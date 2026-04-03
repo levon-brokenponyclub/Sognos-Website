@@ -23,28 +23,65 @@ export const PRODUCTS = {
   },
 } as const;
 
-export const INDUSTRIES = [
-  { name: "Health & Social Care", slug: "health-social-care" },
-  { name: "NDIS & Aged Care", slug: "ndis-aged-care" },
-  { name: "Facilities Management", slug: "facilities" },
-  { name: "Local Government", slug: "local-government" },
-  { name: "Industrial Services", slug: "industrial" },
+// Alignment note: This file is the shared taxonomy source of truth used by reusable
+// navigation/content surfaces. Standalone Platform routes were intentionally removed.
+export const SOLUTIONS = [
+  { name: "Field Service", slug: "field-service", href: "/solutions/field-service" },
+  {
+    name: "Customer Relationship Management",
+    slug: "customer-relationship-management",
+    href: "/solutions/customer-relationship-management",
+  },
+  { name: "Customer Insights", slug: "customer-insights", href: "/solutions/customer-insights" },
+  {
+    name: "Customer Experience",
+    slug: "customer-experience",
+    href: "/solutions/customer-experience",
+  },
+  { name: "Customer Service", slug: "customer-service", href: "/solutions/customer-service" },
+  { name: "Power Platform", slug: "power-platform", href: "/solutions/power-platform" },
+  { name: "Quick Start", slug: "quick-start", href: "/solutions/quick-start" },
 ] as const;
 
-export const PLATFORM = [
+export const INDUSTRIES = [
   {
-    name: "Microsoft Dynamics 365",
-    href: "/platform/dynamics-365",
-    description: "The enterprise foundation Sognos is built on.",
+    name: "Health & Social Care",
+    slug: "health-social-care",
+    href: "/industries/health-social-care",
+    description:
+      "Coordinate complex care delivery, multidisciplinary teams, and compliance-heavy service operations.",
+    products: ["SognosCare", "SognosRoster"],
   },
   {
-    name: "Copilot AI",
-    href: "/platform/copilot-ai",
-    description: "Embedded AI across every workflow.",
+    name: "Facilities Management",
+    slug: "facilities-management",
+    href: "/industries/facilities-management",
+    description:
+      "Dispatch field teams efficiently, manage SLAs, and maintain visibility across sites and clients.",
+    products: ["SognosRoster"],
   },
   {
-    name: "Power Platform",
-    href: "/platform/power-platform",
-    description: "Automation, analytics, and extensibility.",
+    name: "Local Government",
+    slug: "local-government",
+    href: "/industries/local-government",
+    description:
+      "Support frontline service delivery with clear case management, workforce coordination, and audit trails.",
+    products: ["SognosCare", "SognosRoster"],
+  },
+  {
+    name: "Industrial Services",
+    slug: "industrial-services",
+    href: "/industries/industrial-services",
+    description:
+      "Coordinate large-scale field operations, asset-linked work, and complex workforce logistics.",
+    products: ["SognosRoster"],
+  },
+  {
+    name: "Energy & Utilities",
+    slug: "energy-utilities",
+    href: "/industries/energy-utilities",
+    description:
+      "Manage asset-intensive service delivery, compliance, and workforce execution across critical networks.",
+    products: ["SognosCare", "SognosRoster"],
   },
 ] as const;

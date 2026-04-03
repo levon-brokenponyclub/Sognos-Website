@@ -1,273 +1,132 @@
-# Sognos Website — Project Phases
+# Sognos Website — Project Plan
 
-## Phase 1: Foundation & Setup
+> Alignment note: Updated during the architecture-alignment pass to remove legacy scaffold instructions and reflect the current implementation phase and approved content layers.
 
-**Goal:** Establish project structure and core environment
+## Current Status
 
-- Initialize Next.js project (App Router)
-- Configure Tailwind CSS
-- Setup folder structure (`/app`, `/components`, `/lib`)
-- Implement global layout (`layout.tsx`)
-- Setup Navbar + Footer (basic structure)
-- Configure routing and navigation config
+The project already has the marketing shell and homepage section structure in place.
 
----
+Immediate focus:
+- maintain architecture alignment
+- remove outdated taxonomy and page-layer assumptions
+- keep docs in sync with implementation
 
-## ⚙️ Setup Requirements (Mandatory)
+## Phase Plan
 
-Use the following setup commands and constraints:
+### Phase 1: Foundation and Setup
 
-1. Create project:
-   `npx create-next-app@latest sognos-react`
+Completed:
+- Next.js App Router scaffold
+- global layout
+- marketing route group
+- navbar and footer shell
+- initial shared constants
 
-2. Ensure configuration:
-   - App Router enabled
-   - TypeScript enabled
-   - Tailwind CSS enabled
-   - NO `/src` directory (use root)
+### Phase 2: Homepage Structure
 
-3. Install additional packages:
-   - `shadcn/ui` (setup only, no components yet)
-   - `framer-motion`
+Completed:
+- `Hero`
+- `LogoStrip`
+- `HowSognosWorksPreview`
+- `ProductSection`
+- `HowItWorks`
+- `SolutionsSection`
+- `IndustrySection`
+- `ProofSection`
+- `CTASection`
 
-4. Clean default boilerplate:
-   - Remove sample content
-   - Keep minimal layout structure only
+Current homepage composition:
 
----
-
-## 📁 Structure Rule
-
-You MUST follow the structure defined in the architecture spec.
-
-- Do NOT invent a new structure
-- Do NOT use Pages Router
-- Do NOT introduce unnecessary folders
-
----
-
-**Output:**
-
-- Working app scaffold
-- Navigation visible
-
----
-
-## Phase 2: Core Homepage Build
-
-**Goal:** Build full homepage structure (no heavy styling)
-
-- Hero section
-- What Sognos Is
-- Product section (Care + Roster)
-- How It Works
-- Platform section
-- Industries section
-- Proof section
-- CTA section
-
----
-
-### 🧩 Phase 2 Build Checklist (MANDATORY)
-
-Claude must build the homepage using the defined component system.
-
-#### Required Components
-
-Create the following components in `/components/sections/`:
-
-- `Hero.tsx`
-- `WhatIsSognos.tsx`
-- `ProductSection.tsx`
-- `HowItWorks.tsx`
-- `PlatformSection.tsx`
-- `IndustrySection.tsx`
-- `ProofSection.tsx`
-- `CTASection.tsx`
-
----
-
-#### Page Composition
-
-Update:
-`/app/(marketing)/page.tsx`
-
-Must include EXACTLY:
-
-```
+```tsx
 <Hero />
-<WhatIsSognos />
+<LogoStrip />
+<HowSognosWorksPreview />
 <ProductSection />
 <HowItWorks />
-<PlatformSection />
+<SolutionsSection />
 <IndustrySection />
 <ProofSection />
 <CTASection />
 ```
 
----
+### Phase 3: Alignment and Source-of-Truth Cleanup
 
-#### Content Rules
+In progress:
+- align core documentation with the live architecture
+- remove standalone Platform references from shared content/navigation surfaces
+- normalize solution and industry taxonomy
+- ensure footer and shared constants reflect the final spec
 
-- Use content from strategy document
-- Maintain product-first messaging
-- Must include BOTH:
-  - SognosCare
-  - SognosRoster
+Exit criteria:
+- docs, shared constants, footer, and homepage taxonomy all agree
+- no contradictory nav or sitemap references remain
 
----
+### Phase 4: Product Pages
 
-#### Structure Rules
-
-- No styling decisions
-- No visual enhancements
-- Focus on layout + semantic structure
-- Components must be reusable
-
----
-
-#### Cross-Linking Requirement
-
-- Product section must include links to:
-  - `/products/sognoscare`
-  - `/products/sognosroster`
-
----
-
-#### Success Criteria (Phase 2)
-
-- All sections exist
-- Components are created and wired
-- Homepage renders correctly
-- Content is complete (no placeholders)
-
----
-
-**Output:**
-
-- Fully structured homepage
-- All content in place
-
----
-
-## Phase 3: Product Pages
-
-**Goal:** Build core product pages
-
+Next build work:
 - `/products/sognoscare`
 - `/products/sognosroster`
 
-Each includes:
-
-- Hero
-- Problem
-- Features
-- Integration (cross-linking)
+Each page should include:
+- hero
+- what it solves
+- features
+- integration context
 - CTA
 
-**Output:**
+### Phase 5: Solutions and Industries Pages
 
-- Both product pages live
+Build:
+- solution pages for the seven approved solutions
+- dynamic industry pages for the five approved industries
+- supporting customers/resources coverage
 
----
+Rules:
+- solutions are not products
+- industries are not merged into solutions
+- solution pages must not force a product dependency
 
-## Phase 4: Platform & Supporting Pages
+### Phase 6: Design System Application
 
-**Goal:** Build supporting content layer
+Apply the agreed design system:
+- Inter Tight for headings
+- Inter for body
+- heading weight 400 by default
+- card tokens for standard cards
+- no gradients on standard cards or subcards
+- radius tokens:
+  - `sm` 4px
+  - `md` 8px
+  - `lg` 12px
+  - `xl` 16px
+  - `2xl` 20px
+  - `full` 9999px
 
-- Platform pages (`/platform/...`)
-- Industries dynamic pages
-- Customers (case studies)
-- Resources pages
+### Phase 7: UI Polish and Motion
 
-**Output:**
+Add:
+- premium visual refinement
+- system diagrams and product visuals
+- measured motion and transitions
 
-- Full site navigation coverage
+### Phase 8: Conversion and Integration
 
----
+Add:
+- contact flow
+- CRM or scheduling integrations
+- conversion tracking
 
-## Phase 5: Design & UI Enhancement
+### Phase 9: QA and Launch
 
-**Goal:** Apply premium UI (Stripe/Luno level)
+Complete:
+- responsive QA
+- accessibility review
+- performance review
+- deployment and launch setup
 
-- Typography system
-- Spacing + layout refinement
-- Gradient + visual system
-- Card styles + interactions
-- Product UI mock visuals
+## Working Rules
 
-**Output:**
-
-- Visually polished site
-
----
-
-## Phase 6: Interaction & Motion
-
-**Goal:** Add micro-interactions and polish
-
-- Hover states
-- Transitions
-- Framer Motion animations
-- Product card interactions
-
-**Output:**
-
-- Smooth, modern UX
-
----
-
-## Phase 7: Conversion & Integrations
-
-**Goal:** Enable lead capture and tracking
-
-- Contact form (API route)
-- CRM integration (HubSpot or similar)
-- Scheduler embed (Calendly/Chili Piper)
-
-**Output:**
-
-- Conversion-ready site
-
----
-
-## Phase 8: QA & Optimization
-
-**Goal:** Prepare for launch
-
-- Responsive testing
-- Performance optimization
-- SEO metadata
-- Accessibility checks
-
-**Output:**
-
-- Production-ready site
-
----
-
-## Phase 9: Launch
-
-**Goal:** Deploy and go live
-
-- Deploy to Vercel
-- Domain setup
-- Analytics (GA, tracking)
-
-**Output:**
-
-- Live website
-
----
-
-## Phase 10: Iteration
-
-**Goal:** Improve based on data
-
-- Track conversions
-- A/B test sections
-- Optimize messaging
-
-**Output:**
-
-- Continuous improvement loop
+- Update docs in the same task as any structural code change
+- Do not introduce a top-level Platform content layer
+- Do not add industries to `SolutionsSection`
+- Keep products primary in nav, homepage, and page hierarchy

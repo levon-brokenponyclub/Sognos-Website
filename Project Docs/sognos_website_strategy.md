@@ -1,98 +1,77 @@
-# Sognos Website — Product-Led Architecture & Build Spec
+# Sognos Website — Product-Led Architecture and Build Spec
 
-## 1. Overview
+> Alignment note: Updated during the architecture-alignment pass to make this file match the live homepage composition, approved industry list, and embedded-platform rule.
 
-This document defines the **final architecture, UX structure, and build specification** for the Sognos website.
+## Overview
 
-### Objective
+This document is the working architecture spec for the Sognos website rebuild.
 
-Transform Sognos from:
+Objective:
+- present Sognos as a modern, premium, product-led SaaS-style company
+- lead with products, not consulting services
+- show platform depth as supporting proof, not as the site structure
 
-- Consulting / Microsoft partner site
+## Core Positioning
 
-Into:
+Sognos is a service operations platform experience built around two standalone products:
 
-- **Product-led SaaS platform**
+- `SognosCare` for care operations and compliance
+- `SognosRoster` for workforce scheduling and optimisation
 
----
+These products can work independently or together.
 
-## 2. Core Positioning
+Relationship:
 
-### What Sognos Is
+`SognosCare` manages services. `SognosRoster` coordinates the workforce that delivers them.
 
-Sognos is an **AI-powered service operations platform** built on Microsoft Dynamics 365.
-
-It enables organisations to:
-
-- Deliver services efficiently
-- Coordinate complex workforces
-- Maintain compliance
-
----
-
-## 3. Product System
-
-### SognosCare
-
-**Care operations & compliance platform**
-
-- Case management
-- Service delivery tracking
-- Compliance & reporting
-
----
-
-### SognosRoster
-
-**Workforce scheduling & optimisation engine**
-
-- Staff allocation
-- Scheduling & routing
-- Real-time workforce optimisation
-
----
-
-### Relationship
-
-> SognosCare manages services.  
-> SognosRoster coordinates the workforce that delivers them.
-
----
-
-## 4. Architecture Model
+## Final Architecture Model
 
 ```txt
-Product Layer (WHAT)
+Products (primary)
 - SognosCare
 - SognosRoster
 
-Platform Layer (HOW)
-- Dynamics 365
-- Copilot AI
+Solutions (supporting engagements)
+- Field Service
+- Customer Relationship Management
+- Customer Insights
+- Customer Experience
+- Customer Service
 - Power Platform
+- Quick Start
 
-Industry Layer (WHO)
+Industries (sector entry points)
 - Health & Social Care
-- Facilities
-- Government
-- Industrial
+- Facilities Management
+- Local Government
+- Industrial Services
+- Energy & Utilities
 ```
 
----
+Rules:
+- products are primary
+- solutions are supporting
+- industries are separate from solutions
+- solutions do not require forced mapping to a product
+- platform references stay embedded, never top-level
 
-## 5. Sitemap (Final)
+## Final Sitemap
 
-```
-/ (Home)
+```txt
+/
 
 /products
   /products/sognoscare
   /products/sognosroster
 
-/platform
-  /platform/dynamics-365
-  /platform/copilot-ai
-  /platform/power-platform
+/solutions
+  /solutions/field-service
+  /solutions/customer-relationship-management
+  /solutions/customer-insights
+  /solutions/customer-experience
+  /solutions/customer-service
+  /solutions/power-platform
+  /solutions/quick-start
 
 /industries
   /industries/[slug]
@@ -109,475 +88,182 @@ Industry Layer (WHO)
 /contact
 ```
 
----
+There is no `/platform` section in the sitemap.
 
-## 6. Navigation
+## Final Navigation
 
-### Header
-
-**Left:**
-
-- Logo
-
-**Center:**
+Header structure:
 
 - Products
   - SognosCare
   - SognosRoster
-- Platform
+- Solutions
+  - Field Service
+  - Customer Relationship Management
+  - Customer Insights
+  - Customer Experience
+  - Customer Service
+  - Power Platform
+  - Quick Start
 - Industries
+  - Health & Social Care
+  - Facilities Management
+  - Local Government
+  - Industrial Services
+  - Energy & Utilities
 - Customers
 - Resources
 - Company
+  - About
+  - Careers
 
-**Right:**
+Right-side CTAs:
+- Contact Sales
+- Book Assessment
 
-- Contact Sales (secondary)
-- Book Assessment (primary CTA)
+## Homepage Source of Truth
 
----
-
-## 7. Homepage Structure
-
-### 1. Hero
-
-Headline:
-Run your entire service operation on one intelligent platform.
-
-Sub:
-Sognos combines care management and workforce scheduling on Microsoft Dynamics 365.
-
-CTAs:
-
-- Book Free Assessment
-- Explore Platform
-
----
-
-### 2. What Sognos Is
-
-Sognos is an AI-powered service operations platform that unifies:
-
-- Care management
-- Workforce coordination
-
----
-
-### 3. Product Section
-
-#### SognosCare
-
-- Care operations & compliance
-- CTA: Explore SognosCare
-
-#### SognosRoster
-
-- Workforce scheduling & optimisation
-- CTA: Explore SognosRoster
-
----
-
-### 4. How It Works
-
-1. Capture service demand
-2. Schedule workforce
-3. Deliver services
-4. Record outcomes
-5. Optimise performance
-
----
-
-### 5. Platform / AI
-
-Built on:
-
-- Dynamics 365
-- Copilot
-- Power Platform
-
----
-
-### 6. Industries
-
-- Health & Social Care
-- NDIS & Aged Care
-- Facilities
-- Local Government
-- Industrial
-
----
-
-### 7. Proof
-
-- Client logos
-- Case studies
-
----
-
-### 8. Final CTA
-
-Ready to transform your service operations?
-
----
-
-## 8. Product Pages
-
-### SognosCare
-
-Sections:
-
-- Hero
-- What it solves
-- Features
-- Compliance capabilities
-- Integration with SognosRoster
-- CTA
-
----
-
-### SognosRoster
-
-Sections:
-
-- Hero
-- Scheduling challenges
-- Features
-- Optimisation logic
-- Integration with SognosCare
-- CTA
-
----
-
-## 9. Platform Pages
-
-Purpose:
-Explain underlying system (not dominate narrative)
-
-Sections:
-
-- Overview
-- Capability explanation
-- Integration
-- Benefits
-
----
-
-## 10. Industry Pages
-
-Structure:
-
-- Hero (problem-focused)
-- Industry challenges
-- How Sognos solves it
-- Products used (Care + Roster)
-- Case studies
-- CTA
-
----
-
-## 11. Customers
-
-- Filterable grid
-- Case studies
-- Tags:
-  - Industry
-  - Product used
-
----
-
-## 12. Contact
-
-- Embedded form or scheduler
-- No mailto links
-- CRM integration via API
-
----
-
-## 13. Component System
-
-### Core Components
-
-- Navbar
-- HeroSection
-- ProductCard
-- FeatureGrid (Bento)
-- TestimonialCard
-- CTASection
-- IndustryCard
-- AccordionFAQ
-
----
-
-## 14. Tech Stack
-
-- Next.js (App Router)
-- React
-- Tailwind CSS
-- Framer Motion
-- shadcn/ui
-
----
-
-## 15. Design Principles
-
-- Product-first storytelling
-- Visual system (not text-heavy)
-- Large spacing (breathing room)
-- Strong typography hierarchy
-- Real UI visuals (not stock images)
-
----
-
-## 16. Key Rules
-
-- No “Solutions” as top-level
-- Always position products first
-- Always connect Care ↔ Roster
-- Platform supports, not leads
-- Avoid generic Microsoft language
-
----
-
-## 17. Outcome
-
-A scalable, modern SaaS website that:
-
-- Clearly communicates product value
-- Converts effectively
-- Feels like a premium software company
-
----
-
-# Sognos Next.js Build Structure (App Router)
-
-## 1. Project Structure
-
-```
-/app
-  /(marketing)
-    layout.tsx
-    page.tsx                 # Homepage
-
-    /products
-      page.tsx               # Product Hub
-      /sognoscare
-        page.tsx
-      /sognosroster
-        page.tsx
-
-    /platform
-      page.tsx
-      /dynamics-365
-        page.tsx
-      /copilot-ai
-        page.tsx
-      /power-platform
-        page.tsx
-
-    /industries
-      page.tsx
-      /[slug]
-        page.tsx
-
-    /customers
-      page.tsx
-      /[slug]
-        page.tsx
-
-    /resources
-      page.tsx
-
-    /company
-      /about
-        page.tsx
-      /careers
-        page.tsx
-
-    /contact
-      page.tsx
-
-/components
-  /layout
-    Navbar.tsx
-    Footer.tsx
-
-  /sections
-    Hero.tsx
-    WhatIsSognos.tsx
-    ProductSection.tsx
-    HowItWorks.tsx
-    PlatformSection.tsx
-    IndustrySection.tsx
-    ProofSection.tsx
-    CTASection.tsx
-
-  /ui
-    Button.tsx
-    Card.tsx
-    Container.tsx
-    Grid.tsx
-    Badge.tsx
-
-/lib
-  constants.ts
-  navigation.ts
-
-/styles
-  globals.css
-
-/public
-  /images
-```
-
----
-
-## 2. Layout Setup
-
-### `/app/(marketing)/layout.tsx`
-
-- Wrap all pages
-- Includes:
-  - `<Navbar />`
-  - `<Footer />`
-
----
-
-## 3. Homepage Composition
-
-### `/app/(marketing)/page.tsx`
-
-```
+```tsx
 <Hero />
-<WhatIsSognos />
+<LogoStrip />
+<HowSognosWorksPreview />
 <ProductSection />
 <HowItWorks />
-<PlatformSection />
+<SolutionsSection />
 <IndustrySection />
 <ProofSection />
 <CTASection />
 ```
 
----
+### Section Intent
 
-## 4. Product Pages
+#### Hero
 
-### `/products/sognoscare/page.tsx`
+Lead with the platform outcome and product-led positioning.
 
-Sections:
+#### LogoStrip
 
-- Hero
-- Problem
-- Features
-- Compliance
-- Integration (Roster link)
-- CTA
+Reusable trust layer that can move above or below the hero later.
 
-### `/products/sognosroster/page.tsx`
+#### HowSognosWorksPreview
 
-Sections:
+Visual system overview only.
 
-- Hero
-- Scheduling Challenges
-- Features
-- Optimisation Logic
-- Integration (Care link)
-- CTA
+Requirements:
+- visual-first, not paragraph-first
+- shows the operating loop clearly
+- uses platform references as embedded proof
 
----
+#### ProductSection
 
-## 5. Product Hub
+Introduce:
+- SognosCare
+- SognosRoster
 
-### `/products/page.tsx`
+Each product must stand on its own while still showing the system relationship.
 
-```
-Hero
-Product Comparison (Care vs Roster)
-Better Together Section
-System Diagram
-CTA
-```
+#### HowItWorks
 
----
+Detailed operational flow:
+1. capture service demand
+2. coordinate services and workflows
+3. schedule and optimise workforce
+4. deliver services in the field
+5. record outcomes and compliance
+6. optimise performance with AI insights
 
-## 6. Dynamic Routes
+Platform proof appears here as supporting context:
+- built on Dynamics 365
+- enhanced with Copilot
+- powered by Power Platform automation
 
-### Industries
+#### SolutionsSection
 
-`/industries/[slug]/page.tsx`
+Purpose:
+- provide outcome-led entry points for customised engagements
 
-- Fetch industry config
-- Render:
-  - Hero
-  - Problems
-  - Product Mapping
-  - Case Studies
-  - CTA
+Rules:
+- must not include industries
+- must not read like Microsoft documentation
+- must not displace product-led positioning
 
-### Customers
+#### IndustrySection
 
-`/customers/[slug]/page.tsx`
+Approved industries only:
+- Health & Social Care
+- Facilities Management
+- Local Government
+- Industrial Services
+- Energy & Utilities
 
-- Case study template
+#### ProofSection
 
----
+Proof layer may include:
+- logos
+- results
+- case studies
+- testimonials
 
-## 7. Navbar Logic
+#### CTASection
 
-### `/lib/navigation.ts`
+Close on conversion with a clear next action.
 
-```
-export const nav = {
-  products: [
-    { name: "SognosCare", href: "/products/sognoscare" },
-    { name: "SognosRoster", href: "/products/sognosroster" }
-  ],
-  platform: [
-    { name: "Dynamics 365", href: "/platform/dynamics-365" },
-    { name: "Copilot AI", href: "/platform/copilot-ai" }
-  ]
-}
-```
+## Product and Supporting Page Logic
 
----
+### Product Pages
 
-## 8. Core Components
+Build first:
+- `/products/sognoscare`
+- `/products/sognosroster`
 
-### Hero.tsx
+Each page should explain:
+- what the product solves
+- how it works
+- why it matters
+- how it relates to the broader system
 
-- Headline
-- Subtext
-- CTA group
-- Visual slot
+### Solution Pages
 
-### ProductSection.tsx
+Solution pages describe customised engagements.
 
-- Two product blocks
-- Handles layout logic
+Rules:
+- they are not products
+- they may be delivered independently, alongside products, or in broader engagements
+- they should focus on outcomes and implementation value
 
-### CTASection.tsx
+### Industry Pages
 
-- Reusable CTA block
+Industry pages are sector-specific entry points.
 
----
+Rules:
+- they should not become disguised solution pages
+- they should reflect operational context, compliance pressure, and service-delivery complexity
 
-## 9. Styling Approach
+## Design-System Rules
 
-- Tailwind CSS
-- Use utility classes only
-- Central container width: `max-w-7xl`
+Typography:
+- headings use Inter Tight
+- body uses Inter
+- headings default to weight 400 unless explicitly overridden
 
----
+Card system:
+- use card tokens
+- no gradients on standard cards or subcards
+- gradients only on hero or deliberate highlight surfaces
 
-## 10. Dev Notes
+Radius tokens:
+- `sm` 4px
+- `md` 8px
+- `lg` 12px
+- `xl` 16px
+- `2xl` 20px
+- `full` 9999px
 
-- Use Server Components by default
-- Use Client Components only when needed (interactions)
-- All content should be easily replaceable
+## Current Build Priority
 
----
+Before new page implementation:
+- keep docs aligned with code
+- keep shared constants aligned with the approved taxonomy
+- keep footer and other reusable navigation surfaces aligned with the final architecture
 
-## 11. Key Rule
-
-- Product-first at every level
-- Never reintroduce “solutions” structure
-- Always link Care ↔ Roster
+This avoids routing drift, page-layer contradictions, and repeated cleanup later.

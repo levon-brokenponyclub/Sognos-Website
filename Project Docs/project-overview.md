@@ -1,452 +1,181 @@
 # Sognos Website — Project Overview
 
-## Project Name
-Sognos Website Rebuild
+> Alignment note: Updated during the architecture-alignment pass to restore the current homepage order, final taxonomy, and the no-Platform-layer rule.
 
----
+## Project
 
-## What This Project Is
+Sognos website rebuild for a modern, premium, product-led SaaS-style presence.
 
-A full redesign and rebuild of the Sognos website into a **modern, product-led SaaS platform experience**.
-
-The new site will move away from a traditional consulting-style website and reposition Sognos as a **software product company**.
-
----
-
-## What We Are Building
-
-We are building a:
-
-- High-performance marketing website
-- Product-first SaaS experience
-- Scalable component-based frontend
-
-Using:
-- Next.js (App Router)
+Stack:
+- Next.js App Router
 - React
 - Tailwind CSS
 
----
+Benchmarks:
+- Stripe for structure and system thinking
+- Luno for calm, premium visual quality
 
-## Core Objective
+## Core Positioning
 
-Transform Sognos from:
-- A Microsoft partner / consulting website
+Sognos is presented as a service operations platform with two primary products:
 
-Into:
-- A **product-led platform company**
+- SognosCare
+- SognosRoster
 
----
+Supporting layers:
 
-## Key Focus Areas
+- Solutions for customised engagements
+- Industries for sector-specific entry points
 
-- Product-first architecture (SognosCare + SognosRoster)
-- Clear messaging and positioning
-- High-conversion UX
-- Premium SaaS-level UI (Stripe / Luno quality)
-- Scalable component system
+Platform context:
 
----
+- Dynamics 365
+- Copilot
+- Power Platform
 
-## End Result
+The platform is embedded as supporting proof within the experience. It is not a top-level navigation item or standalone page layer.
 
-A website that:
+## Architecture Rules
 
-- Clearly communicates Sognos as a product platform
-- Demonstrates real system value
-- Converts visitors into leads
-- Feels like a modern, premium SaaS company
+### Products
 
----
+Primary positioning:
+- SognosCare
+- SognosRoster
 
-## Project Approach
+### Solutions
 
-- Claude → Structure & content
-- Gemini → UI & styling
-- Dev → Implementation in Next.js
+Supporting engagements:
+- Field Service
+- Customer Relationship Management
+- Customer Insights
+- Customer Experience
+- Customer Service
+- Power Platform
+- Quick Start
 
----
+### Industries
 
-## Status
+Separate sector entry points:
+- Health & Social Care
+- Facilities Management
+- Local Government
+- Industrial Services
+- Energy & Utilities
 
-In build phase
+Critical rules:
+- Products are primary
+- Solutions are supporting
+- Industries are separate from solutions
+- Do not force solution-to-product mapping
+- Do not introduce a standalone Platform nav or page layer
+- System understanding should be visual-first, not paragraph-first
 
----
+## Final Sitemap
 
-## Success Metrics
+```txt
+/
 
-The success of this project will be measured by:
+/products
+  /products/sognoscare
+  /products/sognosroster
 
-### Conversion
-- Increase in demo/assessment bookings
-- Reduced drop-off from key pages
+/solutions
+  /solutions/field-service
+  /solutions/customer-relationship-management
+  /solutions/customer-insights
+  /solutions/customer-experience
+  /solutions/customer-service
+  /solutions/power-platform
+  /solutions/quick-start
 
-### Engagement
-- Time on site
-- Scroll depth on homepage and product pages
+/industries
+  /industries/[slug]
 
-### Performance
-- Page load speed (Core Web Vitals)
-- Mobile responsiveness
+/customers
+  /customers/[slug]
 
-### Clarity
-- Users can clearly identify:
-  - What Sognos is
-  - What SognosCare does
-  - What SognosRoster does
+/resources
 
-### Business Impact
-- Higher quality inbound leads
-- Improved sales conversations (less education required)
+/company
+  /company/about
+  /company/careers
 
----
+/contact
+```
 
-## Sprint Breakdown (Execution Layer)
+## Final Navigation
 
-### Sprint 1
-- Setup project
-- Build layout (Navbar + Footer)
-- Setup routing
+```txt
+Products
+  - SognosCare
+  - SognosRoster
 
-### Sprint 2
-- Build homepage structure
-- Add all sections (no styling)
+Solutions
+  - Field Service
+  - Customer Relationship Management
+  - Customer Insights
+  - Customer Experience
+  - Customer Service
+  - Power Platform
+  - Quick Start
 
-### Sprint 3
-- Build product pages
-- Implement cross-linking (Care ↔ Roster)
+Industries
+  - Health & Social Care
+  - Facilities Management
+  - Local Government
+  - Industrial Services
+  - Energy & Utilities
 
-### Sprint 4
-- Build industries + platform pages
+Customers
+Resources
+Company
+  - About
+  - Careers
+```
 
-### Sprint 5
-- Apply design system (Gemini)
-- Implement visuals + UI polish
+CTAs:
+- Contact Sales
+- Book Assessment
 
-### Sprint 6
-- Add interactions + animations
+## Homepage Structure
 
-### Sprint 7
-- Integrations (forms, CRM, scheduling)
+The homepage must render in this order:
 
-### Sprint 8
-- QA + performance optimisation
+```tsx
+<Hero />
+<LogoStrip />
+<HowSognosWorksPreview />
+<ProductSection />
+<HowItWorks />
+<SolutionsSection />
+<IndustrySection />
+<ProofSection />
+<CTASection />
+```
 
----
+Notes:
+- `HowSognosWorksPreview` is the visual system overview
+- `HowItWorks` is the detailed operational flow
+- `LogoStrip` is reusable and should stay movable
+- `SolutionsSection` must not include industries
+- `IndustrySection` must include Industrial Services and Energy & Utilities
 
-## Definition of Done
+## Current State
 
-A page is complete when:
+Built:
+- Marketing layout shell
+- Homepage section components
+- Navigation config
+- Initial footer and shared constants
 
-- Structure matches spec
-- Content is product-first
-- UI matches premium SaaS quality
-- Mobile responsive
-- No placeholder content
-- CTA is functional
-
----
+Current priority:
+- Keep docs and shared source-of-truth files aligned with the live architecture before new page implementation
 
 ## Non-Negotiables
 
 - Product-first at all times
-- No "solutions" reintroduction
-- SognosCare and SognosRoster always visible
-- No generic template UI
-- Must feel premium (Stripe/Luno level)
-
----
-
-## Reference Sites
-
-### Current Sognos Site
-- https://sognos.com.au/
-
-Purpose:
-- Audit current structure, messaging, and gaps
-- Identify what must be removed or improved
-
----
-
-### Benchmark References
-
-#### Stripe
-- https://stripe.com/
-
-Focus on:
-- Layout hierarchy
-- Navigation (mega menu)
-- Product-first structure
-- Visual system and spacing
-
-#### Luno
-- https://www.luno.com/
-
-Focus on:
-- Bold visual design
-- Hero execution
-- Use of gradients and contrast
-- Simplicity of messaging
-
----
-
-### Usage Rule
-
-All design and UX decisions must align with:
-- Stripe → structure and system thinking
-- Luno → visual quality and impact
-
-Do NOT replicate the current Sognos site structure.
-# Sognos Website — Project Overview
-
-## Project Name
-Sognos Website Rebuild
-
----
-
-## Reference Sites
-
-### Current Sognos Site
-- https://sognos.com.au/
-
-Purpose:
-- Audit current structure, messaging, and gaps
-- Identify what must be removed or improved
-
----
-
-### Benchmark References
-
-#### Stripe
-- https://stripe.com/
-
-Focus on:
-- Layout hierarchy
-- Navigation (mega menu)
-- Product-first structure
-- System-level thinking
-
-#### Luno
-- https://www.luno.com/
-
-Focus on:
-- Bold visual design
-- Hero execution
-- Gradients and contrast
-- Simplicity of messaging
-
----
-
-### Usage Rule
-
-- Stripe → structure and system thinking
-- Luno → visual quality and impact
-
-DO NOT replicate the current Sognos site.
-
----
-
-## What This Project Is
-
-A full redesign and rebuild of the Sognos website into a **modern, product-led SaaS platform**.
-
-Repositioning Sognos from:
-- Consulting / Microsoft partner
-
-Into:
-- **Product platform company**
-
----
-
-## What We Are Building
-
-- High-performance marketing site
-- Product-first SaaS experience
-- Scalable component-based frontend
-
-Stack:
-- Next.js (App Router)
-- React
-- Tailwind CSS
-
----
-
-## Core Objective
-
-Transform Sognos into a:
-
-→ **Product-led service operations platform**
-
----
-
-## Product System
-
-### SognosCare
-- Care operations
-- Compliance & reporting
-
-### SognosRoster
-- Workforce scheduling
-- Optimisation engine
-
-### Relationship
-
-SognosCare manages services.  
-SognosRoster coordinates the workforce that delivers them.
-
----
-
-## Key Focus Areas
-
-- Product-first architecture
-- Clear positioning
-- Conversion-focused UX
-- Premium SaaS UI (Stripe/Luno level)
-- Scalable component system
-
----
-
-## Project Approach
-
-- Claude → Structure, content, components, must create `claude.md`
-- Gemini → UI, styling, visual polish, interactions
-- Dev → Final Next.js implementation
-
----
-
-## Claude Requirements
-
-Claude must maintain `claude.md` including:
-
-- Build instructions
-- Component responsibilities
-- Page structure
-- Current status
-- Next tasks
-
----
-
-## Required Skills
-
-- Product positioning
-- Information architecture
-- UX strategy
-- Conversion UX
-- SaaS UI design
-- Component systems
-- Next.js App Router
-- React
-- Tailwind CSS
-- Motion / interaction design
-- Forms & CRM integration
-- Performance optimisation
-
----
-
-## Status
-
-In build phase
-
----
-
-## Success Metrics
-
-### Conversion
-- Increase bookings
-- Reduce drop-off
-
-### Engagement
-- Time on site
-- Scroll depth
-
-### Performance
-- Core Web Vitals
-- Mobile responsiveness
-
-### Clarity
-Users must understand:
-- What Sognos is
-- Care vs Roster
-
-### Business Impact
-- Higher quality leads
-- Faster sales cycles
-
----
-
-## Sprint Breakdown
-
-### Sprint 1
-- Setup project
-- Layout (Navbar + Footer)
-
-### Sprint 2
-- Homepage structure
-
-### Sprint 3
-- Product pages
-
-### Sprint 4
-- Supporting pages
-
-### Sprint 5
-- Design system (Gemini)
-
-### Sprint 6
-- Interactions
-
-### Sprint 7
-- Integrations
-
-### Sprint 8
-- QA & optimisation
-
----
-
-## Definition of Done
-
-- Structure correct
-- Product-first messaging
-- Premium UI
-- Responsive
-- No placeholders
-- Working CTAs
-
----
-
-## Non-Negotiables
-
-- Product-first ALWAYS
-- No “solutions” structure
-- Care + Roster always visible
-- No generic UI
-- Must feel premium
-
----
-
-## Risks
-
-- Falling back to consulting language
-- Overloading platform layer
-- Weak product clarity
-- Generic design output
-
----
-
-## Guiding Principle
-
-Build a product website, not a services website.
-
-Every page must clearly show:
-- What the product is
-- How it works
-- Why it matters
-
----
-
-## Outcome
-
-A modern SaaS website that:
-- Communicates product clearly
-- Converts effectively
-- Feels like a premium software company
+- Products lead and solutions support
+- Industries remain a separate content layer
+- Platform stays embedded as proof, never standalone
+- No contradictory naming, slugs, or nav references across docs and code

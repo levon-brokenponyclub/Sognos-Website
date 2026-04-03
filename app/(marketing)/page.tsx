@@ -1,8 +1,9 @@
 import Hero from "@/components/sections/Hero";
-import WhatIsSognos from "@/components/sections/WhatIsSognos";
+import LogoStrip from "@/components/sections/LogoStrip";
+import HowSognosWorksPreview from "@/components/sections/HowSognosWorksPreview";
 import ProductSection from "@/components/sections/ProductSection";
 import HowItWorks from "@/components/sections/HowItWorks";
-import PlatformSection from "@/components/sections/PlatformSection";
+import SolutionsSection from "@/components/sections/SolutionsSection";
 import IndustrySection from "@/components/sections/IndustrySection";
 import ProofSection from "@/components/sections/ProofSection";
 import CTASection from "@/components/sections/CTASection";
@@ -11,10 +12,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <WhatIsSognos />
+      <LogoStrip />
+      <HowSognosWorksPreview />
       <ProductSection />
       <HowItWorks />
-      <PlatformSection />
+      <SolutionsSection />
       <IndustrySection />
       <ProofSection />
       <CTASection />

@@ -1,156 +1,106 @@
-## 🔴 INITIAL INSTRUCTION (MANDATORY)
+# Sognos Website — Execution Rules
 
-Before doing anything:
+> Alignment note: Updated during the architecture-alignment pass so kickoff guidance reflects takeover/continuation rules for the in-progress build rather than initial project setup.
 
-1. Read ALL markdown files inside:
-   `/Project Docs/`
+## Role of the Primary Agent
 
-This includes:
-- Project overview
-- Project phases
-- Website strategy
-- Architecture & build spec
+The primary agent is responsible for:
+- project planning
+- architecture enforcement
+- documentation maintenance
+- implementation coordination
 
-You MUST fully understand:
-- Product-first positioning
-- SognosCare + SognosRoster system
-- Next.js architecture
-- Component structure
+This role continues an in-progress build. It does not restart or redesign the project.
 
-Reference files:
-- project-overview.md
-- project-plan.md
-- sognos_website_strategy.md
+## Mandatory First Step for Any New Work
 
-Do NOT begin building until this is complete.
+Before implementation:
+1. read all markdown files in `/Project Docs/`
+2. read the current homepage section components
+3. read navigation config
+4. confirm the current architecture against the live codebase
 
----
+Do not begin new build work without first checking for drift between docs and code.
 
-## ⚙️ SETUP REQUIREMENTS (MANDATORY)
+## Architecture Rules
 
-You MUST use the following setup:
+### Products
 
-1. Create project:
-   `npx create-next-app@latest sognos-react`
-
-2. Ensure configuration:
-- App Router enabled
-- TypeScript enabled
-- Tailwind CSS enabled
-- NO `/src` directory (use root)
-
-3. Install additional packages:
-- shadcn/ui (setup only)
-- framer-motion
-
-4. Clean boilerplate:
-- Remove all default content
-- Keep minimal structure only
-
----
-
-## 🚫 HARD RULES
-
-- DO NOT redesign anything
-- DO NOT add styling decisions
-- DO NOT simplify architecture
-- DO NOT reintroduce “solutions” structure
-- DO NOT deviate from provided file structure
-
-You are:
-👉 Builder + Architect (NOT designer)
-
----
-
-## 🧠 YOUR ROLE
-
-You are responsible for:
-
-- Structure
-- Content placement
-- Component architecture
-- File creation
-- Build logic
-
-You are NOT responsible for design.
-
----
-
-## 📄 REQUIRED ACTION (MANDATORY FIRST STEP)
-
-Create a file:
-
-`/claude.md`
-
-This file must include:
-
-### 1. Project Understanding
-- What Sognos is
-- Product system (Care + Roster)
-- Core objective
-
-### 2. Build Plan
-- Phase-by-phase breakdown (from project phases doc)
-
-### 3. File Structure Plan
-- Next.js app structure
-- Components to be created
-
-### 4. Current Task
-- What you are about to build next
-
-### 5. Next Tasks
-- Ordered execution steps
-
-This file will act as your execution control system.
-
----
-
-## 🚀 AFTER claude.md
-
-Begin **Phase 1: Foundation & Setup**
-
-### Tasks:
-
-1. Initialize Next.js App Router structure
-2. Create `/app/(marketing)/layout.tsx`
-3. Create:
-   - `Navbar.tsx`
-   - `Footer.tsx`
-4. Setup navigation config:
-   `/lib/navigation.ts`
-
-5. Ensure navigation includes:
+Primary:
 - SognosCare
 - SognosRoster
 
----
+### Solutions
 
-## 📦 OUTPUT FORMAT
+Supporting:
+- Field Service
+- Customer Relationship Management
+- Customer Insights
+- Customer Experience
+- Customer Service
+- Power Platform
+- Quick Start
 
-- File-by-file output
-- Clean, production-ready code
-- No styling beyond basic structure
+### Industries
 
----
+Separate:
+- Health & Social Care
+- Facilities Management
+- Local Government
+- Industrial Services
+- Energy & Utilities
 
-## 🎯 SUCCESS CONDITION
+### Platform Rule
 
-You have succeeded when:
+Dynamics 365, Copilot, and Power Platform are embedded supporting proof only.
 
-- `claude.md` is complete
-- Project scaffold is correct
-- Navbar + Footer exist
-- Navigation matches product-first spec
+They must not become:
+- a top-level nav item
+- a standalone page layer
+- a primary positioning message
 
----
+## Homepage Source of Truth
 
-## 🔥 FINAL RULE
+```tsx
+<Hero />
+<LogoStrip />
+<HowSognosWorksPreview />
+<ProductSection />
+<HowItWorks />
+<SolutionsSection />
+<IndustrySection />
+<ProofSection />
+<CTASection />
+```
 
-Think like:
-👉 You are building the foundation of a SaaS product platform
+Additional rules:
+- `HowSognosWorksPreview` is visual-first
+- `HowItWorks` is the detailed operational flow
+- `SolutionsSection` must not include industries
+- `IndustrySection` must include Industrial Services and Energy & Utilities
 
-NOT:
-👉 A marketing template
+## Documentation Rules
 
-Proceed.
+Keep these files aligned with code:
+- `/Project Docs/project-overview.md`
+- `/Project Docs/project-plan.md`
+- `/Project Docs/project-kickoff.md`
+- `/Project Docs/sognos_website_strategy.md`
+
+Never leave:
+- outdated phase descriptions
+- outdated component names
+- outdated nav references
+- contradictory architecture statements
+
+## Execution Method
+
+For each task:
+1. state what is outdated
+2. state what must change
+3. make the changes
+4. verify consistency
+5. summarize files changed, what was fixed, and what remains next
+
+Be conservative.
+Do not make speculative design decisions unless explicitly asked.

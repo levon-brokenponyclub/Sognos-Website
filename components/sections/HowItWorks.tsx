@@ -8,32 +8,45 @@ const steps = [
   },
   {
     step: 2,
-    title: "Schedule your workforce",
+    title: "Coordinate services and workflows",
     description:
-      "SognosRoster automatically matches available, qualified staff to each service — factoring in location, skills, compliance requirements, and availability.",
-    product: "SognosRoster",
+      "SognosCare orchestrates the full service lifecycle — assigning cases, triggering workflows, and ensuring every service requirement is tracked from intake to delivery.",
+    product: "SognosCare",
   },
   {
     step: 3,
-    title: "Deliver services",
+    title: "Schedule and optimise workforce",
+    description:
+      "SognosRoster automatically matches available, qualified staff to each service — factoring in location, skills, compliance requirements, and real-time availability.",
+    product: "SognosRoster",
+  },
+  {
+    step: 4,
+    title: "Deliver services in the field",
     description:
       "Field staff access their schedule and service details in real time. Every visit, task, and interaction is recorded — creating a live picture of delivery.",
     product: "SognosCare + SognosRoster",
   },
   {
-    step: 4,
-    title: "Record outcomes",
+    step: 5,
+    title: "Record outcomes and compliance",
     description:
       "Outcomes, notes, and compliance checkpoints are captured at the point of delivery — feeding directly into your reporting, audit trails, and funding claims.",
     product: "SognosCare",
   },
   {
-    step: 5,
-    title: "Optimise performance",
+    step: 6,
+    title: "Optimise performance with AI insights",
     description:
       "AI-powered insights surface patterns across your operations — highlighting inefficiencies, compliance gaps, and workforce utilisation opportunities so you can act before they become problems.",
-    product: "Sognos Platform",
+    product: "Copilot AI",
   },
+];
+
+const platformStack = [
+  "Built on Microsoft Dynamics 365",
+  "Enhanced with Copilot AI",
+  "Powered by Power Platform automation",
 ];
 
 export default function HowItWorks() {
@@ -60,6 +73,12 @@ export default function HowItWorks() {
             </li>
           ))}
         </ol>
+
+        <ul role="list" aria-label="Platform foundation">
+          {platformStack.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </div>
     </section>
   );

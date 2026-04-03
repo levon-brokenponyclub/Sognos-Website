@@ -10,8 +10,8 @@ type HeroProps = {
 export default function Hero({
   headline = "Run your entire service operation on one intelligent platform.",
   subtext = "Sognos combines care management and workforce scheduling on Microsoft Dynamics 365 — giving you complete visibility and control across every service you deliver.",
-  primaryCTA = { label: "Book Free Assessment", href: "/contact" },
-  secondaryCTA = { label: "Explore Platform", href: "/platform" },
+  primaryCTA = { label: "Book a Demo", href: "/contact" },
+  secondaryCTA = { label: "Explore Products", href: "/products" },
 }: HeroProps) {
   return (
     <section aria-label="Hero">

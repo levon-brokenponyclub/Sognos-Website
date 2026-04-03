@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PRODUCTS, INDUSTRIES, PLATFORM, SITE } from "@/lib/constants";
+import { INDUSTRIES, PRODUCTS, SITE, SOLUTIONS } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -37,11 +37,26 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Platform */}
+          {/* Alignment note: Footer taxonomy now mirrors the approved top-level architecture. */}
+          {/* Solutions */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Platform</h3>
+            <h3 className="text-sm font-semibold text-gray-900">Solutions</h3>
             <ul className="mt-4 space-y-3">
-              {PLATFORM.map((item) => (
+              {SOLUTIONS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-sm text-gray-600 hover:text-gray-900">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industries */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900">Industries</h3>
+            <ul className="mt-4 space-y-3">
+              {INDUSTRIES.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-gray-600 hover:text-gray-900">
                     {item.name}
