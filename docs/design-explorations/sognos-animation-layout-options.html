@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sognos Animation — Layout Explorations</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0f2e;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    padding: 40px 24px;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 48px;
+  }
+
+  .option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: 900px;
+  }
+
+  .option {
+    border: 1px solid rgba(93,100,254,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .option-header {
+    background: #0e1a50;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(93,100,254,0.15);
+  }
+
+  .option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #5D64FE;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 12px;
+  }
+
+  .option-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .option-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+    padding-left: 40px;
+  }
+
+  .option-body {
+    padding: 28px 24px;
+    background: #0d1640;
+  }
+
+  .diagram {
+    background: #0d1b4b;
+    border-radius: 10px;
+    padding: 24px 16px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+  }
+
+  /* Option C uses column layout */
+  .diagram-col {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .zone {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    min-width: 140px;
+  }
+
+  .zone-label {
+    font-size: 10px;
+    color: #5D64FE;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .node {
+    background: #1a2d6e;
+    border: 1px solid #2a3d8e;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #c8d4ff;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .node.platform {
+    background: #5D64FE;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+
+  .node.sub {
+    background: #101d51;
+    font-size: 11px;
+    color: #8899cc;
+  }
+
+  .arrow {
+    color: #5D64FE;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .chosen-badge {
+    display: inline-block;
+    background: rgba(93,100,254,0.15);
+    border: 1px solid #5D64FE;
+    color: #5D64FE;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Sognos Animation — Layout Explorations</h1>
+<p class="meta">Generated 2026-04-04 · Three layout options explored during brainstorming</p>
+
+<div class="option-group">
+
+  <!-- Option A -->
+  <div class="option">
+    <div class="option-header">
+      <div style="display:flex;align-items:center">
+        <span class="option-letter">A</span>
+        <span class="option-title">Flow: Demand → Platform → Outcomes (left/right)</span>
+      </div>
+      <div class="option-desc">Left = Service Demand sources, Centre = Platform + 3 inner layers, Right = Outcomes & Compliance</div>
+    </div>
+    <div class="option-body">
+      <div class="diagram">
+        <div class="zone">
+          <div class="zone-label">Left</div>
+          <div class="node">Referrals</div>
+          <div class="node">Care Plans</div>
+          <div class="node">Field Jobs</div>
+          <div class="node">Schedules</div>
+          <div class="node">Incidents</div>
+          <div class="node">Assessments</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Centre</div>
+          <div class="node platform">Sognos Platform</div>
+          <div class="node sub">AI Optimisation</div>
+          <div class="node sub">Workforce (Roster)</div>
+          <div class="node sub">Service Delivery (Care)</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Right</div>
+          <div class="node">Compliance Reports</div>
+          <div class="node">Audit Trails</div>
+          <div class="node">Outcomes Data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="option">
+    <div class="option-header">
+      <div style="display:flex;align-items:center">
+        <span class="option-letter">B</span>
+        <span class="option-title">Strict 1:1 label replacement</span>
+      </div>
+      <div class="option-desc">Each Stripe label swapped directly — left = Service Demand, right = Outcomes & Compliance, layers replace SDK/Pipeline/Orchestration</div>
+    </div>
+    <div class="option-body">
+      <div class="diagram">
+        <div class="zone">
+          <div class="zone-label">Left (6 tiles)</div>
+          <div class="node">Service Demand</div>
+          <div class="node" style="opacity:0.4;font-style:italic">× 5 cycling tiles</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Centre layers</div>
+          <div class="node platform">Sognos Platform</div>
+          <div class="node sub">Workforce (Roster)</div>
+          <div class="node sub">Service Delivery (Care)</div>
+          <div class="node sub">AI Optimisation</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Right</div>
+          <div class="node">Outcomes &amp; Compliance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C (chosen) -->
+  <div class="option" style="border-color: rgba(93,100,254,0.6);">
+    <div class="option-header" style="background:#101d58;">
+      <div style="display:flex;align-items:center">
+        <span class="option-letter">C</span>
+        <span class="option-title">Top/bottom split — demand above, outputs below</span>
+      </div>
+      <div class="option-desc">Demand sources appear above the platform. Outcomes & Compliance appear below. The 3 layers live inside the platform box.</div>
+      <span class="chosen-badge">✓ Selected</span>
+    </div>
+    <div class="option-body">
+      <div class="diagram diagram-col">
+        <div class="row">
+          <div class="node">Referrals</div>
+          <div class="node">Care Plans</div>
+          <div class="node">Field Jobs</div>
+        </div>
+        <div class="arrow" style="text-align:center">↓</div>
+        <div class="row" style="align-items:center">
+          <div class="node sub">AI Optimisation</div>
+          <div class="node platform">Sognos Platform</div>
+          <div class="node sub">Workforce (Roster)</div>
+        </div>
+        <div class="row">
+          <div class="node sub">Service Delivery (Care)</div>
+        </div>
+        <div class="arrow" style="text-align:center">↓</div>
+        <div class="row">
+          <div class="node">Outcomes &amp; Compliance</div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:16px;line-height:1.6;">
+        <strong style="color:rgba(255,255,255,0.6)">Refined after selection:</strong>
+        2 demand cards (each cycling between 2 services) replaced the 6-tile row.
+        Sub-layer badges removed from the Sognos Platform node.
+        Outcomes revealed with staggered entrance animation.
+        Animated SVG connectors with pulse dots flow top → platform → outputs.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

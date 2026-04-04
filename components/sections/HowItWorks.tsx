@@ -56,8 +56,8 @@ export default function HowItWorks() {
         <header>
           <h2>How it works</h2>
           <p>
-            From service demand to delivery to optimisation — Sognos manages the full cycle of
-            service operations in one connected platform.
+            From service demand to delivery to optimisation — Sognos manages the
+            full cycle of service operations in one connected platform.
           </p>
         </header>
 

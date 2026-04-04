@@ -5,7 +5,7 @@
 ### What Sognos Is
 Sognos is an **AI-powered service operations platform** built on Microsoft Dynamics 365. It enables organisations to deliver services efficiently, coordinate complex workforces, and maintain compliance.
 
-**Positioning:** Product-led SaaS platform (NOT a consulting or Microsoft partner site).
+**Positioning:** Product-led SaaS platform. NOT a consulting or Microsoft partner site.
 
 ### Product System
 
@@ -14,143 +14,202 @@ Sognos is an **AI-powered service operations platform** built on Microsoft Dynam
 | **SognosCare** | Care operations & compliance — case management, service delivery tracking, compliance & reporting |
 | **SognosRoster** | Workforce scheduling & optimisation — staff allocation, scheduling & routing, real-time optimisation |
 
-**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them.
+**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Both products are standalone — they can be implemented independently or together.
+
+### Architecture Layers
+
+| Layer | Purpose | Examples |
+|-------|---------|---------|
+| **Products** | Primary positioning | SognosCare, SognosRoster |
+| **Solutions** | Supporting engagements | Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start |
+| **Industries** | Sector entry points | Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities |
+| **Platform** | Embedded proof only — never top-level | Dynamics 365, Copilot AI, Power Platform |
 
 ### Core Objective
 Transform Sognos from a Microsoft partner / consulting website into a **product-led platform company** — Stripe/Luno quality, SaaS-level UX, conversion-focused.
 
 ---
 
-## 2. Build Plan (Phase-by-Phase)
+## 2. Build Plan
 
 | Phase | Goal | Status |
 |-------|------|--------|
-| **Phase 1** | Foundation & setup — Next.js scaffold, Navbar, Footer, navigation | 🟡 In Progress |
-| **Phase 2** | Homepage structure — all 8 sections, no heavy styling | 🔲 Pending |
-| **Phase 3** | Product pages — `/products/sognoscare` + `/products/sognosroster` | 🔲 Pending |
-| **Phase 4** | Platform & supporting pages — /platform, /industries, /customers, /resources | 🔲 Pending |
-| **Phase 5** | Design & UI enhancement — typography, spacing, gradient system (Gemini) | 🔲 Pending |
-| **Phase 6** | Interaction & motion — hover states, Framer Motion animations | 🔲 Pending |
-| **Phase 7** | Conversion & integrations — contact form, CRM, scheduler embed | 🔲 Pending |
-| **Phase 8** | QA & optimisation — responsive, Core Web Vitals, accessibility | 🔲 Pending |
-| **Phase 9** | Launch — Vercel deploy, domain, analytics | 🔲 Pending |
-| **Phase 10** | Iteration — A/B testing, conversion optimisation | 🔲 Pending |
+| **Phase 1** | Foundation — Next.js scaffold, layout, Navbar, Footer, navigation | ✅ Complete |
+| **Phase 2** | Homepage — all sections built and wired | ✅ Complete |
+| **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
+| **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | 🔲 Next |
+| **Phase 5** | Solutions & industry pages | 🔲 Pending |
+| **Phase 6** | Design system application | 🔲 Pending |
+| **Phase 7** | UI polish & motion | 🔲 Pending |
+| **Phase 8** | Conversion & integrations | 🔲 Pending |
+| **Phase 9** | QA & launch | 🔲 Pending |
 
 ---
 
-## 3. File Structure Plan
+## 3. File Structure
 
 ```
 /app
   /(marketing)
-    layout.tsx                   # Wraps all pages — Navbar + Footer
-    page.tsx                     # Homepage
+    layout.tsx                     ✅
+    page.tsx                       ✅ Homepage
 
     /products
-      page.tsx                   # Product Hub
+      page.tsx                     🔲 Product Hub
       /sognoscare
-        page.tsx
+        page.tsx                   🔲
       /sognosroster
-        page.tsx
+        page.tsx                   🔲
 
-    /platform
-      page.tsx
-      /dynamics-365
-        page.tsx
-      /copilot-ai
-        page.tsx
-      /power-platform
-        page.tsx
+    /solutions
+      /field-service/page.tsx      🔲
+      /customer-relationship-management/page.tsx  🔲
+      /customer-insights/page.tsx  🔲
+      /customer-experience/page.tsx 🔲
+      /customer-service/page.tsx   🔲
+      /power-platform/page.tsx     🔲
+      /quick-start/page.tsx        🔲
 
     /industries
-      page.tsx
-      /[slug]
-        page.tsx
+      page.tsx                     🔲
+      /[slug]/page.tsx             🔲 (covers all 5 industries)
 
     /customers
-      page.tsx
-      /[slug]
-        page.tsx
+      page.tsx                     🔲
+      /[slug]/page.tsx             🔲
 
-    /resources
-      page.tsx
-
-    /company
-      /about
-        page.tsx
-      /careers
-        page.tsx
-
-    /contact
-      page.tsx
+    /resources/page.tsx            🔲
+    /company/about/page.tsx        🔲
+    /company/careers/page.tsx      🔲
+    /contact/page.tsx              🔲
 
 /components
   /layout
-    Navbar.tsx                   # Product-first nav — Care + Roster always visible
-    Footer.tsx
+    Navbar.tsx                     ✅ (data-driven from navigation.ts)
+    Footer.tsx                     ✅ (data-driven from constants.ts)
 
   /sections
-    Hero.tsx
-    WhatIsSognos.tsx
-    ProductSection.tsx
-    HowItWorks.tsx
-    PlatformSection.tsx
-    IndustrySection.tsx
-    ProofSection.tsx
-    CTASection.tsx
+    Hero.tsx                       ✅
+    LogoStrip.tsx                  ✅
+    HowSognosWorksPreview.tsx      ✅ (includes SystemFlowDiagram)
+    ProductSection.tsx             ✅
+    HowItWorks.tsx                 ✅
+    SolutionsSection.tsx           ✅
+    IndustrySection.tsx            ✅ (data-driven from constants.ts)
+    ProofSection.tsx               ✅
+    CTASection.tsx                 ✅
 
   /ui
-    Button.tsx
-    Card.tsx
-    Container.tsx
-    Grid.tsx
-    Badge.tsx
+    Button.tsx                     🔲
+    Card.tsx                       🔲
+    Container.tsx                  🔲
+    Grid.tsx                       🔲
+    Badge.tsx                      🔲
 
 /lib
-  constants.ts
-  navigation.ts                  # Nav config — products + platform links
+  navigation.ts                    ✅
+  constants.ts                     ✅ (SITE, PRODUCTS, SOLUTIONS, INDUSTRIES)
 
 /styles
-  globals.css
-
-/public
-  /images
+  globals.css                      ✅
 ```
 
 ---
 
-## 4. Current Task
+## 4. Homepage Composition (Live)
 
-**Phase 1 — Foundation & Setup**
-
-- [x] Read all project docs
-- [x] Create claude.md
-- [ ] Initialize Next.js App Router project
-- [ ] Install framer-motion + shadcn/ui
-- [ ] Clean boilerplate
-- [ ] Create `/lib/navigation.ts`
-- [ ] Create `Navbar.tsx`
-- [ ] Create `Footer.tsx`
-- [ ] Create `/app/(marketing)/layout.tsx`
+```tsx
+<Hero />
+<LogoStrip />
+<HowSognosWorksPreview />
+<ProductSection />
+<HowItWorks />
+<SolutionsSection />
+<IndustrySection />
+<ProofSection />
+<CTASection />
+```
 
 ---
 
-## 5. Next Tasks (Ordered)
+## 5. Sitemap (Final)
 
-1. **Phase 1 complete** → Confirm scaffold + navigation renders
-2. **Phase 2 start** → Build all 8 homepage sections in `/components/sections/`
-3. **Phase 2 complete** → Wire homepage `page.tsx` with all sections
-4. **Phase 3 start** → Build SognosCare + SognosRoster product pages
+```
+/
+/products/sognoscare
+/products/sognosroster
+/solutions/field-service
+/solutions/customer-relationship-management
+/solutions/customer-insights
+/solutions/customer-experience
+/solutions/customer-service
+/solutions/power-platform
+/solutions/quick-start
+/industries/[slug]  →  health-social-care, facilities-management, local-government, industrial-services, energy-utilities
+/customers/[slug]
+/resources
+/company/about
+/company/careers
+/contact
+```
+
+---
+
+## 6. Navigation (Live)
+
+```
+Products       → SognosCare, SognosRoster
+Solutions      → Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
+Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
+Customers
+Resources
+Company        → About, Careers
+```
+
+CTAs: `Contact Sales` | `Book a Demo`
+
+---
+
+## 7. Design System (Approved — Phase 6)
+
+- **Headings:** Inter Tight, weight 400 default
+- **Body:** Inter
+- **Cards:** card tokens, no gradients on standard cards or subcards
+- **Radius:** sm 4px / md 8px / lg 12px / xl 16px / 2xl 20px / full 9999px
+- **Gradients:** hero and deliberate highlight surfaces only
+- **Container:** `max-w-7xl`
+- **Components:** Server Components by default; Client Components only when interaction is required
+
+---
+
+## 8. Current Task
+
+**Phase 4 — Product Pages**
+
+- [ ] `/products/sognoscare/page.tsx` — Hero, What it solves, Features, Compliance, Integration (Roster link), CTA
+- [ ] `/products/sognosroster/page.tsx` — Hero, Scheduling challenges, Features, Optimisation logic, Integration (Care link), CTA
+- [ ] `/products/page.tsx` — Product Hub (comparison, Better Together, CTA)
+
+---
+
+## 9. Next Tasks (Ordered)
+
+1. Build SognosCare product page
+2. Build SognosRoster product page
+3. Build product hub (`/products`)
+4. Begin Phase 5 — solutions and industry pages
+5. Phase 6 — apply design system
 
 ---
 
 ## Hard Rules
 
-- Product-first at ALL times
-- SognosCare + SognosRoster always visible in navigation
-- NO "solutions" structure — ever
-- Care ↔ Roster cross-linking is mandatory
-- Platform layer supports, never leads
-- No generic Microsoft language
-- Server Components by default — Client Components only when needed
-- Claude = Builder/Architect only — NOT designer
+- Products are primary — always lead with SognosCare + SognosRoster
+- Solutions are supporting — never primary positioning
+- Industries are separate from solutions — never merge
+- Platform is embedded proof only — never a nav item, never a standalone page layer
+- CTA label: **"Book a Demo"** everywhere
+- Doc sync: any routing, permalink, or page title change must update `project-overview.md` and `project-plan.md` in the same task
+- Server Components by default
+- No styling decisions until Phase 6
+- Claude = Builder + Architect only (NOT designer)

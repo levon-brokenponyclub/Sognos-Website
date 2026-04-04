@@ -11,8 +11,8 @@ type CTASectionProps = {
 export default function CTASection({
   headline = "Ready to transform your service operations?",
   subtext = "See how Sognos can unify your care management and workforce scheduling — and what that means for your organisation.",
-  primaryCTA = { label: "Book a Free Assessment", href: "/contact" },
-  secondaryCTA = { label: "Talk to Sales", href: "/contact" },
+  primaryCTA = { label: "Book a Demo", href: "/contact" },
+  secondaryCTA = { label: "Contact Sales", href: "/contact" },
   variant = "default",
 }: CTASectionProps) {
   return (
@@ -29,7 +29,10 @@ export default function CTASection({
           </div>
           {variant === "default" && (
             <aside aria-label="No commitment messaging">
-              <p>No commitment required. Our assessments are free, confidential, and specific to your operations.</p>
+              <p>
+                No commitment required. Our assessments are free, confidential,
+                and specific to your operations.
+              </p>
             </aside>
           )}
         </div>

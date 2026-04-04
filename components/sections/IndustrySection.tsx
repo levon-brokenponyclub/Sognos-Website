@@ -5,7 +5,9 @@ type IndustrySectionProps = {
   showAll?: boolean;
 };
 
-export default function IndustrySection({ showAll = false }: IndustrySectionProps) {
+export default function IndustrySection({
+  showAll = false,
+}: IndustrySectionProps) {
   // Alignment note: Industry cards now read from shared constants so taxonomy and slugs
   // stay consistent with docs, footer, and future routing work.
   const displayed = showAll ? INDUSTRIES : INDUSTRIES;
@@ -16,8 +18,9 @@ export default function IndustrySection({ showAll = false }: IndustrySectionProp
         <header>
           <h2>Built for complex service environments</h2>
           <p>
-            Sognos is designed for organisations that manage high-volume, compliance-heavy service
-            delivery — where the cost of scheduling errors and reporting gaps is significant.
+            Sognos is designed for organisations that manage high-volume,
+            compliance-heavy service delivery — where the cost of scheduling
+            errors and reporting gaps is significant.
           </p>
         </header>
 

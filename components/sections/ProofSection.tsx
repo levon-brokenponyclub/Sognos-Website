@@ -60,8 +60,9 @@ export default function ProofSection() {
         <header>
           <h2>Results organisations can point to</h2>
           <p>
-            Sognos is deployed across health, care, and service organisations — delivering
-            measurable improvements in scheduling efficiency, compliance, and operational visibility.
+            Sognos is deployed across health, care, and service organisations —
+            delivering measurable improvements in scheduling efficiency,
+            compliance, and operational visibility.
           </p>
         </header>
 

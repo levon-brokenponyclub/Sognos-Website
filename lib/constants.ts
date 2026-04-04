@@ -23,24 +23,24 @@ export const PRODUCTS = {
   },
 } as const;
 
-// Alignment note: This file is the shared taxonomy source of truth used by reusable
-// navigation/content surfaces. Standalone Platform routes were intentionally removed.
 export const SOLUTIONS = [
-  { name: "Field Service", slug: "field-service", href: "/solutions/field-service" },
+  { name: "Field Service", slug: "field-service", href: "/solutions/field-service", description: "Manage field technician dispatch, job tracking, and SLA compliance at scale." },
   {
     name: "Customer Relationship Management",
     slug: "customer-relationship-management",
     href: "/solutions/customer-relationship-management",
+    description: "Centralise client records, interactions, and service history in one system."
   },
-  { name: "Customer Insights", slug: "customer-insights", href: "/solutions/customer-insights" },
+  { name: "Customer Insights", slug: "customer-insights", href: "/solutions/customer-insights", description: "Surface patterns in service demand, outcomes, and client behaviour." },
   {
     name: "Customer Experience",
     slug: "customer-experience",
     href: "/solutions/customer-experience",
+    description: "Deliver consistent, high-quality service interactions across every touchpoint."
   },
-  { name: "Customer Service", slug: "customer-service", href: "/solutions/customer-service" },
-  { name: "Power Platform", slug: "power-platform", href: "/solutions/power-platform" },
-  { name: "Quick Start", slug: "quick-start", href: "/solutions/quick-start" },
+  { name: "Customer Service", slug: "customer-service", href: "/solutions/customer-service", description: "Resolve issues faster with unified case management and response tracking." },
+  { name: "Power Platform", slug: "power-platform", href: "/solutions/power-platform", description: "Extend and automate your operations with low-code tools built into the platform." },
+  { name: "Quick Start", slug: "quick-start", href: "/solutions/quick-start", description: "Get up and running with Sognos in weeks — not months." },
 ] as const;
 
 export const INDUSTRIES = [

@@ -119,7 +119,7 @@ Header structure:
 
 Right-side CTAs:
 - Contact Sales
-- Book Assessment
+- Book a Demo
 
 ## Homepage Source of Truth
 

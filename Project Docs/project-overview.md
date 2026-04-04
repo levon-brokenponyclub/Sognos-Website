@@ -1,51 +1,53 @@
 # Sognos Website — Project Overview
 
-> Alignment note: Updated during the architecture-alignment pass to restore the current homepage order, final taxonomy, and the no-Platform-layer rule.
+## Project Name
+Sognos Website Rebuild
 
-## Project
+## What This Project Is
+A full redesign and rebuild of the Sognos website into a modern, product-led SaaS platform experience.
 
-Sognos website rebuild for a modern, premium, product-led SaaS-style presence.
+Sognos is being repositioned from a consulting-first / Microsoft partner website into a product platform company.
+
+## Design Benchmark
+- Stripe: structure, hierarchy, system thinking
+- Luno: visual quality, calm trust, premium simplicity
+
+All UX and design decisions must align to this benchmark and must not replicate the current Sognos site structure.
+
+Current site for reference: https://sognos.com.au/
+
+## What We Are Building
+- High-performance marketing website
+- Product-first SaaS experience
+- Scalable component-based frontend
 
 Stack:
-- Next.js App Router
+- Next.js (App Router)
 - React
 - Tailwind CSS
 
-Benchmarks:
-- Stripe for structure and system thinking
-- Luno for calm, premium visual quality
+## Core Positioning and Architecture
+Sognos is a service operations platform built around two standalone products:
 
-## Core Positioning
+- SognosCare: care operations and compliance
+- SognosRoster: workforce scheduling and optimisation
 
-Sognos is presented as a service operations platform with two primary products:
+Relationship:
+SognosCare manages services. SognosRoster coordinates the workforce that delivers them.
 
+Supporting architecture:
+- Solutions are supporting/customised engagements
+- Industries are sector-specific entry points
+- Platform references (Dynamics 365, Copilot, Power Platform) are embedded supporting proof only
+
+Hard rule: no standalone Platform nav or page layer.
+
+## Final Taxonomy
+Products:
 - SognosCare
 - SognosRoster
 
-Supporting layers:
-
-- Solutions for customised engagements
-- Industries for sector-specific entry points
-
-Platform context:
-
-- Dynamics 365
-- Copilot
-- Power Platform
-
-The platform is embedded as supporting proof within the experience. It is not a top-level navigation item or standalone page layer.
-
-## Architecture Rules
-
-### Products
-
-Primary positioning:
-- SognosCare
-- SognosRoster
-
-### Solutions
-
-Supporting engagements:
+Solutions:
 - Field Service
 - Customer Relationship Management
 - Customer Insights
@@ -54,64 +56,40 @@ Supporting engagements:
 - Power Platform
 - Quick Start
 
-### Industries
-
-Separate sector entry points:
+Industries:
 - Health & Social Care
 - Facilities Management
 - Local Government
 - Industrial Services
 - Energy & Utilities
 
-Critical rules:
-- Products are primary
-- Solutions are supporting
-- Industries are separate from solutions
-- Do not force solution-to-product mapping
-- Do not introduce a standalone Platform nav or page layer
-- System understanding should be visual-first, not paragraph-first
-
 ## Final Sitemap
-
-```txt
-/
-
-/products
-  /products/sognoscare
-  /products/sognosroster
-
-/solutions
-  /solutions/field-service
-  /solutions/customer-relationship-management
-  /solutions/customer-insights
-  /solutions/customer-experience
-  /solutions/customer-service
-  /solutions/power-platform
-  /solutions/quick-start
-
-/industries
-  /industries/[slug]
-
-/customers
-  /customers/[slug]
-
-/resources
-
-/company
-  /company/about
-  /company/careers
-
-/contact
-```
+- `/`
+- `/products`
+- `/products/sognoscare`
+- `/products/sognosroster`
+- `/solutions`
+- `/solutions/field-service`
+- `/solutions/customer-relationship-management`
+- `/solutions/customer-insights`
+- `/solutions/customer-experience`
+- `/solutions/customer-service`
+- `/solutions/power-platform`
+- `/solutions/quick-start`
+- `/industries`
+- `/industries/[slug]`
+- `/customers`
+- `/customers/[slug]`
+- `/resources`
+- `/company/about`
+- `/company/careers`
+- `/contact`
 
 ## Final Navigation
-
-```txt
-Products
+- Products
   - SognosCare
   - SognosRoster
-
-Solutions
+- Solutions
   - Field Service
   - Customer Relationship Management
   - Customer Insights
@@ -119,28 +97,24 @@ Solutions
   - Customer Service
   - Power Platform
   - Quick Start
-
-Industries
+- Industries
   - Health & Social Care
   - Facilities Management
   - Local Government
   - Industrial Services
   - Energy & Utilities
-
-Customers
-Resources
-Company
+- Customers
+- Resources
+- Company
   - About
   - Careers
-```
 
-CTAs:
+Header CTAs:
 - Contact Sales
-- Book Assessment
+- Book a Demo
 
-## Homepage Structure
-
-The homepage must render in this order:
+## Homepage Source of Truth
+The homepage renders in this order:
 
 ```tsx
 <Hero />
@@ -154,28 +128,60 @@ The homepage must render in this order:
 <CTASection />
 ```
 
-Notes:
-- `HowSognosWorksPreview` is the visual system overview
-- `HowItWorks` is the detailed operational flow
-- `LogoStrip` is reusable and should stay movable
+Section rules:
+- `HowSognosWorksPreview` is visual-first system overview
+- `HowItWorks` is detailed operational flow
 - `SolutionsSection` must not include industries
 - `IndustrySection` must include Industrial Services and Energy & Utilities
 
-## Current State
+## Current Status
+In build phase.
 
-Built:
-- Marketing layout shell
-- Homepage section components
-- Navigation config
-- Initial footer and shared constants
+Homepage shell and section structure are implemented. Current execution priority is product page build and architecture/doc alignment maintenance.
 
-Current priority:
-- Keep docs and shared source-of-truth files aligned with the live architecture before new page implementation
+## Success Metrics
+Conversion:
+- increase demo bookings
+- reduce drop-off from key pages
+
+Engagement:
+- time on site
+- scroll depth
+
+Performance:
+- Core Web Vitals
+- mobile responsiveness
+
+Clarity:
+- users can identify what Sognos is
+- users can distinguish SognosCare vs SognosRoster
+
+Business impact:
+- higher quality inbound leads
+- faster sales conversations
+
+## Definition of Done
+A page is complete when:
+- structure matches spec
+- messaging is product-first
+- UI quality meets premium SaaS benchmark
+- mobile responsive
+- no placeholder content
+- CTA is functional
 
 ## Non-Negotiables
+- products are primary
+- solutions are supporting
+- industries are separate from solutions
+- do not force solution-to-product mapping
+- no standalone platform layer
+- no generic template UI
+- maintain premium quality benchmark (Stripe/Luno)
 
-- Product-first at all times
-- Products lead and solutions support
-- Industries remain a separate content layer
-- Platform stays embedded as proof, never standalone
-- No contradictory naming, slugs, or nav references across docs and code
+## Guiding Principle
+Build a product website, not a services website.
+
+Every page should clearly communicate:
+- what the product is
+- how it works
+- why it matters
