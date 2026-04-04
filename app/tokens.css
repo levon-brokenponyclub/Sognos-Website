@@ -37,9 +37,9 @@
 
   /* Text & Links */
   --sognos-text-heading: #061b31;
-  --sognos-text-body: #727376;
+  --sognos-text-body: var(--color-slate-600);
   --sognos-text-muted: #96a3b0;
-  --sognos-text-soft: #839bc8;
+  --sognos-text-soft: #64748d;
   --sognos-text-inverse: #ffffff;
   --sognos-text-link: #122348;
 
@@ -54,7 +54,7 @@
   --sognos-border-strong: #1e96fc;
   --sognos-border-subtle: #dcdfe6;
   --sognos-border-focus: #122348;
-  --sognos-card-border: #cbd6e0;
+  --sognos-card-border: #e5edf5;
   --sognos-card-border-soft: #e7ecf1;
   --sognos-card-bg: #fff;
   --sognos-subcard-bg: #f6f9fc;

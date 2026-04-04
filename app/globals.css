@@ -212,6 +212,24 @@
   animation: dash-line-anim 20s linear infinite reverse;
 }
 
+@property --shine-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes shine-rotate {
+  to {
+    --shine-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-shine {
+    animation: shine-rotate var(--shine-duration, 14s) linear infinite;
+  }
+}
+
 /* ========================
    TRUST STRIP — cycling logo animation
 ======================== */
@@ -337,17 +355,32 @@
   }
 }
 
+/* INLINE STYLES TO BE REVIEWED & ADDED TO DESIGN SYSTEM */
 .side-stack .card h4 {
   font-size: 25px;
 }
 
 .side-stack .card p {
-  font-size: 15px;
   max-width: 530px;
   text-wrap: balance;
+  color: var(--color-slate-600);
 }
 
 .side-stack .card h5 {
   font-size: 22px;
-  color:#6c6969;
+  color: #6c6969;
+}
+
+h2 {
+  font-size: 32px !important;
+  line-height: 36px !important;
+}
+
+p.section-header-description {
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: var(--font-heading);
+  font-weight: 400;
+
+  text-wrap: balance;
 }

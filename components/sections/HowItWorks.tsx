@@ -1,3 +1,5 @@
+import FlowDiagram from "@/components/ui/FlowDiagram";
+
 const steps = [
   {
     step: 1,
@@ -60,6 +62,8 @@ export default function HowItWorks() {
             full cycle of service operations in one connected platform.
           </p>
         </header>
+
+        <FlowDiagram />
 
         <ol role="list" aria-label="Service operations workflow">
           {steps.map((item) => (

@@ -22,7 +22,7 @@ export default function Hero({
   secondaryCTA = { name: "View platform", href: "#" },
 }: HeroProps) {
   return (
-    <section className="relative flex flex-col bg-gradient-brand overflow-hidden text-white">
+    <section className="relative flex flex-col bg-gradient-brand overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white">
       <FlowCanvas />
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 py-30 border-x border-white/10 border-dashed sm:px-12 lg:px-16 lg:py-48">
