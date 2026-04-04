@@ -124,6 +124,7 @@
   .card-standard {
     @apply bg-sognos-card-bg border border-sognos-card-border rounded-xl shadow-md p-6;
   }
+
   .card-subcard {
     @apply bg-sognos-subcard-bg border border-sognos-card-border-soft rounded-lg shadow-sm p-4;
   }
@@ -135,14 +136,17 @@
   width: max-content;
   animation: trust-marquee-scroll 20s linear infinite;
 }
+
 @keyframes trust-marquee-scroll {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .trust-marquee-track {
     animation: none;
@@ -153,23 +157,55 @@
   from {
     stroke-dashoffset: 24;
   }
+
   to {
     stroke-dashoffset: 0;
   }
 }
+
 @keyframes diagram-flow-reverse {
   from {
     stroke-dashoffset: 0;
   }
+
   to {
     stroke-dashoffset: 24;
   }
 }
+
 .animate-diagram-flow {
   animation: diagram-flow 1.5s linear infinite;
 }
+
 .animate-diagram-flow-reverse {
   animation: diagram-flow-reverse 1.5s linear infinite;
+}
+
+/* Orbiting Circles */
+@keyframes orbit {
+  0% {
+    transform: rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
+  }
+
+  100% {
+    transform: rotate(calc(360deg + var(--orbit-angle))) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-360deg + (-1 * var(--orbit-angle))));
+  }
+}
+
+@keyframes orbit-reverse {
+  0% {
+    transform: rotate(var(--orbit-angle)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(-1 * var(--orbit-angle)));
+  }
+
+  100% {
+    transform: rotate(calc(-360deg + var(--orbit-angle))) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(360deg + (-1 * var(--orbit-angle))));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="orbit"] {
+    animation: none !important;
+  }
 }
 
 .section-border {
@@ -181,10 +217,12 @@
    PRODUCT SECTION — card animations
 ======================== */
 @keyframes float-card-elements {
+
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-10px) rotate(1deg);
   }
@@ -254,6 +292,7 @@
 .trust-strip-item.one {
   animation: ts-rotate-one 6s cubic-bezier(0.76, 0, 0.24, 1) infinite;
 }
+
 .trust-strip-item.two {
   animation: ts-rotate-two 6s cubic-bezier(0.76, 0, 0.24, 1) infinite;
 }
@@ -262,40 +301,49 @@
 .trust-strip-group:nth-child(1) .trust-strip-item {
   animation-delay: 0s;
 }
+
 .trust-strip-group:nth-child(2) .trust-strip-item {
   animation-delay: 0.8s;
 }
+
 .trust-strip-group:nth-child(3) .trust-strip-item {
   animation-delay: 1.6s;
 }
+
 .trust-strip-group:nth-child(4) .trust-strip-item {
   animation-delay: 2.4s;
 }
+
 .trust-strip-group:nth-child(5) .trust-strip-item {
   animation-delay: 0.4s;
 }
+
 .trust-strip-group:nth-child(6) .trust-strip-item {
   animation-delay: 1.2s;
 }
 
 @keyframes ts-rotate-one {
+
   0%,
   35% {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0px);
   }
+
   45% {
     opacity: 0;
     transform: translateY(-58px) scale(0.95);
     filter: blur(2px);
   }
+
   50%,
   85% {
     opacity: 0;
     transform: translateY(58px) scale(0.95);
     filter: blur(0px);
   }
+
   95%,
   100% {
     opacity: 1;
@@ -305,23 +353,27 @@
 }
 
 @keyframes ts-rotate-two {
+
   0%,
   35% {
     opacity: 0;
     transform: translateY(58px) scale(0.95);
     filter: blur(0px);
   }
+
   45%,
   85% {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0px);
   }
+
   95% {
     opacity: 0;
     transform: translateY(-58px) scale(0.95);
     filter: blur(2px);
   }
+
   100% {
     opacity: 0;
     transform: translateY(58px) scale(0.95);
@@ -334,6 +386,7 @@
     flex-wrap: wrap;
     row-gap: 3.5rem;
   }
+
   .trust-strip-group {
     flex: 0 0 calc(33.333% - 2rem);
   }
@@ -350,6 +403,7 @@
     animation: none;
     opacity: 1;
   }
+
   .trust-strip-item.two {
     display: none;
   }
@@ -360,13 +414,13 @@
   font-size: 25px;
 }
 
-.side-stack .card p {
+.side-stack .card span.desc {
   max-width: 530px;
   text-wrap: balance;
   color: var(--color-slate-600);
 }
 
-.side-stack .card h5 {
+.side-stack.card h5 {
   font-size: 22px;
   color: #6c6969;
 }

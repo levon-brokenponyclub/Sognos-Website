@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ParticleCanvas from "@/components/ui/ParticleCanvas";
 
 const card1Shadow =
   "2px 4px 8px rgba(0,0,0,0.02), 8px 16px 24px rgba(0,0,0,0.03), 64px 96px 128px rgba(0,0,0,0.12), 80px 120px 160px rgba(99, 102, 241, 0.15), inset 0 1px 1px rgba(255,255,255,1), 0 0 0 1px rgba(0,0,0,0.04)";
@@ -59,37 +60,217 @@ export default function ProductSection() {
               }
             />
 
-            <div className="p-8 pb-0 absolute z-20 flex justify-between items-start">
-              <h2 className="text-2xl tracking-tight font-medium max-w-[220px] leading-tight text-slate-800">
-                Built for regulated industries
+            {/* Animated background orbs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[inherit] z-0">
+              <div
+                className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-400/20 rounded-full blur-[80px] animate-pulse"
+                style={{ animationDuration: "8s" }}
+              />
+              <div
+                className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-cyan-400/20 rounded-full blur-[80px] animate-pulse"
+                style={{ animationDuration: "10s", animationDelay: "2s" }}
+              />
+            </div>
+
+            <div className="z-20 side-stack card flex pt-8 pr-8 pb-0 pl-8 relative items-start justify-between">
+              <h5 className="tracking-tight">Products</h5>
+              <h2 className="text-2xl tracking-tight font-medium max-w-[280px] leading-tight text-slate-800">
+                Native to your Microsoft stack
               </h2>
               <button
                 type="button"
                 aria-haspopup="dialog"
                 aria-expanded={drawerOpen}
                 onClick={() => setDrawerOpen(true)}
-                className="bg-teal-50 hover:bg-teal-100 p-2.5 rounded-xl text-teal-600 transition-colors flex items-center justify-center"
+                className="bg-blue-50 hover:bg-blue-100 p-2.5 rounded-xl text-blue-600 transition-all duration-300 group-hover:scale-110 flex items-center justify-center shadow-sm hover:shadow-md"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  aria-hidden="true"
+                  className="group-hover:rotate-12 transition-transform duration-300"
                 >
-                  <polyline points="15 3 21 3 21 9" />
-                  <polyline points="9 21 3 21 3 15" />
-                  <line x1="21" y1="3" x2="14" y2="10" />
-                  <line x1="3" y1="21" x2="10" y2="14" />
+                  <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+                  <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+                  <line x1="8" x2="16" y1="12" y2="12" />
                 </svg>
               </button>
             </div>
 
-            <div className="relative z-10 flex-1" />
+            <div className="z-0 flex-1 overflow-hidden w-full h-full relative">
+              <ParticleCanvas
+                variant="arc"
+                className="w-full h-full absolute inset-0"
+              />
+
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 400 600"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <defs>
+                  <linearGradient
+                    id="lineGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+                    <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2" />
+                  </linearGradient>
+                </defs>
+
+                <path
+                  d="M-50 450 Q 150 150, 450 350"
+                  fill="none"
+                  stroke="url(#lineGrad)"
+                  strokeWidth="1.5"
+                  className="path-line"
+                />
+
+                <circle
+                  cx="100"
+                  cy="250"
+                  r="3"
+                  fill="none"
+                  stroke="#3b82f6"
+                  strokeWidth="1.5"
+                >
+                  <animate
+                    attributeName="r"
+                    values="3; 25"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0.6; 0"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle
+                  cx="100"
+                  cy="250"
+                  r="3"
+                  fill="white"
+                  stroke="#3b82f6"
+                  strokeWidth="1.5"
+                />
+
+                <circle
+                  cx="350"
+                  cy="300"
+                  r="3"
+                  fill="none"
+                  stroke="#06b6d4"
+                  strokeWidth="1.5"
+                >
+                  <animate
+                    attributeName="r"
+                    values="3; 25"
+                    dur="3s"
+                    begin="1s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0.6; 0"
+                    dur="3s"
+                    begin="1s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle
+                  cx="350"
+                  cy="300"
+                  r="3"
+                  fill="white"
+                  stroke="#06b6d4"
+                  strokeWidth="1.5"
+                />
+
+                <path
+                  d="M50 650 Q 100 300, 300 550"
+                  fill="none"
+                  stroke="url(#lineGrad)"
+                  strokeWidth="1"
+                  className="path-line-2"
+                />
+
+                <circle
+                  cx="150"
+                  cy="400"
+                  r="2.5"
+                  fill="none"
+                  stroke="#8b5cf6"
+                  strokeWidth="1.5"
+                >
+                  <animate
+                    attributeName="r"
+                    values="2.5; 20"
+                    dur="3s"
+                    begin="2s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0.6; 0"
+                    dur="3s"
+                    begin="2s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle
+                  cx="150"
+                  cy="400"
+                  r="2.5"
+                  fill="white"
+                  stroke="#8b5cf6"
+                  strokeWidth="1.5"
+                />
+              </svg>
+
+              {/* Floating badge */}
+              <div
+                className="absolute top-[60%] left-[10%] bg-white/95 backdrop-blur border border-slate-100 shadow-md rounded-lg py-1.5 px-3 flex items-center gap-2 z-10 animate-float hover:scale-105 transition-transform cursor-default"
+                style={{ animationDuration: "4s" }}
+              >
+                <div
+                  className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center animate-pulse"
+                  style={{ animationDuration: "3s" }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-white"
+                  >
+                    <rect width="7" height="7" x="14" y="3" rx="1" />
+                    <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+                  </svg>
+                </div>
+                <span className="text-xs font-medium text-slate-700">
+                  150+{" "}
+                  <span className="text-slate-400">Integrations active</span>
+                </span>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

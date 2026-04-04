@@ -37,7 +37,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 1** | Foundation — Next.js scaffold, layout, Navbar, Footer, navigation | ✅ Complete |
 | **Phase 2** | Homepage — all sections built and wired | ✅ Complete |
 | **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
-| **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | 🔲 Next |
+| **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | 🔄 In Progress |
 | **Phase 5** | Solutions & industry pages | 🔲 Pending |
 | **Phase 6** | Design system application | 🔲 Pending |
 | **Phase 7** | UI polish & motion | 🔲 Pending |
@@ -100,6 +100,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     CTASection.tsx                 ✅
 
   /ui
+    ParticleCanvas.tsx             ✅ (radial + arc variants, canvas-based)
+    FlowDiagram.tsx                ✅ (SMIL animated beams, used in HowItWorks)
     Button.tsx                     🔲
     Card.tsx                       🔲
     Container.tsx                  🔲
@@ -186,6 +188,13 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 **Phase 4 — Product Pages**
 
+ProductSection (Card 1 — partial):
+- [x] Shine border animation (conic-gradient, @property --shine-angle)
+- [x] Bento overlay gradient — 4 animated orbs (teal/cyan/emerald)
+- [x] Expand button wired to bottom drawer (Framer Motion AnimatePresence)
+- [ ] Drawer body content (placeholder only)
+- [ ] Cards 2 and 3
+
 - [ ] `/products/sognoscare/page.tsx` — Hero, What it solves, Features, Compliance, Integration (Roster link), CTA
 - [ ] `/products/sognosroster/page.tsx` — Hero, Scheduling challenges, Features, Optimisation logic, Integration (Care link), CTA
 - [ ] `/products/page.tsx` — Product Hub (comparison, Better Together, CTA)
@@ -199,6 +208,18 @@ CTAs: `Contact Sales` | `Book a Demo`
 3. Build product hub (`/products`)
 4. Begin Phase 5 — solutions and industry pages
 5. Phase 6 — apply design system
+
+---
+
+## 10. Technical Gotchas
+
+- **Linter strips code between saves** — always re-read file before multi-step edits; bento overlay was removed twice by the formatter
+- **Card backgrounds** — never use `style={{ background: "" }}`; use `bg-white` class. Empty string = transparent card = orbs invisible
+- **FlyonUI is NOT installed** — when user pastes FlyonUI snippets, translate to React state + Tailwind + Framer Motion
+- **Component reference sources** — Aceternity UI and Magic UI are the preferred sources for animated bento/card components; do not hand-build from Stripe HTML
+- **Interactive sections** — any section using useState/hooks needs `"use client"` at the top; ProductSection is already a client component
+- **`@property --shine-angle`** — requires Chrome 85+ / Safari 15.4+; see globals.css for full shine border implementation
+- **Framer Motion drawer pattern** — established in ProductSection: `AnimatePresence` wraps conditional render, outer `motion.div` fades, inner panel uses `y: "100%" → 0` spring (`damping: 30, stiffness: 300`)
 
 ---
 
