@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sognos Platform Animation — Design Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0f2e;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .label-bar {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5D64FE;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  /* ── Dot grid ── */
+  .diagram-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(93,100,254,0.18) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-radius: 16px;
+    pointer-events: none;
+  }
+
+  .diagram {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 36px 24px;
+    z-index: 1;
+  }
+
+  /* ── Top: Demand tiles ── */
+  .demand-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+  .demand-tile {
+    background: #111d54;
+    border: 1px solid rgba(93,100,254,0.3);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #9ba8ff;
+    animation: tileEntrance 0.6s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demand-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(93,100,254,0.08), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .demand-tile:nth-child(1) { animation-delay: 0.0s; }
+  .demand-tile:nth-child(2) { animation-delay: 0.1s; }
+  .demand-tile:nth-child(3) { animation-delay: 0.2s; }
+  .demand-tile:nth-child(4) { animation-delay: 0.3s; }
+  .demand-tile:nth-child(5) { animation-delay: 0.4s; }
+  .demand-tile:nth-child(6) { animation-delay: 0.5s; }
+
+  .demand-tile.cycling {
+    animation: tileEntrance 0.6s ease both, tileCycle 4s ease-in-out infinite;
+  }
+
+  @keyframes tileEntrance {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes tileCycle {
+    0%, 80%  { opacity: 1; }
+    90%      { opacity: 0.3; }
+    100%     { opacity: 1; }
+  }
+
+  /* ── SVG connector area ── */
+  .connector-zone {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .connector-svg {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    overflow: visible;
+  }
+
+  .flow-path {
+    stroke: #5D64FE;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4 4;
+    animation: flowDown 1.2s linear infinite;
+  }
+
+  .flow-path-base {
+    stroke: #1a2460;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4 4;
+  }
+
+  @keyframes flowDown {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 32; }
+  }
+
+  /* ── Centre platform ── */
+  .platform-block {
+    width: 100%;
+    max-width: 560px;
+    background: #0e1a50;
+    border: 1px solid rgba(93,100,254,0.25);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    animation: platformIn 0.8s ease 0.3s both;
+  }
+
+  @keyframes platformIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .platform-brand {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .platform-brand svg {
+    opacity: 0.8;
+  }
+
+  .platform-layers {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .layer-badge {
+    background: #101d51;
+    border: 1px solid rgba(93,100,254,0.2);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    color: #8896e0;
+    animation: layerIn 0.5s ease both;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .layer-badge:hover {
+    border-color: rgba(93,100,254,0.5);
+    color: #c0caff;
+  }
+
+  .layer-badge:nth-child(1) { animation-delay: 0.5s; }
+  .layer-badge:nth-child(2) { animation-delay: 0.65s; }
+  .layer-badge:nth-child(3) { animation-delay: 0.8s; }
+
+  .layer-badge.active {
+    border-color: rgba(93,100,254,0.5);
+    color: #c0caff;
+    animation: layerIn 0.5s ease both, layerPulse 3s ease-in-out infinite;
+  }
+
+  .layer-badge.active:nth-child(1) { animation-delay: 0.5s, 1s; }
+  .layer-badge.active:nth-child(2) { animation-delay: 0.65s, 2s; }
+  .layer-badge.active:nth-child(3) { animation-delay: 0.8s, 3s; }
+
+  @keyframes layerIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes layerPulse {
+    0%, 100% { border-color: rgba(93,100,254,0.2); color: #8896e0; }
+    50%      { border-color: rgba(93,100,254,0.6); color: #c8d4ff; box-shadow: 0 0 8px rgba(93,100,254,0.2); }
+  }
+
+  /* ── Bottom: Outcomes ── */
+  .outcomes-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .outcome-tile {
+    background: #111d54;
+    border: 1px solid rgba(93,100,254,0.25);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #9ba8ff;
+    animation: outcomeIn 0.6s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .outcome-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(93,100,254,0.06), transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  .outcome-tile:nth-child(1) { animation-delay: 0.9s; }
+  .outcome-tile:nth-child(2) { animation-delay: 1.0s; }
+  .outcome-tile:nth-child(3) { animation-delay: 1.1s; }
+  .outcome-tile:nth-child(4) { animation-delay: 1.2s; }
+
+  @keyframes outcomeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Animated "data pulse" dots on paths ── */
+  .pulse-dot {
+    r: 3;
+    fill: #5D64FE;
+    filter: drop-shadow(0 0 4px #5D64FE);
+  }
+
+  /* ── Zone labels ── */
+  .zone-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(93,100,254,0.6);
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  /* ── Annotation footer ── */
+  .annotation {
+    margin-top: 32px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="label-bar">Design Mockup — HowSognosWorksPreview Animation</div>
+
+<div class="diagram-wrapper">
+  <div class="dot-grid"></div>
+  <div class="diagram">
+
+    <!-- TOP: Service Demand -->
+    <div class="zone-label">Service Demand</div>
+    <div class="demand-row">
+      <div class="demand-tile cycling" style="animation-delay:0s,0s">Referrals</div>
+      <div class="demand-tile cycling" style="animation-delay:0.1s,0.8s">Care Plans</div>
+      <div class="demand-tile cycling" style="animation-delay:0.2s,1.6s">Field Jobs</div>
+      <div class="demand-tile cycling" style="animation-delay:0.3s,2.4s">Assessments</div>
+      <div class="demand-tile cycling" style="animation-delay:0.4s,3.2s">Incidents</div>
+      <div class="demand-tile cycling" style="animation-delay:0.5s,4.0s">Schedules</div>
+    </div>
+
+    <!-- CONNECTOR: top → platform -->
+    <div class="connector-zone">
+      <svg class="connector-svg" width="560" height="80" viewBox="0 0 560 80">
+        <!-- base dashed (static) -->
+        <path class="flow-path-base" d="M280 0 L280 80" />
+        <path class="flow-path-base" d="M100 0 Q100 40 180 80" />
+        <path class="flow-path-base" d="M460 0 Q460 40 380 80" />
+        <!-- animated overlay -->
+        <path class="flow-path" d="M280 0 L280 80" />
+        <path class="flow-path" d="M100 0 Q100 40 180 80" style="animation-delay:0.4s" />
+        <path class="flow-path" d="M460 0 Q460 40 380 80" style="animation-delay:0.8s" />
+        <!-- pulse dots -->
+        <circle class="pulse-dot">
+          <animateMotion dur="2s" repeatCount="indefinite" path="M280 0 L280 80"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.6s" path="M100 0 Q100 40 180 80"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s" path="M460 0 Q460 40 380 80"/>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- CENTRE: Sognos Platform -->
+    <div class="platform-block">
+      <div class="platform-brand">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7" stroke="#5D64FE" stroke-width="1.5"/>
+          <circle cx="8" cy="8" r="3" fill="#5D64FE"/>
+        </svg>
+        Sognos Platform
+      </div>
+      <div class="platform-layers">
+        <div class="layer-badge active">AI Optimisation</div>
+        <div class="layer-badge active">Workforce (Roster)</div>
+        <div class="layer-badge active">Service Delivery (Care)</div>
+      </div>
+    </div>
+
+    <!-- CONNECTOR: platform → outcomes -->
+    <div class="connector-zone">
+      <svg class="connector-svg" width="560" height="80" viewBox="0 0 560 80">
+        <path class="flow-path-base" d="M280 0 L280 80" />
+        <path class="flow-path-base" d="M180 0 Q100 40 100 80" />
+        <path class="flow-path-base" d="M380 0 Q460 40 460 80" />
+        <path class="flow-path" d="M280 0 L280 80" style="animation-delay:0.2s"/>
+        <path class="flow-path" d="M180 0 Q100 40 100 80" style="animation-delay:0.6s"/>
+        <path class="flow-path" d="M380 0 Q460 40 460 80" style="animation-delay:1.0s"/>
+        <circle class="pulse-dot">
+          <animateMotion dur="2s" repeatCount="indefinite" begin="0.3s" path="M280 0 L280 80"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.9s" path="M180 0 Q100 40 100 80"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.5s" path="M380 0 Q460 40 460 80"/>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- BOTTOM: Outcomes & Compliance -->
+    <div class="zone-label">Outcomes &amp; Compliance</div>
+    <div class="outcomes-row">
+      <div class="outcome-tile">Audit Trails</div>
+      <div class="outcome-tile">Compliance Reports</div>
+      <div class="outcome-tile">Outcome Records</div>
+      <div class="outcome-tile">Real-time Alerts</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="annotation">
+  Animated SVG paths with flowing dashes and pulse dots. Demand tiles shimmer and stagger on load. Platform layers pulse sequentially. Same colour system as Stripe's diagram — adapted to Sognos topology.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<h2>How should the 6 Sognos nodes map to the Stripe diagram?</h2>
+<p class="subtitle">The Stripe animation has 3 structural zones. Which mapping feels right for Sognos?</p>
+
+<style>
+  .diagram {
+    background: #0d1b4b;
+    border-radius: 10px;
+    padding: 24px 16px;
+    margin-bottom: 8px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+  }
+  .zone {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    min-width: 130px;
+  }
+  .zone-label {
+    font-size: 10px;
+    color: #5D64FE;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .node {
+    background: #1a2d6e;
+    border: 1px solid #2a3d8e;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #c8d4ff;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .node.platform {
+    background: #5D64FE;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+  .node.sub {
+    background: #101d51;
+    font-size: 11px;
+    color: #8899cc;
+  }
+  .arrow {
+    color: #5D64FE;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .connector {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .divider {
+    width: 1px;
+    height: 8px;
+    background: #5D64FE;
+  }
+</style>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Flow: Demand → Platform → Outcomes</h3>
+      <p>Left = Service Demand sources, Centre = Platform + 3 inner layers, Right = Outcomes & Compliance</p>
+      <div class="diagram">
+        <div class="zone">
+          <div class="zone-label">Left</div>
+          <div class="node">Referrals</div>
+          <div class="node">Care Plans</div>
+          <div class="node">Field Jobs</div>
+          <div class="node">Schedules</div>
+          <div class="node">Incidents</div>
+          <div class="node">Assessments</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Centre</div>
+          <div class="node platform">Sognos Platform</div>
+          <div class="node sub">AI Optimisation</div>
+          <div class="node sub">Workforce (Roster)</div>
+          <div class="node sub">Service Delivery (Care)</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Right</div>
+          <div class="node">Compliance Reports</div>
+          <div class="node">Audit Trails</div>
+          <div class="node">Outcomes Data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Strict 1:1 label replacement</h3>
+      <p>Each Stripe label swapped directly for a Sognos label — left = Service Demand, right = Outcomes & Compliance, the 3 layers replace SDK/Pipeline/Orchestration etc.</p>
+      <div class="diagram">
+        <div class="zone">
+          <div class="zone-label">Left (6 tiles)</div>
+          <div class="node">Service Demand</div>
+          <div class="node" style="opacity:0.4">×5 cycling tiles</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Centre layers</div>
+          <div class="node platform">Sognos Platform</div>
+          <div class="node sub">Workforce (Roster)</div>
+          <div class="node sub">Service Delivery (Care)</div>
+          <div class="node sub">AI Optimisation</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="zone">
+          <div class="zone-label">Right</div>
+          <div class="node">Outcomes &amp; Compliance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Top/bottom split — systems above, outputs below</h3>
+      <p>Demand sources appear above the platform. Outcomes & Compliance appear below. The 3 layers live inside the platform box.</p>
+      <div class="diagram" style="flex-direction: column; gap: 8px;">
+        <div style="display:flex;gap:8px;justify-content:center">
+          <div class="node">Referrals</div>
+          <div class="node">Care Plans</div>
+          <div class="node">Field Jobs</div>
+        </div>
+        <div class="arrow" style="text-align:center">↓</div>
+        <div style="display:flex;gap:8px;justify-content:center;align-items:center">
+          <div class="node sub">AI Optimisation</div>
+          <div class="node platform">Sognos</div>
+          <div class="node sub">Workforce (Roster)</div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:4px">
+          <div class="node sub">Service Delivery (Care)</div>
+        </div>
+        <div class="arrow" style="text-align:center">↓</div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <div class="node">Outcomes &amp; Compliance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

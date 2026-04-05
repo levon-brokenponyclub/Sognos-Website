@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sognos Platform Animation v2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0f2e;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .label-bar {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5D64FE;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .diagram-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(93,100,254,0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-radius: 16px;
+    pointer-events: none;
+  }
+
+  .diagram {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 24px;
+    z-index: 1;
+    gap: 0;
+  }
+
+  /* ── Zone label ── */
+  .zone-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(93,100,254,0.6);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  /* ── Service demand cards ── */
+  .demand-cards {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .demand-card {
+    width: 140px;
+    height: 72px;
+    background: #111d54;
+    border: 1px solid rgba(93,100,254,0.3);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    animation: cardIn 0.5s ease both;
+  }
+
+  .demand-card:nth-child(1) { animation-delay: 0.0s; }
+  .demand-card:nth-child(2) { animation-delay: 0.15s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* shimmer sweep */
+  .demand-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(93,100,254,0.07) 50%, transparent 100%);
+    animation: shimmer 3.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    60%  { transform: translateX(100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Two service labels inside each card — cross-fade cycle */
+  .service-slot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .service-slot .icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .service-slot .name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #9ba8ff;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .service-slot.slot-a { animation: cycleA 5s ease-in-out infinite; }
+  .service-slot.slot-b { animation: cycleB 5s ease-in-out infinite; }
+
+  @keyframes cycleA {
+    0%   { opacity: 1; transform: translateY(0); }
+    35%  { opacity: 1; transform: translateY(0); }
+    45%  { opacity: 0; transform: translateY(-8px); }
+    90%  { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes cycleB {
+    0%   { opacity: 0; transform: translateY(8px); }
+    35%  { opacity: 0; transform: translateY(8px); }
+    45%  { opacity: 1; transform: translateY(0); }
+    90%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-8px); }
+  }
+
+  /* offset card 2's cycle so they don't sync */
+  .demand-card:nth-child(2) .slot-a { animation-delay: -2.5s; }
+  .demand-card:nth-child(2) .slot-b { animation-delay: -2.5s; }
+
+  /* ── SVG connector zones ── */
+  .connector-zone {
+    position: relative;
+    width: 100%;
+    height: 72px;
+  }
+
+  .connector-svg {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    overflow: visible;
+  }
+
+  .flow-path-base {
+    stroke: #1a2460;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4 4;
+  }
+
+  .flow-path {
+    stroke: #5D64FE;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4 4;
+    animation: flowDown 1.4s linear infinite;
+  }
+
+  @keyframes flowDown {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 32; }
+  }
+
+  .pulse-dot {
+    r: 2.5;
+    fill: #5D64FE;
+    filter: drop-shadow(0 0 3px #5D64FE);
+  }
+
+  /* ── Platform block ── */
+  .platform-block {
+    width: 100%;
+    max-width: 480px;
+    background: #0e1a50;
+    border: 1px solid rgba(93,100,254,0.3);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: platformIn 0.7s ease 0.25s both;
+  }
+
+  @keyframes platformIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .platform-brand {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .platform-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #5D64FE;
+    box-shadow: 0 0 8px rgba(93,100,254,0.6);
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes dotPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(93,100,254,0.4); }
+    50%      { box-shadow: 0 0 14px rgba(93,100,254,0.8); }
+  }
+
+  /* ── Outcomes ── */
+  .outcomes-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .outcome-tile {
+    background: #111d54;
+    border: 1px solid rgba(93,100,254,0.2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #9ba8ff;
+    opacity: 0;
+    animation: outcomeIn 0.5s ease forwards;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* staggered reveal */
+  .outcome-tile:nth-child(1) { animation-delay: 1.0s; }
+  .outcome-tile:nth-child(2) { animation-delay: 1.4s; }
+  .outcome-tile:nth-child(3) { animation-delay: 1.8s; }
+  .outcome-tile:nth-child(4) { animation-delay: 2.2s; }
+
+  @keyframes outcomeIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* shimmer on outcomes too, offset so it feels different */
+  .outcome-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(93,100,254,0.06), transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  .outcome-tile:nth-child(1)::after { animation-delay: 0s; }
+  .outcome-tile:nth-child(2)::after { animation-delay: 0.7s; }
+  .outcome-tile:nth-child(3)::after { animation-delay: 1.4s; }
+  .outcome-tile:nth-child(4)::after { animation-delay: 2.1s; }
+</style>
+</head>
+<body>
+
+<div class="label-bar">Animation v2 — Mockup</div>
+
+<div class="diagram-wrapper">
+  <div class="dot-grid"></div>
+  <div class="diagram">
+
+    <!-- TOP: Service Demand — 2 cycling cards -->
+    <div class="zone-label">Service Demand</div>
+    <div class="demand-cards">
+
+      <div class="demand-card">
+        <div class="service-slot slot-a">
+          <div class="icon">📋</div>
+          <div class="name">Referrals</div>
+        </div>
+        <div class="service-slot slot-b">
+          <div class="icon">🏠</div>
+          <div class="name">Care Plans</div>
+        </div>
+      </div>
+
+      <div class="demand-card">
+        <div class="service-slot slot-a">
+          <div class="icon">🔧</div>
+          <div class="name">Field Jobs</div>
+        </div>
+        <div class="service-slot slot-b">
+          <div class="icon">📅</div>
+          <div class="name">Schedules</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Connector top → platform -->
+    <div class="connector-zone">
+      <svg class="connector-svg" width="480" height="72" viewBox="0 0 480 72">
+        <path class="flow-path-base" d="M170 0 Q170 36 240 72"/>
+        <path class="flow-path-base" d="M310 0 Q310 36 240 72"/>
+        <path class="flow-path" d="M170 0 Q170 36 240 72"/>
+        <path class="flow-path" d="M310 0 Q310 36 240 72" style="animation-delay:0.5s"/>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" path="M170 0 Q170 36 240 72"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s" path="M310 0 Q310 36 240 72"/>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- CENTRE: Sognos Platform (clean — no sub-layers) -->
+    <div class="platform-block">
+      <div class="platform-brand">
+        <div class="platform-dot"></div>
+        Sognos Platform
+      </div>
+    </div>
+
+    <!-- Connector platform → outcomes -->
+    <div class="connector-zone">
+      <svg class="connector-svg" width="480" height="72" viewBox="0 0 480 72">
+        <path class="flow-path-base" d="M240 0 Q140 36 100 72"/>
+        <path class="flow-path-base" d="M240 0 Q200 36 190 72"/>
+        <path class="flow-path-base" d="M240 0 Q280 36 290 72"/>
+        <path class="flow-path-base" d="M240 0 Q340 36 380 72"/>
+        <path class="flow-path" d="M240 0 Q140 36 100 72"/>
+        <path class="flow-path" d="M240 0 Q200 36 190 72" style="animation-delay:0.35s"/>
+        <path class="flow-path" d="M240 0 Q280 36 290 72" style="animation-delay:0.7s"/>
+        <path class="flow-path" d="M240 0 Q340 36 380 72" style="animation-delay:1.05s"/>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" path="M240 0 Q140 36 100 72"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.45s" path="M240 0 Q200 36 190 72"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s" path="M240 0 Q280 36 290 72"/>
+        </circle>
+        <circle class="pulse-dot">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.35s" path="M240 0 Q340 36 380 72"/>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- BOTTOM: Outcomes & Compliance — staggered reveal -->
+    <div class="zone-label">Outcomes &amp; Compliance</div>
+    <div class="outcomes-row">
+      <div class="outcome-tile">Audit Trails</div>
+      <div class="outcome-tile">Compliance Reports</div>
+      <div class="outcome-tile">Outcome Records</div>
+      <div class="outcome-tile">Real-time Alerts</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
