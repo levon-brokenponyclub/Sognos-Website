@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/levongravett/Desktop/BPC/Sites/sognos-react && npm run dev > /tmp/sognos-dev.log 2>&1 &",
+            "async": true,
+            "statusMessage": "Starting dev server..."
+          }
+        ]
+      }
+    ]
+  }
+}

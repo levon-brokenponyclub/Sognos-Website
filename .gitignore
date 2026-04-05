@@ -24,7 +24,7 @@
 .superpowers/
 
 # claude
-.claude/
+.claude/settings.local.json
 
 # docs
 docs/
