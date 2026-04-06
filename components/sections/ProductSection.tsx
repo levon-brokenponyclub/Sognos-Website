@@ -19,9 +19,9 @@ export default function ProductSection() {
   return (
     <section
       aria-label="Platform capabilities"
-      className="flex overflow-hidden bg-slate-50 w-full p-0 relative items-center justify-center border-b border-sognos-border-subtle"
+      className="flex overflow-hidden w-full p-0 relative items-center justify-center border-b border-sognos-border-subtle"
     >
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle z-1">
         {/* Section heading */}
         <div className="mb-16 max-w-4xl">
           <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
@@ -35,9 +35,9 @@ export default function ProductSection() {
         </div>
 
         {/* 3-card grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-1 bg-white rounded-sm border border-sognos-border-subtle">
+        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-6 p-1 rounded-3xl border border-sognos-border-subtle">
           {/* Card 1 — Product One */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full h-[600px] rounded-sm relative overflow-hidden border border-card-border bg-white">
+          <div className="flex flex-col group transition-all duration-700 ease-out w-full h-[600px] rounded-3xl relative overflow-hidden border border-card-border bg-gradient-hero">
             {/* Shine border overlay */}
             <div
               className="animate-shine pointer-events-none absolute inset-0 size-full rounded-[inherit]"
@@ -60,217 +60,57 @@ export default function ProductSection() {
               }
             />
 
-            {/* Animated background orbs */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[inherit] z-0">
-              <div
-                className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-400/20 rounded-full blur-[80px] animate-pulse"
-                style={{ animationDuration: "8s" }}
-              />
-              <div
-                className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-cyan-400/20 rounded-full blur-[80px] animate-pulse"
-                style={{ animationDuration: "10s", animationDelay: "2s" }}
-              />
-            </div>
-
-            <div className="z-20 side-stack card flex pt-8 pr-8 pb-0 pl-8 relative items-start justify-between">
-              <h5 className="tracking-tight">Products</h5>
-              <h2 className="text-2xl tracking-tight font-medium max-w-[280px] leading-tight text-slate-800">
-                Native to your Microsoft stack
+            <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
+              <h2 className="text-2xl tracking-tight font-medium max-w-[280px] leading-tight text-white mb-6">
+                SognosCare
               </h2>
-              <button
-                type="button"
-                aria-haspopup="dialog"
-                aria-expanded={drawerOpen}
-                onClick={() => setDrawerOpen(true)}
-                className="bg-blue-50 hover:bg-blue-100 p-2.5 rounded-xl text-blue-600 transition-all duration-300 group-hover:scale-110 flex items-center justify-center shadow-sm hover:shadow-md"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="group-hover:rotate-12 transition-transform duration-300"
-                >
-                  <path d="M9 17H7A5 5 0 0 1 7 7h2" />
-                  <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
-                  <line x1="8" x2="16" y1="12" y2="12" />
-                </svg>
-              </button>
-            </div>
+              <p className="text-white tracking-tight text-sognos-text-body">
+                Deliver safer, simpler care in the field. From mental health to
+                aged care, we help providers reduce admin and stay
+                service-ready—whatever changes come next.
+              </p>
 
-            <div className="z-0 flex-1 overflow-hidden w-full h-full relative">
-              <ParticleCanvas
-                variant="arc"
-                className="w-full h-full absolute inset-0"
-              />
-
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 400 600"
-                preserveAspectRatio="xMidYMid slice"
-              >
-                <defs>
-                  <linearGradient
-                    id="lineGrad"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
-                    <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2" />
-                  </linearGradient>
-                </defs>
-
-                <path
-                  d="M-50 450 Q 150 150, 450 350"
-                  fill="none"
-                  stroke="url(#lineGrad)"
-                  strokeWidth="1.5"
-                  className="path-line"
-                />
-
-                <circle
-                  cx="100"
-                  cy="250"
-                  r="3"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="1.5"
-                >
-                  <animate
-                    attributeName="r"
-                    values="3; 25"
-                    dur="3s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    values="0.6; 0"
-                    dur="3s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="100"
-                  cy="250"
-                  r="3"
-                  fill="white"
-                  stroke="#3b82f6"
-                  strokeWidth="1.5"
-                />
-
-                <circle
-                  cx="350"
-                  cy="300"
-                  r="3"
-                  fill="none"
-                  stroke="#06b6d4"
-                  strokeWidth="1.5"
-                >
-                  <animate
-                    attributeName="r"
-                    values="3; 25"
-                    dur="3s"
-                    begin="1s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    values="0.6; 0"
-                    dur="3s"
-                    begin="1s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="350"
-                  cy="300"
-                  r="3"
-                  fill="white"
-                  stroke="#06b6d4"
-                  strokeWidth="1.5"
-                />
-
-                <path
-                  d="M50 650 Q 100 300, 300 550"
-                  fill="none"
-                  stroke="url(#lineGrad)"
-                  strokeWidth="1"
-                  className="path-line-2"
-                />
-
-                <circle
-                  cx="150"
-                  cy="400"
-                  r="2.5"
-                  fill="none"
-                  stroke="#8b5cf6"
-                  strokeWidth="1.5"
-                >
-                  <animate
-                    attributeName="r"
-                    values="2.5; 20"
-                    dur="3s"
-                    begin="2s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    values="0.6; 0"
-                    dur="3s"
-                    begin="2s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="150"
-                  cy="400"
-                  r="2.5"
-                  fill="white"
-                  stroke="#8b5cf6"
-                  strokeWidth="1.5"
-                />
-              </svg>
-
-              {/* Floating badge */}
-              <div
-                className="absolute top-[60%] left-[10%] bg-white/95 backdrop-blur border border-slate-100 shadow-md rounded-lg py-1.5 px-3 flex items-center gap-2 z-10 animate-float hover:scale-105 transition-transform cursor-default"
-                style={{ animationDuration: "4s" }}
-              >
-                <div
-                  className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center animate-pulse"
-                  style={{ animationDuration: "3s" }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-white"
-                  >
-                    <rect width="7" height="7" x="14" y="3" rx="1" />
-                    <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
-                  </svg>
+              <div className="cardSlide overflow-hidden absolute bottom-4 left-0 w-full p-4 px-4">
+                <div className="cardSlideInner flex flex-col align-bottom justify-between rounded-2xl bg-white gap-10 p-6 pb-2 border border-[#434EC1]">
+                  <p>
+                    Deliver safer, simpler care in the field. From mental health
+                    to aged care, we help providers reduce admin and stay
+                    service-ready—whatever changes come next.
+                  </p>
+                  <div className="border-t border-brand-dark bottom-0 left-0 py-2 flex flex-col-2 align-middle justify-between">
+                    <a className="py-3 font-heading font-semibold">
+                      Learn More
+                    </a>
+                    <button
+                      type="button"
+                      aria-haspopup="dialog"
+                      aria-expanded={drawerOpen}
+                      onClick={() => setDrawerOpen(true)}
+                      className="bg-blue-50 hover:bg-blue-100 p-2.5 rounded-xl text-blue-600 transition-all duration-300 group-hover:scale-110 flex items-center justify-center shadow-sm hover:shadow-md"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-maximize2-icon lucide-maximize-2"
+                      >
+                        <path d="M15 3h6v6" />
+                        <path d="m21 3-7 7" />
+                        <path d="m3 21 7-7" />
+                        <path d="M9 21H3v-6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <span className="text-xs font-medium text-slate-700">
-                  150+{" "}
-                  <span className="text-slate-400">Integrations active</span>
-                </span>
               </div>
             </div>
-
+            <div className="z-0 flex-1 overflow-hidden w-full h-full relative"></div>
           </div>
         </div>
       </div>
@@ -358,6 +198,24 @@ export default function ProductSection() {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="w-full absolute bottom-0 left-0 h-[220px] sm:h-[240px] md:h-[280px] lg:h-[400px] xl:h-[420px] 2xl:h-[650px] z-0 pointer-events-none">
+        <div className="overflow-hidden flex flex-row h-full w-full">
+          {[
+            0, 40, 80, 120, 160, 200, 160, 120, 80, 40, 0, 40, 80, 120, 160,
+            200, 160, 120, 80, 40, 0, 40, 80, 120, 160, 200,
+          ].map((y, i) => (
+            <div
+              key={i}
+              className="bg-gradient-1-vertical-flipped-test"
+              style={{
+                width: "56.0769px",
+                height: "100%",
+                transform: `translateY(${y}px) scaleY(-1)`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

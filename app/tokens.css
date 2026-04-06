@@ -3,133 +3,134 @@
 ======================== */
 
 :root {
-  /* Brand */
-  --sognos-brand: #122348;
-  --sognos-brand-dark: #04142c;
-  --sognos-brand-light: #444444;
-  --sognos-brand-subtle: #006490;
-  --sognos-brand-foreground: #ffffff;
+    /* Brand */
+    --sognos-brand: #122348;
+    --sognos-brand-dark: #04142c;
+    --sognos-brand-light: #444444;
+    --sognos-brand-subtle: #006490;
+    --sognos-brand-foreground: #ffffff;
 
-  /* Accent & Highlight */
-  --sognos-accent: #1e96fc;
-  --sognos-accent-subtle: rgb(30 150 252 / 0.1);
-  --sognos-accent-blue: #0d1738;
-  --sognos-highlight: #ff4fa3;
-  --sognos-highlight-subtle: rgb(255 79 163 / 0.12);
+    /* Accent & Highlight */
+    --sognos-accent: #1e96fc;
+    --sognos-accent-subtle: rgb(30 150 252 / 0.1);
+    --sognos-accent-blue: #0d1738;
+    --sognos-highlight: #ff4fa3;
+    --sognos-highlight-subtle: rgb(255 79 163 / 0.12);
 
-  --sognos-brand-subtle-300: #6ffacc;
-  --sognos-brand-subtle-700: #00afbd;
+    --sognos-brand-subtle-300: #6ffacc;
+    --sognos-brand-subtle-700: #00afbd;
 
-  --sognos-subtle-coral: #ff7276;
-  --sognos-subtle-purple: #be8fff;
+    --sognos-subtle-coral: #ff7276;
+    --sognos-subtle-purple: #be8fff;
 
-  /* Neutrals */
-  --sognos-neutral-50: #ffffff;
-  --sognos-neutral-100: #fafafa;
-  --sognos-neutral-200: #f2f3f5;
-  --sognos-neutral-300: #d8dbe1;
-  --sognos-neutral-400: #a2a2a2;
-  --sognos-neutral-500: #6c6c6c;
-  --sognos-neutral-600: #525253;
-  --sognos-neutral-700: #3a3a3b;
-  --sognos-neutral-800: #232324;
-  --sognos-neutral-900: #0c0c0d;
+    /* Neutrals */
+    --sognos-neutral-50: #ffffff;
+    --sognos-neutral-100: #fafafa;
+    --sognos-neutral-200: #f2f3f5;
+    --sognos-neutral-300: #d8dbe1;
+    --sognos-neutral-400: #a2a2a2;
+    --sognos-neutral-500: #6c6c6c;
+    --sognos-neutral-600: #525253;
+    --sognos-neutral-700: #3a3a3b;
+    --sognos-neutral-800: #232324;
+    --sognos-neutral-900: #0c0c0d;
 
-  /* Text & Links */
-  --sognos-text-heading: #061b31;
-  --sognos-text-body: var(--color-slate-600);
-  --sognos-text-muted: #96a3b0;
-  --sognos-text-soft: #64748d;
-  --sognos-text-inverse: #ffffff;
-  --sognos-text-link: #122348;
+    /* Text & Links */
+    --sognos-text-heading: #061b31;
+    --sognos-text-body: var(--color-slate-600);
+    --sognos-text-muted: #96a3b0;
+    --sognos-text-soft: #64748d;
+    --sognos-text-inverse: #ffffff;
+    --sognos-text-link: #122348;
 
-  /* Surfaces & Backgrounds */
-  --sognos-bg-page: #ffffff;
-  --sognos-bg-surface: #fcfcfc;
-  --sognos-bg-elevated: #f7f7f7;
-  --sognos-bg-sunken: #f1f4f8;
+    /* Surfaces & Backgrounds */
+    --sognos-bg-page: #ffffff;
+    --sognos-bg-surface: #fcfcfc;
+    --sognos-bg-elevated: #f7f7f7;
+    --sognos-bg-sunken: #f1f4f8;
 
-  /* Borders & Components */
-  --sognos-border: #d8dbe1;
-  --sognos-border-strong: #1e96fc;
-  --sognos-border-subtle: #dcdfe6;
-  --sognos-border-focus: #122348;
-  --sognos-card-border: #e5edf5;
-  --sognos-card-border-soft: #e7ecf1;
-  --sognos-card-bg: #fff;
-  --sognos-subcard-bg: #f6f9fc;
+    /* Borders & Components */
+    --sognos-border: #d8dbe1;
+    --sognos-border-strong: #1d8ded;
+    --sognos-border-subtle: #dcdfe6;
+    --sognos-border-focus: #122348;
+    --sognos-card-border: #e5edf5;
+    --sognos-card-border-soft: #e7ecf1;
+    --sognos-card-bg: #fff;
+    --sognos-subcard-bg: #f6f9fc;
 
-  /* Status */
-  --sognos-success: #10b981;
-  --sognos-success-light: #d1fae5;
-  --sognos-warning: #f59e0b;
-  --sognos-warning-light: #fef3c7;
-  --sognos-error: #ef4444;
-  --sognos-error-light: #fee2e2;
-  --sognos-info: #3b82f6;
-  --sognos-info-light: #dbeafe;
+    /* Status */
+    --sognos-success: #10b981;
+    --sognos-success-light: #d1fae5;
+    --sognos-warning: #f59e0b;
+    --sognos-warning-light: #fef3c7;
+    --sognos-error: #ef4444;
+    --sognos-error-light: #fee2e2;
+    --sognos-info: #3b82f6;
+    --sognos-info-light: #dbeafe;
 
-  /* Editions */
-  --sognos-edition-teal: #00a98f;
-  --sognos-edition-orange: #ff9c47;
-  --sognos-edition-coral: #ff7276;
-  --sognos-edition-purple: #be8fff;
+    /* Editions */
+    --sognos-edition-teal: #00a98f;
+    --sognos-edition-orange: #ff9c47;
+    --sognos-edition-coral: #ff7276;
+    --sognos-edition-purple: #be8fff;
 
-  /* Gradients */
-  --sognos-gradient-brand: linear-gradient(135deg, #04142c 0%, #0d1738 100%);
-  --sognos-gradient-accent: linear-gradient(145deg, #44efde 0%, #0ac5b2 100%);
-  --sognos-gradient-hero: radial-gradient(
-    102.82% 106.44% at 50% 106.44%,
-    #fcfdfe 1.11%,
-    #909cd0 28.73%,
-    #544ca7 45.76%,
-    #404f85 63.37%,
-    #15285c 78.67%,
-    #052048 100%
-  );
-  --sognos-gradient-surface: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  /* Note: standard cards/subcards must NOT use gradients; keeping gradient-card available specifically for hero use cases if absolutely strictly needed, though flat is default. */
-  --sognos-gradient-card: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.65) 0%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
-  --sognos-gradient-highlight: linear-gradient(
-    135deg,
-    #ff4fa3 0%,
-    #ff8ec4 100%
-  );
+    /* Gradients */
+    --sognos-gradient-brand: linear-gradient(135deg, #04142c 0%, #0d1738 100%);
+    --sognos-gradient-accent: linear-gradient(145deg, #44efde 0%, #0ac5b2 100%);
+    --sognos-gradient-hero: radial-gradient(
+        circle at 20% 20%,
+        #16235d 0%,
+        #0a143d 40%,
+        #060c27 100%
+    );
+    --sognos-gradient-surface: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fafafa 100%
+    );
+    /* Note: standard cards/subcards must NOT use gradients; keeping gradient-card available specifically for hero use cases if absolutely strictly needed, though flat is default. */
+    --sognos-gradient-card: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.65) 0%,
+        rgba(255, 255, 255, 0.95) 100%
+    );
+    --sognos-gradient-highlight: linear-gradient(
+        135deg,
+        #ff4fa3 0%,
+        #ff8ec4 100%
+    );
 
-  /* Shadows */
-  --sognos-shadow-sm: 0 1px 3px rgb(18 23 33 / 0.08);
-  --sognos-shadow-md: 0 8px 24px rgb(18 23 33 / 0.08);
-  --sognos-shadow-lg: 0 20px 48px rgb(18 23 33 / 0.1);
-  --sognos-shadow-xl: 0 24px 60px rgb(18 23 33 / 0.12);
-  --sognos-shadow-brand: 0 0 24px rgb(18 35 72 / 0.18);
+    /* Shadows */
+    --sognos-shadow-sm: 0 1px 3px rgb(18 23 33 / 0.08);
+    --sognos-shadow-md: 0 8px 24px rgb(18 23 33 / 0.08);
+    --sognos-shadow-lg: 0 20px 48px rgb(18 23 33 / 0.1);
+    --sognos-shadow-xl: 0 24px 60px rgb(18 23 33 / 0.12);
+    --sognos-shadow-brand: 0 0 24px rgb(18 35 72 / 0.18);
 
-  /* Radius (strict map to tokens) */
-  --sognos-radius-sm: 4px;
-  --sognos-radius-md: 4px;
-  --sognos-radius-lg: 12px;
-  --sognos-radius-xl: 16px;
-  --sognos-radius-2xl: 20px;
-  --sognos-radius-full: 9999px;
+    /* Radius (strict map to tokens) */
+    --sognos-radius-sm: 4px;
+    --sognos-radius-md: 4px;
+    --sognos-radius-lg: 12px;
+    --sognos-radius-xl: 16px;
+    --sognos-radius-2xl: 20px;
+    --sognos-radius-full: 9999px;
 
-  /* Layout */
-  --sognos-container-width: 1380px;
-  --sognos-section-padding: 88px;
-  --sognos-card-padding: 24px;
+    /* Layout */
+    --sognos-container-width: 1320px;
+    --sognos-section-padding: 88px;
+    --sognos-card-padding: 24px;
 
-  /* Typography — heading scale */
-  --sognos-font-size-h1: 46px;
-  --sognos-font-size-h2: 40px;
-  --sognos-font-size-h3: 32px;
-  --sognos-font-size-h4: 28px;
-  --sognos-heading-line-height: 1.05;
-  --sognos-heading-tracking: -0.02em;
-  --sognos-font-weight-regular: 400;
+    /* Typography — heading scale */
+    --sognos-font-size-h1: 46px;
+    --sognos-font-size-h2: 40px;
+    --sognos-font-size-h3: 32px;
+    --sognos-font-size-h4: 28px;
+    --sognos-heading-line-height: 1.05;
+    --sognos-heading-tracking: -0.02em;
+    --sognos-font-weight-regular: 400;
 
-  /* Typography — body */
-  --sognos-font-size-2xl: 1.25rem;
-  --sognos-line-height-2xl: 1.75rem;
+    /* Typography — body */
+    --sognos-font-size-2xl: 1.25rem;
+    --sognos-line-height-2xl: 1.75rem;
 }
