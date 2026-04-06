@@ -1,249 +1,201 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
-import LottiePlayer from "@/components/ui/LottiePlayer";
+import { useRef, useEffect, useState, useCallback } from "react";
+import {
+  motion,
+  animate,
+  useMotionValue,
+  useMotionValueEvent,
+} from "framer-motion";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+const GAP = 20;
+const VIDEO_SRC =
+  "https://www.shutterstock.com/shutterstock/videos/3740674987/preview/stock-footage-people-back-or-volunteer-with-tshirt-for-donation-non-profit-organization-or-community-service-in.webm";
 
-const TAB_HEIGHT = 160;
-const VISIBLE = 3;
-const EASE_STANDARD: [number, number, number, number] = [0.4, 0, 0.2, 1];
-
-// ─── Tab data ─────────────────────────────────────────────────────────────────
-
-const tabs = [
+const caseStudies = [
   {
-    id: 0,
-    num: "01",
-    title: "Capture service demand",
-    description:
-      "Service requests, referrals, and assessments are captured directly into SognosCare — creating a structured record for every service that needs to be delivered.",
-    image: "/images/Invoice-Capture-Accordion.svg",
-    bgClass: "bg-[#C7DBFF]",
+    company: "Meridian Care Group",
+    industry: "Health & Social Care",
+    metric: "↑ 43%",
+    description: "Increase in care worker utilisation across 18 locations",
   },
   {
-    id: 1,
-    num: "02",
-    title: "Coordinate services",
-    description:
-      "SognosCare orchestrates the full service lifecycle — assigning cases, triggering workflows, and ensuring every service requirement is tracked from intake to delivery.",
-    image: "/images/PO-matching-screen-01.svg",
-    bgClass: "bg-[#DAE5CE]",
+    company: "Summit FM Solutions",
+    industry: "Facilities Management",
+    metric: "−28%",
+    description: "Reduction in missed service visits after scheduling overhaul",
   },
   {
-    id: 2,
-    num: "03",
-    title: "Schedule workforce",
-    description:
-      "SognosRoster automatically matches available, qualified staff to each service — factoring in location, skills, compliance requirements, and real-time availability.",
-    image: "/images/Next-Vendor-Management.svg",
-    bgClass: "bg-[#B5E4F3]",
+    company: "Lakeshore Council",
+    industry: "Local Government",
+    metric: "100%",
+    description: "CQC compliance maintained across 12 consecutive months",
   },
   {
-    id: 3,
-    num: "04",
-    title: "Deliver in the field",
-    description:
-      "Field staff access their schedule and service details in real time. Every visit, task, and interaction is recorded — creating a live picture of delivery.",
-    image: "/images/ani-image-01.png",
-    bgClass: "bg-[#DAE5CE]",
+    company: "Apex Industrial Services",
+    industry: "Industrial Services",
+    metric: "2.4×",
+    description: "Faster scheduling cycle from request to worker allocation",
   },
   {
-    id: 4,
-    num: "05",
-    title: "Record outcomes",
-    description:
-      "Outcomes, notes, and compliance checkpoints are captured at the point of delivery — feeding directly into your reporting, audit trails, and funding claims.",
-    image: "/images/payment-options-1.svg",
-    bgClass: "bg-[#00afbd]",
-  },
-  {
-    id: 5,
-    num: "06",
-    title: "Optimise with AI",
-    description:
-      "AI-powered insights surface patterns across your operations — highlighting inefficiencies, compliance gaps, and workforce utilisation opportunities so you can act before they become problems.",
-    image: "/images/Send-checks.svg", // Using Send-checks.svg here
-    bgClass: "bg-gradient-brand",
+    company: "Clearfield Energy",
+    industry: "Energy & Utilities",
+    metric: "−31%",
+    description: "Reduction in compliance incidents year-on-year",
   },
 ];
 
-// ─── Right panel variants — directional slide ─────────────────────────────────
+export default function HowItWorks() {
+  const x = useMotionValue(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [maxDrag, setMaxDrag] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-const panelVariants: Variants = {
-  enter: (dir: number) => ({
-    y: dir > 0 ? "100%" : "-100%",
-    zIndex: 10,
-  }),
-  center: {
-    y: 0,
-    zIndex: 10,
-    transition: { duration: 0.55, ease: EASE_STANDARD },
-  },
-  exit: () => ({
-    y: 0,
-    zIndex: 0,
-    transition: { duration: 0.55, ease: EASE_STANDARD },
-  }),
-};
+  const getCardWidth = useCallback(() => {
+    if (!trackRef.current) return 626;
+    return (
+      (trackRef.current.scrollWidth - GAP * (caseStudies.length - 1)) /
+      caseStudies.length
+    );
+  }, []);
 
-// ─── Component ────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const update = () => {
+      if (!trackRef.current || !viewportRef.current) return;
+      const trackWidth = trackRef.current.scrollWidth;
+      const containerWidth = viewportRef.current.clientWidth;
+      setMaxDrag(Math.min(0, -(trackWidth - containerWidth)));
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
-export default function HowSognosWorksPreview() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
+  // Derive active index from drag position
+  useMotionValueEvent(x, "change", (latest) => {
+    const cardWidth = getCardWidth();
+    const idx = Math.round(-latest / (cardWidth + GAP));
+    setActiveIndex(Math.max(0, Math.min(idx, caseStudies.length - 1)));
+  });
 
-  const handleTabClick = (idx: number) => {
-    setDirection(idx > activeTab ? 1 : -1);
-    setActiveTab(idx);
+  // Play the active slide's video; pause all others
+  useEffect(() => {
+    videoRefs.current.forEach((video, i) => {
+      if (!video) return;
+      if (i === activeIndex) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, [activeIndex]);
+
+  const step = (dir: 1 | -1) => {
+    const cardWidth = getCardWidth();
+    const next = x.get() - dir * (cardWidth + GAP);
+    animate(x, Math.max(Math.min(next, 0), maxDrag), {
+      type: "spring",
+      damping: 30,
+      stiffness: 300,
+    });
   };
 
-  const windowHeight = TAB_HEIGHT * VISIBLE;
-  const visibleStart = Math.min(activeTab, tabs.length - 3);
-  const targetY = -visibleStart * TAB_HEIGHT;
-  const slideTransition = { duration: 0.55, ease: EASE_STANDARD };
-
   return (
-    <section
-      aria-label="How Sognos works — system overview"
-      className="border border-sognos-border-subtle"
-    >
-      {/* Heading row */}
-      <div className="border-b border-sognos-border-subtle">
-        <div className="mx-auto max-w-7xl border-x border-dashed border-sognos-border-subtle px-5 pt-24 pb-14">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between">
-            <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
-              One platform.
-              <br />
-              Every part of your operation.
-            </h2>
-            <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
-              Sognos connects service demand, workforce scheduling, and
-              compliance into a single operational loop. Powered by AI,
-              Microsoft Dynamics 365.
+    <section aria-label="Case studies" className="py-20 overflow-hidden">
+      {/* Header */}
+      <div className="mx-auto max-w-[1320px] px-6 mb-10">
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="text-sm font-medium text-neutral-425 mb-3 uppercase tracking-widest">
+              Case Studies
             </p>
+            <h2 className="text-4xl font-medium leading-tight">
+              Outcomes in the field
+            </h2>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-2">
+            <button
+              onClick={() => step(-1)}
+              aria-label="Previous slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <button
+              onClick={() => step(1)}
+              aria-label="Next slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 hover:border-neutral-700 transition-colors"
+            >
+              <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="mx-auto max-w-7xl border-x border-dashed border-sognos-border-accent">
+      {/* Slider — starts at container left, 2nd slide overflows right of viewport */}
+      <div ref={viewportRef} className="mx-auto max-w-[1320px] px-6">
         <motion.div
-          layoutRoot
-          className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-start"
+          ref={trackRef}
+          style={{ x, gap: GAP }}
+          drag="x"
+          dragConstraints={{ left: maxDrag, right: 0 }}
+          dragElastic={0.05}
+          className="flex cursor-grab active:cursor-grabbing"
         >
-          {/* Left — 3-tab content window */}
-          <div
-            className="relative flex flex-col border-l-[3px] border-transparent border-x-0 overflow-hidden"
-            style={{ height: windowHeight }}
-          >
-            <motion.div
-              className="absolute inset-x-0 top-0 side-stack"
-              animate={{ y: targetY }}
-              transition={slideTransition}
-              style={{ willChange: "transform" }}
+          {caseStudies.map((item, i) => (
+            <div
+              key={i}
+              className="relative flex-shrink-0 min-w-[82vw] lg:min-w-[626px] h-[425px] rounded-xl overflow-hidden"
             >
-              {tabs.map((tab) => {
-                const isActive = tab.id === activeTab;
+              {/* Video background */}
+              <video
+                ref={(el) => {
+                  videoRefs.current[i] = el;
+                }}
+                src={VIDEO_SRC}
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              />
 
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabClick(tab.id)}
-                    style={{ height: TAB_HEIGHT }}
-                    className={[
-                      "relative w-full text-left px-6",
-                      "flex flex-col justify-center",
-                      isActive
-                        ? "bg-sognos-bg-sunken card"
-                        : "bg-transparent hover:bg-sognos-bg-elevated",
-                    ].join(" ")}
-                  >
-                    {/* Progress bar — remounts on each new active tab */}
-                    {isActive && (
-                      <motion.div
-                        key={activeTab}
-                        className="absolute -left-[5px] top-0 w-[7px] z-999 bg-[var(--sognos-border-strong)]"
-                        style={{
-                          height: "100%",
-                          transformOrigin: "top",
-                          willChange: "transform",
-                        }}
-                        initial={{ scaleY: 0 }}
-                        animate={{ scaleY: 1 }}
-                        transition={{ duration: 0.38, ease: EASE_STANDARD }}
-                      />
-                    )}
+              {/* Persistent dark overlay — ensures top text is always readable */}
+              <div className="absolute inset-0 bg-black/45" />
 
-                    {/* <span
-                      className="block text-xs font-mono mb-1"
-                      style={{ opacity: isActive ? 1 : 0.4 }}
-                    >
-                      {tab.num}
-                    </span> */}
+              {/* Content */}
+              <div className="relative z-10 h-full flex flex-col justify-between p-8">
+                {/* Top: industry + company on video */}
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-widest text-white/60">
+                    {item.industry}
+                  </p>
+                  <p className="text-sm font-medium text-white/80 mt-1">
+                    {item.company}
+                  </p>
+                </div>
 
-                    <h5
-                      className="block font-heading text-[22px]"
-                      style={{
-                        opacity: isActive ? 1 : 0.4,
-                        color: isActive
-                          ? "var(--sognos-text-heading)"
-                          : "var(--sognos-text-muted)",
-                      }}
-                    >
-                      {tab.title}
-                    </h5>
-
-                    {/* Description unmasking from bottom to top */}
-                    <AnimatePresence initial={false}>
-                      {isActive && (
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: "auto" }}
-                          exit={{ height: 0 }}
-                          transition={{ duration: 0.38, ease: EASE_STANDARD }}
-                          style={{ overflow: "hidden", willChange: "height" }}
-                        >
-                          <div className="pt-2 flex flex-col justify-end min-h-full">
-                            <span className="block desc font-heading text-sm text-slate-600 leading-tigher">
-                              {tab.description}
-                            </span>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          {/* Right — directional slide panel, sticky to match left height */}
-          <div
-            className={`relative overflow-hidden transition-colors duration-500 ${tabs[activeTab].bgClass}`}
-            style={{ height: windowHeight, position: "sticky", top: 0 }}
-          >
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={activeTab}
-                custom={direction}
-                variants={panelVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                data-panel={activeTab}
-                className="absolute inset-0 w-full h-full flex items-center justify-center p-0"
-                style={{ willChange: "transform" }}
-              >
-                <img
-                  src={tabs[activeTab].image}
-                  alt={tabs[activeTab].title}
-                  className="w-full h-full object-contain"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                {/* Bottom: white stat container */}
+                <div
+                  style={{
+                    background: "white",
+                    borderRadius: 8,
+                    padding: "35px 20px",
+                  }}
+                >
+                  <p className="text-5xl font-semibold text-neutral-900">
+                    {item.metric}
+                  </p>
+                  <p className="text-base text-neutral-500 mt-2 leading-snug">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

@@ -30,8 +30,7 @@ export function OrbitingCircles({
     <>
       {items.map((child, i) => {
         const angle = (360 / count) * i;
-        // Stagger delay so icons spread evenly around the orbit
-        const delay = -(animDuration / count) * i;
+        const delay = 0;
 
         return (
           <div

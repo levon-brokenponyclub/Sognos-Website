@@ -89,7 +89,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     Footer.tsx                     ✅ (data-driven from constants.ts)
 
   /sections
-    Hero.tsx                       ✅
+    Hero.tsx                       ✅ (full-width brand bg, FlowCanvas, single-column layout)
     LogoStrip.tsx                  ✅
     HowSognosWorksPreview.tsx      ✅ (includes SystemFlowDiagram)
     ProductSection.tsx             ✅
@@ -125,8 +125,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 <LogoStrip />
 <HowSognosWorksPreview />
 <ProductSection />
-<HowItWorks />
 <SolutionsSection />
+<HowItWorks />
 <IndustrySection />
 <ProofSection />
 <CTASection />

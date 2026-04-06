@@ -42,8 +42,8 @@ Current homepage composition:
 <LogoStrip />
 <HowSognosWorksPreview />
 <ProductSection />
-<HowItWorks />
 <SolutionsSection />
+<HowItWorks />
 <IndustrySection />
 <ProofSection />
 <CTASection />

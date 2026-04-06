@@ -15,8 +15,8 @@ export default function HomePage() {
       <LogoStrip />
       <HowSognosWorksPreview />
       <ProductSection />
-      <HowItWorks />
       <SolutionsSection />
+      <HowItWorks />
       <IndustrySection />
       <ProofSection />
       <CTASection />
