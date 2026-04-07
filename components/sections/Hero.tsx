@@ -59,12 +59,12 @@ export default function Hero({
             <div className="flex-1 p-6 flex flex-col items-center justify-center gap-6 lg:items-start lg:justify-end lg:p-8">
 
               {/* Stat */}
-              <div>
+              <div className="hidden lg:block">
                 <p className="text-3xl font-heading font-semibold tracking-tight text-white">1,100+</p>
                 <p className="text-sm text-white/50 mt-1 leading-snug">workers coordinated daily across active deployments</p>
               </div>
 
-              <div className="h-px bg-white/10" />
+              <div className="hidden lg:block h-px bg-white/10" />
 
               {/* Avatars + rating */}
               <div className="flex items-center divide-x divide-white/15">
