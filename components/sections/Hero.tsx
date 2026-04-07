@@ -22,10 +22,10 @@ export default function Hero({
   secondaryCTA = { name: "View platform", href: "#" },
 }: HeroProps) {
   return (
-    <section className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white h-[90vh]">
+    <section className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white min-h-[80vh] lg:h-[90vh]">
       <FlowCanvas />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-2 py-30 border-x border-white/10 border-dashed sm:px-12 lg:px-6 lg:py-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-16 border-x border-white/10 border-dashed sm:px-8 sm:py-20 lg:px-6 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-12 lg:gap-0 items-stretch flex-1">
           {/* Col 1 — headline, subtext, CTAs */}
           <div className="flex flex-col justify-center">
@@ -53,8 +53,8 @@ export default function Hero({
             </div>
           </div>
 
-          {/* Col 2 — two equal-height rows */}
-          <div className="flex flex-col gap-0">
+          {/* Col 2 — two equal-height rows (hidden on mobile) */}
+          <div className="hidden lg:flex flex-col gap-0">
             {/* Row 1 */}
             <div className="flex-1 p-8 flex flex-col justify-between hero-standblock">
               {/*<h3 className="text-lg font-semibold text-white">
@@ -66,15 +66,52 @@ export default function Hero({
               </p>*/}
             </div>
 
-            {/* Row 2 */}
-            <div className="flex-1 p-8 flex flex-col justify-end">
-              <h3 className="text-lg font-semibold text-white">
-                Placeholder heading two
-              </h3>
-              <p className="mt-3 text-sm text-white/60">
-                Supporting copy for this card. Describe the key benefit or
-                feature in one or two concise sentences.
-              </p>
+            {/* Row 2 — social proof */}
+            <div className="flex-1 p-8 flex flex-col justify-end gap-6">
+
+              {/* Stat */}
+              <div>
+                <p className="text-3xl font-heading font-semibold tracking-tight text-white">1,100+</p>
+                <p className="text-sm text-white/50 mt-1 leading-snug">workers coordinated daily across active deployments</p>
+              </div>
+
+              <div className="h-px bg-white/10" />
+
+              {/* Avatars + rating */}
+              <div className="flex items-center divide-x divide-white/15">
+                {/* Avatar stack */}
+                <div className="flex -space-x-2.5 pr-4">
+                  {[
+                    "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
+                    "https://randomuser.me/api/portraits/men/75.jpg",
+                  ].map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt=""
+                      aria-hidden="true"
+                      className="w-9 h-9 rounded-full border-2 border-white/20 object-cover"
+                      style={{ zIndex: i + 1 }}
+                    />
+                  ))}
+                </div>
+
+                {/* Stars + label */}
+                <div className="pl-4">
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FACC15" aria-hidden="true">
+                        <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                      </svg>
+                    ))}
+                    <span className="ml-1.5 text-sm font-semibold text-white">4.9</span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-white/50">Rated by operations leaders</p>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
