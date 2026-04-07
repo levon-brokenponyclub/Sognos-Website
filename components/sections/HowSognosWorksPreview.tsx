@@ -55,18 +55,40 @@ export default function HowSognosWorksPreview() {
   return (
     <section className="w-full border-b border-t border-sognos-border-subtle">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
-        {/* Heading row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+        {/* Centered heading + logo row */}
+        <div className="text-center pb-10">
           <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             One platform.
             <br />
             From referral to outcome.
           </h2>
-          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+          <p className="mt-4 font-heading font-medium text-neutral-500 max-w-xl mx-auto leading-relaxed">
             Sognos connects service demand, workforce scheduling, and compliance
-            into a single operational loop. Powered by AI, Microsoft Dynamics
-            365.
+            into a single operational loop. Powered by AI, Microsoft Dynamics 365.
           </p>
+
+          {/* Platform logos */}
+          <div className="flex justify-center mt-8">
+            <div className="inline-flex items-center gap-5 rounded-full bg-neutral-900 px-6 py-3">
+              <img
+                src="/logos/Dynamics365.svg"
+                alt="Microsoft Dynamics 365"
+                className="h-6 w-auto"
+              />
+              <div className="h-5 w-px bg-white/20" />
+              <img
+                src="/logos/Sognos-Solutions-Solutions-Partner.webp"
+                alt="Microsoft Solutions Partner"
+                className="h-6 w-auto"
+              />
+              <div className="h-5 w-px bg-white/20" />
+              <img
+                src="/logos/copilot-logo.png"
+                alt="Microsoft Copilot"
+                className="h-6 w-auto"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Left tabs + right content */}
