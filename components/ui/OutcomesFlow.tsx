@@ -3,92 +3,72 @@
 import { useEffect, useState } from "react";
 import { motion, animate } from "framer-motion";
 
-// ── Animated bar chart icon ────────────────────────────────────────────────
-// 4 bars grow from baseline upward with staggered delay
+const E = [0.22, 1, 0.36, 1] as const;
 
-const BAR_HEIGHTS = [10, 18, 13, 22]; // px, within 24px viewBox height
-
-function BarIcon({ trigger }: { trigger: boolean }) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      {BAR_HEIGHTS.map((h, i) => (
-        <motion.rect
-          key={i}
-          x={i * 5.5 + 0.5}
-          width={4}
-          rx={1.5}
-          fill="currentColor"
-          initial={{ height: 0, y: 22 }}
-          animate={trigger ? { height: h, y: 22 - h } : { height: 0, y: 22 }}
-          transition={{
-            duration: 0.55,
-            delay: 0.3 + i * 0.08,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        />
-      ))}
-    </svg>
-  );
-}
-
-// ── Count-up hook ──────────────────────────────────────────────────────────
+// ─── Count-up ─────────────────────────────────────────────────────────────────
 
 function useCountUp(
   to: number,
-  opts: { duration?: number; decimals?: number; trigger: boolean }
+  opts: { duration?: number; decimals?: number; trigger: boolean; delay?: number }
 ): string {
-  const { duration = 1.8, decimals = 0, trigger } = opts;
+  const { duration = 1.8, decimals = 0, trigger, delay = 0 } = opts;
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
     if (!trigger) return;
-    const ctrl = animate(0, to, {
-      duration,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate(v) {
-        setDisplay(
-          decimals > 0
-            ? v.toFixed(decimals)
-            : Math.round(v).toLocaleString()
-        );
-      },
-    });
-    return ctrl.stop;
-  }, [trigger, to, duration, decimals]);
+    let ctrl: ReturnType<typeof animate> | null = null;
+    const id = setTimeout(() => {
+      ctrl = animate(0, to, {
+        duration,
+        ease: [0.22, 1, 0.36, 1],
+        onUpdate(v) {
+          setDisplay(
+            decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString()
+          );
+        },
+      });
+    }, delay * 1000);
+    return () => {
+      clearTimeout(id);
+      ctrl?.stop();
+    };
+  }, [trigger, to, duration, decimals, delay]);
 
   return display;
 }
 
-// ── Sparkline bar chart ────────────────────────────────────────────────────
-// Mini chart rendered inside the card body
+// ─── Sparkline bars ───────────────────────────────────────────────────────────
 
-const SPARK = [38, 52, 44, 61, 55, 73, 68, 85, 79, 92]; // % of max
+const SPARK = [42, 55, 48, 63, 57, 72, 66, 81, 78, 94];
 
-function SparkLine({ trigger }: { trigger: boolean }) {
-  const W = 200;
-  const H = 48;
-  const barW = 14;
-  const gap = (W - SPARK.length * barW) / (SPARK.length - 1);
-
+function SparkBars({
+  trigger,
+  accent,
+  w = 140,
+  h = 44,
+}: {
+  trigger: boolean;
+  accent: string;
+  w?: number;
+  h?: number;
+}) {
+  const barW = Math.floor((w - (SPARK.length - 1) * 4) / SPARK.length);
+  const gap  = 4;
   return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+    <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden="true">
       {SPARK.map((v, i) => {
-        const h = (v / 100) * H;
-        const x = i * (barW + gap);
+        const bh = (v / 100) * h;
+        const x  = i * (barW + gap);
         return (
           <motion.rect
             key={i}
             x={x}
             width={barW}
-            rx={3}
-            fill={i === SPARK.length - 1 ? "#4f46e5" : "#e0e7ff"}
-            initial={{ height: 0, y: H }}
-            animate={trigger ? { height: h, y: H - h } : { height: 0, y: H }}
-            transition={{
-              duration: 0.6,
-              delay: 0.5 + i * 0.05,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            rx={2}
+            fill={i === SPARK.length - 1 ? accent : accent + "33"}
+            initial={{ height: 0, y: h }}
+            animate={trigger ? { height: bh, y: h - bh } : { height: 0, y: h }}
+            transition={{ duration: 0.6, delay: 0.4 + i * 0.04, ease: E }}
           />
         );
       })}
@@ -96,92 +76,182 @@ function SparkLine({ trigger }: { trigger: boolean }) {
   );
 }
 
-// ── Dashboard card ─────────────────────────────────────────────────────────
+// ─── Compliance ring ──────────────────────────────────────────────────────────
 
-function DashboardCard({ trigger }: { trigger: boolean }) {
-  const mainCount  = useCountUp(8420, { duration: 2.0, trigger });
-  const trendCount = useCountUp(43,   { duration: 1.4, trigger });
-  const sub1Count  = useCountUp(847,  { duration: 1.8, trigger });
-  const sub2Count  = useCountUp(124,  { duration: 1.6, trigger });
+function ComplianceRing({ trigger }: { trigger: boolean }) {
+  const r    = 28;
+  const circ = 2 * Math.PI * r;
+  return (
+    <div className="relative flex h-[68px] w-[68px] shrink-0 items-center justify-center">
+      <svg width="68" height="68" viewBox="0 0 68 68" fill="none" className="-rotate-90">
+        <circle cx="34" cy="34" r={r} stroke="#e5e7eb" strokeWidth="5" />
+        <motion.circle
+          cx="34"
+          cy="34"
+          r={r}
+          stroke="#10b981"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeDasharray={circ}
+          initial={{ strokeDashoffset: circ }}
+          animate={trigger ? { strokeDashoffset: circ * 0.02 } : { strokeDashoffset: circ }}
+          transition={{ duration: 1.4, delay: 0.3, ease: E }}
+        />
+      </svg>
+      <span className="absolute text-[13px] font-bold text-neutral-900">98%</span>
+    </div>
+  );
+}
+
+// ─── Left tile — Utilisation (full height) ────────────────────────────────────
+
+function UtilisationTile({ trigger }: { trigger: boolean }) {
+  const hrs     = useCountUp(8420, { duration: 1.8, trigger, delay: 0.2 });
+  const trend   = useCountUp(43,   { duration: 1.4, trigger, delay: 0.3 });
+  const plans   = useCountUp(847,  { duration: 1.6, trigger, delay: 0.4 });
+  const workers = useCountUp(124,  { duration: 1.5, trigger, delay: 0.45 });
 
   return (
-    <div className="w-full max-w-[360px] rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
 
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5 text-neutral-700">
-          <BarIcon trigger={trigger} />
-          <span className="text-sm font-semibold text-neutral-800 tracking-tight">
-            Care Delivery
-          </span>
-        </div>
-        <button
-          className="flex h-6 w-6 items-center justify-center rounded-md text-neutral-400 hover:text-neutral-600 transition-colors"
-          aria-label="Options"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-            <circle cx="2"  cy="7" r="1.4" />
-            <circle cx="7"  cy="7" r="1.4" />
-            <circle cx="12" cy="7" r="1.4" />
-          </svg>
-        </button>
-      </div>
+      <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+        Utilisation
+      </span>
 
-      {/* Main counter */}
-      <div className="mt-5">
-        <div className="flex items-baseline gap-2">
-          <span className="text-[2.5rem] font-bold leading-none tracking-tight text-neutral-900 tabular-nums">
-            {mainCount}
+      {/* Main stat */}
+      <div>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-4xl font-bold leading-none tracking-tight text-neutral-900 tabular-nums">
+            {hrs}
           </span>
-          <span className="text-sm font-medium text-neutral-400">HRS</span>
+          <span className="text-xs font-medium text-neutral-400">HRS</span>
         </div>
-
         <div className="mt-2.5 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-            <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+            <svg width="7" height="7" viewBox="0 0 8 8" fill="none" aria-hidden="true">
               <path d="M4 1L7.5 6.5H0.5L4 1Z" fill="currentColor" />
             </svg>
-            +{trendCount}%
+            +{trend}%
           </span>
-          <span className="text-sm text-neutral-400">increased from last quarter</span>
+          <span className="text-[10px] text-neutral-400">vs last quarter</span>
         </div>
       </div>
 
-      {/* Sparkline chart */}
-      <div className="mt-5">
-        <SparkLine trigger={trigger} />
+      {/* Sparkbars — fills available width */}
+      <div className="w-full">
+        <SparkBars trigger={trigger} accent="#4f46e5" w={220} h={48} />
       </div>
 
       {/* Metric rows */}
-      <div className="mt-4 space-y-2">
-        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-3">
-          <span className="text-sm text-neutral-500">Active Care Plans:</span>
-          <span className="text-sm font-semibold tabular-nums text-neutral-900">
-            {sub1Count}
-          </span>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
+          <span className="text-[11px] text-neutral-500">Active Care Plans</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">{plans}</span>
         </div>
-        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-3">
-          <span className="text-sm text-neutral-500">Workers Scheduled:</span>
-          <span className="text-sm font-semibold tabular-nums text-neutral-900">
-            {sub2Count}
-          </span>
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
+          <span className="text-[11px] text-neutral-500">Workers Scheduled</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">{workers}</span>
         </div>
       </div>
     </div>
   );
 }
 
-// ── OutcomesFlow ───────────────────────────────────────────────────────────
+// ─── Right top — Compliance ───────────────────────────────────────────────────
+
+function ComplianceTile({ trigger }: { trigger: boolean }) {
+  return (
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+      <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+        Compliance
+      </span>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-2xl font-bold leading-none tracking-tight text-neutral-900">
+            0
+          </p>
+          <p className="mt-1.5 text-[10px] leading-relaxed text-neutral-400">
+            incidents this<br />quarter
+          </p>
+        </div>
+        <ComplianceRing trigger={trigger} />
+      </div>
+      <div className="rounded-xl bg-emerald-50 px-3.5 py-2.5">
+        <span className="text-[11px] font-semibold text-emerald-700">
+          12 consecutive months CQC clean
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Right bottom — Cost & Coverage ──────────────────────────────────────────
+
+function CostTile({ trigger }: { trigger: boolean }) {
+  const saving  = useCountUp(31,  { duration: 1.5, trigger, delay: 0.5 });
+  const workers = useCountUp(124, { duration: 1.6, trigger, delay: 0.4 });
+  const visits  = useCountUp(99,  { duration: 1.4, trigger, delay: 0.45 });
+
+  return (
+    <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+      <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+        Cost & Coverage
+      </span>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
+          <span className="text-[11px] text-neutral-500">Cost reduction</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">−{saving}%</span>
+        </div>
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
+          <span className="text-[11px] text-neutral-500">Workers active</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">{workers}</span>
+        </div>
+        <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
+          <span className="text-[11px] text-neutral-500">Visit completion</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">{visits}%</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── OutcomesFlow ─────────────────────────────────────────────────────────────
 
 export default function OutcomesFlow({ trigger = false }: { trigger?: boolean }) {
   return (
-    <motion.div
-      className="flex items-center justify-center py-4"
-      initial={{ opacity: 0, y: 24 }}
-      animate={trigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <DashboardCard trigger={trigger} />
-    </motion.div>
+    <div className="flex w-full h-full items-stretch gap-4">
+
+      {/* Left column — full height */}
+      <motion.div
+        className="flex flex-[3] flex-col"
+        initial={{ opacity: 0, y: 16 }}
+        animate={trigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+        transition={{ duration: 0.45, delay: 0.1, ease: E }}
+      >
+        <UtilisationTile trigger={trigger} />
+      </motion.div>
+
+      {/* Right column — two stacked tiles */}
+      <div className="flex flex-[2] flex-col gap-4">
+        <motion.div
+          className="flex flex-1 flex-col"
+          initial={{ opacity: 0, y: 16 }}
+          animate={trigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.45, delay: 0.2, ease: E }}
+        >
+          <ComplianceTile trigger={trigger} />
+        </motion.div>
+        <motion.div
+          className="flex flex-1 flex-col"
+          initial={{ opacity: 0, y: 16 }}
+          animate={trigger ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.45, delay: 0.3, ease: E }}
+        >
+          <CostTile trigger={trigger} />
+        </motion.div>
+      </div>
+
+    </div>
   );
 }

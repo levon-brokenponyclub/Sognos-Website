@@ -114,7 +114,7 @@ export default function HowSognosWorksPreview() {
           </div>
 
           {/* Right: Active diagram */}
-          <div className="flex flex-1 min-h-[400px] items-center justify-center overflow-hidden bg-neutral-50/40 p-8">
+          <div className="flex flex-1 h-[445px] items-center justify-center overflow-hidden bg-neutral-50/40 p-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
@@ -122,7 +122,7 @@ export default function HowSognosWorksPreview() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                className="w-full flex items-center justify-center"
+                className="w-full h-full flex items-center justify-center"
               >
                 {active === 0 && <ProcessFlow trigger={visited.has(0)} />}
                 {active === 1 && <Workforce trigger={visited.has(1)} />}

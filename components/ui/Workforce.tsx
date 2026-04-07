@@ -1,135 +1,383 @@
 "use client";
 
-import { motion } from "framer-motion";
-import HubNode from "@/components/ui/HubNode";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, animate as fmAnimate } from "framer-motion";
 
-const VB_W = 700;
-const VB_H = 320;
-const HUB_X = 350;
-const HUB_Y = 56;
-const HUB_HALF = 32;
-const MS_X  = 350;
-const MS_Y  = 220;
-const HALF  = 24;
-const STEP  = 128;
-const PA_NL_X = MS_X - STEP;
-const PA_FL_X = MS_X - STEP * 2;
-const PA_NR_X = MS_X + STEP;
-const PA_FR_X = MS_X + STEP * 2;
-const PA_Y    = MS_Y;
+// ─── Layout constants ─────────────────────────────────────────────────────────
 
-const L1_X1 = MS_X    - HALF;
-const L1_X2 = PA_NL_X + HALF;
-const L2_X1 = PA_NL_X - HALF;
-const L2_X2 = PA_FL_X + HALF;
-const R1_X1 = MS_X    + HALF;
-const R1_X2 = PA_NR_X - HALF;
-const R2_X1 = PA_NR_X + HALF;
-const R2_X2 = PA_FR_X - HALF;
-const VERT_Y1 = HUB_Y + HUB_HALF;
-const VERT_Y2 = MS_Y  - HALF;
+const VB_W     = 640;
+const VB_H     = 360;
+const WORKER_W = 178;
+const JOB_W    = 172;
+const JOB_X    = VB_W - JOB_W;
+const MID_X    = Math.round((WORKER_W + JOB_X) / 2);
 
 const E = [0.22, 1, 0.36, 1] as const;
+
+type Phase = "idle" | "active" | "matching" | "matched";
 
 function pct(val: number, max: number) {
   return `${((val / max) * 100).toFixed(3)}%`;
 }
 
-function IconNode({ src, alt }: { src: string; alt: string }) {
+// Line finish times: delay(0.58 + i*0.16) + draw(0.5s)
+// Rows stagger 160ms apart; matched fires 1800ms after matching (slower transition)
+const MATCHING_DELAYS = [1080, 1240, 1400];
+const MATCHED_DELAYS  = [2880, 3040, 3200];
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const ITEMS = [
+  {
+    id:       "round",
+    worker:   { name: "Emma Clarke",  role: "Care Worker",    avatar: "/images/avatar-emma.png",  accent: "#1E40AF" },
+    job:      { label: "Morning Round",    detail: "Meadowbrook — 08:00" },
+    matchPct: 97,
+    y:        60,
+  },
+  {
+    id:       "visit",
+    worker:   { name: "James Obi",    role: "Support Worker", avatar: "/images/avatar-james.png", accent: "#065F46" },
+    job:      { label: "Home Visit",       detail: "Thornton St — 09:30" },
+    matchPct: 94,
+    y:        180,
+  },
+  {
+    id:       "meds",
+    worker:   { name: "Priya Menon",  role: "Nurse",          avatar: "/images/avatar-priya.png", accent: "#6B21A8" },
+    job:      { label: "Medication Admin", detail: "St Luke's — 10:00" },
+    matchPct: 99,
+    y:        300,
+  },
+] as const;
+
+// ─── Count-up ─────────────────────────────────────────────────────────────────
+
+function useCountUp(to: number, trigger: boolean, duration = 1.3): string {
+  const [display, setDisplay] = useState("0");
+
+  useEffect(() => {
+    if (!trigger) return;
+    const ctrl = fmAnimate(0, to, {
+      duration,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate(v) {
+        setDisplay(String(Math.round(v)));
+      },
+    });
+    return ctrl.stop;
+  }, [trigger, to, duration]);
+
+  return display;
+}
+
+// ─── Worker avatar ────────────────────────────────────────────────────────────
+
+function WorkerAvatar({
+  avatar,
+  name,
+  phase,
+}: {
+  avatar: string;
+  name: string;
+  phase: Phase;
+}) {
+  const matched = phase === "matched";
   return (
-    <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-200 bg-white shadow-sm">
-      <img src={src} alt={alt} width={28} height={28} />
+    <div className="relative shrink-0">
+      <span
+        className={`flex h-10 w-10 overflow-hidden rounded-full ring-2 ring-offset-2 ring-offset-white transition-all duration-500 ${
+          matched ? "ring-teal-600" : "ring-yellow-400"
+        }`}
+      >
+        <img
+          src={avatar}
+          alt={name}
+          className="aspect-square h-full w-full object-cover"
+        />
+      </span>
+      {/* Status indicator — top-right */}
+      <span
+        className={`absolute inline-flex h-4 w-4 items-center justify-center rounded-full transition-all duration-500 ${
+          matched ? "bg-teal-600" : "bg-yellow-400"
+        }`}
+        style={{ top: "-4px", right: "-4px" }}
+      >
+        {matched ? (
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        ) : (
+          <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 1.5" />
+          </svg>
+        )}
+      </span>
     </div>
   );
 }
 
-function HorizBeam({ id, y, dir, dur, begin }: { id: string; y: number; dir: "ltr" | "rtl"; dur: string; begin: string }) {
-  const [x1a, x1b] = dir === "rtl" ? ["500", "-50"] : ["150", "750"];
-  const [x2a, x2b] = dir === "rtl" ? ["550", "0"]   : ["100", "700"];
+// ─── Match ring (circular progress) ──────────────────────────────────────────
+
+function MatchRing({
+  matchPct,
+  phase,
+}: {
+  matchPct: number;
+  phase: Phase;
+}) {
+  const active = phase === "matching" || phase === "matched";
+  const r      = 29;
+  const circ   = 2 * Math.PI * r;
+  const count  = useCountUp(matchPct, active);
+
   return (
-    <linearGradient id={id} gradientUnits="userSpaceOnUse" x1={x1a} x2={x2a} y1={y} y2={y}>
-      <animate attributeName="x1" values={`${x1a};${x1b};${x1a}`} dur={dur} begin={begin} repeatCount="indefinite" calcMode="linear" />
-      <animate attributeName="x2" values={`${x2a};${x2b};${x2a}`} dur={dur} begin={begin} repeatCount="indefinite" calcMode="linear" />
-      <stop offset="0%"   stopColor="#3b82f6" stopOpacity="0" />
-      <stop offset="40%"  stopColor="#3b82f6" />
-      <stop offset="60%"  stopColor="#3b82f6" />
-      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-    </linearGradient>
+    <motion.div
+      className="relative z-10 flex items-center justify-center rounded-full bg-white"
+      style={{ width: 75, height: 75 }}
+      initial={{ opacity: 0, scale: 0.7 }}
+      animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+      transition={{ duration: 0.25, ease: E }}
+    >
+      <svg width="75" height="75" viewBox="0 0 75 75" fill="none" className="-rotate-90">
+        <circle cx="37.5" cy="37.5" r={r} stroke="#e5e7eb" strokeWidth="4" />
+        <motion.circle
+          cx="37.5"
+          cy="37.5"
+          r={r}
+          stroke="#10b981"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeDasharray={circ}
+          initial={{ strokeDashoffset: circ }}
+          animate={
+            active
+              ? { strokeDashoffset: circ * (1 - matchPct / 100) }
+              : { strokeDashoffset: circ }
+          }
+          transition={{ duration: 1.3, ease: E }}
+        />
+      </svg>
+      <span className="absolute text-[16px] font-bold tabular-nums text-neutral-900">
+        {active ? count : "0"}%
+      </span>
+    </motion.div>
   );
 }
 
-// Stagger delays: hub → MS → inner pair → outer pair → SVG
-const NODE_ANIMS = [
-  { key: "hub",   left: pct(HUB_X, VB_W), top: pct(HUB_Y, VB_H), delay: 0.08,  initial: { opacity: 0, scale: 0.8  }, animate: { opacity: 1, scale: 1  } },
-  { key: "ms",    left: pct(MS_X,  VB_W), top: pct(MS_Y,  VB_H), delay: 0.24,  initial: { opacity: 0, y: 10        }, animate: { opacity: 1, y: 0        } },
-  { key: "pa_nl", left: pct(PA_NL_X, VB_W), top: pct(PA_Y, VB_H), delay: 0.38, initial: { opacity: 0, x: 10        }, animate: { opacity: 1, x: 0        } },
-  { key: "pa_nr", left: pct(PA_NR_X, VB_W), top: pct(PA_Y, VB_H), delay: 0.38, initial: { opacity: 0, x: -10       }, animate: { opacity: 1, x: 0        } },
-  { key: "pa_fl", left: pct(PA_FL_X, VB_W), top: pct(PA_Y, VB_H), delay: 0.50, initial: { opacity: 0, x: 10        }, animate: { opacity: 1, x: 0        } },
-  { key: "pa_fr", left: pct(PA_FR_X, VB_W), top: pct(PA_Y, VB_H), delay: 0.50, initial: { opacity: 0, x: -10       }, animate: { opacity: 1, x: 0        } },
-];
+// ─── Job badge (3 states) ─────────────────────────────────────────────────────
 
-const NODE_CONTENT: Record<string, React.ReactNode> = {
-  hub:   <HubNode />,
-  ms:    <IconNode src="/logos/Microsoft-icon-logo.svg"    alt="Microsoft" />,
-  pa_nl: <IconNode src="/logos/PowerPages_scalable.svg"    alt="Power Pages" />,
-  pa_nr: <IconNode src="/logos/PowerApps_scalable.svg"     alt="Power Apps" />,
-  pa_fl: <IconNode src="/logos/PowerPlatform_scalable.svg" alt="Power Platform" />,
-  pa_fr: <IconNode src="/logos/PowerAutomate_scalable.svg" alt="Power Automate" />,
-};
+function JobBadge({ phase }: { phase: Phase }) {
+  return (
+    <AnimatePresence mode="wait">
+      {phase === "active" && (
+        <motion.span
+          key="waiting"
+          className="flex-shrink-0 rounded border border-neutral-300 bg-neutral-50 px-2 py-0.5 text-[11px] font-semibold text-neutral-500"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.85 }}
+          transition={{ duration: 0.2, ease: E }}
+        >
+          Waiting
+        </motion.span>
+      )}
+      {phase === "matching" && (
+        <motion.span
+          key="matching"
+          className="flex-shrink-0 rounded border border-yellow-400 bg-yellow-50 px-2 py-0.5 text-[11px] font-semibold text-yellow-600"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.85 }}
+          transition={{ duration: 0.2, ease: E }}
+        >
+          Matching
+        </motion.span>
+      )}
+      {phase === "matched" && (
+        <motion.span
+          key="matched"
+          className="flex-shrink-0 rounded border border-emerald-500 bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-600"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.85 }}
+          transition={{ duration: 0.2, ease: E }}
+        >
+          Matched
+        </motion.span>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// ─── Worker card ──────────────────────────────────────────────────────────────
+
+function WorkerCard({
+  item,
+  index,
+  trigger,
+  phase,
+}: {
+  item: (typeof ITEMS)[number];
+  index: number;
+  trigger: boolean;
+  phase: Phase;
+}) {
+  return (
+    <motion.div
+      className="absolute"
+      style={{ left: 0, top: pct(item.y, VB_H), translate: "0 -50%" }}
+      initial={{ opacity: 0, x: -18 }}
+      animate={trigger ? { opacity: 1, x: 0 } : { opacity: 0, x: -18 }}
+      transition={{ duration: 0.45, delay: 0.08 + index * 0.18, ease: E }}
+    >
+      <div
+        className="flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-3 py-2.5 shadow-sm"
+        style={{ width: WORKER_W }}
+      >
+        <WorkerAvatar avatar={item.worker.avatar} name={item.worker.name} phase={phase} />
+        <div className="flex min-w-0 flex-col gap-2">
+          <span className="text-[13px] font-semibold text-neutral-900 leading-none truncate">
+            {item.worker.name}
+          </span>
+          <span className="text-[11px] text-neutral-600 leading-none truncate">
+            {item.worker.role}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Job card ─────────────────────────────────────────────────────────────────
+
+function JobCard({
+  item,
+  index,
+  trigger,
+  phase,
+}: {
+  item: (typeof ITEMS)[number];
+  index: number;
+  trigger: boolean;
+  phase: Phase;
+}) {
+  return (
+    <motion.div
+      className="absolute"
+      style={{ left: pct(JOB_X, VB_W), top: pct(item.y, VB_H), translate: "0 -50%" }}
+      initial={{ opacity: 0, x: 18 }}
+      animate={trigger ? { opacity: 1, x: 0 } : { opacity: 0, x: 18 }}
+      transition={{ duration: 0.45, delay: 0.08 + index * 0.18, ease: E }}
+    >
+      <div
+        className="flex flex-col gap-2 rounded-lg border border-gray-200 bg-white shadow-sm"
+        style={{ width: JOB_W, padding: "20px 13px" }}
+      >
+        <div className="flex items-center justify-between gap-1">
+          <span className="text-[13px] font-semibold text-neutral-900 leading-none truncate">
+            {item.job.label}
+          </span>
+          <div style={{ position: "relative", top: "-2px" }}>
+            <JobBadge phase={phase} />
+          </div>
+        </div>
+        <span className="text-[11px] text-neutral-600 leading-none">
+          {item.job.detail}
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Workforce ────────────────────────────────────────────────────────────────
 
 export default function Workforce({ trigger = false }: { trigger?: boolean }) {
-  return (
-    <div className="relative mx-auto w-full" style={{ maxWidth: VB_W, aspectRatio: `${VB_W}/${VB_H}` }} aria-hidden="true">
+  const [phases, setPhases] = useState<Phase[]>(["idle", "idle", "idle"]);
 
-      {/* Nodes — stagger hub → MS → inner pair → outer pair */}
-      {NODE_ANIMS.map((n) => (
-        <motion.div
-          key={n.key}
-          className="absolute"
-          style={{ left: n.left, top: n.top, translate: "-50% -50%" }}
-          initial={n.initial}
-          animate={trigger ? n.animate : n.initial}
-          transition={{ duration: 0.5, delay: n.delay, ease: E }}
-        >
-          {NODE_CONTENT[n.key]}
-        </motion.div>
+  useEffect(() => {
+    if (!trigger) {
+      setPhases(["idle", "idle", "idle"]);
+      return;
+    }
+
+    setPhases(["active", "active", "active"]);
+
+    const timers = [
+      ...MATCHING_DELAYS.map((delay, i) =>
+        setTimeout(() => {
+          setPhases((prev) => {
+            const next = [...prev] as Phase[];
+            next[i] = "matching";
+            return next;
+          });
+        }, delay)
+      ),
+      ...MATCHED_DELAYS.map((delay, i) =>
+        setTimeout(() => {
+          setPhases((prev) => {
+            const next = [...prev] as Phase[];
+            next[i] = "matched";
+            return next;
+          });
+        }, delay)
+      ),
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [trigger]);
+
+  return (
+    <div
+      className="relative mx-auto w-full"
+      style={{ maxWidth: VB_W, aspectRatio: `${VB_W}/${VB_H}` }}
+      aria-hidden="true"
+    >
+      {/* Worker cards */}
+      {ITEMS.map((item, i) => (
+        <WorkerCard key={item.id + "-w"} item={item} index={i} trigger={trigger} phase={phases[i]} />
       ))}
 
-      {/* SVG — fades in after all nodes */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={trigger ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.4, delay: 0.62 }}
-      >
-        <svg className="h-full w-full" viewBox={`0 0 ${VB_W} ${VB_H}`} fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="grad-vert-wf" gradientUnits="userSpaceOnUse" x1={MS_X} x2={MS_X} y1="-50" y2="0">
-              <animate attributeName="y1" values="-50;350;-50" dur="3s"  repeatCount="indefinite" calcMode="linear" />
-              <animate attributeName="y2" values="0;400;0"     dur="3s"  repeatCount="indefinite" calcMode="linear" />
-              <stop offset="0%"   stopColor="#3b82f6" stopOpacity="0" />
-              <stop offset="40%"  stopColor="#3b82f6" />
-              <stop offset="60%"  stopColor="#3b82f6" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-            </linearGradient>
-            <HorizBeam id="grad-l1-wf" y={PA_Y} dir="rtl" dur="2.5s" begin="0.6s" />
-            <HorizBeam id="grad-l2-wf" y={PA_Y} dir="rtl" dur="2.5s" begin="0.9s" />
-            <HorizBeam id="grad-r1-wf" y={PA_Y} dir="ltr" dur="2.5s" begin="0.6s" />
-            <HorizBeam id="grad-r2-wf" y={PA_Y} dir="ltr" dur="2.5s" begin="0.9s" />
-          </defs>
-          <line x1={HUB_X} y1={VERT_Y1} x2={HUB_X} y2={VERT_Y2} stroke="#e5e7eb" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={L1_X1} y1={PA_Y}    x2={L1_X2} y2={PA_Y}    stroke="#e5e7eb" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={L2_X1} y1={PA_Y}    x2={L2_X2} y2={PA_Y}    stroke="#e5e7eb" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={R1_X1} y1={PA_Y}    x2={R1_X2} y2={PA_Y}    stroke="#e5e7eb" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={R2_X1} y1={PA_Y}    x2={R2_X2} y2={PA_Y}    stroke="#e5e7eb" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={HUB_X} y1={VERT_Y1} x2={HUB_X} y2={VERT_Y2} stroke="url(#grad-vert-wf)" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={L1_X1} y1={PA_Y}    x2={L1_X2} y2={PA_Y}    stroke="url(#grad-l1-wf)"   strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={L2_X1} y1={PA_Y}    x2={L2_X2} y2={PA_Y}    stroke="url(#grad-l2-wf)"   strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={R1_X1} y1={PA_Y}    x2={R1_X2} y2={PA_Y}    stroke="url(#grad-r1-wf)"   strokeWidth="1.5" strokeLinecap="round" />
-          <line x1={R2_X1} y1={PA_Y}    x2={R2_X2} y2={PA_Y}    stroke="url(#grad-r2-wf)"   strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </motion.div>
+      {/* Job cards */}
+      {ITEMS.map((item, i) => (
+        <JobCard key={item.id + "-j"} item={item} index={i} trigger={trigger} phase={phases[i]} />
+      ))}
 
+      {/* Match rings — z-10 sits above SVG lines, shifted 50px above line */}
+      {ITEMS.map((item, i) => (
+        <div
+          key={item.id + "-r"}
+          className="pointer-events-none absolute z-10"
+          style={{ left: pct(MID_X, VB_W), top: pct(item.y, VB_H), translate: "-50% -50%" }}
+        >
+          <MatchRing matchPct={item.matchPct} phase={phases[i]} />
+        </div>
+      ))}
+
+      {/* SVG — connection lines */}
+      <svg
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        fill="none"
+      >
+        {ITEMS.map((item, i) => (
+          <motion.path
+            key={item.id}
+            d={`M ${WORKER_W},${item.y} H ${JOB_X}`}
+            stroke={item.worker.accent}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeOpacity={0.25}
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={trigger ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+            transition={{
+              pathLength: { duration: 0.5, delay: 0.58 + i * 0.16, ease: E },
+              opacity:     { duration: 0.01, delay: 0.58 + i * 0.16 },
+            }}
+          />
+        ))}
+      </svg>
     </div>
   );
 }
