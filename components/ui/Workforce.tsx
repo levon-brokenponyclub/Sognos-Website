@@ -340,13 +340,12 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
 
   useEffect(() => {
     if (!trigger) {
-      setPhases(["idle", "idle", "idle"]);
-      return;
+      const id = setTimeout(() => setPhases(["idle", "idle", "idle"]), 0);
+      return () => clearTimeout(id);
     }
 
-    setPhases(["active", "active", "active"]);
-
     const timers = [
+      setTimeout(() => setPhases(["active", "active", "active"]), 0),
       ...MATCHING_DELAYS.map((delay, i) =>
         setTimeout(() => {
           setPhases((prev) => {
