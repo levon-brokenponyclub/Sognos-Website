@@ -32,11 +32,11 @@ export default function LogoStrip() {
         </p> */}
 
         {/* Logo grid */}
-        <div className="flex w-full items-center justify-between gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 w-full">
           {LOGO_GROUPS.map((group) => (
             <div
               key={group.id}
-              className="trust-strip-group relative flex flex-1 items-center justify-center border-r border-dashed border-sognos-border-subtle"
+              className="trust-strip-group relative flex flex-1 items-center justify-center border-r border-b lg:border-b-0 border-dashed border-sognos-border-subtle"
               style={{ height: 130 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
