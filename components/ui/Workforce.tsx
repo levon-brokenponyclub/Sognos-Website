@@ -5,12 +5,12 @@ import { motion, AnimatePresence, animate as fmAnimate } from "framer-motion";
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
 
-const VB_W     = 640;
-const VB_H     = 360;
+const VB_W = 640;
+const VB_H = 360;
 const WORKER_W = 178;
-const JOB_W    = 172;
-const JOB_X    = VB_W - JOB_W;
-const MID_X    = Math.round((WORKER_W + JOB_X) / 2);
+const JOB_W = 172;
+const JOB_X = VB_W - JOB_W;
+const MID_X = Math.round((WORKER_W + JOB_X) / 2);
 
 const E = [0.22, 1, 0.36, 1] as const;
 
@@ -20,40 +20,54 @@ function pct(val: number, max: number) {
   return `${((val / max) * 100).toFixed(3)}%`;
 }
 
-// Line finish times: delay(0.58 + i*0.16) + draw(0.5s)
-// Rows stagger 160ms apart; matched fires 1800ms after matching (slower transition)
-const MATCHING_DELAYS = [1080, 1240, 1400];
-const MATCHED_DELAYS  = [2880, 3040, 3200];
+// Rings trigger at 3s; MATCHED = MATCHING + 1300ms (arc duration)
+const MATCHING_DELAYS = [1100, 1500, 1900];
+const MATCHED_DELAYS = [2000, 2400, 2800];
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const ITEMS = [
   {
-    id:       "round",
-    worker:   { name: "Emma Clarke",  role: "Care Worker",    avatar: "/images/avatar-emma.png",  accent: "#1E40AF" },
-    job:      { label: "Morning Round",    detail: "Meadowbrook — 08:00" },
+    id: "round",
+    worker: {
+      name: "Emma Clarke",
+      role: "Care Worker",
+      avatar: "/images/avatar-emma.png",
+      accent: "#1E40AF",
+    },
+    job: { label: "Morning Round", detail: "Meadowbrook — 08:00" },
     matchPct: 97,
-    y:        60,
+    y: 60,
   },
   {
-    id:       "visit",
-    worker:   { name: "James Obi",    role: "Support Worker", avatar: "/images/avatar-james.png", accent: "#065F46" },
-    job:      { label: "Home Visit",       detail: "Thornton St — 09:30" },
+    id: "visit",
+    worker: {
+      name: "James Obi",
+      role: "Support Worker",
+      avatar: "/images/avatar-james.png",
+      accent: "#065F46",
+    },
+    job: { label: "Home Visit", detail: "Thornton St — 09:30" },
     matchPct: 94,
-    y:        180,
+    y: 180,
   },
   {
-    id:       "meds",
-    worker:   { name: "Priya Menon",  role: "Nurse",          avatar: "/images/avatar-priya.png", accent: "#6B21A8" },
-    job:      { label: "Medication Admin", detail: "St Luke's — 10:00" },
+    id: "meds",
+    worker: {
+      name: "Priya Menon",
+      role: "Nurse",
+      avatar: "/images/avatar-priya.png",
+      accent: "#6B21A8",
+    },
+    job: { label: "Medication Admin", detail: "St Luke's — 10:00" },
     matchPct: 99,
-    y:        300,
+    y: 300,
   },
 ] as const;
 
 // ─── Count-up ─────────────────────────────────────────────────────────────────
 
-function useCountUp(to: number, trigger: boolean, duration = 1.3): string {
+function useCountUp(to: number, trigger: boolean, duration = 1.9): string {
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
@@ -104,11 +118,31 @@ function WorkerAvatar({
         style={{ top: "-4px", right: "-4px" }}
       >
         {matched ? (
-          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg
+            width="8"
+            height="8"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <path d="M20 6 9 17l-5-5" />
           </svg>
         ) : (
-          <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg
+            width="7"
+            height="7"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <circle cx="12" cy="12" r="9" />
             <path d="M12 7v5l3 1.5" />
           </svg>
@@ -120,17 +154,11 @@ function WorkerAvatar({
 
 // ─── Match ring (circular progress) ──────────────────────────────────────────
 
-function MatchRing({
-  matchPct,
-  phase,
-}: {
-  matchPct: number;
-  phase: Phase;
-}) {
+function MatchRing({ matchPct, phase }: { matchPct: number; phase: Phase }) {
   const active = phase === "matching" || phase === "matched";
-  const r      = 29;
-  const circ   = 2 * Math.PI * r;
-  const count  = useCountUp(matchPct, active);
+  const r = 29;
+  const circ = 2 * Math.PI * r;
+  const count = useCountUp(matchPct, active);
 
   return (
     <motion.div
@@ -140,7 +168,13 @@ function MatchRing({
       animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
       transition={{ duration: 0.25, ease: E }}
     >
-      <svg width="75" height="75" viewBox="0 0 75 75" fill="none" className="-rotate-90">
+      <svg
+        width="75"
+        height="75"
+        viewBox="0 0 75 75"
+        fill="none"
+        className="-rotate-90"
+      >
         <circle cx="37.5" cy="37.5" r={r} stroke="#e5e7eb" strokeWidth="4" />
         <motion.circle
           cx="37.5"
@@ -236,7 +270,11 @@ function WorkerCard({
         className="flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-3 py-2.5 shadow-sm"
         style={{ width: WORKER_W }}
       >
-        <WorkerAvatar avatar={item.worker.avatar} name={item.worker.name} phase={phase} />
+        <WorkerAvatar
+          avatar={item.worker.avatar}
+          name={item.worker.name}
+          phase={phase}
+        />
         <div className="flex min-w-0 flex-col gap-2">
           <span className="text-[13px] font-semibold text-neutral-900 leading-none truncate">
             {item.worker.name}
@@ -266,7 +304,11 @@ function JobCard({
   return (
     <motion.div
       className="absolute"
-      style={{ left: pct(JOB_X, VB_W), top: pct(item.y, VB_H), translate: "0 -50%" }}
+      style={{
+        left: pct(JOB_X, VB_W),
+        top: pct(item.y, VB_H),
+        translate: "0 -50%",
+      }}
       initial={{ opacity: 0, x: 18 }}
       animate={trigger ? { opacity: 1, x: 0 } : { opacity: 0, x: 18 }}
       transition={{ duration: 0.45, delay: 0.08 + index * 0.18, ease: E }}
@@ -312,7 +354,7 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
             next[i] = "matching";
             return next;
           });
-        }, delay)
+        }, delay),
       ),
       ...MATCHED_DELAYS.map((delay, i) =>
         setTimeout(() => {
@@ -321,7 +363,7 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
             next[i] = "matched";
             return next;
           });
-        }, delay)
+        }, delay),
       ),
     ];
 
@@ -336,12 +378,24 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
     >
       {/* Worker cards */}
       {ITEMS.map((item, i) => (
-        <WorkerCard key={item.id + "-w"} item={item} index={i} trigger={trigger} phase={phases[i]} />
+        <WorkerCard
+          key={item.id + "-w"}
+          item={item}
+          index={i}
+          trigger={trigger}
+          phase={phases[i]}
+        />
       ))}
 
       {/* Job cards */}
       {ITEMS.map((item, i) => (
-        <JobCard key={item.id + "-j"} item={item} index={i} trigger={trigger} phase={phases[i]} />
+        <JobCard
+          key={item.id + "-j"}
+          item={item}
+          index={i}
+          trigger={trigger}
+          phase={phases[i]}
+        />
       ))}
 
       {/* Match rings — z-10 sits above SVG lines, shifted 50px above line */}
@@ -349,7 +403,11 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
         <div
           key={item.id + "-r"}
           className="pointer-events-none absolute z-10"
-          style={{ left: pct(MID_X, VB_W), top: pct(item.y, VB_H), translate: "-50% -50%" }}
+          style={{
+            left: pct(MID_X, VB_W),
+            top: pct(item.y, VB_H),
+            translate: "-50% -50%",
+          }}
         >
           <MatchRing matchPct={item.matchPct} phase={phases[i]} />
         </div>
@@ -370,10 +428,14 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
             strokeLinecap="round"
             strokeOpacity={0.25}
             initial={{ pathLength: 0, opacity: 0 }}
-            animate={trigger ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+            animate={
+              trigger
+                ? { pathLength: 1, opacity: 1 }
+                : { pathLength: 0, opacity: 0 }
+            }
             transition={{
               pathLength: { duration: 0.5, delay: 0.58 + i * 0.16, ease: E },
-              opacity:     { duration: 0.01, delay: 0.58 + i * 0.16 },
+              opacity: { duration: 0.01, delay: 0.58 + i * 0.16 },
             }}
           />
         ))}

@@ -77,7 +77,7 @@
 
     /* Gradients */
     --sognos-gradient-brand: linear-gradient(135deg, #04142c 0%, #0d1738 100%);
-    --sognos-gradient-accent: linear-gradient(145deg, #44efde 0%, #0ac5b2 100%);
+    --sognos-gradient-accent: linear-gradient(145deg, #1d8ded 0%, #52a9ff 100%);
     --sognos-gradient-hero: radial-gradient(
         circle at 20% 20%,
         #16235d 0%,

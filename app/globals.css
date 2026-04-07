@@ -434,6 +434,11 @@ h2 {
     line-height: 36px !important;
 }
 
+h2.callout {
+    font-size: 38px !important;
+    line-height: 42px !important;
+}
+
 p.section-header-description {
     font-size: 18px;
     line-height: 1.4;

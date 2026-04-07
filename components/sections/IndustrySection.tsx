@@ -7,34 +7,126 @@ import { INDUSTRIES } from "@/lib/constants";
 
 const ICONS: Record<string, () => React.ReactNode> = {
   "health-social-care": () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M11 19.5C11 19.5 2.5 14 2.5 8.5a4.5 4.5 0 019-0a4.5 4.5 0 019 0C20.5 14 11 19.5 11 19.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M11 19.5C11 19.5 2.5 14 2.5 8.5a4.5 4.5 0 019-0a4.5 4.5 0 019 0C20.5 14 11 19.5 11 19.5z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   "facilities-management": () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="12" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="3" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="12" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="3"
+        y="3"
+        width="7"
+        height="7"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <rect
+        x="12"
+        y="3"
+        width="7"
+        height="7"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <rect
+        x="3"
+        y="12"
+        width="7"
+        height="7"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <rect
+        x="12"
+        y="12"
+        width="7"
+        height="7"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
     </svg>
   ),
   "local-government": () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M11 2l8 4v2H3V6l8-4z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-      <path d="M5 8v9M9 8v9M13 8v9M17 8v9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M3 17h16" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M11 2l8 4v2H3V6l8-4z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5 8v9M9 8v9M13 8v9M17 8v9"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M3 17h16"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   ),
   "industrial-services": () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M11 2v3M11 17v3M2 11h3M17 11h3M4.22 4.22l2.12 2.12M15.66 15.66l2.12 2.12M4.22 17.78l2.12-2.12M15.66 6.34l2.12-2.12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M11 2v3M11 17v3M2 11h3M17 11h3M4.22 4.22l2.12 2.12M15.66 15.66l2.12 2.12M4.22 17.78l2.12-2.12M15.66 6.34l2.12-2.12"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   ),
   "energy-utilities": () => (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M13 2L4 13h7l-2 7 9-11h-7l2-7z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M13 2L4 13h7l-2 7 9-11h-7l2-7z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };
@@ -60,7 +152,13 @@ function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
           className="text-neutral-200 group-hover:text-brand transition-colors mt-1"
           aria-hidden="true"
         >
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M3 8h10M9 4l4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </div>
 
@@ -68,7 +166,9 @@ function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
         <h3 className="font-heading font-medium text-neutral-900 leading-snug tracking-tight">
           {industry.name}
         </h3>
-        <p className="text-sm leading-relaxed text-neutral-500">{industry.description}</p>
+        <p className="text-sm leading-relaxed text-neutral-500">
+          {industry.description}
+        </p>
       </div>
 
       <div className="mt-auto flex flex-wrap gap-1.5">
@@ -98,7 +198,8 @@ function StandOutCard() {
           Not seeing your sector?
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-          If your team coordinates workforce and manages service delivery at scale, Sognos fits. We work across sectors not listed here.
+          If your team coordinates workforce and manages service delivery at
+          scale, Sognos fits. We work across sectors not listed here.
         </p>
       </div>
 
@@ -108,8 +209,20 @@ function StandOutCard() {
           className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
         >
           Get in touch
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 7h8M7 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Link>
       </div>
@@ -122,23 +235,29 @@ function StandOutCard() {
 export default function IndustrySection() {
   // Build the 6-slot grid: industries 0–3, stand-out, industry 4
   const slots = [
-    ...INDUSTRIES.slice(0, 4).map((ind) => ({ type: "industry" as const, industry: ind })),
+    ...INDUSTRIES.slice(0, 4).map((ind) => ({
+      type: "industry" as const,
+      industry: ind,
+    })),
     { type: "standout" as const },
     { type: "industry" as const, industry: INDUSTRIES[4] },
   ];
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle py-24">
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-        <div className="mb-10">
-          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+    <section className="w-full border-b border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+        {/* Heading row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             Industries
-          </p>
-          <h2 className="font-heading font-medium tracking-tight">
+            <br />
             Built for service-intensive operations
           </h2>
+          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+            Sognos connects service demand, workforce scheduling, and compliance
+            into a single operational loop. Powered by AI, Microsoft Dynamics
+            365.
+          </p>
         </div>
 
         {/* 3×2 grid */}
@@ -148,10 +267,9 @@ export default function IndustrySection() {
               <IndustryCard key={slot.industry.slug} industry={slot.industry} />
             ) : (
               <StandOutCard key="standout" />
-            )
+            ),
           )}
         </div>
-
       </div>
     </section>
   );

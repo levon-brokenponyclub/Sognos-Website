@@ -56,7 +56,9 @@ function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
   };
 
   return (
-    <div className={`flex flex-col justify-between rounded-2xl p-7 h-full ${themes[stat.theme]}`}>
+    <div
+      className={`flex flex-col justify-between rounded-2xl p-7 h-full ${themes[stat.theme]}`}
+    >
       <p
         className={`text-sm font-medium leading-snug ${
           stat.theme === "light" ? "text-neutral-500" : "text-white/70"
@@ -68,7 +70,9 @@ function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
         <p className="font-heading text-5xl font-semibold tracking-tight leading-none">
           {stat.value}
         </p>
-        <p className={`mt-2 text-xs ${contextColor[stat.theme]}`}>{stat.context}</p>
+        <p className={`mt-2 text-xs ${contextColor[stat.theme]}`}>
+          {stat.context}
+        </p>
       </div>
     </div>
   );
@@ -86,7 +90,9 @@ function TestimonialTile({
   return (
     <div
       className={`flex flex-col justify-between rounded-2xl p-7 h-full ${
-        dark ? "bg-neutral-900 text-white" : "bg-white border border-sognos-border-subtle"
+        dark
+          ? "bg-neutral-900 text-white"
+          : "bg-white border border-sognos-border-subtle"
       }`}
     >
       {/* Quote mark */}
@@ -115,10 +121,14 @@ function TestimonialTile({
       </blockquote>
 
       <footer className="mt-6">
-        <p className={`text-sm font-semibold ${dark ? "text-white" : "text-neutral-900"}`}>
+        <p
+          className={`text-sm font-semibold ${dark ? "text-white" : "text-neutral-900"}`}
+        >
           {testimonial.role}
         </p>
-        <p className={`text-xs mt-0.5 ${dark ? "text-neutral-500" : "text-neutral-400"}`}>
+        <p
+          className={`text-xs mt-0.5 ${dark ? "text-neutral-500" : "text-neutral-400"}`}
+        >
           {testimonial.organisation}
         </p>
       </footer>
@@ -130,22 +140,24 @@ function TestimonialTile({
 
 export default function ProofSection() {
   return (
-    <section className="w-full border-b border-sognos-border-subtle py-24">
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-        <div className="mb-10">
-          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+    <section className="w-full border-b border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+        {/* Heading row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             Results
-          </p>
-          <h2 className="font-heading font-medium tracking-tight">
+            <br />
             Results organisations can point to
           </h2>
+          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+            Sognos connects service demand, workforce scheduling, and compliance
+            into a single operational loop. Powered by AI, Microsoft Dynamics
+            365.
+          </p>
         </div>
 
         {/* Bento grid — 4 cols */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[220px]">
-
           {/* Row 1 */}
           {/* Stat: 40% — col 1 */}
           <div className="lg:col-span-1">
@@ -177,7 +189,6 @@ export default function ProofSection() {
           <div className="sm:col-span-2 lg:col-span-2">
             <TestimonialTile testimonial={TESTIMONIALS[1]} dark />
           </div>
-
         </div>
       </div>
     </section>

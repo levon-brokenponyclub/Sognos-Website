@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flow</title>
+        <style>
+            :root {
+                --bg: #081338;
+                --line: #5d64fe;
+                --line-soft: #2b3f8f;
+                --card: #bec4db;
+                --card-text: #eef2ff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: grid;
+                place-items: center;
+                background: var(--bg);
+                color: #fff;
+                font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+            }
+
+            .developer-systems-animation {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                padding: 24px;
+            }
+
+            .developer-systems-animation__figure {
+                width: 740px;
+                max-width: 100%;
+                height: 420px;
+                position: relative;
+            }
+
+            .developer-systems-animation__center-path-svg {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 100%;
+                transform: translateY(-50%);
+            }
+
+            .developer-systems-animation__stripe {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 2;
+            }
+
+            .developer-systems-animation__edge-logo {
+                position: absolute;
+                top: 50%;
+                width: 40px;
+                height: 40px;
+                transform: translate(-50%, -50%);
+                perspective: 700px;
+                z-index: 2;
+            }
+
+            .developer-systems-animation__edge-logo--left {
+                left: calc(50% - 235px);
+            }
+
+            .developer-systems-animation__edge-logo--right {
+                left: calc(50% + 235px);
+            }
+
+            .developer-systems-animation__edge-logo-inner {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+                animation: logo-box-flip 3.8s ease-in-out infinite;
+            }
+
+            .developer-systems-animation__edge-logo--right
+                .developer-systems-animation__edge-logo-inner {
+                animation-delay: -1.9s;
+            }
+
+            .developer-systems-animation__edge-logo-face {
+                position: absolute;
+                inset: 0;
+                border-radius: 6px;
+                overflow: hidden;
+                backface-visibility: hidden;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            }
+
+            .developer-systems-animation__edge-logo-face--back {
+                transform: rotateX(180deg);
+            }
+
+            .developer-systems-animation__stripe-center {
+                width: 200px;
+                height: 90px;
+                border-radius: 14px;
+                display: grid;
+                place-items: center;
+                background: linear-gradient(160deg, #3f33c6, #1b205f);
+            }
+
+            .developer-systems-animation__stripe-center svg {
+                width: 90px;
+                height: 36px;
+            }
+
+            .developer-systems-animation__psp-connection-base-animated-stroke-svg {
+                position: absolute;
+                left: 0;
+                top: calc(50% + 45px);
+                width: 100%;
+                height: 102px;
+            }
+
+            .developer-systems-animation__psp-connection-path {
+                stroke: var(--line-soft);
+                stroke-width: 2;
+                stroke-dasharray: 2 7;
+                stroke-linecap: round;
+            }
+
+            .developer-systems-animation__psp-connection-beam {
+                stroke: url(#conn-beam-gradient);
+                stroke-width: 3;
+                stroke-linecap: round;
+                stroke-dasharray: 18 82;
+                stroke-dashoffset: 100;
+                filter: url(#conn-beam-glow);
+                opacity: 0.98;
+                animation: path-beam 2.1s linear infinite;
+            }
+
+            @keyframes path-beam {
+                from {
+                    stroke-dashoffset: 100;
+                }
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            @keyframes logo-box-flip {
+                0%,
+                40% {
+                    transform: rotateX(0deg);
+                }
+                50%,
+                90% {
+                    transform: rotateX(180deg);
+                }
+                100% {
+                    transform: rotateX(360deg);
+                }
+            }
+
+            .developer-systems-animation__psp-container {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: calc(50% + 45px + 102px);
+                width: 100%;
+                margin: 0;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0;
+            }
+
+            .developer-systems-animation__psp-app {
+                min-height: 86px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                background: var(--card);
+                color: var(--card-text);
+                font-weight: 700;
+                font-size: 22px;
+                line-height: 1.15;
+                border-radius: 10px;
+                margin: 0 6px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="developer-systems-animation">
+            <figure class="developer-systems-animation__figure">
+                <svg
+                    class="developer-systems-animation__center-path-svg"
+                    viewBox="0 0 740 420"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M0 210H740"
+                        stroke="#5D64FE"
+                        stroke-dasharray="2 7"
+                    ></path>
+                </svg>
+
+                <div
+                    class="developer-systems-animation__edge-logo developer-systems-animation__edge-logo--left"
+                    aria-hidden="true"
+                >
+                    <div class="developer-systems-animation__edge-logo-inner">
+                        <div
+                            class="developer-systems-animation__edge-logo-face"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="40"
+                                height="40"
+                                viewBox="0 0 40 40"
+                                fill="none"
+                            >
+                                <rect
+                                    width="40"
+                                    height="40"
+                                    rx="6"
+                                    fill="#29B5E8"
+                                ></rect>
+                                <circle
+                                    cx="20"
+                                    cy="20"
+                                    r="9"
+                                    fill="#fff"
+                                ></circle>
+                                <path
+                                    d="M20 13v14M13 20h14"
+                                    stroke="#29B5E8"
+                                    stroke-width="2.2"
+                                    stroke-linecap="round"
+                                ></path>
+                            </svg>
+                        </div>
+                        <div
+                            class="developer-systems-animation__edge-logo-face developer-systems-animation__edge-logo-face--back"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="40"
+                                height="40"
+                                viewBox="0 0 40 40"
+                                fill="none"
+                            >
+                                <rect
+                                    width="40"
+                                    height="40"
+                                    rx="6"
+                                    fill="#fff"
+                                ></rect>
+                                <rect
+                                    x="8"
+                                    y="8"
+                                    width="24"
+                                    height="24"
+                                    rx="4"
+                                    fill="#1271FF"
+                                ></rect>
+                                <path
+                                    d="M14 22l4-4 3 3 5-5"
+                                    stroke="#fff"
+                                    stroke-width="2.2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="developer-systems-animation__edge-logo developer-systems-animation__edge-logo--right"
+                    aria-hidden="true"
+                >
+                    <div class="developer-systems-animation__edge-logo-inner">
+                        <div
+                            class="developer-systems-animation__edge-logo-face"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="40"
+                                height="40"
+                                viewBox="0 0 40 40"
+                                fill="none"
+                            >
+                                <rect
+                                    width="40"
+                                    height="40"
+                                    rx="6"
+                                    fill="#29B5E8"
+                                ></rect>
+                                <circle
+                                    cx="20"
+                                    cy="20"
+                                    r="9"
+                                    fill="#fff"
+                                ></circle>
+                                <path
+                                    d="M20 13v14M13 20h14"
+                                    stroke="#29B5E8"
+                                    stroke-width="2.2"
+                                    stroke-linecap="round"
+                                ></path>
+                            </svg>
+                        </div>
+                        <div
+                            class="developer-systems-animation__edge-logo-face developer-systems-animation__edge-logo-face--back"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="40"
+                                height="40"
+                                viewBox="0 0 40 40"
+                                fill="none"
+                            >
+                                <rect
+                                    width="40"
+                                    height="40"
+                                    rx="6"
+                                    fill="#fff"
+                                ></rect>
+                                <rect
+                                    x="8"
+                                    y="8"
+                                    width="24"
+                                    height="24"
+                                    rx="4"
+                                    fill="#1271FF"
+                                ></rect>
+                                <path
+                                    d="M14 22l4-4 3 3 5-5"
+                                    stroke="#fff"
+                                    stroke-width="2.2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="developer-systems-animation__stripe">
+                    <div
+                        class="developer-systems-animation__stripe-center"
+                        aria-hidden="true"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 42 17"
+                            fill="none"
+                        >
+                            <path
+                                fill="#fefeff"
+                                fill-rule="evenodd"
+                                d="M41.751 9.711h-5.643c.129 1.312 1.119 1.733 2.242 1.733 1.145 0 2.067-.249 2.832-.647v2.256c-.783.484-1.818.753-3.196.753-2.807 0-4.775-1.708-4.775-5.085 0-2.852 1.669-5.117 4.411-5.117 2.739 0 4.168 2.23 4.168 5.098 0 .271-.026.858-.039 1.01m-4.147-3.824c-.72 0-1.522.495-1.522 1.757h2.98c0-1.26-.75-1.757-1.458-1.757m-8.936 7.919c-1.008 0-1.625-.414-2.039-.708l-.006 3.146-2.883.596V3.79h2.627l.06.692c.423-.36 1.129-.878 2.259-.878 2.024 0 3.93 1.771 3.93 5.032 0 3.558-1.885 5.17-3.948 5.17m-.671-7.722c-.662 0-1.076.235-1.377.555l.017 4.162c.28.294.684.53 1.36.53 1.066 0 1.78-1.126 1.78-2.634 0-1.465-.726-2.613-1.78-2.613M19.765 3.79h2.894v9.816h-2.894zm0-3.193L22.659 0v2.284l-2.894.597zm-3.021 6.354v6.655h-2.88V3.79h2.58l.092.828c.702-1.205 2.15-.961 2.535-.827v2.574c-.367-.115-1.603-.291-2.327.586m-5.987 3.21c0 1.652 1.82 1.138 2.189.994v2.28c-.385.205-1.081.371-2.023.371-1.711 0-2.995-1.224-2.995-2.882l.013-8.96 2.814-.581.002 2.407h2.19v2.388h-2.19v3.984m-3.435.479c0 2.016-1.617 3.166-4.014 3.166A8 8 0 0 1 .19 13.17v-2.673c.968.51 2.166.894 3.12.894.644 0 1.072-.167 1.072-.685C4.382 9.37 0 9.873 0 6.773c0-1.983 1.593-3.17 3.932-3.17.954 0 1.91.143 2.864.513v2.637c-.877-.46-1.99-.72-2.867-.72-.604 0-1.013.17-1.013.607 0 1.26 4.406.66 4.406 4"
+                                clip-rule="evenodd"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <svg
+                    class="developer-systems-animation__psp-connection-base-animated-stroke-svg"
+                    viewBox="0 0 740 102"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <defs>
+                        <linearGradient
+                            id="conn-beam-gradient"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                        >
+                            <stop offset="0%" stop-color="#7f95ff"></stop>
+                            <stop offset="30%" stop-color="#8ea3ff"></stop>
+                            <stop offset="50%" stop-color="#d1ddff"></stop>
+                            <stop offset="70%" stop-color="#8ea3ff"></stop>
+                            <stop offset="100%" stop-color="#7f95ff"></stop>
+                        </linearGradient>
+                        <filter
+                            id="conn-beam-glow"
+                            x="-50%"
+                            y="-50%"
+                            width="200%"
+                            height="200%"
+                        >
+                            <feGaussianBlur
+                                stdDeviation="2.8"
+                                result="blur"
+                            ></feGaussianBlur>
+                            <feMerge>
+                                <feMergeNode in="blur"></feMergeNode>
+                                <feMergeNode in="SourceGraphic"></feMergeNode>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <path
+                        class="developer-systems-animation__psp-connection-path"
+                        d="M340 0V18C340 30 330 40 318 40H92.5C80.5 40 70.5 50 70.5 62V102"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-path"
+                        d="M360 0V52C360 60 354 66 346 66H277.5C265.5 66 255.5 76 255.5 88V102"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-path"
+                        d="M380 0V52C380 60 386 66 394 66H462.5C474.5 66 484.5 76 484.5 88V102"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-path"
+                        d="M400 0V18C400 30 410 40 422 40H647.5C659.5 40 669.5 50 669.5 62V102"
+                    ></path>
+
+                    <path
+                        class="developer-systems-animation__psp-connection-beam"
+                        pathLength="100"
+                        d="M340 0V18C340 30 330 40 318 40H92.5C80.5 40 70.5 50 70.5 62V102"
+                        style="animation-delay: 0s"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-beam"
+                        pathLength="100"
+                        d="M360 0V52C360 60 354 66 346 66H277.5C265.5 66 255.5 76 255.5 88V102"
+                        style="animation-delay: 0.2s"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-beam"
+                        pathLength="100"
+                        d="M380 0V52C380 60 386 66 394 66H462.5C474.5 66 484.5 76 484.5 88V102"
+                        style="animation-delay: 0.4s"
+                    ></path>
+                    <path
+                        class="developer-systems-animation__psp-connection-beam"
+                        pathLength="100"
+                        d="M400 0V18C400 30 410 40 422 40H647.5C659.5 40 669.5 50 669.5 62V102"
+                        style="animation-delay: 0.6s"
+                    ></path>
+                </svg>
+            </figure>
+        </div>
+    </body>
+</html>

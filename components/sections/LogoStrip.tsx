@@ -58,33 +58,6 @@ export default function LogoStrip() {
             </div>
           ))}
         </div>
-        {/* Logo grid */}
-        <div className="flex w-full items-center justify-between gap-8">
-          {LOGO_GROUPS.map((group) => (
-            <div
-              key={group.id}
-              className="trust-strip-group relative flex flex-1 items-center justify-center border-r border-dashed border-sognos-border-subtle"
-              style={{ height: 130 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <div className="trust-strip-item absolute inset-0 flex items-center justify-center one">
-                <img
-                  src={group.one.src}
-                  alt={group.one.alt}
-                  className="max-h-12 w-auto max-w-full object-contain"
-                />
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <div className="trust-strip-item absolute inset-0 flex items-center justify-center two">
-                <img
-                  src={group.two.src}
-                  alt={group.two.alt}
-                  className="max-h-12 w-auto max-w-full object-contain"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

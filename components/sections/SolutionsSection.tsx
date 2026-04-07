@@ -206,7 +206,8 @@ const SOLUTIONS = [
       },
     ],
     stat: { value: "4 weeks", label: "to go live" },
-    bestFor: "Organisations that need results fast without a long project cycle",
+    bestFor:
+      "Organisations that need results fast without a long project cycle",
     badge: "Both products",
     badgeHref: "/products",
   },
@@ -218,45 +219,157 @@ type SolutionId = (typeof SOLUTIONS)[number]["id"];
 
 const ICONS: Record<SolutionId, () => React.ReactNode> = {
   "field-service": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="10" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M10 2C6.69 2 4 4.69 4 8c0 4.38 6 10 6 10s6-5.62 6-10c0-3.31-2.69-6-6-6z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path
+        d="M10 2C6.69 2 4 4.69 4 8c0 4.38 6 10 6 10s6-5.62 6-10c0-3.31-2.69-6-6-6z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   crm: () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="7.5" cy="7" r="2.5" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M2 17c0-3.31 2.46-5.5 5.5-5.5S13 13.69 13 17" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M14 11.5a3 3 0 000-5M17 17c0-2.21-1.34-4-3-4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M2 17c0-3.31 2.46-5.5 5.5-5.5S13 13.69 13 17"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 11.5a3 3 0 000-5M17 17c0-2.21-1.34-4-3-4.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   ),
   "customer-insights": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <rect x="2" y="12" width="3" height="6" rx="1" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="8.5" y="8" width="3" height="10" rx="1" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="15" y="4" width="3" height="14" rx="1" stroke="currentColor" strokeWidth="1.4" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="2"
+        y="12"
+        width="3"
+        height="6"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <rect
+        x="8.5"
+        y="8"
+        width="3"
+        height="10"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <rect
+        x="15"
+        y="4"
+        width="3"
+        height="14"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
     </svg>
   ),
   "customer-experience": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 2l2.09 4.26L17 7.27l-3.5 3.41.83 4.82L10 13.27l-4.33 2.23.83-4.82L3 7.27l4.91-.71L10 2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M10 2l2.09 4.26L17 7.27l-3.5 3.41.83 4.82L10 13.27l-4.33 2.23.83-4.82L3 7.27l4.91-.71L10 2z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
   "customer-service": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M3 6a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H6l-3 3V6z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-      <path d="M7 9h6M7 12h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M3 6a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H6l-3 3V6z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 9h6M7 12h4"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   ),
   "power-platform": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 2v8M10 10l4-4M10 10l-4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 14h12M6 17h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M10 2v8M10 10l4-4M10 10l-4-4"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 14h12M6 17h8"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   ),
   "quick-start": () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 2l1.5 5h5l-4 3 1.5 5L10 12l-4 3 1.5-5-4-3h5L10 2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M10 2l1.5 5h5l-4 3 1.5 5L10 12l-4 3 1.5-5-4-3h5L10 2z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
     </svg>
   ),
 };
@@ -265,8 +378,10 @@ const ICONS: Record<SolutionId, () => React.ReactNode> = {
 
 function FeatureCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-sognos-border-subtle bg-white p-5">
-      <p className="text-sm font-semibold text-neutral-900 leading-snug">{title}</p>
+    <div className="rounded border border-sognos-border-subtle bg-white p-5">
+      <p className="text-sm font-semibold text-neutral-900 leading-snug">
+        {title}
+      </p>
       <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{body}</p>
     </div>
   );
@@ -278,14 +393,28 @@ function LeftColumn({ solution }: { solution: (typeof SOLUTIONS)[number] }) {
       <h3 className="font-heading font-medium tracking-tight text-neutral-900 text-xl leading-snug">
         {solution.title}
       </h3>
-      <p className="mt-4 text-sm leading-relaxed text-neutral-500">{solution.copy}</p>
+      <p className="mt-4 text-sm leading-relaxed text-neutral-500">
+        {solution.copy}
+      </p>
       <Link
         href={solution.href}
         className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-brand hover:text-brand/80 transition-colors"
       >
         Learn more
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M3 7h8M7 3l4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </Link>
     </div>
@@ -307,7 +436,9 @@ function RightColumn({ solution }: { solution: (typeof SOLUTIONS)[number] }) {
           <span className="text-2xl font-bold tracking-tight text-neutral-900 font-heading">
             {solution.stat.value}
           </span>
-          <span className="text-sm text-neutral-400">{solution.stat.label}</span>
+          <span className="text-sm text-neutral-400">
+            {solution.stat.label}
+          </span>
         </div>
 
         <span className="text-neutral-200">|</span>
@@ -340,17 +471,20 @@ export default function SolutionsSection() {
   const activeSolution = SOLUTIONS.find((s) => s.id === activeId)!;
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle py-24">
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-        <div className="mb-10">
-          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+    <section className="w-full border-b border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+        {/* Heading row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             Solutions
-          </p>
-          <h2 className="font-heading font-medium tracking-tight">
+            <br />
             Built for how your operation works
           </h2>
+          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+            Sognos connects service demand, workforce scheduling, and compliance
+            into a single operational loop. Powered by AI, Microsoft Dynamics
+            365.
+          </p>
         </div>
 
         {/* Tab nav */}
@@ -388,7 +522,7 @@ export default function SolutionsSection() {
         </nav>
 
         {/* Content */}
-        <div className="rounded-b-2xl border border-t-0 border-sognos-border-subtle overflow-hidden bg-neutral-50/40">
+        <div className="rounded-b-lg border border-t-0 border-sognos-border-subtle overflow-hidden bg-neutral-50/40">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}
@@ -403,7 +537,6 @@ export default function SolutionsSection() {
             </motion.div>
           </AnimatePresence>
         </div>
-
       </div>
     </section>
   );

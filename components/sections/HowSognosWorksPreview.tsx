@@ -27,7 +27,7 @@ const TABS = [
   },
 ] as const;
 
-const AUTOPLAY_MS = 6500;
+const AUTOPLAY_MS = 5000;
 
 export default function HowSognosWorksPreview() {
   const [active, setActive] = useState(0);
@@ -57,14 +57,17 @@ export default function HowSognosWorksPreview() {
       <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Centered heading + logo row */}
         <div className="text-center pb-10">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
-            One platform.
-            <br />
-            From referral to outcome.
+          <h2 className="callout text-3xl md:text-4xl text-brand font-heading  font-medium tracking-tight">
+            Stop managing complexity.{" "}
+            <span className="text-soft text-slate-500">
+              Start delivering outcomes.
+            </span>
           </h2>
-          <p className="mt-4 font-heading font-medium text-neutral-500 max-w-xl mx-auto leading-relaxed">
-            Sognos connects service demand, workforce scheduling, and compliance
-            into a single operational loop. Powered by AI, Microsoft Dynamics 365.
+          <p className="mt-4 font-heading font-medium text-neutral-500 max-w-4xl text-balance mx-auto leading-relaxed text-lg">
+            Most care and service organisations run on disconnected tools —
+            spreadsheets for rosters, email for referrals, manual processes for
+            compliance. Sognos replaces all of it with one intelligent platform
+            built natively on Microsoft Dynamics 365.
           </p>
 
           {/* Platform logos */}
@@ -73,19 +76,19 @@ export default function HowSognosWorksPreview() {
               <img
                 src="/logos/Dynamics365.svg"
                 alt="Microsoft Dynamics 365"
-                className="h-6 w-auto"
+                className="h-7 w-auto"
               />
-              <div className="h-5 w-px bg-white/20" />
+              <div className="h-7 w-px bg-white/20" />
               <img
                 src="/logos/Sognos-Solutions-Solutions-Partner.webp"
                 alt="Microsoft Solutions Partner"
-                className="h-6 w-auto"
+                className="h-8 w-auto"
               />
-              <div className="h-5 w-px bg-white/20" />
+              <div className="h-9 w-px bg-white/20" />
               <img
                 src="/logos/copilot-logo.png"
                 alt="Microsoft Copilot"
-                className="h-6 w-auto"
+                className="h-9 w-auto"
               />
             </div>
           </div>

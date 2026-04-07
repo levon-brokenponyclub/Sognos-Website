@@ -14,10 +14,9 @@ export default function CTASection({
   secondaryCTA = { label: "Contact Sales", href: "/contact" },
 }: CTASectionProps) {
   return (
-    <section className="w-full border-b border-sognos-border-subtle py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="w-full">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
         <div className="rounded-2xl border border-sognos-border-subtle bg-neutral-900 px-10 py-16 text-center">
-
           <p className="text-sm font-medium uppercase tracking-widest text-neutral-500">
             Get started
           </p>
@@ -48,9 +47,9 @@ export default function CTASection({
           </div>
 
           <p className="mt-5 text-xs text-neutral-600">
-            No commitment required. Our assessments are free, confidential, and specific to your operations.
+            No commitment required. Our assessments are free, confidential, and
+            specific to your operations.
           </p>
-
         </div>
       </div>
     </section>
