@@ -6,6 +6,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import IndustrySection from "@/components/sections/IndustrySection";
 import ProofSection from "@/components/sections/ProofSection";
+import NewsInsightSection from "@/components/sections/NewsInsightSection";
 import CTASection from "@/components/sections/CTASection";
 
 export default function HomePage() {
@@ -19,6 +20,7 @@ export default function HomePage() {
       <HowItWorks />
       <IndustrySection />
       <ProofSection />
+      <NewsInsightSection />
       <CTASection />
     </>
   );

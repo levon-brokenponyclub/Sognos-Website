@@ -1,250 +1,157 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
-import LottiePlayer from "@/components/ui/LottiePlayer";
+import Link from "next/link";
+import { INDUSTRIES } from "@/lib/constants";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// ─── Icons ────────────────────────────────────────────────────────────────────
 
-const TAB_HEIGHT = 160;
-const VISIBLE = 3;
-const EASE_STANDARD: [number, number, number, number] = [0.4, 0, 0.2, 1];
-
-// ─── Tab data ─────────────────────────────────────────────────────────────────
-
-const tabs = [
-  {
-    id: 0,
-    num: "01",
-    title: "Capture service demand",
-    description:
-      "Service requests, referrals, and assessments are captured directly into SognosCare — creating a structured record for every service that needs to be delivered.",
-    image: "/images/Invoice-Capture-Accordion.svg",
-    bgClass: "bg-[#C7DBFF]",
-  },
-  {
-    id: 1,
-    num: "02",
-    title: "Coordinate services",
-    description:
-      "SognosCare orchestrates the full service lifecycle — assigning cases, triggering workflows, and ensuring every service requirement is tracked from intake to delivery.",
-    image: "/images/PO-matching-screen-01.svg",
-    bgClass: "bg-[#DAE5CE]",
-  },
-  {
-    id: 2,
-    num: "03",
-    title: "Schedule workforce",
-    description:
-      "SognosRoster automatically matches available, qualified staff to each service — factoring in location, skills, compliance requirements, and real-time availability.",
-    image: "/images/Next-Vendor-Management.svg",
-    bgClass: "bg-[#B5E4F3]",
-  },
-  {
-    id: 3,
-    num: "04",
-    title: "Deliver in the field",
-    description:
-      "Field staff access their schedule and service details in real time. Every visit, task, and interaction is recorded — creating a live picture of delivery.",
-    image: "/images/ani-image-01.png",
-    bgClass: "bg-[#DAE5CE]",
-  },
-  {
-    id: 4,
-    num: "05",
-    title: "Record outcomes",
-    description:
-      "Outcomes, notes, and compliance checkpoints are captured at the point of delivery — feeding directly into your reporting, audit trails, and funding claims.",
-    image: "/images/payment-options-1.svg",
-    bgClass: "bg-[#00afbd]",
-  },
-  {
-    id: 5,
-    num: "06",
-    title: "Optimise with AI",
-    description:
-      "AI-powered insights surface patterns across your operations — highlighting inefficiencies, compliance gaps, and workforce utilisation opportunities so you can act before they become problems.",
-    image: "/images/Send-checks.svg", // Using Send-checks.svg here
-    bgClass: "bg-gradient-brand",
-  },
-];
-
-// ─── Right panel variants — directional slide ─────────────────────────────────
-
-const panelVariants: Variants = {
-  enter: (dir: number) => ({
-    y: dir > 0 ? "100%" : "-100%",
-    zIndex: 10,
-  }),
-  center: {
-    y: 0,
-    zIndex: 10,
-    transition: { duration: 0.55, ease: EASE_STANDARD },
-  },
-  exit: () => ({
-    y: 0,
-    zIndex: 0,
-    transition: { duration: 0.55, ease: EASE_STANDARD },
-  }),
+const ICONS: Record<string, () => React.ReactNode> = {
+  "health-social-care": () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M11 19.5C11 19.5 2.5 14 2.5 8.5a4.5 4.5 0 019-0a4.5 4.5 0 019 0C20.5 14 11 19.5 11 19.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    </svg>
+  ),
+  "facilities-management": () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="12" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="3" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="12" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  ),
+  "local-government": () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M11 2l8 4v2H3V6l8-4z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M5 8v9M9 8v9M13 8v9M17 8v9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M3 17h16" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  "industrial-services": () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M11 2v3M11 17v3M2 11h3M17 11h3M4.22 4.22l2.12 2.12M15.66 15.66l2.12 2.12M4.22 17.78l2.12-2.12M15.66 6.34l2.12-2.12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  "energy-utilities": () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M13 2L4 13h7l-2 7 9-11h-7l2-7z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    </svg>
+  ),
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Industry card ────────────────────────────────────────────────────────────
 
-export default function HowSognosWorksPreview() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
-
-  const handleTabClick = (idx: number) => {
-    setDirection(idx > activeTab ? 1 : -1);
-    setActiveTab(idx);
-  };
-
-  const windowHeight = TAB_HEIGHT * VISIBLE;
-  const visibleStart = Math.min(activeTab, tabs.length - 3);
-  const targetY = -visibleStart * TAB_HEIGHT;
-  const slideTransition = { duration: 0.55, ease: EASE_STANDARD };
-
+function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
+  const Icon = ICONS[industry.slug];
   return (
-    <section
-      aria-label="How Sognos works — system overview"
-      className="border border-sognos-border-subtle"
+    <Link
+      href={industry.href}
+      className="group flex flex-col gap-5 rounded-2xl border border-sognos-border-subtle bg-white p-7 transition-all duration-200 hover:border-brand/20 hover:shadow-sm"
     >
-      {/* Heading row */}
-      <div className="border-b border-sognos-border-subtle">
-        <div className="mx-auto max-w-7xl border-x border-dashed border-sognos-border-subtle px-5 pt-24 pb-14">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between">
-            <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
-              One platform.
-              <br />
-              Every part of your operation.
-            </h2>
-            <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
-              Sognos connects service demand, workforce scheduling, and
-              compliance into a single operational loop. Powered by AI,
-              Microsoft Dynamics 365.
-            </p>
-          </div>
-        </div>
+      <div className="flex items-start justify-between">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-sognos-border-subtle bg-neutral-50 text-neutral-400 group-hover:border-brand/20 group-hover:text-brand transition-colors">
+          {Icon && <Icon />}
+        </span>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          className="text-neutral-200 group-hover:text-brand transition-colors mt-1"
+          aria-hidden="true"
+        >
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </div>
 
-      {/* Grid */}
-      <div className="mx-auto max-w-7xl border-x border-dashed border-sognos-border-accent">
-        <motion.div
-          layoutRoot
-          className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-start"
+      <div className="flex flex-col gap-2">
+        <h3 className="font-heading font-medium text-neutral-900 leading-snug tracking-tight">
+          {industry.name}
+        </h3>
+        <p className="text-sm leading-relaxed text-neutral-500">{industry.description}</p>
+      </div>
+
+      <div className="mt-auto flex flex-wrap gap-1.5">
+        {industry.products.map((p) => (
+          <span
+            key={p}
+            className="inline-flex items-center rounded-full border border-sognos-border-subtle bg-neutral-50 px-2.5 py-0.5 text-xs font-medium text-neutral-500"
+          >
+            {p}
+          </span>
+        ))}
+      </div>
+    </Link>
+  );
+}
+
+// ─── Stand-out card ───────────────────────────────────────────────────────────
+
+function StandOutCard() {
+  return (
+    <div className="flex flex-col justify-between rounded-2xl bg-neutral-900 p-7 text-white">
+      <div>
+        <span className="text-xs font-medium uppercase tracking-widest text-neutral-500">
+          Any sector
+        </span>
+        <h3 className="mt-3 font-heading font-medium text-white leading-snug tracking-tight">
+          Not seeing your sector?
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+          If your team coordinates workforce and manages service delivery at scale, Sognos fits. We work across sectors not listed here.
+        </p>
+      </div>
+
+      <div className="mt-8">
+        <Link
+          href="/contact"
+          className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
         >
-          {/* Left — 3-tab content window */}
-          <div
-            className="relative flex flex-col border-l-[3px] border-transparent border-x-0 overflow-hidden"
-            style={{ height: windowHeight }}
-          >
-            <motion.div
-              className="absolute inset-x-0 top-0 side-stack"
-              animate={{ y: targetY }}
-              transition={slideTransition}
-              style={{ willChange: "transform" }}
-            >
-              {tabs.map((tab) => {
-                const isActive = tab.id === activeTab;
+          Get in touch
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
+      </div>
+    </div>
+  );
+}
 
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabClick(tab.id)}
-                    style={{ height: TAB_HEIGHT }}
-                    className={[
-                      "relative w-full text-left px-6",
-                      "flex flex-col justify-center",
-                      isActive
-                        ? "bg-sognos-bg-sunken card"
-                        : "bg-transparent hover:bg-sognos-bg-elevated",
-                    ].join(" ")}
-                  >
-                    {/* Progress bar — remounts on each new active tab */}
-                    {isActive && (
-                      <motion.div
-                        key={activeTab}
-                        className="absolute -left-[5px] top-0 w-[7px] z-999 bg-[var(--sognos-border-strong)]"
-                        style={{
-                          height: "100%",
-                          transformOrigin: "top",
-                          willChange: "transform",
-                        }}
-                        initial={{ scaleY: 0 }}
-                        animate={{ scaleY: 1 }}
-                        transition={{ duration: 0.38, ease: EASE_STANDARD }}
-                      />
-                    )}
+// ─── Section ──────────────────────────────────────────────────────────────────
 
-                    {/* <span
-                      className="block text-xs font-mono mb-1"
-                      style={{ opacity: isActive ? 1 : 0.4 }}
-                    >
-                      {tab.num}
-                    </span> */}
+export default function IndustrySection() {
+  // Build the 6-slot grid: industries 0–3, stand-out, industry 4
+  const slots = [
+    ...INDUSTRIES.slice(0, 4).map((ind) => ({ type: "industry" as const, industry: ind })),
+    { type: "standout" as const },
+    { type: "industry" as const, industry: INDUSTRIES[4] },
+  ];
 
-                    <h5
-                      className="block font-heading text-[22px]"
-                      style={{
-                        opacity: isActive ? 1 : 0.4,
-                        color: isActive
-                          ? "var(--sognos-text-heading)"
-                          : "var(--sognos-text-muted)",
-                      }}
-                    >
-                      {tab.title}
-                    </h5>
+  return (
+    <section className="w-full border-b border-sognos-border-subtle py-24">
+      <div className="mx-auto max-w-7xl px-6">
 
-                    {/* Description unmasking from bottom to top */}
-                    <AnimatePresence initial={false}>
-                      {isActive && (
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: "auto" }}
-                          exit={{ height: 0 }}
-                          transition={{ duration: 0.38, ease: EASE_STANDARD }}
-                          style={{ overflow: "hidden", willChange: "height" }}
-                        >
-                          <div className="pt-2 flex flex-col justify-end min-h-full">
-                            <span className="block desc font-heading text-sm text-slate-600 leading-tigher">
-                              {tab.description}
-                            </span>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                );
-              })}
-            </motion.div>
-          </div>
+        {/* Heading */}
+        <div className="mb-10">
+          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+            Industries
+          </p>
+          <h2 className="font-heading font-medium tracking-tight">
+            Built for service-intensive operations
+          </h2>
+        </div>
 
-          {/* Right — directional slide panel, sticky to match left height */}
-          <div
-            className={`relative overflow-hidden transition-colors duration-500 ${tabs[activeTab].bgClass}`}
-            style={{ height: windowHeight, position: "sticky", top: 0 }}
-          >
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={activeTab}
-                custom={direction}
-                variants={panelVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                data-panel={activeTab}
-                className="absolute inset-0 w-full h-full flex items-center justify-center p-0"
-                style={{ willChange: "transform" }}
-              >
-                <img
-                  src={tabs[activeTab].image}
-                  alt={tabs[activeTab].title}
-                  className="w-full h-full object-contain"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </motion.div>
+        {/* 3×2 grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {slots.map((slot, i) =>
+            slot.type === "industry" ? (
+              <IndustryCard key={slot.industry.slug} industry={slot.industry} />
+            ) : (
+              <StandOutCard key="standout" />
+            )
+          )}
+        </div>
+
       </div>
     </section>
   );

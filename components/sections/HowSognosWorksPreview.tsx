@@ -54,7 +54,7 @@ export default function HowSognosWorksPreview() {
 
   return (
     <section className="w-full py-24 border-b border-sognos-border-subtle">
-      <div className="mx-auto max-w-[1200px] px-6">
+      <div className="mx-auto max-w-7xl px-6">
 
         {/* Heading */}
         <div className="mb-10">
