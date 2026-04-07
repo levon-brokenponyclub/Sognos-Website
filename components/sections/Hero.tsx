@@ -16,11 +16,13 @@ export default function Hero({
       Run your entire service operation
       <br className="hidden sm:block" />
       <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(145deg, #1d8ded 0%, #52a9ff 100%)" }}
-            >
-              on one intelligent platform.
-            </span>
+        className="bg-clip-text text-transparent"
+        style={{
+          backgroundImage: "linear-gradient(145deg, #1d8ded 0%, #52a9ff 100%)",
+        }}
+      >
+        on one intelligent platform.
+      </span>
     </>
   ),
   subtext = "Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.",
@@ -28,7 +30,7 @@ export default function Hero({
   secondaryCTA = { name: "Talk to us", href: "#" },
 }: HeroProps) {
   return (
-    <section className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white min-h-[80vh] lg:h-[90vh]">
+    <section className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white min-h-[80vh] lg:h-[630px]">
       <FlowCanvas />
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-16 pb-6 border-x border-white/10 border-dashed sm:px-8 sm:py-20 lg:px-6 lg:py-0">

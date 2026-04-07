@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -214,6 +214,8 @@ const SOLUTIONS = [
 ] as const;
 
 type SolutionId = (typeof SOLUTIONS)[number]["id"];
+
+const N = SOLUTIONS.length;
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
@@ -466,15 +468,37 @@ function RightColumn({ solution }: { solution: (typeof SOLUTIONS)[number] }) {
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 export default function SolutionsSection() {
-  const [activeId, setActiveId] = useState<SolutionId>(SOLUTIONS[0].id);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const activeSolution = SOLUTIONS.find((s) => s.id === activeId)!;
+  useEffect(() => {
+    const onScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const track = rect.height - window.innerHeight;
+      if (track <= 0) return;
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / track));
+      setActiveIndex(Math.min(Math.floor(progress * N), N - 1));
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const activeSolution = SOLUTIONS[activeIndex];
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
-        {/* Heading row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+    // Outer scroll track — tall enough to give each tab ~50vh of scroll
+    <section
+      ref={sectionRef}
+      className="relative"
+      style={{ height: `${N * 50 + 100}vh` }}
+    >
+      {/* Heading — scrolls normally, not sticky */}
+      <div className="max-w-7xl w-full mx-auto px-6 border-x border-dashed border-sognos-border-subtle">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pt-12 pb-6">
           <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             Solutions
             <br />
@@ -486,56 +510,61 @@ export default function SolutionsSection() {
             365.
           </p>
         </div>
+      </div>
 
-        {/* Tab nav */}
-        <nav
-          className="flex overflow-x-auto border-b border-sognos-border-subtle mb-0 gap-0 -mb-px"
-          aria-label="Solutions"
-        >
-          {SOLUTIONS.map((s) => {
-            const Icon = ICONS[s.id];
-            const isActive = activeId === s.id;
-            return (
-              <button
-                key={s.id}
-                onClick={() => setActiveId(s.id)}
-                className={`relative flex items-center gap-2 whitespace-nowrap px-5 py-3.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "text-neutral-900"
-                    : "text-neutral-400 hover:text-neutral-600"
-                }`}
-              >
-                <span
-                  className={`transition-colors ${
-                    isActive ? "text-brand" : "text-neutral-300"
+      {/* Sticky panel — only tabs + content lock to viewport */}
+      <div className="sticky top-[70px] h-[calc(100vh-70px)] flex flex-col border-b border-sognos-border-subtle overflow-hidden">
+        <div className="max-w-7xl w-full h-full mx-auto px-6 flex flex-col border-x border-dashed border-sognos-border-subtle">
+          {/* Tab nav */}
+          <nav
+            className="flex overflow-x-auto border-b justify-evenly border-sognos-border-subtle gap-0 -mb-px flex-shrink-0"
+            aria-label="Solutions"
+          >
+            {SOLUTIONS.map((s, i) => {
+              const Icon = ICONS[s.id];
+              const isActive = activeIndex === i;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setActiveIndex(i)}
+                  className={`relative flex items-center gap-2 whitespace-nowrap px-4 py-5 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "text-neutral-900"
+                      : "text-neutral-400 hover:text-neutral-600"
                   }`}
                 >
-                  <Icon />
-                </span>
-                {s.label}
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />
-                )}
-              </button>
-            );
-          })}
-        </nav>
+                  <span
+                    className={`transition-colors ${
+                      isActive ? "text-brand" : "text-neutral-300"
+                    }`}
+                  >
+                    <Icon />
+                  </span>
+                  {s.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
 
-        {/* Content */}
-        <div className="rounded-b-lg border border-t-0 border-sognos-border-subtle overflow-hidden bg-neutral-50/40">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="grid grid-cols-[1fr_2fr]"
-            >
-              <LeftColumn solution={activeSolution} />
-              <RightColumn solution={activeSolution} />
-            </motion.div>
-          </AnimatePresence>
+          {/* Content */}
+          <div className="flex-1 min-h-0 rounded-b-lg border border-t-0 border-sognos-border-subtle overflow-hidden bg-neutral-50/40">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSolution.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="grid grid-cols-[1fr_2fr] h-full"
+              >
+                <LeftColumn solution={activeSolution} />
+                <RightColumn solution={activeSolution} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

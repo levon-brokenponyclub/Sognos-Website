@@ -17,12 +17,13 @@ const caseStudies = [
   {
     company: "Meridian Care Group",
     industry: "Health & Social Care",
-    logo: "/images/logos/meridian-care.svg",
+    logo: "/logos/penrith-city-council-logo.png",
     stat1: "↑ 43%",
     stat1Label: "Care worker utilisation",
     stat2: "18",
     stat2Label: "Locations live",
-    quote: "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically.",
+    quote:
+      "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically.",
     author: "Sarah Mitchell",
     role: "Director of Operations",
     href: "/customers/meridian-care-group",
@@ -30,12 +31,13 @@ const caseStudies = [
   {
     company: "Summit FM Solutions",
     industry: "Facilities Management",
-    logo: "/images/logos/summit-fm.svg",
+    logo: "/logos/flourish-australia-logo.png",
     stat1: "−28%",
     stat1Label: "Missed service visits",
     stat2: "3 days",
     stat2Label: "Deployment to go-live",
-    quote: "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works.",
+    quote:
+      "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works.",
     author: "James Holt",
     role: "Head of Field Operations",
     href: "/customers/summit-fm",
@@ -43,12 +45,13 @@ const caseStudies = [
   {
     company: "Lakeshore Council",
     industry: "Local Government",
-    logo: "/images/logos/lakeshore-council.svg",
+    logo: "/logos/auckland-airport-logo.png",
     stat1: "100%",
     stat1Label: "CQC compliance",
     stat2: "12 mo",
     stat2Label: "Consecutive clean audits",
-    quote: "We've moved from reactive to proactive compliance. Inspectors comment on it every visit.",
+    quote:
+      "We've moved from reactive to proactive compliance. Inspectors comment on it every visit.",
     author: "Claire Donovan",
     role: "Service Delivery Manager",
     href: "/customers/lakeshore-council",
@@ -61,7 +64,8 @@ const caseStudies = [
     stat1Label: "Faster scheduling cycle",
     stat2: "↓ 19%",
     stat2Label: "Overtime costs",
-    quote: "From request to worker allocation used to take days. Now it's measured in minutes.",
+    quote:
+      "From request to worker allocation used to take days. Now it's measured in minutes.",
     author: "Tom Adeyemi",
     role: "Operations Director",
     href: "/customers/apex-industrial",
@@ -74,7 +78,8 @@ const caseStudies = [
     stat1Label: "Compliance incidents",
     stat2: "↑ 37%",
     stat2Label: "First-time fix rate",
-    quote: "Sognos connected our compliance, scheduling and reporting into one place. The efficiency gains were immediate.",
+    quote:
+      "Sognos connected our compliance, scheduling and reporting into one place. The efficiency gains were immediate.",
     author: "Rachel Osei",
     role: "VP of Service Operations",
     href: "/customers/clearfield-energy",
@@ -177,16 +182,16 @@ export default function CustomerStories() {
                 />
 
                 {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/45" />
+                <div className="absolute inset-0 bg-black/65" />
 
                 {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-between p-8">
+                <div className="relative z-10 h-full flex flex-col justify-between p-4 pt-8">
                   {/* Top: industry + company */}
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-white/60">
+                    <p className="text-xs font-medium uppercase tracking-widest text-white/80">
                       {item.industry}
                     </p>
-                    <p className="text-sm font-medium text-white/80 mt-1">
+                    <p className="text-sm font-medium text-white mt-1">
                       {item.company}
                     </p>
                   </div>
@@ -194,11 +199,11 @@ export default function CustomerStories() {
                   {/* Bottom card */}
                   <div className="bg-white rounded-lg px-5 py-5">
                     {/* Client logo */}
-                    <div className="mb-4 h-6 flex items-center">
+                    <div className="mb-4 h-14 flex items-center">
                       <img
                         src={item.logo}
                         alt={item.company}
-                        className="h-full w-auto max-w-[140px] object-contain object-left grayscale opacity-60"
+                        className="h-full w-auto max-w-[140px] object-contain object-left"
                       />
                     </div>
 
@@ -244,8 +249,20 @@ export default function CustomerStories() {
                         className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-900 underline underline-offset-2 hover:opacity-60 transition-opacity"
                       >
                         Read the case study
-                        <svg width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                          <path d="M2 8L8 2M8 2H3.5M8 2v4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="9"
+                          height="9"
+                          viewBox="0 0 10 10"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M2 8L8 2M8 2H3.5M8 2v4.5"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </a>
                     </div>
