@@ -1,202 +1,135 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
-import {
-  motion,
-  animate,
-  useMotionValue,
-  useMotionValueEvent,
-} from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ProcessFlow from "@/components/ui/ProcessFlow";
+import Workforce from "@/components/ui/Workforce";
+import OutcomesFlow from "@/components/ui/OutcomesFlow";
 
-const GAP = 20;
-const VIDEO_SRC =
-  "https://www.shutterstock.com/shutterstock/videos/3740674987/preview/stock-footage-people-back-or-volunteer-with-tshirt-for-donation-non-profit-organization-or-community-service-in.webm";
+const TABS = [
+  {
+    id: "demand",
+    label: "Manage demand",
+    description:
+      "SognosCare captures every referral, care plan and service request — triaged, assigned and compliance-tracked from day one.",
+  },
+  {
+    id: "workforce",
+    label: "Coordinate workforce",
+    description:
+      "SognosRoster matches the right worker to every job in real time — factoring skills, location, availability and compliance.",
+  },
+  {
+    id: "outcomes",
+    label: "Track outcomes",
+    description:
+      "Live dashboards surface utilisation, compliance and costs across every service, site and workforce team.",
+  },
+] as const;
 
-const caseStudies = [
-  {
-    company: "Meridian Care Group",
-    industry: "Health & Social Care",
-    metric: "↑ 43%",
-    description: "Increase in care worker utilisation across 18 locations",
-  },
-  {
-    company: "Summit FM Solutions",
-    industry: "Facilities Management",
-    metric: "−28%",
-    description: "Reduction in missed service visits after scheduling overhaul",
-  },
-  {
-    company: "Lakeshore Council",
-    industry: "Local Government",
-    metric: "100%",
-    description: "CQC compliance maintained across 12 consecutive months",
-  },
-  {
-    company: "Apex Industrial Services",
-    industry: "Industrial Services",
-    metric: "2.4×",
-    description: "Faster scheduling cycle from request to worker allocation",
-  },
-  {
-    company: "Clearfield Energy",
-    industry: "Energy & Utilities",
-    metric: "−31%",
-    description: "Reduction in compliance incidents year-on-year",
-  },
-];
+const AUTOPLAY_MS = 6500;
 
-export default function HowItWorks() {
-  const x = useMotionValue(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [maxDrag, setMaxDrag] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function HowSognosWorksPreview() {
+  const [active, setActive] = useState(0);
+  const [visited, setVisited] = useState<Set<number>>(new Set([0]));
+  const [paused, setPaused] = useState(false);
 
-  const getCardWidth = useCallback(() => {
-    if (!trackRef.current) return 626;
-    return (
-      (trackRef.current.scrollWidth - GAP * (caseStudies.length - 1)) /
-      caseStudies.length
+  useEffect(() => {
+    if (paused) return;
+    const t = setTimeout(
+      () => setActive((prev) => (prev + 1) % TABS.length),
+      AUTOPLAY_MS
     );
-  }, []);
+    return () => clearTimeout(t);
+  }, [active, paused]);
 
   useEffect(() => {
-    const update = () => {
-      if (!trackRef.current || !viewportRef.current) return;
-      const trackWidth = trackRef.current.scrollWidth;
-      const containerWidth = viewportRef.current.clientWidth;
-      setMaxDrag(Math.min(0, -(trackWidth - containerWidth)));
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+    setVisited((prev) => new Set([...prev, active]));
+  }, [active]);
 
-  // Derive active index from drag position
-  useMotionValueEvent(x, "change", (latest) => {
-    const cardWidth = getCardWidth();
-    const idx = Math.round(-latest / (cardWidth + GAP));
-    setActiveIndex(Math.max(0, Math.min(idx, caseStudies.length - 1)));
-  });
-
-  // Play the active slide's video; pause all others
-  useEffect(() => {
-    videoRefs.current.forEach((video, i) => {
-      if (!video) return;
-      if (i === activeIndex) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    });
-  }, [activeIndex]);
-
-  const step = (dir: 1 | -1) => {
-    const cardWidth = getCardWidth();
-    const next = x.get() - dir * (cardWidth + GAP);
-    animate(x, Math.max(Math.min(next, 0), maxDrag), {
-      type: "spring",
-      damping: 30,
-      stiffness: 300,
-    });
+  const handleTab = (idx: number) => {
+    setActive(idx);
+    setPaused(true);
   };
 
   return (
-    <section aria-label="Case studies" className="py-20 overflow-hidden">
-      {/* Header */}
-      <div className="mx-auto max-w-[1320px] px-6 mb-10">
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="text-sm font-medium text-neutral-425 mb-3 uppercase tracking-widest">
-              Case Studies
-            </p>
-            <h2 className="text-4xl font-medium leading-tight">
-              Outcomes in the field
-            </h2>
-          </div>
+    <section className="w-full py-24 border-b border-sognos-border-subtle">
+      <div className="mx-auto max-w-[1200px] px-6">
 
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              onClick={() => step(-1)}
-              aria-label="Previous slide"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <button
-              onClick={() => step(1)}
-              aria-label="Next slide"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 hover:border-neutral-700 transition-colors"
-            >
-              <ArrowRight size={16} />
-            </button>
-          </div>
+        {/* Heading */}
+        <div className="mb-10">
+          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+            How it works
+          </p>
+          <h2 className="font-heading font-medium tracking-tight">
+            From referral to outcome
+          </h2>
         </div>
-      </div>
 
-      {/* Slider — starts at container left, 2nd slide overflows right of viewport */}
-      <div ref={viewportRef} className="mx-auto max-w-[1320px] px-6">
-        <motion.div
-          ref={trackRef}
-          style={{ x, gap: GAP }}
-          drag="x"
-          dragConstraints={{ left: maxDrag, right: 0 }}
-          dragElastic={0.05}
-          className="flex cursor-grab active:cursor-grabbing"
-        >
-          {caseStudies.map((item, i) => (
-            <div
-              key={i}
-              className="relative flex-shrink-0 min-w-[82vw] lg:min-w-[626px] h-[425px] rounded-xl overflow-hidden"
-            >
-              {/* Video background */}
-              <video
-                ref={(el) => {
-                  videoRefs.current[i] = el;
-                }}
-                src={VIDEO_SRC}
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+        {/* Left tabs + right content */}
+        <div className="flex rounded-2xl border border-sognos-border-subtle overflow-hidden">
 
-              {/* Persistent dark overlay — ensures top text is always readable */}
-              <div className="absolute inset-0 bg-black/45" />
-
-              {/* Content */}
-              <div className="relative z-10 h-full flex flex-col justify-between p-8">
-                {/* Top: industry + company on video */}
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-widest text-white/60">
-                    {item.industry}
-                  </p>
-                  <p className="text-sm font-medium text-white/80 mt-1">
-                    {item.company}
-                  </p>
+          {/* Left: Tab buttons */}
+          <div className="w-[40%] flex-shrink-0 flex flex-col divide-y divide-sognos-border-subtle border-r border-sognos-border-subtle">
+            {TABS.map((tab, i) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTab(i)}
+                className={`relative flex-1 px-5 py-6 text-left transition-colors ${
+                  active === i
+                    ? "bg-white"
+                    : "bg-neutral-50/80 hover:bg-white/60"
+                }`}
+              >
+                {/* Progress bar — top border */}
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-neutral-100">
+                  {active === i && (
+                    <motion.div
+                      key={`progress-${i}-${active}`}
+                      className="h-full bg-brand"
+                      initial={{ width: "0%" }}
+                      animate={paused ? false : { width: "100%" }}
+                      transition={{
+                        duration: AUTOPLAY_MS / 1000,
+                        ease: "linear",
+                      }}
+                    />
+                  )}
                 </div>
 
-                {/* Bottom: white stat container */}
-                <div
-                  style={{
-                    background: "white",
-                    borderRadius: 8,
-                    padding: "35px 20px",
-                  }}
+                <p
+                  className={`text-sm font-semibold leading-snug transition-colors ${
+                    active === i ? "text-neutral-900" : "text-neutral-400"
+                  }`}
                 >
-                  <p className="text-5xl font-semibold text-neutral-900">
-                    {item.metric}
-                  </p>
-                  <p className="text-base text-neutral-500 mt-2 leading-snug">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </motion.div>
+                  {tab.label}
+                </p>
+                <p className="mt-1.5 text-xs leading-relaxed text-neutral-500">
+                  {tab.description}
+                </p>
+              </button>
+            ))}
+          </div>
+
+          {/* Right: Active diagram */}
+          <div className="flex flex-1 min-h-[400px] items-center justify-center overflow-hidden bg-neutral-50/40 p-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="w-full flex items-center justify-center"
+              >
+                {active === 0 && <ProcessFlow trigger={visited.has(0)} />}
+                {active === 1 && <Workforce trigger={visited.has(1)} />}
+                {active === 2 && <OutcomesFlow trigger={visited.has(2)} />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
       </div>
     </section>
   );
