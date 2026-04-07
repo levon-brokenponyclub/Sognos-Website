@@ -36,39 +36,41 @@ export default function HowSognosWorksPreview() {
 
   useEffect(() => {
     if (paused) return;
-    const t = setTimeout(
-      () => setActive((prev) => (prev + 1) % TABS.length),
-      AUTOPLAY_MS
-    );
+    const t = setTimeout(() => {
+      setActive((prev) => {
+        const next = (prev + 1) % TABS.length;
+        setVisited((v) => new Set([...v, next]));
+        return next;
+      });
+    }, AUTOPLAY_MS);
     return () => clearTimeout(t);
   }, [active, paused]);
 
-  useEffect(() => {
-    setVisited((prev) => new Set([...prev, active]));
-  }, [active]);
-
   const handleTab = (idx: number) => {
     setActive(idx);
+    setVisited((prev) => new Set([...prev, idx]));
     setPaused(true);
   };
 
   return (
-    <section className="w-full py-24 border-b border-sognos-border-subtle">
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-        <div className="mb-10">
-          <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
-            How it works
-          </p>
-          <h2 className="font-heading font-medium tracking-tight">
-            From referral to outcome
+    <section className="w-full border-b border-t border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+        {/* Heading row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
+          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+            One platform.
+            <br />
+            From referral to outcome.
           </h2>
+          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+            Sognos connects service demand, workforce scheduling, and compliance
+            into a single operational loop. Powered by AI, Microsoft Dynamics
+            365.
+          </p>
         </div>
 
         {/* Left tabs + right content */}
-        <div className="flex rounded-2xl border border-sognos-border-subtle overflow-hidden">
-
+        <div className="flex rounded-lg border border-sognos-border-subtle overflow-hidden">
           {/* Left: Tab buttons */}
           <div className="w-[40%] flex-shrink-0 flex flex-col divide-y divide-sognos-border-subtle border-r border-sognos-border-subtle">
             {TABS.map((tab, i) => (
@@ -128,7 +130,6 @@ export default function HowSognosWorksPreview() {
               </motion.div>
             </AnimatePresence>
           </div>
-
         </div>
       </div>
     </section>
