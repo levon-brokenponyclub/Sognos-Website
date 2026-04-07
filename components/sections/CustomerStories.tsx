@@ -46,7 +46,7 @@ const caseStudies = [
   },
 ];
 
-export default function HowItWorks() {
+export default function CustomerStories() {
   const x = useMotionValue(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -74,14 +74,12 @@ export default function HowItWorks() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Derive active index from drag position
   useMotionValueEvent(x, "change", (latest) => {
     const cardWidth = getCardWidth();
     const idx = Math.round(-latest / (cardWidth + GAP));
     setActiveIndex(Math.max(0, Math.min(idx, caseStudies.length - 1)));
   });
 
-  // Play the active slide's video; pause all others
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return;
@@ -104,15 +102,16 @@ export default function HowItWorks() {
   };
 
   return (
-    <section aria-label="Case studies" className="py-20 overflow-hidden">
+    <section aria-label="Customer stories" className="w-full border-b border-sognos-border-subtle py-24 overflow-hidden">
+
       {/* Header */}
-      <div className="mx-auto max-w-[1320px] px-6 mb-10">
+      <div className="mx-auto max-w-7xl px-6 mb-10">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-sm font-medium text-neutral-425 mb-3 uppercase tracking-widest">
-              Case Studies
+            <p className="text-sm font-medium uppercase tracking-widest text-neutral-400 mb-3">
+              Customer Stories
             </p>
-            <h2 className="text-4xl font-medium leading-tight">
+            <h2 className="font-heading font-medium tracking-tight">
               Outcomes in the field
             </h2>
           </div>
@@ -136,8 +135,8 @@ export default function HowItWorks() {
         </div>
       </div>
 
-      {/* Slider — starts at container left, 2nd slide overflows right of viewport */}
-      <div ref={viewportRef} className="mx-auto max-w-[1320px] px-6">
+      {/* Slider */}
+      <div ref={viewportRef} className="mx-auto max-w-7xl px-6">
         <motion.div
           ref={trackRef}
           style={{ x, gap: GAP }}
@@ -149,13 +148,11 @@ export default function HowItWorks() {
           {caseStudies.map((item, i) => (
             <div
               key={i}
-              className="relative flex-shrink-0 min-w-[82vw] lg:min-w-[626px] h-[425px] rounded-xl overflow-hidden"
+              className="relative flex-shrink-0 w-[82vw] lg:w-[626px] h-[425px] rounded-xl overflow-hidden"
             >
               {/* Video background */}
               <video
-                ref={(el) => {
-                  videoRefs.current[i] = el;
-                }}
+                ref={(el) => { videoRefs.current[i] = el; }}
                 src={VIDEO_SRC}
                 muted
                 loop
@@ -163,12 +160,11 @@ export default function HowItWorks() {
                 className="absolute inset-0 w-full h-full object-cover"
               />
 
-              {/* Persistent dark overlay — ensures top text is always readable */}
+              {/* Dark overlay */}
               <div className="absolute inset-0 bg-black/45" />
 
               {/* Content */}
               <div className="relative z-10 h-full flex flex-col justify-between p-8">
-                {/* Top: industry + company on video */}
                 <div>
                   <p className="text-xs font-medium uppercase tracking-widest text-white/60">
                     {item.industry}
@@ -178,14 +174,7 @@ export default function HowItWorks() {
                   </p>
                 </div>
 
-                {/* Bottom: white stat container */}
-                <div
-                  style={{
-                    background: "white",
-                    borderRadius: 8,
-                    padding: "35px 20px",
-                  }}
-                >
+                <div className="bg-white rounded-lg px-5 py-8">
                   <p className="text-5xl font-semibold text-neutral-900">
                     {item.metric}
                   </p>
@@ -198,6 +187,7 @@ export default function HowItWorks() {
           ))}
         </motion.div>
       </div>
+
     </section>
   );
 }

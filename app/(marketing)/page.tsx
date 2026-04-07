@@ -2,7 +2,7 @@ import Hero from "@/components/sections/Hero";
 import LogoStrip from "@/components/sections/LogoStrip";
 import HowSognosWorksPreview from "@/components/sections/HowSognosWorksPreview";
 import ProductSection from "@/components/sections/ProductSection";
-import HowItWorks from "@/components/sections/HowItWorks";
+import CustomerStories from "@/components/sections/CustomerStories";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import IndustrySection from "@/components/sections/IndustrySection";
 import ProofSection from "@/components/sections/ProofSection";
@@ -17,7 +17,7 @@ export default function HomePage() {
       <HowSognosWorksPreview />
       <ProductSection />
       <SolutionsSection />
-      <HowItWorks />
+      <CustomerStories />
       <IndustrySection />
       <ProofSection />
       <NewsInsightSection />
