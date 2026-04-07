@@ -29,15 +29,15 @@ export default function Hero({
         <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-12 lg:gap-0 items-stretch flex-1">
           {/* Col 1 — headline, subtext, CTAs */}
           <div className="flex flex-col justify-center">
-            <h1 className="text-h1 font-heading font-normal leading-heading tracking-heading text-white sm:text-6xl lg:text-5xl">
+            <h1 className="text-4xl text-center font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-left lg:text-5xl">
               {headline}
             </h1>
 
-            <p className="mt-6 max-w-4/5 text-base text-white/80 sm:text-xl">
+            <p className="mt-6 text-base text-white/80 text-center sm:text-lg lg:text-left lg:max-w-4/5">
               {subtext}
             </p>
 
-            <div className="mt-8 flex flex-col items-start justify-start gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-row items-center justify-center gap-3 lg:justify-start">
               <Link
                 href={primaryCTA.href}
                 className="inline-flex items-start justify-center rounded-md bg-white px-8 py-3 text-sm font-semibold text-brand transition-colors hover:bg-neutral-100"
