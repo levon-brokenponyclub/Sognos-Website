@@ -53,21 +53,10 @@ export default function Hero({
             </div>
           </div>
 
-          {/* Col 2 — two equal-height rows (hidden on mobile) */}
-          <div className="hidden lg:flex flex-col gap-0">
-            {/* Row 1 */}
-            <div className="flex-1 p-8 flex flex-col justify-between hero-standblock">
-              {/*<h3 className="text-lg font-semibold text-white">
-                Placeholder heading one
-              </h3>
-              <p className="mt-3 text-sm text-white/60">
-                Supporting copy for this card. Describe the key benefit or
-                feature in one or two concise sentences.
-              </p>*/}
-            </div>
-
-            {/* Row 2 — social proof */}
-            <div className="flex-1 p-8 flex flex-col justify-end gap-6">
+          {/* Col 2 — social proof */}
+          <div className="flex flex-col">
+            {/* Social proof */}
+            <div className="flex-1 p-6 flex flex-col items-center justify-center gap-6 lg:items-start lg:justify-end lg:p-8">
 
               {/* Stat */}
               <div>
