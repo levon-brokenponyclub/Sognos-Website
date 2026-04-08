@@ -30,10 +30,10 @@ export default function Hero({
   secondaryCTA = { name: "Talk to us", href: "#" },
 }: HeroProps) {
   return (
-    <section className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white min-h-[80vh] lg:h-[630px]">
+    <section data-header-dark className="relative flex flex-col bg-gradient-hero overflow-hidden text-white border-10 border-b-0 rounded-2xl border-white min-h-[80vh] lg:h-[630px]">
       <FlowCanvas />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-16 pb-6 border-x border-white/10 border-dashed sm:px-8 sm:py-20 lg:px-6 lg:py-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-[100px] pb-6 border-x border-white/10 border-dashed sm:px-8 sm:pt-[110px] sm:pb-20 lg:px-6 lg:pt-[100px] lg:pb-0">
         <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-12 lg:gap-0 items-stretch flex-1">
           {/* Col 1 — headline, subtext, CTAs */}
           <div className="flex flex-col justify-center">

@@ -51,7 +51,7 @@ Current homepage composition:
 
 ### Phase 3: Alignment and Source-of-Truth Cleanup
 
-In progress:
+Completed:
 - align core documentation with the live architecture
 - remove standalone Platform references from shared content/navigation surfaces
 - normalize solution and industry taxonomy
@@ -77,6 +77,7 @@ Each page should include:
 ### Phase 5: Solutions and Industries Pages
 
 Build:
+- solutions hub index (`/solutions`)
 - solution pages for the seven approved solutions
 - dynamic industry pages for the five approved industries
 - supporting customers/resources coverage

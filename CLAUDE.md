@@ -62,6 +62,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
         page.tsx                   🔲
 
     /solutions
+      page.tsx                     🔲 Solutions Hub
       /field-service/page.tsx      🔲
       /customer-relationship-management/page.tsx  🔲
       /customer-insights/page.tsx  🔲
@@ -140,6 +141,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /
 /products/sognoscare
 /products/sognosroster
+/solutions
 /solutions/field-service
 /solutions/customer-relationship-management
 /solutions/customer-insights

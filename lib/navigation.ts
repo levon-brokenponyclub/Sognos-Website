@@ -13,7 +13,7 @@ export type MegaColumn = {
 export type NavGroup = {
   label: string;
   href: string;
-  items?: NavItem[];                               // used on mobile accordion
+  items?: NavItem[];                               // used on mobile for groups without megaMenu
   megaMenu?: [MegaColumn, MegaColumn, MegaColumn]; // always 3 cols; col3 empty → bg-slate-100
 };
 
@@ -40,6 +40,28 @@ const INDUSTRIES: NavItem[] = [
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 export const nav: NavGroup[] = [
+  {
+    label: "Why Sognos",
+    href: "#",
+    megaMenu: [
+      {
+        heading: "Why Choose Us",
+        items: [
+          { name: "Built for complexity", href: "#" },
+          { name: "Microsoft-first platform", href: "#" },
+          { name: "Designed for frontline", href: "#" },
+        ],
+      },
+      {
+        heading: "Explore",
+        items: [
+          { name: "Customer Stories", href: "/customers" },
+          { name: "Partners", href: "#" },
+        ],
+      },
+      { heading: "", items: [] },
+    ],
+  },
   {
     label: "Products",
     href: "/products",
@@ -87,19 +109,26 @@ export const nav: NavGroup[] = [
     ],
   },
   {
-    label: "Customers",
-    href: "/customers",
-  },
-  {
-    label: "Resources",
+    label: "Knowledge Hub",
     href: "/resources",
-  },
-  {
-    label: "Company",
-    href: "/company/about",
-    items: [
-      { name: "About", href: "/company/about" },
-      { name: "Careers", href: "/company/careers" },
+    megaMenu: [
+      {
+        heading: "Resources",
+        items: [
+          { name: "Blog", href: "#" },
+          { name: "Customer Stories", href: "/customers" },
+          { name: "News", href: "#" },
+        ],
+      },
+      {
+        heading: "Company",
+        items: [
+          { name: "Our Team", href: "/company/about" },
+          { name: "Social Responsibility", href: "#" },
+          { name: "Careers", href: "/company/careers" },
+        ],
+      },
+      { heading: "", items: [] },
     ],
   },
 ];

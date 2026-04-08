@@ -53,7 +53,7 @@ export default function HowSognosWorksPreview() {
   };
 
   return (
-    <section className="w-full border-b border-t border-sognos-border-subtle">
+    <section className="w-full border-b border-t border-sognos-border-subtle bg-slate-50">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Centered heading + logo row */}
         <div className="text-center pb-10">
@@ -72,7 +72,7 @@ export default function HowSognosWorksPreview() {
 
           {/* Platform logos */}
           <div className="flex justify-center mt-8">
-            <div className="inline-flex items-center gap-5 rounded-full bg-neutral-900 px-6 py-3">
+            <div className="inline-flex items-center gap-5 rounded-full bg-dodger-blue-900 px-6 py-3">
               <img
                 src="/logos/Dynamics365.svg"
                 alt="Microsoft Dynamics 365"
@@ -95,25 +95,25 @@ export default function HowSognosWorksPreview() {
         </div>
 
         {/* Left tabs + right content */}
-        <div className="flex rounded-lg border border-sognos-border-subtle overflow-hidden">
+        <div className="flex rounded-lg gap-10 overflow-hidden">
           {/* Left: Tab buttons */}
-          <div className="w-[40%] flex-shrink-0 flex flex-col divide-y divide-sognos-border-subtle border-r border-sognos-border-subtle">
+          <div className="w-[40%] gap-6 flex-shrink-0 flex flex-col">
             {TABS.map((tab, i) => (
               <button
                 key={tab.id}
                 onClick={() => handleTab(i)}
                 className={`relative flex-1 px-5 py-6 text-left transition-colors ${
                   active === i
-                    ? "bg-white"
-                    : "bg-neutral-50/80 hover:bg-white/60"
+                    ? "bg-white border border-sognos-border-subtle"
+                    : "bg-slate-50 border border-slate-50 hover:bg-white/60 hover:border-sognos-border-subtle"
                 }`}
               >
                 {/* Progress bar — top border */}
-                <div className="absolute inset-x-0 top-0 h-[2px] bg-neutral-100">
+                <div className="absolute inset-x-0 top-0 h-[4px] bg-neutral-100">
                   {active === i && (
                     <motion.div
                       key={`progress-${i}-${active}`}
-                      className="h-full bg-brand"
+                      className="h-full bg-boston-blue-200"
                       initial={{ width: "0%" }}
                       animate={paused ? false : { width: "100%" }}
                       transition={{
@@ -125,13 +125,13 @@ export default function HowSognosWorksPreview() {
                 </div>
 
                 <p
-                  className={`text-sm font-semibold leading-snug transition-colors ${
+                  className={`text-xl font-semibold leading-snug transition-colors ${
                     active === i ? "text-neutral-900" : "text-neutral-400"
                   }`}
                 >
                   {tab.label}
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-neutral-500">
+                <p className="mt-1.5 text-[14px] leading-relaxed text-neutral-500">
                   {tab.description}
                 </p>
               </button>
@@ -139,7 +139,7 @@ export default function HowSognosWorksPreview() {
           </div>
 
           {/* Right: Active diagram */}
-          <div className="flex flex-1 h-[445px] items-center justify-center overflow-hidden bg-neutral-50/40 p-8">
+          <div className="flex flex-1 h-[445px] bg-white border border-sognos-border-subtle items-center justify-center overflow-hidden p-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}

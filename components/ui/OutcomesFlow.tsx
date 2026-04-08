@@ -9,7 +9,12 @@ const E = [0.22, 1, 0.36, 1] as const;
 
 function useCountUp(
   to: number,
-  opts: { duration?: number; decimals?: number; trigger: boolean; delay?: number }
+  opts: {
+    duration?: number;
+    decimals?: number;
+    trigger: boolean;
+    delay?: number;
+  },
 ): string {
   const { duration = 1.8, decimals = 0, trigger, delay = 0 } = opts;
   const [display, setDisplay] = useState("0");
@@ -23,7 +28,7 @@ function useCountUp(
         ease: [0.22, 1, 0.36, 1],
         onUpdate(v) {
           setDisplay(
-            decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString()
+            decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString(),
           );
         },
       });
@@ -53,12 +58,18 @@ function SparkBars({
   h?: number;
 }) {
   const barW = Math.floor((w - (SPARK.length - 1) * 4) / SPARK.length);
-  const gap  = 4;
+  const gap = 4;
   return (
-    <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden="true">
+    <svg
+      width="100%"
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
       {SPARK.map((v, i) => {
         const bh = (v / 100) * h;
-        const x  = i * (barW + gap);
+        const x = i * (barW + gap);
         return (
           <motion.rect
             key={i}
@@ -79,11 +90,17 @@ function SparkBars({
 // ─── Compliance ring ──────────────────────────────────────────────────────────
 
 function ComplianceRing({ trigger }: { trigger: boolean }) {
-  const r    = 28;
+  const r = 28;
   const circ = 2 * Math.PI * r;
   return (
     <div className="relative flex h-[68px] w-[68px] shrink-0 items-center justify-center">
-      <svg width="68" height="68" viewBox="0 0 68 68" fill="none" className="-rotate-90">
+      <svg
+        width="68"
+        height="68"
+        viewBox="0 0 68 68"
+        fill="none"
+        className="-rotate-90"
+      >
         <circle cx="34" cy="34" r={r} stroke="#e5e7eb" strokeWidth="5" />
         <motion.circle
           cx="34"
@@ -94,11 +111,17 @@ function ComplianceRing({ trigger }: { trigger: boolean }) {
           strokeLinecap="round"
           strokeDasharray={circ}
           initial={{ strokeDashoffset: circ }}
-          animate={trigger ? { strokeDashoffset: circ * 0.02 } : { strokeDashoffset: circ }}
+          animate={
+            trigger
+              ? { strokeDashoffset: circ * 0.02 }
+              : { strokeDashoffset: circ }
+          }
           transition={{ duration: 1.4, delay: 0.3, ease: E }}
         />
       </svg>
-      <span className="absolute text-[13px] font-bold text-neutral-900">98%</span>
+      <span className="absolute text-[13px] font-bold text-neutral-900">
+        98%
+      </span>
     </div>
   );
 }
@@ -106,14 +129,13 @@ function ComplianceRing({ trigger }: { trigger: boolean }) {
 // ─── Left tile — Utilisation (full height) ────────────────────────────────────
 
 function UtilisationTile({ trigger }: { trigger: boolean }) {
-  const hrs     = useCountUp(8420, { duration: 1.8, trigger, delay: 0.2 });
-  const trend   = useCountUp(43,   { duration: 1.4, trigger, delay: 0.3 });
-  const plans   = useCountUp(847,  { duration: 1.6, trigger, delay: 0.4 });
-  const workers = useCountUp(124,  { duration: 1.5, trigger, delay: 0.45 });
+  const hrs = useCountUp(8420, { duration: 1.8, trigger, delay: 0.2 });
+  const trend = useCountUp(43, { duration: 1.4, trigger, delay: 0.3 });
+  const plans = useCountUp(847, { duration: 1.6, trigger, delay: 0.4 });
+  const workers = useCountUp(124, { duration: 1.5, trigger, delay: 0.45 });
 
   return (
     <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
-
       {/* Header */}
       <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
         Utilisation
@@ -129,7 +151,13 @@ function UtilisationTile({ trigger }: { trigger: boolean }) {
         </div>
         <div className="mt-2.5 flex items-center gap-2">
           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-            <svg width="7" height="7" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+            <svg
+              width="7"
+              height="7"
+              viewBox="0 0 8 8"
+              fill="none"
+              aria-hidden="true"
+            >
               <path d="M4 1L7.5 6.5H0.5L4 1Z" fill="currentColor" />
             </svg>
             +{trend}%
@@ -146,12 +174,20 @@ function UtilisationTile({ trigger }: { trigger: boolean }) {
       {/* Metric rows */}
       <div className="space-y-2">
         <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
-          <span className="text-[11px] text-neutral-500">Active Care Plans</span>
-          <span className="text-sm font-bold tabular-nums text-neutral-900">{plans}</span>
+          <span className="text-[11px] text-neutral-500">
+            Active Care Plans
+          </span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">
+            {plans}
+          </span>
         </div>
         <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
-          <span className="text-[11px] text-neutral-500">Workers Scheduled</span>
-          <span className="text-sm font-bold tabular-nums text-neutral-900">{workers}</span>
+          <span className="text-[11px] text-neutral-500">
+            Workers Scheduled
+          </span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">
+            {workers}
+          </span>
         </div>
       </div>
     </div>
@@ -172,7 +208,9 @@ function ComplianceTile({ trigger }: { trigger: boolean }) {
             0
           </p>
           <p className="mt-1.5 text-[10px] leading-relaxed text-neutral-400">
-            incidents this<br />quarter
+            incidents this
+            <br />
+            quarter
           </p>
         </div>
         <ComplianceRing trigger={trigger} />
@@ -189,9 +227,9 @@ function ComplianceTile({ trigger }: { trigger: boolean }) {
 // ─── Right bottom — Cost & Coverage ──────────────────────────────────────────
 
 function CostTile({ trigger }: { trigger: boolean }) {
-  const saving  = useCountUp(31,  { duration: 1.5, trigger, delay: 0.5 });
+  const saving = useCountUp(31, { duration: 1.5, trigger, delay: 0.5 });
   const workers = useCountUp(124, { duration: 1.6, trigger, delay: 0.4 });
-  const visits  = useCountUp(99,  { duration: 1.4, trigger, delay: 0.45 });
+  const visits = useCountUp(99, { duration: 1.4, trigger, delay: 0.45 });
 
   return (
     <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
@@ -201,15 +239,21 @@ function CostTile({ trigger }: { trigger: boolean }) {
       <div className="space-y-2">
         <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
           <span className="text-[11px] text-neutral-500">Cost reduction</span>
-          <span className="text-sm font-bold tabular-nums text-neutral-900">−{saving}%</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">
+            −{saving}%
+          </span>
         </div>
         <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
           <span className="text-[11px] text-neutral-500">Workers active</span>
-          <span className="text-sm font-bold tabular-nums text-neutral-900">{workers}</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">
+            {workers}
+          </span>
         </div>
         <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3.5 py-2.5">
           <span className="text-[11px] text-neutral-500">Visit completion</span>
-          <span className="text-sm font-bold tabular-nums text-neutral-900">{visits}%</span>
+          <span className="text-sm font-bold tabular-nums text-neutral-900">
+            {visits}%
+          </span>
         </div>
       </div>
     </div>
@@ -218,10 +262,13 @@ function CostTile({ trigger }: { trigger: boolean }) {
 
 // ─── OutcomesFlow ─────────────────────────────────────────────────────────────
 
-export default function OutcomesFlow({ trigger = false }: { trigger?: boolean }) {
+export default function OutcomesFlow({
+  trigger = false,
+}: {
+  trigger?: boolean;
+}) {
   return (
     <div className="flex w-full h-full items-stretch gap-4">
-
       {/* Left column — full height */}
       <motion.div
         className="flex flex-[3] flex-col"
@@ -251,7 +298,6 @@ export default function OutcomesFlow({ trigger = false }: { trigger?: boolean })
           <CostTile trigger={trigger} />
         </motion.div>
       </div>
-
     </div>
   );
 }

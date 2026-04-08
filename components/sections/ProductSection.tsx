@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import AnimatedButton from "@/components/ui/AnimatedButton";
 
 const SHINE_BASE = {
   padding: "1px",
@@ -154,14 +155,10 @@ export default function ProductSection() {
     <section
       aria-label="Platform capabilities"
       className="flex overflow-hidden w-full p-0 relative items-center justify-center border-b border-sognos-border-subtle py-24"
-      style={{
-        background:
-          "radial-gradient(125% 125% at 50% 10%, #fff 40%, #ffffff 100%)",
-      }}
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-4 border-x border-dashed border-sognos-border-subtle z-1">
         {/* Section heading */}
-        <div className="mb-16 max-w-4xl">
+        <div className="mb-10 max-w-4xl">
           <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
             Built for regulated operations.{" "}
             <span className="text-soft text-slate-500">
@@ -173,36 +170,39 @@ export default function ProductSection() {
         </div>
 
         {/* 3-card grid */}
-        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-12">
+        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-12 bg-slate-100/90 p-8 rounded-xl h-[560px]">
           {/* ── Card 1 — SognosCare ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full rounded-lg relative overflow-hidden border border-card-border bg-neutral-700">
+          <div className="flex flex-col group transition-all duration-700 ease-out w-full rounded-lg relative overflow-hidden border border-card-border bg-biscay-950">
             <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
               {/* Logo */}
-              <div className="mb-3">
+              <div className="mb-4 flex justify-center">
                 <img
                   src="/logos/sognos-care-logo.svg"
                   alt="SognosCare"
-                  className="h-8 object-contain"
+                  className="h-12 object-contain"
                 />
               </div>
               {/* Byline */}
-              <p className="text-sm font-medium text-white/60 tracking-wide mb-5">
-                From intake to outcome, on one platform
-              </p>
-              <p className="text-white tracking-tight text-sognos-text-body">
+              <h3 className="text-[24px] leading-[30px] font-medium text-[#00a98f] tracking-tight my-5">
+                From intake to outcome
+                <br />
+                on one platform
+              </h3>
+              <p className="text-white tracking-tight text-sognos-text-body mb-6">
                 Deliver safer, simpler care in the field. From mental health to
                 aged care, we help providers reduce admin and stay
                 service-ready—whatever changes come next.
               </p>
-              <a
+              <AnimatedButton
                 href="/products/sognoscare"
-                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white transition-colors"
+                variant="white"
+                className="mt-5"
               >
-                Explore SognosCare <ArrowIcon />
-              </a>
+                Explore SognosCare
+              </AnimatedButton>
 
               {/* White block */}
-              <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_50px)] group-hover:translate-y-0 transition-transform duration-500 ease-out">
+              <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_56px)] group-hover:translate-y-0 transition-transform duration-500 ease-out z-11">
                 <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 pb-2 shadow-2xl">
                   {/* Drawer bar */}
                   <div
@@ -213,14 +213,11 @@ export default function ProductSection() {
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900">
-                          Flourish Australia
-                        </p>
-                        <p className="text-xs text-neutral-400">
-                          Mental Health · Not-for-profit
+                        <p className="text font-heading font-medium text-neutral-700 text-left">
+                          Customer Story
                         </p>
                       </div>
-                      <span className="text-xs font-semibold bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-bold bg-[#f1a10d] text-white/90 tracking-tighter px-2.5 py-1 rounded-full">
                         1,100+ staff
                       </span>
                     </div>
@@ -251,31 +248,34 @@ export default function ProductSection() {
           </div>
 
           {/* ── Card 2 — SognosRoster ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-card-border bg-neutral-700">
+          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-boston-blue-200 bg-[#c4e0efb8]">
             <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
               {/* Logo */}
               <div className="mb-3">
                 <img
                   src="/logos/sognos-roster-logo.svg"
                   alt="SognosRoster"
-                  className="h-8 object-contain"
+                  className="h-12 object-contain"
                 />
               </div>
               {/* Byline */}
-              <p className="text-sm font-medium text-white/60 tracking-wide mb-5">
-                The right worker, for every job, in real time
-              </p>
-              <p className="text-white tracking-tight text-sognos-text-body">
+              <h3 className="text-[24px] leading-[30px] font-medium text-[#00a98f] tracking-tight my-5">
+                The right worker,
+                <br />
+                for every job, in real time
+              </h3>
+              <p className="text-brand tracking-tight text-sognos-text-body mb-6">
                 From scheduling to routing, SognosRoster puts the right worker
                 on every shift — factoring skills, location, availability and
                 compliance automatically.
               </p>
-              <a
+              <AnimatedButton
                 href="/products/sognosroster"
-                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white transition-colors"
+                variant="brand"
+                className="mt-5"
               >
-                Explore SognosRoster <ArrowIcon />
-              </a>
+                Explore SognosRoster
+              </AnimatedButton>
 
               {/* White block */}
               <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_55px)] group-hover:translate-y-0 transition-transform duration-500 ease-out">
@@ -328,7 +328,7 @@ export default function ProductSection() {
           </div>
 
           {/* ── Card 3 — Better Together ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-card-border bg-neutral-900">
+          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-[#dde4ed] bg-[#ffffffb8]">
             <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
               {/* Both logos + plus */}
               <div className="flex items-center gap-2.5 mb-3">
@@ -344,66 +344,22 @@ export default function ProductSection() {
                   className="h-6 object-contain opacity-90"
                 />
               </div>
-
               {/* Byline */}
               <p className="text-sm font-medium text-white/60 tracking-wide mb-5">
                 When care and workforce share one platform
               </p>
-
               <p className="text-white tracking-tight text-sognos-text-body">
                 Every referral gets a worker. Every worker gets the right job.
                 SognosCare and SognosRoster connect the full service lifecycle —
                 from intake to delivery — without manual handoffs.
               </p>
-
               <a
                 href="/products"
                 className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white transition-colors"
               >
                 See the full platform <ArrowIcon />
               </a>
-
               {/* White block — stat panel, no drawer */}
-              <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_55px)] group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 pb-2 shadow-2xl">
-                  {/* Drawer bar */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute flex touch-none items-center justify-center p-3 before:content-[''] before:rounded-full before:bg-neutral-200 before:h-1 before:w-12 inset-x-0 top-0"
-                    data-slot="drawer-bar"
-                  />
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    {[
-                      { value: "1,100+", label: "Staff on one platform" },
-                      { value: "4 wks", label: "Average time to live" },
-                      { value: "100%", label: "Compliance maintained" },
-                    ].map(({ value, label }) => (
-                      <div key={label}>
-                        <p className="text-xl font-bold text-neutral-900 tabular-nums leading-none">
-                          {value}
-                        </p>
-                        <p className="text-[10px] text-neutral-400 mt-1 leading-snug">
-                          {label}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="border-t border-violet-100 py-2 flex items-center justify-between">
-                    <a
-                      href="/products"
-                      className="py-3 text-sm font-heading font-semibold text-violet-600 hover:text-violet-800 transition-colors"
-                    >
-                      Compare products →
-                    </a>
-                    <a
-                      href="/contact"
-                      className="bg-brand text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:opacity-90 transition-opacity"
-                    >
-                      Book a Demo
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
             <div className="z-0 flex-1 overflow-hidden w-full h-full relative" />
           </div>

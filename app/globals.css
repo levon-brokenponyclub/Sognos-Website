@@ -85,6 +85,61 @@
     --shadow-md: var(--sognos-shadow-md);
     --shadow-lg: var(--sognos-shadow-lg);
     --shadow-xl: var(--sognos-shadow-xl);
+
+    /* Palette: Biscay */
+    --color-biscay-50: var(--palette-biscay-50);
+    --color-biscay-100: var(--palette-biscay-100);
+    --color-biscay-200: var(--palette-biscay-200);
+    --color-biscay-300: var(--palette-biscay-300);
+    --color-biscay-400: var(--palette-biscay-400);
+    --color-biscay-500: var(--palette-biscay-500);
+    --color-biscay-600: var(--palette-biscay-600);
+    --color-biscay-700: var(--palette-biscay-700);
+    --color-biscay-800: var(--palette-biscay-800);
+    --color-biscay-900: var(--palette-biscay-900);
+    --color-biscay-950: var(--palette-biscay-950);
+
+    /* Palette: Lily White */
+    --color-lily-white-50: var(--palette-lily-white-50);
+    --color-lily-white-100: var(--palette-lily-white-100);
+    --color-lily-white-200: var(--palette-lily-white-200);
+    --color-lily-white-300: var(--palette-lily-white-300);
+    --color-lily-white-400: var(--palette-lily-white-400);
+    --color-lily-white-500: var(--palette-lily-white-500);
+    --color-lily-white-600: var(--palette-lily-white-600);
+    --color-lily-white-700: var(--palette-lily-white-700);
+    --color-lily-white-800: var(--palette-lily-white-800);
+    --color-lily-white-900: var(--palette-lily-white-900);
+    --color-lily-white-950: var(--palette-lily-white-950);
+
+    /* Palette: Boston Blue */
+    --color-boston-blue-50: var(--palette-boston-blue-50);
+    --color-boston-blue-100: var(--palette-boston-blue-100);
+    --color-boston-blue-200: var(--palette-boston-blue-200);
+    --color-boston-blue-300: var(--palette-boston-blue-300);
+    --color-boston-blue-400: var(--palette-boston-blue-400);
+    --color-boston-blue-500: var(--palette-boston-blue-500);
+    --color-boston-blue-600: var(--palette-boston-blue-600);
+    --color-boston-blue-700: var(--palette-boston-blue-700);
+    --color-boston-blue-800: var(--palette-boston-blue-800);
+    --color-boston-blue-900: var(--palette-boston-blue-900);
+    --color-boston-blue-950: var(--palette-boston-blue-950);
+
+    /* Palette: Dodger Blue */
+    --color-dodger-blue-50: var(--palette-dodger-blue-50);
+    --color-dodger-blue-100: var(--palette-dodger-blue-100);
+    --color-dodger-blue-200: var(--palette-dodger-blue-200);
+    --color-dodger-blue-300: var(--palette-dodger-blue-300);
+    --color-dodger-blue-400: var(--palette-dodger-blue-400);
+    --color-dodger-blue-500: var(--palette-dodger-blue-500);
+    --color-dodger-blue-600: var(--palette-dodger-blue-600);
+    --color-dodger-blue-700: var(--palette-dodger-blue-700);
+    --color-dodger-blue-800: var(--palette-dodger-blue-800);
+    --color-dodger-blue-900: var(--palette-dodger-blue-900);
+    --color-dodger-blue-950: var(--palette-dodger-blue-950);
+
+    /* Surface */
+    --color-surface-100: var(--sognos-surface-100);
 }
 
 /* ========================

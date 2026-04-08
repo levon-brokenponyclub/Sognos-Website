@@ -68,7 +68,7 @@ Industries:
 - `/products`
 - `/products/sognoscare`
 - `/products/sognosroster`
-- `/solutions`
+- `/solutions` (Solutions Hub)
 - `/solutions/field-service`
 - `/solutions/customer-relationship-management`
 - `/solutions/customer-insights`
@@ -121,8 +121,8 @@ The homepage renders in this order:
 <LogoStrip />
 <HowSognosWorksPreview />
 <ProductSection />
-<HowItWorks />
 <SolutionsSection />
+<HowItWorks />
 <IndustrySection />
 <ProofSection />
 <CTASection />
