@@ -51,7 +51,7 @@ export default function Hero({
               </AnimatedButton>
               <Link
                 href={secondaryCTA.href}
-                className="inline-flex items-start justify-center rounded-md px-8 py-3 font-medium text-white border border-white/0 transition-colors hover:bg-accent hover:border-accent"
+                className="inline-flex items-start justify-center rounded-md px-8 py-3 font-medium text-white border border-white/0 transition-colors hover:bg-white/10 hover:border-white/20"
               >
                 {secondaryCTA.name}
               </Link>

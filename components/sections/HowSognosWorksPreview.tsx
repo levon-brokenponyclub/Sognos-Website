@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ProcessFlow from "@/components/ui/ProcessFlow";
 import Workforce from "@/components/ui/Workforce";
@@ -73,21 +74,27 @@ export default function HowSognosWorksPreview() {
           {/* Platform logos */}
           <div className="flex justify-center mt-8">
             <div className="inline-flex items-center gap-5 rounded-full bg-dodger-blue-900 px-6 py-3">
-              <img
+              <Image
                 src="/logos/Dynamics365.svg"
                 alt="Microsoft Dynamics 365"
+                width={140}
+                height={28}
                 className="h-7 w-auto"
               />
               <div className="h-7 w-px bg-white/20" />
-              <img
+              <Image
                 src="/logos/Sognos-Solutions-Solutions-Partner.webp"
                 alt="Microsoft Solutions Partner"
+                width={160}
+                height={32}
                 className="h-8 w-auto"
               />
               <div className="h-9 w-px bg-white/20" />
-              <img
+              <Image
                 src="/logos/copilot-logo.png"
                 alt="Microsoft Copilot"
+                width={140}
+                height={36}
                 className="h-9 w-auto"
               />
             </div>
@@ -95,51 +102,64 @@ export default function HowSognosWorksPreview() {
         </div>
 
         {/* Left tabs + right content */}
-        <div className="flex rounded-lg gap-10 overflow-hidden">
+        <div className="flex rounded-lg gap-14 overflow-hidden">
           {/* Left: Tab buttons */}
-          <div className="w-[40%] gap-6 flex-shrink-0 flex flex-col">
+          <div className="w-[40%] gap-3 shrink-0 flex flex-col">
             {TABS.map((tab, i) => (
               <button
                 key={tab.id}
                 onClick={() => handleTab(i)}
-                className={`relative flex-1 px-5 py-6 text-left transition-colors ${
+                className={[
+                  "relative px-5 py-6 text-left transition-colors rounded-lg",
                   active === i
-                    ? "bg-white border border-sognos-border-subtle"
-                    : "bg-slate-50 border border-slate-50 hover:bg-white/60 hover:border-sognos-border-subtle"
-                }`}
+                    ? "bg-white border border-[--sognos-border]"
+                    : "bg-[--sognos-bg-surface] border border-transparent hover:bg-white/70",
+                ].join(" ")}
               >
-                {/* Progress bar — top border */}
-                <div className="absolute inset-x-0 top-0 h-[4px] bg-neutral-100">
+                {/* Progress bar — top edge */}
+                <div className="absolute inset-x-0 top-0 h-[3px] rounded-t-lg overflow-hidden bg-transparent">
                   {active === i && (
                     <motion.div
                       key={`progress-${i}-${active}`}
-                      className="h-full bg-boston-blue-200"
+                      className="h-full bg-[var(--sognos-highlight)]"
                       initial={{ width: "0%" }}
                       animate={paused ? false : { width: "100%" }}
-                      transition={{
-                        duration: AUTOPLAY_MS / 1000,
-                        ease: "linear",
-                      }}
+                      transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
                     />
                   )}
                 </div>
 
                 <p
                   className={`text-xl font-semibold leading-snug transition-colors ${
-                    active === i ? "text-neutral-900" : "text-neutral-400"
+                    active === i
+                      ? "text-[--sognos-text-heading]"
+                      : "text-slate-500"
                   }`}
                 >
                   {tab.label}
                 </p>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-neutral-500">
-                  {tab.description}
-                </p>
+
+                <AnimatePresence initial={false}>
+                  {active === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <p className="mt-2 text-[14px] leading-relaxed text-[--sognos-text-body]">
+                        {tab.description}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </button>
             ))}
           </div>
 
           {/* Right: Active diagram */}
-          <div className="flex flex-1 h-[445px] bg-white border border-sognos-border-subtle items-center justify-center overflow-hidden p-8">
+          <div className="flex flex-1 h-[445px] bg-white border border-[--sognos-border] items-center justify-center overflow-hidden p-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}

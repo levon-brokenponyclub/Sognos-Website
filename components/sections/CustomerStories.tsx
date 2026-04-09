@@ -1,293 +1,259 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
-import {
-  motion,
-  animate,
-  useMotionValue,
-  useMotionValueEvent,
-} from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import AnimatedButton from "@/components/ui/AnimatedButton";
 
-const GAP = 20;
-const VIDEO_SRC =
-  "https://www.shutterstock.com/shutterstock/videos/3740674987/preview/stock-footage-people-back-or-volunteer-with-tshirt-for-donation-non-profit-organization-or-community-service-in.webm";
+type CaseStudy = {
+  company: string;
+  companySize: string;
+  industry: string;
+  logo: string;
+  quote: string;
+  author: string;
+  role: string;
+  href: string;
+  panelClass: string;
+  quoteIconColor: string;
+};
 
-const caseStudies = [
+const CASE_STUDIES: CaseStudy[] = [
   {
     company: "Meridian Care Group",
+    companySize: "Enterprise",
     industry: "Health & Social Care",
     logo: "/logos/penrith-city-council-logo.png",
-    stat1: "↑ 43%",
-    stat1Label: "Care worker utilisation",
-    stat2: "18",
-    stat2Label: "Locations live",
     quote:
-      "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically.",
+      "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically — and our compliance team finally has the audit trail they need.",
     author: "Sarah Mitchell",
-    role: "Director of Operations",
+    role: "Director of Operations, Meridian Care Group",
     href: "/customers/meridian-care-group",
+    panelClass: "bg-[#cdedfe]",
+    quoteIconColor: "#9bdbfd",
   },
   {
     company: "Summit FM Solutions",
+    companySize: "Mid-market",
     industry: "Facilities Management",
     logo: "/logos/flourish-australia-logo.png",
-    stat1: "−28%",
-    stat1Label: "Missed service visits",
-    stat2: "3 days",
-    stat2Label: "Deployment to go-live",
     quote:
-      "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works.",
+      "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works — and management has the data to prove it.",
     author: "James Holt",
-    role: "Head of Field Operations",
+    role: "Head of Field Operations, Summit FM Solutions",
     href: "/customers/summit-fm",
+    panelClass: "bg-[#ccfff7]",
+    quoteIconColor: "#99fff0",
   },
   {
     company: "Lakeshore Council",
+    companySize: "Enterprise",
     industry: "Local Government",
     logo: "/logos/auckland-airport-logo.png",
-    stat1: "100%",
-    stat1Label: "CQC compliance",
-    stat2: "12 mo",
-    stat2Label: "Consecutive clean audits",
     quote:
-      "We've moved from reactive to proactive compliance. Inspectors comment on it every visit.",
+      "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",
-    role: "Service Delivery Manager",
+    role: "Service Delivery Manager, Lakeshore Council",
     href: "/customers/lakeshore-council",
+    panelClass: "bg-[#e1ccff]",
+    quoteIconColor: "#c399ff",
   },
   {
     company: "Apex Industrial Services",
+    companySize: "Enterprise",
     industry: "Industrial Services",
     logo: "/images/logos/apex-industrial.svg",
-    stat1: "2.4×",
-    stat1Label: "Faster scheduling cycle",
-    stat2: "↓ 19%",
-    stat2Label: "Overtime costs",
     quote:
-      "From request to worker allocation used to take days. Now it's measured in minutes.",
+      "From request to worker allocation used to take days. Now it's measured in minutes. The efficiency gains were immediate and the team bought in straight away.",
     author: "Tom Adeyemi",
-    role: "Operations Director",
+    role: "Operations Director, Apex Industrial Services",
     href: "/customers/apex-industrial",
+    panelClass: "bg-[#ffc999]",
+    quoteIconColor: "#ffa966",
   },
   {
     company: "Clearfield Energy",
+    companySize: "Enterprise",
     industry: "Energy & Utilities",
     logo: "/images/logos/clearfield-energy.svg",
-    stat1: "−31%",
-    stat1Label: "Compliance incidents",
-    stat2: "↑ 37%",
-    stat2Label: "First-time fix rate",
     quote:
-      "Sognos connected our compliance, scheduling and reporting into one place. The efficiency gains were immediate.",
+      "Sognos connected our compliance, scheduling and reporting into one place. We reduced incidents by 31% in the first six months — and our first-time fix rate is the best it's ever been.",
     author: "Rachel Osei",
-    role: "VP of Service Operations",
+    role: "VP of Service Operations, Clearfield Energy",
     href: "/customers/clearfield-energy",
+    panelClass: "bg-[#ffccce]",
+    quoteIconColor: "#ff999c",
   },
 ];
 
+function QuoteIcon({ color }: { color: string }) {
+  return (
+    <svg
+      viewBox="0 0 39 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-8 h-7 shrink-0"
+      aria-hidden="true"
+    >
+      <path
+        d="m16.3 4-4.333-4C4.189 5.557.078 12.89.078 20.668v.445C.078 27.779 3.745 32 8.856 32c4.222 0 7.778-3.334 7.778-7.89 0-4.444-3.111-7.332-7.334-7.332a7.15 7.15 0 0 0-2.666.555C7.41 12.223 11.3 7.78 16.3 4.001Zm21.667 0-4.333-4c-7.778 5.556-11.89 12.89-11.89 20.667v.445c0 6.667 3.668 10.889 8.779 10.889 4.222 0 7.777-3.334 7.777-7.89 0-4.444-3.11-7.332-7.333-7.332a7.15 7.15 0 0 0-2.667.555c.778-5.111 4.667-9.555 9.667-13.333Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
+
 export default function CustomerStories() {
-  const x = useMotionValue(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [maxDrag, setMaxDrag] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [index, setIndex] = useState(0);
+  const total = CASE_STUDIES.length;
 
-  const getCardWidth = useCallback(() => {
-    if (!trackRef.current) return 626;
-    return (
-      (trackRef.current.scrollWidth - GAP * (caseStudies.length - 1)) /
-      caseStudies.length
-    );
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      if (!trackRef.current || !viewportRef.current) return;
-      const trackWidth = trackRef.current.scrollWidth;
-      const containerWidth = viewportRef.current.clientWidth;
-      setMaxDrag(Math.min(0, -(trackWidth - containerWidth)));
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  useMotionValueEvent(x, "change", (latest) => {
-    const cardWidth = getCardWidth();
-    const idx = Math.round(-latest / (cardWidth + GAP));
-    setActiveIndex(Math.max(0, Math.min(idx, caseStudies.length - 1)));
-  });
-
-  useEffect(() => {
-    videoRefs.current.forEach((video, i) => {
-      if (!video) return;
-      if (i === activeIndex) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    });
-  }, [activeIndex]);
-
-  const step = (dir: 1 | -1) => {
-    const cardWidth = getCardWidth();
-    const next = x.get() - dir * (cardWidth + GAP);
-    animate(x, Math.max(Math.min(next, 0), maxDrag), {
-      type: "spring",
-      damping: 30,
-      stiffness: 300,
-    });
+  const go = (next: number) => {
+    if (next < 0 || next >= total) return;
+    setIndex(next);
   };
 
+  const study = CASE_STUDIES[index];
+
   return (
-    <section className="w-full border-b border-sognos-border-subtle overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-l border-dashed border-sognos-border-subtle">
-        {/* Heading row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+    <section className="w-full border-b border-[--sognos-border-subtle] overflow-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-[--sognos-border-subtle]">
+
+        {/* Section header */}
+        <div className="max-w-2xl mb-8">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted]">
+            Customers
+          </p>
+          <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
             Customer Stories
           </h2>
-          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
-            Outcomes in the field
-          </p>
         </div>
 
-        {/* Slider */}
-        <div ref={viewportRef} className="mx-auto max-w-7xl">
-          <motion.div
-            ref={trackRef}
-            style={{ x, gap: GAP }}
-            drag="x"
-            dragConstraints={{ left: maxDrag, right: 0 }}
-            dragElastic={0.05}
-            className="flex cursor-grab active:cursor-grabbing"
-          >
-            {caseStudies.map((item, i) => (
-              <div
-                key={i}
-                className="relative flex-shrink-0 w-[82vw] lg:w-[626px] h-[480px] rounded-xl overflow-hidden"
+        {/* Card */}
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] rounded-2xl overflow-hidden border border-[--sognos-border] min-h-[420px]">
+
+          {/* Left panel — white */}
+          <div className="bg-white border-b lg:border-b-0 lg:border-r border-[--sognos-border] p-8 flex flex-col">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`left-${index}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col h-full"
               >
-                {/* Video background */}
-                <video
-                  ref={(el) => {
-                    videoRefs.current[i] = el;
-                  }}
-                  src={VIDEO_SRC}
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/65" />
-
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-between p-4 pt-8">
-                  {/* Top: industry + company */}
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-white/80">
-                      {item.industry}
-                    </p>
-                    <p className="text-sm font-medium text-white mt-1">
-                      {item.company}
-                    </p>
-                  </div>
-
-                  {/* Bottom card */}
-                  <div className="bg-white rounded-lg px-5 py-5">
-                    {/* Client logo */}
-                    <div className="mb-4 h-14 flex items-center">
-                      <img
-                        src={item.logo}
-                        alt={item.company}
-                        className="h-full w-auto max-w-[140px] object-contain object-left"
-                      />
+                <div className="mb-auto">
+                  <img
+                    src={study.logo}
+                    alt={study.company}
+                    className="h-10 w-auto max-w-[160px] object-contain object-left"
+                  />
+                </div>
+                <div className="mt-auto pt-6">
+                  <hr className="border-[--sognos-border] mb-6" />
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[--sognos-text-muted] mb-1">
+                        Company Size
+                      </p>
+                      <p className="text-sm font-medium text-[--sognos-text-heading]">
+                        {study.companySize}
+                      </p>
                     </div>
-
-                    {/* Stat blocks */}
-                    <div className="flex divide-x divide-neutral-100 mb-4">
-                      <div className="flex-1 pr-4">
-                        <p className="text-2xl font-bold leading-none text-neutral-900">
-                          {item.stat1}
-                        </p>
-                        <p className="text-[11px] text-neutral-400 mt-1">
-                          {item.stat1Label}
-                        </p>
-                      </div>
-                      <div className="flex-1 pl-4">
-                        <p className="text-2xl font-bold leading-none text-neutral-900">
-                          {item.stat2}
-                        </p>
-                        <p className="text-[11px] text-neutral-400 mt-1">
-                          {item.stat2Label}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="h-px bg-neutral-100 mb-4" />
-
-                    {/* Quote */}
-                    <p className="text-sm leading-relaxed text-neutral-700">
-                      &ldquo;{item.quote}&rdquo;
-                    </p>
-
-                    {/* Author + CTA */}
-                    <div className="mt-4 flex items-end justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold text-neutral-900">
-                          {item.author}
-                        </p>
-                        <p className="text-[11px] text-neutral-400 mt-0.5">
-                          {item.role}
-                        </p>
-                      </div>
-                      <a
-                        href={item.href}
-                        className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-900 underline underline-offset-2 hover:opacity-60 transition-opacity"
-                      >
-                        Read the case study
-                        <svg
-                          width="9"
-                          height="9"
-                          viewBox="0 0 10 10"
-                          fill="none"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M2 8L8 2M8 2H3.5M8 2v4.5"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </a>
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[--sognos-text-muted] mb-1">
+                        Industry
+                      </p>
+                      <p className="text-sm font-medium text-[--sognos-text-heading]">
+                        {study.industry}
+                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Right panel — accent color */}
+          <div className={`p-10 flex flex-col transition-colors duration-300 ${study.panelClass}`}>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`right-${index}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                className="flex flex-col h-full"
+              >
+                <QuoteIcon color={study.quoteIconColor} />
+
+                <blockquote className="mt-6 flex-1">
+                  <p
+                    className="font-heading text-xl font-normal leading-snug tracking-tight lg:text-2xl"
+                    style={{ color: "#122454" }}
+                  >
+                    {study.quote}
+                  </p>
+                </blockquote>
+
+                <div className="mt-6">
+                  <p className="text-sm font-semibold" style={{ color: "#122454" }}>
+                    {study.author}
+                  </p>
+                  <p className="text-sm mt-0.5" style={{ color: "rgba(18,36,84,0.55)" }}>
+                    {study.role}
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-6 flex justify-end border-t border-[rgba(18,36,84,0.12)]">
+                  <AnimatedButton href={study.href} variant="transparent">
+                    Read case study
+                  </AnimatedButton>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Bottom nav row */}
+        <div className="flex items-center justify-between mt-6">
+          {/* Dots */}
+          <div className="flex items-center gap-2">
+            {CASE_STUDIES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className="w-2 h-2 rounded-full transition-all duration-200 cursor-pointer"
+                style={{
+                  background: i === index ? "var(--sognos-accent)" : "var(--sognos-border)",
+                  transform: i === index ? "scale(1.3)" : "scale(1)",
+                }}
+              />
             ))}
-          </motion.div>
+          </div>
+
+          {/* Arrows — bottom right */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => go(index - 1)}
+              disabled={index === 0}
+              aria-label="Previous slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-[--sognos-border] text-[--sognos-text-muted] transition-colors hover:border-[--sognos-text-heading] hover:text-[--sognos-text-heading] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <button
+              onClick={() => go(index + 1)}
+              disabled={index === total - 1}
+              aria-label="Next slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-brand text-white transition-opacity hover:opacity-85 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <ArrowRight size={16} />
+            </button>
+          </div>
         </div>
-        <div className="hidden sm:flex items-center gap-2 justify-end">
-          <button
-            onClick={() => step(-1)}
-            aria-label="Previous slide"
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-          >
-            <ArrowLeft size={16} />
-          </button>
-          <button
-            onClick={() => step(1)}
-            aria-label="Next slide"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 hover:border-neutral-700 transition-colors"
-          >
-            <ArrowRight size={16} />
-          </button>
-        </div>
+
       </div>
     </section>
   );

@@ -1,522 +1,245 @@
 "use client";
 
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 
-const SHINE_BASE = {
-  padding: "1px",
-  maskImage: "linear-gradient(#fff, #fff), linear-gradient(#fff, #fff)",
-  maskClip: "content-box, border-box",
-  maskComposite: "exclude",
-  WebkitMaskImage: "linear-gradient(#fff, #fff), linear-gradient(#fff, #fff)",
-  WebkitMaskClip: "content-box, padding-box",
-  WebkitMaskComposite: "xor",
-  ["--shine-duration" as string]: "6s",
-  ["--shine-angle" as string]: "0deg",
-} as React.CSSProperties;
-
-const ExpandIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M15 3h6v6" />
-    <path d="m21 3-7 7" />
-    <path d="m3 21 7-7" />
-    <path d="M9 21H3v-6" />
-  </svg>
-);
-
-const ArrowIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-);
-
-const CloseIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
-  </svg>
-);
-
-type DrawerProduct = "care" | "roster" | null;
-
-const DRAWER_CONTENT: Record<
-  "care" | "roster",
-  {
-    logo: string;
-    logoAlt: string;
-    company: string;
-    context: string;
-    challenge: string;
-    solution: string;
-    quote: string;
-    quoteAuthor: string;
-    outcomes: string[];
-    products: string[];
-    productLink: string;
-    productLabel: string;
-    accentClass: string;
-  }
-> = {
-  care: {
-    logo: "/logos/sognos-care-logo.svg",
-    logoAlt: "SognosCare",
-    company: "Flourish Australia",
-    context: "SognosCare · Mental Health · Not-for-profit",
-    challenge:
-      "Flourish Australia — a national not-for-profit supporting over 1,100 staff delivering mental health services — was running on a legacy Client Information Management System approaching end-of-life. Fragmented systems, manual data handling, and poor reporting visibility were creating unsustainable admin load and compliance risk.",
-    solution:
-      "Sognos deployed Flourish Connect — a unified platform built on Microsoft Dynamics 365 and Power Platform — covering Enquiry, Intake, Support Delivery, NDIS Billing & Claiming, and advanced Power BI reporting. Integrated with payroll, HR, and rostering systems to create a single source of truth across the network.",
-    quote: "You make us very proud — THANK YOU!",
-    quoteAuthor: "Susan McCarthy, Chief Operating Officer — Flourish Australia",
-    outcomes: [
-      "1,100+ users on a single platform",
-      "Eliminated redundant manual processes",
-      "Single source of truth for funder reporting",
-      "Full NDIS claiming & billing automation",
-    ],
-    products: [
-      "Dynamics 365",
-      "Power Platform",
-      "Power BI",
-      "Power Pages",
-      "Copilot AI",
-      "Customer Insights",
-    ],
-    productLink: "/products/sognoscare",
-    productLabel: "Explore SognosCare",
-    accentClass: "text-indigo-600 hover:text-indigo-800",
-  },
-  roster: {
-    logo: "/logos/sognos-roster-logo.svg",
-    logoAlt: "SognosRoster",
-    company: "Asset Security Concepts",
-    context: "SognosRoster · Security Services · Field Service",
-    challenge:
-      "Asset Security Concepts (ASC), a national security provider within the SECOM Group, was managing field scheduling across disconnected systems — Excel spreadsheets, physical whiteboards, and separate finance and inventory tools. The fragmentation created blind spots in job visibility, cost tracking, and technician coordination.",
-    solution:
-      "Sognos implemented an integrated Dynamics 365 Field Service and Business Central solution, unifying ERP and field service management on a single database. Automated smart workflows replaced paper-based processes and real-time dashboards gave management, customers, and technicians visibility across every job.",
-    quote:
-      "Real-time visibility across management, customers, employees, and technicians.",
-    quoteAuthor: "Deployment outcome — Asset Security Concepts",
-    outcomes: [
-      "Eliminated paper-based scheduling entirely",
-      "Real-time job tracking across the network",
-      "Detailed job costing and profitability visibility",
-      "Streamlined workflows with advanced reporting",
-    ],
-    products: [
-      "Dynamics 365 Field Service",
-      "Business Central",
-      "Office 365",
-      "Power BI",
-    ],
-    productLink: "/products/sognosroster",
-    productLabel: "Explore SognosRoster",
-    accentClass: "text-teal-600 hover:text-teal-800",
-  },
+type ProductStory = {
+  quote: string;
+  author: string;
+  company: string;
+  href: string;
 };
 
+type ProductCardData = {
+  logo: string;
+  logoAlt: string;
+  eyebrow: string;
+  title: string;
+  byline: string;
+  description: string;
+  ctaText: string;
+  ctaLink: string;
+  story: ProductStory;
+};
+
+type ProductCardProps = ProductCardData & {
+  index: number;
+  isActive: boolean;
+  isRevealed: boolean;
+  onActivate: (index: number) => void;
+};
+
+const PRODUCT_CARDS: ProductCardData[] = [
+  {
+    logo: "/logos/sognos-care-logo.svg",
+    logoAlt: "SognosCare",
+    eyebrow: "SognosCare",
+    title: "Amplify your impact with AI",
+    byline: "From intake to outcome on one platform",
+    description:
+      "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
+    ctaText: "Explore SognosCare",
+    ctaLink: "/products/sognoscare",
+    story: {
+      quote:
+        "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically — and our compliance team finally has the audit trail they need.",
+      author: "Sarah Mitchell",
+      company: "Meridian Care Group",
+      href: "/customers/meridian-care-group",
+    },
+  },
+  {
+    logo: "/logos/sognos-roster-logo.svg",
+    logoAlt: "SognosRoster",
+    eyebrow: "SognosRoster",
+    title: "More clarity and accountability",
+    byline: "The right worker, for every job, in real time",
+    description:
+      "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
+    ctaText: "Explore SognosRoster",
+    ctaLink: "/products/sognosroster",
+    story: {
+      quote:
+        "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works — and management has the data to prove it.",
+      author: "James Holt",
+      company: "Summit FM Solutions",
+      href: "/customers/summit-fm",
+    },
+  },
+];
+
+function ProductCard({
+  logo,
+  logoAlt,
+  eyebrow,
+  title,
+  byline,
+  description,
+  ctaText,
+  ctaLink,
+  story,
+  index,
+  isActive,
+  isRevealed,
+  onActivate,
+}: ProductCardProps) {
+  return (
+    <motion.article
+      onMouseEnter={() => onActivate(index)}
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
+      className={[
+        "w-full h-full overflow-hidden rounded-2xl text-white",
+        "transition-[flex] duration-500 ease-in-out",
+        "flex flex-col md:flex",
+        "bg-prussian-blue-950",
+        isActive ? "md:flex-2" : "md:flex-1",
+      ].join(" ")}
+    >
+      <div className="flex h-full flex-col lg:flex-row lg:items-stretch">
+
+        {/* Text side — fixed width, never squashes */}
+        <div className="flex flex-col justify-between gap-6 p-8 lg:p-10 lg:w-[380px] lg:shrink-0">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <Image
+                src={logo}
+                alt={logoAlt}
+                width={120}
+                height={32}
+                className="h-8 w-auto object-contain brightness-0 invert"
+              />
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+                {eyebrow}
+              </p>
+            </div>
+
+            <p className="text-sm font-medium tracking-wide text-white/50 mb-3">
+              {title}
+            </p>
+            <h3 className="font-heading text-2xl font-medium leading-tight tracking-tight text-[var(--sognos-edition-green)] lg:text-3xl">
+              {byline}
+            </h3>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70 lg:text-base">
+              {description}
+            </p>
+          </div>
+
+          <AnimatedButton href={ctaLink} variant="white">
+            {ctaText}
+          </AnimatedButton>
+        </div>
+
+        {/* Story panel — fades in/out, fills remaining card width */}
+        <div
+          className={[
+            "flex flex-col justify-between lg:flex-1 lg:min-w-0",
+            "border-t border-white/10 lg:border-t-0 lg:border-l lg:border-white/10",
+            "p-8 lg:p-10",
+            "transition-opacity duration-300",
+            isRevealed ? "opacity-100" : "opacity-0",
+          ].join(" ")}
+        >
+          {/* Quote mark */}
+          <svg viewBox="0 0 39 32" fill="none" className="w-8 h-7 shrink-0 text-white/20" aria-hidden="true">
+            <path
+              d="m16.3 4-4.333-4C4.189 5.557.078 12.89.078 20.668v.445C.078 27.779 3.745 32 8.856 32c4.222 0 7.778-3.334 7.778-7.89 0-4.444-3.111-7.332-7.334-7.332a7.15 7.15 0 0 0-2.666.555C7.41 12.223 11.3 7.78 16.3 4.001Zm21.667 0-4.333-4c-7.778 5.556-11.89 12.89-11.89 20.667v.445c0 6.667 3.668 10.889 8.779 10.889 4.222 0 7.777-3.334 7.777-7.89 0-4.444-3.11-7.332-7.333-7.332a7.15 7.15 0 0 0-2.667.555c.778-5.111 4.667-9.555 9.667-13.333Z"
+              fill="currentColor"
+            />
+          </svg>
+
+          <blockquote className="mt-6 flex-1">
+            <p className="font-heading text-base font-normal leading-relaxed text-white/80 lg:text-lg">
+              {story.quote}
+            </p>
+          </blockquote>
+
+          <div className="mt-8 pt-6 border-t border-white/10">
+            <p className="text-sm font-semibold text-white">{story.author}</p>
+            <p className="text-xs text-white/50 mt-0.5">{story.company}</p>
+            <Link
+              href={story.href}
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--sognos-edition-green)] hover:gap-3 transition-all duration-200"
+            >
+              Read case study
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
 export default function ProductSection() {
-  const [drawerProduct, setDrawerProduct] = useState<DrawerProduct>(null);
-  const drawer = drawerProduct ? DRAWER_CONTENT[drawerProduct] : null;
+  const [activeIndex, setActiveIndex] = useState(0);
+  // revealedIndex: which card's story panel is visible (-1 = none during transition)
+  const [revealedIndex, setRevealedIndex] = useState(0);
+  const transitioning = useRef(false);
+
+  const handleActivate = (index: number) => {
+    if (
+      typeof window !== "undefined" &&
+      !window.matchMedia("(min-width: 768px) and (hover: hover)").matches
+    ) {
+      return;
+    }
+    if (index === activeIndex || transitioning.current) return;
+
+    transitioning.current = true;
+
+    // Phase 1: fade out story panel (300ms — matches fade-in)
+    setRevealedIndex(-1);
+
+    // Phase 2: 80ms hold, then reflow panels
+    setTimeout(() => {
+      setActiveIndex(index);
+
+      // Phase 3: after expansion settles (~480ms), reveal new story panel
+      setTimeout(() => {
+        setRevealedIndex(index);
+        transitioning.current = false;
+      }, 480);
+    }, 380); // 300ms fade + 80ms hold
+  };
 
   return (
     <section
       aria-label="Platform capabilities"
-      className="flex overflow-hidden w-full p-0 relative items-center justify-center border-b border-sognos-border-subtle py-24"
+      className="relative flex w-full items-center justify-center overflow-hidden border-b border-[--sognos-border-subtle] py-24 bg-sky-50"
     >
-      <div className="max-w-7xl w-full mx-auto px-6 py-4 border-x border-dashed border-sognos-border-subtle z-1">
-        {/* Section heading */}
+      <div className="z-1 mx-auto w-full max-w-7xl border-x border-dashed border-[--sognos-border-subtle] px-6 py-4">
         <div className="mb-10 max-w-4xl">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted]">
+            Platform
+          </p>
+          <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
             Built for regulated operations.{" "}
-            <span className="text-soft text-slate-500">
-              For organisations that can&apos;t afford to get things wrong —
-              from compliance and audit trails to real-time workforce
-              optimisation.
+            <span className="text-slate-500">
+              For organisations that can&apos;t afford to get things wrong — from
+              compliance and audit trails to real-time workforce optimisation.
             </span>
           </h2>
         </div>
 
-        {/* 3-card grid */}
-        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-12 bg-slate-100/90 p-8 rounded-xl h-[560px]">
-          {/* ── Card 1 — SognosCare ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full rounded-lg relative overflow-hidden border border-card-border bg-biscay-950">
-            <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
-              {/* Logo */}
-              <div className="mb-4 flex justify-center">
-                <img
-                  src="/logos/sognos-care-logo.svg"
-                  alt="SognosCare"
-                  className="h-12 object-contain"
-                />
-              </div>
-              {/* Byline */}
-              <h3 className="text-[24px] leading-[30px] font-medium text-[#00a98f] tracking-tight my-5">
-                From intake to outcome
-                <br />
-                on one platform
-              </h3>
-              <p className="text-white tracking-tight text-sognos-text-body mb-6">
-                Deliver safer, simpler care in the field. From mental health to
-                aged care, we help providers reduce admin and stay
-                service-ready—whatever changes come next.
-              </p>
-              <AnimatedButton
-                href="/products/sognoscare"
-                variant="white"
-                className="mt-5"
-              >
-                Explore SognosCare
-              </AnimatedButton>
-
-              {/* White block */}
-              <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_56px)] group-hover:translate-y-0 transition-transform duration-500 ease-out z-11">
-                <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 pb-2 shadow-2xl">
-                  {/* Drawer bar */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute flex touch-none items-center justify-center p-3 before:content-[''] before:rounded-full before:bg-neutral-200 before:h-1 before:w-12 inset-x-0 top-0"
-                    data-slot="drawer-bar"
-                  />
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="text font-heading font-medium text-neutral-700 text-left">
-                          Customer Story
-                        </p>
-                      </div>
-                      <span className="text-xs font-bold bg-[#f1a10d] text-white/90 tracking-tighter px-2.5 py-1 rounded-full">
-                        1,100+ staff
-                      </span>
-                    </div>
-                    <blockquote className="text-sm leading-relaxed text-neutral-600 italic border-l-2 border-indigo-200 pl-3">
-                      &ldquo;You make us very proud — THANK YOU!&rdquo;
-                    </blockquote>
-                    <p className="text-xs text-neutral-400 mt-1.5 pl-3">
-                      — Susan McCarthy, Chief Operating Officer
-                    </p>
-                  </div>
-                  <div className="border-t border-indigo-100 py-2 flex items-center justify-between">
-                    <a className="py-3 text-sm font-heading font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer">
-                      Read the full story →
-                    </a>
-                    <button
-                      type="button"
-                      aria-haspopup="dialog"
-                      onClick={() => setDrawerProduct("care")}
-                      className="bg-blue-50 hover:bg-blue-100 p-2.5 rounded-xl text-blue-600 transition-all duration-300 group-hover:scale-110 flex items-center justify-center shadow-sm hover:shadow-md"
-                    >
-                      <ExpandIcon />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="z-0 flex-1 overflow-hidden w-full h-full relative" />
-          </div>
-
-          {/* ── Card 2 — SognosRoster ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-boston-blue-200 bg-[#c4e0efb8]">
-            <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
-              {/* Logo */}
-              <div className="mb-3">
-                <img
-                  src="/logos/sognos-roster-logo.svg"
-                  alt="SognosRoster"
-                  className="h-12 object-contain"
-                />
-              </div>
-              {/* Byline */}
-              <h3 className="text-[24px] leading-[30px] font-medium text-[#00a98f] tracking-tight my-5">
-                The right worker,
-                <br />
-                for every job, in real time
-              </h3>
-              <p className="text-brand tracking-tight text-sognos-text-body mb-6">
-                From scheduling to routing, SognosRoster puts the right worker
-                on every shift — factoring skills, location, availability and
-                compliance automatically.
-              </p>
-              <AnimatedButton
-                href="/products/sognosroster"
-                variant="brand"
-                className="mt-5"
-              >
-                Explore SognosRoster
-              </AnimatedButton>
-
-              {/* White block */}
-              <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_55px)] group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 shadow shadow-2xl">
-                  {/* Drawer bar */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute flex touch-none items-center justify-center p-3 before:content-[''] before:rounded-full before:bg-neutral-200 before:h-1 before:w-12 inset-x-0 top-0"
-                    data-slot="drawer-bar"
-                  />
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900">
-                          Asset Security Concepts
-                        </p>
-                        <p className="text-xs text-neutral-400">
-                          Security Services · Field Service
-                        </p>
-                      </div>
-                      <span className="text-xs font-semibold bg-teal-50 text-teal-600 px-2.5 py-1 rounded-full">
-                        Paper-free ops
-                      </span>
-                    </div>
-                    <blockquote className="text-sm leading-relaxed text-neutral-600 italic border-l-2 border-teal-200 pl-3">
-                      &ldquo;Real-time visibility across management, customers,
-                      employees, and technicians.&rdquo;
-                    </blockquote>
-                    <p className="text-xs text-neutral-400 mt-1.5 pl-3">
-                      — Deployment outcome, Asset Security Concepts
-                    </p>
-                  </div>
-                  <div className="border-t border-teal-100 py-2 flex items-center justify-between">
-                    <a className="py-3 text-sm font-heading font-semibold text-teal-600 hover:text-teal-800 transition-colors cursor-pointer">
-                      Read the full story →
-                    </a>
-                    <button
-                      type="button"
-                      aria-haspopup="dialog"
-                      onClick={() => setDrawerProduct("roster")}
-                      className="bg-teal-50 hover:bg-teal-100 p-2.5 rounded-xl text-teal-600 transition-all duration-300 group-hover:scale-110 flex items-center justify-center shadow-sm hover:shadow-md"
-                    >
-                      <ExpandIcon />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="z-0 flex-1 overflow-hidden w-full h-full relative" />
-          </div>
-
-          {/* ── Card 3 — Better Together ── */}
-          <div className="flex flex-col group transition-all duration-700 ease-out w-full  rounded-lg relative overflow-hidden border border-[#dde4ed] bg-[#ffffffb8]">
-            <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
-              {/* Both logos + plus */}
-              <div className="flex items-center gap-2.5 mb-3">
-                <img
-                  src="/logos/sognos-care-logo.svg"
-                  alt="SognosCare"
-                  className="h-6 object-contain opacity-90"
-                />
-                <span className="text-white/40 text-lg font-light">+</span>
-                <img
-                  src="/logos/sognos-roster-logo.svg"
-                  alt="SognosRoster"
-                  className="h-6 object-contain opacity-90"
-                />
-              </div>
-              {/* Byline */}
-              <p className="text-sm font-medium text-white/60 tracking-wide mb-5">
-                When care and workforce share one platform
-              </p>
-              <p className="text-white tracking-tight text-sognos-text-body">
-                Every referral gets a worker. Every worker gets the right job.
-                SognosCare and SognosRoster connect the full service lifecycle —
-                from intake to delivery — without manual handoffs.
-              </p>
-              <a
-                href="/products"
-                className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white transition-colors"
-              >
-                See the full platform <ArrowIcon />
-              </a>
-              {/* White block — stat panel, no drawer */}
-            </div>
-            <div className="z-0 flex-1 overflow-hidden w-full h-full relative" />
-          </div>
+        <div className="flex flex-col gap-6 md:flex-row md:h-[500px]">
+          {PRODUCT_CARDS.map((card, index) => (
+            <ProductCard
+              key={card.ctaLink}
+              {...card}
+              index={index}
+              isActive={activeIndex === index}
+              isRevealed={revealedIndex === index}
+              onActivate={handleActivate}
+            />
+          ))}
         </div>
       </div>
-
-      {/* ── Shared bottom drawer ── */}
-      <AnimatePresence>
-        {drawerProduct && drawer && (
-          <motion.div
-            className="fixed inset-0 z-50 flex flex-col justify-end"
-            role="dialog"
-            aria-modal="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-              onClick={() => setDrawerProduct(null)}
-              aria-hidden="true"
-            />
-            <motion.div
-              className="relative z-10 bg-white rounded-t-2xl shadow-xl min-h-[80vh] max-w-7xl w-full mx-auto"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            >
-              {/* Drawer bar */}
-              <div
-                aria-hidden="true"
-                className="absolute flex touch-none items-center justify-center p-3 before:content-[''] before:rounded-full before:bg-neutral-300 before:h-1 before:w-12 inset-x-0 top-0"
-                data-slot="drawer-bar"
-              />
-
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={drawer.logo}
-                    alt={drawer.logoAlt}
-                    className="h-7 object-contain"
-                  />
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-900 tracking-tight leading-none">
-                      {drawer.company}
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      {drawer.context}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setDrawerProduct(null)}
-                  aria-label="Close"
-                  className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-                >
-                  <CloseIcon />
-                </button>
-              </div>
-
-              {/* Body */}
-              <div className="px-6 py-8 grid grid-cols-3 gap-8 overflow-y-auto max-h-[60vh]">
-                <div className="col-span-2 space-y-6">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
-                      The challenge
-                    </p>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {drawer.challenge}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
-                      The solution
-                    </p>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {drawer.solution}
-                    </p>
-                  </div>
-                  <blockquote className="border-l-2 border-slate-200 pl-4">
-                    <p className="text-slate-700 text-base leading-relaxed italic">
-                      &ldquo;{drawer.quote}&rdquo;
-                    </p>
-                    <footer className="text-xs text-slate-400 mt-2">
-                      {drawer.quoteAuthor}
-                    </footer>
-                  </blockquote>
-                </div>
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
-                      Outcomes
-                    </p>
-                    <ul className="space-y-2.5">
-                      {drawer.outcomes.map((item) => (
-                        <li
-                          key={item}
-                          className="flex items-start gap-2 text-sm text-slate-600"
-                        >
-                          <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-[10px] font-bold">
-                            ✓
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
-                      Products used
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {drawer.products.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
-                <a
-                  href={drawer.productLink}
-                  className={`text-sm font-medium transition-colors ${drawer.accentClass}`}
-                >
-                  {drawer.productLabel} →
-                </a>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setDrawerProduct(null)}
-                    className="px-4 py-2 text-sm text-slate-500 hover:text-slate-900 transition-colors"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm bg-brand text-white rounded-lg hover:opacity-90 transition-opacity"
-                  >
-                    Book a Demo
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

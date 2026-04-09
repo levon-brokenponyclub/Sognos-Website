@@ -8,8 +8,12 @@ interface AnimatedButtonProps {
   href: string;
   children: React.ReactNode;
   className?: string;
-  /** "white" = white bg + brand icon circle. "brand" = brand bg + white icon circle. */
-  variant?: "white" | "brand";
+  /**
+   * "brand"       = brand bg + white icon bubble (default)
+   * "white"       = white bg + brand icon bubble
+   * "transparent" = transparent bg + border + brand icon bubble
+   */
+  variant?: "white" | "brand" | "transparent";
 }
 
 export default function AnimatedButton({
@@ -18,14 +22,22 @@ export default function AnimatedButton({
   className,
   variant = "brand",
 }: AnimatedButtonProps) {
-  const isWhite = variant === "white";
+  const containerClass =
+    variant === "white"
+      ? "bg-white text-brand"
+      : variant === "transparent"
+      ? "bg-transparent text-[var(--sognos-brand)] border border-[rgba(18,36,84,0.2)]"
+      : "bg-brand text-white";
+
+  const bubbleClass =
+    variant === "brand" ? "bg-white text-brand" : "bg-[var(--sognos-brand)] text-white";
 
   return (
     <Link
       href={href}
       className={cn(
         "relative inline-flex items-center text-sm font-semibold rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden cursor-pointer",
-        isWhite ? "bg-white text-brand" : "bg-brand text-white",
+        containerClass,
         className
       )}
     >
@@ -35,7 +47,7 @@ export default function AnimatedButton({
       <div
         className={cn(
           "absolute right-1 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-44px)] group-hover:rotate-45",
-          isWhite ? "bg-brand text-white" : "bg-white text-brand"
+          bubbleClass
         )}
       >
         <ArrowUpRight size={16} />

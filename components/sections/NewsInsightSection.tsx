@@ -87,11 +87,11 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex-shrink-0 flex flex-col overflow-hidden rounded-2xl border border-sognos-border-subtle bg-white transition-shadow hover:shadow-md w-[280px] sm:w-[320px] lg:w-[340px] h-[420px]"
+      className="group shrink-0 flex flex-col overflow-hidden rounded-2xl border border-sognos-border-subtle bg-white transition-shadow hover:shadow-md w-70 sm:w-[320px] lg:w-85 h-105"
     >
       {/* Image / placeholder */}
       <div
-        className="h-44 w-full flex-shrink-0"
+        className="h-44 w-full shrink-0"
         style={{ background: article.imageBg }}
         aria-hidden="true"
       />

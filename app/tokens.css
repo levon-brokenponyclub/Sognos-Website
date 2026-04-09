@@ -3,130 +3,133 @@
 ======================== */
 
 :root {
-    /* ---- Palette: Biscay ---- */
-    --palette-biscay-50: #eff8ff;
-    --palette-biscay-100: #dbeffe;
-    --palette-biscay-200: #bee4ff;
-    --palette-biscay-300: #92d4fe;
-    --palette-biscay-400: #5ebbfc;
-    --palette-biscay-500: #389cf9;
-    --palette-biscay-600: #227eee;
-    --palette-biscay-700: #1a68db;
-    --palette-biscay-800: #1c54b1;
-    --palette-biscay-900: #1d498b;
-    --palette-biscay-950: #172f58;
+    /* ════════════════════════════════════════════
+       PALETTE FAMILIES
+    ════════════════════════════════════════════ */
 
-    /* ---- Palette: Lily White ---- */
-    --palette-lily-white-50: #f1fafe;
-    --palette-lily-white-100: #e5f5fd;
-    --palette-lily-white-200: #bde9fa;
-    --palette-lily-white-300: #82d9f7;
-    --palette-lily-white-400: #40c6f0;
-    --palette-lily-white-500: #17afe0;
-    --palette-lily-white-600: #0a8ebf;
-    --palette-lily-white-700: #0a719a;
-    --palette-lily-white-800: #0c5f80;
-    --palette-lily-white-900: #104f6a;
-    --palette-lily-white-950: #0b3246;
+    /* ---- Palette: Prussian Blue (Brand) ---- */
+    --color-prussian-blue-50: #eaeefb;
+    --color-prussian-blue-100: #d5def6;
+    --color-prussian-blue-200: #abbded;
+    --color-prussian-blue-300: #819be4;
+    --color-prussian-blue-400: #577adb;
+    --color-prussian-blue-500: #2d59d2;
+    --color-prussian-blue-600: #2447a8;
+    --color-prussian-blue-700: #1b357e;
+    --color-prussian-blue-800: #122454;
+    --color-prussian-blue-900: #09122a;
+    --color-prussian-blue-950: #060c1d;
 
-    /* ---- Palette: Boston Blue ---- */
-    --palette-boston-blue-50: #f2f7f9;
-    --palette-boston-blue-100: #ddeaf0;
-    --palette-boston-blue-200: #bfd7e2;
-    --palette-boston-blue-300: #92bace;
-    --palette-boston-blue-400: #558fae;
-    --palette-boston-blue-500: #427998;
-    --palette-boston-blue-600: #3a6380;
-    --palette-boston-blue-700: #34536a;
-    --palette-boston-blue-800: #314759;
-    --palette-boston-blue-900: #2d3d4c;
-    --palette-boston-blue-950: #1a2632;
+    /* ---- Palette: Cornflower Ocean (Accent / CTA) ---- */
+    --color-cornflower-ocean-50: #e6f6fe;
+    --color-cornflower-ocean-100: #cdedfe;
+    --color-cornflower-ocean-200: #9bdbfd;
+    --color-cornflower-ocean-300: #69c9fc;
+    --color-cornflower-ocean-400: #37b6fb;
+    --color-cornflower-ocean-500: #05a4fa;
+    --color-cornflower-ocean-600: #0483c8;
+    --color-cornflower-ocean-700: #036396;
+    --color-cornflower-ocean-800: #024264;
+    --color-cornflower-ocean-900: #012132;
+    --color-cornflower-ocean-950: #011723;
 
-    /* ---- Palette: Dodger Blue ---- */
-    --palette-dodger-blue-50: #eff7ff;
-    --palette-dodger-blue-100: #dcecfd;
-    --palette-dodger-blue-200: #c1dffc;
-    --palette-dodger-blue-300: #96ccfa;
-    --palette-dodger-blue-400: #65aff5;
-    --palette-dodger-blue-500: #4a94f1;
-    --palette-dodger-blue-600: #2b71e5;
-    --palette-dodger-blue-700: #235cd2;
-    --palette-dodger-blue-800: #224bab;
-    --palette-dodger-blue-900: #214287;
-    --palette-dodger-blue-950: #192a52;
+    /* ---- Palette: Dodger Blue (Highlight) ---- */
+    --color-dodger-blue-50: #e6f3ff;
+    --color-dodger-blue-100: #cde7fe;
+    --color-dodger-blue-200: #9bcffd;
+    --color-dodger-blue-300: #68b7fd;
+    --color-dodger-blue-400: #36a0fc;
+    --color-dodger-blue-500: #0488fb;
+    --color-dodger-blue-600: #036dc9;
+    --color-dodger-blue-700: #025197;
+    --color-dodger-blue-800: #023664;
+    --color-dodger-blue-900: #011b32;
+    --color-dodger-blue-950: #011323;
 
-    /* ---- Color aliases (available as CSS custom properties) ---- */
-    --color-biscay-50: var(--palette-biscay-50);
-    --color-biscay-100: var(--palette-biscay-100);
-    --color-biscay-200: var(--palette-biscay-200);
-    --color-biscay-300: var(--palette-biscay-300);
-    --color-biscay-400: var(--palette-biscay-400);
-    --color-biscay-500: var(--palette-biscay-500);
-    --color-biscay-600: var(--palette-biscay-600);
-    --color-biscay-700: var(--palette-biscay-700);
-    --color-biscay-800: var(--palette-biscay-800);
-    --color-biscay-900: var(--palette-biscay-900);
-    --color-biscay-950: var(--palette-biscay-950);
+    /* ---- Palette: Seagrass (Edition: Green / Care — Disability & Mental Health) ---- */
+    --color-seagrass-50: #e5fffb;
+    --color-seagrass-100: #ccfff7;
+    --color-seagrass-200: #99fff0;
+    --color-seagrass-300: #66ffe8;
+    --color-seagrass-400: #33ffe0;
+    --color-seagrass-500: #00ffd9;
+    --color-seagrass-600: #00ccad;
+    --color-seagrass-700: #009982;
+    --color-seagrass-800: #006657;
+    --color-seagrass-900: #00332b;
+    --color-seagrass-950: #00241e;
 
-    --color-lily-white-50: var(--palette-lily-white-50);
-    --color-lily-white-100: var(--palette-lily-white-100);
-    --color-lily-white-200: var(--palette-lily-white-200);
-    --color-lily-white-300: var(--palette-lily-white-300);
-    --color-lily-white-400: var(--palette-lily-white-400);
-    --color-lily-white-500: var(--palette-lily-white-500);
-    --color-lily-white-600: var(--palette-lily-white-600);
-    --color-lily-white-700: var(--palette-lily-white-700);
-    --color-lily-white-800: var(--palette-lily-white-800);
-    --color-lily-white-900: var(--palette-lily-white-900);
-    --color-lily-white-950: var(--palette-lily-white-950);
+    /* ---- Palette: Grapefruit Pink (Edition: Coral / Care — Support at Home) ---- */
+    --color-grapefruit-pink-50: #ffe5e6;
+    --color-grapefruit-pink-100: #ffccce;
+    --color-grapefruit-pink-200: #ff999c;
+    --color-grapefruit-pink-300: #ff666b;
+    --color-grapefruit-pink-400: #ff333a;
+    --color-grapefruit-pink-500: #ff0008;
+    --color-grapefruit-pink-600: #cc0007;
+    --color-grapefruit-pink-700: #990005;
+    --color-grapefruit-pink-800: #660003;
+    --color-grapefruit-pink-900: #330002;
+    --color-grapefruit-pink-950: #240001;
 
-    --color-boston-blue-50: var(--palette-boston-blue-50);
-    --color-boston-blue-100: var(--palette-boston-blue-100);
-    --color-boston-blue-200: var(--palette-boston-blue-200);
-    --color-boston-blue-300: var(--palette-boston-blue-300);
-    --color-boston-blue-400: var(--palette-boston-blue-400);
-    --color-boston-blue-500: var(--palette-boston-blue-500);
-    --color-boston-blue-600: var(--palette-boston-blue-600);
-    --color-boston-blue-700: var(--palette-boston-blue-700);
-    --color-boston-blue-800: var(--palette-boston-blue-800);
-    --color-boston-blue-900: var(--palette-boston-blue-900);
-    --color-boston-blue-950: var(--palette-boston-blue-950);
+    /* ---- Palette: Sandy Brown (Edition: Orange / Care — Allied Health) ---- */
+    --color-sandy-brown-50: #fff1e5;
+    --color-sandy-brown-100: #ffe4cc;
+    --color-sandy-brown-200: #ffc999;
+    --color-sandy-brown-300: #ffad66;
+    --color-sandy-brown-400: #ff9233;
+    --color-sandy-brown-500: #ff7700;
+    --color-sandy-brown-600: #cc5f00;
+    --color-sandy-brown-700: #994700;
+    --color-sandy-brown-800: #663000;
+    --color-sandy-brown-900: #331800;
+    --color-sandy-brown-950: #241100;
 
-    --color-dodger-blue-50: var(--palette-dodger-blue-50);
-    --color-dodger-blue-100: var(--palette-dodger-blue-100);
-    --color-dodger-blue-200: var(--palette-dodger-blue-200);
-    --color-dodger-blue-300: var(--palette-dodger-blue-300);
-    --color-dodger-blue-400: var(--palette-dodger-blue-400);
-    --color-dodger-blue-500: var(--palette-dodger-blue-500);
-    --color-dodger-blue-600: var(--palette-dodger-blue-600);
-    --color-dodger-blue-700: var(--palette-dodger-blue-700);
-    --color-dodger-blue-800: var(--palette-dodger-blue-800);
-    --color-dodger-blue-900: var(--palette-dodger-blue-900);
-    --color-dodger-blue-950: var(--palette-dodger-blue-950);
+    /* ---- Palette: Bright Lavender (Edition: Purple / Care — Aged Care) ---- */
+    --color-bright-lavender-50: #f0e5ff;
+    --color-bright-lavender-100: #e1ccff;
+    --color-bright-lavender-200: #c399ff;
+    --color-bright-lavender-300: #a666ff;
+    --color-bright-lavender-400: #8833ff;
+    --color-bright-lavender-500: #6a00ff;
+    --color-bright-lavender-600: #5500cc;
+    --color-bright-lavender-700: #400099;
+    --color-bright-lavender-800: #2a0066;
+    --color-bright-lavender-900: #150033;
+    --color-bright-lavender-950: #0f0024;
 
-    /* ---- Surface ---- */
-    --sognos-surface-100: #fafafa;
+    /* ════════════════════════════════════════════
+       SURFACE
+    ════════════════════════════════════════════ */
+
+    --sognos-surface-100: #f1f5f9;
     --color-surface-100: var(--sognos-surface-100);
 
+    /* ════════════════════════════════════════════
+       SEMANTIC TOKENS
+    ════════════════════════════════════════════ */
+
     /* Brand */
-    --sognos-brand: #122348;
-    --sognos-brand-dark: #04142c;
-    --sognos-brand-light: #444444;
-    --sognos-brand-subtle: #006490;
+    --sognos-brand: var(--color-prussian-blue-800);          /* #122454 */
+    --sognos-brand-dark: var(--color-prussian-blue-900);     /* #09122a */
+    --sognos-brand-light: var(--color-prussian-blue-500);    /* #2d59d2 */
+    --sognos-brand-subtle: var(--color-prussian-blue-600);   /* #2447a8 */
     --sognos-brand-foreground: #ffffff;
 
     /* Accent & Highlight */
-    --sognos-accent: #1e96fc;
-    --sognos-accent-subtle: rgb(30 150 252 / 0.1);
-    --sognos-accent-blue: #0d1738;
-    --sognos-highlight: #ff4fa3;
-    --sognos-highlight-subtle: rgb(255 79 163 / 0.12);
+    --sognos-accent: var(--color-cornflower-ocean-500);      /* #05a4fa */
+    --sognos-accent-subtle: rgb(5 164 250 / 0.1);
+    --sognos-accent-blue: var(--color-prussian-blue-950);    /* #060c1d */
+    --sognos-highlight: var(--color-dodger-blue-400);        /* #36a0fc */
+    --sognos-highlight-subtle: rgb(4 136 251 / 0.12);
 
-    --sognos-brand-subtle-300: #6ffacc;
-    --sognos-brand-subtle-700: #00afbd;
+    /* Brand glow / animation colours */
+    --sognos-brand-subtle-300: var(--color-seagrass-300);   /* #66ffe8 */
+    --sognos-brand-subtle-700: var(--color-seagrass-600);   /* #00ccad */
 
-    --sognos-subtle-coral: #ff7276;
-    --sognos-subtle-purple: #be8fff;
+    /* Subtle tints (used in legacy components) */
+    --sognos-subtle-coral: var(--color-grapefruit-pink-300); /* #ff666b */
+    --sognos-subtle-purple: var(--color-bright-lavender-300); /* #a666ff */
 
     /* Neutrals */
     --sognos-neutral-50: #ffffff;
@@ -141,28 +144,28 @@
     --sognos-neutral-900: #0c0c0d;
 
     /* Text & Links */
-    --sognos-text-heading: #061b31;
-    --sognos-text-body: var(--color-slate-600);
+    --sognos-text-heading: var(--color-prussian-blue-950);   /* #060c1d */
+    --sognos-text-body: #475569;
     --sognos-text-muted: #96a3b0;
     --sognos-text-soft: #64748d;
     --sognos-text-inverse: #ffffff;
-    --sognos-text-link: #122348;
+    --sognos-text-link: var(--color-prussian-blue-800);      /* #122454 */
 
-    /* Surfaces & Backgrounds */
-    --sognos-bg-page: #ffffff;
-    --sognos-bg-surface: #fcfcfc;
-    --sognos-bg-elevated: #f7f7f7;
-    --sognos-bg-sunken: #f1f4f8;
+    /* Surfaces & Backgrounds — Slate base */
+    --sognos-bg-page: #ffffff;      /* white */
+    --sognos-bg-surface: #f8fafc;   /* slate-50 */
+    --sognos-bg-elevated: #e2e8f0;  /* slate-200 */
+    --sognos-bg-sunken: #f1f5f9;    /* slate-100 */
 
     /* Borders & Components */
-    --sognos-border: #d8dbe1;
-    --sognos-border-strong: #1d8ded;
-    --sognos-border-subtle: #dcdfe6;
-    --sognos-border-focus: #122348;
-    --sognos-card-border: #e5edf5;
-    --sognos-card-border-soft: #e7ecf1;
-    --sognos-card-bg: #fff;
-    --sognos-subcard-bg: #f6f9fc;
+    --sognos-border: #e5e7eb;                                  /* gray-200 */
+    --sognos-border-strong: var(--color-cornflower-ocean-500); /* #05a4fa */
+    --sognos-border-subtle: #f3f4f6;                           /* gray-100 */
+    --sognos-border-focus: var(--color-prussian-blue-800);     /* #122454 */
+    --sognos-card-border: #f3f4f6;                             /* gray-100 */
+    --sognos-card-border-soft: #e5e7eb;                        /* gray-200 */
+    --sognos-card-bg: #ffffff;
+    --sognos-subcard-bg: #f8fafc;                              /* slate-50 */
 
     /* Status */
     --sognos-success: #10b981;
@@ -174,36 +177,43 @@
     --sognos-info: #3b82f6;
     --sognos-info-light: #dbeafe;
 
-    /* Editions */
-    --sognos-edition-teal: #00a98f;
-    --sognos-edition-orange: #ff9c47;
-    --sognos-edition-coral: #ff7276;
-    --sognos-edition-purple: #be8fff;
+    /* ---- Editions — SognosCare sector identity colours ---- */
+    --sognos-edition-green: var(--color-seagrass-700);          /* #009982 — Disability & Mental Health */
+    --sognos-edition-orange: var(--color-sandy-brown-400);      /* #ff9233 — Allied Health */
+    --sognos-edition-coral: var(--color-grapefruit-pink-300);   /* #ff666b — Support at Home */
+    --sognos-edition-purple: var(--color-bright-lavender-300);  /* #a666ff — Aged Care */
 
     /* Gradients */
-    --sognos-gradient-brand: linear-gradient(135deg, #04142c 0%, #0d1738 100%);
-    --sognos-gradient-accent: linear-gradient(145deg, #1d8ded 0%, #52a9ff 100%);
+    --sognos-gradient-brand: linear-gradient(
+        135deg,
+        var(--color-prussian-blue-900) 0%,
+        var(--color-prussian-blue-950) 100%
+    );
+    --sognos-gradient-accent: linear-gradient(
+        145deg,
+        var(--color-cornflower-ocean-500) 0%,
+        var(--color-cornflower-ocean-300) 100%
+    );
     --sognos-gradient-hero: radial-gradient(
         circle at 20% 20%,
-        #16235d 0%,
-        #0a143d 40%,
-        #060c27 100%
+        var(--color-prussian-blue-700) 0%,
+        var(--color-prussian-blue-900) 40%,
+        var(--color-prussian-blue-950) 100%
     );
     --sognos-gradient-surface: linear-gradient(
         180deg,
         #ffffff 0%,
-        #fafafa 100%
+        #f8fafc 100%
     );
-    /* Note: standard cards/subcards must NOT use gradients; keeping gradient-card available specifically for hero use cases if absolutely strictly needed, though flat is default. */
     --sognos-gradient-card: linear-gradient(
         180deg,
         rgba(255, 255, 255, 0.65) 0%,
         rgba(255, 255, 255, 0.95) 100%
     );
     --sognos-gradient-highlight: linear-gradient(
-        135deg,
-        #ff4fa3 0%,
-        #ff8ec4 100%
+        145deg,
+        var(--color-dodger-blue-400) 0%,
+        var(--color-cornflower-ocean-300) 100%
     );
 
     /* Shadows */
@@ -211,9 +221,9 @@
     --sognos-shadow-md: 0 8px 24px rgb(18 23 33 / 0.08);
     --sognos-shadow-lg: 0 20px 48px rgb(18 23 33 / 0.1);
     --sognos-shadow-xl: 0 24px 60px rgb(18 23 33 / 0.12);
-    --sognos-shadow-brand: 0 0 24px rgb(18 35 72 / 0.18);
+    --sognos-shadow-brand: 0 0 24px rgb(18 36 84 / 0.18);
 
-    /* Radius (strict map to tokens) */
+    /* Radius */
     --sognos-radius-sm: 4px;
     --sognos-radius-md: 4px;
     --sognos-radius-lg: 12px;

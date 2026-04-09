@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
@@ -125,7 +126,7 @@ function ChevronDown({ open }: { open: boolean }) {
 
 function ChevronRight({ className = "w-3.5 h-3.5 text-gray-300" }: { className?: string }) {
   return (
-    <svg className={`flex-shrink-0 ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className={`shrink-0 ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
     </svg>
   );
@@ -171,7 +172,7 @@ function FeatureItems({
               className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
             >
               {meta && (
-                <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}>
                   <svg className={`w-4 h-4 ${meta.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={meta.path} />
                   </svg>
@@ -288,15 +289,12 @@ function getMobilePanelId(label: string) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const SCROLL_THRESHOLD = 150;
-
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState("root");
   const [mobileHistory, setMobileHistory] = useState<string[]>([]);
-  const [isMinified, setIsMinified] = useState(false);
   const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -323,11 +321,10 @@ export default function Navbar() {
     return () => { document.body.style.overflow = prev; };
   }, [mobileOpen]);
 
-  // Scroll-driven minify + dark/light colour detection
+  // Scroll-driven dark/light colour detection
   useEffect(() => {
     let ticking = false;
     const update = () => {
-      setIsMinified(window.scrollY >= SCROLL_THRESHOLD);
       const el = headerRef.current;
       if (el) {
         const rect = el.getBoundingClientRect();
@@ -441,33 +438,30 @@ export default function Navbar() {
       ? "bg-white text-brand hover:opacity-90"
       : "bg-brand text-white hover:bg-brand-dark";
 
-  const innerWrapperClass = [
-    "pointer-events-auto w-full mx-auto border",
-    "transition-[background-color,border-color,border-radius,box-shadow,backdrop-filter,max-width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-    isMinified
-      ? `max-w-[1080px] rounded-full backdrop-blur-md ${
-          colorMode === "dark"
-            ? "bg-[rgb(0_16_51/0.75)] border-[rgb(255_255_255/0.12)]"
-            : "bg-[rgb(255_255_255/0.8)] border-[rgb(18_35_72/0.12)] shadow-sm"
-        }`
-      : "max-w-7xl rounded-none border-transparent bg-transparent",
-  ].join(" ");
-
   return (
     <header
       ref={headerRef}
-      className="fixed top-[16px] left-0 w-full z-50 px-4 bg-transparent pointer-events-none"
+      className="fixed top-0 left-0 w-full z-50 bg-transparent pointer-events-none"
     >
-      {/* ── Inner pill wrapper ── */}
-      <div className={innerWrapperClass}>
       {/* ── Nav bar ── */}
-      <div className="px-6">
+      <div
+        className={[
+          "pointer-events-auto w-full px-6",
+          "transition-[background-color,border-color] duration-300",
+          colorMode === "light"
+            ? "bg-white border-b border-[--sognos-border]"
+            : "bg-transparent border-b border-transparent",
+        ].join(" ")}
+      >
+      <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-[68px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center flex-shrink-0" onClick={closeAll}>
-            <img
+          <Link href="/" className="flex items-center shrink-0" onClick={closeAll}>
+            <Image
               src="/logos/sognos-logo.svg"
               alt="Sognos"
+              width={160}
+              height={40}
               className="h-[40px] w-auto transition-[filter] duration-300"
               style={colorMode === "dark" ? { filter: "brightness(0) invert(1)" } : undefined}
             />
@@ -515,15 +509,13 @@ export default function Navbar() {
 
           {/* CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            {!isMinified && (
-              <Link
-                href={navCTA.secondary.href}
-                className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
-                onClick={closeAll}
-              >
-                {navCTA.secondary.name}
-              </Link>
-            )}
+            <Link
+              href={navCTA.secondary.href}
+              className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
+              onClick={closeAll}
+            >
+              {navCTA.secondary.name}
+            </Link>
             <Link
               href={navCTA.primary.href}
               className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
@@ -555,7 +547,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      </div>{/* end inner pill wrapper */}
+      </div>
 
       {/* ── Desktop mega panel ── */}
       <AnimatePresence>
@@ -642,14 +634,14 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="lg:hidden fixed top-[84px] inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
+            className="lg:hidden fixed top-[68px] inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
           >
             {/* Sticky drilldown header */}
-            <div className="sticky top-0 bg-white z-10 flex items-center h-12 px-4 border-b border-gray-100 flex-shrink-0">
+            <div className="sticky top-0 bg-white z-10 flex items-center h-12 px-4 border-b border-gray-100 shrink-0">
               {mobileHistory.length > 0 && (
                 <button
                   onClick={drillBack}
-                  className="p-1.5 -ml-1.5 rounded-md hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 mr-2"
+                  className="p-1.5 -ml-1.5 rounded-md hover:bg-gray-100 transition-colors duration-200 shrink-0 mr-2"
                   aria-label="Back"
                 >
                   <ChevronLeft />
@@ -728,7 +720,7 @@ export default function Navbar() {
                                   className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
                                 >
                                   {meta && (
-                                    <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center flex-shrink-0`}>
+                                    <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}>
                                       <svg className={`w-4 h-4 ${meta.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={meta.path} />
                                       </svg>
@@ -778,7 +770,7 @@ export default function Navbar() {
 
             {/* Bottom CTA bar (visible on all sub-panels) */}
             {mobilePanel !== "root" && (
-              <div className="flex-shrink-0 border-t border-gray-100 bg-white px-4 py-4">
+              <div className="shrink-0 border-t border-gray-100 bg-white px-4 py-4">
                 <Link
                   href={navCTA.secondary.href}
                   onClick={closeMobile}
