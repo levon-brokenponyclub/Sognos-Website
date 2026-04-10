@@ -45,7 +45,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
     ctaText: "Explore SognosCare",
     ctaLink: "/products/sognoscare",
-    sectionBg: "oklch(0.45 0.12 240 / 0.25)",
+    sectionBg: "#C2E4FE",
     story: {
       quote:
         "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically — and our compliance team finally has the audit trail they need.",
@@ -64,7 +64,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
     ctaText: "Explore SognosRoster",
     ctaLink: "/products/sognosroster",
-    sectionBg: "oklch(0.45 0.14 165 / 0.25)",
+    sectionBg: "#ffccce",
     story: {
       quote:
         "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works — and management has the data to prove it.",
