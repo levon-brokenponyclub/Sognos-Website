@@ -492,7 +492,7 @@ export default function Navbar() {
 
   const linkClass =
     colorMode === "dark"
-      ? "text-white/80 hover:text-white"
+      ? "text-white hover:text-white"
       : "text-[rgb(18_35_72/0.75)] hover:text-brand";
 
   const ctaClass =
@@ -557,7 +557,7 @@ export default function Navbar() {
                       type="button"
                       aria-expanded={openMenu === group.label}
                       onClick={() => toggleMenu(group.label, groupIndex)}
-                      className={`flex items-center gap-1 font-medium px-4 py-2 rounded-md text-sm transition-colors duration-300 ${
+                      className={`flex items-center gap-1 font-semibold px-4 py-2 rounded-md text transition-colors duration-300 ${
                         openMenu === group.label
                           ? "opacity-100"
                           : "opacity-80 hover:opacity-100"

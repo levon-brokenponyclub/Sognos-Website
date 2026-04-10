@@ -32,7 +32,7 @@ const ITEMS = [
     worker: {
       name: "Emma Clarke",
       role: "Care Worker",
-      avatar: "/images/avatar-emma.png",
+      avatar: "/images/avatar-emma-real.png",
       accent: "#1E40AF",
     },
     job: { label: "Morning Round", detail: "Meadowbrook — 08:00" },
@@ -44,7 +44,7 @@ const ITEMS = [
     worker: {
       name: "James Obi",
       role: "Support Worker",
-      avatar: "/images/avatar-james.png",
+      avatar: "/images/avatar-james-real.png",
       accent: "#065F46",
     },
     job: { label: "Home Visit", detail: "Thornton St — 09:30" },
@@ -56,7 +56,7 @@ const ITEMS = [
     worker: {
       name: "Priya Menon",
       role: "Nurse",
-      avatar: "/images/avatar-priya.png",
+      avatar: "/images/avatar-priya-real.png",
       accent: "#6B21A8",
     },
     job: { label: "Medication Admin", detail: "St Luke's — 10:00" },

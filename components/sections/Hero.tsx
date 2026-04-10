@@ -32,23 +32,22 @@ export default function Hero({
   return (
     <section
       data-header-dark
-      className="relative flex flex-col bg-gradient-hero overflow-hidden text-white min-h-[80vh] lg:h-157.5"
+      className="relative flex flex-col bg-gradient-hero overflow-hidden text-white min-h-[90vh] lg:h-157.5"
     >
       <FlowCanvas />
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-25 pb-6 border-x border-white/10 border-dashed sm:px-8 sm:pt-27.5 sm:pb-20 lg:px-6 lg:pt-25 lg:pb-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-12 lg:gap-0 items-stretch flex-1">
-          {/* Col 1 — headline, subtext, CTAs */}
-          <div className="flex flex-col justify-center">
-            <h1 className="text-4xl text-center font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-left lg:text-5xl">
+        <div className="flex flex-1 flex-col justify-between gap-14 py-8 lg:py-8 mt-12">
+          <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+            <h1 className="text-4xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
               {headline}
             </h1>
 
-            <p className="mt-6 text-balance text-base text-white/80 text-center sm:text-lg lg:text-left lg:max-w-4/5">
+            <p className="mt-6 max-w-3xl text-balance text-base text-white/80 sm:text-lg">
               {subtext}
             </p>
 
-            <div className="mt-8 flex flex-row items-center justify-center gap-3 lg:justify-start">
+            <div className="mt-8 flex flex-row items-center justify-center gap-3">
               <AnimatedButton href={primaryCTA.href} variant="white">
                 {primaryCTA.name}
               </AnimatedButton>
@@ -61,66 +60,70 @@ export default function Hero({
             </div>
           </div>
 
-          {/* Col 2 — social proof */}
-          <div className="flex flex-col">
-            {/* Social proof */}
-            <div className="flex-1 p-6 flex flex-col items-center justify-center gap-6 lg:items-start lg:justify-end lg:pb-14">
-              {/* Stat */}
-              <div className="hidden lg:block">
-                <p className="text-3xl font-heading font-semibold tracking-tight text-white">
-                  1,100+
-                </p>
-                <p className="text-sm text-white/50 mt-1 leading-snug">
-                  workers coordinated daily across active deployments
-                </p>
+          <div className="mx-auto flex w-full flex-row justify-between items-center gap-6">
+            <div className="inline-flex items-center gap-5 rounded-full bg-prussian-blue-800/10 px-6 py-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/Dynamics365.svg"
+                alt="Microsoft Dynamics 365"
+                className="h-7 w-auto"
+              />
+              <div className="h-7 w-px bg-white/20" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/Sognos-Solutions-Solutions-Partner.webp"
+                alt="Microsoft Solutions Partner"
+                className="h-8 w-auto"
+              />
+              <div className="h-9 w-px bg-white/20" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/copilot-logo.png"
+                alt="Microsoft Copilot"
+                className="h-9 w-auto"
+              />
+            </div>
+
+            <div className="flex items-center divide-x divide-white/15">
+              <div className="flex -space-x-2.5 pr-4">
+                {[
+                  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+                  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
+                  "https://randomuser.me/api/portraits/men/75.jpg",
+                ].map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt=""
+                    aria-hidden="true"
+                    className="w-9 h-9 rounded-full border-2 border-white/20 object-cover"
+                    style={{ zIndex: i + 1 }}
+                  />
+                ))}
               </div>
 
-              <div className="hidden lg:block h-px bg-white/10" />
-
-              {/* Avatars + rating */}
-              <div className="flex items-center divide-x divide-white/15">
-                {/* Avatar stack */}
-                <div className="flex -space-x-2.5 pr-4">
-                  {[
-                    "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
-                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
-                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
-                    "https://randomuser.me/api/portraits/men/75.jpg",
-                  ].map((src, i) => (
-                    <img
+              <div className="pl-4">
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg
                       key={i}
-                      src={src}
-                      alt=""
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="#FACC15"
                       aria-hidden="true"
-                      className="w-9 h-9 rounded-full border-2 border-white/20 object-cover"
-                      style={{ zIndex: i + 1 }}
-                    />
+                    >
+                      <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                    </svg>
                   ))}
+                  <span className="ml-1.5 text-sm font-semibold text-white">
+                    4.9
+                  </span>
                 </div>
-
-                {/* Stars + label */}
-                <div className="pl-4">
-                  <div className="flex items-center gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg
-                        key={i}
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="#FACC15"
-                        aria-hidden="true"
-                      >
-                        <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-                      </svg>
-                    ))}
-                    <span className="ml-1.5 text-sm font-semibold text-white">
-                      4.9
-                    </span>
-                  </div>
-                  <p className="mt-0.5 text-xs text-white/50">
-                    Rated by operations leaders
-                  </p>
-                </div>
+                <p className="mt-0.5 text-xs text-white/50">
+                  Rated by operations leaders
+                </p>
               </div>
             </div>
           </div>

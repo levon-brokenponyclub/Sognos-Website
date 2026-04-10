@@ -203,7 +203,7 @@
   );
   --sognos-gradient-hero: radial-gradient(
     circle at 20% 20%,
-    var(--color-prussian-blue-800) 0%,
+    var(--color-prussian-blue-700) 0%,
     var(--color-prussian-blue-900) 40%,
     var(--color-prussian-blue-950) 100%
   );

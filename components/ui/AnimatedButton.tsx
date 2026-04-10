@@ -8,6 +8,7 @@ interface AnimatedButtonProps {
   href: string;
   children: React.ReactNode;
   className?: string;
+  bubbleClassName?: string;
   /**
    * "brand"       = brand bg + white icon bubble (default)
    * "white"       = white bg + brand icon bubble
@@ -20,6 +21,7 @@ export default function AnimatedButton({
   href,
   children,
   className,
+  bubbleClassName,
   variant = "brand",
 }: AnimatedButtonProps) {
   const containerClass =
@@ -41,13 +43,14 @@ export default function AnimatedButton({
         className
       )}
     >
-      <span className="relative z-10 transition-all duration-500 whitespace-nowrap">
-        {children}
-      </span>
+        <span className="relative z-10 transition-all duration-500 whitespace-nowrap">
+          {children}
+        </span>
       <div
         className={cn(
           "absolute right-1 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-44px)] group-hover:rotate-45",
-          bubbleClass
+          bubbleClass,
+          bubbleClassName
         )}
       >
         <ArrowUpRight size={16} />

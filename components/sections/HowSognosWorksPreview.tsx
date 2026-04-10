@@ -33,6 +33,7 @@ const FADE_OUT_MS = 300;
 const HOLD_MS = 80;
 const PANEL_SETTLE_MS = 480;
 const PANEL_TRANSITION = { duration: 0.48, ease: [0.4, 0, 0.2, 1] as const };
+const TAB_TEXT_TRANSITION = { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const };
 
 export default function HowSognosWorksPreview() {
   const [active, setActive] = useState(0);
@@ -84,7 +85,7 @@ export default function HowSognosWorksPreview() {
               Start delivering outcomes.
             </span>
           </h2>
-          <p className="mt-4 font-heading font-medium text-neutral-500 max-w-5xl text-balance mx-auto leading-relaxed text-2xl">
+          <p className="mt-4 font-heading font-medium text-sognos-text-body max-w-5xl text-balance mx-auto leading-relaxed text-2xl">
             Most care and service organisations run on disconnected tools —
             spreadsheets for rosters, email for referrals, manual processes for
             compliance. Sognos replaces all of it with one intelligent platform
@@ -119,9 +120,9 @@ export default function HowSognosWorksPreview() {
         </div>
 
         {/* Left tabs + right content */}
-        <div className="flex rounded-2xl gap-10 overflow-hidden">
+        <div className="flex items-center rounded-2xl gap-10 overflow-hidden">
           {/* Left: Tab buttons */}
-          <div className="w-[45%] gap-3 shrink-0 flex flex-col">
+          <div className="w-[45%] gap-3 shrink-0 flex flex-col justify-center self-center">
             {TABS.map((tab, i) => (
               <button
                 key={tab.id}
@@ -150,36 +151,31 @@ export default function HowSognosWorksPreview() {
                 </div>
 
                 <p
-                  className={`text-xl font-medium leading-snug tracking-tight transition-colors ${
+                  className={`text-xl font-medium leading-snug tracking-tight transition-[color,opacity] duration-500 ease-in-out ${
                     active === i
-                      ? "text-prussian-blue-800"
-                      : "text-prussian-blue-800/50"
+                      ? "text-prussian-blue-800 opacity-100"
+                      : "text-prussian-blue-800 opacity-40"
                   }`}
                 >
                   {tab.label}
                 </p>
 
-                <AnimatePresence initial={false}>
-                  {active === i && revealed === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={PANEL_TRANSITION}
-                      style={{ overflow: "hidden" }}
-                    >
-                      <p className="mt-2 text-sognos-text-body">
-                        {tab.description}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.p
+                  className="mt-2 min-h-12 text-sognos-text-body"
+                  initial={false}
+                  animate={{
+                    opacity: active === i && revealed === i ? 1 : 0.4,
+                  }}
+                  transition={TAB_TEXT_TRANSITION}
+                >
+                  {tab.description}
+                </motion.p>
               </button>
             ))}
           </div>
 
           {/* Right: Active diagram */}
-          <div className="flex flex-1 h-111.25 bg-white rounded-xl border border-slate-400/30 items-center justify-center overflow-hidden p-8">
+          <div className="flex flex-1 self-center h-111.25 bg-white rounded-xl border border-slate-400/30 items-center justify-center overflow-hidden p-8">
             <AnimatePresence mode="wait">
               {revealed === active && (
                 <motion.div

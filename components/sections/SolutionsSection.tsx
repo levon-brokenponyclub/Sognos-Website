@@ -82,7 +82,10 @@ type SolutionId = (typeof SOLUTIONS)[number]["id"];
 const ICONS: Record<
   SolutionId,
   React.ComponentType<
-    React.ComponentProps<"svg"> & { size?: number; weight?: "thin" }
+    React.ComponentProps<"svg"> & {
+      size?: number;
+      weight?: "thin" | "light" | "regular" | "bold" | "fill" | "duotone";
+    }
   >
 > = {
   "field-service": MapPin,
@@ -97,54 +100,61 @@ const ICONS: Record<
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
 const GAP = 20;
-const CARD_WIDTH = 290;
+const CARD_WIDTH = 310;
 
 function SolutionCard({ solution }: { solution: (typeof SOLUTIONS)[number] }) {
   const Icon = ICONS[solution.id];
   return (
     <div
-      className="flex-shrink-0 rounded-lg border border-sognos-border bg-white overflow-hidden flex flex-col"
+      className="group relative flex-shrink-0 rounded-lg border border-slate-400/30 bg-white overflow-hidden flex flex-col hover:bg-true-cobalt-700 transition-colors cursor-pointer"
       style={{ width: CARD_WIDTH }}
     >
-      <div className="h-45 flex items-center justify-center">
+      <div className="h-34 flex items-center px-10">
         <div
-          className="text-sognos-text-body"
+          className="text-sognos-text-body bg-prussian-blue-900/5 group-hover:bg-white w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200"
           style={{
             transform: "scale(2.2)",
             transformOrigin: "center",
           }}
         >
-          <Icon size={32} weight="thin" />
+          <Icon size={20} weight="duotone" />
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
-        <h5 className="text-xl font-semibold text-sognos-text-heading leading-snug">
+      <div className="p-6 pt-0 flex flex-col flex-1">
+        <h5 className="text-2xl font-medium text-prussian-blue-800 group-hover:text-white leading-snug text-balance transition-colors duration-200">
           {solution.title}
         </h5>
-        <p className="mt-2 text-sm leading-relaxed text-sognos-text-body line-clamp-3 flex-1">
+        <p className="mt-3 leading-normal text-prussian-blue-900/65 group-hover:text-white/80 line-clamp-4 flex-1 transition-colors duration-200">
           {solution.copy}
         </p>
-        <Link
-          href={solution.href}
-          className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand hover:gap-2 transition-all duration-200"
-        >
-          See {solution.label}
+      </div>
+
+      {/* Animated bubble CTA — bottom right */}
+      <Link
+        href={solution.href}
+        className="relative mx-6 mb-6 mt-4 flex items-center overflow-hidden rounded-full border border-slate-400/0 bg-transparent h-11 px-4 font-semibold text-sm text-prussian-blue-800 group-hover:text-white group-hover:border-white/20 transition-colors duration-300"
+      >
+        See {solution.label}
+        <div className="absolute right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-40px)] group-hover:rotate-45 text-prussian-blue-900/20 bg-prussian-blue-900/5 group-hover:bg-white group-hover:text-prussian-blue-800">
           <svg
+            xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
-            viewBox="0 0 16 16"
+            viewBox="0 0 24 24"
             fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path
-              fill="currentColor"
-              d="M1.9877 7.23745H12.1877L8.4877 3.53745C8.1877 3.23745 8.1877 2.78745 8.4877 2.48745C8.7877 2.18745 9.2377 2.18745 9.5377 2.48745L14.5377 7.48745C14.8377 7.78745 14.8377 8.23745 14.5377 8.53745L9.5377 13.5375C9.3877 13.6875 9.1877 13.7375 8.9877 13.7375C8.7877 13.7375 8.5877 13.6875 8.4377 13.5375C8.13769 13.2375 8.13769 12.7875 8.4377 12.4875L12.1377 8.78745H1.9877C1.5877 8.78745 1.2377 8.43745 1.2377 8.03745C1.2377 7.63745 1.5877 7.23745 1.9877 7.23745Z"
-            />
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
           </svg>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 }
@@ -181,22 +191,18 @@ export default function SolutionsSection() {
   };
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle overflow-hidden">
+    <section className="w-full bg-slate-50 overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl w-full mx-auto px-6 border-x border-dashed border-sognos-border-subtle">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pt-24 pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pt-24 pb-5">
           <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
-              Solutions
-            </p>
-            <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
+            <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
               Built for how your operation works
             </h2>
           </div>
           <p className="font-heading font-medium text-sognos-text-body leading-relaxed justify-self-end max-w-md">
-            Sognos connects service demand, workforce scheduling, and compliance
-            into a single operational loop — powered by AI and Microsoft
-            Dynamics 365.
+            Sognos connects service demand, workforce scheduling, & compliance
+            into a single operational loop. Powererd by Dynamics 365.
           </p>
         </div>
       </div>

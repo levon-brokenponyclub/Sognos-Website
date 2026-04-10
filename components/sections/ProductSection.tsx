@@ -39,7 +39,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
     logoAlt: "SognosCare",
     eyebrow: "SognosCare",
     title: "Amplify your impact with AI",
-    byline: "From intake to outcome on one platform",
+    byline: "One platform.\nFrom intake to outcome.",
     description:
       "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
     ctaText: "Explore SognosCare",
@@ -104,7 +104,7 @@ function ProductCard({
       <div className="flex h-full flex-col lg:flex-row gap-12 items-end">
         {/* Text side — fixed width, never squashes */}
         <div className="flex flex-col justify-between h-full gap-6 lg:w-96 lg:shrink-0">
-          <div className="p-14 pr-4 h-full flex flex-col justify-between gap-3">
+          <div className="p-14 pr-3 h-full flex flex-col justify-between gap-3">
             <div>
               <Image
                 src={logo}
@@ -114,7 +114,7 @@ function ProductCard({
                 className="h-9 w-auto object-contain mb-6"
               />
 
-              <h3 className="font-body text font-medium leading-tighter tracking-normal text-cornflower-ocean-300 text-balance lg:text-3xl">
+              <h3 className="font-body text leading-tight tracking-normal text-cornflower-ocean-300 whitespace-pre-line lg:text-3xl">
                 {byline}
               </h3>
               <p className="mt-6 max-w-sm text-sm leading-6 text-white lg:text-base">
@@ -142,7 +142,7 @@ function ProductCard({
             <svg
               viewBox="0 0 39 32"
               fill="none"
-              className="w-8 h-7 shrink-0 text-prussian-blue-200"
+              className="w-8 h-7 shrink-0 text-prussian-blue-700/35"
               aria-hidden="true"
             >
               <path
@@ -152,16 +152,16 @@ function ProductCard({
             </svg>
 
             <blockquote className="mt-6 flex-1">
-              <p className="font-heading text-base font-normal leading-relaxed text-prussian-blue-700 lg:text-lg">
+              <p className="font-heading text-base font-normal leading-relaxed text-prussian-blue-800 lg:text-xl">
                 {story.quote}
               </p>
             </blockquote>
 
-            <div className="mt-8 pt-6 border-t border-prussian-blue-300">
-              <p className="text-sm font-semibold text-prussian-blue-800">
+            <div className="mt-8 pt-6 border-t border-prussian-blue-800">
+              <p className="text-sm font-semibold text-prussian-blue-800/85">
                 {story.author}
               </p>
-              <p className="text-xs text-prussian-blue mt-0.5">
+              <p className="text-xs text-prussian-blue-800 mt-0.5">
                 {story.company}
               </p>
               <Link
@@ -217,17 +217,11 @@ export default function ProductSection() {
       className="relative flex w-full items-center justify-center overflow-hidden border-b border-sognos-border-subtle py-24 bg-cornflower-ocean-500/20"
     >
       <div className="z-1 mx-auto w-full max-w-7xl border-x border-dashed border-sognos-border-subtle px-6 py-4">
-        <div className="mb-10 max-w-4xl">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
-            Platform
-          </p>
-          <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
-            Built for regulated operations.{" "}
-            <span className="text-slate-500">
-              For organisations that can&apos;t afford to get things wrong —
-              from compliance and audit trails to real-time workforce
-              optimisation.
-            </span>
+        <div className="mb-5 max-w-4xl">
+          <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
+            For organisations
+            <br />
+            that can't afford to get things wrong
           </h2>
         </div>
 

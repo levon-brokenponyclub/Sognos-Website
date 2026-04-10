@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import {
   Heartbeat,
@@ -8,6 +9,12 @@ import {
   Factory,
   Circuitry,
 } from "@phosphor-icons/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionTemplate,
+} from "framer-motion";
 import { INDUSTRIES } from "@/lib/constants";
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -28,41 +35,50 @@ const ICONS: Record<
 function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
   const Icon = ICONS[industry.slug];
   return (
-    <Link
-      href={industry.href}
-      className="group flex flex-col gap-5 rounded-2xl border border-sognos-border-subtle bg-white p-7 transition-all duration-200 hover:border-brand/20 hover:shadow-sm"
-    >
-      <div className="flex items-start justify-between">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-sognos-border-subtle bg-neutral-50 text-slate-600 transition-colors group-hover:border-brand/20">
-          {Icon ? <Icon size={22} weight="duotone" /> : null}
-        </span>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          className="text-slate-400 mt-1"
-          aria-hidden="true"
+    <div className="group relative flex flex-col overflow-hidden rounded-lg border border-slate-400/30 bg-white hover:bg-true-cobalt-700 transition-colors duration-200 cursor-pointer">
+      <div className="h-34 flex items-center px-10">
+        <div
+          className="text-sognos-text-body bg-prussian-blue-900/5 group-hover:bg-white w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200"
+          style={{ transform: "scale(2.2)", transformOrigin: "center" }}
         >
-          <path
-            d="M3 8h10M9 4l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+          {Icon ? <Icon size={20} weight="duotone" /> : null}
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <h3 className="font-heading font-medium text-neutral-900 leading-snug tracking-tight">
+      <div className="p-6 pt-0 flex flex-col flex-1">
+        <h3 className="text-2xl font-medium text-prussian-blue-800 group-hover:text-white leading-snug text-balance transition-colors duration-200">
           {industry.name}
         </h3>
-        <p className="text-sm leading-relaxed text-neutral-500">
+        <p className="mt-3 leading-normal text-prussian-blue-900/65 group-hover:text-white/80 line-clamp-4 flex-1 transition-colors duration-200">
           {industry.description}
         </p>
       </div>
-    </Link>
+
+      {/* Animated bubble CTA */}
+      <Link
+        href={industry.href}
+        className="relative mx-6 mb-6 mt-4 flex items-center overflow-hidden rounded-full border border-slate-400/30 bg-transparent h-11 px-4 font-semibold text-sm text-prussian-blue-800 group-hover:text-white group-hover:border-white/20 transition-colors duration-300"
+      >
+        See {industry.name}
+        <div className="absolute right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-40px)] group-hover:rotate-45 text-prussian-blue-900/20 bg-prussian-blue-900/5 group-hover:bg-white group-hover:text-prussian-blue-800">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg>
+        </div>
+      </Link>
+    </div>
   );
 }
 
@@ -114,6 +130,18 @@ function StandOutCard() {
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 export default function IndustrySection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 0.6", "start 0.1"],
+  });
+
+  // 120px margin shrinks to 0 as section scrolls into view
+  const margin = useTransform(scrollYProgress, [0, 1], [120, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const expandWidth = useMotionTemplate`calc(100vw - ${margin}px)`;
+
   // Build the 6-slot grid: industries 0–3, stand-out, industry 4
   const slots = [
     ...INDUSTRIES.map((ind) => ({
@@ -124,8 +152,18 @@ export default function IndustrySection() {
   ];
 
   return (
-    <section className="w-full bg-slate-50 border-b border-sognos-border-subtle">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+    <section
+      ref={sectionRef}
+      className="w-full bg-white border-b border-sognos-border-subtle overflow-hidden relative"
+    >
+      {/* Background layer only — expands and fades independently of content */}
+      <motion.div
+        className="absolute inset-0 bg-bright-lavender-200 mx-auto h-full rounded-xl"
+        style={{ width: expandWidth, opacity, left: "50%", x: "-50%" }}
+      />
+
+      {/* Content — always full width, unaffected by background animation */}
+      <div className="relative max-w-7xl w-full mx-auto px-6 py-24">
         {/* Heading row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
           <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
