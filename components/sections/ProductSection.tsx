@@ -24,6 +24,7 @@ type ProductCardData = {
   ctaText: string;
   ctaLink: string;
   story: ProductStory;
+  sectionBg: string;
 };
 
 type ProductCardProps = ProductCardData & {
@@ -44,6 +45,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
     ctaText: "Explore SognosCare",
     ctaLink: "/products/sognoscare",
+    sectionBg: "oklch(0.45 0.12 240 / 0.25)",
     story: {
       quote:
         "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically — and our compliance team finally has the audit trail they need.",
@@ -62,6 +64,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
     ctaText: "Explore SognosRoster",
     ctaLink: "/products/sognosroster",
+    sectionBg: "oklch(0.45 0.14 165 / 0.25)",
     story: {
       quote:
         "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works — and management has the data to prove it.",
@@ -97,7 +100,7 @@ function ProductCard({
         "w-full h-full overflow-hidden rounded-xl text-white",
         "transition-[flex] duration-500 ease-in-out",
         "flex flex-col md:flex",
-        "bg-true-cobalt-700",
+        "bg-prussian-blue-800",
         isActive ? "md:flex-2" : "md:flex-1",
       ].join(" ")}
     >
@@ -212,11 +215,13 @@ export default function ProductSection() {
   };
 
   return (
-    <section
+    <motion.section
       aria-label="Platform capabilities"
-      className="relative flex w-full items-center justify-center overflow-hidden border-b border-sognos-border-subtle py-24 bg-cornflower-ocean-500/20"
+      className="relative flex w-full items-center justify-center overflow-hidden border-b border-sognos-border-subtle py-24"
+      animate={{ backgroundColor: PRODUCT_CARDS[activeIndex].sectionBg }}
+      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
     >
-      <div className="z-1 mx-auto w-full max-w-7xl border-x border-dashed border-sognos-border-subtle px-6 py-4">
+      <div className="z-1 mx-auto w-full max-w-7xl px-6 py-4">
         <div className="mb-5 max-w-4xl">
           <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
             For organisations
@@ -238,6 +243,6 @@ export default function ProductSection() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
