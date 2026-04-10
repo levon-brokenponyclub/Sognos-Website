@@ -68,17 +68,17 @@
     --container-7xl: var(--sognos-container-width);
 
     /* Typography — heading scale */
-    --text-h1: var(--sognos-font-size-h1);
-    --text-h2: var(--sognos-font-size-h2);
-    --text-h3: var(--sognos-font-size-h3);
-    --text-h4: var(--sognos-font-size-h4);
+    --text-h1: 46px;
+    --text-h2: 40px;
+    --text-h3: 32px;
+    --text-h4: 28px;
     --leading-heading: var(--sognos-heading-line-height);
     --tracking-heading: var(--sognos-heading-tracking);
     --font-weight-regular: var(--sognos-font-weight-regular);
 
     /* Typography — body */
-    --text-2xl: var(--sognos-font-size-2xl);
-    --text-2xl--line-height: var(--sognos-line-height-2xl);
+    --text-2xl: 1.25rem;
+    --text-2xl--line-height: 1.75rem;
 
     /* Shadows */
     --shadow-sm: var(--sognos-shadow-sm);
@@ -112,18 +112,18 @@
     --color-cornflower-ocean-900: var(--color-cornflower-ocean-900);
     --color-cornflower-ocean-950: var(--color-cornflower-ocean-950);
 
-    /* Palette: Dodger Blue */
-    --color-dodger-blue-50: var(--color-dodger-blue-50);
-    --color-dodger-blue-100: var(--color-dodger-blue-100);
-    --color-dodger-blue-200: var(--color-dodger-blue-200);
-    --color-dodger-blue-300: var(--color-dodger-blue-300);
-    --color-dodger-blue-400: var(--color-dodger-blue-400);
-    --color-dodger-blue-500: var(--color-dodger-blue-500);
-    --color-dodger-blue-600: var(--color-dodger-blue-600);
-    --color-dodger-blue-700: var(--color-dodger-blue-700);
-    --color-dodger-blue-800: var(--color-dodger-blue-800);
-    --color-dodger-blue-900: var(--color-dodger-blue-900);
-    --color-dodger-blue-950: var(--color-dodger-blue-950);
+    /* Palette: True Cobalt */
+    --color-true-cobalt-50: var(--color-true-cobalt-50);
+    --color-true-cobalt-100: var(--color-true-cobalt-100);
+    --color-true-cobalt-200: var(--color-true-cobalt-200);
+    --color-true-cobalt-300: var(--color-true-cobalt-300);
+    --color-true-cobalt-400: var(--color-true-cobalt-400);
+    --color-true-cobalt-500: var(--color-true-cobalt-500);
+    --color-true-cobalt-600: var(--color-true-cobalt-600);
+    --color-true-cobalt-700: var(--color-true-cobalt-700);
+    --color-true-cobalt-800: var(--color-true-cobalt-800);
+    --color-true-cobalt-900: var(--color-true-cobalt-900);
+    --color-true-cobalt-950: var(--color-true-cobalt-950);
 
     /* Palette: Seagrass */
     --color-seagrass-50: var(--color-seagrass-50);
@@ -208,12 +208,12 @@
     }
 
     h2 {
-        font-size: var(--sognos-font-size-h2);
+        font-size: 40px;
         line-height: var(--sognos-heading-line-height);
     }
 
     h2.callout {
-        font-size: var(--sognos-font-size-h1);
+        font-size: 46px;
         line-height: var(--sognos-heading-line-height);
     }
 
@@ -1051,4 +1051,3 @@ p.section-header-description {
         animation: none !important;
     }
 }
-

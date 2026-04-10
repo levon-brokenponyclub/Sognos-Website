@@ -112,7 +112,7 @@ function TestimonialTile({
 
       <blockquote className="mt-4 flex-1">
         <p
-          className={`text-[15px] leading-relaxed ${
+          className={`text-sm leading-relaxed ${
             dark ? "text-neutral-300" : "text-neutral-600"
           }`}
         >
@@ -157,7 +157,7 @@ export default function ProofSection() {
         </div>
 
         {/* Bento grid — 4 cols */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[220px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-55">
           {/* Row 1 */}
           {/* Stat: 40% — col 1 */}
           <div className="lg:col-span-1">

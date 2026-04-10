@@ -19,7 +19,7 @@
     --color-prussian-blue-800: #122454;
     --color-prussian-blue-900: #09122a;
     --color-prussian-blue-950: #060c1d;
-
+    
     /* ---- Palette: Cornflower Ocean (Accent / CTA) ---- */
     --color-cornflower-ocean-50: #e6f6fe;
     --color-cornflower-ocean-100: #cdedfe;
@@ -33,18 +33,19 @@
     --color-cornflower-ocean-900: #012132;
     --color-cornflower-ocean-950: #011723;
 
-    /* ---- Palette: Dodger Blue (Highlight) ---- */
-    --color-dodger-blue-50: #e6f3ff;
-    --color-dodger-blue-100: #cde7fe;
-    --color-dodger-blue-200: #9bcffd;
-    --color-dodger-blue-300: #68b7fd;
-    --color-dodger-blue-400: #36a0fc;
-    --color-dodger-blue-500: #0488fb;
-    --color-dodger-blue-600: #036dc9;
-    --color-dodger-blue-700: #025197;
-    --color-dodger-blue-800: #023664;
-    --color-dodger-blue-900: #011b32;
-    --color-dodger-blue-950: #011323;
+    --color-true-cobalt-50: #ebecf9;
+    --color-true-cobalt-100: #d7d9f4;
+    --color-true-cobalt-200: #b0b4e8;
+    --color-true-cobalt-300: #888edd;
+    --color-true-cobalt-400: #6168d1;
+    --color-true-cobalt-500: #3943c6;
+    --color-true-cobalt-600: #2e359e;
+    --color-true-cobalt-700: #222877;
+    --color-true-cobalt-800: #171b4f;
+    --color-true-cobalt-900: #0b0d28;
+    --color-true-cobalt-950: #08091c;
+    
+
 
     /* ---- Palette: Seagrass (Edition: Green / Care — Disability & Mental Health) ---- */
     --color-seagrass-50: #e5fffb;
@@ -110,22 +111,22 @@
     ════════════════════════════════════════════ */
 
     /* Brand */
-    --sognos-brand: var(--color-prussian-blue-800);          /* #122454 */
-    --sognos-brand-dark: var(--color-prussian-blue-900);     /* #09122a */
-    --sognos-brand-light: var(--color-prussian-blue-500);    /* #2d59d2 */
-    --sognos-brand-subtle: var(--color-prussian-blue-600);   /* #2447a8 */
+    --sognos-brand: var(--color-prussian-blue-800); /* #122454 */
+    --sognos-brand-dark: var(--color-prussian-blue-900); /* #09122a */
+    --sognos-brand-light: var(--color-prussian-blue-500); /* #2d59d2 */
+    --sognos-brand-subtle: var(--color-prussian-blue-600); /* #2447a8 */
     --sognos-brand-foreground: #ffffff;
 
     /* Accent & Highlight */
-    --sognos-accent: var(--color-cornflower-ocean-500);      /* #05a4fa */
+    --sognos-accent: var(--color-cornflower-ocean-500); /* #05a4fa */
     --sognos-accent-subtle: rgb(5 164 250 / 0.1);
-    --sognos-accent-blue: var(--color-prussian-blue-950);    /* #060c1d */
-    --sognos-highlight: var(--color-dodger-blue-400);        /* #36a0fc */
+    --sognos-accent-blue: var(--color-prussian-blue-950); /* #060c1d */
+    --sognos-highlight: var(--color-true-cobalt-400); /* #6168d1 */
     --sognos-highlight-subtle: rgb(4 136 251 / 0.12);
 
     /* Brand glow / animation colours */
-    --sognos-brand-subtle-300: var(--color-seagrass-300);   /* #66ffe8 */
-    --sognos-brand-subtle-700: var(--color-seagrass-600);   /* #00ccad */
+    --sognos-brand-subtle-300: var(--color-seagrass-300); /* #66ffe8 */
+    --sognos-brand-subtle-700: var(--color-seagrass-600); /* #00ccad */
 
     /* Subtle tints (used in legacy components) */
     --sognos-subtle-coral: var(--color-grapefruit-pink-300); /* #ff666b */
@@ -144,28 +145,28 @@
     --sognos-neutral-900: #0c0c0d;
 
     /* Text & Links */
-    --sognos-text-heading: var(--color-prussian-blue-950);   /* #060c1d */
+    --sognos-text-heading: var(--color-prussian-blue-950); /* #060c1d */
     --sognos-text-body: #475569;
     --sognos-text-muted: #96a3b0;
     --sognos-text-soft: #64748d;
     --sognos-text-inverse: #ffffff;
-    --sognos-text-link: var(--color-prussian-blue-800);      /* #122454 */
+    --sognos-text-link: var(--color-prussian-blue-800); /* #122454 */
 
     /* Surfaces & Backgrounds — Slate base */
-    --sognos-bg-page: #ffffff;      /* white */
-    --sognos-bg-surface: #f8fafc;   /* slate-50 */
-    --sognos-bg-elevated: #e2e8f0;  /* slate-200 */
-    --sognos-bg-sunken: #f1f5f9;    /* slate-100 */
+    --sognos-bg-page: #ffffff; /* white */
+    --sognos-bg-surface: #f8fafc; /* slate-50 */
+    --sognos-bg-elevated: #e2e8f0; /* slate-200 */
+    --sognos-bg-sunken: #f1f5f9; /* slate-100 */
 
     /* Borders & Components */
-    --sognos-border: #e5e7eb;                                  /* gray-200 */
+    --sognos-border: #e5e7eb; /* gray-200 */
     --sognos-border-strong: var(--color-cornflower-ocean-500); /* #05a4fa */
-    --sognos-border-subtle: #f3f4f6;                           /* gray-100 */
-    --sognos-border-focus: var(--color-prussian-blue-800);     /* #122454 */
-    --sognos-card-border: #f3f4f6;                             /* gray-100 */
-    --sognos-card-border-soft: #e5e7eb;                        /* gray-200 */
+    --sognos-border-subtle: #f3f4f6; /* gray-100 */
+    --sognos-border-focus: var(--color-prussian-blue-800); /* #122454 */
+    --sognos-card-border: #f3f4f6; /* gray-100 */
+    --sognos-card-border-soft: #e5e7eb; /* gray-200 */
     --sognos-card-bg: #ffffff;
-    --sognos-subcard-bg: #f8fafc;                              /* slate-50 */
+    --sognos-subcard-bg: #f8fafc; /* slate-50 */
 
     /* Status */
     --sognos-success: #10b981;
@@ -178,10 +179,18 @@
     --sognos-info-light: #dbeafe;
 
     /* ---- Editions — SognosCare sector identity colours ---- */
-    --sognos-edition-green: var(--color-seagrass-700);          /* #009982 — Disability & Mental Health */
-    --sognos-edition-orange: var(--color-sandy-brown-400);      /* #ff9233 — Allied Health */
-    --sognos-edition-coral: var(--color-grapefruit-pink-300);   /* #ff666b — Support at Home */
-    --sognos-edition-purple: var(--color-bright-lavender-300);  /* #a666ff — Aged Care */
+    --sognos-edition-green: var(
+        --color-seagrass-700
+    ); /* #009982 — Disability & Mental Health */
+    --sognos-edition-orange: var(
+        --color-sandy-brown-400
+    ); /* #ff9233 — Allied Health */
+    --sognos-edition-coral: var(
+        --color-grapefruit-pink-300
+    ); /* #ff666b — Support at Home */
+    --sognos-edition-purple: var(
+        --color-bright-lavender-300
+    ); /* #a666ff — Aged Care */
 
     /* Gradients */
     --sognos-gradient-brand: linear-gradient(
@@ -212,7 +221,7 @@
     );
     --sognos-gradient-highlight: linear-gradient(
         145deg,
-        var(--color-dodger-blue-400) 0%,
+        var(--color-true-cobalt-400) 0%,
         var(--color-cornflower-ocean-300) 100%
     );
 
@@ -224,9 +233,9 @@
     --sognos-shadow-brand: 0 0 24px rgb(18 36 84 / 0.18);
 
     /* Radius */
-    --sognos-radius-sm: 4px;
-    --sognos-radius-md: 4px;
-    --sognos-radius-lg: 12px;
+    --sognos-radius-sm: 6px;
+    --sognos-radius-md: 8px;
+    --sognos-radius-lg: 10px;
     --sognos-radius-xl: 16px;
     --sognos-radius-2xl: 20px;
     --sognos-radius-full: 9999px;
@@ -236,16 +245,8 @@
     --sognos-section-padding: 88px;
     --sognos-card-padding: 24px;
 
-    /* Typography — heading scale */
-    --sognos-font-size-h1: 46px;
-    --sognos-font-size-h2: 40px;
-    --sognos-font-size-h3: 32px;
-    --sognos-font-size-h4: 28px;
+    /* Typography */
     --sognos-heading-line-height: 1.05;
     --sognos-heading-tracking: -0.02em;
     --sognos-font-weight-regular: 400;
-
-    /* Typography — body */
-    --sognos-font-size-2xl: 1.25rem;
-    --sognos-line-height-2xl: 1.75rem;
 }

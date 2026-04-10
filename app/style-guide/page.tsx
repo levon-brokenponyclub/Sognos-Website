@@ -24,13 +24,13 @@ const CORNFLOWER_OCEAN = [
   { stop: 950, hex: "#011723" },
 ];
 
-const DODGER_BLUE = [
-  { stop: 50,  hex: "#e6f3ff" }, { stop: 100, hex: "#cde7fe" },
-  { stop: 200, hex: "#9bcffd" }, { stop: 300, hex: "#68b7fd" },
-  { stop: 400, hex: "#36a0fc" }, { stop: 500, hex: "#0488fb" },
-  { stop: 600, hex: "#036dc9" }, { stop: 700, hex: "#025197" },
-  { stop: 800, hex: "#023664" }, { stop: 900, hex: "#011b32" },
-  { stop: 950, hex: "#011323" },
+const TRUE_COBALT = [
+  { stop: 50,  hex: "#ebecf9" }, { stop: 100, hex: "#d7d9f4" },
+  { stop: 200, hex: "#b0b4e8" }, { stop: 300, hex: "#888edd" },
+  { stop: 400, hex: "#6168d1" }, { stop: 500, hex: "#3943c6" },
+  { stop: 600, hex: "#2e359e" }, { stop: 700, hex: "#222877" },
+  { stop: 800, hex: "#171b4f" }, { stop: 900, hex: "#0b0d28" },
+  { stop: 950, hex: "#08091c" },
 ];
 
 const SLATE_BG = [
@@ -131,10 +131,72 @@ type TokenRow = {
   defaultHex: string;
 };
 
+function SwatchRow({
+  rows,
+  selections,
+  onSelect,
+}: {
+  rows: TokenRow[];
+  selections: Record<string, string>;
+  onSelect: (cssVar: string, hex: string) => void;
+}) {
+  return (
+    <div className="space-y-5">
+      {rows.map((row) => {
+        const current = selections[row.cssVar];
+        const currentStop = row.stops.find((stop) => stop.hex === current);
+        const stopLabel = currentStop?.label ?? (currentStop ? String(currentStop.stop) : "-");
+        return (
+          <div key={row.cssVar} className="flex items-start gap-4">
+            <div className="w-36 shrink-0 pt-1">
+              <p className="text-xs font-semibold text-[--sognos-text-heading]">{row.label}</p>
+              <p className="text-[10px] font-mono text-[--sognos-text-muted] mt-0.5">
+                -{row.tag}/{stopLabel}
+              </p>
+              <p className="text-[10px] font-mono text-[--sognos-text-muted] opacity-60">{current}</p>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {row.stops.map((stop) => {
+                const selected = current === stop.hex;
+                const stopDisplay = stop.label ?? String(stop.stop);
+                return (
+                  <button
+                    key={stop.hex}
+                    onClick={() => onSelect(row.cssVar, stop.hex)}
+                    title={`-${row.tag}/${stopDisplay}`}
+                    className="flex flex-col items-center gap-1 cursor-pointer"
+                  >
+                    <div
+                      className="w-8 h-8 rounded-md border transition-all"
+                      style={{
+                        background: stop.hex,
+                        borderColor: selected ? "#000" : "rgba(0,0,0,0.12)",
+                        outline: selected ? "2px solid #000" : "none",
+                        outlineOffset: "2px",
+                        transform: selected ? "scale(1.1)" : "scale(1)",
+                      }}
+                    />
+                    <p
+                      className="text-[9px] font-mono"
+                      style={{ color: selected ? "var(--sognos-text-heading)" : "var(--sognos-text-muted)" }}
+                    >
+                      {stopDisplay}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 const CORE_TOKEN_ROWS: TokenRow[] = [
   { label: "Brand",        tag: "brand",     cssVar: "--sognos-brand",        stops: PRUSSIAN_BLUE,                      defaultHex: "#122454" },
   { label: "Accent",       tag: "accent",    cssVar: "--sognos-accent",       stops: CORNFLOWER_OCEAN,                   defaultHex: "#05a4fa" },
-  { label: "Highlight",    tag: "highlight", cssVar: "--sognos-highlight",    stops: DODGER_BLUE,                        defaultHex: "#36a0fc" },
+  { label: "Highlight",    tag: "highlight", cssVar: "--sognos-highlight",    stops: TRUE_COBALT,                        defaultHex: "#6168d1" },
   { label: "Text Heading", tag: "heading",   cssVar: "--sognos-text-heading", stops: HEADING_STOPS,                      defaultHex: "#060c1d" },
   { label: "Text Body",    tag: "body",      cssVar: "--sognos-text-body",    stops: BODY_STOPS.map((s) => ({ ...s })), defaultHex: "#475569" },
 ];
@@ -235,60 +297,6 @@ function TokenConfigurator() {
     { label: "Purple", hex: edPurple, sector: "Aged Care" },
   ];
 
-  function SwatchRow({ rows }: { rows: TokenRow[] }) {
-    return (
-      <div className="space-y-5">
-        {rows.map((row) => {
-          const current = selections[row.cssVar];
-          const currentStop = row.stops.find((s) => s.hex === current);
-          const stopLabel = currentStop?.label ?? (currentStop ? String(currentStop.stop) : "—");
-          return (
-            <div key={row.cssVar} className="flex items-start gap-4">
-              <div className="w-36 shrink-0 pt-1">
-                <p className="text-xs font-semibold text-[--sognos-text-heading]">{row.label}</p>
-                <p className="text-[10px] font-mono text-[--sognos-text-muted] mt-0.5">
-                  -{row.tag}/{stopLabel}
-                </p>
-                <p className="text-[10px] font-mono text-[--sognos-text-muted] opacity-60">{current}</p>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {row.stops.map((s) => {
-                  const selected = current === s.hex;
-                  const stopDisplay = s.label ?? String(s.stop);
-                  return (
-                    <button
-                      key={s.hex}
-                      onClick={() => set(row.cssVar, s.hex)}
-                      title={`-${row.tag}/${stopDisplay}`}
-                      className="flex flex-col items-center gap-1 cursor-pointer"
-                    >
-                      <div
-                        className="w-8 h-8 rounded-md border transition-all"
-                        style={{
-                          background: s.hex,
-                          borderColor: selected ? "#000" : "rgba(0,0,0,0.12)",
-                          outline: selected ? "2px solid #000" : "none",
-                          outlineOffset: "2px",
-                          transform: selected ? "scale(1.1)" : "scale(1)",
-                        }}
-                      />
-                      <p
-                        className="text-[9px] font-mono"
-                        style={{ color: selected ? "var(--sognos-text-heading)" : "var(--sognos-text-muted)" }}
-                      >
-                        {stopDisplay}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-10">
 
@@ -378,25 +386,25 @@ function TokenConfigurator() {
       {/* ── Core tokens ──────────────────────────────────────────────────── */}
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted] mb-5">Core</p>
-        <SwatchRow rows={CORE_TOKEN_ROWS} />
+        <SwatchRow rows={CORE_TOKEN_ROWS} selections={selections} onSelect={set} />
       </div>
 
       {/* ── Background tokens ────────────────────────────────────────────── */}
       <div className="pt-6 border-t border-[--sognos-border]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted] mb-5">Backgrounds</p>
-        <SwatchRow rows={BG_TOKEN_ROWS} />
+        <SwatchRow rows={BG_TOKEN_ROWS} selections={selections} onSelect={set} />
       </div>
 
       {/* ── Border tokens ────────────────────────────────────────────────── */}
       <div className="pt-6 border-t border-[--sognos-border]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted] mb-5">Borders</p>
-        <SwatchRow rows={BORDER_TOKEN_ROWS} />
+        <SwatchRow rows={BORDER_TOKEN_ROWS} selections={selections} onSelect={set} />
       </div>
 
       {/* ── Edition tokens ───────────────────────────────────────────────── */}
       <div className="pt-6 border-t border-[--sognos-border]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted] mb-5">Edition Tokens — SognosCare Sectors</p>
-        <SwatchRow rows={EDITION_TOKEN_ROWS} />
+        <SwatchRow rows={EDITION_TOKEN_ROWS} selections={selections} onSelect={set} />
       </div>
 
       <div className="flex items-center gap-4 pt-2 border-t border-[--sognos-border]">
@@ -764,7 +772,7 @@ export default function StyleGuidePage() {
             {[
               { name: "Prussian Blue", key: "prussian-blue", role: "Brand" },
               { name: "Cornflower Ocean", key: "cornflower-ocean", role: "Accent / CTA" },
-              { name: "Dodger Blue", key: "dodger-blue", role: "Highlight" },
+              { name: "True Cobalt", key: "true-cobalt", role: "Highlight" },
               { name: "Seagrass", key: "seagrass", role: "Edition: Green" },
               { name: "Grapefruit Pink", key: "grapefruit-pink", role: "Edition: Coral" },
               { name: "Sandy Brown", key: "sandy-brown", role: "Edition: Orange" },
@@ -910,13 +918,13 @@ export default function StyleGuidePage() {
                   <AnimatedButton href="#" variant="brand">
                     Book a Demo
                   </AnimatedButton>
-                  <Label>variant="brand" — dark bg, white icon bubble</Label>
+                  <Label>variant=&quot;brand&quot; — dark bg, white icon bubble</Label>
                 </div>
                 <div className="bg-[--sognos-brand] p-4 rounded-xl">
                   <AnimatedButton href="#" variant="white">
                     Book a Demo
                   </AnimatedButton>
-                  <Label>variant="white" — white bg, brand icon bubble</Label>
+                  <Label>variant=&quot;white&quot; — white bg, brand icon bubble</Label>
                 </div>
               </Row>
             </div>

@@ -115,12 +115,12 @@ export default function CustomerStories() {
   const study = CASE_STUDIES[index];
 
   return (
-    <section className="w-full border-b border-[--sognos-border-subtle] overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-[--sognos-border-subtle]">
+    <section className="w-full border-b border-sognos-border-subtle overflow-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
 
         {/* Section header */}
         <div className="max-w-2xl mb-8">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[--sognos-text-muted]">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
             Customers
           </p>
           <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
@@ -129,10 +129,10 @@ export default function CustomerStories() {
         </div>
 
         {/* Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] rounded-2xl overflow-hidden border border-[--sognos-border] min-h-[420px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] rounded-2xl overflow-hidden border border-sognos-border min-h-105">
 
           {/* Left panel — white */}
-          <div className="bg-white border-b lg:border-b-0 lg:border-r border-[--sognos-border] p-8 flex flex-col">
+          <div className="bg-white border-b lg:border-b-0 lg:border-r border-sognos-border p-8 flex flex-col">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`left-${index}`}
@@ -146,25 +146,25 @@ export default function CustomerStories() {
                   <img
                     src={study.logo}
                     alt={study.company}
-                    className="h-10 w-auto max-w-[160px] object-contain object-left"
+                    className="h-10 w-auto max-w-40 object-contain object-left"
                   />
                 </div>
                 <div className="mt-auto pt-6">
-                  <hr className="border-[--sognos-border] mb-6" />
+                  <hr className="border-sognos-border mb-6" />
                   <div className="space-y-4">
                     <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[--sognos-text-muted] mb-1">
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sognos-text-muted mb-1">
                         Company Size
                       </p>
-                      <p className="text-sm font-medium text-[--sognos-text-heading]">
+                      <p className="text-sm font-medium text-sognos-text-heading">
                         {study.companySize}
                       </p>
                     </div>
                     <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[--sognos-text-muted] mb-1">
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-sognos-text-muted mb-1">
                         Industry
                       </p>
-                      <p className="text-sm font-medium text-[--sognos-text-heading]">
+                      <p className="text-sm font-medium text-sognos-text-heading">
                         {study.industry}
                       </p>
                     </div>
@@ -239,7 +239,7 @@ export default function CustomerStories() {
               onClick={() => go(index - 1)}
               disabled={index === 0}
               aria-label="Previous slide"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-[--sognos-border] text-[--sognos-text-muted] transition-colors hover:border-[--sognos-text-heading] hover:text-[--sognos-text-heading] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-sognos-border text-sognos-text-muted transition-colors hover:border-sognos-text-heading hover:text-sognos-text-heading disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             >
               <ArrowLeft size={16} />
             </button>

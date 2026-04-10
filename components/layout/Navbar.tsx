@@ -44,7 +44,11 @@ const mobilePanelVariants = {
   },
 };
 
-function flatIndex(colIdx: number, rowIdx: number, columns: MegaColumn[]): number {
+function flatIndex(
+  colIdx: number,
+  rowIdx: number,
+  columns: MegaColumn[],
+): number {
   const before = columns
     .slice(0, colIdx)
     .reduce((sum, col) => sum + 1 + col.items.length, 0);
@@ -117,25 +121,59 @@ function ChevronDown({ open }: { open: boolean }) {
       transition={{ duration: 0.2, ease: SHELL_EASE }}
       aria-hidden
     >
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
       </svg>
     </motion.span>
   );
 }
 
-function ChevronRight({ className = "w-3.5 h-3.5 text-gray-300" }: { className?: string }) {
+function ChevronRight({
+  className = "w-3.5 h-3.5 text-gray-300",
+}: {
+  className?: string;
+}) {
   return (
-    <svg className={`shrink-0 ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    <svg
+      className={`shrink-0 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 5l7 7-7 7"
+      />
     </svg>
   );
 }
 
 function ChevronLeft() {
   return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+    <svg
+      className="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M15 19l-7-7 7-7"
+      />
     </svg>
   );
 }
@@ -172,9 +210,21 @@ function FeatureItems({
               className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
             >
               {meta && (
-                <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}>
-                  <svg className={`w-4 h-4 ${meta.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={meta.path} />
+                <div
+                  className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
+                >
+                  <svg
+                    className={`w-4 h-4 ${meta.color}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={meta.path}
+                    />
                   </svg>
                 </div>
               )}
@@ -183,7 +233,9 @@ function FeatureItems({
                   {item.name}
                 </div>
                 {item.description && (
-                  <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
+                  <div className="text-xs text-gray-500 mt-0.5">
+                    {item.description}
+                  </div>
                 )}
               </div>
             </Link>
@@ -247,14 +299,16 @@ function MegaCol({
   const isEmptyCol3 = colIdx === 2 && isEmpty;
 
   return (
-    <div className={`mega-col py-6 space-y-1 ${isEmptyCol3 ? "bg-slate-100" : "bg-white"}`}>
+    <div
+      className={`mega-col py-6 space-y-1 ${isEmptyCol3 ? "bg-slate-100" : "bg-white"}`}
+    >
       {!isEmpty && (
         <>
           <motion.h4
             initial={itemInitial(direction)}
             animate={{ opacity: 1, x: 0, y: 0 }}
             transition={itemTransition(colIdx, -1, columns, direction)}
-            className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2"
+            className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2"
           >
             {col.heading}
           </motion.h4>
@@ -318,7 +372,9 @@ export default function Navbar() {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [mobileOpen]);
 
   // Scroll-driven dark/light colour detection
@@ -339,7 +395,10 @@ export default function Navbar() {
       ticking = false;
     };
     const onScroll = () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -423,10 +482,13 @@ export default function Navbar() {
   const mobileTitle =
     mobilePanel === "root"
       ? "Menu"
-      : nav.find((g) => getMobilePanelId(g.label) === mobilePanel)?.label ?? mobilePanel;
+      : (nav.find((g) => getMobilePanelId(g.label) === mobilePanel)?.label ??
+        mobilePanel);
 
   const activeGroup = nav.find((g) => g.label === openMenu && g.megaMenu);
-  const activeSimpleGroup = nav.find((g) => g.label === openMenu && !g.megaMenu && g.items);
+  const activeSimpleGroup = nav.find(
+    (g) => g.label === openMenu && !g.megaMenu && g.items,
+  );
 
   const linkClass =
     colorMode === "dark"
@@ -449,104 +511,134 @@ export default function Navbar() {
           "pointer-events-auto w-full px-6",
           "transition-[background-color,border-color] duration-300",
           colorMode === "light"
-            ? "bg-white border-b border-[--sognos-border]"
+            ? "bg-white border-b border-sognos-border"
             : "bg-transparent border-b border-transparent",
         ].join(" ")}
       >
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between h-[68px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0" onClick={closeAll}>
-            <Image
-              src="/logos/sognos-logo.svg"
-              alt="Sognos"
-              width={160}
-              height={40}
-              className="h-[40px] w-auto transition-[filter] duration-300"
-              style={colorMode === "dark" ? { filter: "brightness(0) invert(1)" } : undefined}
-            />
-          </Link>
+        <div className="max-w-7xl mx-auto px-6 py-2">
+          <div className="flex items-center justify-between h-17">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center shrink-0"
+              onClick={closeAll}
+            >
+              <Image
+                src="/logos/sognos-logo.svg"
+                alt="Sognos"
+                width={160}
+                height={40}
+                className="h-10 w-auto transition-[filter] duration-300"
+                style={
+                  colorMode === "dark"
+                    ? { filter: "brightness(0) invert(1)" }
+                    : undefined
+                }
+              />
+            </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {nav.map((group, groupIndex) => (
-              <div
-                key={group.label}
-                className="relative"
-                onMouseEnter={() => {
-                  if (group.megaMenu || group.items) {
-                    handleTriggerEnter(group.label, groupIndex);
-                  } else {
-                    scheduleClose();
-                  }
-                }}
-                onMouseLeave={() => scheduleClose()}
+            {/* Desktop nav */}
+            <nav className="hidden lg:flex items-center gap-0.5">
+              {nav.map((group, groupIndex) => (
+                <div
+                  key={group.label}
+                  className="relative"
+                  onMouseEnter={() => {
+                    if (group.megaMenu || group.items) {
+                      handleTriggerEnter(group.label, groupIndex);
+                    } else {
+                      scheduleClose();
+                    }
+                  }}
+                  onMouseLeave={() => scheduleClose()}
+                >
+                  {group.megaMenu || group.items ? (
+                    <button
+                      type="button"
+                      aria-expanded={openMenu === group.label}
+                      onClick={() => toggleMenu(group.label, groupIndex)}
+                      className={`flex items-center gap-1 font-medium px-4 py-2 rounded-md text-sm transition-colors duration-300 ${
+                        openMenu === group.label
+                          ? "opacity-100"
+                          : "opacity-80 hover:opacity-100"
+                      } ${linkClass}`}
+                    >
+                      {group.label}
+                      <ChevronDown open={openMenu === group.label} />
+                    </button>
+                  ) : (
+                    <Link
+                      href={group.href}
+                      className={`font-medium px-4 py-2 rounded-md text-sm opacity-80 hover:opacity-100 transition-colors duration-300 ${linkClass}`}
+                      onClick={closeAll}
+                    >
+                      {group.label}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </nav>
+
+            {/* CTAs */}
+            <div className="hidden lg:flex items-center gap-3">
+              <Link
+                href={navCTA.secondary.href}
+                className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
+                onClick={closeAll}
               >
-                {group.megaMenu || group.items ? (
-                  <button
-                    type="button"
-                    aria-expanded={openMenu === group.label}
-                    onClick={() => toggleMenu(group.label, groupIndex)}
-                    className={`flex items-center gap-1 font-medium px-4 py-2 rounded-md text-sm transition-colors duration-300 ${
-                      openMenu === group.label ? "opacity-100" : "opacity-80 hover:opacity-100"
-                    } ${linkClass}`}
-                  >
-                    {group.label}
-                    <ChevronDown open={openMenu === group.label} />
-                  </button>
-                ) : (
-                  <Link
-                    href={group.href}
-                    className={`font-medium px-4 py-2 rounded-md text-sm opacity-80 hover:opacity-100 transition-colors duration-300 ${linkClass}`}
-                    onClick={closeAll}
-                  >
-                    {group.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </nav>
+                {navCTA.secondary.name}
+              </Link>
+              <Link
+                href={navCTA.primary.href}
+                className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
+                onClick={closeAll}
+              >
+                {navCTA.primary.name}
+              </Link>
+            </div>
 
-          {/* CTAs */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href={navCTA.secondary.href}
-              className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
-              onClick={closeAll}
+            {/* Mobile hamburger */}
+            <button
+              className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
+                colorMode === "dark"
+                  ? "text-white/80 hover:text-white"
+                  : "text-gray-500 hover:text-gray-900"
+              }`}
+              onClick={mobileOpen ? closeMobile : openMobile}
+              aria-label="Toggle menu"
             >
-              {navCTA.secondary.name}
-            </Link>
-            <Link
-              href={navCTA.primary.href}
-              className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
-              onClick={closeAll}
-            >
-              {navCTA.primary.name}
-            </Link>
+              {mobileOpen ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
-              colorMode === "dark"
-                ? "text-white/80 hover:text-white"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
-            onClick={mobileOpen ? closeMobile : openMobile}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
         </div>
-      </div>
       </div>
 
       {/* ── Desktop mega panel ── */}
@@ -563,7 +655,11 @@ export default function Navbar() {
             onMouseLeave={() => scheduleClose()}
           >
             <div className="mx-auto max-w-7xl px-6">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <AnimatePresence
+                initial={false}
+                custom={direction}
+                mode="popLayout"
+              >
                 <motion.div
                   key={openMenu}
                   custom={direction}
@@ -603,7 +699,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: SHELL_EASE }}
-            className="mega-panel absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-[200px]"
+            className="mega-panel absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
             style={{ left: "auto" }}
             onMouseEnter={cancelClose}
             onMouseLeave={() => scheduleClose()}
@@ -634,7 +730,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
-            className="lg:hidden fixed top-[68px] inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
+            className="lg:hidden fixed top-17 inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
           >
             {/* Sticky drilldown header */}
             <div className="sticky top-0 bg-white z-10 flex items-center h-12 px-4 border-b border-gray-100 shrink-0">
@@ -647,7 +743,9 @@ export default function Navbar() {
                   <ChevronLeft />
                 </button>
               )}
-              <span className="text-sm font-semibold text-gray-900">{mobileTitle}</span>
+              <span className="text-sm font-semibold text-gray-900">
+                {mobileTitle}
+              </span>
             </div>
 
             {/* Panel content */}
@@ -720,16 +818,32 @@ export default function Navbar() {
                                   className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
                                 >
                                   {meta && (
-                                    <div className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}>
-                                      <svg className={`w-4 h-4 ${meta.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={meta.path} />
+                                    <div
+                                      className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
+                                    >
+                                      <svg
+                                        className={`w-4 h-4 ${meta.color}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d={meta.path}
+                                        />
                                       </svg>
                                     </div>
                                   )}
                                   <div>
-                                    <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                                    <div className="text-sm font-medium text-gray-900">
+                                      {item.name}
+                                    </div>
                                     {item.description && (
-                                      <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
+                                      <div className="text-xs text-gray-500 mt-0.5">
+                                        {item.description}
+                                      </div>
                                     )}
                                   </div>
                                 </Link>
@@ -742,25 +856,30 @@ export default function Navbar() {
                       // Mega columns fallback (e.g. Why Sognos, Knowledge Hub)
                       return (
                         <div key={panelId}>
-                          {group.megaMenu!.filter((col) => col.items.length > 0).map((col, i) => (
-                            <div key={i} className={`px-3 py-5 ${i > 0 ? "border-t border-gray-100" : ""}`}>
-                              <p className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                                {col.heading}
-                              </p>
-                              <div className="space-y-0.5">
-                                {col.items.map((item) => (
-                                  <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    onClick={closeMobile}
-                                    className="block px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-                                  >
-                                    {item.name}
-                                  </Link>
-                                ))}
+                          {group
+                            .megaMenu!.filter((col) => col.items.length > 0)
+                            .map((col, i) => (
+                              <div
+                                key={i}
+                                className={`px-3 py-5 ${i > 0 ? "border-t border-gray-100" : ""}`}
+                              >
+                                <p className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                                  {col.heading}
+                                </p>
+                                <div className="space-y-0.5">
+                                  {col.items.map((item) => (
+                                    <Link
+                                      key={item.name}
+                                      href={item.href}
+                                      onClick={closeMobile}
+                                      className="block px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
                         </div>
                       );
                     })}

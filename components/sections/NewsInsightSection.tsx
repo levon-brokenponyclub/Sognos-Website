@@ -109,7 +109,7 @@ function ArticleCard({ article }: { article: Article }) {
         </span>
 
         {/* Title */}
-        <h3 className="font-heading text-[15px] font-medium leading-snug tracking-tight text-neutral-900 line-clamp-3">
+        <h3 className="font-heading text-sm font-medium leading-snug tracking-tight text-neutral-900 line-clamp-3">
           {article.title}
         </h3>
 
