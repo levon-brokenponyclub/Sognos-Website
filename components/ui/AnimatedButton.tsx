@@ -28,11 +28,11 @@ export default function AnimatedButton({
     variant === "white"
       ? "bg-white text-brand"
       : variant === "transparent"
-      ? "bg-transparent text-[var(--sognos-brand)] border border-[rgba(18,36,84,0.2)]"
+      ? "bg-transparent text-(--sognos-brand) border border-[rgba(18,36,84,0.2)]"
       : "bg-brand text-white";
 
   const bubbleClass =
-    variant === "brand" ? "bg-white text-brand" : "bg-[var(--sognos-brand)] text-white";
+    variant === "brand" ? "bg-white text-brand" : "bg-(--sognos-brand) text-white";
 
   return (
     <Link

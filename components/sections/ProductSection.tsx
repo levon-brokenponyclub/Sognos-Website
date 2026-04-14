@@ -226,7 +226,7 @@ export default function ProductSection() {
           <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
             For organisations
             <br />
-            that can't afford to get things wrong
+            that can&apos;t afford to get things wrong
           </h2>
         </div>
 
