@@ -4,12 +4,12 @@
 
 ## Current Status
 
-The project already has the marketing shell and homepage section structure in place.
+Phases 1–5 are complete. All core marketing pages are built and statically generated.
 
 Immediate focus:
-- maintain architecture alignment
-- remove outdated taxonomy and page-layer assumptions
-- keep docs in sync with implementation
+- Phase 6 — design system application pass
+- Phase 8 (early) — contact page (all CTAs reference `/contact`, currently 404)
+- Customers pages (`/customers`, `/customers/[slug]`) referenced by Stories sections
 
 ## Phase Plan
 
@@ -63,29 +63,25 @@ Exit criteria:
 
 ### Phase 4: Product Pages
 
-Next build work:
-- `/products/sognoscare`
-- `/products/sognosroster`
-
-Each page should include:
-- hero
-- what it solves
-- features
-- integration context
-- CTA
+Completed:
+- `/products/sognoscare` — Hero, Problems, Features, Editions (4 care-sector), Proof, Stories, Compliance, Integration, CTA
+- `/products/sognosroster` — Hero, Problems, Features, Proof, Stories, Integration, CTA
+- `/products` — Product hub with comparison cards and Better Together section
+- SognosCare Editions: Disability & Mental Health, Allied Health, Support at Home, Residential Aged Care
+- Edition-specific CSS tokens: `--sognos-edition-green/orange/coral/purple`
+- Tailwind v4 CSS variable syntax applied across all components (`bg-(--token)`)
 
 ### Phase 5: Solutions and Industries Pages
 
-Build:
-- solutions hub index (`/solutions`)
-- solution pages for the seven approved solutions
-- dynamic industry pages for the five approved industries
-- supporting customers/resources coverage
-
-Rules:
-- solutions are not products
-- industries are not merged into solutions
-- solution pages must not force a product dependency
+Completed:
+- `/solutions` — Solutions hub (grid of 7 solutions)
+- `/solutions/[slug]` — Dynamic solution pages, 7 static routes: Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
+- `/industries` — Industries hub (grid of 5 industries with product chips)
+- `/industries/[slug]` — Dynamic industry pages, 5 static routes: Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
+- `lib/solutions-content.ts` — full hero/pain points/capabilities/platform/worksWithCare/worksWithRoster per solution
+- `lib/industries-content.ts` — full hero/challenges/howSognosHelps per industry
+- "Works with" product chips on solution pages — shown only where genuine relationship exists
+- 22 total routes, all statically generated
 
 ### Phase 6: Design System Application
 

@@ -135,9 +135,15 @@ Section rules:
 - `IndustrySection` must include Industrial Services and Energy & Utilities
 
 ## Current Status
-In build phase.
+Phases 1–5 complete. All core marketing pages built and statically generated (22 routes).
 
-Homepage shell and section structure are implemented. Current execution priority is product page build and architecture/doc alignment maintenance.
+Live routes:
+- `/` — Homepage (9 sections)
+- `/products`, `/products/sognoscare`, `/products/sognosroster`
+- `/solutions`, `/solutions/[slug]` × 7
+- `/industries`, `/industries/[slug]` × 5
+
+Next priority: Phase 6 (design system application pass), contact page, customers pages.
 
 ## Success Metrics
 Conversion:

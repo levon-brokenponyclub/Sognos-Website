@@ -37,8 +37,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 1** | Foundation — Next.js scaffold, layout, Navbar, Footer, navigation | ✅ Complete |
 | **Phase 2** | Homepage — all sections built and wired | ✅ Complete |
 | **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
-| **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | 🔄 In Progress |
-| **Phase 5** | Solutions & industry pages | 🔲 Pending |
+| **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | ✅ Complete |
+| **Phase 5** | Solutions & industry pages | ✅ Complete |
 | **Phase 6** | Design system application | 🔲 Pending |
 | **Phase 7** | UI polish & motion | 🔲 Pending |
 | **Phase 8** | Conversion & integrations | 🔲 Pending |
@@ -55,25 +55,19 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     page.tsx                       ✅ Homepage
 
     /products
-      page.tsx                     🔲 Product Hub
+      page.tsx                     ✅ Product Hub
       /sognoscare
-        page.tsx                   🔲
+        page.tsx                   ✅
       /sognosroster
-        page.tsx                   🔲
+        page.tsx                   ✅
 
     /solutions
-      page.tsx                     🔲 Solutions Hub
-      /field-service/page.tsx      🔲
-      /customer-relationship-management/page.tsx  🔲
-      /customer-insights/page.tsx  🔲
-      /customer-experience/page.tsx 🔲
-      /customer-service/page.tsx   🔲
-      /power-platform/page.tsx     🔲
-      /quick-start/page.tsx        🔲
+      page.tsx                     ✅ Solutions Hub
+      /[slug]/page.tsx             ✅ (7 static routes — field-service, crm, insights, experience, service, power-platform, quick-start)
 
     /industries
-      page.tsx                     🔲
-      /[slug]/page.tsx             🔲 (covers all 5 industries)
+      page.tsx                     ✅ Industries Hub
+      /[slug]/page.tsx             ✅ (5 static routes — health-social-care, facilities-management, local-government, industrial-services, energy-utilities)
 
     /customers
       page.tsx                     🔲
@@ -112,6 +106,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /lib
   navigation.ts                    ✅
   constants.ts                     ✅ (SITE, PRODUCTS, SOLUTIONS, INDUSTRIES)
+  solutions-content.ts             ✅ (full page content for all 7 solutions)
+  industries-content.ts            ✅ (full page content for all 5 industries)
 
 /styles
   globals.css                      ✅
@@ -138,23 +134,30 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 ## 5. Sitemap (Final)
 
 ```
-/
-/products/sognoscare
-/products/sognosroster
-/solutions
-/solutions/field-service
-/solutions/customer-relationship-management
-/solutions/customer-insights
-/solutions/customer-experience
-/solutions/customer-service
-/solutions/power-platform
-/solutions/quick-start
-/industries/[slug]  →  health-social-care, facilities-management, local-government, industrial-services, energy-utilities
-/customers/[slug]
-/resources
-/company/about
-/company/careers
-/contact
+/                                                    ✅
+/products                                            ✅
+/products/sognoscare                                 ✅
+/products/sognosroster                               ✅
+/solutions                                           ✅
+/solutions/field-service                             ✅
+/solutions/customer-relationship-management          ✅
+/solutions/customer-insights                         ✅
+/solutions/customer-experience                       ✅
+/solutions/customer-service                          ✅
+/solutions/power-platform                            ✅
+/solutions/quick-start                               ✅
+/industries                                          ✅
+/industries/health-social-care                       ✅
+/industries/facilities-management                    ✅
+/industries/local-government                         ✅
+/industries/industrial-services                      ✅
+/industries/energy-utilities                         ✅
+/customers                                           🔲
+/customers/[slug]                                    🔲
+/resources                                           🔲
+/company/about                                       🔲
+/company/careers                                     🔲
+/contact                                             🔲 (all CTAs point here — priority)
 ```
 
 ---
@@ -188,28 +191,27 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Phase 4 — Product Pages**
+**Phase 6 — Design System Application**
 
-ProductSection (Card 1 — partial):
-- [x] Shine border animation (conic-gradient, @property --shine-angle)
-- [x] Bento overlay gradient — 4 animated orbs (teal/cyan/emerald)
-- [x] Expand button wired to bottom drawer (Framer Motion AnimatePresence)
-- [ ] Drawer body content (placeholder only)
-- [ ] Cards 2 and 3
+Pending:
+- [ ] Typography pass — confirm Inter Tight / Inter applied consistently across all pages
+- [ ] Card token audit — verify `border-(--sognos-card-border)` and `bg-white`/`bg-(--sognos-bg-sunken)` used throughout
+- [ ] Radius token audit — replace arbitrary radius values with token classes
+- [ ] Gradient audit — hero and highlight surfaces only; strip from standard cards
+- [ ] Spacing consistency pass — container, section padding, gap values
 
-- [ ] `/products/sognoscare/page.tsx` — Hero, What it solves, Features, Compliance, Integration (Roster link), CTA
-- [ ] `/products/sognosroster/page.tsx` — Hero, Scheduling challenges, Features, Optimisation logic, Integration (Care link), CTA
-- [ ] `/products/page.tsx` — Product Hub (comparison, Better Together, CTA)
+Also pending (not Phase 6):
+- [ ] `/contact` page — all CTAs reference this; currently 404 (priority)
+- [ ] `/customers` hub + `/customers/[slug]` — referenced by Stories sections
 
 ---
 
 ## 9. Next Tasks (Ordered)
 
-1. Build SognosCare product page
-2. Build SognosRoster product page
-3. Build product hub (`/products`)
-4. Begin Phase 5 — solutions and industry pages
-5. Phase 6 — apply design system
+1. Build `/contact` page (unblocks all CTA flows)
+2. Phase 6 — design system application pass
+3. Build customers hub and case study pages
+4. Phase 7 — UI polish and motion
 
 ---
 
