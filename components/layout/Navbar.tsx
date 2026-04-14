@@ -650,7 +650,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2, ease: SHELL_EASE }}
-            className="mega-panel absolute inset-x-0 top-full bg-white border-t border-b border-gray-200 shadow-sm"
+            className="mega-panel pointer-events-auto absolute inset-x-0 top-full bg-white border-t border-b border-gray-200 shadow-sm"
             onMouseEnter={cancelClose}
             onMouseLeave={() => scheduleClose()}
           >
@@ -699,7 +699,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: SHELL_EASE }}
-            className="mega-panel absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
+            className="mega-panel pointer-events-auto absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
             style={{ left: "auto" }}
             onMouseEnter={cancelClose}
             onMouseLeave={() => scheduleClose()}

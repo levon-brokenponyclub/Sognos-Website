@@ -5,6 +5,7 @@ import SognoscareRosterProof from "@/components/sections/sognosroster/Proof";
 import SognoscareRosterStories from "@/components/sections/sognosroster/Stories";
 import SognoscareRosterIntegration from "@/components/sections/sognosroster/Integration";
 import CTASection from "@/components/sections/CTASection";
+import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
   title: "SognosRoster — Workforce Scheduling & Optimisation | Sognos",
@@ -12,10 +13,17 @@ export const metadata = {
     "Allocate the right people, at the right time, to the right services — automatically. Built for complex service operations.",
 };
 
+const SECTIONS = [
+  { label: "Features", id: "features" },
+  { label: "Proof", id: "proof" },
+  { label: "Integration", id: "integration" },
+];
+
 export default function SognoscareRosterPage() {
   return (
     <>
       <SognoscareRosterHero />
+      <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
       <SognoscareRosterProblems />
       <SognoscareRosterFeatures />
       <SognoscareRosterProof />

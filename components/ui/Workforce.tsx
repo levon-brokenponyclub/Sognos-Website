@@ -260,7 +260,7 @@ function WorkerCard({
 }) {
   return (
     <motion.div
-      className="absolute"
+      className="absolute z-99"
       style={{ left: 0, top: pct(item.y, VB_H), translate: "0 -50%" }}
       initial={{ opacity: 0, x: -18 }}
       animate={trigger ? { opacity: 1, x: 0 } : { opacity: 0, x: -18 }}
@@ -414,7 +414,7 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
 
       {/* SVG — connection lines */}
       <svg
-        className="pointer-events-none absolute inset-0 h-full w-full"
+        className="pointer-events-none absolute inset-0 h-full w-full z-1"
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         fill="none"
       >

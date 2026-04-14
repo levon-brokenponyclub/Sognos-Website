@@ -126,7 +126,7 @@ function TestimonialTile({
 
 export default function SognoscareRosterProof() {
   return (
-    <section className="bg-(--sognos-bg-sunken) py-24">
+    <section id="proof" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>

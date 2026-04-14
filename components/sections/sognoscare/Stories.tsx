@@ -51,15 +51,15 @@ const STORIES: Story[] = [
     buttonIconBgClass: "bg-seagrass-900",
   },
   {
-    company: "Meridian Care Group",
-    companySize: "450+",
+    company: "Home Care Provider",
+    companySize: "200+",
     edition: "Support at Home",
-    logo: "/logos/auckland-airport-logo.png",
+    logo: "/logos/sognos-logo.svg",
     quote:
       "We used to spend two days assembling compliance reports at the end of every quarter. Now it's a single export. The audit trail is there automatically — every note, every visit, every change of plan.",
-    author: "Sarah Mitchell",
-    role: "Operations Director, Meridian Care Group",
-    href: "/customers/meridian-care-group",
+    author: "Operations Director",
+    role: "Support at Home Provider, NSW",
+    href: "/customers",
     panelClass: "bg-(--color-grapefruit-pink-100)",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -102,7 +102,7 @@ export default function SognoscareStories() {
   );
 
   return (
-    <section className="bg-white py-24">
+    <section id="stories" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-8 max-w-2xl">
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">

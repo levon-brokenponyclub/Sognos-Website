@@ -2,24 +2,24 @@ const STATS = [
   {
     value: "99%",
     label: "Compliance audit pass rate",
-    context: "Across SognosCare regulated clients",
+    context: "Across SognosCare regulated deployments",
     theme: "dark",
   },
   {
-    value: "3×",
-    label: "Faster reporting cycle",
-    context: "Compared to manual processes",
+    value: "75%",
+    label: "Reduction in funding-body report time",
+    context: "Compared to manual assembly processes",
     theme: "light",
   },
   {
     value: "60%",
-    label: "Reduction in admin time",
-    context: "Per care worker, across active deployments",
+    label: "Reduction in admin time per care worker",
+    context: "Across active SognosCare deployments",
     theme: "light",
   },
   {
-    value: "2,500+",
-    label: "Participants managed",
+    value: "12,000+",
+    label: "Participants managed on platform",
     context: "Across active SognosCare deployments",
     theme: "brand",
   },
@@ -140,7 +140,7 @@ function TestimonialTile({
 
 export default function SognoscareProof() {
   return (
-    <section className="bg-(--sognos-bg-sunken) py-24">
+    <section id="proof" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
@@ -148,12 +148,13 @@ export default function SognoscareProof() {
               Results
             </p>
             <h2 className="font-heading text-4xl font-normal text-brand">
-              Results care providers can point to
+              Numbers care providers can point to
             </h2>
           </div>
           <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
-            SognosCare is built for care providers who need to demonstrate
-            outcomes — to funding bodies, auditors, and the people they serve.
+            SognosCare is built for providers who must demonstrate outcomes — to
+            funding bodies, auditors, and boards. These are results from active
+            deployments.
           </p>
         </div>
 

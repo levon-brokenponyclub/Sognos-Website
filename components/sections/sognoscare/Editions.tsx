@@ -20,9 +20,9 @@ const EDITIONS: Edition[] = [
     accentHex: "#009982",
     accentTextClass: "text-(--sognos-edition-green)",
     accentBgClass: "bg-(--sognos-edition-green)",
-    subtitle: "Support for NDIS and psychosocial teams",
+    subtitle: "NDIS, psychosocial support, and participant outcome tracking",
     description:
-      "Plan around participant goals, manage incidents and streamline progress notes — all while staying aligned with funding rules and reducing admin strain.",
+      "Plan around participant goals, manage incidents, and streamline progress notes — with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
     href: "#",
   },
   {
@@ -30,9 +30,9 @@ const EDITIONS: Edition[] = [
     accentHex: "#ff9233",
     accentTextClass: "text-(--sognos-edition-orange)",
     accentBgClass: "bg-(--sognos-edition-orange)",
-    subtitle: "Purpose-built for therapy and community health teams",
+    subtitle: "Mobile therapy teams, referral management, and multi-disciplinary records",
     description:
-      "Manage referrals, coordinate schedules and record multi-disciplinary notes in one place — with mobile-first access to keep your workforce productive in the field.",
+      "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
     href: "#",
   },
   {
@@ -40,9 +40,9 @@ const EDITIONS: Edition[] = [
     accentHex: "#ff666b",
     accentTextClass: "text-(--sognos-edition-coral)",
     accentBgClass: "bg-(--sognos-edition-coral)",
-    subtitle: "Designed for in-home aged care providers",
+    subtitle: "Home care packages, Support at Home reform, and client independence",
     description:
-      "Support client independence while managing services, budgets and care workers — built to help providers prepare for the new Support at Home funding model.",
+      "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
     href: "#",
   },
   {
@@ -50,9 +50,9 @@ const EDITIONS: Edition[] = [
     accentHex: "#a666ff",
     accentTextClass: "text-(--sognos-edition-purple)",
     accentBgClass: "bg-(--sognos-edition-purple)",
-    subtitle: "Simplify resident care, clinical workflows and facility ops",
+    subtitle: "Resident care planning, clinical documentation, and facility compliance",
     description:
-      "From care planning and documentation to staff coordination, we help residential providers deliver quality care while meeting compliance requirements.",
+      "From care planning and progress documentation to staff coordination and resident outcome reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
     href: "#",
   },
 ];
@@ -147,8 +147,13 @@ export default function SognoscareEditions() {
             Choose the Right SognosCare Edition for Your Service
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-sognos-text-body">
-            SognosCare offers four tailored editions to meet the needs of diverse
-            care providers.
+            SognosCare offers four tailored editions — each pre-configured for its
+            funding model, compliance framework, and operational workflows.
+          </p>
+          <p className="mx-auto mt-4 max-w-xl text-sm text-sognos-text-muted">
+            All editions share the same core platform. Editions determine which
+            funding model workflows, compliance frameworks, and reporting templates
+            are pre-configured for your organisation.
           </p>
         </div>
 

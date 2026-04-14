@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function SognoscareRosterIntegration() {
   return (
-    <section className="bg-(--sognos-bg-sunken) py-24">
+    <section id="integration" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="overflow-hidden rounded-2xl bg-prussian-blue-950">
           <div className="grid lg:grid-cols-2">
