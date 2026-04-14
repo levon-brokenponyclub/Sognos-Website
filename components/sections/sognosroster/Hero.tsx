@@ -118,11 +118,13 @@ export default function SognoscareRosterHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* ── Copy ── */}
           <div>
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-(--sognos-accent)" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                SognosRoster
-              </span>
+            <div className="mb-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/sognos-roster-logo.svg"
+                alt="SognosRoster"
+                className="h-8 w-auto"
+              />
             </div>
 
             <h1 className="mb-6 font-heading text-5xl font-normal leading-[1.08] text-white lg:text-5xl">
@@ -151,14 +153,14 @@ export default function SognoscareRosterHero() {
 
           {/* ── Roster animation panel ── */}
           <div className="hidden lg:block">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-5">
+            <div className="rounded-xl bg-white border border-slate-200 p-5">
               {/* Panel header */}
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-xs font-semibold text-white/35 uppercase tracking-widest">
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
                     Weekly Roster
                   </p>
-                  <p className="text-xs text-white/25 mt-0.5">
+                  <p className="text-xs text-slate-300 mt-0.5">
                     4 workers · 5 days
                   </p>
                 </div>
@@ -170,7 +172,7 @@ export default function SognoscareRosterHero() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.92 }}
                       transition={{ duration: 0.2 }}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-400"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-semibold text-emerald-600"
                     >
                       <svg
                         className="w-3 h-3"
@@ -191,10 +193,10 @@ export default function SognoscareRosterHero() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-semibold text-white/35"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-400"
                     >
                       <motion.span
-                        className="h-1.5 w-1.5 rounded-full bg-white/35"
+                        className="h-1.5 w-1.5 rounded-full bg-slate-300"
                         animate={
                           phase === "filling"
                             ? { opacity: [1, 0.25, 1] }
@@ -218,7 +220,7 @@ export default function SognoscareRosterHero() {
                 {DAYS.map((day) => (
                   <div
                     key={day}
-                    className="h-7 flex items-center justify-center text-[11px] font-semibold text-white/25 tracking-wide"
+                    className="h-7 flex items-center justify-center text-[11px] font-semibold text-slate-300 tracking-wide"
                   >
                     {day}
                   </div>
@@ -246,7 +248,7 @@ export default function SognoscareRosterHero() {
                         <div
                           className="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0"
                           style={{
-                            backgroundColor: `${worker.hex}22`,
+                            backgroundColor: `${worker.hex}18`,
                             color: worker.hex,
                             border: `1px solid ${worker.hex}40`,
                           }}
@@ -278,13 +280,13 @@ export default function SognoscareRosterHero() {
                                 style={{
                                   backgroundColor: `${worker.hex}18`,
                                   color: worker.hex,
-                                  border: `1px solid ${worker.hex}30`,
+                                  border: `1px solid ${worker.hex}35`,
                                 }}
                               >
                                 {shift.label}
                               </motion.div>
                             ) : (
-                              <div className="h-full rounded-md bg-white/[0.03] border border-white/[0.06]" />
+                              <div className="h-full rounded-md bg-slate-50 border border-slate-100" />
                             )}
                           </AnimatePresence>
                         </div>
@@ -295,7 +297,7 @@ export default function SognoscareRosterHero() {
               </div>
 
               {/* Stats bar — always visible */}
-              <div className="mt-5 pt-4 border-t border-white/[0.08] grid grid-cols-4 gap-2">
+              <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-4 gap-2">
                 {[
                   {
                     value: phase === "done" ? `${utilisation}%` : "—",
@@ -323,17 +325,17 @@ export default function SognoscareRosterHero() {
                       animate={{
                         color:
                           value === "—"
-                            ? "rgba(255,255,255,0.2)"
+                            ? "#cbd5e1"
                             : highlight
-                              ? "#34d399"
-                              : "#ffffff",
+                              ? "#059669"
+                              : "#1e293b",
                       }}
                       transition={{ duration: 0.3 }}
                       className="text-sm font-semibold tabular-nums"
                     >
                       {value}
                     </motion.div>
-                    <div className="text-[10px] text-white/30 mt-0.5">
+                    <div className="text-[10px] text-slate-400 mt-0.5">
                       {label}
                     </div>
                   </div>

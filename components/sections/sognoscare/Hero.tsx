@@ -179,11 +179,13 @@ export default function SognoscareHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* ── Copy ── */}
           <div>
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-(--sognos-edition-green)" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                SognosCare
-              </span>
+            <div className="mb-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/sognos-care-logo.svg"
+                alt="SognosCare"
+                className="h-8 w-auto"
+              />
             </div>
 
             <h1 className="mb-6 font-heading text-5xl font-normal leading-[1.08] text-white lg:text-5xl">
