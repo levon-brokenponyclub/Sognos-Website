@@ -51,15 +51,15 @@ const STORIES: Story[] = [
     buttonIconBgClass: "bg-cornflower-ocean-800",
   },
   {
-    company: "Summit FM Solutions",
+    company: "Facilities Management Provider",
     companySize: "220+",
     industry: "Facilities Management",
-    logo: "/logos/auckland-airport-logo.png",
+    logo: "/logos/sognos-logo.svg",
     quote:
       "From request to worker allocation used to take two to three days of back-and-forth. Now it's measured in minutes. SognosRoster paid for itself in the first quarter just on scheduling efficiency alone.",
-    author: "James Holt",
-    role: "Operations Manager, Summit FM Solutions",
-    href: "/customers/summit-fm",
+    author: "Operations Manager",
+    role: "National Facilities Management Provider",
+    href: "/customers",
     panelClass: "bg-sandy-brown-500/30",
     quoteClass: "text-sandy-brown-900",
     authorClass: "text-sandy-brown-900",
@@ -102,7 +102,7 @@ export default function SognoscareRosterStories() {
   );
 
   return (
-    <section className="bg-white py-24">
+    <section id="stories" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-8 max-w-2xl">
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">

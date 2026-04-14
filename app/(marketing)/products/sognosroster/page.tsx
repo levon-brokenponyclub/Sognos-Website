@@ -1,6 +1,7 @@
 import SognoscareRosterHero from "@/components/sections/sognosroster/Hero";
 import SognoscareRosterProblems from "@/components/sections/sognosroster/Problems";
 import SognoscareRosterFeatures from "@/components/sections/sognosroster/Features";
+import SognoscareRosterAdvantages from "@/components/sections/sognosroster/Advantages";
 import SognoscareRosterProof from "@/components/sections/sognosroster/Proof";
 import SognoscareRosterStories from "@/components/sections/sognosroster/Stories";
 import SognoscareRosterIntegration from "@/components/sections/sognosroster/Integration";
@@ -14,8 +15,11 @@ export const metadata = {
 };
 
 const SECTIONS = [
+  { label: "Problems", id: "problems" },
   { label: "Features", id: "features" },
+  { label: "Advantages", id: "advantages" },
   { label: "Proof", id: "proof" },
+  { label: "Stories", id: "stories" },
   { label: "Integration", id: "integration" },
 ];
 
@@ -26,6 +30,7 @@ export default function SognoscareRosterPage() {
       <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
       <SognoscareRosterProblems />
       <SognoscareRosterFeatures />
+      <SognoscareRosterAdvantages />
       <SognoscareRosterProof />
       <SognoscareRosterStories />
       <SognoscareRosterIntegration />
