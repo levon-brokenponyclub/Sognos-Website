@@ -191,12 +191,12 @@ export default function SolutionsSection() {
   };
 
   return (
-    <section className="w-full bg-slate-50 overflow-hidden">
+    <section className="w-full bg-prussian-blue-800 overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl w-full mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pt-24 pb-5">
           <div>
-            <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
+            <h2 className="font-heading text-white leading-snug text-2xl md:text-3xl lg:text-4xl">
               Built for how your operation works
             </h2>
           </div>
@@ -208,10 +208,7 @@ export default function SolutionsSection() {
       </div>
 
       {/* Card track — no overflow-hidden so cards bleed past container right edge */}
-      <div
-        ref={viewportRef}
-        className="max-w-7xl w-full mx-auto px-6 border-x border-dashed border-sognos-border-subtle pb-2"
-      >
+      <div ref={viewportRef} className="max-w-7xl w-full mx-auto px-6 pb-2">
         <motion.div
           ref={trackRef}
           style={{ x, gap: GAP }}
@@ -227,7 +224,7 @@ export default function SolutionsSection() {
       </div>
 
       {/* Bottom nav — bottom right */}
-      <div className="max-w-7xl w-full mx-auto px-6 pb-16 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 pb-16">
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={() => step(-1)}

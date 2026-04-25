@@ -83,7 +83,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery — giving your team the context they need to deliver better outcomes.",
     ctaText: "Explore Sognos Genogram",
     ctaLink: "/products/sognosgenogram",
-    sectionBg: "#ead5f4",
+    sectionBg: "#C2E4FE",
     story: {
       quote:
         "Having the full family picture embedded in the case record changed how our team approaches every intake. We catch things we would have missed before.",
