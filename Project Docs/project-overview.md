@@ -66,33 +66,37 @@ Industries:
 - Energy & Utilities
 
 ## Final Sitemap
-- `/`
-- `/products`
-- `/products/sognoscare`
-- `/products/sognosroster`
-- `/products/sognosgenogram` (Phase 5b)
-- `/solutions` (Solutions Hub)
-- `/solutions/field-service`
-- `/solutions/customer-relationship-management`
-- `/solutions/customer-insights`
-- `/solutions/customer-experience`
-- `/solutions/customer-service`
-- `/solutions/power-platform`
-- `/solutions/quick-start`
-- `/industries`
-- `/industries/[slug]`
-- `/customers`
-- `/customers/[slug]`
-- `/resources`
-- `/company/about`
-- `/company/careers`
-- `/contact`
+- `/` ✅
+- `/products` ✅
+- `/products/sognoscare` ✅
+- `/products/sognosroster` ✅
+- `/products/sognosgenogram` ✅
+- `/solutions` ✅
+- `/solutions/field-service` ✅
+- `/solutions/customer-relationship-management` ✅
+- `/solutions/customer-insights` ✅
+- `/solutions/customer-experience` ✅
+- `/solutions/customer-service` ✅
+- `/solutions/power-platform` ✅
+- `/solutions/quick-start` ✅
+- `/industries` ✅
+- `/industries/health-social-care` ✅
+- `/industries/facilities-management` ✅
+- `/industries/local-government` ✅
+- `/industries/industrial-services` ✅
+- `/industries/energy-utilities` ✅
+- `/knowledge-hub` ✅ (renamed from /resources)
+- `/contact` ✅
+- `/customers` 🔲
+- `/customers/[slug]` 🔲
+- `/company/about` 🔲
+- `/company/careers` 🔲
 
 ## Final Navigation
 - Products
   - SognosCare
   - SognosRoster
-  - Sognos Genogram (nav wiring pending Phase 5b)
+  - Sognos Genogram
 - Solutions
   - Field Service
   - Customer Relationship Management
@@ -108,7 +112,10 @@ Industries:
   - Industrial Services
   - Energy & Utilities
 - Customers
-- Resources
+- Knowledge Hub
+  - Blog
+  - News
+  - Customer Stories
 - Company
   - About
   - Careers
@@ -139,15 +146,17 @@ Section rules:
 - `IndustrySection` must include Industrial Services and Energy & Utilities
 
 ## Current Status
-Phases 1–5 complete. All core marketing pages built and statically generated (22 routes).
+Phases 1–5b complete. 27 routes live and statically generated.
 
 Live routes:
-- `/` — Homepage (9 sections, ProductSection includes Genogram card with placeholder links)
-- `/products`, `/products/sognoscare`, `/products/sognosroster`
+- `/` — Homepage (9 sections)
+- `/products`, `/products/sognoscare`, `/products/sognosroster`, `/products/sognosgenogram`
 - `/solutions`, `/solutions/[slug]` × 7
 - `/industries`, `/industries/[slug]` × 5
+- `/knowledge-hub` — KnowledgeHubArchive with sticky sidebar + 6 real articles
+- `/contact`
 
-Next priority: Phase 5b (Sognos Genogram page + routing), contact page, Phase 6 design system pass.
+Next priority: Phase 6 design system pass, `/customers` hub + case study pages.
 
 ## Success Metrics
 Conversion:

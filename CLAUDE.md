@@ -40,7 +40,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
 | **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | ✅ Complete |
 | **Phase 5** | Solutions & industry pages | ✅ Complete |
-| **Phase 5b** | Sognos Genogram — product page, routing, nav wiring | 🔲 Pending |
+| **Phase 5b** | Sognos Genogram — product page, routing, nav wiring | ✅ Complete |
 | **Phase 6** | Design system application | 🔲 Pending |
 | **Phase 7** | UI polish & motion | 🔲 Pending |
 | **Phase 8** | Conversion & integrations | 🔲 Pending |
@@ -63,7 +63,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
       /sognosroster
         page.tsx                   ✅
       /sognosgenogram
-        page.tsx                   🔲 (Phase 5b)
+        page.tsx                   ✅
 
     /solutions
       page.tsx                     ✅ Solutions Hub
@@ -77,10 +77,10 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
       page.tsx                     🔲
       /[slug]/page.tsx             🔲
 
-    /resources/page.tsx            🔲
+    /knowledge-hub/page.tsx        ✅ (renamed from /resources)
     /company/about/page.tsx        🔲
     /company/careers/page.tsx      🔲
-    /contact/page.tsx              🔲
+    /contact/page.tsx              ✅
 
 /components
   /layout
@@ -89,13 +89,16 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 
   /sections
     Hero.tsx                       ✅ (full-width brand bg, FlowCanvas, single-column layout)
-    LogoStrip.tsx                  ✅
+    LogoStrip.tsx                  ✅ (infinite CSS marquee, uniform color filter)
     HowSognosWorksPreview.tsx      ✅ (includes SystemFlowDiagram)
     ProductSection.tsx             ✅
     HowItWorks.tsx                 ✅
-    SolutionsSection.tsx           ✅
-    IndustrySection.tsx            ✅ (data-driven from constants.ts)
-    ProofSection.tsx               ✅
+    SolutionsSection.tsx           ✅ (dark bg, Framer Motion drag slider)
+    IndustrySection.tsx            ✅ (data-driven from constants.ts, Industrial Services video always autoplays)
+    NewsInsightSection.tsx         ✅ (Framer Motion drag slider, real article data)
+    CustomerStories.tsx            ✅ (3 active case studies: Auckland Airport, Flourish Australia, Penrith City Council)
+    KnowledgeHubArchive.tsx        ✅ (sticky sidebar filters, 3-col grid, 6 real articles)
+    ProofSection.tsx               ✅ (video bg compliance card, image bg 1100+ card, bento grid)
     CTASection.tsx                 ✅
 
   /ui
@@ -142,7 +145,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /products                                            ✅
 /products/sognoscare                                 ✅
 /products/sognosroster                               ✅
-/products/sognosgenogram                             🔲 (Phase 5b)
+/products/sognosgenogram                             ✅
 /solutions                                           ✅
 /solutions/field-service                             ✅
 /solutions/customer-relationship-management          ✅
@@ -159,10 +162,10 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /industries/energy-utilities                         ✅
 /customers                                           🔲
 /customers/[slug]                                    🔲
-/resources                                           🔲
+/knowledge-hub                                       ✅ (renamed from /resources)
 /company/about                                       🔲
 /company/careers                                     🔲
-/contact                                             🔲 (all CTAs point here — priority)
+/contact                                             ✅
 ```
 
 ---
@@ -170,11 +173,11 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 ## 6. Navigation (Live)
 
 ```
-Products       → SognosCare, SognosRoster, Sognos Genogram (nav wiring pending Phase 5b)
+Products       → SognosCare, SognosRoster, Sognos Genogram
 Solutions      → Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
 Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 Customers
-Resources
+Knowledge Hub  → Blog, News, Customer Stories
 Company        → About, Careers
 ```
 
@@ -196,28 +199,23 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Phase 5b — Sognos Genogram**
+**Phase 6 — Design System Application**
 
-- [x] Add Genogram card to ProductSection (placeholder copy, `ctaLink: "#"`, `story.href: "#"`)
-- [ ] Add `genogram` to `lib/constants.ts` PRODUCTS
-- [ ] Add Genogram to `lib/navigation.ts` under Products
-- [ ] Scaffold `/products/sognosgenogram/page.tsx` — Hero, Problems, Features, Integration, CTA
-- [ ] Wire `ctaLink` and `story.href` in ProductSection to live routes
-- [ ] Update product hub `/products/page.tsx` to include Genogram card
+Phase 5b complete. Contact page live. Knowledge Hub live.
 
-Also pending:
-- [ ] `/contact` page — all CTAs reference this; currently 404 (priority)
-- [ ] `/customers` hub + `/customers/[slug]` — referenced by Stories sections
+Pending:
+- [ ] `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
+- [ ] `/company/about` and `/company/careers`
+- [ ] Phase 6 — design system pass across all pages
 
 ---
 
 ## 9. Next Tasks (Ordered)
 
-1. Phase 5b — Sognos Genogram page + routing + nav (unblocks ProductSection card links)
-2. Build `/contact` page (unblocks all CTA flows)
-3. Phase 6 — design system application pass
-4. Build customers hub and case study pages
-5. Phase 7 — UI polish and motion
+1. Phase 6 — design system application pass
+2. Build customers hub and case study pages (`/customers`, `/customers/[slug]`)
+3. Phase 7 — UI polish and motion
+4. `/company/about` and `/company/careers` pages
 
 ---
 

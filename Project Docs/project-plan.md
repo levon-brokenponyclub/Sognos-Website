@@ -4,12 +4,16 @@
 
 ## Current Status
 
-Phases 1–5 are complete. All core marketing pages are built and statically generated.
+Phases 1–5b complete. 27 routes live and statically generated.
+
+Also complete outside the original phase plan:
+- `/contact` page — built and live
+- `/knowledge-hub` — renamed from `/resources`, includes KnowledgeHubArchive with sticky filters + 6 real articles
+- Homepage polish: LogoStrip → infinite CSS marquee, ProofSection bento grid with video/image bg tiles, IndustrySection always-on video, SolutionsSection dark bg, CustomerStories trimmed to 3 active
 
 Immediate focus:
 - Phase 6 — design system application pass
-- Phase 8 (early) — contact page (all CTAs reference `/contact`, currently 404)
-- Customers pages (`/customers`, `/customers/[slug]`) referenced by Stories sections
+- `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
 
 ## Phase Plan
 
@@ -83,22 +87,17 @@ Completed:
 - "Works with" product chips on solution pages — shown only where genuine relationship exists
 - 22 total routes, all statically generated
 
-### Phase 5b: Sognos Genogram
+### Phase 5b: Sognos Genogram ✅ Complete
 
-Sognos Genogram is a third product added after Phase 5 completion. The ProductSection card exists with placeholder copy and `href="#"` links. This phase wires it up fully.
+Sognos Genogram added as third primary product.
 
-Build:
-- Add `genogram` to `lib/constants.ts` PRODUCTS with slug, href, name, tagline, description
-- Add Genogram to `lib/navigation.ts` under Products dropdown
-- Scaffold `/products/sognosgenogram/page.tsx` — same composition pattern as SognosCare/SognosRoster (Hero, Problems, Features, Integration, CTA)
-- Create `components/sections/sognosgenogram/` section components
-- Wire `ctaLink` and `story.href` in ProductSection `PRODUCT_CARDS[2]` to `/products/sognosgenogram`
-- Add Genogram card to product hub `/products/page.tsx`
-
-Rules:
-- Genogram is a primary product — treat equally to SognosCare and SognosRoster
-- Logo: `/public/logos/SognosGenogram-logo..svg` (note double dot — do not rename)
-- Accent colour: `#92278d` (purple, from SVG) — add CSS token `--sognos-edition-purple-genogram` or reuse existing purple token
+Delivered:
+- `genogram` added to `lib/constants.ts` PRODUCTS
+- Genogram added to `lib/navigation.ts` under Products dropdown
+- `/products/sognosgenogram/page.tsx` scaffolded
+- `ctaLink` and `story.href` in ProductSection wired to `/products/sognosgenogram`
+- Genogram card in product hub `/products/page.tsx`
+- Logo: `/public/logos/SognosGenogram-logo.svg`
 
 ### Phase 6: Design System Application
 
