@@ -16,7 +16,7 @@
   --color-prussian-blue-500: #2d59d2;
   --color-prussian-blue-600: #2447a8;
   --color-prussian-blue-700: #1b357e;
-  --color-prussian-blue-800: #122454;
+  --color-prussian-blue-800: #052048;
   --color-prussian-blue-900: #09122a;
   --color-prussian-blue-950: #060c1d;
 
@@ -24,7 +24,7 @@
   --color-cornflower-ocean-50: #e6f6fe;
   --color-cornflower-ocean-100: #cdedfe;
   --color-cornflower-ocean-200: #9bdbfd;
-  --color-cornflower-ocean-300: #69c9fc;
+  --color-cornflower-ocean-300: #59bbf7;
   --color-cornflower-ocean-400: #37b6fb;
   --color-cornflower-ocean-500: #05a4fa;
   --color-cornflower-ocean-600: #0483c8;
@@ -235,7 +235,7 @@
   --sognos-radius-full: 9999px;
 
   /* Layout */
-  --sognos-container-width: 1360px;
+  --sognos-container-width: 1280px;
   --sognos-section-padding: 88px;
   --sognos-card-padding: 24px;
 

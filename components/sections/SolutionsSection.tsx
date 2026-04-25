@@ -106,7 +106,7 @@ function SolutionCard({ solution }: { solution: (typeof SOLUTIONS)[number] }) {
   const Icon = ICONS[solution.id];
   return (
     <div
-      className="group relative flex-shrink-0 rounded-lg border border-slate-400/30 bg-white overflow-hidden flex flex-col hover:bg-true-cobalt-700 transition-colors cursor-pointer"
+      className="group relative flex-shrink-0 rounded-lg border border-slate-400/30 bg-white overflow-hidden flex flex-col hover:bg-[#1D96FC] transition-colors cursor-pointer"
       style={{ width: CARD_WIDTH }}
     >
       <div className="h-34 flex items-center px-10">
@@ -193,17 +193,17 @@ export default function SolutionsSection() {
   return (
     <section className="w-full bg-slate-50 overflow-hidden">
       {/* Header */}
-      <div className="max-w-7xl w-full mx-auto px-6 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pt-24 pb-5">
           <div>
             <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
               Built for how your operation works
             </h2>
           </div>
-          <p className="font-heading font-medium text-sognos-text-body leading-relaxed justify-self-end max-w-md">
+          {/* <p className="font-heading font-medium text-sognos-text-body leading-relaxed justify-self-end max-w-md">
             Sognos connects service demand, workforce scheduling, & compliance
             into a single operational loop. Powererd by Dynamics 365.
-          </p>
+          </p> */}
         </div>
       </div>
 

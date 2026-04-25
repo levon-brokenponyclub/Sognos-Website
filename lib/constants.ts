@@ -59,6 +59,7 @@ export const INDUSTRIES = [
     description:
       "Coordinate complex care delivery, multidisciplinary teams, and compliance-heavy service operations.",
     products: ["SognosCare", "SognosRoster"],
+    image: "/images/industries/health-social-care.webp",
   },
   {
     name: "Facilities Management",
@@ -67,6 +68,7 @@ export const INDUSTRIES = [
     description:
       "Dispatch field teams efficiently, manage SLAs, and maintain visibility across sites and clients.",
     products: ["SognosRoster"],
+    image: "/images/industries/facilities-management.webp",
   },
   {
     name: "Local Government",
@@ -75,6 +77,7 @@ export const INDUSTRIES = [
     description:
       "Support frontline service delivery with clear case management, workforce coordination, and audit trails.",
     products: ["SognosCare", "SognosRoster"],
+    image: "/images/industries/local-government.webp",
   },
   {
     name: "Industrial Services",
@@ -83,6 +86,7 @@ export const INDUSTRIES = [
     description:
       "Coordinate large-scale field operations, asset-linked work, and complex workforce logistics.",
     products: ["SognosRoster"],
+    image: "/images/industries/industrial-services.webp",
   },
   {
     name: "Energy & Utilities",
@@ -91,5 +95,6 @@ export const INDUSTRIES = [
     description:
       "Manage asset-intensive service delivery, compliance, and workforce execution across critical networks.",
     products: ["SognosCare", "SognosRoster"],
+    image: "/images/industries/energy-utilities.webp",
   },
 ] as const;

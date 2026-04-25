@@ -75,21 +75,20 @@ export default function HowSognosWorksPreview() {
   };
 
   return (
-    <section className="w-full border-b border-t border-sognos-border-subtle bg-slate-50">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-slate-600/20">
+    <section className="w-full border-sognos-border-subtle bg-slate-50">
+      <div className="max-w-7xl w-full mx-auto px-4 py-24 border-dashed border-slate-600/20">
         {/* Centered heading + logo row */}
         <div className="text-center pb-10">
-          <h2 className="callout text-3xl md:text-6xl text-prussian-blue-800 font-heading tracking-tight">
-            Stop managing complexity. <br />
+          <h2 className="callout text-3xl md:text-4xl text-prussian-blue-800 font-heading tracking-tight">
+            Stop managing complexity.{" "}
             <span className="text-soft text-prussian-blue-900/60">
               Start delivering outcomes.
             </span>
           </h2>
           <p className="mt-4 font-heading font-medium text-sognos-text-body max-w-5xl text-balance mx-auto leading-relaxed text-2xl">
-            Most care and service organisations run on disconnected tools —
-            spreadsheets for rosters, email for referrals, manual processes for
-            compliance. Sognos replaces all of it with one intelligent platform
-            built natively on Microsoft Dynamics 365.
+            Most care and service organisations run on disconnected tools — and
+            manual processes for compliance. Sognos replaces all of it with one
+            intelligent platform built natively on Microsoft Dynamics 365.
           </p>
 
           {/* Platform logos */}

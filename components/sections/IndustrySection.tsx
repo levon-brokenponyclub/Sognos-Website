@@ -2,13 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import {
-  Heartbeat,
-  Buildings,
-  ClipboardText,
-  Factory,
-  Circuitry,
-} from "@phosphor-icons/react";
+import Image from "next/image";
 import {
   motion,
   useScroll,
@@ -17,67 +11,69 @@ import {
 } from "framer-motion";
 import { INDUSTRIES } from "@/lib/constants";
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
-
-const ICONS: Record<
-  string,
-  React.ComponentType<{ size?: number; weight?: "duotone" }>
-> = {
-  "health-social-care": Heartbeat,
-  "facilities-management": Buildings,
-  "local-government": ClipboardText,
-  "industrial-services": Factory,
-  "energy-utilities": Circuitry,
-};
+const INDUSTRIAL_VIDEO =
+  "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm";
 
 // ─── Industry card ────────────────────────────────────────────────────────────
 
 function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
-  const Icon = ICONS[industry.slug];
-  return (
-    <div className="group relative flex flex-col overflow-hidden rounded-lg border border-slate-400/30 bg-white hover:bg-true-cobalt-700 transition-colors duration-200 cursor-pointer">
-      <div className="h-34 flex items-center px-10">
-        <div
-          className="text-sognos-text-body bg-prussian-blue-900/5 group-hover:bg-white w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200"
-          style={{ transform: "scale(2.2)", transformOrigin: "center" }}
-        >
-          {Icon ? <Icon size={20} weight="duotone" /> : null}
-        </div>
-      </div>
+  const isIndustrial = industry.slug === "industrial-services";
 
-      <div className="p-6 pt-0 flex flex-col flex-1">
-        <h3 className="text-2xl font-medium text-prussian-blue-800 group-hover:text-white leading-snug text-balance transition-colors duration-200">
+  return (
+    <div className="group relative flex flex-col overflow-hidden rounded-lg cursor-pointer min-h-96">
+      {/* Background: video for industrial, image for all others */}
+      {isIndustrial ? (
+        <video
+          src={INDUSTRIAL_VIDEO}
+          autoPlay
+          muted
+          playsInline
+          loop
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <Image
+          src={industry.image}
+          alt={industry.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      )}
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-prussian-blue-900/90 via-prussian-blue-900/40 to-transparent" />
+
+      {/* Content */}
+      <div className="relative mt-auto p-6 flex flex-col">
+        <h3 className="text-xl font-medium text-white leading-snug text-balance">
           {industry.name}
         </h3>
-        <p className="mt-3 leading-normal text-prussian-blue-900/65 group-hover:text-white/80 line-clamp-4 flex-1 transition-colors duration-200">
+        <p className="mt-2 text-sm leading-normal text-white/70 line-clamp-3">
           {industry.description}
         </p>
-      </div>
-
-      {/* Animated bubble CTA */}
-      <Link
-        href={industry.href}
-        className="relative mx-6 mb-6 mt-4 flex items-center overflow-hidden rounded-full border border-slate-400/30 bg-transparent h-11 px-4 font-semibold text-sm text-prussian-blue-800 group-hover:text-white group-hover:border-white/20 transition-colors duration-300"
-      >
-        See {industry.name}
-        <div className="absolute right-1 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-40px)] group-hover:rotate-45 text-prussian-blue-900/20 bg-prussian-blue-900/5 group-hover:bg-white group-hover:text-prussian-blue-800">
+        <Link
+          href={industry.href}
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white/90 hover:text-white transition-colors"
+        >
+          Learn more
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path d="M7 7h10v10" />
-            <path d="M7 17 17 7" />
+            <path
+              d="M3 7h8M7 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -86,7 +82,7 @@ function IndustryCard({ industry }: { industry: (typeof INDUSTRIES)[number] }) {
 
 function StandOutCard() {
   return (
-    <div className="flex flex-col justify-between rounded-2xl bg-neutral-900 p-7 text-white">
+    <div className="flex flex-col justify-between rounded-lg bg-prussian-blue-800 p-7 text-white">
       <div>
         <span className="text-xs font-medium uppercase tracking-widest text-neutral-500">
           Any sector
@@ -137,17 +133,12 @@ export default function IndustrySection() {
     offset: ["start 0.6", "start 0.1"],
   });
 
-  // 120px margin shrinks to 0 as section scrolls into view
   const margin = useTransform(scrollYProgress, [0, 1], [120, 0]);
   const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const expandWidth = useMotionTemplate`calc(100vw - ${margin}px)`;
 
-  // Build the 6-slot grid: industries 0–3, stand-out, industry 4
   const slots = [
-    ...INDUSTRIES.map((ind) => ({
-      type: "industry" as const,
-      industry: ind,
-    })),
+    ...INDUSTRIES.map((ind) => ({ type: "industry" as const, industry: ind })),
     { type: "standout" as const },
   ];
 
@@ -156,31 +147,24 @@ export default function IndustrySection() {
       ref={sectionRef}
       className="w-full bg-white border-b border-sognos-border-subtle overflow-hidden relative"
     >
-      {/* Background layer only — expands and fades independently of content */}
-      <motion.div
-        className="absolute inset-0 bg-bright-lavender-200 mx-auto h-full rounded-xl"
-        style={{ width: expandWidth, opacity, left: "50%", x: "-50%" }}
-      />
+      <motion.div className="absolute inset-0 bg-[#1D96FC] mx-auto h-full" />
 
-      {/* Content — always full width, unaffected by background animation */}
       <div className="relative max-w-7xl w-full mx-auto px-6 py-24">
-        {/* Heading row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+          <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
             Industries
             <br />
             Built for service-intensive operations
           </h2>
-          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+          <p className="font-heading font-medium leading-tigher section-header-description text-white justify-self-end">
             Sognos connects service demand, workforce scheduling, and compliance
             into a single operational loop. Powered by AI, Microsoft Dynamics
             365.
           </p>
         </div>
 
-        {/* 3×2 grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {slots.map((slot, i) =>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {slots.map((slot) =>
             slot.type === "industry" ? (
               <IndustryCard key={slot.industry.slug} industry={slot.industry} />
             ) : (

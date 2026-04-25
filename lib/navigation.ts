@@ -112,14 +112,14 @@ export const nav: NavGroup[] = [
   },
   {
     label: "Knowledge Hub",
-    href: "/resources",
+    href: "/knowledge-hub",
     megaMenu: [
       {
-        heading: "Resources",
+        heading: "Knowledge Hub",
         items: [
-          { name: "Blog", href: "#" },
+          { name: "Blog", href: "/knowledge-hub" },
+          { name: "News", href: "/knowledge-hub" },
           { name: "Customer Stories", href: "/customers" },
-          { name: "News", href: "#" },
         ],
       },
       {

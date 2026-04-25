@@ -113,7 +113,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/resources"
+                  href="/knowledge-hub"
                   className="text-sm text-white hover:text-white"
                 >
                   Resources

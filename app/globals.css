@@ -244,7 +244,11 @@
 .trust-marquee-track {
   display: flex;
   width: max-content;
-  animation: trust-marquee-scroll 20s linear infinite;
+  animation: trust-marquee-scroll 75s linear infinite;
+}
+
+.trust-marquee-wrap:hover .trust-marquee-track {
+  animation-play-state: paused;
 }
 
 @keyframes trust-marquee-scroll {

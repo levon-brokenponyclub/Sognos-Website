@@ -45,12 +45,12 @@ const PRODUCT_CARDS: ProductCardData[] = [
       "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
     ctaText: "Explore SognosCare",
     ctaLink: "/products/sognoscare",
-    sectionBg: "#abd6cc",
+    sectionBg: "#C2E4FE",
     story: {
       quote:
-        "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
-      author: "Sarah Mitchell",
-      company: "Meridian Care Group",
+        "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
+      author: "Susan McCarthy",
+      company: "Flourish Australia",
       href: "/customers/meridian-care-group",
     },
   },
@@ -67,9 +67,9 @@ const PRODUCT_CARDS: ProductCardData[] = [
     sectionBg: "#C2E4FE",
     story: {
       quote:
-        "The scheduling overhaul paid for itself in the first quarter. Our field teams finally have a system that works — and management has the data to prove it.",
-      author: "James Holt",
-      company: "Summit FM Solutions",
+        "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+      author: "Claire Donovan",
+      company: "Penrith City Council",
       href: "/customers/summit-fm",
     },
   },
@@ -134,7 +134,7 @@ function ProductCard({
                 alt={logoAlt}
                 width={120}
                 height={32}
-                className="h-9 w-auto object-contain mb-6"
+                className="h-11 w-auto object-contain mb-10"
               />
 
               <h3 className="font-body text leading-tight tracking-normal text-cornflower-ocean-300 whitespace-pre-line lg:text-3xl">
@@ -175,7 +175,7 @@ function ProductCard({
             </svg>
 
             <blockquote className="mt-6 flex-1">
-              <p className="font-heading text-base font-normal leading-relaxed text-prussian-blue-800 lg:text-xl">
+              <p className="font-heading text-base font-normal leading-relaxed text-prussian-blue-800 lg:text-lg">
                 {story.quote}
               </p>
             </blockquote>
@@ -187,13 +187,13 @@ function ProductCard({
               <p className="text-xs text-prussian-blue-800 mt-0.5">
                 {story.company}
               </p>
-              <Link
+              {/* <Link
                 href={story.href}
                 className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-sognos-edition-green hover:gap-3 transition-all duration-200"
               >
                 Read case study
                 <ArrowRight size={14} />
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function ProductSection() {
   return (
     <motion.section
       aria-label="Platform capabilities"
-      className="relative w-full border-b border-sognos-border-subtle py-24 overflow-x-clip"
+      className="relative w-full  py-24 overflow-x-clip"
       animate={{ backgroundColor: PRODUCT_CARDS[activeIndex].sectionBg }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
     >

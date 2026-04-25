@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import { cn } from "@/lib/utils";
 
@@ -28,27 +29,7 @@ type CaseStudy = {
 };
 
 const CASE_STUDIES: CaseStudy[] = [
-  {
-    company: "Auckland Airport",
-    companySize: "350+",
-    industry: "Transport",
-    logo: "/logos/auckland-airport-logo.png",
-    quote:
-      "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
-    author: "Anthony Hart",
-    role: "Operations Delivery Lead, Auckland Airport",
-    href: "/customers/meridian-care-group",
-    panelClass: "bg-cornflower-ocean-500/30",
-    quoteClass: "text-cornflower-ocean-800",
-    authorClass: "text-cornflower-ocean-800",
-    roleClass: "text-cornflower-ocean-800/85",
-    quoteIconColor: "text-cornflower-ocean-800/60",
-    contentBorderClass: "border-cornflower-ocean-800/35",
-    buttonBorderClass: "border-cornflower-ocean-800",
-    buttonTextClass: "text-cornflower-ocean-800",
-    buttonHoverClass: "hover:bg-cornflower-ocean-800/8",
-    buttonIconBgClass: "bg-cornflower-ocean-800",
-  },
+  // Only first 3 active — add more as case studies are ready
   {
     company: "Flourish Australia",
     companySize: "1 100+",
@@ -71,14 +52,35 @@ const CASE_STUDIES: CaseStudy[] = [
     buttonIconBgClass: "bg-seagrass-900",
   },
   {
-    company: "City Council–Public Sector",
+    company: "Auckland Airport",
+    companySize: "350+",
+    industry: "Transport",
+    logo: "/logos/auckland-airport-logo.png",
+    quote:
+      "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
+    author: "Anthony Hart",
+    role: "Operations Delivery Lead, Auckland Airport",
+    href: "/customers/meridian-care-group",
+    panelClass: "bg-cornflower-ocean-500/30",
+    quoteClass: "text-cornflower-ocean-800",
+    authorClass: "text-cornflower-ocean-800",
+    roleClass: "text-cornflower-ocean-800/85",
+    quoteIconColor: "text-cornflower-ocean-800/60",
+    contentBorderClass: "border-cornflower-ocean-800/35",
+    buttonBorderClass: "border-cornflower-ocean-800",
+    buttonTextClass: "text-cornflower-ocean-800",
+    buttonHoverClass: "hover:bg-cornflower-ocean-800/8",
+    buttonIconBgClass: "bg-cornflower-ocean-800",
+  },
+  {
+    company: "Penrith City Council",
     companySize: "300 Technicians",
     industry: "Local Government",
-    logo: "/logos/auckland-airport-logo.png",
+    logo: "/logos/penrith-city-council-logo.png",
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",
-    role: "Service Delivery Manager, Lakeshore Council",
+    role: "Service Delivery Manager, Penrith City Council",
     href: "/customers/lakeshore-council",
     panelClass: "bg-sandy-brown-500/40",
     quoteClass: "text-sandy-brown-800",
@@ -90,48 +92,6 @@ const CASE_STUDIES: CaseStudy[] = [
     buttonTextClass: "text-sandy-brown-800",
     buttonHoverClass: "hover:bg-sandy-brown-800/8",
     buttonIconBgClass: "bg-sandy-brown-800",
-  },
-  {
-    company: "Apex Industrial Services",
-    companySize: "300 Technicians",
-    industry: "Industrial Services",
-    logo: "/images/logos/apex-industrial.svg",
-    quote:
-      "From request to worker allocation used to take days. Now it's measured in minutes. The efficiency gains were immediate and the team bought in straight away.",
-    author: "Tom Adeyemi",
-    role: "Operations Director, Apex Industrial Services",
-    href: "/customers/apex-industrial",
-    panelClass: "bg-[#ffc999]",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/55",
-    quoteIconColor: "text-sandy-brown-300",
-    contentBorderClass: "border-prussian-blue-800/12",
-    buttonBorderClass: "border-prussian-blue-800/20",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
-  },
-  {
-    company: "Clearfield Energy",
-    companySize: "Enterprise",
-    industry: "Energy & Utilities",
-    logo: "/images/logos/clearfield-energy.svg",
-    quote:
-      "Sognos connected our compliance, scheduling and reporting into one place. We reduced incidents by 31% in the first six months — and our first-time fix rate is the best it's ever been.",
-    author: "Rachel Osei",
-    role: "VP of Service Operations, Clearfield Energy",
-    href: "/customers/clearfield-energy",
-    panelClass: "bg-[#ffccce]",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/55",
-    quoteIconColor: "text-grapefruit-pink-200",
-    contentBorderClass: "border-prussian-blue-800/12",
-    buttonBorderClass: "border-prussian-blue-800/20",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
 ];
 
@@ -203,9 +163,11 @@ export default function CustomerStories() {
                 className="flex flex-col h-full"
               >
                 <div className="mb-auto">
-                  <img
+                  <Image
                     src={study.logo}
                     alt={study.company}
+                    width={160}
+                    height={72}
                     className="h-18 w-auto max-w-40 object-contain object-left"
                   />
                 </div>
@@ -308,7 +270,7 @@ export default function CustomerStories() {
           </div>
 
           {/* Arrows — bottom right */}
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <button
               onClick={() => go(index - 1)}
               disabled={index === 0}
@@ -325,7 +287,7 @@ export default function CustomerStories() {
             >
               <ArrowRight size={16} />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

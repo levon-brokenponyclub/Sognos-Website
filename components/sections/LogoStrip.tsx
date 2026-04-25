@@ -1,60 +1,47 @@
 type Logo = { src: string; alt: string };
 
-const LOGO_GROUPS: { id: string; one: Logo; two: Logo }[] = [
-  {
-    id: "g1",
-    one: { src: "/logos/aceternity-ui.png", alt: "Aceternity UI" },
-    two: { src: "/logos/aceternity-ui.png", alt: "Aceternity UI" },
-  },
-  {
-    id: "g2",
-    one: { src: "/logos/asteroid-kit.png", alt: "Asteroid Kit" },
-    two: { src: "/logos/asteroid-kit.png", alt: "Asteroid Kit" },
-  },
-  {
-    id: "g3",
-    one: { src: "/logos/gamity.png", alt: "Gamity" },
-    two: { src: "/logos/gamity.png", alt: "Gamity" },
-  },
-  {
-    id: "g4",
-    one: { src: "/logos/hostit.png", alt: "Host IT" },
-    two: { src: "/logos/hostit.png", alt: "Host IT" },
-  },
+const LOGOS: Logo[] = [
+  { src: "/logos/clients/client-01.png", alt: "Sognos client" },
+  { src: "/logos/clients/asc-secom.png", alt: "ASC Secom" },
+  { src: "/logos/clients/client-03.webp", alt: "Sognos client" },
+  { src: "/logos/clients/nci.webp", alt: "NCI" },
+  { src: "/logos/clients/countplus.png", alt: "CountPlus" },
+  { src: "/logos/clients/water-nsw.webp", alt: "Water NSW" },
+  { src: "/logos/clients/sa.webp", alt: "Sognos client" },
+  { src: "/logos/clients/mcs.webp", alt: "MCS" },
+  { src: "/logos/clients/neca.webp", alt: "NECA" },
+  { src: "/logos/clients/nps.webp", alt: "NPS" },
+  { src: "/logos/clients/deloitte.webp", alt: "Deloitte" },
+  { src: "/logos/clients/apm.webp", alt: "APM" },
 ];
+
+// Duplicate for seamless infinite loop (-50% = one full set)
+const TRACK = [...LOGOS, ...LOGOS];
 
 export default function LogoStrip() {
   return (
-    <section aria-label="Trusted organisations" className="w-full bg-white p-0">
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center border-x border-dashed border-sognos-border-subtle text-center p-0">
-        {/*  <p className="text-sm font-semibold uppercase text-body">
-          Trusted by leading organisations
-        </p> */}
-
-        {/* Logo grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 w-full">
-          {LOGO_GROUPS.map((group) => (
+    <section
+      aria-label="Trusted organisations"
+      className="w-full overflow-hidden bg-white py-10 border-b border-dashed border-sognos-border-subtle"
+    >
+      {/*  <h4 className="font-heading text-lg text-center my-1 font-semibold text-brand">
+        Trusted by Leading Companies
+      </h4> */}
+      <div className="trust-marquee-wrap">
+        <div className="trust-marquee-track" aria-hidden="true">
+          {TRACK.map((logo, i) => (
             <div
-              key={group.id}
-              className="trust-strip-group relative flex flex-1 items-center justify-center border-r border-b lg:border-b-0 border-dashed border-sognos-border-subtle"
-              style={{ height: 130 }}
+              key={i}
+              className="flex items-center justify-center px-2"
+              style={{ minWidth: 260 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <div className="trust-strip-item absolute inset-0 flex items-center justify-center one">
-                <img
-                  src={group.one.src}
-                  alt={group.one.alt}
-                  className="max-h-12 w-auto max-w-full object-contain"
-                />
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <div className="trust-strip-item absolute inset-0 flex items-center justify-center two">
-                <img
-                  src={group.two.src}
-                  alt={group.two.alt}
-                  className="max-h-12 w-auto max-w-full object-contain"
-                />
-              </div>
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className="max-h-14 w-auto max-w-[190px] object-contain"
+                style={{ filter: "brightness(0) opacity(0.8)" }}
+              />
             </div>
           ))}
         </div>

@@ -13,7 +13,7 @@ type HeroProps = {
 export default function Hero({
   headline = (
     <>
-      Run your entire service operation
+      Your entire service operation
       <br className="hidden sm:block" />
       <span
         className="bg-clip-text text-transparent"
@@ -21,7 +21,7 @@ export default function Hero({
           backgroundImage: "linear-gradient(145deg, #1d8ded 0%, #52a9ff 100%)",
         }}
       >
-        on one intelligent platform.
+        run on one intelligent platform.
       </span>
     </>
   ),
@@ -32,22 +32,22 @@ export default function Hero({
   return (
     <section
       data-header-dark
-      className="relative flex flex-col bg-gradient-hero overflow-hidden text-white min-h-[90vh] lg:h-157.5"
+      className="relative flex flex-col bg-gradient-hero overflow-hidden text-white min-h-[100vh] lg:h-157.5"
     >
       <FlowCanvas />
 
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-25 pb-6 border-x border-white/10 border-dashed sm:px-8 sm:pt-27.5 sm:pb-20 lg:px-6 lg:pt-25 lg:pb-0">
         <div className="flex flex-1 flex-col justify-between gap-14 py-8 lg:py-8 mt-12">
-          <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+          <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
             <h1 className="text-4xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
               {headline}
             </h1>
 
-            <p className="mt-6 max-w-3xl text-balance text-base text-white/80 sm:text-lg">
+            <p className="mt-6 max-w-5xl text-balance text-2xl text-white/80">
               {subtext}
             </p>
 
-            <div className="mt-8 flex flex-row items-center justify-center gap-3">
+            <div className="mt-10 flex flex-row items-center justify-center gap-3">
               <AnimatedButton href={primaryCTA.href} variant="white">
                 {primaryCTA.name}
               </AnimatedButton>

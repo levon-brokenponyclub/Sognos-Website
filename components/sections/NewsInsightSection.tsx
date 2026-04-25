@@ -17,7 +17,7 @@ type Article = {
   title: string;
   excerpt: string;
   href: string;
-  imageBg: string; // gradient fallback until real images exist
+  image: string;
 };
 
 const ARTICLES: Article[] = [
@@ -26,51 +26,51 @@ const ARTICLES: Article[] = [
     title:
       "Sognos Solutions Celebrates 9 Years of Growth, Innovation, and Microsoft Dynamics 365 Expertise",
     excerpt:
-      "Today marks a major milestone — 9 years of Sognos. From a small team with a bold idea to a platform serving organisations across Australia, New Zealand, and beyond.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)",
+      "Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions.",
+    href: "https://sognos.com.au/sognos-solutions-celebrates-9-years-of-growth-innovation-and-microsoft-dynamics-365-expertise/",
+    image: "/images/news/sognos-9-years.webp",
   },
   {
     category: "News",
     title: "Sognos Solutions Moves to New Office in North Sydney",
     excerpt:
-      "We're thrilled to share that Sognos Solutions has officially moved to a new office in North Sydney — a space built to match our next chapter of growth.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #1a2e1a 0%, #16a34a 100%)",
+      "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.",
+    href: "https://sognos.com.au/sognos-solutions-moves-to-new-office-in-north-sydney/",
+    image: "/images/news/north-sydney-office.webp",
   },
   {
     category: "News",
     title:
       "Sognos Solutions Expands to New Zealand with Official Launch at Microsoft House in Auckland",
     excerpt:
-      "Sognos Solutions is proud to announce the official launch of our New Zealand operations — bringing our platform to service organisations across the Tasman.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #1f1635 0%, #7c3aed 100%)",
+      "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This expansion was marked by a milestone event at Microsoft's Auckland offices.",
+    href: "https://sognos.com.au/sognos-solutions-expands-to-new-zealand-with-official-launch-at-microsoft-house-in-auckland/",
+    image: "/images/news/new-zealand-launch.webp",
   },
   {
     category: "News",
     title: "New Beginnings | Office Premises in India",
     excerpt:
-      "As we continue to grow and evolve, we are excited to announce the opening of our new office in India — expanding our delivery capability and global footprint.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #2d1a0e 0%, #ea580c 100%)",
+      "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India — expanding our delivery capability and global footprint.",
+    href: "https://sognos.com.au/new-beginnings-office-premises-in-india/",
+    image: "/images/news/india-office.webp",
   },
   {
     category: "Events",
     title:
       "Sognos at FSM Summit 2024: Driving the Future of Field Service in Sydney",
     excerpt:
-      "The Field Service Management Summit 2024 in Sydney brought together industry leaders to explore what's next in field service — and Sognos was there.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #1a1a2e 0%, #0891b2 100%)",
+      "The Field Service Management (FSM) Summit 2024 in Sydney brought together industry innovators. Sognos participated as a Microsoft partner specialising in field service technology.",
+    href: "https://sognos.com.au/sognos-at-fsm-summit-2024-driving-the-future-of-field-service-in-sydney/",
+    image: "/images/news/fsm-summit-2024.webp",
   },
   {
     category: "Webinar",
     title: "Enhancing Participant Care with Field Service Management",
     excerpt:
       "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
-    href: "/resources",
-    imageBg: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+    href: "https://sognos.com.au/sognos-webinar-series-reinventing-patient-and-participant-care/",
+    image: "/images/news/participant-care-webinar.webp",
   },
 ];
 
@@ -87,14 +87,16 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group shrink-0 flex flex-col overflow-hidden rounded-2xl border border-sognos-border-subtle bg-white transition-shadow hover:shadow-md w-70 sm:w-[320px] lg:w-85 h-105"
+      className="group shrink-0 flex flex-col overflow-hidden rounded-lg bg-white transition-shadow duration-200 hover:shadow-md w-70 sm:w-[320px] lg:w-85"
     >
-      {/* Image / placeholder */}
-      <div
-        className="h-44 w-full shrink-0"
-        style={{ background: article.imageBg }}
-        aria-hidden="true"
-      />
+      {/* Image */}
+      <div className="h-44 w-full shrink-0 overflow-hidden">
+        <img
+          src={article.image}
+          alt={article.title}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
 
       {/* Body */}
       <div className="flex flex-1 flex-col gap-3 p-6">
@@ -109,17 +111,17 @@ function ArticleCard({ article }: { article: Article }) {
         </span>
 
         {/* Title */}
-        <h3 className="font-heading text-sm font-medium leading-snug tracking-tight text-neutral-900 line-clamp-3">
+        <h3 className="font-heading text-base font-medium leading-snug tracking-tight text-sognos-text-heading line-clamp-3">
           {article.title}
         </h3>
 
         {/* Excerpt */}
-        <p className="text-sm leading-relaxed text-neutral-500 line-clamp-2 flex-1">
+        <p className="flex-1 text-sm leading-relaxed text-sognos-text-body line-clamp-2">
           {article.excerpt}
         </p>
 
         {/* Read more */}
-        <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-brand transition-colors group-hover:text-brand/70">
+        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
           Read More
           <svg
             width="14"
@@ -188,53 +190,52 @@ export default function NewsInsightSection() {
   };
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-l border-dashed border-sognos-border-subtle">
+    <section className="w-full bg-prussian-blue-800 overflow-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Heading row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+          <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
             Industries
             <br />
             Built for service-intensive operations
           </h2>
-          <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
+          <div className="hidden sm:flex items-center gap-2 justify-end">
+            <button
+              onClick={() => step(-1)}
+              aria-label="Previous slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <button
+              onClick={() => step(1)}
+              aria-label="Next slide"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 transition-colors"
+            >
+              <ArrowRight size={16} />
+            </button>
+          </div>
+          {/* <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
             Sognos connects service demand, workforce scheduling, and compliance
             into a single operational loop. Powered by AI, Microsoft Dynamics
             365.
-          </p>
+          </p> */}
         </div>
 
         {/* Slider */}
         <div ref={viewportRef} className="mx-auto max-w-7xl">
           <motion.div
             ref={trackRef}
-            style={{ x, gap: GAP }}
+            style={{ x }}
             drag="x"
             dragConstraints={{ left: maxDrag, right: 0 }}
             dragElastic={0.05}
-            className="flex cursor-grab active:cursor-grabbing"
+            className="flex gap-8 cursor-grab active:cursor-grabbing"
           >
             {ARTICLES.map((article, i) => (
               <ArticleCard key={i} article={article} />
             ))}
           </motion.div>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-2 justify-end">
-          <button
-            onClick={() => step(-1)}
-            aria-label="Previous slide"
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-          >
-            <ArrowLeft size={16} />
-          </button>
-          <button
-            onClick={() => step(1)}
-            aria-label="Next slide"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 transition-colors"
-          >
-            <ArrowRight size={16} />
-          </button>
         </div>
       </div>
     </section>
