@@ -27,13 +27,14 @@ Stack:
 - Tailwind CSS
 
 ## Core Positioning and Architecture
-Sognos is a service operations platform built around two standalone products:
+Sognos is a service operations platform built around three standalone products:
 
 - SognosCare: care operations and compliance
 - SognosRoster: workforce scheduling and optimisation
+- Sognos Genogram: relationship and family context mapping — embeds support networks, histories, and family structures into case records
 
 Relationship:
-SognosCare manages services. SognosRoster coordinates the workforce that delivers them.
+SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Sognos Genogram enriches case records with relational context. All three are standalone.
 
 Supporting architecture:
 - Solutions are supporting/customised engagements
@@ -46,6 +47,7 @@ Hard rule: no standalone Platform nav or page layer.
 Products:
 - SognosCare
 - SognosRoster
+- Sognos Genogram
 
 Solutions:
 - Field Service
@@ -68,6 +70,7 @@ Industries:
 - `/products`
 - `/products/sognoscare`
 - `/products/sognosroster`
+- `/products/sognosgenogram` (Phase 5b)
 - `/solutions` (Solutions Hub)
 - `/solutions/field-service`
 - `/solutions/customer-relationship-management`
@@ -89,6 +92,7 @@ Industries:
 - Products
   - SognosCare
   - SognosRoster
+  - Sognos Genogram (nav wiring pending Phase 5b)
 - Solutions
   - Field Service
   - Customer Relationship Management
@@ -138,12 +142,12 @@ Section rules:
 Phases 1–5 complete. All core marketing pages built and statically generated (22 routes).
 
 Live routes:
-- `/` — Homepage (9 sections)
+- `/` — Homepage (9 sections, ProductSection includes Genogram card with placeholder links)
 - `/products`, `/products/sognoscare`, `/products/sognosroster`
 - `/solutions`, `/solutions/[slug]` × 7
 - `/industries`, `/industries/[slug]` × 5
 
-Next priority: Phase 6 (design system application pass), contact page, customers pages.
+Next priority: Phase 5b (Sognos Genogram page + routing), contact page, Phase 6 design system pass.
 
 ## Success Metrics
 Conversion:

@@ -83,6 +83,23 @@ Completed:
 - "Works with" product chips on solution pages — shown only where genuine relationship exists
 - 22 total routes, all statically generated
 
+### Phase 5b: Sognos Genogram
+
+Sognos Genogram is a third product added after Phase 5 completion. The ProductSection card exists with placeholder copy and `href="#"` links. This phase wires it up fully.
+
+Build:
+- Add `genogram` to `lib/constants.ts` PRODUCTS with slug, href, name, tagline, description
+- Add Genogram to `lib/navigation.ts` under Products dropdown
+- Scaffold `/products/sognosgenogram/page.tsx` — same composition pattern as SognosCare/SognosRoster (Hero, Problems, Features, Integration, CTA)
+- Create `components/sections/sognosgenogram/` section components
+- Wire `ctaLink` and `story.href` in ProductSection `PRODUCT_CARDS[2]` to `/products/sognosgenogram`
+- Add Genogram card to product hub `/products/page.tsx`
+
+Rules:
+- Genogram is a primary product — treat equally to SognosCare and SognosRoster
+- Logo: `/public/logos/SognosGenogram-logo..svg` (note double dot — do not rename)
+- Accent colour: `#92278d` (purple, from SVG) — add CSS token `--sognos-edition-purple-genogram` or reuse existing purple token
+
 ### Phase 6: Design System Application
 
 Apply the agreed design system:

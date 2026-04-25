@@ -13,14 +13,15 @@ Sognos is an **AI-powered service operations platform** built on Microsoft Dynam
 |---------|------|
 | **SognosCare** | Care operations & compliance — case management, service delivery tracking, compliance & reporting |
 | **SognosRoster** | Workforce scheduling & optimisation — staff allocation, scheduling & routing, real-time optimisation |
+| **Sognos Genogram** | Relationship & family context mapping — embeds support networks, histories, and family structures into case records |
 
-**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Both products are standalone — they can be implemented independently or together.
+**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Sognos Genogram enriches case records with relational context. All three are standalone — they can be implemented independently or together.
 
 ### Architecture Layers
 
 | Layer | Purpose | Examples |
 |-------|---------|---------|
-| **Products** | Primary positioning | SognosCare, SognosRoster |
+| **Products** | Primary positioning | SognosCare, SognosRoster, Sognos Genogram |
 | **Solutions** | Supporting engagements | Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start |
 | **Industries** | Sector entry points | Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities |
 | **Platform** | Embedded proof only — never top-level | Dynamics 365, Copilot AI, Power Platform |
@@ -39,6 +40,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
 | **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | ✅ Complete |
 | **Phase 5** | Solutions & industry pages | ✅ Complete |
+| **Phase 5b** | Sognos Genogram — product page, routing, nav wiring | 🔲 Pending |
 | **Phase 6** | Design system application | 🔲 Pending |
 | **Phase 7** | UI polish & motion | 🔲 Pending |
 | **Phase 8** | Conversion & integrations | 🔲 Pending |
@@ -60,6 +62,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
         page.tsx                   ✅
       /sognosroster
         page.tsx                   ✅
+      /sognosgenogram
+        page.tsx                   🔲 (Phase 5b)
 
     /solutions
       page.tsx                     ✅ Solutions Hub
@@ -138,6 +142,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /products                                            ✅
 /products/sognoscare                                 ✅
 /products/sognosroster                               ✅
+/products/sognosgenogram                             🔲 (Phase 5b)
 /solutions                                           ✅
 /solutions/field-service                             ✅
 /solutions/customer-relationship-management          ✅
@@ -165,7 +170,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 ## 6. Navigation (Live)
 
 ```
-Products       → SognosCare, SognosRoster
+Products       → SognosCare, SognosRoster, Sognos Genogram (nav wiring pending Phase 5b)
 Solutions      → Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
 Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 Customers
@@ -191,16 +196,16 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Phase 6 — Design System Application**
+**Phase 5b — Sognos Genogram**
 
-Pending:
-- [ ] Typography pass — confirm Inter Tight / Inter applied consistently across all pages
-- [ ] Card token audit — verify `border-(--sognos-card-border)` and `bg-white`/`bg-(--sognos-bg-sunken)` used throughout
-- [ ] Radius token audit — replace arbitrary radius values with token classes
-- [ ] Gradient audit — hero and highlight surfaces only; strip from standard cards
-- [ ] Spacing consistency pass — container, section padding, gap values
+- [x] Add Genogram card to ProductSection (placeholder copy, `ctaLink: "#"`, `story.href: "#"`)
+- [ ] Add `genogram` to `lib/constants.ts` PRODUCTS
+- [ ] Add Genogram to `lib/navigation.ts` under Products
+- [ ] Scaffold `/products/sognosgenogram/page.tsx` — Hero, Problems, Features, Integration, CTA
+- [ ] Wire `ctaLink` and `story.href` in ProductSection to live routes
+- [ ] Update product hub `/products/page.tsx` to include Genogram card
 
-Also pending (not Phase 6):
+Also pending:
 - [ ] `/contact` page — all CTAs reference this; currently 404 (priority)
 - [ ] `/customers` hub + `/customers/[slug]` — referenced by Stories sections
 
@@ -208,10 +213,11 @@ Also pending (not Phase 6):
 
 ## 9. Next Tasks (Ordered)
 
-1. Build `/contact` page (unblocks all CTA flows)
-2. Phase 6 — design system application pass
-3. Build customers hub and case study pages
-4. Phase 7 — UI polish and motion
+1. Phase 5b — Sognos Genogram page + routing + nav (unblocks ProductSection card links)
+2. Build `/contact` page (unblocks all CTA flows)
+3. Phase 6 — design system application pass
+4. Build customers hub and case study pages
+5. Phase 7 — UI polish and motion
 
 ---
 
