@@ -5,9 +5,9 @@ import CTASection from "@/components/sections/CTASection";
 import { PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Products — SognosCare & SognosRoster | Sognos",
+  title: "Products — SognosCare, SognosRoster & Sognos Genogram | Sognos",
   description:
-    "Two products built for service operations. SognosCare for care management and compliance. SognosRoster for workforce scheduling and optimisation.",
+    "Three products built for service operations. SognosCare for care management, SognosRoster for workforce scheduling, and Sognos Genogram for relationship and family context.",
 };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -46,6 +46,23 @@ const PRODUCT_DETAIL = [
     href: PRODUCTS.roster.href,
     name: PRODUCTS.roster.name,
     tagline: PRODUCTS.roster.tagline,
+  },
+  {
+    key: "genogram",
+    logo: "/logos/SognosGenogram-logo.svg",
+    accentDot: "bg-[#92278d]",
+    accentText: "text-[#92278d]",
+    capabilities: [
+      "Interactive genogram builder",
+      "Support network mapping",
+      "Risk & protective factor tagging",
+      "Embedded in the case record",
+      "Copilot AI narrative generation",
+    ],
+    badge: null,
+    href: PRODUCTS.genogram.href,
+    name: PRODUCTS.genogram.name,
+    tagline: PRODUCTS.genogram.tagline,
   },
 ] as const;
 
@@ -245,12 +262,12 @@ export default function ProductsPage() {
             </span>
           </div>
           <h1 className="mx-auto mb-6 max-w-3xl font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
-            Two products. One operating system for service delivery.
+            Three products. One operating system for service delivery.
           </h1>
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/60">
-            SognosCare and SognosRoster are built to stand alone — and designed
-            to work together. Both run on Microsoft Dynamics 365, enhanced with
-            Copilot AI.
+            SognosCare, SognosRoster, and Sognos Genogram are built to stand
+            alone — and designed to work together. All run on Microsoft Dynamics
+            365, enhanced with Copilot AI.
           </p>
         </div>
       </section>
@@ -258,7 +275,7 @@ export default function ProductsPage() {
       {/* Product cards */}
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-3">
             {PRODUCT_DETAIL.map(({ key, ...rest }) => (
               <ProductCard key={key} {...rest} />
             ))}
@@ -268,7 +285,7 @@ export default function ProductsPage() {
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-(--sognos-card-border) bg-white px-6 py-5">
             <div className="flex items-center gap-3">
               <span className="text-sm text-sognos-text-muted">
-                Both products run on
+                All products run on
               </span>
               <span className="text-sm font-semibold text-sognos-text-heading">
                 Microsoft Dynamics 365

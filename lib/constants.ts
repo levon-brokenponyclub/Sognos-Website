@@ -21,6 +21,14 @@ export const PRODUCTS = {
     description:
       "Allocate the right people, at the right time, to the right services — automatically.",
   },
+  genogram: {
+    name: "Sognos Genogram",
+    slug: "sognosgenogram",
+    href: "/products/sognosgenogram",
+    tagline: "Relationship & family context platform",
+    description:
+      "Map family structures, support networks, and relationship histories directly into case records — so every worker has the context they need.",
+  },
 } as const;
 
 export const SOLUTIONS = [

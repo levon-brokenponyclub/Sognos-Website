@@ -48,7 +48,7 @@ const PRODUCT_CARDS: ProductCardData[] = [
     sectionBg: "#abd6cc",
     story: {
       quote:
-        "Sognos gave us full visibility across every site. Scheduling that used to take hours now happens automatically — and our compliance team finally has the audit trail they need.",
+        "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
       author: "Sarah Mitchell",
       company: "Meridian Care Group",
       href: "/customers/meridian-care-group",
@@ -71,6 +71,25 @@ const PRODUCT_CARDS: ProductCardData[] = [
       author: "James Holt",
       company: "Summit FM Solutions",
       href: "/customers/summit-fm",
+    },
+  },
+  {
+    logo: "/logos/SognosGenogram-logo.svg",
+    logoAlt: "Sognos Genogram",
+    eyebrow: "Sognos Genogram",
+    title: "Understand the people behind every case",
+    byline: "Family context.\nBuilt into every record.",
+    description:
+      "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery — giving your team the context they need to deliver better outcomes.",
+    ctaText: "Explore Sognos Genogram",
+    ctaLink: "/products/sognosgenogram",
+    sectionBg: "#ead5f4",
+    story: {
+      quote:
+        "Having the full family picture embedded in the case record changed how our team approaches every intake. We catch things we would have missed before.",
+      author: "Dr. Priya Nair",
+      company: "Northside Community Health",
+      href: "/customers/northside-community-health",
     },
   },
 ];
@@ -97,17 +116,18 @@ function ProductCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
       className={[
-        "w-full h-full overflow-hidden rounded-xl text-white",
-        "transition-[flex] duration-500 ease-in-out",
-        "flex flex-col md:flex",
+        "h-full overflow-hidden rounded-xl text-white shrink-0",
+        "transition-[width] duration-500 ease-in-out",
+        "flex flex-col",
         "bg-prussian-blue-800",
-        isActive ? "md:flex-2" : "md:flex-1",
+        "w-full",
+        isActive ? "md:w-[750px]" : "md:w-[400px]",
       ].join(" ")}
     >
       <div className="flex h-full flex-col lg:flex-row gap-12 items-end">
         {/* Text side — fixed width, never squashes */}
         <div className="flex flex-col justify-between h-full gap-6 lg:w-96 lg:shrink-0">
-          <div className="p-14 pr-3 h-full flex flex-col justify-between gap-3">
+          <div className="p-8 py-14 h-full flex flex-col justify-between gap-3">
             <div>
               <Image
                 src={logo}
@@ -217,20 +237,22 @@ export default function ProductSection() {
   return (
     <motion.section
       aria-label="Platform capabilities"
-      className="relative flex w-full items-center justify-center overflow-hidden border-b border-sognos-border-subtle py-24"
+      className="relative w-full border-b border-sognos-border-subtle py-24 overflow-x-clip"
       animate={{ backgroundColor: PRODUCT_CARDS[activeIndex].sectionBg }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
     >
-      <div className="z-1 mx-auto w-full max-w-7xl px-6 py-4">
-        <div className="mb-5 max-w-4xl">
-          <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl">
-            For organisations
-            <br />
-            that can&apos;t afford to get things wrong
-          </h2>
-        </div>
+      {/* Heading — constrained to container */}
+      <div className="mx-auto mb-5 max-w-7xl px-6">
+        <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl max-w-4xl">
+          For organisations
+          <br />
+          that can&apos;t afford to get things wrong
+        </h2>
+      </div>
 
-        <div className="flex flex-col gap-6 md:flex-row md:h-125  ">
+      {/* Cards — left-edge aligned to container, overflow right */}
+      <div className="pl-6 md:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
+        <div className="flex flex-col gap-6 md:flex-row md:h-125">
           {PRODUCT_CARDS.map((card, index) => (
             <ProductCard
               key={card.ctaLink}

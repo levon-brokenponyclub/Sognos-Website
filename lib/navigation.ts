@@ -68,6 +68,7 @@ export const nav: NavGroup[] = [
     items: [
       { name: "SognosCare", href: "/products/sognoscare", description: "Care operations & compliance" },
       { name: "SognosRoster", href: "/products/sognosroster", description: "Workforce scheduling & optimisation" },
+      { name: "Sognos Genogram", href: "/products/sognosgenogram", description: "Relationship & family context mapping" },
     ],
     megaMenu: [
       {
@@ -76,6 +77,7 @@ export const nav: NavGroup[] = [
         items: [
           { name: "SognosCare", href: "/products/sognoscare", description: "Care operations & compliance" },
           { name: "SognosRoster", href: "/products/sognosroster", description: "Workforce scheduling & optimisation" },
+          { name: "Sognos Genogram", href: "/products/sognosgenogram", description: "Relationship & family context mapping" },
         ],
       },
       {
