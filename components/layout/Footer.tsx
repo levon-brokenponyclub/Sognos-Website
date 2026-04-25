@@ -37,6 +37,14 @@ export default function Footer() {
                   {PRODUCTS.roster.name}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={PRODUCTS.genogram.href}
+                  className="text-sm text-white hover:text-white"
+                >
+                  {PRODUCTS.genogram.name}
+                </Link>
+              </li>
             </ul>
           </div>
 
