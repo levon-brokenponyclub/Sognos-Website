@@ -125,8 +125,8 @@ export const nav: NavGroup[] = [
       {
         heading: "Company",
         items: [
-          { name: "Our Team", href: "/company/about" },
-          { name: "Social Responsibility", href: "#" },
+          { name: "About", href: "/company/about" },
+          { name: "Social Responsibility", href: "/company/social-responsibility" },
           { name: "Careers", href: "/company/careers" },
         ],
       },

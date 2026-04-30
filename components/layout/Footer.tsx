@@ -97,6 +97,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/company/social-responsibility"
+                  className="text-sm text-white hover:text-white"
+                >
+                  Social Responsibility
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/company/careers"
                   className="text-sm text-white hover:text-white"
                 >
@@ -116,7 +124,7 @@ export default function Footer() {
                   href="/knowledge-hub"
                   className="text-sm text-white hover:text-white"
                 >
-                  Resources
+                  Knowledge Hub
                 </Link>
               </li>
               <li>

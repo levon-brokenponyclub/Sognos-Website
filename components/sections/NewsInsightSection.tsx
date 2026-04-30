@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import AnimatedButton from "@/components/ui/AnimatedButton";
 
 const GAP = 20;
 
@@ -74,6 +75,9 @@ const ARTICLES: Article[] = [
   },
 ];
 
+// Doubled for seamless infinite loop
+const LOOPED_ARTICLES = [...ARTICLES, ...ARTICLES];
+
 const BADGE_STYLES: Record<string, string> = {
   Milestone: "bg-indigo-50 text-indigo-700 border-indigo-100",
   News: "bg-blue-50 text-blue-700 border-blue-100",
@@ -87,10 +91,10 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex flex-col overflow-hidden rounded-lg bg-white transition-shadow duration-200 hover:shadow-md w-full"
+      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white border border-gray-300 transition-shadow duration-200 hover:shadow-md"
     >
-      {/* Image */}
-      <div className="h-44 w-full shrink-0 overflow-hidden">
+      {/* Image — fixed height */}
+      <div className="h-56 w-full shrink-0 overflow-hidden">
         <img
           src={article.image}
           alt={article.title}
@@ -99,7 +103,7 @@ function ArticleCard({ article }: { article: Article }) {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className="flex flex-1 flex-col p-6">
         {/* Badge */}
         <span
           className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
@@ -110,18 +114,19 @@ function ArticleCard({ article }: { article: Article }) {
           {article.category}
         </span>
 
-        {/* Title */}
-        <h3 className="font-heading text-base font-medium leading-snug tracking-tight text-sognos-text-heading line-clamp-3">
+        {/* Title — fixed 3-line height for cross-card alignment */}
+        <h3 className="mt-3 h-[4.5rem] overflow-hidden font-heading text-base font-medium leading-snug tracking-tight text-sognos-text-heading line-clamp-3">
           {article.title}
         </h3>
 
-        {/* Excerpt */}
-        <p className="flex-1 text-sm leading-relaxed text-sognos-text-body line-clamp-2">
+        {/* Excerpt — fixed 2-line height for cross-card alignment */}
+        <p className="mt-3 h-12 overflow-hidden text-sm leading-relaxed text-sognos-text-body line-clamp-2">
           {article.excerpt}
         </p>
 
-        {/* Read more */}
-        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
+        {/* Spacer + Read more always at bottom */}
+        <div className="flex-1" />
+        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
           Read More
           <svg
             width="14"
@@ -150,57 +155,98 @@ export default function NewsInsightSection() {
   const x = useMotionValue(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const maxDragRef = useRef(0);
+  const cardWidthRef = useRef(0);
+  const periodRef = useRef(0); // width of one full set = ARTICLES.length * (cardWidth + GAP)
   const [maxDrag, setMaxDrag] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 
-  // 2 cards exactly fill the viewport: (containerWidth - 1 gap) / 2
-  const getCardWidth = useCallback(() => {
-    if (!viewportRef.current) return 0;
-    return (viewportRef.current.clientWidth - GAP) / 2;
-  }, []);
+  // Autoplay refs
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Seamless infinite loop: teleport x when it crosses set boundaries
+  useMotionValueEvent(x, "change", (latest) => {
+    const p = periodRef.current;
+    if (!p) return;
+    if (latest <= -p) x.set(latest + p);
+    else if (latest > 0) x.set(latest - p);
+  });
 
   useEffect(() => {
     const update = () => {
       if (!trackRef.current || !viewportRef.current) return;
-      const cw = (viewportRef.current.clientWidth - GAP) / 2;
-      setCardWidth(cw);
-      const trackWidth = trackRef.current.scrollWidth;
       const containerWidth = viewportRef.current.clientWidth;
-      setMaxDrag(Math.min(0, -(trackWidth - containerWidth)));
+      const cw = (containerWidth - GAP) / 2;
+      cardWidthRef.current = cw;
+      setCardWidth(cw);
+      periodRef.current = ARTICLES.length * (cw + GAP);
+      const trackWidth = trackRef.current.scrollWidth;
+      const md = Math.min(0, -(trackWidth - containerWidth));
+      maxDragRef.current = md;
+      setMaxDrag(md);
     };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  useMotionValueEvent(x, "change", (latest) => {
-    const cardWidth = getCardWidth();
-    const idx = Math.round(-latest / (cardWidth + GAP));
-    setActiveIndex(Math.max(0, Math.min(idx, ARTICLES.length - 1)));
-  });
+  const stepFn = useCallback(
+    (dir: 1 | -1) => {
+      const next = x.get() - dir * (cardWidthRef.current + GAP);
+      animate(x, next, { type: "spring", damping: 30, stiffness: 300 });
+    },
+    [x],
+  );
 
-  const step = (dir: 1 | -1) => {
-    const cardWidth = getCardWidth();
-    const next = x.get() - dir * (cardWidth + GAP);
-    animate(x, Math.max(Math.min(next, 0), maxDrag), {
-      type: "spring",
-      damping: 30,
-      stiffness: 300,
-    });
-  };
+  const stopAutoplay = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (resumeRef.current) {
+      clearTimeout(resumeRef.current);
+      resumeRef.current = null;
+    }
+  }, []);
+
+  const startAutoplay = useCallback(() => {
+    stopAutoplay();
+    intervalRef.current = setInterval(() => stepFn(1), 4000);
+  }, [stopAutoplay, stepFn]);
+
+  const pauseAndResume = useCallback(() => {
+    stopAutoplay();
+    resumeRef.current = setTimeout(startAutoplay, 5000);
+  }, [stopAutoplay, startAutoplay]);
+
+  const handleStep = useCallback(
+    (dir: 1 | -1) => {
+      stepFn(dir);
+      pauseAndResume();
+    },
+    [stepFn, pauseAndResume],
+  );
+
+  useEffect(() => {
+    startAutoplay();
+    return stopAutoplay;
+  }, [startAutoplay, stopAutoplay]);
 
   return (
     <section className="w-full bg-prussian-blue-800 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <div className="flex items-center gap-12">
-          {/* Left column — h2 only, vertically centered */}
-          <div className="shrink-0 w-[35%] flex items-center">
+        <div className="flex items-start gap-12">
+          {/* Left column — h2 and button, aligned top */}
+          <div className="shrink-0 w-[35%] flex flex-col items-start">
             <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
-              Industries
-              <br />
-              Built for service-intensive operations
+              News &amp; Insights
             </h2>
+            <div className="mt-6">
+              <AnimatedButton href="/knowledge-hub" variant="white">
+                Visit Blog
+              </AnimatedButton>
+            </div>
           </div>
 
           {/* Right column — strip wrapper, overflow-hidden clips right arrow */}
@@ -213,13 +259,14 @@ export default function NewsInsightSection() {
                 drag="x"
                 dragConstraints={{ left: maxDrag, right: 0 }}
                 dragElastic={0.05}
-                className="flex gap-5 cursor-grab active:cursor-grabbing"
+                onDragStart={pauseAndResume}
+                className="flex gap-5 cursor-grab active:cursor-grabbing items-stretch"
               >
-                {ARTICLES.map((article, i) => (
+                {LOOPED_ARTICLES.map((article, i) => (
                   <div
                     key={i}
-                    className="shrink-0"
-                    style={{ width: cardWidth || undefined }}
+                    className="shrink-0 flex flex-col"
+                    style={{ width: cardWidth > 0 ? cardWidth : undefined }}
                   >
                     <ArticleCard article={article} />
                   </div>
@@ -229,7 +276,7 @@ export default function NewsInsightSection() {
 
             {/* Prev — left edge, vertically centered */}
             <button
-              onClick={() => step(-1)}
+              onClick={() => handleStep(-1)}
               aria-label="Previous slide"
               className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >
@@ -238,7 +285,7 @@ export default function NewsInsightSection() {
 
             {/* Next — right edge, half-clipped by overflow-hidden */}
             <button
-              onClick={() => step(1)}
+              onClick={() => handleStep(1)}
               aria-label="Next slide"
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >

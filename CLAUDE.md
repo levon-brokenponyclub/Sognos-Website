@@ -78,8 +78,9 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
       /[slug]/page.tsx             🔲
 
     /knowledge-hub/page.tsx        ✅ (renamed from /resources)
-    /company/about/page.tsx        🔲
-    /company/careers/page.tsx      🔲
+    /company/about/page.tsx        ✅
+    /company/social-responsibility/page.tsx  ✅
+    /company/careers/page.tsx      ✅
     /contact/page.tsx              ✅
 
 /components
@@ -100,6 +101,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     KnowledgeHubArchive.tsx        ✅ (sticky sidebar filters, 3-col grid, 6 real articles)
     ProofSection.tsx               ✅ (video bg compliance card, image bg 1100+ card, bento grid)
     CTASection.tsx                 ✅
+    LifeAtSognos.tsx               ✅ (careers page — 3-col tabs|image|quote, IndustrySection pattern)
+    OpenRoles.tsx                  ✅ (careers page — filterable roles list, Department + Location filters)
 
   /ui
     ParticleCanvas.tsx             ✅ (radial + arc variants, canvas-based)
@@ -163,8 +166,9 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /customers                                           🔲
 /customers/[slug]                                    🔲
 /knowledge-hub                                       ✅ (renamed from /resources)
-/company/about                                       🔲
-/company/careers                                     🔲
+/company/about                                       ✅
+/company/social-responsibility                       ✅
+/company/careers                                     ✅
 /contact                                             ✅
 ```
 
@@ -178,7 +182,7 @@ Solutions      → Field Service, CRM, Customer Insights, Customer Experience, C
 Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 Customers
 Knowledge Hub  → Blog, News, Customer Stories
-Company        → About, Careers
+Company        → About, Social Responsibility, Careers
 ```
 
 CTAs: `Contact Sales` | `Book a Demo`
@@ -201,21 +205,19 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 **Phase 6 — Design System Application**
 
-Phase 5b complete. Contact page live. Knowledge Hub live.
+Company pages complete. Contact page live. Knowledge Hub live.
 
 Pending:
 - [ ] `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
-- [ ] `/company/about` and `/company/careers`
 - [ ] Phase 6 — design system pass across all pages
 
 ---
 
 ## 9. Next Tasks (Ordered)
 
-1. Phase 6 — design system application pass
-2. Build customers hub and case study pages (`/customers`, `/customers/[slug]`)
+1. Build customers hub and case study pages (`/customers`, `/customers/[slug]`)
+2. Phase 6 — design system application pass
 3. Phase 7 — UI polish and motion
-4. `/company/about` and `/company/careers` pages
 
 ---
 

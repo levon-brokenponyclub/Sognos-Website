@@ -17,10 +17,10 @@ export default function HomePage() {
       <HowSognosWorksPreview />
       <ProductSection />
       <SolutionsSection />
-      <CustomerStories />
       <IndustrySection />
-      <ProofSection />
+      <CustomerStories />
       <NewsInsightSection />
+      <ProofSection />
       <CTASection />
     </>
   );

@@ -250,8 +250,8 @@ export default function ProductSection() {
         </h2>
       </div>
 
-      {/* Cards — left-edge aligned to container, overflow right */}
-      <div className="pl-6 md:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
+      {/* Cards — left edge matches heading container, overflow right */}
+      <div className="mx-auto max-w-7xl pl-6">
         <div className="flex flex-col gap-6 md:flex-row md:h-125">
           {PRODUCT_CARDS.map((card, index) => (
             <ProductCard

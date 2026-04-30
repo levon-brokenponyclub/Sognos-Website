@@ -36,7 +36,7 @@ export default function Hero({
     >
       <FlowCanvas />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-25 pb-6 border-x border-white/10 border-dashed sm:px-8 sm:pt-27.5 sm:pb-20 lg:px-6 lg:pt-25 lg:pb-0">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-25 pb-6 sm:px-8 sm:pt-27.5 sm:pb-20 lg:px-6 lg:pt-25 lg:pb-0">
         <div className="flex flex-1 flex-col justify-between gap-14 py-8 lg:py-8 mt-12">
           <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
             <h1 className="text-4xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
