@@ -87,7 +87,7 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group shrink-0 flex flex-col overflow-hidden rounded-lg bg-white transition-shadow duration-200 hover:shadow-md w-70 sm:w-[320px] lg:w-85"
+      className="group flex flex-col overflow-hidden rounded-lg bg-white transition-shadow duration-200 hover:shadow-md w-full"
     >
       {/* Image */}
       <div className="h-44 w-full shrink-0 overflow-hidden">
@@ -152,18 +152,19 @@ export default function NewsInsightSection() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [maxDrag, setMaxDrag] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
 
+  // 2 cards exactly fill the viewport: (containerWidth - 1 gap) / 2
   const getCardWidth = useCallback(() => {
-    if (!trackRef.current) return 360;
-    return (
-      (trackRef.current.scrollWidth - GAP * (ARTICLES.length - 1)) /
-      ARTICLES.length
-    );
+    if (!viewportRef.current) return 0;
+    return (viewportRef.current.clientWidth - GAP) / 2;
   }, []);
 
   useEffect(() => {
     const update = () => {
       if (!trackRef.current || !viewportRef.current) return;
+      const cw = (viewportRef.current.clientWidth - GAP) / 2;
+      setCardWidth(cw);
       const trackWidth = trackRef.current.scrollWidth;
       const containerWidth = viewportRef.current.clientWidth;
       setMaxDrag(Math.min(0, -(trackWidth - containerWidth)));
@@ -192,50 +193,58 @@ export default function NewsInsightSection() {
   return (
     <section className="w-full bg-prussian-blue-800 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        {/* Heading row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
-            Industries
-            <br />
-            Built for service-intensive operations
-          </h2>
-          <div className="hidden sm:flex items-center gap-2 justify-end">
+        <div className="flex items-center gap-12">
+          {/* Left column — h2 only, vertically centered */}
+          <div className="shrink-0 w-[35%] flex items-center">
+            <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
+              Industries
+              <br />
+              Built for service-intensive operations
+            </h2>
+          </div>
+
+          {/* Right column — strip wrapper, overflow-hidden clips right arrow */}
+          <div className="flex-1 relative overflow-hidden">
+            {/* Slider viewport */}
+            <div ref={viewportRef}>
+              <motion.div
+                ref={trackRef}
+                style={{ x }}
+                drag="x"
+                dragConstraints={{ left: maxDrag, right: 0 }}
+                dragElastic={0.05}
+                className="flex gap-5 cursor-grab active:cursor-grabbing"
+              >
+                {ARTICLES.map((article, i) => (
+                  <div
+                    key={i}
+                    className="shrink-0"
+                    style={{ width: cardWidth || undefined }}
+                  >
+                    <ArticleCard article={article} />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Prev — left edge, vertically centered */}
             <button
               onClick={() => step(-1)}
               aria-label="Previous slide"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >
               <ArrowLeft size={16} />
             </button>
+
+            {/* Next — right edge, half-clipped by overflow-hidden */}
             <button
               onClick={() => step(1)}
               aria-label="Next slide"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 border border-neutral-900 text-white hover:bg-neutral-700 transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >
               <ArrowRight size={16} />
             </button>
           </div>
-          {/* <p className="font-heading font-medium leading-tigher section-header-description justify-self-end">
-            Sognos connects service demand, workforce scheduling, and compliance
-            into a single operational loop. Powered by AI, Microsoft Dynamics
-            365.
-          </p> */}
-        </div>
-
-        {/* Slider */}
-        <div ref={viewportRef} className="mx-auto max-w-7xl">
-          <motion.div
-            ref={trackRef}
-            style={{ x }}
-            drag="x"
-            dragConstraints={{ left: maxDrag, right: 0 }}
-            dragElastic={0.05}
-            className="flex gap-8 cursor-grab active:cursor-grabbing"
-          >
-            {ARTICLES.map((article, i) => (
-              <ArticleCard key={i} article={article} />
-            ))}
-          </motion.div>
         </div>
       </div>
     </section>

@@ -60,6 +60,12 @@ export const INDUSTRIES = [
       "Coordinate complex care delivery, multidisciplinary teams, and compliance-heavy service operations.",
     products: ["SognosCare", "SognosRoster"],
     image: "/images/industries/health-social-care.webp",
+    features: [
+      "Real-time care delivery tracking across multidisciplinary teams",
+      "Automated compliance reporting and full audit trail management",
+      "Skill-matched rostering for care workers across service types",
+      "Case management linked directly to service delivery outcomes",
+    ],
   },
   {
     name: "Facilities Management",
@@ -69,6 +75,12 @@ export const INDUSTRIES = [
       "Dispatch field teams efficiently, manage SLAs, and maintain visibility across sites and clients.",
     products: ["SognosRoster"],
     image: "/images/industries/facilities-management.webp",
+    features: [
+      "Real-time field technician dispatch and job progress tracking",
+      "SLA monitoring with automated escalation and client alerts",
+      "Multi-site workforce visibility in a single operational view",
+      "Asset-linked work order management with full service history",
+    ],
   },
   {
     name: "Local Government",
@@ -78,6 +90,12 @@ export const INDUSTRIES = [
       "Support frontline service delivery with clear case management, workforce coordination, and audit trails.",
     products: ["SognosCare", "SognosRoster"],
     image: "/images/industries/local-government.webp",
+    features: [
+      "Case management with full audit trail for public accountability",
+      "Workforce coordination across departments and field teams",
+      "Automated reporting for council performance and compliance metrics",
+      "Compliant service delivery documentation built into every workflow",
+    ],
   },
   {
     name: "Industrial Services",
@@ -87,6 +105,12 @@ export const INDUSTRIES = [
       "Coordinate large-scale field operations, asset-linked work, and complex workforce logistics.",
     products: ["SognosRoster"],
     image: "/images/industries/industrial-services.webp",
+    features: [
+      "Large-scale field crew scheduling and dispatch across remote sites",
+      "Asset-linked work orders with integrated safety compliance tracking",
+      "Real-time job progress visibility across distributed operations",
+      "Contractor and subcontractor workforce management in one system",
+    ],
   },
   {
     name: "Energy & Utilities",
@@ -96,5 +120,11 @@ export const INDUSTRIES = [
       "Manage asset-intensive service delivery, compliance, and workforce execution across critical networks.",
     products: ["SognosCare", "SognosRoster"],
     image: "/images/industries/energy-utilities.webp",
+    features: [
+      "Planned maintenance scheduling integrated with live field operations",
+      "Regulatory compliance tracking across critical infrastructure assets",
+      "Emergency response coordination with dynamic workforce reallocation",
+      "Network fault response with SLA tracking and full audit trails",
+    ],
   },
 ] as const;
