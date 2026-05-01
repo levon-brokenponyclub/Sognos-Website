@@ -59,33 +59,37 @@ export default function TeamSection() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TEAM.map((member) => (
-              <div key={member.name} className="flex flex-col">
-                {/* Photo */}
-                <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-slate-200 mb-6">
+              <button 
+                key={member.name} 
+                onClick={() => setActive(member)}
+                className="flex flex-col text-left group bg-white p-2 rounded-xl border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:border-[#1D96FC]/20 hover:-translate-y-1 cursor-pointer"
+              >
+                {/* Photo - Reduced height (aspect 4/5) */}
+                <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-slate-50 mb-5 lg:mb-6">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover object-top"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </div>
                 {/* Meta */}
-                <p className="font-heading text-lg font-semibold text-prussian-blue-800">
-                  {member.name}
-                </p>
-                <p className="text-sm text-brand mt-0.5">{member.role}</p>
-                {/* Read More */}
-                <button
-                  onClick={() => setActive(member)}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-prussian-blue-800 hover:opacity-60 transition-opacity cursor-pointer self-start"
-                >
-                  Read more
-                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
+                <div className="px-3 pb-4 flex flex-col items-start w-full">
+                  <p className="font-heading text-lg lg:text-xl font-bold text-prussian-blue-800 leading-tight transition-colors group-hover:text-[#1D96FC]">
+                    {member.name}
+                  </p>
+                  <p className="text-[13px] font-semibold text-[#1D96FC] uppercase tracking-wide mt-1.5">{member.role}</p>
+                  
+                  {/* Visual trigger */}
+                  <div className="mt-6 flex items-center gap-2 text-[13px] font-bold text-gray-400 group-hover:text-prussian-blue-800 transition-colors">
+                    <span>Read profile</span>
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="transition-transform group-hover:translate-x-0.5">
+                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+              </button>
             ))}
           </div>
         </div>
