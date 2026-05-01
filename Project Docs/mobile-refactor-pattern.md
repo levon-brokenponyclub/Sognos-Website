@@ -169,9 +169,29 @@ For card-internal CTAs alignment:
 
 ## 10. Hero (special case)
 
-- `min-h-[100vh] lg:h-X` → `h-[100svh] lg:h-X` (100svh avoids mobile browser bar height jumps)
-- Trust bar (logos + ratings): stack with `flex-col lg:flex-row`
-- Logo pill: `flex-wrap` on mobile so badges don't overflow horizontally
+- `min-h-[100vh] lg:h-X` → `h-[100svh] lg:h-[100vh]` (svh avoids mobile browser bar height jumps; vh on desktop for full coverage)
+- **Vertical centering on mobile**: wrap centre content in `flex-1 lg:flex-none flex items-center justify-center` inside a `flex flex-col lg:justify-between` container — content centres in remaining space, bottom bar stays anchored
+- **Bottom bar layout**: mobile stacked/animated, desktop `justify-between` with logos left, trust bar right
+- **Crossfade cycle between two elements** (e.g. trust bar ↔ logo strip):
+  ```tsx
+  // "use client" required
+  const [showB, setShowB] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => setShowB(v => !v), 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Container: relative fixed-height, both children absolute
+  <div className="relative lg:hidden flex justify-center items-center h-16">
+    <div className={`absolute transition-all duration-700 ease-in-out ${showB ? "opacity-0 translate-y-2 pointer-events-none" : "opacity-100 translate-y-0"}`}>
+      <ElementA />
+    </div>
+    <div className={`absolute transition-all duration-700 ease-in-out ${showB ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"}`}>
+      <ElementB />
+    </div>
+  </div>
+  ```
+  `pointer-events-none` on the hidden element prevents invisible click targets.
 
 ---
 
@@ -182,10 +202,46 @@ For card-internal CTAs alignment:
 - Logo: `h-8 lg:h-9` default, `h-7 lg:h-8` when scrolled, `transition-[height]`
 - Hamburger icon: `w-7 h-7` (was `w-5 h-5`)
 - Bottom border: omit when `colorMode === "dark" && scrolled` so dark hero stays seamless
+- **Scroll-driven padding collapse**: extra top padding on mobile (e.g. `pt-4`) collapses to `py-2` on scroll. Add `padding` to the transition property list:
+  ```tsx
+  scrolled ? "py-2" : "pt-4 pb-2",
+  "transition-[background-color,border-color,padding] duration-300",
+  ```
+- **colorMode-conditional horizontal padding**: use `px-2` when `bg-white` is active (`colorMode === "light"` or `scrolled`), `px-5` on dark hero:
+  ```tsx
+  `${scrolled || colorMode === "light" ? "px-2" : "px-5"} lg:px-6`
+  ```
 
 ---
 
-## 12. Footer
+## 12. Scroll-stacked cards (e.g. IndustrySection mobile)
+
+Cards that stack on top of each other as the user scrolls — later cards slide up and cover earlier ones.
+
+**Critical**: `position: sticky` is broken by ANY `overflow` value other than `visible` on any ancestor. This includes `overflow-x: hidden`. Do not add overflow to the section or any ancestor that wraps sticky children.
+
+```tsx
+const HEADER_H = 112; // px from top of viewport where first card sticks
+const PEEK = 18;      // px each card peeks above the one covering it
+
+{items.map((item, i) => (
+  <div
+    key={item.slug}
+    style={{ top: HEADER_H + i * PEEK, zIndex: (i + 1) * 10 }}
+    className="sticky mb-3 last:mb-0 ..."
+  >
+    ...
+  </div>
+))}
+```
+
+- Earlier cards have lower `top` (stick higher, visible in the stack)
+- Later cards have higher `z-index` (visually on top)
+- `HEADER_H` = navbar height + desired gap from top of viewport
+
+---
+
+## 13. Footer
 
 - Padding: `py-16` → `py-12 lg:py-16`
 - Grid gap: `gap-8` → `gap-x-6 gap-y-10`
@@ -205,7 +261,26 @@ For card-internal CTAs alignment:
 7. For tabs: convert grid to horizontal-scroll with `snap-x snap-mandatory` and `basis-[calc(50%-0.5rem)]`
 8. Sync active item with `container.scrollTo({ left })`, never `scrollIntoView`
 9. Center CTAs on mobile, left-align on desktop
+10. **Never add `overflow: hidden` or `overflow-x: hidden` to any section that contains `position: sticky` children**
 
 ---
 
-Sections currently following this pattern: Hero, Navbar, HowSognosWorksPreview, ProductSection, SolutionsSection, IndustrySection, NewsInsightSection, CustomerStories, CTASection, LogoStrip, Footer.
+## Status
+
+Homepage sections confirmed complete (pending user sign-off before applying to other pages):
+
+| Section | Mobile done |
+|---------|-------------|
+| Hero | ✅ |
+| Navbar | ✅ |
+| LogoStrip | ✅ |
+| HowSognosWorksPreview | ✅ |
+| ProductSection | ✅ |
+| SolutionsSection | ✅ |
+| HowItWorks | ✅ |
+| IndustrySection | ✅ |
+| ProofSection | ✅ |
+| CTASection | ✅ |
+| Footer | ✅ |
+
+**Pattern is locked to homepage.** Once user confirms homepage is complete, apply this document to product, solution, and industry pages.

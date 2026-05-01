@@ -214,11 +214,22 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Phase 6 — Design System Application**
+**Phase 6 — Mobile Refactor (Homepage → all pages)**
 
-Company pages complete. Contact page live. Knowledge Hub live.
+Homepage mobile refactor in progress. Pattern is documented in `Project Docs/mobile-refactor-pattern.md`.
+
+Homepage sections complete:
+- [x] Hero — 100vh, vertically centred content, crossfade trust bar/logo strip, scroll-driven navbar padding
+- [x] Navbar — scroll padding collapse, colorMode-conditional px, h-14/h-12 height
+- [x] LogoStrip, HowSognosWorksPreview, ProductSection, SolutionsSection, HowItWorks
+- [x] IndustrySection — scroll-stacked cards (sticky), HEADER_H 112px, PEEK 18px
+- [x] ProofSection, CTASection, Footer
+
+**Awaiting homepage sign-off before applying pattern to product/solution/industry pages.**
 
 Pending:
+- [ ] Homepage sign-off
+- [ ] Apply mobile pattern to all product, solution, and industry pages
 - [ ] `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
 - [ ] Phase 6 — design system pass across all pages
 
