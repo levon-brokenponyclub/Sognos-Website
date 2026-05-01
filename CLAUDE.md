@@ -60,6 +60,11 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
       page.tsx                     ✅ Product Hub
       /sognoscare
         page.tsx                   ✅
+        /editions
+          /disability-mental-health/page.tsx  ✅
+          /allied-health/page.tsx             ✅
+          /support-at-home/page.tsx           ✅
+          /residential-aged-care/page.tsx     ✅
       /sognosroster
         page.tsx                   ✅
       /sognosgenogram
@@ -104,6 +109,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     LifeAtSognos.tsx               ✅ (careers page — 3-col tabs|image|quote, IndustrySection pattern)
     OpenRoles.tsx                  ✅ (careers page — filterable roles list, Department + Location filters)
     TeamSection.tsx                ✅ (about page — photo cards + Read More dialog modal, 2-col layout)
+    sognoscare/EditionPageTemplate.tsx  ✅ (shared template: Hero/WhatItSolves/Features/Advantages/ProofStories)
 
   /ui
     ParticleCanvas.tsx             ✅ (radial + arc variants, canvas-based)
@@ -148,6 +154,10 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /                                                    ✅
 /products                                            ✅
 /products/sognoscare                                 ✅
+/products/sognoscare/editions/disability-mental-health  ✅
+/products/sognoscare/editions/allied-health          ✅
+/products/sognoscare/editions/support-at-home        ✅
+/products/sognoscare/editions/residential-aged-care  ✅
 /products/sognosroster                               ✅
 /products/sognosgenogram                             ✅
 /solutions                                           ✅

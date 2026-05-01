@@ -23,7 +23,7 @@ const EDITIONS: Edition[] = [
     subtitle: "NDIS, psychosocial support, and participant outcome tracking",
     description:
       "Plan around participant goals, manage incidents, and streamline progress notes — with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
-    href: "#",
+    href: "/products/sognoscare/editions/disability-mental-health",
   },
   {
     name: "Allied Health",
@@ -33,7 +33,7 @@ const EDITIONS: Edition[] = [
     subtitle: "Mobile therapy teams, referral management, and multi-disciplinary records",
     description:
       "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
-    href: "#",
+    href: "/products/sognoscare/editions/allied-health",
   },
   {
     name: "Support at Home",
@@ -43,7 +43,7 @@ const EDITIONS: Edition[] = [
     subtitle: "Home care packages, Support at Home reform, and client independence",
     description:
       "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
-    href: "#",
+    href: "/products/sognoscare/editions/support-at-home",
   },
   {
     name: "Residential Aged Care",
@@ -53,7 +53,7 @@ const EDITIONS: Edition[] = [
     subtitle: "Resident care planning, clinical documentation, and facility compliance",
     description:
       "From care planning and progress documentation to staff coordination and resident outcome reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
-    href: "#",
+    href: "/products/sognoscare/editions/residential-aged-care",
   },
 ];
 
