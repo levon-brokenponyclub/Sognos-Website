@@ -12,7 +12,10 @@ const INDUSTRIAL_VIDEO =
 const HEALTH_VIDEO =
   "https://www.shutterstock.com/shutterstock/videos/3762351217/preview/stock-footage-help-senior-woman-and-nurse-with-cellphone-in-retirement-home-for-telehealth-app-or-communication.webm";
 
-// ─── Section ──────────────────────────────────────────────────────────────────
+// Header bar height (h-14 = 56px) — cards stick just below it
+const HEADER_H = 56;
+// Each card in the stack peeks this many px above the one covering it
+const PEEK = 10;
 
 export default function IndustrySection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,11 +24,11 @@ export default function IndustrySection() {
   const isHealth = active.slug === "health-social-care";
 
   return (
-    <section className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        {/* Section heading — unchanged */}
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-2 lg:gap-5 items-end justify-items-between pb-6">
-          {/* Badge */}
+    // overflow-x-hidden (not overflow-hidden) so sticky children work in the scroll axis
+    <section className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-x-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+        {/* Section heading */}
+        <div className="grid grid-cols-1 gap-2 lg:gap-5 items-end pb-6">
           <div className="inline-flex mx-auto w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Built for every industry
@@ -34,22 +37,21 @@ export default function IndustrySection() {
             Purpose-built for{" "}
             <span className="text-[#1D96FC]">service-intensive</span> sectors
           </h2>
-          {/* <p className="font-heading font-medium leading-tigher section-header-description text-white justify-self-end">
-            Sognos connects service demand, workforce scheduling, and compliance
-            into a single operational loop. Powered by AI, Microsoft Dynamics
-            365.
-          </p> */}
         </div>
 
-        {/* Mobile — stacked cards (image/video top, title + read more below) */}
-        <div className="lg:hidden mt-10 flex flex-col gap-5">
-          {INDUSTRIES.map((ind) => {
+        {/* Mobile — scroll-stacked cards */}
+        <div className="lg:hidden mt-10">
+          {INDUSTRIES.map((ind, i) => {
             const indIsIndustrial = ind.slug === "industrial-services";
             const indIsHealth = ind.slug === "health-social-care";
+            // Earlier cards stick higher (peek above later cards); later cards have higher z-index
+            const stickyTop = HEADER_H + i * PEEK;
+
             return (
               <div
                 key={ind.slug}
-                className="bg-white rounded-lg p-2 flex flex-col gap-3"
+                style={{ top: stickyTop, zIndex: (i + 1) * 10 }}
+                className="sticky mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3"
               >
                 <div className="relative w-full h-[185px] rounded-lg overflow-hidden">
                   {indIsIndustrial ? (
@@ -93,20 +95,8 @@ export default function IndustrySection() {
                   >
                     Read more
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M3 7h8M7 3l4 4-4 4"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>
                   </Link>
@@ -148,13 +138,10 @@ export default function IndustrySection() {
               {/* Left column — grey info panel */}
               <div className="shrink-0 w-[40%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
-                  {/* <span className="text-xs font-medium uppercase tracking-widest text-neutral-500">
-                    {active.name}
-                  </span> */}
                   <h3 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
                   </h3>
-                  <p className="font-heading text-base font-normal leading-relaxedtext-sognos-text-body lg:text-lg">
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body lg:text-lg">
                     {active.description}
                   </p>
                 </div>
@@ -164,20 +151,8 @@ export default function IndustrySection() {
                 >
                   Read more
                   <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M3 7h8M7 3l4 4-4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                 </Link>
