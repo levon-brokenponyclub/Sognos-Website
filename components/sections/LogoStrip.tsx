@@ -32,14 +32,13 @@ export default function LogoStrip() {
           {TRACK.map((logo, i) => (
             <div
               key={i}
-              className="flex items-center justify-center px-2"
-              style={{ minWidth: 260 }}
+              className="flex items-center justify-center px-1 lg:px-2 min-w-[150px] lg:min-w-[260px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className="max-h-14 w-auto max-w-[190px] object-contain"
+                className="max-h-10 lg:max-h-14 w-auto max-w-[110px] lg:max-w-[190px] object-contain"
                 style={{ filter: "brightness(0) opacity(0.8)" }}
               />
             </div>

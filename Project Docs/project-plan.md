@@ -12,7 +12,7 @@ Also complete outside the original phase plan:
 - Homepage polish: LogoStrip → infinite CSS marquee, ProofSection bento grid with video/image bg tiles, IndustrySection always-on video, SolutionsSection dark bg, CustomerStories trimmed to 3 active
 
 Immediate focus:
-- Phase 6 — design system application pass
+- Phase 6 — design system application pass (in progress, started 2026-05-01)
 - `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
 
 ## Phase Plan
@@ -99,7 +99,7 @@ Delivered:
 - Genogram card in product hub `/products/page.tsx`
 - Logo: `/public/logos/SognosGenogram-logo.svg`
 
-### Phase 6: Design System Application
+### Phase 6: Design System Application — In Progress (started 2026-05-01)
 
 Apply the agreed design system:
 - Inter Tight for headings

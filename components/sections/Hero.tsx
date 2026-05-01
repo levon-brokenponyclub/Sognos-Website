@@ -32,7 +32,7 @@ export default function Hero({
   return (
     <section
       data-header-dark
-      className="relative flex flex-col bg-white overflow-hidden text-white min-h-[100vh] lg:h-157.5 p-2"
+      className="relative flex flex-col bg-white overflow-hidden text-white h-[100svh] lg:h-157.5 p-2"
     >
       <div className="bg-gradient-hero h-full overflow-hidden text-white rounded-2xl">
         <FlowCanvas />
@@ -59,10 +59,8 @@ export default function Hero({
                   {secondaryCTA.name}
                 </Link>
               </div>
-            </div>
 
-            <div className="mx-auto flex w-full flex-row justify-between items-center gap-6">
-              <div className="inline-flex items-center gap-5 rounded-full bg-prussian-blue-800/10 px-6 py-3">
+              <div className="mt-8 inline-flex flex-wrap justify-center items-center gap-3 sm:gap-5 rounded-full bg-prussian-blue-800/10 px-4 sm:px-6 py-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/logos/Dynamics365.svg"
@@ -84,7 +82,9 @@ export default function Hero({
                   className="h-9 w-auto"
                 />
               </div>
+            </div>
 
+            <div className="mx-auto flex w-full justify-center lg:justify-end items-center">
               <div className="flex items-center divide-x divide-white/15">
                 <div className="flex -space-x-2.5 pr-4">
                   {[

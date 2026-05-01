@@ -67,17 +67,17 @@ export default function CTASection({
 }: CTASectionProps) {
   return (
     <section className="w-full">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
         <div className="rounded-2xl border border-white/10 bg-neutral-900 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
 
             {/* Left — CTA */}
-            <div className="flex flex-col justify-center px-10 py-16 lg:py-20 lg:pr-12">
+            <div className="flex flex-col justify-center items-center text-center lg:items-start lg:text-left px-6 py-12 lg:px-10 lg:py-20 lg:pr-12">
               <p className="text-sm font-medium uppercase tracking-widest text-neutral-500">
                 Get started
               </p>
 
-              <h2 className="mt-4 font-heading font-medium tracking-tight text-white max-w-md">
+              <h2 className="mt-4 font-heading font-medium tracking-tight text-white text-3xl md:text-4xl max-w-md">
                 {headline}
               </h2>
 
@@ -85,7 +85,7 @@ export default function CTASection({
                 {subtext}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-wrap justify-center lg:justify-start items-center gap-3">
                 <Link
                   href={primaryCTA.href}
                   className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
@@ -102,7 +102,7 @@ export default function CTASection({
                 )}
               </div>
 
-              <p className="mt-6 text-xs text-neutral-600">
+              <p className="mt-6 text-xs text-neutral-600 max-w-sm">
                 No commitment required. Assessments are free, confidential, and specific to your operations.
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function CTASection({
                 <div
                   key={stat.label}
                   className={[
-                    "flex flex-col justify-between p-8",
+                    "flex flex-col justify-between gap-8 p-5 lg:p-8",
                     // right border for col 0
                     i % 2 === 0 ? "border-r border-white/10" : "",
                     // bottom border for row 0
@@ -128,8 +128,8 @@ export default function CTASection({
                   </div>
 
                   {/* Value + label */}
-                  <div className="mt-8">
-                    <p className="font-heading text-4xl font-medium tracking-tight text-white leading-none">
+                  <div>
+                    <p className="font-heading text-3xl lg:text-4xl font-medium tracking-tight text-white leading-none">
                       {stat.value}
                     </p>
                     <p className="mt-2 text-xs font-medium uppercase tracking-widest text-neutral-500">

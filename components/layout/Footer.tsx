@@ -3,18 +3,18 @@ import { INDUSTRIES, PRODUCTS, SITE, SOLUTIONS } from "@/lib/constants";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-gray-200 bg-gradient-hero text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6">
+    <footer className="border-t border-white/10 bg-gradient-hero text-white">
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
           {/* Brand */}
-          <div className="col-span-2 lg:col-span-2">
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link
               href="/"
               className="text-xl font-bold tracking-tight text-white"
             >
               {SITE.name}
             </Link>
-            <p className="mt-2 text-sm text-white">{SITE.tagline}</p>
+            <p className="mt-2 text-sm text-white/80 max-w-sm">{SITE.tagline}</p>
           </div>
 
           {/* Products */}
@@ -140,7 +140,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-gray-200 pt-8 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-8 sm:flex-row sm:items-center">
           <p className="text-sm text-white">
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>

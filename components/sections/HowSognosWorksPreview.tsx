@@ -68,19 +68,20 @@ export default function HowSognosWorksPreview() {
   return (
     <section className="w-full border-sognos-border-subtle bg-slate-100">
       <div className="max-w-7xl w-full mx-auto px-4 py-24">
-        <div className="flex items-stretch gap-16">
+        <div
+          className="grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-[40%_1fr] lg:grid-rows-[auto_1fr] lg:items-stretch [grid-template-areas:'heading''image''tabs'] lg:[grid-template-areas:'heading_image''tabs_image']"
+        >
 
-          {/* Left column — heading at top, tabs pinned to bottom */}
-          <div className="w-[40%] shrink-0 flex flex-col">
-            <h2 className="callout text-3xl md:text-4xl text-prussian-blue-800 font-heading tracking-tight">
-              Stop managing complexity. <br />
-              <span className="text-soft text-prussian-blue-900/60">
-                Start delivering outcomes.
-              </span>
-            </h2>
+          {/* Heading */}
+          <h2 className="[grid-area:heading] callout text-center lg:text-left text-3xl md:text-4xl text-prussian-blue-800 font-heading tracking-tight">
+            Stop managing complexity. <br />
+            <span className="text-soft text-prussian-blue-900/60">
+              Start delivering outcomes.
+            </span>
+          </h2>
 
-            {/* Tab list */}
-            <div className="mt-auto">
+          {/* Tab list */}
+          <div className="[grid-area:tabs] lg:self-end">
               {TABS.map((tab, i) => (
                 <button
                   key={tab.id}
@@ -132,11 +133,10 @@ export default function HowSognosWorksPreview() {
                   </AnimatePresence>
                 </button>
               ))}
-            </div>
           </div>
 
-          {/* Right column — images stacked, active slides up from below */}
-          <div className="flex-1 self-stretch rounded-xl border border-slate-400/30 overflow-hidden relative min-h-[500px] bg-slate-200">
+          {/* Image — images stacked, active slides up from below */}
+          <div className="[grid-area:image] rounded-xl border border-slate-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-slate-200">
             {TABS.map((tab, i) => (
               <motion.div
                 key={tab.id}

@@ -158,6 +158,8 @@ export default function CustomerStories() {
   const [paused, setPaused] = useState(false);
   const total = CASE_STUDIES.length;
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
 
   // Autoplay
   useEffect(() => {
@@ -167,6 +169,14 @@ export default function CustomerStories() {
     }, AUTOPLAY_MS);
     return () => clearTimeout(t);
   }, [index, paused, total]);
+
+  // Scroll active tab into view inside the tab strip only (no page scroll)
+  useEffect(() => {
+    const container = tabsContainerRef.current;
+    const el = tabRefs.current[index];
+    if (!container || !el) return;
+    container.scrollTo({ left: el.offsetLeft, behavior: "smooth" });
+  }, [index]);
 
   const go = (next: number) => {
     if (next < 0 || next >= total) return;
@@ -181,13 +191,14 @@ export default function CustomerStories() {
 
   return (
     <section className="w-full bg-gray-200/70 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Section header */}
-        <div className="max-w-2xl mb-8">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
+        <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Customers
-          </p>
-          <h2 className="font-heading text-2xl font-medium tracking-tight text-brand md:text-4xl">
+          </div>
+          <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
             Customer Stories
           </h2>
         </div>
@@ -200,10 +211,10 @@ export default function CustomerStories() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-[500px]"
+            className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]"
           >
             {/* Left column — image/video with logo + stats */}
-            <div className="shrink-0 w-[40%] relative rounded-lg overflow-hidden flex flex-col">
+            <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
               {study.panelVideo ? (
                 <video
                   src={study.panelVideo}
@@ -237,7 +248,7 @@ export default function CustomerStories() {
               )}
 
               {/* Stats — bottom */}
-              <div className="relative z-10 mt-auto p-6 flex gap-8">
+              <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
                     Company Size
@@ -262,14 +273,14 @@ export default function CustomerStories() {
             </div>
 
             {/* Right column — quote info panel */}
-            <div className="flex-1 bg-white rounded-lg p-7 flex flex-col">
+            <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
               {/* Quote + author — vertically centered */}
               <div className="flex-1 flex flex-col justify-center">
                 <QuoteIcon className={study.quoteIconColor} />
 
                 <blockquote className="mt-4">
                   <p
-                    className={`font-heading text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}
+                    className={`font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}
                   >
                     {study.quote}
                   </p>
@@ -286,7 +297,7 @@ export default function CustomerStories() {
               </div>
 
               {/* CTA — right aligned */}
-              <div className="mt-8 flex justify-end">
+              <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
                 <AnimatedButton
                   href={study.href}
                   variant="transparent"
@@ -301,16 +312,17 @@ export default function CustomerStories() {
         </AnimatePresence>
 
         {/* Logo tab row — below card */}
-        <div
-          className="grid overflow-hidden gap-10"
-          style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }}
-        >
+        <div ref={tabsContainerRef} className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory gap-4 lg:gap-10 mt-4 lg:mt-0 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none">
           {CASE_STUDIES.map((s, i) => (
             <button
               key={i}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
               onClick={() => go(i)}
               className={cn(
-                "relative flex items-center justify-center py-8 px-6 cursor-pointer transition-colors duration-300",
+                "relative flex items-center justify-center py-5 px-3 lg:py-8 lg:px-6 cursor-pointer transition-colors duration-300",
+                "shrink-0 basis-[calc(50%-0.5rem)] snap-start lg:shrink lg:basis-auto",
                 i === index ? "" : "",
               )}
             >
@@ -320,7 +332,7 @@ export default function CustomerStories() {
                   alt={s.company}
                   width={140}
                   height={48}
-                  className="h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
+                  className="h-7 lg:h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
                   style={{
                     filter: i === index ? "none" : "grayscale(1) opacity(0.35)",
                   }}

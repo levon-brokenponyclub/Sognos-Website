@@ -334,7 +334,7 @@ function SolutionCard({
       </Link>
 
       {/* Decorative illustration - removed but keeping space */}
-      <div className="px-0 w-full h-[120px] flex items-end">
+      <div className="hidden lg:flex px-0 w-full h-[120px] items-end">
         {/* CardIllustration id={solution.id} / - removed */}
       </div>
     </div>
@@ -432,22 +432,28 @@ export default function SolutionsSection() {
     <section className="w-full bg-gray-200/70 overflow-hidden">
       {/* Header — h2 left, arrows right */}
       <div className="max-w-7xl w-full mx-auto px-6">
-        <div className="flex items-center justify-between pt-24 pb-8">
-          <h2 className="font-heading text-brand leading-snug text-2xl md:text-3xl lg:text-4xl">
-            Built for how your operation works
-          </h2>
-          <div className="hidden sm:flex items-center gap-3 shrink-0 ml-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pt-16 lg:pt-24 pb-6 lg:pb-8">
+          <div className="flex flex-col items-center lg:items-start gap-4">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Solutions for every workflow
+            </div>
+            <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
+              Built for how your operation works
+            </h2>
+          </div>
+          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-8">
             <button
               onClick={() => handleStep(-1)}
               aria-label="Previous"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/70 hover:border-white hover:text-white transition-colors cursor-pointer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
             >
               <ArrowLeft size={16} />
             </button>
             <button
               onClick={() => handleStep(1)}
               aria-label="Next"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/70 hover:border-white hover:text-white transition-colors cursor-pointer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
             >
               <ArrowRight size={16} />
             </button>
@@ -456,7 +462,7 @@ export default function SolutionsSection() {
       </div>
 
       {/* Card track */}
-      <div className="max-w-7xl w-full mx-auto px-6 pb-16">
+      <div className="max-w-7xl w-full mx-auto px-6 pb-12 lg:pb-24">
         {/* Viewport: measured without padding so cardWidth fills exactly */}
         <div ref={viewportRef} className="overflow-hidden">
           <motion.div
@@ -476,6 +482,24 @@ export default function SolutionsSection() {
               />
             ))}
           </motion.div>
+        </div>
+
+        {/* Mobile arrows — below cards, right-aligned */}
+        <div className="flex lg:hidden items-center justify-end gap-3 mt-6">
+          <button
+            onClick={() => handleStep(-1)}
+            aria-label="Previous"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+          >
+            <ArrowLeft size={16} />
+          </button>
+          <button
+            onClick={() => handleStep(1)}
+            aria-label="Next"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+          >
+            <ArrowRight size={16} />
+          </button>
         </div>
       </div>
     </section>

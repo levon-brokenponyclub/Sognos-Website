@@ -30,7 +30,7 @@ export default function IndustrySection() {
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Built for every industry
           </div>
-          <h2 className="text-2xl md:text-4xl text-white text-center font-heading font-medium tracking-tight">
+          <h2 className="text-3xl md:text-4xl text-white text-center font-heading font-medium tracking-tight">
             Purpose-built for{" "}
             <span className="text-[#1D96FC]">service-intensive</span> sectors
           </h2>
@@ -41,8 +41,83 @@ export default function IndustrySection() {
           </p> */}
         </div>
 
-        {/* Three-column layout: vertical tabs | animated panel */}
-        <div className="flex gap-4 h-[460px] mt-10">
+        {/* Mobile — stacked cards (image/video top, title + read more below) */}
+        <div className="lg:hidden mt-10 flex flex-col gap-5">
+          {INDUSTRIES.map((ind) => {
+            const indIsIndustrial = ind.slug === "industrial-services";
+            const indIsHealth = ind.slug === "health-social-care";
+            return (
+              <div
+                key={ind.slug}
+                className="bg-white rounded-lg p-2 flex flex-col gap-3"
+              >
+                <div className="relative w-full h-[185px] rounded-lg overflow-hidden">
+                  {indIsIndustrial ? (
+                    <video
+                      src={INDUSTRIAL_VIDEO}
+                      autoPlay
+                      muted
+                      playsInline
+                      loop
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : indIsHealth ? (
+                    <video
+                      src={HEALTH_VIDEO}
+                      autoPlay
+                      muted
+                      playsInline
+                      loop
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={ind.image}
+                      alt={ind.name}
+                      fill
+                      className="object-cover"
+                      sizes="100vw"
+                    />
+                  )}
+                </div>
+                <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
+                  <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                    {ind.name}
+                  </h3>
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
+                    {ind.description}
+                  </p>
+                  <Link
+                    href={ind.href}
+                    className="inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                  >
+                    Read more
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M3 7h8M7 3l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop — vertical tabs | animated panel */}
+        <div className="hidden lg:flex gap-4 h-[460px] mt-10">
           {/* Left column — vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
             {INDUSTRIES.map((ind, i) => (

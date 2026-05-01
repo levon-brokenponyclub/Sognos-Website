@@ -156,7 +156,7 @@ Live routes:
 - `/knowledge-hub` — KnowledgeHubArchive with sticky sidebar + 6 real articles
 - `/contact`
 
-Next priority: Phase 6 design system pass, `/customers` hub + case study pages.
+Current focus: Phase 6 design system pass — in progress (started 2026-05-01). Then `/customers` hub + case study pages.
 
 ## Success Metrics
 Conversion:

@@ -94,7 +94,7 @@ function ArticleCard({ article }: { article: Article }) {
       className="group flex h-full flex-col overflow-hidden rounded-lg bg-white p-2 transition-shadow duration-200 hover:shadow-md"
     >
       {/* Image — fixed height */}
-      <div className="h-64 w-full shrink-0 overflow-hidden rounded-lg">
+      <div className="h-48 lg:h-64 w-full shrink-0 overflow-hidden rounded-lg">
         <img
           src={article.image}
           alt={article.title}
@@ -115,7 +115,7 @@ function ArticleCard({ article }: { article: Article }) {
         </span> */}
 
         {/* Title — fixed 3-line height for cross-card alignment */}
-        <h3 className="mt-3 h-[4.5rem] overflow-hidden font-heading text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
+        <h3 className="mt-3 h-auto lg:h-[4.5rem] overflow-hidden font-heading text-xl lg:text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
           {article.title}
         </h3>
 
@@ -177,7 +177,10 @@ export default function NewsInsightSection() {
     const update = () => {
       if (!trackRef.current || !viewportRef.current) return;
       const containerWidth = viewportRef.current.clientWidth;
-      const cw = (containerWidth - GAP) / 2;
+      const isMobile = window.innerWidth < 1024;
+      const cw = isMobile
+        ? containerWidth
+        : (containerWidth - GAP) / 2;
       cardWidthRef.current = cw;
       setCardWidth(cw);
       periodRef.current = ARTICLES.length * (cw + GAP);
@@ -235,14 +238,18 @@ export default function NewsInsightSection() {
 
   return (
     <section className="w-full bg-prussian-blue-800 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <div className="flex items-start gap-12">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-8 lg:gap-12">
           {/* Left column — h2 and button, aligned top */}
-          <div className="shrink-0 w-[35%] flex flex-col items-start">
-            <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
+          <div className="w-full lg:w-[35%] lg:shrink-0 flex flex-col items-center lg:items-start gap-4">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              News &amp; Insights
+            </div>
+            <h2 className="text-3xl md:text-4xl text-white text-center lg:text-left font-heading font-medium tracking-tight">
               News &amp; Insights
             </h2>
-            <div className="mt-6">
+            <div className="mt-2 lg:mt-6 hidden lg:block">
               <AnimatedButton href="/knowledge-hub" variant="white">
                 Visit Blog
               </AnimatedButton>
@@ -250,7 +257,7 @@ export default function NewsInsightSection() {
           </div>
 
           {/* Right column — strip wrapper, overflow-hidden clips right arrow */}
-          <div className="flex-1 relative overflow-hidden">
+          <div className="flex-1 min-w-0 relative overflow-hidden">
             {/* Slider viewport */}
             <div ref={viewportRef}>
               <motion.div
@@ -278,7 +285,7 @@ export default function NewsInsightSection() {
             <button
               onClick={() => handleStep(-1)}
               aria-label="Previous slide"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >
               <ArrowLeft size={16} />
             </button>
@@ -287,10 +294,33 @@ export default function NewsInsightSection() {
             <button
               onClick={() => handleStep(1)}
               aria-label="Next slide"
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
             >
               <ArrowRight size={16} />
             </button>
+
+            {/* Mobile arrows — below cards, button left, arrows right */}
+            <div className="flex lg:hidden items-center justify-between gap-3 mt-6">
+              <AnimatedButton href="/knowledge-hub" variant="white">
+                Visit Blog
+              </AnimatedButton>
+              <div className="flex items-center gap-3">
+              <button
+                onClick={() => handleStep(-1)}
+                aria-label="Previous slide"
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                onClick={() => handleStep(1)}
+                aria-label="Next slide"
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
+              >
+                <ArrowRight size={16} />
+              </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

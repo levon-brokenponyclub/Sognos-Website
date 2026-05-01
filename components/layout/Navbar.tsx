@@ -350,6 +350,7 @@ export default function Navbar() {
   const [mobilePanel, setMobilePanel] = useState("root");
   const [mobileHistory, setMobileHistory] = useState<string[]>([]);
   const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
+  const [scrolled, setScrolled] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const activeIndexRef = useRef<number>(-1);
@@ -392,6 +393,7 @@ export default function Navbar() {
         });
         setColorMode(mode);
       }
+      setScrolled(window.scrollY > 8);
       ticking = false;
     };
     const onScroll = () => {
@@ -508,15 +510,21 @@ export default function Navbar() {
       {/* ── Nav bar ── */}
       <div
         className={[
-          "pointer-events-auto w-full px-6 py-2",
+          "pointer-events-auto w-full px-4 lg:px-6 py-2",
           "transition-[background-color,border-color] duration-300",
           colorMode === "light"
             ? "bg-white border-b border-sognos-border"
-            : "bg-transparent border-b border-transparent",
+            : scrolled
+              ? "bg-transparent"
+              : "bg-transparent border-b border-transparent",
         ].join(" ")}
       >
-        <div className="max-w-7xl mx-auto px-6 py-2">
-          <div className="flex items-center justify-between h-17">
+        <div className="max-w-7xl mx-auto px-2 lg:px-6 py-2">
+          <div
+            className={`flex items-center justify-between transition-[height] duration-300 ${
+              scrolled ? "h-12 lg:h-13" : "h-14 lg:h-17"
+            }`}
+          >
             {/* Logo */}
             <Link
               href="/"
@@ -528,7 +536,9 @@ export default function Navbar() {
                 alt="Sognos"
                 width={160}
                 height={40}
-                className="h-9 w-auto transition-[filter] duration-300"
+                className={`w-auto transition-[height,filter] duration-300 ${
+                  scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
+                }`}
                 style={
                   colorMode === "dark"
                     ? { filter: "brightness(0) invert(1)" }
@@ -609,7 +619,7 @@ export default function Navbar() {
             >
               {mobileOpen ? (
                 <svg
-                  className="w-5 h-5"
+                  className="w-7 h-7"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -623,7 +633,7 @@ export default function Navbar() {
                 </svg>
               ) : (
                 <svg
-                  className="w-5 h-5"
+                  className="w-7 h-7"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

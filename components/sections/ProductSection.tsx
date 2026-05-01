@@ -124,11 +124,11 @@ function ProductCard({
         isActive ? "md:w-[750px]" : "md:w-[400px]",
       ].join(" ")}
     >
-      <div className="flex h-full flex-col lg:flex-row gap-12 items-end">
+      <div className="flex h-full flex-col lg:flex-row gap-12 items-center lg:items-end">
         {/* Text side — fixed width, never squashes */}
-        <div className="flex flex-col justify-between h-full gap-6 lg:w-96 lg:shrink-0">
-          <div className="p-8 py-14 h-full flex flex-col justify-between gap-3">
-            <div>
+        <div className="flex flex-col justify-between h-full w-full gap-6 lg:w-96 lg:shrink-0">
+          <div className="p-8 py-10 lg:py-14 h-full flex flex-col justify-between gap-3 items-center text-center lg:items-start lg:text-left">
+            <div className="flex flex-col items-center lg:items-start">
               <Image
                 src={logo}
                 alt={logoAlt}
@@ -137,14 +137,14 @@ function ProductCard({
                 className="h-11 w-auto object-contain mb-10"
               />
 
-              <h3 className="font-body text leading-tight tracking-normal text-cornflower-ocean-300 whitespace-pre-line lg:text-3xl">
+              <h3 className="font-body text-2xl leading-tight tracking-normal text-cornflower-ocean-300 whitespace-pre-line lg:text-3xl">
                 {byline}
               </h3>
               <p className="mt-6 max-w-sm text-sm leading-6 text-white lg:text-base">
                 {description}
               </p>
             </div>
-            <div>
+            <div className="mt-8 lg:mt-0">
               <AnimatedButton href={ctaLink} variant="white">
                 {ctaText}
               </AnimatedButton>
@@ -152,10 +152,10 @@ function ProductCard({
           </div>
         </div>
 
-        {/* Story panel — fades in/out, fills remaining card width */}
+        {/* Story panel — fades in/out, fills remaining card width (desktop only) */}
         <div
           className={[
-            "flex flex-col justify-between lg:flex-1 lg:min-w-0",
+            "hidden lg:flex flex-col justify-between lg:flex-1 lg:min-w-0",
             "transition-opacity duration-300",
             isRevealed ? "opacity-100" : "opacity-0",
           ].join(" ")}
@@ -242,16 +242,20 @@ export default function ProductSection() {
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
     >
       {/* Heading — constrained to container */}
-      <div className="mx-auto mb-5 max-w-7xl px-6">
-        <h2 className="font-heading text-prussian-blue-800 leading-snug text-2xl md:text-3xl lg:text-4xl max-w-4xl">
+      <div className="mx-auto mb-8 lg:mb-5 max-w-7xl px-6 flex flex-col items-center lg:items-start gap-4">
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+          <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+          Built for high-stakes operations
+        </div>
+        <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
           For organisations
           <br />
           that can&apos;t afford to get things wrong
         </h2>
       </div>
 
-      {/* Cards — left edge matches heading container, overflow right */}
-      <div className="mx-auto max-w-7xl pl-6">
+      {/* Cards — left edge matches heading container, overflow right on desktop only */}
+      <div className="mx-auto max-w-7xl px-6 lg:pr-0">
         <div className="flex flex-col gap-6 md:flex-row md:h-125">
           {PRODUCT_CARDS.map((card, index) => (
             <ProductCard
