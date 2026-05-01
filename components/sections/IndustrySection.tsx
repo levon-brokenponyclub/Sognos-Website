@@ -13,9 +13,9 @@ const HEALTH_VIDEO =
   "https://www.shutterstock.com/shutterstock/videos/3762351217/preview/stock-footage-help-senior-woman-and-nurse-with-cellphone-in-retirement-home-for-telehealth-app-or-communication.webm";
 
 // Header bar height (h-14 = 56px) — cards stick just below it
-const HEADER_H = 56;
+const HEADER_H = 112;
 // Each card in the stack peeks this many px above the one covering it
-const PEEK = 10;
+const PEEK = 0;
 
 export default function IndustrySection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,8 +24,7 @@ export default function IndustrySection() {
   const isHealth = active.slug === "health-social-care";
 
   return (
-    // overflow-x-hidden (not overflow-hidden) so sticky children work in the scroll axis
-    <section className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-x-hidden">
+    <section className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Section heading */}
         <div className="grid grid-cols-1 gap-2 lg:gap-5 items-end pb-6">
@@ -53,7 +52,7 @@ export default function IndustrySection() {
                 style={{ top: stickyTop, zIndex: (i + 1) * 10 }}
                 className="sticky mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3"
               >
-                <div className="relative w-full h-[185px] rounded-lg overflow-hidden">
+                <div className="relative w-full h-[215px] rounded-lg overflow-hidden">
                   {indIsIndustrial ? (
                     <video
                       src={INDUSTRIAL_VIDEO}
@@ -95,8 +94,20 @@ export default function IndustrySection() {
                   >
                     Read more
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M3 7h8M7 3l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </span>
                   </Link>
@@ -151,8 +162,20 @@ export default function IndustrySection() {
                 >
                   Read more
                   <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 7h8M7 3l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </span>
                 </Link>

@@ -505,13 +505,14 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="fixed top-0 left-0 w-full z-50 bg-transparent pointer-events-none"
+      className="fixed top-0 left-0 w-full z-99 bg-transparent pointer-events-none"
     >
       {/* ── Nav bar ── */}
       <div
         className={[
-          "pointer-events-auto w-full px-4 lg:px-6 py-2",
-          "transition-[background-color,border-color] duration-300",
+          `pointer-events-auto w-full ${scrolled || colorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
+          scrolled ? "py-2" : "pt-4 pb-2",
+          "transition-[background-color,border-color,padding] duration-300",
           colorMode === "light"
             ? "bg-white border-b border-sognos-border"
             : scrolled
@@ -519,7 +520,7 @@ export default function Navbar() {
               : "bg-transparent border-b border-transparent",
         ].join(" ")}
       >
-        <div className="max-w-7xl mx-auto px-2 lg:px-6 py-2">
+        <div className="max-w-7xl mx-auto px-3 lg:px-6 py-2">
           <div
             className={`flex items-center justify-between transition-[height] duration-300 ${
               scrolled ? "h-12 lg:h-13" : "h-14 lg:h-17"
