@@ -119,7 +119,7 @@ function ProductCard({
         "h-full overflow-hidden rounded-xl text-white shrink-0",
         "transition-[width] duration-500 ease-in-out",
         "flex flex-col",
-        "bg-prussian-blue-800",
+        "bg-white p-2",
         "w-full",
         isActive ? "md:w-[750px]" : "md:w-[400px]",
       ].join(" ")}
@@ -237,13 +237,13 @@ export default function ProductSection() {
   return (
     <motion.section
       aria-label="Platform capabilities"
-      className="relative w-full  py-24 overflow-x-clip"
+      className="relative w-full  py-24 overflow-x-clip bg-gradient-hero"
       animate={{ backgroundColor: PRODUCT_CARDS[activeIndex].sectionBg }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
     >
       {/* Heading — constrained to container */}
       <div className="mx-auto mb-8 lg:mb-5 max-w-7xl px-6 flex flex-col items-center lg:items-start gap-4">
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-white font-medium">
           <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
           Built for high-stakes operations
         </div>
