@@ -103,6 +103,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
     CTASection.tsx                 ✅
     LifeAtSognos.tsx               ✅ (careers page — 3-col tabs|image|quote, IndustrySection pattern)
     OpenRoles.tsx                  ✅ (careers page — filterable roles list, Department + Location filters)
+    TeamSection.tsx                ✅ (about page — photo cards + Read More dialog modal, 2-col layout)
 
   /ui
     ParticleCanvas.tsx             ✅ (radial + arc variants, canvas-based)

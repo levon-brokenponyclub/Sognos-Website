@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import TeamSection from "@/components/sections/TeamSection";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -29,24 +30,6 @@ const VALUES = [
   {
     title: "Excellence in all that we do",
     body: "We hold ourselves to the highest standards of delivery, ethics, and continuous improvement.",
-  },
-];
-
-const TEAM = [
-  {
-    name: "Kunal Joshi",
-    role: "Managing Director & Co-Founder",
-    bio: "With over 20 years in the technology sector, Kunal brings visionary leadership and a strategic mindset to drive Sognos forward. He holds a Master of Technology from Swinburne University and an Executive MBA from AGSM. His leadership emphasises collaboration, creativity, and a customer-centric approach.",
-  },
-  {
-    name: "Rick Vosila",
-    role: "Chief Commercial Officer & Co-Founder",
-    bio: "A 40-year veteran of the Australian tech sector, Rick co-founded Sognos in 2016 after identifying a gap in the Microsoft ecosystem for a specialist Field Service Management integrator. He holds a Bachelor of Commerce and an MBA, and serves his community as a proud Rotarian.",
-  },
-  {
-    name: "Miloni Mehta",
-    role: "Microsoft D365 & Power Platform Practice Lead",
-    bio: "Miloni has built a career solving business problems with Microsoft technology across healthcare, utilities, and facilities maintenance. She holds a Master's in Data Analytics from UTS and is a recognised expert in Dynamics 365 Field Service architecture and end-to-end solution design.",
   },
 ];
 
@@ -170,36 +153,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership Team */}
-      <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
-            Leadership
-          </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-16">
-            Senior Leadership Team
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {TEAM.map((member) => (
-              <div key={member.name} className="flex flex-col">
-                {/* Avatar placeholder — replace with next/image when photo assets available */}
-                <div className="w-16 h-16 rounded-full bg-prussian-blue-800/10 mb-6 flex items-center justify-center">
-                  <span className="text-prussian-blue-800/40 text-xl font-semibold">
-                    {member.name.charAt(0)}
-                  </span>
-                </div>
-                <p className="font-heading text-lg font-semibold text-prussian-blue-800">
-                  {member.name}
-                </p>
-                <p className="text-sm text-brand mt-0.5 mb-4">{member.role}</p>
-                <p className="text-sm text-sognos-text-body leading-relaxed">
-                  {member.bio}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TeamSection />
 
       {/* Partners */}
       <section className="w-full border-b border-sognos-border-subtle">
