@@ -38,7 +38,13 @@ const TEAM: TeamMember[] = [
 
 function LinkedInIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   );
@@ -49,23 +55,23 @@ export default function TeamSection() {
 
   return (
     <>
-      <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
+      <section className="w-full bg-prussian-blue-800">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
             Leadership
           </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-16">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-16">
             Senior Leadership Team
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TEAM.map((member) => (
-              <button 
-                key={member.name} 
+              <button
+                key={member.name}
                 onClick={() => setActive(member)}
-                className="flex flex-col text-left group bg-white p-2 rounded-xl border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:border-[#1D96FC]/20 hover:-translate-y-1 cursor-pointer"
+                className="flex flex-col text-left group bg-white p-2 rounded-lg transition-all duration-500 hover:-translate-y-1 cursor-pointer"
               >
                 {/* Photo - Reduced height (aspect 4/5) */}
-                <div className="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-slate-50 mb-5 lg:mb-6">
+                <div className="relative w-full rounded-lg h-72 overflow-hidden bg-slate-50 mb-5 lg:mb-6">
                   <Image
                     src={member.image}
                     alt={member.name}
@@ -76,17 +82,33 @@ export default function TeamSection() {
                 </div>
                 {/* Meta */}
                 <div className="px-3 pb-4 flex flex-col items-start w-full">
-                  <p className="font-heading text-lg lg:text-xl font-bold text-prussian-blue-800 leading-tight transition-colors group-hover:text-[#1D96FC]">
+                  <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight transition-colors group-hover:text-[#1D96FC]">
                     {member.name}
+                  </h3>
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body mt-1.5">
+                    {member.role}
                   </p>
-                  <p className="text-[13px] font-semibold text-[#1D96FC] uppercase tracking-wide mt-1.5">{member.role}</p>
-                  
+
                   {/* Visual trigger */}
-                  <div className="mt-6 flex items-center gap-2 text-[13px] font-bold text-gray-400 group-hover:text-prussian-blue-800 transition-colors">
+                  <div className="mt-6 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity">
                     <span>Read profile</span>
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="transition-transform group-hover:translate-x-0.5">
-                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M3 7h8M7 3l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </button>
@@ -129,8 +151,19 @@ export default function TeamSection() {
                   className="w-9 h-9 rounded-full border border-sognos-border-subtle flex items-center justify-center text-prussian-blue-800/50 hover:text-prussian-blue-800 hover:border-prussian-blue-800/30 transition-colors cursor-pointer"
                   aria-label="Close"
                 >
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 2l10 10M12 2L2 12"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
                   </svg>
                 </button>
               </div>
@@ -172,7 +205,10 @@ export default function TeamSection() {
                     </p>
                     <div className="space-y-4">
                       {active.bio.split("\n\n").map((para, i) => (
-                        <p key={i} className="text-sognos-text-body leading-relaxed text-base">
+                        <p
+                          key={i}
+                          className="text-sognos-text-body leading-relaxed text-base"
+                        >
                           {para}
                         </p>
                       ))}

@@ -6,6 +6,42 @@ Breakpoint convention: `lg` (1024px) is the desktop boundary used throughout. Be
 
 ---
 
+## 0. Design system non-negotiables
+
+These apply to every section on every page — not just mobile refactors.
+
+| Rule | Value |
+|------|-------|
+| Border radius | `rounded-lg` only. Never `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-[Xrem]` |
+| Gray section bg | `bg-gray-200/70` — never `bg-[#FAFAFA]`, `bg-slate-50`, `bg-gray-100` |
+| Shadows | **Never.** No `shadow-sm`, `shadow-md`, `shadow-xl`, `shadow-2xl` |
+| Grid/flex gap | `gap-3 lg:gap-4` |
+| Stat blocks | Match CTASection.tsx exactly (see §0a below) |
+
+### §0a Stat block reference (CTASection.tsx)
+
+```tsx
+<div className="grid grid-cols-2 gap-3 lg:gap-4">
+  {STATS.map((stat) => (
+    <div className={`relative flex flex-col justify-between h-full p-6 lg:p-8 rounded-lg overflow-hidden ${stat.bgClass}`}>
+      <p className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}>
+        {stat.value}{stat.suffix}
+      </p>
+      <p className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}>
+        {stat.label}
+      </p>
+    </div>
+  ))}
+</div>
+```
+
+Color variants:
+- Dark: `bg-prussian-blue-800` / `text-white` / `text-[#8E9EBB]`
+- Brand: `bg-[#1D96FC]` / `text-white` / `text-blue-100`
+- Light: `bg-white` / `text-[#0A1629]` / `text-neutral-500`
+
+---
+
 ## 1. Section padding
 
 ```

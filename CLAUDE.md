@@ -205,10 +205,19 @@ CTAs: `Contact Sales` | `Book a Demo`
 - **Headings:** Inter Tight, weight 400 default
 - **Body:** Inter
 - **Cards:** card tokens, no gradients on standard cards or subcards
-- **Radius:** sm 4px / md 8px / lg 12px / xl 16px / 2xl 20px / full 9999px
+- **Radius:** `rounded-lg` everywhere — no exceptions. Never `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-[Xrem]`
 - **Gradients:** hero and deliberate highlight surfaces only
 - **Container:** `max-w-7xl`
 - **Components:** Server Components by default; Client Components only when interaction is required
+- **Section backgrounds (gray):** always `bg-gray-200/70` — never `bg-[#FAFAFA]`, `bg-slate-50`, `bg-gray-100`, `bg-gray-200`
+- **Shadows:** NEVER. No `shadow-sm`, `shadow-md`, `shadow-xl`, `shadow-2xl` anywhere
+- **Gaps:** `gap-3 lg:gap-4` as standard grid/flex gap
+- **Stat blocks:** always match CTASection.tsx stat block pattern exactly:
+  - Container: `grid grid-cols-2 gap-3 lg:gap-4`
+  - Each cell: `relative flex flex-col justify-between h-full p-6 lg:p-8 rounded-lg overflow-hidden {bgClass}`
+  - Number: `font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none {textClass}`
+  - Label: `text-xs font-semibold uppercase tracking-widest {labelClass}`
+  - Color variants: `bg-prussian-blue-800 / text-[#8E9EBB]`, `bg-[#1D96FC] / text-blue-100`, `bg-white text-[#0A1629] / text-neutral-500`
 
 ---
 
