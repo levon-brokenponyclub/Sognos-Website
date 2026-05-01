@@ -88,8 +88,8 @@ export default function ProcessFlow({ trigger = false }: { trigger?: boolean }) 
 
   useEffect(() => {
     if (!trigger) {
-      setPhases(["idle", "idle", "idle"]);
-      return;
+      const t = setTimeout(() => setPhases(["idle", "idle", "idle"]), 0);
+      return () => clearTimeout(t);
     }
 
     setPhases(["waiting", "waiting", "waiting"]);

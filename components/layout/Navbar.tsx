@@ -508,7 +508,7 @@ export default function Navbar() {
       {/* ── Nav bar ── */}
       <div
         className={[
-          "pointer-events-auto w-full px-6",
+          "pointer-events-auto w-full px-6 py-2",
           "transition-[background-color,border-color] duration-300",
           colorMode === "light"
             ? "bg-white border-b border-sognos-border"

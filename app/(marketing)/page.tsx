@@ -5,7 +5,6 @@ import ProductSection from "@/components/sections/ProductSection";
 import CustomerStories from "@/components/sections/CustomerStories";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import IndustrySection from "@/components/sections/IndustrySection";
-import ProofSection from "@/components/sections/ProofSection";
 import NewsInsightSection from "@/components/sections/NewsInsightSection";
 import CTASection from "@/components/sections/CTASection";
 
@@ -20,7 +19,6 @@ export default function HomePage() {
       <IndustrySection />
       <CustomerStories />
       <NewsInsightSection />
-      <ProofSection />
       <CTASection />
     </>
   );

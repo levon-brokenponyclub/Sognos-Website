@@ -91,10 +91,10 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white border border-gray-300 transition-shadow duration-200 hover:shadow-md"
+      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white p-2 transition-shadow duration-200 hover:shadow-md"
     >
       {/* Image — fixed height */}
-      <div className="h-56 w-full shrink-0 overflow-hidden">
+      <div className="h-64 w-full shrink-0 overflow-hidden rounded-lg">
         <img
           src={article.image}
           alt={article.title}
@@ -103,26 +103,26 @@ function ArticleCard({ article }: { article: Article }) {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-1">
         {/* Badge */}
-        <span
+        {/* <span
           className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
             BADGE_STYLES[article.category] ??
             "bg-neutral-50 text-neutral-600 border-neutral-100"
           }`}
         >
           {article.category}
-        </span>
+        </span> */}
 
         {/* Title — fixed 3-line height for cross-card alignment */}
-        <h3 className="mt-3 h-[4.5rem] overflow-hidden font-heading text-base font-medium leading-snug tracking-tight text-sognos-text-heading line-clamp-3">
+        <h3 className="mt-3 h-[4.5rem] overflow-hidden font-heading text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
           {article.title}
         </h3>
 
         {/* Excerpt — fixed 2-line height for cross-card alignment */}
-        <p className="mt-3 h-12 overflow-hidden text-sm leading-relaxed text-sognos-text-body line-clamp-2">
+        {/*  <p className="mt-3 h-12 overflow-hidden text-sm leading-relaxed text-sognos-text-body line-clamp-2">
           {article.excerpt}
-        </p>
+        </p> */}
 
         {/* Spacer + Read more always at bottom */}
         <div className="flex-1" />
