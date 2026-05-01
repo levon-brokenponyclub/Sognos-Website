@@ -107,7 +107,7 @@ const CASE_STUDIES: CaseStudy[] = [
     logo: "/logos/gentari-logo-rect.webp",
     panelImage: "/images/customers/gentari.webp",
     quote:
-      "For us it is of the utmost importance to give our technicians visibility of the history of each of the farms that they service in their routine PMs and capture data at the same time. Dynamics 365 Field Service has not disappointed us in any of our key requirements. It has been over five years and the techs love it, and so do we.",
+      "For us it is of the utmost importance to give our technicians visibility of the history of each of the farms that they service in their routine PMs and capture data at the same time. Dynamics 365 Field Service has not disappointed us in any of our key requirements.",
     author: "Operations Team",
     role: "Gentari Solar Australia",
     href: "/customers/gentari-solar",
@@ -312,7 +312,10 @@ export default function CustomerStories() {
         </AnimatePresence>
 
         {/* Logo tab row — below card */}
-        <div ref={tabsContainerRef} className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory gap-4 lg:gap-10 mt-4 lg:mt-0 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none">
+        <div
+          ref={tabsContainerRef}
+          className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory gap-4 lg:gap-10 mt-4 lg:mt-0 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none"
+        >
           {CASE_STUDIES.map((s, i) => (
             <button
               key={i}
