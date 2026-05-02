@@ -1,5 +1,5 @@
 import ProductCustomerStories from "@/components/sections/ProductCustomerStories";
 
-export default function SognoscareStories() {
+export default function GenogramStories() {
   return <ProductCustomerStories />;
 }

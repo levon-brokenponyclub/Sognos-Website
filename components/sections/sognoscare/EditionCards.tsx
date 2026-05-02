@@ -24,7 +24,7 @@ function EditionCard({ edition }: { edition: Edition }) {
   const title = edition.label || edition.name || "";
 
   return (
-    <article className="rounded-lg bg-white p-2 h-[450px] lg:h-[500px] flex-shrink-0 snap-center w-full sm:w-[calc(50%-8px)] lg:w-[calc((100%-3rem)/3)]">
+    <article className="rounded-lg bg-white p-2 h-[450px] lg:h-[500px] flex-shrink-0 snap-center w-[82vw] lg:w-[38%]">
       {/* Inner panel — accent colour throughout (no video bg) */}
       <div className="relative h-full rounded-lg overflow-hidden flex flex-col">
         {/* Logo — centered in upper zone */}
@@ -110,7 +110,7 @@ export default function EditionCards({
       </div>
 
       {showSliderButtons && (
-        <div className="flex lg:hidden items-center justify-end gap-3 mt-4">
+        <div className="flex items-center justify-end gap-3 mt-4">
           <button
             onClick={() => scroll("prev")}
             className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-sognos-border-subtle text-prussian-blue-800 hover:border-prussian-blue-800 transition-colors"

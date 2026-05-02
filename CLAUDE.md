@@ -261,6 +261,12 @@ Pending:
 - **Interactive sections** — any section using useState/hooks needs `"use client"` at the top; ProductSection is already a client component
 - **`@property --shine-angle`** — requires Chrome 85+ / Safari 15.4+; see globals.css for full shine border implementation
 - **Framer Motion drawer pattern** — established in ProductSection: `AnimatePresence` wraps conditional render, outer `motion.div` fades, inner panel uses `y: "100%" → 0` spring (`damping: 30, stiffness: 300`)
+- **Next.js 15 async params** — page components receiving `params` must be `async`; use `const { slug } = await params` before accessing route segments
+- **Bulk identical class swaps** — use `sed -i '' 's/old/new/g' file1 file2 file3` rather than individual Edits across multiple files
+- **EditionCards.tsx vs ProductCard.tsx** — editions slider lives in `components/sections/sognoscare/EditionCards.tsx`; `ProductCard.tsx` is the homepage product card — do not confuse
+- **Drawer scroll isolation** — requires both `document.body.style.overflow = "hidden"` on expand AND `overscroll-contain` on the inner scroll div; both are needed
+- **ProductCustomerStories** — shared customer stories component at `components/sections/ProductCustomerStories.tsx`; product `Stories.tsx` files are thin wrappers around it
+- **Knowledge Hub post template** — `app/(marketing)/knowledge-hub/[slug]/page.tsx`; all 6 posts hardcoded for dev, `twoCol: true` enables sticky-meta + scrollable-content layout
 
 ---
 

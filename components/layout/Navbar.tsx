@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 
@@ -364,7 +363,6 @@ function getMobilePanelId(label: string) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -721,7 +719,7 @@ export default function Navbar() {
                   className="mega-panel-open grid grid-cols-3 gap-0"
                 >
                   {(() => {
-                    let displayColumns = [...activeGroup.megaMenu!] as [MegaColumn, MegaColumn, MegaColumn];
+                    const displayColumns = [...activeGroup.megaMenu!] as [MegaColumn, MegaColumn, MegaColumn];
 
                     if (activeGroup.label === "Products") {
                       const productSub = hoveredProduct ? activeGroup.submenu?.[hoveredProduct] : undefined;

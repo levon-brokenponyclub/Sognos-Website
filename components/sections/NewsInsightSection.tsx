@@ -28,7 +28,7 @@ const ARTICLES: Article[] = [
       "Sognos Solutions Celebrates 9 Years of Growth, Innovation, and Microsoft Dynamics 365 Expertise",
     excerpt:
       "Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions.",
-    href: "https://sognos.com.au/sognos-solutions-celebrates-9-years-of-growth-innovation-and-microsoft-dynamics-365-expertise/",
+    href: "/knowledge-hub/sognos-9-years",
     image: "/images/news/sognos-9-years.webp",
   },
   {
@@ -36,7 +36,7 @@ const ARTICLES: Article[] = [
     title: "Sognos Solutions Moves to New Office in North Sydney",
     excerpt:
       "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.",
-    href: "https://sognos.com.au/sognos-solutions-moves-to-new-office-in-north-sydney/",
+    href: "/knowledge-hub/north-sydney-office",
     image: "/images/news/north-sydney-office.webp",
   },
   {
@@ -45,7 +45,7 @@ const ARTICLES: Article[] = [
       "Sognos Solutions Expands to New Zealand with Official Launch at Microsoft House in Auckland",
     excerpt:
       "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This expansion was marked by a milestone event at Microsoft's Auckland offices.",
-    href: "https://sognos.com.au/sognos-solutions-expands-to-new-zealand-with-official-launch-at-microsoft-house-in-auckland/",
+    href: "/knowledge-hub/new-zealand-launch",
     image: "/images/news/new-zealand-launch.webp",
   },
   {
@@ -53,7 +53,7 @@ const ARTICLES: Article[] = [
     title: "New Beginnings | Office Premises in India",
     excerpt:
       "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India — expanding our delivery capability and global footprint.",
-    href: "https://sognos.com.au/new-beginnings-office-premises-in-india/",
+    href: "/knowledge-hub/india-office",
     image: "/images/news/india-office.webp",
   },
   {
@@ -62,7 +62,7 @@ const ARTICLES: Article[] = [
       "Sognos at FSM Summit 2024: Driving the Future of Field Service in Sydney",
     excerpt:
       "The Field Service Management (FSM) Summit 2024 in Sydney brought together industry innovators. Sognos participated as a Microsoft partner specialising in field service technology.",
-    href: "https://sognos.com.au/sognos-at-fsm-summit-2024-driving-the-future-of-field-service-in-sydney/",
+    href: "/knowledge-hub/fsm-summit-2024",
     image: "/images/news/fsm-summit-2024.webp",
   },
   {
@@ -70,7 +70,7 @@ const ARTICLES: Article[] = [
     title: "Enhancing Participant Care with Field Service Management",
     excerpt:
       "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
-    href: "https://sognos.com.au/sognos-webinar-series-reinventing-patient-and-participant-care/",
+    href: "/knowledge-hub/participant-care-webinar",
     image: "/images/news/participant-care-webinar.webp",
   },
 ];
@@ -91,57 +91,35 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white p-2 transition-shadow duration-200 hover:shadow-md"
+      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white p-2"
     >
-      {/* Image — fixed height */}
-      <div className="h-48 lg:h-64 w-full shrink-0 overflow-hidden rounded-lg">
+      {/* Image + badge overlay */}
+      <div className="relative h-48 lg:h-56 w-full shrink-0 overflow-hidden rounded-lg">
         <img
           src={article.image}
           alt={article.title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-1 flex-col p-1">
-        {/* Badge */}
-        {/* <span
-          className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+        <span
+          className={`absolute bottom-3 left-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
             BADGE_STYLES[article.category] ??
             "bg-neutral-50 text-neutral-600 border-neutral-100"
           }`}
         >
           {article.category}
-        </span> */}
+        </span>
+      </div>
 
-        {/* Title — fixed 3-line height for cross-card alignment */}
-        <h3 className="mt-3 h-auto lg:h-[4.5rem] overflow-hidden font-heading text-xl lg:text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
+      {/* Body */}
+      <div className="flex flex-1 flex-col px-1 pt-3 pb-1">
+        <h3 className="font-heading text-xl lg:text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
           {article.title}
         </h3>
-
-        {/* Excerpt — fixed 2-line height for cross-card alignment */}
-        {/*  <p className="mt-3 h-12 overflow-hidden text-sm leading-relaxed text-sognos-text-body line-clamp-2">
-          {article.excerpt}
-        </p> */}
-
-        {/* Spacer + Read more always at bottom */}
         <div className="flex-1" />
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
           Read More
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M3 7h8M7 3l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       </div>

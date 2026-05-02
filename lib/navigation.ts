@@ -68,7 +68,8 @@ const SOGNOSROSTER_SECTIONS: NavItem[] = [
 const SOGNOSGENOGRAM_SECTIONS: NavItem[] = [
   { name: "What it solves", href: "/products/sognosgenogram#problems" },
   { name: "Features", href: "/products/sognosgenogram#features" },
-  { name: "Integration", href: "/products/sognosgenogram#integration" },
+  { name: "Customer Stories", href: "/products/sognosgenogram#stories" },
+  { name: "Schedule a Call", href: "/products/sognosgenogram#calendar" },
 ];
 
 // ─── Navigation ───────────────────────────────────────────────────────────────

@@ -27,7 +27,7 @@ export default function GenogramHero() {
           }}
         />
 
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col px-4 sm:px-8 lg:px-6 pt-25 sm:pt-27.5 lg:pt-25">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col px-4 sm:px-8 lg:px-6">
           <div className="flex flex-1 items-center justify-center">
             <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
               <Image
@@ -49,8 +49,8 @@ export default function GenogramHero() {
             </div>
           </div>
 
-          {/* The problem — bottom-aligned card inside the hero */}
-          <div className="relative z-10 pb-4 lg:pb-0">
+          {/* Bottom bar — hidden, replaced by ProductDrawer */}
+          <div className="hidden relative z-10 pb-4 lg:pb-0">
             <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
               <div className="flex flex-col gap-2 max-w-xl">
                 <h2 className="text-left font-heading text-2xl md:text-[22px] font-medium tracking-normal text-prussian-blue-800">
