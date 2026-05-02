@@ -210,7 +210,7 @@ export default function ProofSection() {
       <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Heading row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="text-2xl md:text-4xl text-brand font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
             Results
             <br />
             Results organisations can point to

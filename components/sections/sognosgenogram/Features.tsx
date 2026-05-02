@@ -29,11 +29,27 @@ export default function GenogramFeatures() {
   return (
     <section id="features" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-            Capabilities
-          </p>
-          <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+        <div className="mb-12 flex flex-col items-start gap-4">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                padding: "1px",
+                background:
+                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                ["--shine-duration" as string]: "7s",
+              } as React.CSSProperties}
+            />
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            Features
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
             Everything you need to map relationships that matter
           </h2>
         </div>
@@ -45,9 +61,9 @@ export default function GenogramFeatures() {
               className="rounded-xl border border-(--sognos-card-border) bg-white p-8"
             >
               <div className="mb-4 h-1 w-8 rounded-full bg-[#92278d]" />
-              <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+              <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                 {feature.title}
-              </h3>
+              </h2>
               <p className="text-sm leading-relaxed text-sognos-text-body">
                 {feature.body}
               </p>

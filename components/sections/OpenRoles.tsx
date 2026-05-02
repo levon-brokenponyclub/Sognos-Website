@@ -58,11 +58,12 @@ export default function OpenRoles() {
   return (
     <section className="w-full border-b border-sognos-border-subtle">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
-          Open roles
-        </p>
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Open roles
+              </div>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <h2 className="font-heading text-3xl font-medium text-prussian-blue-800 tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
             Current opportunities
           </h2>
           {/* Filters */}

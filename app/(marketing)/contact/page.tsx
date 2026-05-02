@@ -61,9 +61,10 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="bg-prussian-blue-800 w-full">
         <div className="max-w-7xl w-full mx-auto px-6 py-28">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50 mb-4">
-            Contact
-          </p>
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Contact
+              </div>
           <h1 className="font-heading text-4xl md:text-6xl font-medium text-white tracking-tight max-w-2xl">
             Get in touch.
           </h1>
@@ -214,9 +215,10 @@ export default function ContactPage() {
 
               {/* Response time */}
               <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
-                  Response time
-                </p>
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Response time
+              </div>
                 <p className="font-heading text-2xl font-medium text-prussian-blue-800">
                   Within 1 business day
                 </p>
@@ -275,9 +277,10 @@ export default function ContactPage() {
 
               {/* ABN + LinkedIn */}
               <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
-                  Company info
-                </p>
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Company info
+              </div>
                 <dl className="space-y-2 text-sm">
                   <div className="flex gap-2">
                     <dt className="text-sognos-text-muted shrink-0">ABN</dt>

@@ -31,10 +31,11 @@ export default function SocialResponsibilitySection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           {/* Left Content - Sticky */}
           <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               Social Responsibility
-            </span>
-            <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight mb-6">
+            </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
               Our commitment to <br /> community and planet.
             </h2>
             <p className="font-heading font-normal leading-relaxed lg:text-lg mb-10">
@@ -116,16 +117,16 @@ export default function SocialResponsibilitySection() {
                 {/* Left Column — Info Panel */}
                 <div className="shrink-0 lg:w-[40%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
                   <div className="flex flex-col">
-                    <h3 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
+                    <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
                       {SR_PILLARS[activeSR].title}
-                    </h3>
+                    </h2>
                     <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body lg:text-lg">
                       {SR_PILLARS[activeSR].body}
                     </p>
                   </div>
                   <Link
                     href="/company/social-responsibility"
-                    className="mt-5 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                    className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                   >
                     Read more
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">

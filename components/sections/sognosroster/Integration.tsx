@@ -9,10 +9,11 @@ export default function SognoscareRosterIntegration() {
           <div className="grid lg:grid-cols-2">
             {/* Left — text */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Better together
-              </p>
-              <h2 className="mb-5 font-heading text-3xl font-normal text-white lg:text-4xl">
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
                 SognosRoster + SognosCare
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
@@ -53,9 +54,10 @@ export default function SognoscareRosterIntegration() {
                   <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                   </svg>
-                  <p className="text-[10px] font-medium uppercase tracking-widest text-white/30">
-                    Delivers to
-                  </p>
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Delivers to
+              </div>
                   <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                   </svg>

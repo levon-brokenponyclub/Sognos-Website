@@ -187,7 +187,7 @@ export const SOGNOSCARE_EDITIONS = [
     accentColor: "#FF7276",
     tagline: "Support at Home reform, and client independence",
     description:
-      "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
+      "Manage client services, budgets, and care workers while staying ahead of the Support at Home program — with funding model changes tracked and compliance pre-configured.",
   },
   {
     label: "Residential Aged Care",
@@ -196,6 +196,6 @@ export const SOGNOSCARE_EDITIONS = [
     accentColor: "#BE8FFF",
     tagline: "Care planning, clinical documentation, and compliance",
     description:
-      "From care planning and progress documentation to staff coordination and resident reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
+      "From care planning to staff coordination and resident reporting — built for residential providers demonstrating quality against Aged Care Quality Standards.",
   },
 ] as const;

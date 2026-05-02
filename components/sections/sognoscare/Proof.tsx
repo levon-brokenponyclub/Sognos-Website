@@ -169,10 +169,11 @@ export default function SognoscareProof() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
-              Results
-            </span>
-            <h2 className="font-heading text-4xl lg:text-5xl font-semibold text-prussian-blue-800 tracking-tight leading-tight">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Results
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
               Numbers care providers <br className="hidden lg:block"/> can point to
             </h2>
           </div>

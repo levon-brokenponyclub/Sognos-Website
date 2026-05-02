@@ -23,9 +23,10 @@ export default function KnowledgeHubPage() {
         />
         <div className="relative z-10 mx-auto max-w-7xl px-6">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-              Knowledge Hub
-            </span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Knowledge Hub
+              </div>
           </div>
           <div className="max-w-3xl">
             <h1 className="mb-6 font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">

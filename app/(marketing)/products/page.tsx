@@ -154,10 +154,11 @@ function BetterTogether() {
           <div className="grid lg:grid-cols-[1fr_1px_1fr]">
             {/* Left */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Better together
-              </p>
-              <h2 className="mb-5 font-heading text-3xl font-normal text-white lg:text-4xl">
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
                 One operating system for the full service loop
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
@@ -257,9 +258,10 @@ export default function ProductsPage() {
         />
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-              Products
-            </span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Products
+              </div>
           </div>
           <h1 className="mx-auto mb-6 max-w-3xl font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
             Three products. One operating system for service delivery.

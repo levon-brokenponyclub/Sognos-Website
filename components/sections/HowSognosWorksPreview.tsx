@@ -72,7 +72,7 @@ export default function HowSognosWorksPreview() {
       <div className="max-w-7xl w-full mx-auto px-4 py-24">
         <div className="grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-[40%_1fr] lg:grid-rows-[auto_1fr] lg:items-stretch [grid-template-areas:'heading''image''tabs'] lg:[grid-template-areas:'heading_image''tabs_image']">
           {/* Heading */}
-          <h2 className="[grid-area:heading] callout text-center lg:text-left text-3xl md:text-4xl text-prussian-blue-800 font-heading tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
             Stop managing complexity. <br />
             <span className="text-soft text-prussian-blue-900/60">
               Start delivering outcomes.

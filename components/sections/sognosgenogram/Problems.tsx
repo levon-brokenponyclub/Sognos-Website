@@ -17,16 +17,11 @@ export default function GenogramProblems() {
   return (
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
-          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              The problem
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
-              Case records have facts. They&apos;re missing people.
-            </h2>
-          </div>
-          <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
+        <div className="mb-12 flex flex-col items-center gap-4 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
+            Case records have facts. They&apos;re missing people.
+          </h2>
+          <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
             Standard case management captures what happened. Sognos Genogram
             captures who is involved — and what those relationships mean for
             service delivery.
@@ -42,9 +37,9 @@ export default function GenogramProblems() {
               <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
                 {i + 1}
               </div>
-              <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+              <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                 {point.title}
-              </h3>
+              </h2>
               <p className="text-sm leading-relaxed text-sognos-text-body">
                 {point.body}
               </p>

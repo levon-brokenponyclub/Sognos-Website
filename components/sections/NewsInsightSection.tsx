@@ -224,7 +224,7 @@ export default function NewsInsightSection() {
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               News &amp; Insights
             </div>
-            <h2 className="text-3xl md:text-4xl text-white text-center lg:text-left font-heading font-medium tracking-tight">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
               News &amp; Insights
             </h2>
             <div className="mt-2 lg:mt-6 hidden lg:block">

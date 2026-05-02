@@ -80,10 +80,11 @@ export default async function SolutionPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 The problem
-              </p>
-              <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
                 What {meta.name} solves
               </h2>
             </div>
@@ -101,9 +102,9 @@ export default async function SolutionPage({
                 <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
                   {i + 1}
                 </div>
-                <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                   {point.title}
-                </h3>
+                </h2>
                 <p className="text-sm leading-relaxed text-sognos-text-body">
                   {point.body}
                 </p>
@@ -117,10 +118,11 @@ export default async function SolutionPage({
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              Capabilities
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Capabilities
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
               What you get with {meta.name}
             </h2>
           </div>
@@ -131,9 +133,9 @@ export default async function SolutionPage({
                 key={i}
                 className="rounded-xl border border-(--sognos-card-border) bg-white p-8"
               >
-                <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                   {cap.title}
-                </h3>
+                </h2>
                 <p className="text-sm leading-relaxed text-sognos-text-body">
                   {cap.body}
                 </p>
@@ -147,10 +149,11 @@ export default async function SolutionPage({
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="overflow-hidden rounded-2xl bg-prussian-blue-950 px-10 py-14 lg:px-14 lg:py-16">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
-              Platform
-            </p>
-            <h2 className="mb-5 max-w-2xl font-heading text-3xl font-normal text-white lg:text-4xl">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Platform
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
               Built on {content.platform.label}
             </h2>
             <p className="max-w-xl text-base leading-relaxed text-white/60">
@@ -165,10 +168,11 @@ export default async function SolutionPage({
         <section className="bg-(--sognos-bg-sunken) py-24">
           <div className="mx-auto max-w-7xl px-6">
             <div className="mb-10">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Works with
-              </p>
-              <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
                 Connects to the Sognos platform
               </h2>
             </div>

@@ -33,7 +33,7 @@ export default function LifeAtSognos() {
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pb-6">
-          <h2 className="text-2xl md:text-4xl text-white font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
             Life at Sognos
           </h2>
           <p className="font-heading font-medium text-white/80 justify-self-end max-w-sm">

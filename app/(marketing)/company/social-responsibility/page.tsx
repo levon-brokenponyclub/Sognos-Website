@@ -50,9 +50,10 @@ export default function SocialResponsibilityPage() {
       {/* Hero */}
       <section className="bg-seagrass-700/30 w-full border-b border-sognos-border-subtle">
         <div className="max-w-7xl w-full mx-auto px-6 py-28">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
-            Company
-          </p>
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Company
+              </div>
           <h1 className="font-heading text-4xl md:text-6xl font-medium text-prussian-blue-800 tracking-tight max-w-3xl">
             Our commitment to community and planet.
           </h1>
@@ -103,7 +104,7 @@ export default function SocialResponsibilityPage() {
       <section className="w-full">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div className="max-w-xl">
-            <h2 className="font-heading text-2xl md:text-3xl font-medium text-prussian-blue-800 tracking-tight">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
               Want to know more?
             </h2>
             <p className="mt-3 text-sognos-text-body leading-relaxed">

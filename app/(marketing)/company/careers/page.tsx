@@ -43,9 +43,10 @@ export default function CareersPage() {
       {/* Hero */}
       <section className="bg-prussian-blue-800 w-full">
         <div className="max-w-7xl w-full mx-auto px-6 py-28">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50 mb-4">
-            Careers
-          </p>
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Careers
+              </div>
           <h1 className="font-heading text-4xl md:text-6xl font-medium text-white tracking-tight max-w-3xl">
             Join Sognos to drive innovation together.
           </h1>
@@ -64,7 +65,7 @@ export default function CareersPage() {
 
             {/* Row 1, Col 1 — section title */}
             <div className="border-t border-dashed border-sognos-border-subtle md:border-r p-8 flex items-start">
-              <h2 className="font-heading text-2xl md:text-3xl font-medium text-prussian-blue-800 tracking-tight leading-snug">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
                 Our People —{" "}
                 <span className="text-sognos-text-muted">Our Planet</span>
               </h2>

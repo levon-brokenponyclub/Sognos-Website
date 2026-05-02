@@ -32,7 +32,7 @@ export default function IndustrySection() {
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Built for every industry
           </div>
-          <h2 className="text-3xl md:text-4xl text-white text-center font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center tracking-tight mb-6">
             Purpose-built for{" "}
             <span className="text-[#1D96FC]">service-intensive</span> sectors
           </h2>
@@ -81,16 +81,16 @@ export default function IndustrySection() {
                     />
                   )}
                 </div>
-                <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
-                  <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                <div className="bg-slate-200 rounded-lg p-5 flex flex-col gap-4">
+                  <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                     {ind.name}
-                  </h3>
+                  </h2>
                   <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
                     {ind.description}
                   </p>
                   <Link
                     href={ind.href}
-                    className="inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                    className="inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                   >
                     Read more
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
@@ -144,24 +144,24 @@ export default function IndustrySection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
+              className="flex gap-2 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
               {/* Left column — grey info panel */}
-              <div className="shrink-0 w-[40%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
+              <div className="shrink-0 w-[45%] bg-slate-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
-                  <h3 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
+                  <h2 className="mt-1 mb-5 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
-                  </h3>
-                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body lg:text-lg">
+                  </h2>
+                  <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
                     {active.description}
                   </p>
                 </div>
                 <Link
                   href={active.href}
-                  className="mt-5 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                  className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                 >
                   Read more
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-prussian-blue-900 text-white shrink-0">
                     <svg
                       width="12"
                       height="12"

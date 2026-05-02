@@ -92,10 +92,11 @@ export default async function IndustryPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 The challenge
-              </p>
-              <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
                 What makes {meta.name} hard to run
               </h2>
             </div>
@@ -113,9 +114,9 @@ export default async function IndustryPage({
                 <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
                   {i + 1}
                 </div>
-                <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                   {challenge.title}
-                </h3>
+                </h2>
                 <p className="text-sm leading-relaxed text-sognos-text-body">
                   {challenge.body}
                 </p>
@@ -129,10 +130,11 @@ export default async function IndustryPage({
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              How Sognos helps
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-brand">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                How Sognos helps
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
               Purpose-built for {meta.name}
             </h2>
           </div>
@@ -143,9 +145,9 @@ export default async function IndustryPage({
                 key={i}
                 className="rounded-xl border border-(--sognos-card-border) bg-white p-8"
               >
-                <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
                   {item.title}
-                </h3>
+                </h2>
                 <p className="text-sm leading-relaxed text-sognos-text-body">
                   {item.body}
                 </p>
@@ -159,10 +161,11 @@ export default async function IndustryPage({
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-10">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              Products
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Products
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
               What Sognos deploys in {meta.name}
             </h2>
           </div>

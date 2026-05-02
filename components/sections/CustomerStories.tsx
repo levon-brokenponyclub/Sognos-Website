@@ -193,13 +193,13 @@ export default function CustomerStories() {
     <section className="w-full bg-gray-200/70 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Section header */}
-        <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
+        <div className="mb-2 flex flex-col items-center lg:items-start gap-4">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Customers
           </div>
-          <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
-            Customer Stories
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center tracking-tight mb-6">
+            What our eco-supply clients say
           </h2>
         </div>
 

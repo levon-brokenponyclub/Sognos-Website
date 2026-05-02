@@ -31,9 +31,10 @@ export default function IndustriesPage() {
         />
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-              Industries
-            </span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Industries
+              </div>
           </div>
           <h1 className="mx-auto mb-6 max-w-3xl font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
             Built for organisations that deliver services in the field
@@ -49,10 +50,11 @@ export default function IndustriesPage() {
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              Sectors we serve
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Sectors we serve
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
               Five industries. One platform.
             </h2>
           </div>
@@ -65,12 +67,13 @@ export default function IndustriesPage() {
                 className="group flex flex-col justify-between rounded-2xl border border-(--sognos-card-border) bg-white p-8 transition-shadow duration-200 hover:shadow-md"
               >
                 <div>
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-                    Industry
-                  </p>
-                  <h3 className="mb-3 font-heading text-xl font-normal text-sognos-text-heading">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Industry
+              </div>
+                  <h2 className="mb-3 font-heading text-xl font-normal text-sognos-text-heading">
                     {industry.name}
-                  </h3>
+                  </h2>
                   <p className="text-sm leading-relaxed text-sognos-text-body">
                     {industry.description}
                   </p>

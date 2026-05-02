@@ -4,6 +4,7 @@ import AnimatedButton from "@/components/ui/AnimatedButton";
 import FlowCanvas from "@/components/ui/FlowCanvas";
 import EditionCards from "@/components/sections/sognoscare/EditionCards";
 import ProductDrawer from "@/components/ui/ProductDrawer";
+import CTASection from "@/components/sections/CTASection";
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -195,10 +196,11 @@ function WhatItSolves({ data }: { data: EditionData }) {
     <section className="w-full bg-white">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             What it solves
-          </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
             What SognosCare Fixes
           </h2>
         </div>
@@ -252,10 +254,33 @@ function Features({ data }: { data: EditionData }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Left column — sticky, vertically centered in viewport */}
           <div className="lg:col-span-5 lg:sticky lg:top-1/2 lg:-translate-y-1/2">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+            <div
+              className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6"
+              style={{ borderColor: `${data.accentHex}4d` }}
+            >
+              <span
+                aria-hidden
+                className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+                style={
+                  {
+                    padding: "1px",
+                    background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                    ["--shine-duration" as string]: "7s",
+                  } as React.CSSProperties
+                }
+              />
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               Features
-            </p>
-            <h2 className="font-heading text-4xl lg:text-5xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+            </div>
+            <h2
+              className="font-heading text-3xl md:text-4xl font-medium tracking-tight mb-6"
+              style={{ color: data.accentHex }}
+            >
               Core Features
             </h2>
             <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
@@ -283,9 +308,9 @@ function Features({ data }: { data: EditionData }) {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h4 className="font-heading text-2xl lg:text-3xl font-medium tracking-tight text-prussian-blue-800 group-hover:text-white transition-colors duration-500">
+                    <h2 className="edition-feature-title font-heading text-3xl md:text-4xl font-medium tracking-tight mb-6">
                       {feature.title}
-                    </h4>
+                    </h2>
                     <p className="mt-3 text-base text-sognos-text-body group-hover:text-white/85 transition-colors duration-500 leading-relaxed">
                       {feature.description}
                     </p>
@@ -323,11 +348,31 @@ function Advantages({ data }: { data: EditionData }) {
     <section className="w-full bg-gray-200/70">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         {/* Heading */}
-        <div className="mb-12 lg:mb-16 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+        <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
+          <div
+            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
+            style={{ borderColor: `${data.accentHex}4d` }}
+          >
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={
+                {
+                  padding: "1px",
+                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "7s",
+                } as React.CSSProperties
+              }
+            />
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Advantages
-          </p>
-          <h2 className="font-heading text-4xl lg:text-5xl font-medium text-prussian-blue-800 tracking-tight">
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
             Key Advantages
           </h2>
         </div>
@@ -408,14 +453,33 @@ function ProofStories({ data }: { data: EditionData }) {
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Section header */}
         <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+          <div
+            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
+            style={{ borderColor: `${data.accentHex}4d` }}
+          >
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={
+                {
+                  padding: "1px",
+                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "7s",
+                } as React.CSSProperties
+              }
+            />
             <span
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: data.accentHex }}
             />
             Customers
           </div>
-          <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
             Customer Stories
           </h2>
         </div>
@@ -547,17 +611,37 @@ function RelatedEditions({ data }: { data: EditionData }) {
     <section className="w-full bg-gray-200">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         {/* Section header */}
-        <div className="mb-12 lg:mb-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+        <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
+          <div
+            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
+            style={{ borderColor: `${data.accentHex}4d` }}
+          >
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={
+                {
+                  padding: "1px",
+                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "7s",
+                } as React.CSSProperties
+              }
+            />
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Explore other editions
-          </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
             Other SognosCare Editions
           </h2>
         </div>
 
-        {/* Editions slider */}
-        <EditionCards editions={relatedEditions} />
+        {/* Editions grid — 3 visible, no overflow */}
+        <EditionCards editions={relatedEditions} showSliderButtons={false} />
       </div>
     </section>
   );
@@ -574,6 +658,7 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
       <Advantages data={data} />
       <ProofStories data={data} />
       <RelatedEditions data={data} />
+      <CTASection />
 
       {/* Mobile hero drawer — fixed, rendered at page level to escape hero overflow-hidden */}
       <ProductDrawer

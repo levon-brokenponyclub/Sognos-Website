@@ -174,7 +174,7 @@ export default function KnowledgeHubArchive() {
 
         {/* Header row */}
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-          <h2 className="font-heading text-4xl font-normal text-sognos-text-heading">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
             {activeCategory ?? "All Articles"}
           </h2>
 

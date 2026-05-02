@@ -7,16 +7,13 @@ const ADVANTAGES = [
   "Scales from community care to residential aged care without re-implementation",
 ];
 
-// 8-cell grid: col 1 empty, cols 2-4 hold the 6 content blocks
-// Row 1: [empty] [accent] [dark] [dark]
-// Row 2: [empty] [dark]   [dark] [accent]
-type Cell = { type: "empty" } | { type: "accent" | "dark" | "white"; idx: number };
+// 8-cell grid pattern: col 1 is a spanning header card, cols 2-4 hold content
+type Cell = { type: "header" } | { type: "accent" | "dark" | "white"; idx: number };
 const GRID: Cell[] = [
-  { type: "empty" },
+  { type: "header" },
   { type: "accent", idx: 0 },
   { type: "dark", idx: 1 },
   { type: "dark", idx: 2 },
-  { type: "empty" },
   { type: "dark", idx: 3 },
   { type: "dark", idx: 4 },
   { type: "white", idx: 5 },
@@ -24,35 +21,46 @@ const GRID: Cell[] = [
 
 export default function SognoscareAdvantages() {
   return (
-    <section id="advantages" className="w-full bg-gray-200/70">
+    <section id="advantages" className="w-full bg-slate-200/90">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-        <div className="mb-12 lg:mb-16 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
-            Advantages
-          </p>
-          <h2 className="font-heading text-4xl lg:text-5xl font-medium text-prussian-blue-800 tracking-tight">
-            Key Advantages
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr_1fr_1fr] gap-3 lg:gap-4">
           {GRID.map((cell, i) => {
-            if (cell.type === "empty") {
-              return <div key={`empty-${i}`} className="hidden lg:block" />;
+            if (cell.type === "header") {
+              return (
+                <div
+                  key="header-card"
+                  className="lg:row-span-2 rounded-lg lg:p-2 h-full bg-white text-prussian-blue-800"
+                >
+                  <div className="h-full shrink-0 bg-slate-100/70 rounded-lg p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-1 text-sm text-prussian-blue-800 font-medium mb-6">
+                        <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                        Advantages
+                      </div>
+                      <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
+                        Key Advantages
+                      </h2>
+                      <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 text-sognos-text-body">
+                        Hello
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
             }
+
             const text = ADVANTAGES[cell.idx];
             const isAccent = cell.type === "accent";
             const isWhite = cell.type === "white";
             return (
               <div
                 key={text}
-                className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${
-                  isWhite
-                    ? "bg-white text-prussian-blue-800"
-                    : isAccent
-                      ? "text-white"
-                      : "bg-prussian-blue-800 text-white"
-                }`}
+                className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${isWhite
+                  ? "bg-white text-prussian-blue-800"
+                  : isAccent
+                    ? "text-white"
+                    : "bg-prussian-blue-800 text-white"
+                  }`}
                 style={isAccent ? { backgroundColor: "#1d96fc" } : undefined}
               >
                 <p className={`font-heading text-base lg:text-lg font-medium leading-snug ${isWhite ? "text-prussian-blue-800" : "text-white"}`}>

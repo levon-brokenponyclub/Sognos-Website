@@ -310,16 +310,16 @@ function SolutionCard({
       style={{ width: width > 0 ? width : undefined, minWidth: 260 }}
     >
       {/* Icon and Content */}
-      <div className="p-6 flex flex-col gap-4">
+      <div className="p-8 flex flex-col gap-8">
         <div className="flex items-start">
-          <Icon size={40} weight="duotone" className="text-[#1D96FC] mt-6" />
+          <Icon size={55} weight="thin" className="text-[#1D96FC] mt-2" />
         </div>
 
         <div className="flex flex-col flex-1">
-          <h5 className="text-2xl font-medium text-prussian-blue-800 leading-snug text-balance transition-colors duration-200">
+          <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200">
             {solution.label}
-          </h5>
-          <p className="mt-3 leading-normal text-prussian-blue-900/65 line-clamp-4 flex-1 transition-colors duration-200">
+          </h3>
+          <p className="mt-4 font-heading font-normal text-balance leading-relaxed lg:text-lg text-prussian-blue-900/65 line-clamp-4 flex-1 transition-colors duration-200">
             {solution.copy}
           </p>
         </div>
@@ -330,7 +330,7 @@ function SolutionCard({
         href={solution.href}
         className="mx-6 mb-4 mt-2 inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 bg-brand text-white hover:bg-brand-dark"
       >
-        See {solution.label}
+        See Details
       </Link>
 
       {/* Decorative illustration - removed but keeping space */}
@@ -429,17 +429,34 @@ export default function SolutionsSection() {
   // }, [startAutoplay, stopAutoplay]);
 
   return (
-    <section className="w-full bg-gray-200/70 overflow-hidden">
+    <section className="w-full bg-slate-200/70 overflow-hidden">
       {/* Header — h2 left, arrows right */}
       <div className="max-w-7xl w-full mx-auto px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pt-16 lg:pt-24 pb-6 lg:pb-8">
           <div className="flex flex-col items-center lg:items-start gap-4">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+            <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1 text-sm  font-heading font-medium border-prussian-blue-900/50 text-prussian-blue-800/80">
+              <span
+                aria-hidden
+                className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+                style={
+                  {
+                    padding: "1px",
+                    background:
+                      "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                    ["--shine-duration" as string]: "7s",
+                  } as React.CSSProperties
+                }
+              />
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              Solutions for every workflow
+              Product that work
             </div>
-            <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
-              Built for how your operation works
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
+              Designed for how organisations actually operate
             </h2>
           </div>
           <div className="hidden lg:flex items-center gap-3 shrink-0 ml-8">

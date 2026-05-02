@@ -46,8 +46,8 @@ export default function SognoscareProblems() {
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
-        <div className="mb-16 max-w-2xl">
-          <h2 className="mb-4 font-heading text-4xl font-normal text-sognos-text-heading">
+        <div className="mb-16 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
             Care providers shouldn&apos;t operate like this
           </h2>
           <p className="text-lg text-sognos-text-body">
@@ -72,9 +72,7 @@ export default function SognoscareProblems() {
                     isEven ? "lg:order-last" : ""
                   }`}
                 >
-                  <span className="font-heading text-6xl font-normal leading-none text-white/10">
-                    {item.number}
-                  </span>
+                  {/* number hidden */}
                   <div className="mt-8">
                     <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-white/8">
                       <svg
@@ -92,9 +90,9 @@ export default function SognoscareProblems() {
                         />
                       </svg>
                     </div>
-                    <h3 className="mb-3 text-xl font-semibold leading-snug text-white">
+                    <h2 className="mb-3 text-xl font-semibold leading-snug text-white">
                       {item.problem}
-                    </h3>
+                    </h2>
                     <p className="text-sm leading-relaxed text-white/55">
                       {item.problemDetail}
                     </p>
@@ -107,9 +105,6 @@ export default function SognoscareProblems() {
                     isEven ? "lg:order-first" : ""
                   }`}
                 >
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-brand">
-                    The fix
-                  </p>
                   <p className="text-base leading-relaxed text-sognos-text-body">
                     {item.solution}
                   </p>

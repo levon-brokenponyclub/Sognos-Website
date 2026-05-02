@@ -130,10 +130,11 @@ export default function SognoscareRosterProof() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
-              Results
-            </p>
-            <h2 className="font-heading text-4xl font-normal text-brand">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Results
+              </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
               Results workforce managers can measure
             </h2>
           </div>

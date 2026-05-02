@@ -89,14 +89,39 @@ const FEATURES = [
 
 function FeatureVisual({ id }: { id: string }) {
   const visuals: Record<string, React.ReactNode> = {
-    "scheduling": (
+    scheduling: (
       <div className="space-y-2">
         {[
-          { worker: "Sarah K.", service: "Support visit", time: "08:00", status: "Confirmed" },
-          { worker: "Marcus T.", service: "Allied health", time: "09:30", status: "Confirmed" },
-          { worker: "Priya M.", service: "Transport", time: "10:15", status: "Confirmed" },
-          { worker: "James O.", service: "Community access", time: "13:00", status: "Pending" },
-          { worker: "Emma R.", service: "Support visit", time: "14:30", status: "Confirmed" },
+          {
+            worker: "Sarah K.",
+            service: "Support visit",
+            time: "08:00",
+            status: "Confirmed",
+          },
+          {
+            worker: "Marcus T.",
+            service: "Allied health",
+            time: "09:30",
+            status: "Confirmed",
+          },
+          {
+            worker: "Priya M.",
+            service: "Transport",
+            time: "10:15",
+            status: "Confirmed",
+          },
+          {
+            worker: "James O.",
+            service: "Community access",
+            time: "13:00",
+            status: "Pending",
+          },
+          {
+            worker: "Emma R.",
+            service: "Support visit",
+            time: "14:30",
+            status: "Confirmed",
+          },
         ].map((row) => (
           <div
             key={row.worker}
@@ -106,11 +131,17 @@ function FeatureVisual({ id }: { id: string }) {
               {row.worker.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-semibold text-prussian-blue-800">{row.worker}</p>
-              <p className="truncate text-[11px] text-gray-400">{row.service}</p>
+              <p className="truncate text-xs font-semibold text-prussian-blue-800">
+                {row.worker}
+              </p>
+              <p className="truncate text-[11px] text-gray-400">
+                {row.service}
+              </p>
             </div>
             <span className="shrink-0 text-xs text-gray-400">{row.time}</span>
-            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${row.status === "Confirmed" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-600"}`}>
+            <span
+              className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${row.status === "Confirmed" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-600"}`}
+            >
               {row.status}
             </span>
           </div>
@@ -120,16 +151,35 @@ function FeatureVisual({ id }: { id: string }) {
     "skills-matching": (
       <div className="space-y-2">
         {[
-          { label: "First Aid Certificate", status: "Valid", expiry: "Jun 2026" },
-          { label: "NDIS Worker Screening", status: "Valid", expiry: "Mar 2027" },
+          {
+            label: "First Aid Certificate",
+            status: "Valid",
+            expiry: "Jun 2026",
+          },
+          {
+            label: "NDIS Worker Screening",
+            status: "Valid",
+            expiry: "Mar 2027",
+          },
           { label: "Manual Handling", status: "Valid", expiry: "Dec 2025" },
-          { label: "Medication Administration", status: "Expiring", expiry: "May 2025" },
+          {
+            label: "Medication Administration",
+            status: "Expiring",
+            expiry: "May 2025",
+          },
         ].map((item) => (
-          <div key={item.label} className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3">
-            <span className="text-xs font-medium text-prussian-blue-800">{item.label}</span>
+          <div
+            key={item.label}
+            className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
+          >
+            <span className="text-xs font-medium text-prussian-blue-800">
+              {item.label}
+            </span>
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-gray-400">{item.expiry}</span>
-              <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${item.status === "Valid" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${item.status === "Valid" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}
+              >
                 {item.status}
               </span>
             </div>
@@ -141,19 +191,37 @@ function FeatureVisual({ id }: { id: string }) {
       <div className="space-y-3">
         <div className="rounded-lg border border-gray-100 bg-white p-4">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Today&apos;s routes</p>
-            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">Optimised</span>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+              Today&apos;s routes
+            </p>
+            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+              Optimised
+            </span>
           </div>
           {[
             { worker: "Sarah K.", stops: 4, travel: "38 min", saved: "22 min" },
-            { worker: "Marcus T.", stops: 3, travel: "25 min", saved: "14 min" },
+            {
+              worker: "Marcus T.",
+              stops: 3,
+              travel: "25 min",
+              saved: "14 min",
+            },
             { worker: "James O.", stops: 5, travel: "52 min", saved: "31 min" },
           ].map((row) => (
-            <div key={row.worker} className="flex items-center gap-3 border-t border-gray-100 py-2.5 first:border-0">
-              <span className="w-20 text-xs font-medium text-prussian-blue-800 truncate">{row.worker}</span>
+            <div
+              key={row.worker}
+              className="flex items-center gap-3 border-t border-gray-100 py-2.5 first:border-0"
+            >
+              <span className="w-20 text-xs font-medium text-prussian-blue-800 truncate">
+                {row.worker}
+              </span>
               <span className="text-xs text-gray-400">{row.stops} stops</span>
-              <span className="ml-auto text-xs text-gray-400">{row.travel}</span>
-              <span className="text-xs font-semibold text-emerald-600">−{row.saved}</span>
+              <span className="ml-auto text-xs text-gray-400">
+                {row.travel}
+              </span>
+              <span className="text-xs font-semibold text-emerald-600">
+                −{row.saved}
+              </span>
             </div>
           ))}
         </div>
@@ -162,22 +230,50 @@ function FeatureVisual({ id }: { id: string }) {
     "real-time-adjustments": (
       <div className="space-y-2">
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-xs font-semibold text-amber-800">Disruption detected</p>
-          <p className="mt-0.5 text-[11px] text-amber-700">Sarah K. — sick leave. 3 services affected.</p>
+          <p className="text-xs font-semibold text-amber-800">
+            Disruption detected
+          </p>
+          <p className="mt-0.5 text-[11px] text-amber-700">
+            Sarah K. — sick leave. 3 services affected.
+          </p>
         </div>
         {[
-          { worker: "Emma R.", match: "98%", travel: "+12 min", action: "Assign" },
-          { worker: "Priya M.", match: "91%", travel: "+18 min", action: "Assign" },
-          { worker: "James O.", match: "84%", travel: "+25 min", action: "Assign" },
+          {
+            worker: "Emma R.",
+            match: "98%",
+            travel: "+12 min",
+            action: "Assign",
+          },
+          {
+            worker: "Priya M.",
+            match: "91%",
+            travel: "+18 min",
+            action: "Assign",
+          },
+          {
+            worker: "James O.",
+            match: "84%",
+            travel: "+25 min",
+            action: "Assign",
+          },
         ].map((row) => (
-          <div key={row.worker} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3">
+          <div
+            key={row.worker}
+            className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3"
+          >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-[#1D96FC]">
               {row.worker.charAt(0)}
             </div>
-            <span className="flex-1 text-xs font-medium text-prussian-blue-800">{row.worker}</span>
-            <span className="text-xs font-semibold text-emerald-600">{row.match}</span>
+            <span className="flex-1 text-xs font-medium text-prussian-blue-800">
+              {row.worker}
+            </span>
+            <span className="text-xs font-semibold text-emerald-600">
+              {row.match}
+            </span>
             <span className="text-[11px] text-gray-400">{row.travel}</span>
-            <button className="rounded-md bg-[#1D96FC] px-2.5 py-1 text-[10px] font-semibold text-white">{row.action}</button>
+            <button className="rounded-md bg-[#1D96FC] px-2.5 py-1 text-[10px] font-semibold text-white">
+              {row.action}
+            </button>
           </div>
         ))}
       </div>
@@ -196,9 +292,13 @@ function FeatureVisual({ id }: { id: string }) {
             { time: "15:30", name: "A. Wilson", type: "Support" },
           ].map((v) => (
             <div key={v.time} className="flex items-center gap-3 px-3 py-2.5">
-              <span className="shrink-0 text-[10px] font-medium text-gray-400">{v.time}</span>
+              <span className="shrink-0 text-[10px] font-medium text-gray-400">
+                {v.time}
+              </span>
               <div className="min-w-0">
-                <p className="truncate text-[11px] font-semibold text-prussian-blue-800">{v.name}</p>
+                <p className="truncate text-[11px] font-semibold text-prussian-blue-800">
+                  {v.name}
+                </p>
                 <p className="text-[10px] text-gray-400">{v.type}</p>
               </div>
             </div>
@@ -206,16 +306,23 @@ function FeatureVisual({ id }: { id: string }) {
         </div>
       </div>
     ),
-    "copilot": (
+    copilot: (
       <div className="space-y-3">
         <div className="rounded-lg border border-gray-100 bg-white p-4">
-          <p className="mb-2 text-xs font-semibold text-gray-400">Copilot insight — Thursday roster</p>
+          <p className="mb-2 text-xs font-semibold text-gray-400">
+            Copilot insight — Thursday roster
+          </p>
           <p className="text-sm leading-relaxed text-prussian-blue-800">
-            3 workers are scheduled within 500m of each other between 10am–12pm. Reassigning one visit could save 45 minutes of total drive time.
+            3 workers are scheduled within 500m of each other between 10am–12pm.
+            Reassigning one visit could save 45 minutes of total drive time.
           </p>
           <div className="mt-3 flex gap-2">
-            <button className="rounded-md bg-[#1D96FC] px-3 py-1 text-xs font-semibold text-white">Apply suggestion</button>
-            <button className="rounded-md border border-gray-100 px-3 py-1 text-xs font-semibold text-gray-400">Dismiss</button>
+            <button className="rounded-md bg-[#1D96FC] px-3 py-1 text-xs font-semibold text-white">
+              Apply suggestion
+            </button>
+            <button className="rounded-md border border-gray-100 px-3 py-1 text-xs font-semibold text-gray-400">
+              Dismiss
+            </button>
           </div>
         </div>
       </div>
@@ -236,15 +343,33 @@ export default function SognoscareRosterFeatures() {
   const active = FEATURES[activeIndex];
 
   return (
-    <section id="features" className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden">
+    <section
+      id="features"
+      className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden"
+    >
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Header */}
-        <div className="grid grid-cols-1 gap-2 lg:gap-5 items-end pb-6">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
+        <div className="flex flex-col items-start lg:items-start gap-4 pb-6">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                padding: "1px",
+                background:
+                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.9) 60deg, transparent 120deg, transparent 360deg)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                ["--shine-duration" as string]: "8s",
+              } as React.CSSProperties}
+            />
             <span className="w-2 h-2 bg-white rounded-full"></span>
-            Full scheduling lifecycle
+            Features
           </div>
-          <h2 className="text-3xl md:text-4xl text-white font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
             Built for the full scheduling lifecycle
           </h2>
         </div>
@@ -252,15 +377,35 @@ export default function SognoscareRosterFeatures() {
         {/* Mobile — stacked cards */}
         <div className="lg:hidden mt-10">
           {FEATURES.map((feat) => (
-            <div key={feat.id} className="mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3">
+            <div
+              key={feat.id}
+              className="mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3"
+            >
               <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
-                <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">{feat.name}</h3>
-                <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">{feat.description}</p>
+                <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                  {feat.name}
+                </h2>
+                <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
+                  {feat.description}
+                </p>
                 <ul className="space-y-2 mt-1">
                   {feat.capabilities.map((cap) => (
-                    <li key={cap} className="flex items-start gap-2.5 text-sm text-sognos-text-body">
-                      <svg className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <li
+                      key={cap}
+                      className="flex items-start gap-2.5 text-md text-sognos-text-body"
+                    >
+                      <svg
+                        className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                       {cap}
                     </li>
@@ -306,14 +451,33 @@ export default function SognoscareRosterFeatures() {
               {/* Left — grey info panel */}
               <div className="shrink-0 w-[45%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">{active.tagline}</p>
-                  <h3 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">{active.name}</h3>
-                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">{active.description}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
+                    {active.tagline}
+                  </p>
+                  <h3 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                    {active.name}
+                  </h3>
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
+                    {active.description}
+                  </p>
                   <ul className="mt-6 space-y-2.5">
                     {active.capabilities.map((cap) => (
-                      <li key={cap} className="flex items-start gap-2.5 text-sm text-sognos-text-body">
-                        <svg className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <li
+                        key={cap}
+                        className="flex items-start gap-2.5 text-md text-sognos-text-body"
+                      >
+                        <svg
+                          className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         {cap}
                       </li>
@@ -322,12 +486,24 @@ export default function SognoscareRosterFeatures() {
                 </div>
                 <Link
                   href="/contact"
-                  className="mt-5 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                  className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                 >
                   Book a Demo
                   <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 7h8M7 3l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </span>
                 </Link>

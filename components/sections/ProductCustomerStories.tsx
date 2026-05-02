@@ -180,12 +180,27 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
   return (
     <section id="stories" className="w-full bg-gray-200/70 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
-        <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+        <div className="mb-8 flex flex-col items-start gap-4">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                padding: "1px",
+                background:
+                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                ["--shine-duration" as string]: "7s",
+              } as React.CSSProperties}
+            />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
             Customers
           </div>
-          <h2 className="text-3xl md:text-4xl text-prussian-blue-800 text-center lg:text-left font-heading font-medium tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 lg:text-left tracking-tight">
             Customer Stories
           </h2>
         </div>
@@ -213,11 +228,15 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
               )}
               <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">Company Size</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
+                    Company Size
+                  </p>
                   <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">{study.companySize}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">Industry</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
+                    Industry
+                  </p>
                   <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">{study.industry}</p>
                 </div>
               </div>

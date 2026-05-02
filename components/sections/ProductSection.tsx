@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowLeft, ArrowRight } from "lucide-react";
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
@@ -34,12 +34,12 @@ function EditionsDrawer({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-[#EDEEF1] rounded-t-2xl max-w-10/12 mx-auto shadow-2xl max-h-[80vh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-slate-100 rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle + close */}
             <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
-              <div className="w-10 h-1 rounded-full bg-gray-300 mx-auto absolute left-1/2 -translate-x-1/2" />
+              <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto absolute left-1/2 -translate-x-1/2" />
               <div />
               <button
                 onClick={onClose}
@@ -52,11 +52,11 @@ function EditionsDrawer({
 
             {/* Scrollable content */}
             <div className="overflow-y-auto flex-1">
-              <div className="mx-auto px-6 lg:px-12 pb-10">
+              <div className="mx-auto px-6 lg:px-26 pb-10">
                 <div className="py-4 items-center text-center max-w-4xl mx-auto mb-6 border-b border-sognos-border-subtle">
-                  <h3 className="font-heading text-3xl font-medium text-prussian-blue-800">
+                  <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
                     Choose the Right SognosCare Edition for Your Service
-                  </h3>
+                  </h2>
                   <p className="mt-2 text-lg text-sognos-text-body">
                     SognosCare offers four tailored editions — each
                     pre-configured for its funding model, compliance framework,
@@ -81,6 +81,24 @@ function EditionsDrawer({
 export default function ProductSection() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const shineRef = useRef<HTMLSpanElement>(null);
+  const [shineInView, setShineInView] = useState(false);
+
+  useEffect(() => {
+    const node = shineRef.current;
+    if (!node || shineInView) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShineInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, [shineInView]);
 
   const scroll = (dir: "prev" | "next") => {
     const el = sliderRef.current;
@@ -95,26 +113,48 @@ export default function ProductSection() {
     <>
       <section
         aria-label="Platform capabilities"
-        className="relative w-full py-16 lg:py-24 overflow-x-clip bg-gradient-hero"
+        className="relative w-full py-16 lg:py-26 lg:pb-18 overflow-x-clip bg-gradient-hero"
       >
         {/* Heading */}
-        <div className="mx-auto mb-8 lg:mb-5 max-w-7xl px-6 flex flex-col items-center lg:items-center gap-5 pb-6">
-          <div className="inline-flex w-fit items-center gap-2 r mx-auto rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
+        <div className="mx-auto lg:mb-2 max-w-7xl px-6 flex flex-col items-left lg:items-left gap-5 pb-6">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1.5 text-sm  font-heading font-medium border-white/20 text-white/80 bg-prussian-blue-900/30">
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={
+                {
+                  padding: "1px",
+                  background:
+                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.8) 60deg, transparent 120deg, transparent 360deg)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "8.s",
+                } as React.CSSProperties
+              }
+            />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Built for high-stakes operations
+            Product that work
           </div>
-          <h2 className="text-3xl md:text-4xl text-white text-center lg:text-left font-heading font-medium tracking-tight">
-            For organisations that{" "}
-            <span className="text-[#1D96FC]">can&apos;t afford</span> to get
-            things wrong
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
+            Building{" "}
+            <span
+              ref={shineRef}
+              className={`text-shine-settle${shineInView ? " in-view" : ""}`}
+            >
+              smarter,faster
+            </span>{" "}
+            across diverse industries
           </h2>
         </div>
 
         {/* Cards */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-6 mt-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-6 mt-2">
           <div
             ref={sliderRef}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none lg:gap-6 -mx-6 px-6 lg:mx-0 lg:px-0"
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none lg:gap-7 -mx-6 px-6 lg:mx-0 lg:px-0"
           >
             {PRODUCT_CARDS.map((card, index) => (
               <ProductCard

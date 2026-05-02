@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 const data: EditionData = {
   name: "Allied Health",
-  tagline:
-    "Mobile therapy teams, referral management, and multi-disciplinary records.",
+  tagline: "Unified therapy, referrals, and multidisciplinary records.",
   description:
     "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
   gradient: "/images/sognoscare/gradient-2.png",

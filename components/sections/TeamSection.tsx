@@ -57,10 +57,11 @@ export default function TeamSection() {
     <>
       <section className="w-full bg-prussian-blue-800">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Leadership
-          </p>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-16">
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
             Senior Leadership Team
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -82,15 +83,15 @@ export default function TeamSection() {
                 </div>
                 {/* Meta */}
                 <div className="px-3 pb-4 flex flex-col items-start w-full">
-                  <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight transition-colors group-hover:text-[#1D96FC]">
+                  <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight transition-colors group-hover:text-[#1D96FC]">
                     {member.name}
-                  </h3>
+                  </h2>
                   <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body mt-1.5">
                     {member.role}
                   </p>
 
                   {/* Visual trigger */}
-                  <div className="mt-6 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity">
+                  <div className="mt-6 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity">
                     <span>Read profile</span>
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
                       <svg
@@ -200,9 +201,10 @@ export default function TeamSection() {
 
                   {/* Col 2 — bio */}
                   <div className="py-6 md:pl-8 border-t md:border-t-0 border-sognos-border-subtle">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-5">
+                    <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                      <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                       Overview
-                    </p>
+                    </div>
                     <div className="space-y-4">
                       {active.bio.split("\n\n").map((para, i) => (
                         <p

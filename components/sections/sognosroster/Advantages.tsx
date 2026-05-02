@@ -26,11 +26,27 @@ export default function SognoscareRosterAdvantages() {
   return (
     <section id="advantages" className="w-full bg-gray-200/70">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-        <div className="mb-12 lg:mb-16 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+        <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+            <span
+              aria-hidden
+              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                padding: "1px",
+                background:
+                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                ["--shine-duration" as string]: "7s",
+              } as React.CSSProperties}
+            />
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Advantages
-          </p>
-          <h2 className="font-heading text-4xl lg:text-5xl font-medium text-prussian-blue-800 tracking-tight">
+          </div>
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
             Key Advantages
           </h2>
         </div>

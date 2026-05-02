@@ -20,11 +20,11 @@ interface EditionCardsProps {
   containerClassName?: string;
 }
 
-function EditionCard({ edition }: { edition: Edition }) {
+function EditionCard({ edition, cardWidthClass = "lg:w-[31.5%]" }: { edition: Edition; cardWidthClass?: string }) {
   const title = edition.label || edition.name || "";
 
   return (
-    <article className="rounded-lg bg-white p-2 h-[450px] lg:h-[500px] flex-shrink-0 snap-center w-[82vw] lg:w-[38%]">
+    <article className={`rounded-lg bg-white p-2 h-[450px] lg:h-[500px] flex-shrink-0 snap-center w-[82vw] ${cardWidthClass}`}>
       {/* Inner panel — accent colour throughout (no video bg) */}
       <div className="relative h-full rounded-lg overflow-hidden flex flex-col">
         {/* Logo — centered in upper zone */}
@@ -40,21 +40,21 @@ function EditionCard({ edition }: { edition: Edition }) {
 
         {/* Content — bottom panel, accent bg, white text */}
         <div
-          className="absolute bottom-0 rounded-lg left-0 right-0 z-10 px-7 pt-10 pb-8"
+          className="absolute bottom-0 rounded-lg left-0 right-0 z-10 px-8 pt-10 pb-8"
           style={{
             backgroundColor: `${edition.accentColor}e6`,
           }}
         >
-          <h3 className="font-body text-2xl leading-tight tracking-normal whitespace-pre-line text-white lg:text-3xl">
+          <h2 className="font-heading text-2xl font-medium leading-tight tracking-normal whitespace-pre-line lg:text-2xl transition-colors duration-500 text-white">
             {title}
-          </h3>
+          </h2>
           <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-white/90 lg:text-lg">
             {edition.description}
           </p>
           <div className="mt-5">
             <Link
               href={edition.href}
-              className="inline-flex items-center gap-2.5 text-sm font-medium text-white hover:opacity-70 transition-opacity"
+              className="inline-flex items-center gap-2.5 text-md font-semibold text-white hover:opacity-70 transition-opacity"
             >
               View Edition
               <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white/25 text-white shrink-0">
@@ -88,6 +88,9 @@ export default function EditionCards({
   containerClassName = "",
 }: EditionCardsProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  // When > 3 cards, reduce width so 4th card peeks (indicate scroll)
+  const hasMoreThanThree = editions.length > 3;
+  const cardWidthClass = hasMoreThanThree ? "lg:w-[28%]" : "lg:w-[31.5%]";
 
   const scroll = (dir: "prev" | "next") => {
     const el = sliderRef.current;
@@ -102,10 +105,10 @@ export default function EditionCards({
     <div className={`relative ${containerClassName}`}>
       <div
         ref={sliderRef}
-        className="flex gap-4 lg:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
+        className="flex gap-4 lg:gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
       >
         {editions.map((edition) => (
-          <EditionCard key={edition.href} edition={edition} />
+          <EditionCard key={edition.href} edition={edition} cardWidthClass={cardWidthClass} />
         ))}
       </div>
 

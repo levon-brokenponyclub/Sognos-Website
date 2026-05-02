@@ -127,7 +127,7 @@ export function ProductCard({
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
-      className="shrink-0 w-[calc(100vw-3rem)] snap-center lg:flex-1 lg:w-auto h-[520px] overflow-hidden rounded-md bg-white p-2"
+      className="shrink-0 w-[calc(100vw-3rem)] snap-center lg:flex-1 lg:w-auto h-[480px] overflow-hidden rounded-md bg-white p-2"
     >
       <div className="relative h-full rounded-lg overflow-hidden bg-white">
         <video
@@ -179,7 +179,7 @@ export function ProductCard({
           }}
         >
           <h3
-            className={`font-body text-2xl leading-tight tracking-normal whitespace-pre-line lg:text-3xl transition-colors duration-500 ${active ? "text-white" : "text-prussian-blue-800"}`}
+            className={`font-body text-2xl font-medium leading-tight tracking-normal whitespace-pre-line lg:text-2xl transition-colors duration-500 ${active ? "text-white" : "text-prussian-blue-800"}`}
           >
             {byline}
           </h3>
