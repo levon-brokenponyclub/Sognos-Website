@@ -378,40 +378,7 @@ export default function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const activeIndexRef = useRef<number>(-1);
 
-  // Edition logo mapping (white variants for dark navbar)
-  const editionLogoMap: Record<string, string> = {
-    "disability-mental-health": "/logos/sognoscare-edition-dmh-white.svg",
-    "allied-health": "/logos/sognoscare-edition-ahc-white.svg",
-    "support-at-home": "/logos/sognoscare-edition-sah-white.svg",
-    "residential-aged-care": "/logos/sognoscare-edition-rac-white.svg",
-  };
-
-  const getLogoSrc = () => {
-    // Check if on an edition page
-    for (const [key, whiteLogoSrc] of Object.entries(editionLogoMap)) {
-      if (pathname.includes(`/editions/${key}`)) {
-        // Edition pages: light mode use regular .svg, dark mode use -white.svg
-        if (colorMode === "light") {
-          return whiteLogoSrc.replace("-white", "");
-        }
-        return whiteLogoSrc;
-      }
-    }
-    // Default Sognos logo (no switching)
-    return "/logos/sognos-logo.svg";
-  };
-
-  const isEditionPage = () => {
-    for (const key of Object.keys(editionLogoMap)) {
-      if (pathname.includes(`/editions/${key}`)) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const logoSrc = getLogoSrc();
-  const onEditionPage = isEditionPage();
+  const logoSrc = "/logos/sognos-logo.svg";
 
   // Click-outside closes desktop menu
   useEffect(() => {
@@ -599,7 +566,7 @@ export default function Navbar() {
                   scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
                 }`}
                 style={
-                  !onEditionPage && colorMode === "dark"
+                  colorMode === "dark"
                     ? { color: "transparent", filter: "brightness(0) invert(1)" }
                     : undefined
                 }

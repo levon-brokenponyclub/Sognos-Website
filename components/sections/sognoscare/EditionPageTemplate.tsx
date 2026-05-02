@@ -97,7 +97,7 @@ function Hero({ data }: { data: EditionData }) {
       data-header-dark
       className="relative flex flex-col bg-white overflow-hidden text-white h-[100svh] lg:h-[100vh] p-2"
     >
-      <div className="bg-gradient-hero h-full overflow-hidden text-white rounded-2xl relative">
+      <div className="bg-gradient-brand h-full overflow-hidden text-white rounded-2xl relative">
         <FlowCanvas colors={flowColors} />
 
         {/* Accent radial glow */}

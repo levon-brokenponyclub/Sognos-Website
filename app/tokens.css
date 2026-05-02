@@ -191,10 +191,11 @@
   ); /* #a666ff — Aged Care */
 
   /* Gradients */
-  --sognos-gradient-brand: linear-gradient(
-    135deg,
-    var(--color-prussian-blue-900) 0%,
-    var(--color-prussian-blue-950) 100%
+  --sognos-gradient-brand: radial-gradient(
+    circle at 20% 20%,
+    var(--color-prussian-blue-700) 0%,
+    var(--color-prussian-blue-800) 40%,
+    var(--color-prussian-blue-800) 100%
   );
   --sognos-gradient-accent: linear-gradient(
     145deg,
