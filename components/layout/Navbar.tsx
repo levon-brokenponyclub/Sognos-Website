@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 
@@ -99,6 +100,11 @@ const PRODUCT_META: Record<string, ProductMeta> = {
     color: "text-blue-600",
     path: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
   },
+  "Sognos Genogram": {
+    bg: "bg-violet-50",
+    color: "text-violet-500",
+    path: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
+  },
   "AI Agents": {
     bg: "bg-violet-50",
     color: "text-violet-500",
@@ -186,12 +192,14 @@ function FeatureItems({
   colIdx,
   columns,
   direction,
+  onHover,
 }: {
   items: NavItem[];
   onClose: () => void;
   colIdx: number;
   columns: MegaColumn[];
   direction: Direction;
+  onHover?: (productName: string | null) => void;
 }) {
   return (
     <ul className="space-y-0.5 mt-1">
@@ -207,6 +215,8 @@ function FeatureItems({
             <Link
               href={item.href}
               onClick={onClose}
+              onMouseEnter={() => onHover?.(item.name)}
+              onMouseLeave={() => onHover?.(null)}
               className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
             >
               {meta && (
@@ -252,12 +262,14 @@ function SimpleItems({
   colIdx,
   columns,
   direction,
+  onHover,
 }: {
   items: NavItem[];
   onClose: () => void;
   colIdx: number;
   columns: MegaColumn[];
   direction: Direction;
+  onHover?: (itemName: string | null) => void;
 }) {
   return (
     <ul className="space-y-0.5 mt-1">
@@ -271,6 +283,8 @@ function SimpleItems({
           <Link
             href={item.href}
             onClick={onClose}
+            onMouseEnter={() => onHover?.(item.name)}
+            onMouseLeave={() => onHover?.(null)}
             className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
           >
             <ChevronRight />
@@ -288,12 +302,16 @@ function MegaCol({
   onClose,
   columns,
   direction,
+  onHover,
+  onSubmenuHover,
 }: {
   col: MegaColumn;
   colIdx: number;
   onClose: () => void;
   columns: MegaColumn[];
   direction: Direction;
+  onHover?: (productName: string | null) => void;
+  onSubmenuHover?: (itemName: string | null) => void;
 }) {
   const isEmpty = col.items.length === 0;
   const isEmptyCol3 = colIdx === 2 && isEmpty;
@@ -319,6 +337,7 @@ function MegaCol({
               colIdx={colIdx}
               columns={columns}
               direction={direction}
+              onHover={onHover}
             />
           ) : (
             <SimpleItems
@@ -327,6 +346,7 @@ function MegaCol({
               colIdx={colIdx}
               columns={columns}
               direction={direction}
+              onHover={onSubmenuHover}
             />
           )}
         </>
@@ -344,6 +364,7 @@ function getMobilePanelId(label: string) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -351,9 +372,46 @@ export default function Navbar() {
   const [mobileHistory, setMobileHistory] = useState<string[]>([]);
   const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const [hoveredSubmenuItem, setHoveredSubmenuItem] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const activeIndexRef = useRef<number>(-1);
+
+  // Edition logo mapping (white variants for dark navbar)
+  const editionLogoMap: Record<string, string> = {
+    "disability-mental-health": "/logos/sognoscare-edition-dmh-white.svg",
+    "allied-health": "/logos/sognoscare-edition-ahc-white.svg",
+    "support-at-home": "/logos/sognoscare-edition-sah-white.svg",
+    "residential-aged-care": "/logos/sognoscare-edition-rac-white.svg",
+  };
+
+  const getLogoSrc = () => {
+    // Check if on an edition page
+    for (const [key, whiteLogoSrc] of Object.entries(editionLogoMap)) {
+      if (pathname.includes(`/editions/${key}`)) {
+        // Edition pages: light mode use regular .svg, dark mode use -white.svg
+        if (colorMode === "light") {
+          return whiteLogoSrc.replace("-white", "");
+        }
+        return whiteLogoSrc;
+      }
+    }
+    // Default Sognos logo (no switching)
+    return "/logos/sognos-logo.svg";
+  };
+
+  const isEditionPage = () => {
+    for (const key of Object.keys(editionLogoMap)) {
+      if (pathname.includes(`/editions/${key}`)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const logoSrc = getLogoSrc();
+  const onEditionPage = isEditionPage();
 
   // Click-outside closes desktop menu
   useEffect(() => {
@@ -533,7 +591,7 @@ export default function Navbar() {
               onClick={closeAll}
             >
               <Image
-                src="/logos/sognos-logo.svg"
+                src={logoSrc}
                 alt="Sognos"
                 width={160}
                 height={40}
@@ -541,8 +599,8 @@ export default function Navbar() {
                   scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
                 }`}
                 style={
-                  colorMode === "dark"
-                    ? { filter: "brightness(0) invert(1)" }
+                  !onEditionPage && colorMode === "dark"
+                    ? { color: "transparent", filter: "brightness(0) invert(1)" }
                     : undefined
                 }
               />
@@ -608,11 +666,11 @@ export default function Navbar() {
               </Link>
             </div>
 
-            <div className="flex justify-center items-center gap-3">
+            <div className="lg:hidden flex justify-center items-center gap-3">
               {/* Mobile CTA */}
               <Link
                 href="/contact"
-                className={`lg:hidden inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
+                className={`inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
                 onClick={closeAll}
               >
                 Book a Demo
@@ -695,16 +753,47 @@ export default function Navbar() {
                   }}
                   className="mega-panel-open grid grid-cols-3 gap-0"
                 >
-                  {activeGroup.megaMenu!.map((col, colIdx) => (
-                    <MegaCol
-                      key={`${activeGroup.label}-col-${colIdx}`}
-                      col={col}
-                      colIdx={colIdx}
-                      onClose={closeAll}
-                      columns={activeGroup.megaMenu!}
-                      direction={direction}
-                    />
-                  ))}
+                  {(() => {
+                    let displayColumns = [...activeGroup.megaMenu!] as [MegaColumn, MegaColumn, MegaColumn];
+
+                    if (activeGroup.label === "Products") {
+                      const productSub = hoveredProduct ? activeGroup.submenu?.[hoveredProduct] : undefined;
+
+                      // Col 2: product section links when a product is hovered
+                      if (productSub?.col2) {
+                        displayColumns[1] = {
+                          heading: productSub.col2.heading,
+                          variant: "simple" as const,
+                          items: productSub.col2.items,
+                        };
+                      }
+
+                      // Col 3: editions when "Editions" item is hovered in col 2 for SognosCare
+                      const showEditions = hoveredProduct === "SognosCare" && hoveredSubmenuItem === "Editions";
+                      if (showEditions && productSub?.col3) {
+                        displayColumns[2] = {
+                          heading: productSub.col3.heading,
+                          variant: "simple" as const,
+                          items: productSub.col3.items,
+                        };
+                      } else {
+                        displayColumns[2] = { heading: "", items: [] };
+                      }
+                    }
+
+                    return displayColumns.map((col, colIdx) => (
+                      <MegaCol
+                        key={`${activeGroup.label}-col-${colIdx}-${hoveredProduct ?? ""}`}
+                        col={col}
+                        colIdx={colIdx}
+                        onClose={closeAll}
+                        columns={displayColumns}
+                        direction={direction}
+                        onHover={activeGroup.label === "Products" && colIdx === 0 ? setHoveredProduct : undefined}
+                        onSubmenuHover={activeGroup.label === "Products" && colIdx === 1 ? setHoveredSubmenuItem : undefined}
+                      />
+                    ));
+                  })()}
                 </motion.div>
               </AnimatePresence>
             </div>

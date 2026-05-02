@@ -3,9 +3,7 @@ import SognoscareProblems from "@/components/sections/sognoscare/Problems";
 import SognoscareFeatures from "@/components/sections/sognoscare/Features";
 import SognoscareEditions from "@/components/sections/sognoscare/Editions";
 import SognoscareAdvantages from "@/components/sections/sognoscare/Advantages";
-import SognoscareProof from "@/components/sections/sognoscare/Proof";
 import SognoscareStories from "@/components/sections/sognoscare/Stories";
-import SognoscareIntegration from "@/components/sections/sognoscare/Integration";
 import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 
@@ -19,10 +17,9 @@ const SECTIONS = [
   { label: "What it solves", id: "problems" },
   { label: "Features", id: "features" },
   { label: "Editions", id: "editions" },
-  { label: "Why SognosCare", id: "advantages" },
-  { label: "Proof", id: "proof" },
-  { label: "Stories", id: "stories" },
-  { label: "Integration", id: "integration" },
+  { label: "Key Advantages", id: "advantages" },
+  { label: "Customer Stories", id: "stories" },
+  { label: "Schedule a Call", id: "calendar" },
 ];
 
 export default function SognosCarePage() {
@@ -34,9 +31,7 @@ export default function SognosCarePage() {
       <SognoscareFeatures />
       <SognoscareEditions />
       <SognoscareAdvantages />
-      <SognoscareProof />
       <SognoscareStories />
-      <SognoscareIntegration />
       <CTASection
         headline="Ready to see SognosCare in action?"
         subtext="Book a personalised demo and see how SognosCare handles your specific service delivery, compliance, and reporting requirements."

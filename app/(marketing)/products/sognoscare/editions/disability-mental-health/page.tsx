@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import EditionPageTemplate, { type EditionData } from "@/components/sections/sognoscare/EditionPageTemplate";
+import EditionPageTemplate, {
+  type EditionData,
+} from "@/components/sections/sognoscare/EditionPageTemplate";
 
 export const metadata: Metadata = {
   title: "SognosCare for Disability & Mental Health | Sognos",
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
 
 const data: EditionData = {
   name: "Disability & Mental Health",
-  tagline: "Purpose-built for NDIS and psychosocial support providers.",
+  tagline: "Purpose-built for psychosocial providers.",
   description:
     "Smart systems to support participant goals, reduce admin, and stay NDIS-compliant — all built on Microsoft using the latest AI technology.",
   gradient: "/images/sognoscare/gradient-1.png",
@@ -57,27 +59,33 @@ const data: EditionData = {
     },
     {
       title: "Intake & Onboarding",
-      description: "Referrals, assessments, consent forms, and participant records from day one.",
+      description:
+        "Referrals, assessments, consent forms, and participant records from day one.",
     },
     {
       title: "Recovery Planning & Goal Tracking",
-      description: "Personalised plans, goal progress notes, and outcome reporting built in.",
+      description:
+        "Personalised plans, goal progress notes, and outcome reporting built in.",
     },
     {
       title: "Rostering & Mobile Workforce",
-      description: "Smart scheduling, NDIS-compliant shift matching, and mobile access for workers.",
+      description:
+        "Smart scheduling, NDIS-compliant shift matching, and mobile access for workers.",
     },
     {
       title: "Compliance & Reporting",
-      description: "Auditing templates, mandatory reporting workflows, and quality indicator dashboards.",
+      description:
+        "Auditing templates, mandatory reporting workflows, and quality indicator dashboards.",
     },
     {
       title: "Billing & Claims",
-      description: "Plan management automation, NDIS price guide enforcement, and bulk claim submission.",
+      description:
+        "Plan management automation, NDIS price guide enforcement, and bulk claim submission.",
     },
     {
       title: "Secure Communication",
-      description: "Encrypted messaging and document sharing between coordinators, workers, and participants.",
+      description:
+        "Encrypted messaging and document sharing between coordinators, workers, and participants.",
     },
   ],
   advantages: [
@@ -87,6 +95,8 @@ const data: EditionData = {
     "Reduces admin by up to 40%",
     "Keeps you audit-ready and person-centred at every step",
     "Pre-configured NDIS funding rules and Quality & Safeguards workflows",
+    "Goal tracking and outcome reporting aligned to NDIS plans",
+    "Restrictive practice authorisation workflows built in",
   ],
   aiTools: [
     "Copilot-style note automation",
@@ -107,10 +117,22 @@ const data: EditionData = {
   ],
   caseStudy: {
     eyebrow: "Customer Story",
-    title: "How Flourish Australia is Transforming Care Delivery with SognosCare",
+    title:
+      "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how SognosCare helped a leading mental health provider streamline care coordination, reduce manual processes, and prepare for sector reforms — all while keeping teams focused on the people they serve.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
     href: "/customers",
+    company: "Penrith City Council",
+    companySize: "300+",
+    industry: "Local Government",
+    logo: "/logos/penrith-city-council-logo.png",
+    panelImage: "",
+    panelVideo:
+      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    quote:
+      "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+    author: "Claire Donovan",
+    role: "Service Delivery Manager, Penrith City Council",
   },
 };
 

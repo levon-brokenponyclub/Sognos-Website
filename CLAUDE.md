@@ -275,3 +275,9 @@ Pending:
 - Server Components by default
 - No styling decisions until Phase 6
 - Claude = Builder + Architect only (NOT designer)
+- - If you cannot locate a file on the first attempt, stop and ask — do not keep searching and burning tokens
+- Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
+- Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
+- Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
+- Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
+- Do not add features, abstractions, or complexity beyond what the task requires — keep it minimal

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const FEATURES = [
   {
@@ -16,8 +17,6 @@ const FEATURES = [
       "Bulk schedule preview before publishing to workers",
       "Override controls for manual adjustments without breaking automation",
     ],
-    iconPath:
-      "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
   },
   {
     id: "skills-matching",
@@ -31,8 +30,6 @@ const FEATURES = [
       "Automatic ineligibility flags when compliance requirements aren't met",
       "Compliance audit trail per shift allocation",
     ],
-    iconPath:
-      "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
   },
   {
     id: "route-optimisation",
@@ -46,8 +43,6 @@ const FEATURES = [
       "Travel time reporting for cost transparency and worker pay",
       "Worker travel allowance calculations automated per award conditions",
     ],
-    iconPath:
-      "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7",
   },
   {
     id: "real-time-adjustments",
@@ -61,8 +56,6 @@ const FEATURES = [
       "Disruption impact summary showing affected services and coverage gaps",
       "Day-of adjustment audit log for compliance and dispute resolution",
     ],
-    iconPath:
-      "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
   },
   {
     id: "mobile-app",
@@ -76,8 +69,6 @@ const FEATURES = [
       "In-app progress notes and incident capture",
       "Offline mode for areas with poor connectivity",
     ],
-    iconPath:
-      "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
   },
   {
     id: "copilot",
@@ -91,7 +82,6 @@ const FEATURES = [
       "Natural language queries across workforce and schedule data",
       "Anomaly detection for coverage risks and compliance gaps",
     ],
-    iconPath: "M13 10V3L4 14h7v7l9-11h-7z",
   },
 ] as const;
 
@@ -110,25 +100,17 @@ function FeatureVisual({ id }: { id: string }) {
         ].map((row) => (
           <div
             key={row.worker}
-            className="flex items-center gap-3 rounded-lg border border-(--sognos-card-border) bg-white px-4 py-3"
+            className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3"
           >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-(--color-cornflower-ocean-100) text-xs font-semibold text-brand">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-[#1D96FC]">
               {row.worker.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-semibold text-sognos-text-heading">
-                {row.worker}
-              </p>
-              <p className="truncate text-[11px] text-sognos-text-muted">{row.service}</p>
+              <p className="truncate text-xs font-semibold text-prussian-blue-800">{row.worker}</p>
+              <p className="truncate text-[11px] text-gray-400">{row.service}</p>
             </div>
-            <span className="shrink-0 text-xs text-sognos-text-muted">{row.time}</span>
-            <span
-              className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                row.status === "Confirmed"
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "bg-amber-50 text-amber-600"
-              }`}
-            >
+            <span className="shrink-0 text-xs text-gray-400">{row.time}</span>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${row.status === "Confirmed" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-600"}`}>
               {row.status}
             </span>
           </div>
@@ -143,20 +125,11 @@ function FeatureVisual({ id }: { id: string }) {
           { label: "Manual Handling", status: "Valid", expiry: "Dec 2025" },
           { label: "Medication Administration", status: "Expiring", expiry: "May 2025" },
         ].map((item) => (
-          <div
-            key={item.label}
-            className="flex items-center justify-between rounded-lg border border-(--sognos-card-border) bg-white px-4 py-3"
-          >
-            <span className="text-xs font-medium text-sognos-text-heading">{item.label}</span>
+          <div key={item.label} className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3">
+            <span className="text-xs font-medium text-prussian-blue-800">{item.label}</span>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-sognos-text-muted">{item.expiry}</span>
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                  item.status === "Valid"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "bg-amber-50 text-amber-700"
-                }`}
-              >
+              <span className="text-[10px] text-gray-400">{item.expiry}</span>
+              <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${item.status === "Valid" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
                 {item.status}
               </span>
             </div>
@@ -166,29 +139,20 @@ function FeatureVisual({ id }: { id: string }) {
     ),
     "route-optimisation": (
       <div className="space-y-3">
-        <div className="rounded-xl border border-(--sognos-card-border) bg-white p-4">
+        <div className="rounded-lg border border-gray-100 bg-white p-4">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-semibold text-sognos-text-muted uppercase tracking-widest">
-              Today&apos;s routes
-            </p>
-            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
-              Optimised
-            </span>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Today&apos;s routes</p>
+            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">Optimised</span>
           </div>
           {[
             { worker: "Sarah K.", stops: 4, travel: "38 min", saved: "22 min" },
             { worker: "Marcus T.", stops: 3, travel: "25 min", saved: "14 min" },
             { worker: "James O.", stops: 5, travel: "52 min", saved: "31 min" },
           ].map((row) => (
-            <div
-              key={row.worker}
-              className="flex items-center gap-3 border-t border-(--sognos-card-border) py-2.5 first:border-0"
-            >
-              <span className="w-20 text-xs font-medium text-sognos-text-heading truncate">
-                {row.worker}
-              </span>
-              <span className="text-xs text-sognos-text-muted">{row.stops} stops</span>
-              <span className="ml-auto text-xs text-sognos-text-muted">{row.travel}</span>
+            <div key={row.worker} className="flex items-center gap-3 border-t border-gray-100 py-2.5 first:border-0">
+              <span className="w-20 text-xs font-medium text-prussian-blue-800 truncate">{row.worker}</span>
+              <span className="text-xs text-gray-400">{row.stops} stops</span>
+              <span className="ml-auto text-xs text-gray-400">{row.travel}</span>
               <span className="text-xs font-semibold text-emerald-600">−{row.saved}</span>
             </div>
           ))}
@@ -197,45 +161,34 @@ function FeatureVisual({ id }: { id: string }) {
     ),
     "real-time-adjustments": (
       <div className="space-y-2">
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
           <p className="text-xs font-semibold text-amber-800">Disruption detected</p>
-          <p className="mt-0.5 text-[11px] text-amber-700">
-            Sarah K. — sick leave. 3 services affected.
-          </p>
+          <p className="mt-0.5 text-[11px] text-amber-700">Sarah K. — sick leave. 3 services affected.</p>
         </div>
         {[
           { worker: "Emma R.", match: "98%", travel: "+12 min", action: "Assign" },
           { worker: "Priya M.", match: "91%", travel: "+18 min", action: "Assign" },
           { worker: "James O.", match: "84%", travel: "+25 min", action: "Assign" },
         ].map((row) => (
-          <div
-            key={row.worker}
-            className="flex items-center gap-3 rounded-lg border border-(--sognos-card-border) bg-white px-4 py-3"
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-(--color-cornflower-ocean-100) text-xs font-semibold text-brand">
+          <div key={row.worker} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-[#1D96FC]">
               {row.worker.charAt(0)}
             </div>
-            <span className="flex-1 text-xs font-medium text-sognos-text-heading">
-              {row.worker}
-            </span>
-            <span className="text-xs font-semibold text-(--sognos-edition-green)">
-              {row.match}
-            </span>
-            <span className="text-[11px] text-sognos-text-muted">{row.travel}</span>
-            <button className="rounded-md bg-brand px-2.5 py-1 text-[10px] font-semibold text-white">
-              {row.action}
-            </button>
+            <span className="flex-1 text-xs font-medium text-prussian-blue-800">{row.worker}</span>
+            <span className="text-xs font-semibold text-emerald-600">{row.match}</span>
+            <span className="text-[11px] text-gray-400">{row.travel}</span>
+            <button className="rounded-md bg-[#1D96FC] px-2.5 py-1 text-[10px] font-semibold text-white">{row.action}</button>
           </div>
         ))}
       </div>
     ),
     "mobile-app": (
-      <div className="mx-auto w-48 overflow-hidden rounded-2xl border border-(--sognos-card-border) bg-white shadow-sm">
-        <div className="bg-brand px-4 py-3">
+      <div className="mx-auto w-48 overflow-hidden rounded-lg border border-gray-100 bg-white">
+        <div className="bg-[#1D96FC] px-4 py-3">
           <p className="text-xs font-semibold text-white">Today — 4 visits</p>
           <p className="text-[10px] text-white/60">Sarah K.</p>
         </div>
-        <div className="divide-y divide-(--sognos-card-border)">
+        <div className="divide-y divide-gray-100">
           {[
             { time: "08:00", name: "R. Thompson", type: "Support" },
             { time: "10:30", name: "M. Chen", type: "Transport" },
@@ -243,14 +196,10 @@ function FeatureVisual({ id }: { id: string }) {
             { time: "15:30", name: "A. Wilson", type: "Support" },
           ].map((v) => (
             <div key={v.time} className="flex items-center gap-3 px-3 py-2.5">
-              <span className="shrink-0 text-[10px] font-medium text-sognos-text-muted">
-                {v.time}
-              </span>
+              <span className="shrink-0 text-[10px] font-medium text-gray-400">{v.time}</span>
               <div className="min-w-0">
-                <p className="truncate text-[11px] font-semibold text-sognos-text-heading">
-                  {v.name}
-                </p>
-                <p className="text-[10px] text-sognos-text-muted">{v.type}</p>
+                <p className="truncate text-[11px] font-semibold text-prussian-blue-800">{v.name}</p>
+                <p className="text-[10px] text-gray-400">{v.type}</p>
               </div>
             </div>
           ))}
@@ -259,22 +208,14 @@ function FeatureVisual({ id }: { id: string }) {
     ),
     "copilot": (
       <div className="space-y-3">
-        <div className="rounded-xl border border-(--sognos-card-border) bg-white p-4">
-          <p className="mb-2 text-xs font-semibold text-sognos-text-muted">
-            Copilot insight — Thursday roster
-          </p>
-          <p className="text-sm leading-relaxed text-sognos-text-body">
-            3 workers are scheduled within 500m of each other between 10am–12pm.
-            Reassigning one visit to reduce travel overlap could save 45 minutes
-            of total drive time.
+        <div className="rounded-lg border border-gray-100 bg-white p-4">
+          <p className="mb-2 text-xs font-semibold text-gray-400">Copilot insight — Thursday roster</p>
+          <p className="text-sm leading-relaxed text-prussian-blue-800">
+            3 workers are scheduled within 500m of each other between 10am–12pm. Reassigning one visit could save 45 minutes of total drive time.
           </p>
           <div className="mt-3 flex gap-2">
-            <button className="rounded-md bg-brand px-3 py-1 text-xs font-semibold text-white">
-              Apply suggestion
-            </button>
-            <button className="rounded-md border border-(--sognos-card-border) px-3 py-1 text-xs font-semibold text-sognos-text-muted">
-              Dismiss
-            </button>
+            <button className="rounded-md bg-[#1D96FC] px-3 py-1 text-xs font-semibold text-white">Apply suggestion</button>
+            <button className="rounded-md border border-gray-100 px-3 py-1 text-xs font-semibold text-gray-400">Dismiss</button>
           </div>
         </div>
       </div>
@@ -282,7 +223,7 @@ function FeatureVisual({ id }: { id: string }) {
   };
 
   return (
-    <div className="rounded-2xl border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-6">
+    <div className="w-full h-full flex flex-col justify-center">
       {visuals[id] ?? null}
     </div>
   );
@@ -291,120 +232,115 @@ function FeatureVisual({ id }: { id: string }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SognoscareRosterFeatures() {
-  const [activeId, setActiveId] = useState<string>(FEATURES[0].id);
-  const active = FEATURES.find((f) => f.id === activeId) ?? FEATURES[0];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = FEATURES[activeIndex];
 
   return (
-    <section id="features" className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="features" className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Header */}
-        <div className="mb-16 max-w-xl">
-          <h2 className="mb-4 font-heading text-4xl font-normal text-sognos-text-heading">
+        <div className="grid grid-cols-1 gap-2 lg:gap-5 items-end pb-6">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
+            <span className="w-2 h-2 bg-white rounded-full"></span>
+            Full scheduling lifecycle
+          </div>
+          <h2 className="text-3xl md:text-4xl text-white font-heading font-medium tracking-tight">
             Built for the full scheduling lifecycle
           </h2>
-          <p className="text-lg text-sognos-text-body">
-            From initial roster generation through to real-time disruptions and
-            field execution — SognosRoster handles the full operational loop.
-          </p>
         </div>
 
-        {/* Mobile: horizontal tab scroll */}
-        <div className="mb-8 -mx-6 flex gap-1 overflow-x-auto px-6 pb-2 lg:hidden">
-          {FEATURES.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setActiveId(f.id)}
-              className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                activeId === f.id
-                  ? "bg-brand text-white"
-                  : "bg-(--sognos-bg-sunken) text-sognos-text-body hover:text-sognos-text-heading"
-              }`}
-            >
-              {f.name}
-            </button>
+        {/* Mobile — stacked cards */}
+        <div className="lg:hidden mt-10">
+          {FEATURES.map((feat) => (
+            <div key={feat.id} className="mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3">
+              <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
+                <h3 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">{feat.name}</h3>
+                <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">{feat.description}</p>
+                <ul className="space-y-2 mt-1">
+                  {feat.capabilities.map((cap) => (
+                    <li key={cap} className="flex items-start gap-2.5 text-sm text-sognos-text-body">
+                      <svg className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {cap}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-lg overflow-hidden bg-gray-200/50 p-4 min-h-[200px] flex items-center justify-center">
+                <FeatureVisual id={feat.id} />
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Desktop: sticky nav + content */}
-        <div className="flex gap-16">
-          {/* Left nav — sticky */}
-          <nav className="hidden lg:flex lg:w-56 lg:shrink-0 lg:flex-col lg:gap-1 self-start sticky top-[160px]">
-            {FEATURES.map((f) => (
+        {/* Desktop — vertical tabs | animated panel */}
+        <div className="hidden lg:flex gap-4 h-[460px] mt-10">
+          {/* Left column — vertical tab list */}
+          <div className="w-[360px] shrink-0 flex flex-col justify-center">
+            {FEATURES.map((feat, i) => (
               <button
-                key={f.id}
-                onClick={() => setActiveId(f.id)}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-200 ${
-                  activeId === f.id
-                    ? "bg-(--sognos-bg-sunken) font-semibold text-brand"
-                    : "font-medium text-sognos-text-body hover:bg-(--sognos-bg-sunken) hover:text-sognos-text-heading"
+                key={feat.id}
+                onClick={() => setActiveIndex(i)}
+                className={`w-full text-left py-3 px-5 font-heading text-xl font-medium tracking-tight transition-colors cursor-pointer ${
+                  i === activeIndex
+                    ? "text-white border-l-3 border-l-[#1D96FC]"
+                    : "text-white/70 border-l-3 border-l-prussian-blue-900 hover:text-white"
                 }`}
               >
-                <span
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-200 ${
-                    activeId === f.id ? "bg-brand" : "bg-(--sognos-card-border)"
-                  }`}
-                />
-                {f.name}
+                {feat.name}
               </button>
             ))}
-          </nav>
-
-          {/* Right content */}
-          <div className="min-w-0 flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
-                  {/* Detail */}
-                  <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand">
-                      {active.tagline}
-                    </p>
-                    <h3 className="mb-4 font-heading text-3xl font-normal text-sognos-text-heading">
-                      {active.name}
-                    </h3>
-                    <p className="mb-8 text-base leading-relaxed text-sognos-text-body">
-                      {active.description}
-                    </p>
-
-                    <ul className="space-y-3">
-                      {active.capabilities.map((cap) => (
-                        <li key={cap} className="flex items-start gap-3">
-                          <svg
-                            className="mt-0.5 h-4 w-4 shrink-0 text-(--sognos-edition-green)"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span className="text-sm leading-relaxed text-sognos-text-body">
-                            {cap}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Visual mock */}
-                  <div className="hidden lg:block">
-                    <FeatureVisual id={active.id} />
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
           </div>
+
+          {/* Center + right — animated panel */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
+            >
+              {/* Left — grey info panel */}
+              <div className="shrink-0 w-[45%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
+                <div className="flex flex-col">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">{active.tagline}</p>
+                  <h3 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">{active.name}</h3>
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">{active.description}</p>
+                  <ul className="mt-6 space-y-2.5">
+                    {active.capabilities.map((cap) => (
+                      <li key={cap} className="flex items-start gap-2.5 text-sm text-sognos-text-body">
+                        <svg className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        {cap}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Link
+                  href="/contact"
+                  className="mt-5 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                >
+                  Book a Demo
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
+
+              {/* Right — visual */}
+              <div className="flex-1 relative rounded-lg overflow-hidden bg-gray-200/40 flex items-center justify-center p-8">
+                <div className="w-full max-w-sm">
+                  <FeatureVisual id={active.id} />
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

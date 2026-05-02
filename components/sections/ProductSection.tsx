@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Maximize2, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
+import EditionCards from "./sognoscare/EditionCards";
 
 type Edition = {
   label: string;
@@ -24,50 +26,8 @@ type ProductCardData = {
   ctaLink: string;
   video: string;
   hoverBg: string;
-  editions?: Edition[];
+  editions?: readonly Edition[];
 };
-
-const SOGNOSCARE_EDITIONS: Edition[] = [
-  {
-    label: "Disability & Mental Health",
-    logo: "/logos/sognoscare-edition-dmh.svg",
-    href: "/products/sognoscare/editions/disability-mental-health",
-    accentColor: "#1D96FC",
-    tagline: "NDIS, psychosocial support, and participant outcome tracking",
-    description:
-      "Plan around participant goals, manage incidents, and streamline progress notes — with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
-  },
-  {
-    label: "Allied Health",
-    logo: "/logos/sognoscare-edition-ahc.svg",
-    href: "/products/sognoscare/editions/allied-health",
-    accentColor: "#4ECCD6",
-    tagline:
-      "Mobile therapy teams, referral management, and multi-disciplinary records",
-    description:
-      "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
-  },
-  {
-    label: "Support at Home",
-    logo: "/logos/sognoscare-edition-sah.svg",
-    href: "/products/sognoscare/editions/support-at-home",
-    accentColor: "#92278D",
-    tagline:
-      "Home care packages, Support at Home reform, and client independence",
-    description:
-      "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
-  },
-  {
-    label: "Residential Aged Care",
-    logo: "/logos/sognoscare-edition-rac.svg",
-    href: "/products/sognoscare/editions/residential-aged-care",
-    accentColor: "#FF6B35",
-    tagline:
-      "Resident care planning, clinical documentation, and facility compliance",
-    description:
-      "From care planning and progress documentation to staff coordination and resident outcome reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
-  },
-];
 
 const PRODUCT_CARDS: ProductCardData[] = [
   {
@@ -171,7 +131,7 @@ function ProductCard({
       className="shrink-0 w-[calc(100vw-3rem)] snap-center lg:flex-1 lg:w-auto h-[520px] overflow-hidden rounded-md bg-white p-2"
     >
       {/* Inner — relative + overflow-hidden clips the content when offset */}
-      <div className="relative h-full rounded-lg overflow-hidden bg-gray-100">
+      <div className="relative h-full rounded-lg overflow-hidden bg-white">
         {/* Video */}
         <video
           src={video}
@@ -220,9 +180,9 @@ function ProductCard({
         <motion.div
           animate={{ y: active ? 0 : 50 }}
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-          className="absolute bottom-0 left-0 right-0 z-10 rounded-lf px-6 pt-10 pb-8"
+          className="absolute bottom-0 left-0 right-0 z-10 rounded-lg px-6 pt-10 pb-8"
           style={{
-            backgroundColor: active ? `${hoverBg}e6` : "rgb(229 231 235 / 1)",
+            backgroundColor: active ? `${hoverBg}e6` : "rgb(241, 245, 249)",
           }}
         >
           <h3
@@ -273,16 +233,16 @@ function EditionsDrawer({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-[#EDEEF1] rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle + close */}
             <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
-              <div className="w-10 h-1 rounded-full bg-slate-200 mx-auto absolute left-1/2 -translate-x-1/2" />
+              <div className="w-10 h-1 rounded-full bg-gray-300 mx-auto absolute left-1/2 -translate-x-1/2" />
               <div />
               <button
                 onClick={onClose}
-                className="w-9 h-9 rounded-full border border-sognos-border-subtle flex items-center justify-center text-prussian-blue-800/50 hover:text-prussian-blue-800 hover:border-prussian-blue-800/30 transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-prussian-blue-800/50 hover:text-prussian-blue-800 hover:border-prussian-blue-800/30 transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X size={14} />
@@ -291,72 +251,23 @@ function EditionsDrawer({
 
             {/* Scrollable content */}
             <div className="overflow-y-auto flex-1">
-              <div className="max-w-5xl mx-auto px-6 pb-10">
-                <div className="py-4 mb-6 border-b border-sognos-border-subtle">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-1">
-                    SognosCare
-                  </p>
-                  <h3 className="font-heading text-2xl font-medium text-prussian-blue-800">
-                    Choose your edition
+              <div className="mx-auto px-6 lg:px-12 pb-10">
+                <div className="py-4 items-center text-center max-w-4xl mx-auto mb-6 border-b border-sognos-border-subtle">
+                  <h3 className="font-heading text-3xl font-medium text-prussian-blue-800">
+                    Choose the Right SognosCare Edition for Your Service
                   </h3>
-                  <p className="mt-1 text-sm text-sognos-text-body">
-                    SognosCare is purpose-built for each care setting.
+                  <p className="mt-2 text-lg text-sognos-text-body">
+                    SognosCare offers four tailored editions — each
+                    pre-configured for its funding model, compliance framework,
+                    and operational workflows.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {SOGNOSCARE_EDITIONS.map((edition) => (
-                    <div
-                      key={edition.href}
-                      className="p-2 rounded-lg"
-                      style={{ backgroundColor: edition.accentColor }}
-                    >
-                      <div className="bg-white rounded-lg p-6 flex flex-col h-full">
-                        <Image
-                          src={edition.logo}
-                          alt={edition.label}
-                          width={120}
-                          height={32}
-                          className="h-8 w-auto object-contain mb-4"
-                        />
-
-                        <h4 className="font-heading text-xl font-medium text-prussian-blue-800 mb-2">
-                          {edition.label}
-                        </h4>
-                        <p className="text-sm font-medium text-gray-600 mb-3">
-                          {edition.tagline}
-                        </p>
-                        <p className="text-sm text-gray-700 leading-relaxed mb-6 flex-1">
-                          {edition.description}
-                        </p>
-                        <Link
-                          href="/contact"
-                          onClick={onClose}
-                          className="inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
-                        >
-                          Book a Demo
-                          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 14 14"
-                              fill="none"
-                              aria-hidden="true"
-                            >
-                              <path
-                                d="M3 7h8M7 3l4 4-4 4"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <EditionCards
+                  editions={SOGNOSCARE_EDITIONS}
+                  showSliderButtons
+                  containerClassName="w-full"
+                />
               </div>
             </div>
           </motion.div>

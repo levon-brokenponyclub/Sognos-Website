@@ -3,6 +3,7 @@ import GenogramProblems from "@/components/sections/sognosgenogram/Problems";
 import GenogramFeatures from "@/components/sections/sognosgenogram/Features";
 import GenogramIntegration from "@/components/sections/sognosgenogram/Integration";
 import CTASection from "@/components/sections/CTASection";
+import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
   title: "Sognos Genogram — Relationship & Family Context Platform | Sognos",
@@ -10,10 +11,18 @@ export const metadata = {
     "Map family structures, support networks, and relationship histories directly into case records. Sognos Genogram gives every worker the relational context they need.",
 };
 
+const SECTIONS = [
+  { label: "What it solves", id: "problems" },
+  { label: "Features", id: "features" },
+  { label: "Integration", id: "integration" },
+  { label: "Schedule a Call", id: "calendar" },
+];
+
 export default function SognosGenogramPage() {
   return (
     <>
       <GenogramHero />
+      <ProductSubNav productName="Sognos Genogram" sections={SECTIONS} />
       <GenogramProblems />
       <GenogramFeatures />
       <GenogramIntegration />

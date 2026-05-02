@@ -15,7 +15,7 @@ const PAIN_POINTS = [
 
 export default function GenogramProblems() {
   return (
-    <section className="bg-white py-24">
+    <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>

@@ -32,23 +32,54 @@ export const PRODUCTS = {
 } as const;
 
 export const SOLUTIONS = [
-  { name: "Field Service", slug: "field-service", href: "/solutions/field-service", description: "Manage field technician dispatch, job tracking, and SLA compliance at scale." },
+  {
+    name: "Field Service",
+    slug: "field-service",
+    href: "/solutions/field-service",
+    description:
+      "Manage field technician dispatch, job tracking, and SLA compliance at scale.",
+  },
   {
     name: "Customer Relationship Management",
     slug: "customer-relationship-management",
     href: "/solutions/customer-relationship-management",
-    description: "Centralise client records, interactions, and service history in one system."
+    description:
+      "Centralise client records, interactions, and service history in one system.",
   },
-  { name: "Customer Insights", slug: "customer-insights", href: "/solutions/customer-insights", description: "Surface patterns in service demand, outcomes, and client behaviour." },
+  {
+    name: "Customer Insights",
+    slug: "customer-insights",
+    href: "/solutions/customer-insights",
+    description:
+      "Surface patterns in service demand, outcomes, and client behaviour.",
+  },
   {
     name: "Customer Experience",
     slug: "customer-experience",
     href: "/solutions/customer-experience",
-    description: "Deliver consistent, high-quality service interactions across every touchpoint."
+    description:
+      "Deliver consistent, high-quality service interactions across every touchpoint.",
   },
-  { name: "Customer Service", slug: "customer-service", href: "/solutions/customer-service", description: "Resolve issues faster with unified case management and response tracking." },
-  { name: "Power Platform", slug: "power-platform", href: "/solutions/power-platform", description: "Extend and automate your operations with low-code tools built into the platform." },
-  { name: "Quick Start", slug: "quick-start", href: "/solutions/quick-start", description: "Get up and running with Sognos in weeks — not months." },
+  {
+    name: "Customer Service",
+    slug: "customer-service",
+    href: "/solutions/customer-service",
+    description:
+      "Resolve issues faster with unified case management and response tracking.",
+  },
+  {
+    name: "Power Platform",
+    slug: "power-platform",
+    href: "/solutions/power-platform",
+    description:
+      "Extend and automate your operations with low-code tools built into the platform.",
+  },
+  {
+    name: "Quick Start",
+    slug: "quick-start",
+    href: "/solutions/quick-start",
+    description: "Get up and running with Sognos in weeks — not months.",
+  },
 ] as const;
 
 export const INDUSTRIES = [
@@ -126,5 +157,45 @@ export const INDUSTRIES = [
       "Emergency response coordination with dynamic workforce reallocation",
       "Network fault response with SLA tracking and full audit trails",
     ],
+  },
+] as const;
+
+export const SOGNOSCARE_EDITIONS = [
+  {
+    label: "Disability & Mental Health",
+    logo: "/logos/sognoscare-edition-dmh.svg",
+    href: "/products/sognoscare/editions/disability-mental-health",
+    accentColor: "#00A98F",
+    tagline: "NDIS, psychosocial support, and participant outcome tracking",
+    description:
+      "Plan around participant goals, manage incidents, and streamline progress notes — with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
+  },
+  {
+    label: "Allied Health",
+    logo: "/logos/sognoscare-edition-ahc.svg",
+    href: "/products/sognoscare/editions/allied-health",
+    accentColor: "#FE9C48",
+    tagline:
+      "Mobile therapy , referral management, and multi-disciplinary records",
+    description:
+      "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
+  },
+  {
+    label: "Support at Home",
+    logo: "/logos/sognoscare-edition-sah.svg",
+    href: "/products/sognoscare/editions/support-at-home",
+    accentColor: "#FF7276",
+    tagline: "Support at Home reform, and client independence",
+    description:
+      "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
+  },
+  {
+    label: "Residential Aged Care",
+    logo: "/logos/sognoscare-edition-rac.svg",
+    href: "/products/sognoscare/editions/residential-aged-care",
+    accentColor: "#BE8FFF",
+    tagline: "Care planning, clinical documentation, and compliance",
+    description:
+      "From care planning and progress documentation to staff coordination and resident reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
   },
 ] as const;

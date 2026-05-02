@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import EditionPageTemplate, { type EditionData } from "@/components/sections/sognoscare/EditionPageTemplate";
+import EditionPageTemplate, {
+  type EditionData,
+} from "@/components/sections/sognoscare/EditionPageTemplate";
 
 export const metadata: Metadata = {
   title: "SognosCare for Support at Home | Sognos",
@@ -9,9 +11,9 @@ export const metadata: Metadata = {
 
 const data: EditionData = {
   name: "Support at Home",
-  tagline: "Home care packages, Support at Home reform, and client independence.",
+  tagline: "Support at Home reform, and independence.",
   description:
-    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance obligations pre-configured.",
+    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program.",
   gradient: "/images/sognoscare/gradient-3.png",
   accentHex: "#ff666b",
   accentTextClass: "text-(--sognos-edition-coral)",
@@ -93,6 +95,8 @@ const data: EditionData = {
     "Automates compliance reporting to reduce month-end burden",
     "Supports both self-directed and provider-managed care models",
     "Demonstrates person-centred care with structured goal records",
+    "GPS-verified service delivery for transparent billing",
+    "Care partner and family portal for shared visibility",
   ],
   aiTools: [
     "AI-assisted care plan generation from client assessments",
@@ -113,10 +117,22 @@ const data: EditionData = {
   ],
   caseStudy: {
     eyebrow: "Customer Story",
-    title: "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
+    title:
+      "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
       "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
     href: "/customers",
+    company: "Penrith City Council",
+    companySize: "300+",
+    industry: "Local Government",
+    logo: "/logos/penrith-city-council-logo.png",
+    panelImage: "",
+    panelVideo:
+      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    quote:
+      "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+    author: "Claire Donovan",
+    role: "Service Delivery Manager, Penrith City Council",
   },
 };
 

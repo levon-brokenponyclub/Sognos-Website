@@ -2,8 +2,20 @@
 
 import { useEffect, useRef } from "react";
 
-export default function FlowCanvas() {
+const DEFAULT_COLORS: [string, string, string] = [
+  "rgba(186, 230, 253, 0.5)",
+  "rgba(56, 189, 248, 0.5)",
+  "rgba(2, 132, 199, 0.5)",
+];
+
+type Props = {
+  colors?: [string, string, string];
+};
+
+export default function FlowCanvas({ colors = DEFAULT_COLORS }: Props = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const colorsRef = useRef(colors);
+  colorsRef.current = colors;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,9 +45,9 @@ export default function FlowCanvas() {
       mouseY += (targetMouseY - mouseY) * 0.08;
 
       const gradient = ctx!.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop(0, "rgba(186, 230, 253, 0.5)");
-      gradient.addColorStop(0.5, "rgba(56, 189, 248, 0.5)");
-      gradient.addColorStop(1, "rgba(2, 132, 199, 0.5)");
+      gradient.addColorStop(0, colorsRef.current[0]);
+      gradient.addColorStop(0.5, colorsRef.current[1]);
+      gradient.addColorStop(1, colorsRef.current[2]);
 
       ctx!.strokeStyle = gradient;
       ctx!.globalCompositeOperation = "screen";

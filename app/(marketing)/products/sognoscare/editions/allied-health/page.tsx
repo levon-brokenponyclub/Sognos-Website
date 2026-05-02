@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import EditionPageTemplate, { type EditionData } from "@/components/sections/sognoscare/EditionPageTemplate";
+import EditionPageTemplate, {
+  type EditionData,
+} from "@/components/sections/sognoscare/EditionPageTemplate";
 
 export const metadata: Metadata = {
   title: "SognosCare for Allied Health | Sognos",
@@ -9,7 +11,8 @@ export const metadata: Metadata = {
 
 const data: EditionData = {
   name: "Allied Health",
-  tagline: "Mobile therapy teams, referral management, and multi-disciplinary records.",
+  tagline:
+    "Mobile therapy teams, referral management, and multi-disciplinary records.",
   description:
     "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
   gradient: "/images/sognoscare/gradient-2.png",
@@ -93,6 +96,8 @@ const data: EditionData = {
     "Reduces time-to-treatment from referral",
     "Structured documentation that keeps you audit-ready",
     "Shared records visible to all disciplines in the care team",
+    "Outcome measurement built in for evidence-based practice",
+    "Group session and program management out of the box",
   ],
   aiTools: [
     "Copilot-style clinical note automation",
@@ -113,10 +118,22 @@ const data: EditionData = {
   ],
   caseStudy: {
     eyebrow: "Customer Story",
-    title: "How an Allied Health Provider Streamlined Referral-to-Treatment with SognosCare",
+    title:
+      "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a multi-site allied health practice reduced referral wait times, improved practitioner utilisation, and eliminated billing errors with SognosCare.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
     href: "/customers",
+    company: "Penrith City Council",
+    companySize: "300+",
+    industry: "Local Government",
+    logo: "/logos/penrith-city-council-logo.png",
+    panelImage: "",
+    panelVideo:
+      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    quote:
+      "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+    author: "Claire Donovan",
+    role: "Service Delivery Manager, Penrith City Council",
   },
 };
 

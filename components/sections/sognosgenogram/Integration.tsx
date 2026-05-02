@@ -3,7 +3,7 @@ import { PRODUCTS } from "@/lib/constants";
 
 export default function GenogramIntegration() {
   return (
-    <section className="bg-white py-24">
+    <section id="integration" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="overflow-hidden rounded-2xl bg-prussian-blue-950 px-10 py-14 lg:px-14 lg:py-16">
           <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">

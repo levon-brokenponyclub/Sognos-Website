@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import EditionPageTemplate, { type EditionData } from "@/components/sections/sognoscare/EditionPageTemplate";
+import EditionPageTemplate, {
+  type EditionData,
+} from "@/components/sections/sognoscare/EditionPageTemplate";
 
 export const metadata: Metadata = {
   title: "SognosCare for Residential Aged Care | Sognos",
@@ -9,9 +11,9 @@ export const metadata: Metadata = {
 
 const data: EditionData = {
   name: "Residential Aged Care",
-  tagline: "Resident care planning, clinical documentation, and facility compliance.",
+  tagline: "Planning, documentation, and compliance.",
   description:
-    "From care planning and progress documentation to staff coordination and resident outcome reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
+    "From care planning and progress documentation to staff coordination and resident outcome reporting — built for providers.",
   gradient: "/images/sognoscare/gradient-4.png",
   accentHex: "#a666ff",
   accentTextClass: "text-(--sognos-edition-purple)",
@@ -93,6 +95,8 @@ const data: EditionData = {
     "Real-time compliance dashboards for continuous quality monitoring",
     "Supports continuous improvement cycles with structured evidence capture",
     "Structured handover records to eliminate information loss across shifts",
+    "Family and representative communication tools embedded",
+    "Resident lifestyle and preference tracking for person-centred care",
   ],
   aiTools: [
     "Copilot-style clinical documentation and progress notes",
@@ -113,10 +117,22 @@ const data: EditionData = {
   ],
   caseStudy: {
     eyebrow: "Customer Story",
-    title: "How a Residential Aged Care Provider Achieved Quality Standards Compliance with SognosCare",
+    title:
+      "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a residential aged care provider streamlined accreditation preparation, improved AN-ACC capture, and reduced clinical documentation time with SognosCare.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
     href: "/customers",
+    company: "Penrith City Council",
+    companySize: "300+",
+    industry: "Local Government",
+    logo: "/logos/penrith-city-council-logo.png",
+    panelImage: "",
+    panelVideo:
+      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    quote:
+      "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+    author: "Claire Donovan",
+    role: "Service Delivery Manager, Penrith City Council",
   },
 };
 

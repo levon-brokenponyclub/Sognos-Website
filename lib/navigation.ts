@@ -10,11 +10,17 @@ export type MegaColumn = {
   items: NavItem[];
 };
 
+export type ProductSubmenu = {
+  col2?: { heading: string; items: NavItem[] };
+  col3?: { heading: string; items: NavItem[] }; // shown when a col2 item named "Editions" is hovered
+};
+
 export type NavGroup = {
   label: string;
   href: string;
   items?: NavItem[];                               // used on mobile for groups without megaMenu
   megaMenu?: [MegaColumn, MegaColumn, MegaColumn]; // always 3 cols; col3 empty → bg-slate-100
+  submenu?: Record<string, ProductSubmenu>;        // product-specific submenus (keyed by product name)
 };
 
 // ─── Shared lists ─────────────────────────────────────────────────────────────
@@ -35,6 +41,34 @@ const INDUSTRIES: NavItem[] = [
   { name: "Local Government", href: "/industries/local-government" },
   { name: "Industrial Services", href: "/industries/industrial-services" },
   { name: "Energy & Utilities", href: "/industries/energy-utilities" },
+];
+
+const SOGNOSCARE_SECTIONS: NavItem[] = [
+  { name: "What it solves", href: "/products/sognoscare#problems" },
+  { name: "Features", href: "/products/sognoscare#features" },
+  { name: "Editions", href: "/products/sognoscare#editions" },
+  { name: "Key Advantages", href: "/products/sognoscare#advantages" },
+  { name: "Customer Stories", href: "/products/sognoscare#stories" },
+];
+
+const SOGNOSCARE_EDITIONS: NavItem[] = [
+  { name: "Disability & Mental Health", href: "/products/sognoscare/editions/disability-mental-health" },
+  { name: "Allied Health", href: "/products/sognoscare/editions/allied-health" },
+  { name: "Support at Home", href: "/products/sognoscare/editions/support-at-home" },
+  { name: "Residential Aged Care", href: "/products/sognoscare/editions/residential-aged-care" },
+];
+
+const SOGNOSROSTER_SECTIONS: NavItem[] = [
+  { name: "What it solves", href: "/products/sognosroster#problems" },
+  { name: "Features", href: "/products/sognosroster#features" },
+  { name: "Key Advantages", href: "/products/sognosroster#advantages" },
+  { name: "Customer Stories", href: "/products/sognosroster#stories" },
+];
+
+const SOGNOSGENOGRAM_SECTIONS: NavItem[] = [
+  { name: "What it solves", href: "/products/sognosgenogram#problems" },
+  { name: "Features", href: "/products/sognosgenogram#features" },
+  { name: "Integration", href: "/products/sognosgenogram#integration" },
 ];
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -80,15 +114,21 @@ export const nav: NavGroup[] = [
           { name: "Sognos Genogram", href: "/products/sognosgenogram", description: "Relationship & family context mapping" },
         ],
       },
-      {
-        heading: "Solutions",
-        items: SOLUTIONS,
-      },
-      {
-        heading: "Industries",
-        items: INDUSTRIES,
-      },
+      { heading: "", items: [] },
+      { heading: "", items: [] },
     ],
+    submenu: {
+      "SognosCare": {
+        col2: { heading: "SognosCare", items: SOGNOSCARE_SECTIONS },
+        col3: { heading: "Editions", items: SOGNOSCARE_EDITIONS },
+      },
+      "SognosRoster": {
+        col2: { heading: "SognosRoster", items: SOGNOSROSTER_SECTIONS },
+      },
+      "Sognos Genogram": {
+        col2: { heading: "Sognos Genogram", items: SOGNOSGENOGRAM_SECTIONS },
+      },
+    },
   },
   {
     label: "Solutions",

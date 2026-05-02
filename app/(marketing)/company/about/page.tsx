@@ -199,8 +199,8 @@ export default function AboutPage() {
               </p>
               <div className="mt-auto p-8 rounded-lg bg-[#F8FAFC] border border-gray-100">
                 <p className="italic text-gray-500 text-sm leading-relaxed mb-4">
-                  "We simplify processes, solve operational challenges, and
-                  deliver measurable value for those who serve others."
+                  We simplify processes, solve operational challenges, and
+                  deliver measurable value for those who serve others.
                 </p>
                 <p className="text-xs font-bold text-prussian-blue-800 uppercase tracking-wide">
                   — Our Commitment

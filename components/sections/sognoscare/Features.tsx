@@ -308,9 +308,9 @@ export default function SognoscareFeatures() {
           {FEATURES.map((feat) => (
             <div
               key={feat.id}
-              className="bg-white rounded-2xl p-2 flex flex-col gap-3 shadow-xl"
+              className="bg-white rounded-lg p-2 flex flex-col gap-3"
             >
-              <div className="bg-[#F8FAFC] rounded-xl p-6 min-h-[220px] flex items-center justify-center border border-gray-100">
+              <div className="bg-gray-200 rounded-lg p-6 min-h-[220px] flex items-center justify-center">
                 <FeatureVisual id={feat.id} />
               </div>
               <div className="p-5 flex flex-col gap-4">
@@ -346,24 +346,19 @@ export default function SognoscareFeatures() {
         </div>
 
         {/* Desktop — vertical tabs | animated panel */}
-        <div className="hidden lg:flex gap-4 min-h-[560px] mt-10">
+        <div className="hidden lg:flex gap-4 h-[460px] mt-10">
           {/* Left column — vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
             {FEATURES.map((feat, i) => (
               <button
                 key={feat.id}
                 onClick={() => setActiveIndex(i)}
-                className={`w-full text-left py-4 px-5 font-heading text-[22px] font-medium tracking-tight transition-all cursor-pointer group flex items-center gap-4 ${
+                className={`w-full text-left py-3 px-5 font-heading text-xl font-medium tracking-tight transition-colors cursor-pointer ${
                   i === activeIndex
-                    ? "text-white border-l-4 border-l-white bg-white/10"
-                    : "text-white/60 border-l-4 border-l-transparent hover:text-white hover:bg-white/5"
+                    ? "text-white border-l-3 border-l-[#1D96FC]"
+                    : "text-white/70 border-l-3 border-l-prussian-blue-900 hover:text-white"
                 }`}
               >
-                <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-colors ${
-                  i === activeIndex ? 'bg-white text-[#1D96FC]' : 'bg-white/10 text-white group-hover:bg-white/20'
-                }`}>
-                  {i + 1}
-                </span>
                 {feat.name}
               </button>
             ))}
@@ -373,50 +368,50 @@ export default function SognoscareFeatures() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="flex gap-4 flex-1 min-w-0 bg-white rounded-2xl p-2 shadow-2xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
               {/* Left column — grey info panel */}
-              <div className="w-1/2 bg-[#F1F5F9] rounded-xl p-10 flex flex-col justify-between">
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#1D96FC] mb-4">
+              <div className="shrink-0 w-[45%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
+                <div className="flex flex-col">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
                     {active.tagline}
                   </p>
-                  <h3 className="font-heading text-3xl font-bold text-prussian-blue-800 tracking-tight leading-tight mb-5">
+                  <h3 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
                   </h3>
-                  <p className="text-[15px] font-medium text-gray-600 leading-relaxed">
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
                     {active.description}
                   </p>
-                </div>
-                
-                <div className="mt-8 pt-8 border-t border-gray-200/60">
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">Key Capabilities</p>
-                  <ul className="space-y-4">
+                  <ul className="mt-6 space-y-2.5">
                     {active.capabilities.map((cap) => (
-                      <li key={cap} className="flex items-start gap-3">
-                        <svg
-                          className="mt-[3px] h-4 w-4 shrink-0 text-[#1D96FC]"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      <li key={cap} className="flex items-start gap-2.5 text-sm text-sognos-text-body">
+                        <svg className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="text-sm font-semibold text-prussian-blue-800">
-                          {cap}
-                        </span>
+                        {cap}
                       </li>
                     ))}
                   </ul>
                 </div>
+                <a
+                  href="/contact"
+                  className="mt-5 inline-flex items-center gap-2.5 text-sm font-medium text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                >
+                  Book a Demo
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </a>
               </div>
 
               {/* Right column — visual mock */}
-              <div className="w-1/2 rounded-xl border border-gray-100 bg-[#F8FAFC] flex items-center justify-center p-12 overflow-hidden shadow-inner">
+              <div className="flex-1 relative rounded-lg overflow-hidden bg-gray-200/40 flex items-center justify-center p-8">
                 <div className="w-full max-w-sm">
                   <FeatureVisual id={active.id} />
                 </div>
