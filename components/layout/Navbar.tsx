@@ -608,46 +608,57 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Mobile hamburger */}
-            <button
-              className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
-                colorMode === "dark"
-                  ? "text-white/80 hover:text-white"
-                  : "text-gray-500 hover:text-gray-900"
-              }`}
-              onClick={mobileOpen ? closeMobile : openMobile}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? (
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
+            <div className="flex justify-center items-center gap-3">
+              {/* Mobile CTA */}
+              <Link
+                href="/contact"
+                className={`lg:hidden inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
+                onClick={closeAll}
+              >
+                Book a Demo
+              </Link>
+
+              {/* Mobile hamburger */}
+              <button
+                className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
+                  colorMode === "dark"
+                    ? "text-white/80 hover:text-white"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+                onClick={mobileOpen ? closeMobile : openMobile}
+                aria-label="Toggle menu"
+              >
+                {mobileOpen ? (
+                  <svg
+                    className="w-7 h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-7 h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
