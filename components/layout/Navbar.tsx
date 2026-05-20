@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 
@@ -363,6 +364,7 @@ function getMobilePanelId(label: string) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -537,6 +539,24 @@ export default function Navbar() {
     setMobileHistory([]);
   };
 
+  const onBookDemoClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    closeAll();
+    closeMobile();
+
+    const target = document.getElementById("book-demo");
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Keep the URL in sync without forcing a jump.
+      window.history.replaceState(null, "", "#book-demo");
+      return;
+    }
+
+    // Fallback when the current page doesn't render the CTA section.
+    e.preventDefault();
+    router.push("/contact");
+  };
+
   const mobileTitle =
     mobilePanel === "root"
       ? "Menu"
@@ -654,9 +674,9 @@ export default function Navbar() {
                 {navCTA.secondary.name}
               </Link>
               <Link
-                href={navCTA.primary.href}
+                href="#book-demo"
                 className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
-                onClick={closeAll}
+                onClick={onBookDemoClick}
               >
                 {navCTA.primary.name}
               </Link>
@@ -665,9 +685,9 @@ export default function Navbar() {
             <div className="lg:hidden flex justify-center items-center gap-3">
               {/* Mobile CTA */}
               <Link
-                href="/contact"
+                href="#book-demo"
                 className={`inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
-                onClick={closeAll}
+                onClick={onBookDemoClick}
               >
                 Book a Demo
               </Link>
@@ -890,8 +910,8 @@ export default function Navbar() {
                       })}
                       <div className="px-1 pt-4 pb-2">
                         <Link
-                          href={navCTA.primary.href}
-                          onClick={closeMobile}
+                          href="#book-demo"
+                          onClick={onBookDemoClick}
                           className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
                         >
                           {navCTA.primary.name}
@@ -1001,8 +1021,8 @@ export default function Navbar() {
                   {navCTA.secondary.name}
                 </Link>
                 <Link
-                  href={navCTA.primary.href}
-                  onClick={closeMobile}
+                  href="#book-demo"
+                  onClick={onBookDemoClick}
                   className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
                 >
                   {navCTA.primary.name}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface SubNavSection {
   label: string;
@@ -162,14 +162,17 @@ export default function ProductSubNav({
             </div>
 
             {/* Section links */}
-            <nav className="flex items-center gap-0 ml-auto">
+            <nav
+              className="flex flex-1 items-center gap-0 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:ml-auto lg:flex-none lg:overflow-visible"
+              aria-label={`${productName} sections`}
+            >
               {sections.map(({ label, id }) => {
                 const isActive = activeId === id;
                 return (
                   <Link
                     key={id}
                     href={`#${id}`}
-                    className={`relative px-4 h-18 flex items-center text-sm transition-colors duration-200 ${
+                    className={`relative px-4 h-18 flex items-center text-sm whitespace-nowrap shrink-0 transition-colors duration-200 ${
                       isActive
                         ? "text-brand font-medium"
                         : "text-gray-500 hover:text-gray-900"

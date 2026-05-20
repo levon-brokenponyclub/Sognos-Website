@@ -9,6 +9,7 @@ interface AnimatedButtonProps {
   children: React.ReactNode;
   className?: string;
   bubbleClassName?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   /**
    * "brand"       = brand bg + white icon bubble (default)
    * "white"       = white bg + brand icon bubble
@@ -22,6 +23,7 @@ export default function AnimatedButton({
   children,
   className,
   bubbleClassName,
+  onClick,
   variant = "brand",
 }: AnimatedButtonProps) {
   const containerClass =
@@ -37,6 +39,7 @@ export default function AnimatedButton({
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(
         "relative inline-flex items-center text-sm font-semibold rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden cursor-pointer",
         containerClass,

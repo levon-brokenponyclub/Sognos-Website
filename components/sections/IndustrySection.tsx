@@ -6,12 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { INDUSTRIES } from "@/lib/constants";
 
-const INDUSTRIAL_VIDEO =
-  "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm";
-
-const HEALTH_VIDEO =
-  "https://www.shutterstock.com/shutterstock/videos/3762351217/preview/stock-footage-help-senior-woman-and-nurse-with-cellphone-in-retirement-home-for-telehealth-app-or-communication.webm";
-
 // Header bar height (h-14 = 56px) — cards stick just below it
 const HEADER_H = 112;
 // Each card in the stack peeks this many px above the one covering it
@@ -20,8 +14,6 @@ const PEEK = 0;
 export default function IndustrySection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = INDUSTRIES[activeIndex];
-  const isIndustrial = active.slug === "industrial-services";
-  const isHealth = active.slug === "health-social-care";
 
   return (
     <section className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle">
@@ -41,8 +33,6 @@ export default function IndustrySection() {
         {/* Mobile — scroll-stacked cards */}
         <div className="lg:hidden mt-10">
           {INDUSTRIES.map((ind, i) => {
-            const indIsIndustrial = ind.slug === "industrial-services";
-            const indIsHealth = ind.slug === "health-social-care";
             // Earlier cards stick higher (peek above later cards); later cards have higher z-index
             const stickyTop = HEADER_H + i * PEEK;
 
@@ -53,33 +43,13 @@ export default function IndustrySection() {
                 className="sticky mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3"
               >
                 <div className="relative w-full h-[215px] rounded-lg overflow-hidden">
-                  {indIsIndustrial ? (
-                    <video
-                      src={INDUSTRIAL_VIDEO}
-                      autoPlay
-                      muted
-                      playsInline
-                      loop
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : indIsHealth ? (
-                    <video
-                      src={HEALTH_VIDEO}
-                      autoPlay
-                      muted
-                      playsInline
-                      loop
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={ind.image}
-                      alt={ind.name}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                    />
-                  )}
+                  <Image
+                    src={ind.image}
+                    alt={ind.name}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                  />
                 </div>
                 <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
                   <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
@@ -183,33 +153,13 @@ export default function IndustrySection() {
 
               {/* Center column — portrait image or video */}
               <div className="flex-1 relative rounded-lg overflow-hidden">
-                {isIndustrial ? (
-                  <video
-                    src={INDUSTRIAL_VIDEO}
-                    autoPlay
-                    muted
-                    playsInline
-                    loop
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : isHealth ? (
-                  <video
-                    src={HEALTH_VIDEO}
-                    autoPlay
-                    muted
-                    playsInline
-                    loop
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <Image
-                    src={active.image}
-                    alt={active.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 50vw, 35vw"
-                  />
-                )}
+                <Image
+                  src={active.image}
+                  alt={active.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 35vw"
+                />
               </div>
             </motion.div>
           </AnimatePresence>

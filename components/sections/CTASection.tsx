@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { bookDemo } from "@/app/actions/book-demo";
 
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -10,7 +11,7 @@ function AnimatedCounter({ value }: { value: number }) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {  
+      ([entry]) => {
         if (entry.isIntersecting) setIsInView(true);
       },
       { threshold: 0.1 },
@@ -43,23 +44,24 @@ function AnimatedCounter({ value }: { value: number }) {
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
+type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram";
+
 type CTASectionProps = {
   headline?: string;
   subtext?: string;
   primaryCTA?: { label: string; href: string };
   secondaryCTA?: { label: string; href: string };
+  defaultProduct?: ProductKey;
 };
 
 // ─── Proof stats ────────────────────────────────────────────────────────────
 
+const TEAM_TILE_IMAGE = "/images/team/sognos-team.png";
+
 const STATS = [
   {
-    numericValue: 1100,
-    suffix: "+",
-    label: "Workers Coordinated Daily",
-    bgClass: "bg-prussian-blue-800",
-    textClass: "text-white",
-    labelClass: "text-[#8E9EBB]",
+    imageSrc: TEAM_TILE_IMAGE,
+    imageAlt: "Sognos team group photo",
   },
   {
     numericValue: 40,
@@ -90,15 +92,16 @@ const STATS = [
 
 // ─── Section ────────────────────────────────────────────────────────────────
 
-export default function CTASection({
-  headline = "Ready to transform your service operations?",
-  subtext = "See how Sognos can unify your care management and workforce scheduling — and what that means for your organisation.",
-  primaryCTA = { label: "Book a Demo", href: "/contact" },
-  secondaryCTA = { label: "Contact Sales", href: "/contact" },
-}: CTASectionProps) {
+export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<number | null>(22);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [product, setProduct] = useState<string>(defaultProduct ?? "");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const times = [
     "09:00 AM",
@@ -111,12 +114,12 @@ export default function CTASection({
   ];
 
   return (
-    <section className="w-full bg-gray-200/70">
+    <section id="book-demo" className="w-full bg-gray-200/70 scroll-mt-[140px]">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        <div className="rounded-lg overflow-hidden">
+        <div className="rounded-md overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Left — Calendar / Book a Demo */}
-            <div className="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col w-full">
+            <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm border border-gray-200 flex flex-col w-full">
               <div className="w-full h-[420px] flex flex-col">
                 <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
                   <h3 className="text-lg lg:text-xl font-heading font-semibold mb-1 text-gray-900 tracking-tight">
@@ -140,7 +143,7 @@ export default function CTASection({
                     </div>
 
                     {step === 1 && (
-                      <div className="flex-1 min-h-0 border border-gray-200 rounded-lg p-4 lg:p-5 flex flex-col animate-in fade-in zoom-in-95 duration-300">
+                      <div className="flex-1 min-h-0 border border-gray-200 rounded-md p-4 lg:p-5 flex flex-col animate-in fade-in zoom-in-95 duration-300">
                         <div className="flex items-center justify-between mb-5 flex-shrink-0">
                           <button
                             type="button"
@@ -233,7 +236,7 @@ export default function CTASection({
                     )}
 
                     {step === 2 && (
-                      <div className="flex-1 min-h-0 border border-gray-200 rounded-lg p-4 lg:p-5 flex flex-col animate-in slide-in-from-right-8 duration-300">
+                      <div className="flex-1 min-h-0 border border-gray-200 rounded-md p-4 lg:p-5 flex flex-col animate-in slide-in-from-right-8 duration-300">
                         <div className="flex items-center mb-5 flex-shrink-0">
                           <button
                             type="button"
@@ -277,7 +280,7 @@ export default function CTASection({
                     )}
 
                     {step === 3 && (
-                      <div className="flex-1 min-h-0 border border-gray-200 rounded-lg p-4 lg:p-5 flex flex-col animate-in slide-in-from-right-8 duration-300">
+                      <div className="flex-1 min-h-0 border border-gray-200 rounded-md p-4 lg:p-5 flex flex-col animate-in slide-in-from-right-8 duration-300">
                         <div className="flex items-center mb-5 flex-shrink-0">
                           <button
                             type="button"
@@ -309,20 +312,38 @@ export default function CTASection({
                         </div>
                         <form
                           className="flex-1 overflow-y-auto flex flex-col space-y-4 pr-1 pb-2"
-                          onSubmit={(e) => {
+                          onSubmit={async (e) => {
                             e.preventDefault();
+                            if (submitting) return;
+                            setSubmitting(true);
+                            setErrorMsg(null);
+                            const result = await bookDemo({
+                              fullName,
+                              email,
+                              company,
+                              product,
+                              date: selectedDate,
+                              time: selectedTime,
+                            });
+                            setSubmitting(false);
+                            if (!result.ok) {
+                              setErrorMsg(result.error);
+                              return;
+                            }
                             setStep(4);
                           }}
                         >
                           <div>
                             <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                              First Name *
+                              Full Name *
                             </label>
                             <input
                               required
                               type="text"
+                              value={fullName}
+                              onChange={(e) => setFullName(e.target.value)}
                               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
-                              placeholder="Jane"
+                              placeholder="Jane Doe"
                             />
                           </div>
                           <div>
@@ -332,16 +353,61 @@ export default function CTASection({
                             <input
                               required
                               type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
                               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
                               placeholder="jane@company.com"
                             />
                           </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                              Company *
+                            </label>
+                            <input
+                              required
+                              type="text"
+                              value={company}
+                              onChange={(e) => setCompany(e.target.value)}
+                              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                              placeholder="Acme Health Group"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                              Product of interest *
+                            </label>
+                            <select
+                              required
+                              value={product}
+                              onChange={(e) => setProduct(e.target.value)}
+                              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                            >
+                              <option value="" disabled>
+                                Select a product
+                              </option>
+                              <option value="sognoscare">SognosCare</option>
+                              <option value="sognosroster">SognosRoster</option>
+                              <option value="sognosgenogram">
+                                Sognos Genogram
+                              </option>
+                              <option value="not-sure">Not sure yet</option>
+                            </select>
+                          </div>
+                          {errorMsg && (
+                            <p
+                              role="alert"
+                              className="text-xs text-red-600 leading-relaxed"
+                            >
+                              {errorMsg}
+                            </p>
+                          )}
                           <div className="pt-2 mt-auto">
                             <button
                               type="submit"
-                              className="w-full bg-[#1D96FC] hover:bg-[#1582e0] text-white font-semibold py-2.5 rounded-md text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1D96FC] focus:ring-offset-1"
+                              disabled={submitting}
+                              className="w-full bg-[#1D96FC] hover:bg-[#1582e0] disabled:bg-[#1D96FC]/60 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-md text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1D96FC] focus:ring-offset-1"
                             >
-                              Confirm Demo
+                              {submitting ? "Sending…" : "Confirm Demo"}
                             </button>
                           </div>
                         </form>
@@ -349,7 +415,7 @@ export default function CTASection({
                     )}
 
                     {step === 4 && (
-                      <div className="flex-1 min-h-0 border border-gray-200 bg-gray-50 rounded-lg p-6 lg:p-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
+                      <div className="flex-1 min-h-0 border border-gray-200 bg-gray-50 rounded-md p-6 lg:p-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
                         <div className="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center mb-5 shadow-sm">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -367,7 +433,7 @@ export default function CTASection({
                           </svg>
                         </div>
                         <h4 className="text-xl font-bold text-gray-900 mb-2">
-                          You&apos;re booked!
+                          You're booked!
                         </h4>
                         <p className="text-sm text-gray-600 max-w-[250px] mx-auto">
                           A calendar invitation has been sent to your email for{" "}
@@ -397,24 +463,40 @@ export default function CTASection({
             <div className="grid grid-cols-2 gap-3 lg:gap-4">
               {STATS.map((stat, i) => (
                 <div
-                  key={stat.label}
-                  className={`relative flex flex-col justify-between h-full p-6 lg:p-8 rounded-lg overflow-hidden shadow-sm ${stat.bgClass}`}
+                  key={stat.label ?? stat.imageSrc ?? i}
+                  className={
+                    stat.imageSrc
+                      ? "relative min-h-[220px] overflow-hidden rounded-md shadow-sm"
+                      : `relative flex h-full flex-col justify-between rounded-md overflow-hidden p-6 shadow-sm lg:p-8 ${stat.bgClass}`
+                  }
                 >
-                  <div className="relative z-10 text-left">
-                    <p
-                      className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
-                    >
-                      <AnimatedCounter value={stat.numericValue} />
-                      {stat.suffix}
-                    </p>
-                  </div>
-                  <div className="relative z-10 text-left mt-8 lg:mt-10">
-                    <p
-                      className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}
-                    >
-                      {stat.label}
-                    </p>
-                  </div>
+                  {stat.imageSrc ? (
+                    <Image
+                      src={stat.imageSrc}
+                      alt={stat.imageAlt ?? ""}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                    />
+                  ) : (
+                    <>
+                      <div className="relative z-10 text-left">
+                        <p
+                          className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
+                        >
+                          <AnimatedCounter value={stat.numericValue} />
+                          {stat.suffix}
+                        </p>
+                      </div>
+                      <div className="relative z-10 mt-8 text-left lg:mt-10">
+                        <p
+                          className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}
+                        >
+                          {stat.label}
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>

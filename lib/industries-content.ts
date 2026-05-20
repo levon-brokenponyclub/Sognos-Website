@@ -4,6 +4,7 @@ export type IndustryContent = {
   slug: string;
   hero: { headline: string; subtext: string };
   challenges: { title: string; body: string }[];
+  howSognosHelpsIntro?: string;
   howSognosHelps: { title: string; body: string }[];
 };
 
@@ -58,25 +59,39 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
       },
       {
         title: "Field visibility is limited",
-        body: "Operations managers work from yesterday&apos;s data. Real-time job status, worker location, and completion rates are guesswork.",
+        body: "Operations managers work from yesterday's data. Real-time job status, worker location, and completion rates are guesswork.",
       },
       {
         title: "Scheduling at scale is manual",
         body: "Coordinating hundreds of field workers across clients, sites, and shift patterns is a time-consuming process that breaks under pressure.",
       },
     ],
+    howSognosHelpsIntro:
+      "Keep operations moving with connected facilities management solutions built on Dynamics 365.",
     howSognosHelps: [
       {
-        title: "Automated SLA tracking and alerting",
-        body: "SognosRoster monitors every job against its SLA and flags issues before breaches occur — not after.",
+        title: "Connected field operations",
+        body: "Manage jobs, assets, workers and service requests in one platform with Dynamics 365.",
       },
       {
-        title: "Live field operations dashboard",
-        body: "See job status, worker location, and schedule adherence in real time — from dispatch through completion.",
+        title: "Real-time operational visibility",
+        body: "Track job status, workforce activity and service delivery as work happens.",
       },
       {
-        title: "Demand-driven scheduling",
-        body: "SognosRoster generates optimised schedules automatically based on job load, worker availability, and travel efficiency.",
+        title: "Smarter scheduling and dispatch",
+        body: "Optimise schedules automatically based on availability, workload and travel time.",
+      },
+      {
+        title: "Mobile-first workforce management",
+        body: "Give field teams access to jobs, updates and reporting from anywhere.",
+      },
+      {
+        title: "Compliance and audit readiness",
+        body: "Capture field activity, inspections and service records in real time.",
+      },
+      {
+        title: "Built on Microsoft Dynamics 365",
+        body: "Connect field service, customer service, reporting and operations across Microsoft.",
       },
     ],
   },
@@ -90,7 +105,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Accountability without visibility",
-        body: "Council services are expected to be transparent and auditable — but records are often scattered, incomplete, or stored in systems that can&apos;t report effectively.",
+        body: "Council services are expected to be transparent and auditable — but records are often scattered, incomplete, or stored in systems that can't report effectively. Budget pressure is constant.",
       },
       {
         title: "Workforce coordination across departments",
@@ -101,18 +116,32 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
         body: "Elected officials, executive teams, and funding bodies all need different views of the same operational data — and getting there takes hours of manual work.",
       },
     ],
+    howSognosHelpsIntro:
+      "Keep local government operations moving on Microsoft Dynamics 365.",
     howSognosHelps: [
       {
-        title: "Full audit trails on every case",
-        body: "SognosCare records every action, decision, and document change against the case record — producing an audit trail that&apos;s always ready.",
+        title: "Connected field service management",
+        body: "Manage work orders, service requests, assets and field teams in one Dynamics 365 platform.",
       },
       {
-        title: "Cross-department workforce coordination",
-        body: "SognosRoster coordinates field teams and contractors across services with a single scheduling and dispatch layer.",
+        title: "Smarter scheduling and routing",
+        body: "Plan crews, shifts and routes based on workload, location, availability and priority.",
       },
       {
-        title: "Configurable stakeholder reporting",
-        body: "Build role-specific dashboards and scheduled reports so every stakeholder gets the view they need without manual data compilation.",
+        title: "Mobile access for field workers",
+        body: "Give teams real-time job details, service updates and reporting tools from anywhere.",
+      },
+      {
+        title: "Asset maintenance and inspections",
+        body: "Track maintenance history, inspections, faults, warranties and service records across community assets.",
+      },
+      {
+        title: "Predictive maintenance alerts",
+        body: "Reduce paperwork, avoid critical incidents and act before outages or failures occur.",
+      },
+      {
+        title: "Performance and KPI tracking",
+        body: "Measure response times, resolution rates, service quality and operational efficiency.",
       },
     ],
   },
@@ -126,11 +155,11 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Large workforces are hard to coordinate",
-        body: "Hundreds of workers across multiple sites, shifts, and contractors — getting the right people in the right place requires coordination that manual tools can&apos;t handle.",
+        body: "Hundreds of workers across multiple sites, shifts, and contractors — getting the right people in the right place requires coordination that manual tools can't handle.",
       },
       {
         title: "Asset and job linkage is complex",
-        body: "Field workers need to know what asset they&apos;re servicing, what history it has, and what tools or parts are required — and that information rarely reaches them efficiently.",
+        body: "Field workers need to know what asset they're servicing, what history it has, and what tools or parts are required — and that information rarely reaches them efficiently.",
       },
       {
         title: "Real-time changes disrupt the schedule",
@@ -173,18 +202,32 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
         body: "Grid events, emergency callouts, and contractor dependencies create rapid changes to operational plans that manual scheduling cannot absorb.",
       },
     ],
+    howSognosHelpsIntro:
+      "Keep critical field operations moving on Microsoft Dynamics 365.",
     howSognosHelps: [
       {
-        title: "Skills and compliance matching",
-        body: "SognosRoster only assigns workers who meet the certification, licensing, and competency requirements for each job — enforced automatically.",
+        title: "Connected field service management",
+        body: "Manage work orders, maintenance activity and field operations in one platform.",
       },
       {
-        title: "Asset-linked service management",
-        body: "Connect field jobs to asset records so every work order carries the history, specifications, and compliance requirements of what&apos;s being serviced.",
+        title: "Intelligent scheduling and dispatch",
+        body: "Assign the right technician based on skills, location and availability.",
       },
       {
-        title: "Rapid reoptimisation for grid events",
-        body: "SognosRoster reoptimises schedules in real time when priority jobs emerge — maintaining coverage and response times across the network.",
+        title: "Predictive maintenance and monitoring",
+        body: "Identify issues earlier and reduce unplanned outages using connected asset data.",
+      },
+      {
+        title: "Mobile workforce operations",
+        body: "Give field teams access to jobs, service history and reporting from anywhere.",
+      },
+      {
+        title: "Compliance and operational reporting",
+        body: "Track inspections, maintenance and regulatory requirements in real time.",
+      },
+      {
+        title: "Built on Microsoft Dynamics 365",
+        body: "Connect field service, customer operations and reporting across Microsoft.",
       },
     ],
   },

@@ -129,14 +129,25 @@ export default async function IndustryPage({
       {/* How Sognos helps */}
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-12">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+          <div
+            className={`mb-12 grid gap-8 ${
+              content.howSognosHelpsIntro ? "lg:grid-cols-2 lg:items-end" : ""
+            }`}
+          >
+            <div>
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 How Sognos helps
               </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
-              Purpose-built for {meta.name}
-            </h2>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight">
+                Purpose-built for {meta.name}
+              </h2>
+            </div>
+            {content.howSognosHelpsIntro && (
+              <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
+                {content.howSognosHelpsIntro}
+              </p>
+            )}
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
@@ -172,6 +183,25 @@ export default async function IndustryPage({
 
           <div className="flex flex-wrap gap-4">
             {meta.products.map((product) => {
+              if (slug === "energy-utilities" && product === "SognosCare") {
+                return (
+                  <div
+                    key="Microsoft Dynamics 365"
+                    className="flex items-center gap-4 rounded-2xl border border-prussian-blue-800/10 bg-prussian-blue-800/[0.03] px-6 py-5"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-prussian-blue-800/70" />
+                    <div>
+                      <p className="text-sm font-semibold text-sognos-text-heading">
+                        Microsoft Dynamics 365
+                      </p>
+                      <p className="mt-0.5 text-xs text-sognos-text-muted">
+                        Core platform for utility operations.
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
               const p = PRODUCT_META[product as keyof typeof PRODUCT_META];
               if (!p) return null;
               return (
@@ -201,7 +231,7 @@ export default async function IndustryPage({
 
       <CTASection
         headline={`Ready to see Sognos for ${meta.name}?`}
-        subtext="Our team has hands-on experience in your sector. Book a call and we&apos;ll show you exactly how the platform fits your operation."
+        subtext="Our team has hands-on experience in your sector. Book a call and we'll show you exactly how the platform fits your operation."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
       />
