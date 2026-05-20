@@ -582,9 +582,13 @@ export default function Navbar() {
     <header
       ref={headerRef}
       data-site-header
-      className="fixed top-0 left-0 w-full z-99 bg-transparent pointer-events-none will-change-transform"
+      className={`fixed top-0 left-0 w-full z-99 bg-transparent ${
+        mobileOpen ? "pointer-events-auto" : "pointer-events-none will-change-transform"
+      }`}
       style={{
-        transform: `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
+        transform: mobileOpen
+          ? "none"
+          : `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
       }}
     >
       {/* ── Nav bar ── */}

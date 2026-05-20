@@ -182,11 +182,11 @@ export default function AboutPage() {
       <section className="w-full bg-gray-200/70 border-b border-sognos-border-subtle">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
           {/* Section Header */}
-          <div className="mb-16 lg:mb-20">
+          <div className="mb-16 lg:mb-4">
             <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
               Our Mission & Vision
             </span>
-            <h2 className="font-heading text-4xl lg:text-6xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
+            <h2 className="font-heading text-4xl lg:text-5xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
               Healthcare First. Field Service Always. AI at the Centre.
             </h2>
           </div>
