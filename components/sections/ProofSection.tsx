@@ -64,28 +64,28 @@ function StatTile({ stat }: { stat: Stat }) {
   const bgClass = {
     light: "bg-white border border-sognos-border-subtle text-[#052048]",
     dark: "bg-prussian-blue-800 text-white",
-    [#052048]: "bg-[#052048] text-white",
+    "[#052048]": "bg-[#052048] text-white",
     video: "text-white",
   }[stat.theme];
 
   const labelColor = {
     light: "text-[#052048]",
     dark: "text-white",
-    [#052048]: "text-white",
+    "[#052048]": "text-white",
     video: "text-white",
   }[stat.theme];
 
   const contextColor = {
     light: "text-[#052048]",
     dark: "text-white",
-    [#052048]: "text-white",
+    "[#052048]": "text-white",
     video: "text-white",
   }[stat.theme];
 
   const valueColor = {
     light: "text-[#052048]",
     dark: "text-white",
-    [#052048]: "text-white",
+    "[#052048]": "text-white",
     video: "text-white",
   }[stat.theme];
 
