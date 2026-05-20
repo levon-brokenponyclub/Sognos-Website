@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 
@@ -539,7 +539,7 @@ export default function Navbar() {
     setMobileHistory([]);
   };
 
-  const onBookDemoClick = (e: MouseEvent<HTMLAnchorElement>) => {
+  const onBookDemoClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
     closeAll();
     closeMobile();
 

@@ -484,7 +484,7 @@ export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
                         <p
                           className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
                         >
-                          <AnimatedCounter value={stat.numericValue} />
+                          <AnimatedCounter value={stat.numericValue!} />
                           {stat.suffix}
                         </p>
                       </div>
