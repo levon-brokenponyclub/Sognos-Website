@@ -23,11 +23,11 @@ import Link from "next/link";
 
 const SOLUTIONS = [
   {
-    id: "field-service",
-    label: "Field Service",
-    href: "/solutions/field-service",
+    id: "frontline",
+    label: "Frontline",
+    href: "/solutions/frontline",
     title: "End-to-end field service management",
-    copy: "Dispatch technicians, track jobs in real time, and close every work order with a complete audit trail — all from a single platform.",
+    copy: "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
     accentBg: "#cdedfe",
   },
   {
@@ -96,7 +96,7 @@ const ICONS: Record<
     }
   >
 > = {
-  "field-service": MapPin,
+  frontline: MapPin,
   crm: UsersThree,
   "customer-insights": ChartBar,
   "customer-experience": Gauge,
@@ -111,7 +111,7 @@ function CardIllustration({ id }: { id: SolutionId }) {
   const base =
     "transition-opacity duration-300 opacity-[0.15] group-hover:opacity-30";
 
-  if (id === "field-service")
+  if (id === "frontline")
     return (
       <svg
         viewBox="0 0 280 100"

@@ -48,7 +48,7 @@ export default function SognoscareRosterProblems() {
         {/* Header */}
         <div className="mb-16 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
-            Workforce scheduling shouldn&apos;t work like this
+            Workforce scheduling shouldn't work like this
           </h2>
           <p className="text-lg text-sognos-text-body">
             Manual rostering, compliance risks, and disconnected data are the

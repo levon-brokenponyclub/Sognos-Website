@@ -22,7 +22,7 @@ Sognos is an **AI-powered service operations platform** built on Microsoft Dynam
 | Layer | Purpose | Examples |
 |-------|---------|---------|
 | **Products** | Primary positioning | SognosCare, SognosRoster, Sognos Genogram |
-| **Solutions** | Supporting engagements | Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start |
+| **Solutions** | Supporting engagements | Frontline, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start |
 | **Industries** | Sector entry points | Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities |
 | **Platform** | Embedded proof only — never top-level | Dynamics 365, Copilot AI, Power Platform |
 
@@ -72,7 +72,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 
     /solutions
       page.tsx                     ✅ Solutions Hub
-      /[slug]/page.tsx             ✅ (7 static routes — field-service, crm, insights, experience, service, power-platform, quick-start)
+      /[slug]/page.tsx             ✅ (7 static routes — frontline, crm, insights, experience, service, power-platform, quick-start)
 
     /industries
       page.tsx                     ✅ Industries Hub
@@ -161,7 +161,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /products/sognosroster                               ✅
 /products/sognosgenogram                             ✅
 /solutions                                           ✅
-/solutions/field-service                             ✅
+/solutions/frontline                                 ✅
 /solutions/customer-relationship-management          ✅
 /solutions/customer-insights                         ✅
 /solutions/customer-experience                       ✅
@@ -189,7 +189,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 
 ```
 Products       → SognosCare, SognosRoster, Sognos Genogram
-Solutions      → Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
+Solutions      → Frontline, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
 Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 Customers
 Knowledge Hub  → Blog, News, Customer Stories

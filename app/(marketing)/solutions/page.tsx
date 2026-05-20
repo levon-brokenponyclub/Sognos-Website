@@ -6,7 +6,7 @@ import { SOLUTIONS } from "@/lib/constants";
 export const metadata = {
   title: "Solutions — Sognos",
   description:
-    "Supporting engagements built on Microsoft Dynamics 365. From Field Service and CRM to Power Platform and Quick Start — Sognos delivers the right solution for your operations.",
+    "Supporting engagements built on Microsoft Dynamics 365. From Frontline and CRM to Power Platform and Quick Start — Sognos delivers the right solution for your operations.",
 };
 
 export default function SolutionsPage() {
@@ -86,7 +86,7 @@ export default function SolutionsPage() {
 
       <CTASection
         headline="Not sure which solution fits your operation?"
-        subtext="Our team works with service providers across sectors. Book a call and we&apos;ll help you identify the right starting point."
+        subtext="Our team works with service providers across sectors. Book a call and we'll help you identify the right starting point."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
       />

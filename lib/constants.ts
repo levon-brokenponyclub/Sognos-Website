@@ -33,9 +33,9 @@ export const PRODUCTS = {
 
 export const SOLUTIONS = [
   {
-    name: "Field Service",
-    slug: "field-service",
-    href: "/solutions/field-service",
+    name: "Frontline",
+    slug: "frontline",
+    href: "/solutions/frontline",
     description:
       "Manage field technician dispatch, job tracking, and SLA compliance at scale.",
   },

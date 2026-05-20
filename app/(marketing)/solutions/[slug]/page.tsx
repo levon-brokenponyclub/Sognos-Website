@@ -222,7 +222,7 @@ export default async function SolutionPage({
 
       <CTASection
         headline={`Ready to explore ${meta.name}?`}
-        subtext="Our team works with service providers across sectors. Book a call and we&apos;ll walk you through how this solution fits your operation."
+        subtext="Our team works with service providers across sectors. Book a call and we'll walk you through how this solution fits your operation."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
       />

@@ -51,7 +51,7 @@ export default function CareersPage() {
             Join Sognos to drive innovation together.
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
-            We&apos;re not just a company — we&apos;re a community of passionate
+            We're not just a company — we're a community of passionate
             individuals committed to driving innovation and creating positive
             change.
           </p>

@@ -81,9 +81,9 @@ const CASE_STUDIES: CaseStudy[] = [
     companySize: "300+",
     industry: "Local Government",
     logo: "/logos/penrith-city-council-logo.png",
-    panelImage: "",
-    panelVideo:
-      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    panelImage: "/images/customers/auckland-airport.webp",
+    /* panelVideo:
+      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm", */
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",

@@ -192,7 +192,7 @@ function FeatureVisual({ id }: { id: string }) {
         <div className="rounded-lg border border-gray-100 bg-white p-4">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-              Today&apos;s routes
+              Today's routes
             </p>
             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
               Optimised

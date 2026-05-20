@@ -153,14 +153,14 @@ export default function OpenRoles() {
         )}
 
         <p className="mt-10 text-sm text-sognos-text-muted">
-          Don&apos;t see a fit?{" "}
+          Don't see a fit?{" "}
           <a
             href="mailto:careers@sognos.com.au"
             className="text-prussian-blue-800 font-medium underline underline-offset-2 hover:opacity-70 transition-opacity"
           >
             Send us your CV anyway
           </a>{" "}
-          — we&apos;re always interested in hearing from talented people.
+          — we're always interested in hearing from talented people.
         </p>
       </div>
     </section>

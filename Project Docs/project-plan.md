@@ -79,7 +79,7 @@ Completed:
 
 Completed:
 - `/solutions` — Solutions hub (grid of 7 solutions)
-- `/solutions/[slug]` — Dynamic solution pages, 7 static routes: Field Service, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
+- `/solutions/[slug]` — Dynamic solution pages, 7 static routes: Frontline, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
 - `/industries` — Industries hub (grid of 5 industries with product chips)
 - `/industries/[slug]` — Dynamic industry pages, 5 static routes: Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 - `lib/solutions-content.ts` — full hero/pain points/capabilities/platform/worksWithCare/worksWithRoster per solution

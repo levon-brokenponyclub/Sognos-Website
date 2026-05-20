@@ -61,6 +61,7 @@ export default function SognoscareRosterPage() {
         subtext="Book a personalised demo and see how SognosRoster handles your specific scheduling volume, skills requirements, and real-time operational demands."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
+        defaultProduct="sognosroster"
       />
     </>
   );

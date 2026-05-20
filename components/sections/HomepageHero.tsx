@@ -15,7 +15,7 @@ const CAPABILITIES = [
   { label: "Workforce Scheduling", icon: CalendarCheck },
   { label: "Compliance Tracking", icon: ShieldCheck },
   { label: "CRM", icon: UsersThree },
-  { label: "Field Service", icon: MapPin },
+  { label: "Frontline", icon: MapPin },
   { label: "Reporting & Insights", icon: ChartBar },
 ] as const;
 

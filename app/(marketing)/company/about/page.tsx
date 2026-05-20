@@ -37,18 +37,11 @@ const PARTNERS = [
       "As a Microsoft Solutions Partner, Sognos builds natively on Dynamics 365, Power Platform, and Azure — giving clients access to continuous innovation and enterprise-grade security.",
   },
   {
-    name: "rhipe — A Crayon Company",
-    logo: "/logos/partners/Crayon.webp",
+    name: "SoftwareOne",
+    logo: "/logos/partners/One-Software.png",
     type: "Software & Licensing",
     description:
-      "rhipe, a Crayon company, helps organisations manage and optimise their Microsoft licensing. Our partnership ensures clients get the right entitlements, at the right cost, from day one.",
-  },
-  {
-    name: "Resco",
-    logo: "/logos/partners/Resco.webp",
-    type: "Mobile Solutions",
-    description:
-      "Resco extends Dynamics 365 Field Service with powerful offline-capable mobile applications, keeping frontline teams productive regardless of connectivity.",
+      "SoftwareOne helps organisations manage and optimise their Microsoft licensing. Our partnership ensures clients get the right entitlements, at the right cost, from day one.",
   },
   {
     name: "Ingram Micro",
@@ -56,6 +49,13 @@ const PARTNERS = [
     type: "Distribution & Services",
     description:
       "Ingram Micro's global distribution network and services capabilities support Sognos clients with deployment, logistics, and lifecycle management.",
+  },
+  {
+    name: "Resco",
+    logo: "/logos/partners/Resco.webp",
+    type: "Mobile Solutions",
+    description:
+      "Resco extends Dynamics 365 Field Service with powerful offline-capable mobile applications, keeping frontline teams productive regardless of connectivity.",
   },
 ];
 
@@ -117,21 +117,12 @@ export default function AboutPage() {
 
               {/* Stat 2 — Video */}
               <div className="rounded-lg relative overflow-hidden h-[200px] md:h-[260px] lg:flex-1 p-8 lg:p-10 flex flex-col justify-end transition-all duration-500 hover:-translate-y-1 group">
-                <video
-                  src="https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover transition duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-prussian-blue-900/90 via-prussian-blue-900/30 to-transparent" />
                 <div className="relative z-10 text-white">
                   <p className="text-5xl text-white lg:text-6xl font-heading font-medium mb-3 tracking-tight">
-                    9+
+                    10+
                   </p>
                   <p className="text-xs font-semibold uppercase tracking-wide text-white">
-                    Years in field service
+                    Years
                   </p>
                 </div>
               </div>
@@ -170,14 +161,14 @@ export default function AboutPage() {
                   </p>
                 </div>
 
-                {/* Stat 4 — Image */}
+                {/* Stat 4 — Built on Microsoft */}
                 <div className="rounded-lg bg-[#122E58] relative overflow-hidden flex-1 p-6 lg:p-8 flex flex-col justify-end min-h-[200px] transition-all duration-500 hover:-translate-y-1 group">
                   <div className="relative z-10 text-white">
-                    <p className="text-4xl lg:text-5xl font-heading font-medium mb-3 tracking-tight">
-                      1,100+
+                    <p className="text-2xl lg:text-3xl font-heading font-medium tracking-tight">
+                      Built on Microsoft
                     </p>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[#173465]">
-                      Users on platform
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                      Dynamics 365 Native
                     </p>
                   </div>
                 </div>
@@ -196,54 +187,83 @@ export default function AboutPage() {
               Our Mission & Vision
             </span>
             <h2 className="font-heading text-4xl lg:text-6xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
-              First in field service: <br />
-              <span className="text-gray-400">our vision & mission</span>{" "}
-              explained
+              Healthcare First. Field Service Always. AI at the Centre. <br />
+              <span className="text-gray-400">Our vision & mission</span> ex
+              ined
             </h2>
           </div>
 
-          {/* Mission & Vision Cards */}
+          {/* About | Mission & Vision */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden mb-24 lg:mb-32">
-            {/* Mission Card */}
+            {/* About Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
               <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-8">
-                Mission
+                About Sognos
               </h3>
-              <p className="text-gray-600 leading-relaxed text-lg mb-10">
-                By leveraging modern business applications — centred on
-                Microsoft Dynamics 365 — we simplify processes, solve
-                operational challenges, and deliver measurable value for the
-                organisations that keep communities running.
-              </p>
-              <div className="mt-auto p-8 rounded-lg bg-[#F8FAFC] border border-gray-100">
-                <p className="italic text-gray-500 text-sm leading-relaxed mb-4">
-                  We simplify processes, solve operational challenges, and
-                  deliver measurable value for those who serve others.
+              <div className="space-y-6 text-gray-600 leading-relaxed text-base">
+                <p>
+                  For over a decade, Sognos has been helping organisations
+                  simplify complex frontline operations through connected,
+                  intelligent business solutions built around real work.
                 </p>
-                <p className="text-xs font-bold text-[#173465] uppercase tracking-wide">
-                  — Our Commitment
+                <p>
+                  Since 2016, we've partnered with organisations across
+                  healthcare, social care, government and essential services to
+                  modernise the way teams deliver care, services and community
+                  support every day. From frontline healthcare providers to
+                  mobile operational teams, we help organisations stay
+                  connected, responsive and ready for change.
+                </p>
+                <p>
+                  Our clients rely on Sognos to deliver highly usable,
+                  integrated systems that improve visibility, reduce
+                  administrative burden and support better experiences for both
+                  teams and the people they serve.
+                </p>
+                <p>
+                  As a specialist Microsoft Dynamics 365 partner, we combine
+                  deep operational understanding with modern business
+                  applications to help organisations transform complex service
+                  delivery into smarter, more connected operations.
                 </p>
               </div>
             </div>
 
-            {/* Vision Card */}
+            {/* Mission + Vision Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-8">
+              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-6">
+                Mission
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-base mb-12">
+                Built to support the people delivering care, services and
+                frontline operations every day — simplifying the complexity of
+                healthcare through modern business applications designed for
+                real-world service delivery.
+              </p>
+
+              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-6">
                 Vision
               </h3>
-              <p className="text-gray-600 leading-relaxed text-lg mb-10">
-                To be first in field service. We aim to set the global standard
-                for operational excellence in service-led organisations through
-                innovation and native cloud technology.
+              <p className="text-gray-600 leading-relaxed text-base mb-8">
+                A future where healthcare and frontline teams are empowered by
+                connected, intelligent systems that make work simpler and create
+                better experiences for patients, clients and the communities
+                they support.
               </p>
+
               <div className="mt-auto flex flex-wrap gap-2">
                 {[
-                  "Innovation",
+                  "Healthcare",
+                  "Social Care",
+                  "Community Care",
+                  "Frontline Focused",
+                  "Powered by AI",
+                  "Field Ready",
+                  "Connected Operations",
                   "Operational Excellence",
-                  "Cloud Native",
-                  "Field Service",
-                  "D365 Expertise",
-                  "Direct Impact",
+                  "Microsoft Native",
+                  "Real World Design",
+                  "Build for complexity",
                 ].map((tag) => (
                   <span
                     key={tag}
@@ -293,9 +313,9 @@ export default function AboutPage() {
                 Our Partners
               </h2>
               <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
-                We&apos;ve partnered with some of the best innovators in the
-                industry to bring you new and exciting possibilities — enhanced
-                and integrated business solutions to your most complex problems.
+                We've partnered with some of the best innovators in the industry
+                to bring you new and exciting possibilities — enhanced and
+                integrated business solutions to your most complex problems.
               </p>
             </div>
 
@@ -352,9 +372,9 @@ export default function AboutPage() {
                 Join Sognos to drive innovation together.
               </h2>
               <p className="mt-6 text-white/70 leading-relaxed">
-                We&apos;re a community of passionate individuals committed to
-                driving innovation and creating positive change. If you thrive
-                in a collaborative, high-trust environment and want your work to
+                We're a community of passionate individuals committed to driving
+                innovation and creating positive change. If you thrive in a
+                collaborative, high-trust environment and want your work to
                 matter, Sognos is built for you.
               </p>
               <Link

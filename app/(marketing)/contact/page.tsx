@@ -205,7 +205,7 @@ export default function ContactPage() {
                   <Link href="/privacy" className="underline hover:text-prussian-blue-800 transition-colors">
                     Privacy Policy
                   </Link>
-                  . We&apos;ll never share your information with third parties.
+                  . We'll never share your information with third parties.
                 </p>
               </form>
             </div>

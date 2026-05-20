@@ -55,9 +55,10 @@ export default function SognosGenogramPage() {
       <GenogramStories />
       <CTASection
         headline="Ready to bring relationship context into your case records?"
-        subtext="Book a call and we&apos;ll show you how Sognos Genogram fits into your existing care operations."
+        subtext="Book a call and we'll show you how Sognos Genogram fits into your existing care operations."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
+        defaultProduct="sognosgenogram"
       />
     </>
   );

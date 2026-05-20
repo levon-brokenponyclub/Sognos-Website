@@ -190,7 +190,7 @@ export default function ProductSection() {
               </h3>
               <p className="text-white tracking-tight text-sognos-text-body mb-6">
                 Deliver safer, simpler care in the field. From mental health to
-                aged care, we help providers reduce admin and stay
+                aged care, we help providers reduce admin burden and stay
                 service-ready—whatever changes come next.
               </p>
               <AnimatedButton

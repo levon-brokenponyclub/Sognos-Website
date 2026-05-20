@@ -163,7 +163,7 @@ function BetterTogether() {
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
                 SognosCare and SognosRoster are designed to work independently —
-                but they&apos;re built to work together. When combined, they close
+                but they're built to work together. When combined, they close
                 the loop from service intake to workforce delivery to compliance
                 outcome, without the gaps that come from disconnected systems.
               </p>

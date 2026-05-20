@@ -68,7 +68,7 @@ const ARTICLES: Article[] = [
     href: "/knowledge-hub/fsm-summit-2024",
     image: "/images/news/fsm-summit-2024.webp",
     industry: "Facilities Management",
-    useCase: "Field Service",
+    useCase: "Frontline",
   },
   {
     slug: "participant-care-webinar",
@@ -90,14 +90,6 @@ const INDUSTRIES = [
   "Industrial Services",
   "Energy & Utilities",
 ];
-const USE_CASES = [
-  "Care Operations",
-  "Workforce Scheduling",
-  "Compliance",
-  "Family Context Mapping",
-  "Field Service",
-];
-
 const BADGE_STYLES: Record<string, string> = {
   Milestone: "bg-indigo-50 text-indigo-700 border-indigo-100",
   News: "bg-blue-50 text-blue-700 border-blue-100",
@@ -154,19 +146,27 @@ function ArticleCard({ article }: { article: Article }) {
 
 // ─── Archive ──────────────────────────────────────────────────────────────────
 
-export default function KnowledgeHubArchive() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+export default function KnowledgeHubArchive({
+  initialCategory = null,
+}: {
+  initialCategory?: string | null;
+} = {}) {
+  const safeInitialCategory =
+    initialCategory && (CATEGORIES as readonly string[]).includes(initialCategory)
+      ? initialCategory
+      : null;
+  const [activeCategory, setActiveCategory] = useState<string | null>(
+    safeInitialCategory,
+  );
   const [activeIndustry, setActiveIndustry] = useState<string | null>(null);
-  const [activeUseCase, setActiveUseCase] = useState<string | null>(null);
 
   const filtered = ARTICLES.filter((a) => {
     if (activeCategory && a.category !== activeCategory) return false;
     if (activeIndustry && a.industry !== activeIndustry) return false;
-    if (activeUseCase && a.useCase !== activeUseCase) return false;
     return true;
   });
 
-  const hasFilter = activeCategory || activeIndustry || activeUseCase;
+  const hasFilter = activeCategory || activeIndustry;
 
   return (
     <section className="bg-(--sognos-bg-sunken) py-24">
@@ -197,30 +197,11 @@ export default function KnowledgeHubArchive() {
               />
             </div>
 
-            {/* Use Case dropdown */}
-            <div className="relative">
-              <select
-                value={activeUseCase ?? ""}
-                onChange={(e) => setActiveUseCase(e.target.value || null)}
-                className="appearance-none cursor-pointer rounded-full border border-(--sognos-card-border) bg-white py-2.5 pl-4 pr-9 text-xs font-semibold uppercase tracking-widest text-sognos-text-body focus:border-prussian-blue-950 focus:outline-none"
-              >
-                <option value="">Select by Use Case</option>
-                {USE_CASES.map((uc) => (
-                  <option key={uc} value={uc}>{uc}</option>
-                ))}
-              </select>
-              <ChevronDown
-                size={13}
-                className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-sognos-text-muted"
-              />
-            </div>
-
             {hasFilter && (
               <button
                 onClick={() => {
                   setActiveCategory(null);
                   setActiveIndustry(null);
-                  setActiveUseCase(null);
                 }}
                 className="text-xs font-medium text-sognos-text-muted underline hover:text-sognos-text-body"
               >

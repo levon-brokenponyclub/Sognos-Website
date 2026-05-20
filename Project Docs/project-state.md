@@ -16,7 +16,7 @@ Phases 1–5b complete. 27 routes statically generated.
 | `/products/sognosroster` | ✅ | |
 | `/products/sognosgenogram` | ✅ | Phase 5b |
 | `/solutions` | ✅ | Solutions hub |
-| `/solutions/[slug]` × 7 | ✅ | field-service, crm, insights, experience, service, power-platform, quick-start |
+| `/solutions/[slug]` × 7 | ✅ | frontline, crm, insights, experience, service, power-platform, quick-start |
 | `/industries` | ✅ | Industries hub |
 | `/industries/[slug]` × 5 | ✅ | health-social-care, facilities-management, local-government, industrial-services, energy-utilities |
 | `/knowledge-hub` | ✅ | Renamed from /resources. KnowledgeHubArchive with sticky sidebar + 6 real articles |

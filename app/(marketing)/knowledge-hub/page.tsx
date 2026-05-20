@@ -6,7 +6,12 @@ export const metadata = {
     "News, guides, case studies, and product updates from the Sognos team. Filter by category, industry, or use case.",
 };
 
-export default function KnowledgeHubPage() {
+export default async function KnowledgeHubPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
   return (
     <>
       {/* Hero */}
@@ -41,7 +46,7 @@ export default function KnowledgeHubPage() {
         </div>
       </section>
 
-      <KnowledgeHubArchive />
+      <KnowledgeHubArchive initialCategory={category ?? null} />
     </>
   );
 }

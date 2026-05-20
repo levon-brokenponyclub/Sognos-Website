@@ -50,7 +50,7 @@ Products:
 - Sognos Genogram
 
 Solutions:
-- Field Service
+- Frontline
 - Customer Relationship Management
 - Customer Insights
 - Customer Experience
@@ -72,7 +72,7 @@ Industries:
 - `/products/sognosroster` ✅
 - `/products/sognosgenogram` ✅
 - `/solutions` ✅
-- `/solutions/field-service` ✅
+- `/solutions/frontline` ✅
 - `/solutions/customer-relationship-management` ✅
 - `/solutions/customer-insights` ✅
 - `/solutions/customer-experience` ✅
@@ -98,7 +98,7 @@ Industries:
   - SognosRoster
   - Sognos Genogram
 - Solutions
-  - Field Service
+  - Frontline
   - Customer Relationship Management
   - Customer Insights
   - Customer Experience

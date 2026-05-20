@@ -57,7 +57,7 @@ export default function SognosRosterHero() {
                   What SognosRoster Solves
                 </h2>
                 <p className="text-left text-base text-prussian-blue-800/75 text-balance">
-                  Manual rostering can&apos;t keep up with shifting demand,
+                  Manual rostering can't keep up with shifting demand,
                   complex skill matching, and last-minute changes.
                 </p>
               </div>

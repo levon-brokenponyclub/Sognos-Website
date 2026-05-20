@@ -65,6 +65,7 @@ export default function SognosCarePage() {
         subtext="Book a personalised demo and see how SognosCare handles your specific service delivery, compliance, and reporting requirements."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
+        defaultProduct="sognoscare"
       />
     </>
   );

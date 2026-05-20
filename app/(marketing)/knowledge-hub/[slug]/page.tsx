@@ -41,17 +41,17 @@ const POSTS: Record<string, Post> = {
         <p>Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions. These efforts help organisations achieve more with Microsoft Dynamics 365 and the Power Platform.</p>
         <p>From our early beginnings, Sognos has grown into a global solutions partner. We have a strong presence in Australia, New Zealand, and India. Additionally, there are exciting new opportunities emerging in the United Arab Emirates (UAE).</p>
         <h2>9 Years of Impact and Digital Transformation</h2>
-        <p>Over nearly a decade, we&apos;ve achieved:</p>
+        <p>Over nearly a decade, we've achieved:</p>
         <ul>
           <li>Tailored Microsoft Dynamics 365 solutions across industries in Australia and New Zealand</li>
           <li>Expansion into new sectors with innovative digital transformation and intelligent service delivery</li>
           <li>A growing international team, including our talented India office. Their energy, expertise, and commitment continue to fuel our success.</li>
         </ul>
         <h2>Thank You to Our Clients, Partners, and Team</h2>
-        <p>This milestone would not have been possible without the trust of our clients. Also, the collaboration of our partners and the dedication of the incredible Sognos Solutions team played a vital role. Together, we&apos;ve built a track record of delivering field service excellence, operational optimisation, and technology-driven growth.</p>
+        <p>This milestone would not have been possible without the trust of our clients. Also, the collaboration of our partners and the dedication of the incredible Sognos Solutions team played a vital role. Together, we've built a track record of delivering field service excellence, operational optimisation, and technology-driven growth.</p>
         <h2>Looking Ahead</h2>
         <p>As we celebrate 9 years of Sognos Solutions, we remain focused on our mission: helping organisations harness the power of Microsoft Dynamics 365. We aim to optimise operations, overcome field service challenges, and deliver measurable business impact.</p>
-        <p>Here&apos;s to the next chapter of growth, innovation, and digital transformation. We look forward to continuing our journey as a trusted partner for organisations worldwide.</p>
+        <p>Here's to the next chapter of growth, innovation, and digital transformation. We look forward to continuing our journey as a trusted partner for organisations worldwide.</p>
       </div>
     ),
   },
@@ -67,12 +67,12 @@ const POSTS: Record<string, Post> = {
     twoCol: true,
     body: (
       <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>We&apos;re thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.</p>
-        <p>This move marks an exciting new chapter in our journey. Our new office location allows us to continue to grow and evolve in a space that better reflects our team&apos;s energy, culture, and ambition. Located in one of Sydney&apos;s most dynamic business precincts, our new office offers a vibrant environment for collaboration, innovation, and connection, complete with panoramic views that inspire.</p>
+        <p>We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.</p>
+        <p>This move marks an exciting new chapter in our journey. Our new office location allows us to continue to grow and evolve in a space that better reflects our team's energy, culture, and ambition. Located in one of Sydney's most dynamic business precincts, our new office offers a vibrant environment for collaboration, innovation, and connection, complete with panoramic views that inspire.</p>
         <p>The relocation supports our ongoing commitment to delivering exceptional service and building strong partnerships, and it gives our team a workplace that fosters creativity and focus.</p>
-        <p>We extend a sincere thank you to everyone involved in making the transition seamless. Our team managed every detail, from logistics to design, with care, and we&apos;re already seeing the positive impact take shape.</p>
+        <p>We extend a sincere thank you to everyone involved in making the transition seamless. Our team managed every detail, from logistics to design, with care, and we're already seeing the positive impact take shape.</p>
         <p>We look forward to welcoming our clients, partners, and friends to the new space in the weeks ahead.</p>
-        <p>Here&apos;s to new beginnings, continued growth, and even greater collaboration at Sognos with our new office in North Sydney.</p>
+        <p>Here's to new beginnings, continued growth, and even greater collaboration at Sognos with our new office in North Sydney.</p>
       </div>
     ),
   },
@@ -88,7 +88,7 @@ const POSTS: Record<string, Post> = {
     twoCol: true,
     body: (
       <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This New Zealand expansion was marked by a milestone event at Microsoft&apos;s Auckland offices (Microsoft House). This exciting expansion strengthens our presence in the region and underscores our commitment to delivering world-class Microsoft Dynamics 365 and Power Platform solutions to organisations across New Zealand.</p>
+        <p>Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This New Zealand expansion was marked by a milestone event at Microsoft's Auckland offices (Microsoft House). This exciting expansion strengthens our presence in the region and underscores our commitment to delivering world-class Microsoft Dynamics 365 and Power Platform solutions to organisations across New Zealand.</p>
         <p>The launch event brought together an impressive line-up of local organisations, customers, and partners — including APM Group, Auckland Airport, Function10, and Microsoft — who joined us to celebrate this next chapter for Sognos and our New Zealand expansion.</p>
         <h2>Introducing SognosCare for Allied Health and Social Care in New Zealand</h2>
         <p>As part of the New Zealand expansion launch, we were proud to unveil SognosCare, our purpose-built Accelerator solution for the Allied Health and Social Care sector. Designed to empower healthcare providers with digital transformation tools, SognosCare streamlines service delivery, enhances patient and participant care, and improves workforce efficiency. By harnessing the power of Microsoft Cloud and Dynamics 365, SognosCare helps providers deliver more connected, transparent, and impactful care.</p>
@@ -135,9 +135,9 @@ const POSTS: Record<string, Post> = {
         <p>The FSM Summit Sydney event was packed with valuable insights on automation, customer expectations, workforce challenges, and the impact of AI on field service delivery. For Sognos, it was more than a networking opportunity — it was a reaffirmation of our mission to help clients modernise operations through Microsoft Dynamics 365 and the Power Platform.</p>
         <h2>Key Takeaways from FSM Summit 2024</h2>
         <ol>
-          <li><strong>AI is no longer on the horizon — it&apos;s here.</strong> The field service industry is rapidly embracing AI to optimise scheduling, anticipate equipment failure, and enhance customer experiences. Microsoft&apos;s Copilot capabilities were front and centre, reinforcing how intelligent service is becoming the new normal.</li>
-          <li><strong>Data-driven decision-making is the new standard.</strong> From asset performance to technician productivity, FSM leaders are prioritising platforms that deliver real-time insights. As one speaker noted, &ldquo;If you&apos;re not measuring it, you&apos;re not managing it.&rdquo;</li>
-          <li><strong>People-first innovation is critical.</strong> Amid all the tech, there was a strong focus on workforce enablement — ensuring field technicians have the right tools, training, and support to succeed. At Sognos, we&apos;re passionate about building systems that empower people as much as they optimise process.</li>
+          <li><strong>AI is no longer on the horizon — it's here.</strong> The field service industry is rapidly embracing AI to optimise scheduling, anticipate equipment failure, and enhance customer experiences. Microsoft's Copilot capabilities were front and centre, reinforcing how intelligent service is becoming the new normal.</li>
+          <li><strong>Data-driven decision-making is the new standard.</strong> From asset performance to technician productivity, FSM leaders are prioritising platforms that deliver real-time insights. As one speaker noted, &ldquo;If you're not measuring it, you're not managing it.&rdquo;</li>
+          <li><strong>People-first innovation is critical.</strong> Amid all the tech, there was a strong focus on workforce enablement — ensuring field technicians have the right tools, training, and support to succeed. At Sognos, we're passionate about building systems that empower people as much as they optimise process.</li>
         </ol>
         <h2>The Sognos Team in Action</h2>
         <p>It was fantastic to see our leadership team connecting with industry peers and participating in breakout sessions. We showcased how our clients are achieving real results with Dynamics 365 Field Service. We also had the opportunity to strengthen relationships with Microsoft, reaffirming our shared commitment to digital transformation in complex, regulated service industries.</p>

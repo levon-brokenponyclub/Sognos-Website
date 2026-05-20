@@ -3,7 +3,10 @@ import { SOLUTIONS } from "./constants";
 export type SolutionContent = {
   slug: string;
   hero: { headline: string; subtext: string };
-  whatItSolves: { intro: string; painPoints: { title: string; body: string }[] };
+  whatItSolves: {
+    intro: string;
+    painPoints: { title: string; body: string }[];
+  };
   capabilities: { title: string; body: string }[];
   platform: { label: string; description: string };
   worksWithCare: boolean;
@@ -12,15 +15,15 @@ export type SolutionContent = {
 
 export const SOLUTIONS_CONTENT: SolutionContent[] = [
   {
-    slug: "field-service",
+    slug: "frontline",
     hero: {
       headline: "Coordinate field teams without the chaos",
       subtext:
-        "Dispatch the right people to the right jobs — automatically. Sognos Field Service gives your operations team full visibility and control without manual scheduling.",
+        "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
     },
     whatItSolves: {
       intro:
-        "Most field service problems come from the same place: disconnected systems, manual dispatch, and no real-time view of what&apos;s happening on the ground.",
+        "Most field service problems come from the same place: disconnected systems, manual dispatch, and no real-time view of what's happening on the ground.",
       painPoints: [
         {
           title: "Scheduling delays and mismatches",
@@ -28,7 +31,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "SLA compliance under pressure",
-          body: "Without automated tracking, SLA breaches are only visible after they&apos;ve happened — not when there&apos;s still time to act.",
+          body: "Without automated tracking, SLA breaches are only visible after they've happened — not when there's still time to act.",
         },
         {
           title: "No real-time ground visibility",
@@ -37,12 +40,30 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       ],
     },
     capabilities: [
-      { title: "Intelligent job dispatch", body: "Automatically match jobs to the right field worker based on skills, location, and availability." },
-      { title: "SLA tracking and alerts", body: "Monitor response and resolution times in real time. Get alerted before a breach occurs." },
-      { title: "Live field visibility", body: "See every job, every worker, and every status update on a single operations dashboard." },
-      { title: "Mobile worker app", body: "Field workers receive job details, capture attendance, and submit completion data from their phone." },
-      { title: "Asset and equipment linking", body: "Attach assets to jobs so field workers arrive with the right information and tools." },
-      { title: "Operational reporting", body: "Understand performance across teams, regions, and job types with configurable reports." },
+      {
+        title: "Intelligent job dispatch",
+        body: "Automatically match jobs to the right field worker based on skills, location, and availability.",
+      },
+      {
+        title: "SLA tracking and alerts",
+        body: "Monitor response and resolution times in real time. Get alerted before a breach occurs.",
+      },
+      {
+        title: "Live field visibility",
+        body: "See every job, every worker, and every status update on a single operations dashboard.",
+      },
+      {
+        title: "Mobile worker app",
+        body: "Field workers receive job details, capture attendance, and submit completion data from their phone.",
+      },
+      {
+        title: "Asset and equipment linking",
+        body: "Attach assets to jobs so field workers arrive with the right information and tools.",
+      },
+      {
+        title: "Operational reporting",
+        body: "Understand performance across teams, regions, and job types with configurable reports.",
+      },
     ],
     platform: {
       label: "Dynamics 365 Field Service",
@@ -73,17 +94,35 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "No unified service history",
-          body: "Clients repeat themselves. Workers can&apos;t see what was promised, delivered, or escalated before their involvement.",
+          body: "Clients repeat themselves. Workers can't see what was promised, delivered, or escalated before their involvement.",
         },
       ],
     },
     capabilities: [
-      { title: "Unified contact management", body: "Every client, contact, and relationship in one structured record — accessible by your whole team." },
-      { title: "Service history timeline", body: "See every interaction, case, and delivery milestone in a chronological view per client." },
-      { title: "Pipeline and engagement tracking", body: "Track where each client relationship is in their journey and what actions are needed next." },
-      { title: "Communication logging", body: "Automatically capture emails, calls, and meetings against the correct record." },
-      { title: "Automated follow-up workflows", body: "Trigger tasks, reminders, and notifications at the right points in the relationship lifecycle." },
-      { title: "Relationship reporting", body: "Understand engagement levels, service frequency, and relationship health across your client base." },
+      {
+        title: "Unified contact management",
+        body: "Every client, contact, and relationship in one structured record — accessible by your whole team.",
+      },
+      {
+        title: "Service history timeline",
+        body: "See every interaction, case, and delivery milestone in a chronological view per client.",
+      },
+      {
+        title: "Pipeline and engagement tracking",
+        body: "Track where each client relationship is in their journey and what actions are needed next.",
+      },
+      {
+        title: "Communication logging",
+        body: "Automatically capture emails, calls, and meetings against the correct record.",
+      },
+      {
+        title: "Automated follow-up workflows",
+        body: "Trigger tasks, reminders, and notifications at the right points in the relationship lifecycle.",
+      },
+      {
+        title: "Relationship reporting",
+        body: "Understand engagement levels, service frequency, and relationship health across your client base.",
+      },
     ],
     platform: {
       label: "Dynamics 365 Sales & Customer Service",
@@ -102,11 +141,11 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     },
     whatItSolves: {
       intro:
-        "Reactive operations are expensive. When you can&apos;t see patterns in your data, every surge in demand and every compliance risk catches you off guard.",
+        "Reactive operations are expensive. When you can't see patterns in your data, every surge in demand and every compliance risk catches you off guard.",
       painPoints: [
         {
           title: "No visibility into demand patterns",
-          body: "Service requests spike unpredictably. Without analytics, you can&apos;t prepare capacity in advance or understand what&apos;s driving the change.",
+          body: "Service requests spike unpredictably. Without analytics, you can't prepare capacity in advance or understand what's driving the change.",
         },
         {
           title: "Decisions based on gut feel",
@@ -114,17 +153,35 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "Data locked in separate systems",
-          body: "Useful information exists across your CRM, scheduling, and case management tools — but it&apos;s never in one place when you need it.",
+          body: "Useful information exists across your CRM, scheduling, and case management tools — but it's never in one place when you need it.",
         },
       ],
     },
     capabilities: [
-      { title: "Demand analytics", body: "Track service request volumes, types, and timing to understand what&apos;s driving your workload." },
-      { title: "Outcome tracking", body: "Measure what gets delivered against what was planned — at client, team, and service level." },
-      { title: "Segment analysis", body: "Understand which client groups, regions, or services have the highest demand, cost, or risk." },
-      { title: "Predictive demand signals", body: "Use AI-driven signals to anticipate resource needs before demand peaks hit." },
-      { title: "Custom dashboards", body: "Build role-specific views so every team sees the metrics that matter to their function." },
-      { title: "Data export and integration", body: "Push insights to Power BI, Excel, or your existing reporting stack." },
+      {
+        title: "Demand analytics",
+        body: "Track service request volumes, types, and timing to understand what's driving your workload.",
+      },
+      {
+        title: "Outcome tracking",
+        body: "Measure what gets delivered against what was planned — at client, team, and service level.",
+      },
+      {
+        title: "Segment analysis",
+        body: "Understand which client groups, regions, or services have the highest demand, cost, or risk.",
+      },
+      {
+        title: "Predictive demand signals",
+        body: "Use AI-driven signals to anticipate resource needs before demand peaks hit.",
+      },
+      {
+        title: "Custom dashboards",
+        body: "Build role-specific views so every team sees the metrics that matter to their function.",
+      },
+      {
+        title: "Data export and integration",
+        body: "Push insights to Power BI, Excel, or your existing reporting stack.",
+      },
     ],
     platform: {
       label: "Dynamics 365 Customer Insights",
@@ -160,12 +217,30 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       ],
     },
     capabilities: [
-      { title: "Service standard enforcement", body: "Embed service protocols into workflows so the right steps happen automatically — regardless of who&apos;s involved." },
-      { title: "Omnichannel interaction tracking", body: "See every client touchpoint — calls, emails, portal, in-person — in a single timeline." },
-      { title: "Client satisfaction surveys", body: "Trigger feedback requests at key moments and collect structured responses against each service record." },
-      { title: "Satisfaction scoring", body: "Track NPS, CSAT, or custom satisfaction metrics at client and cohort level over time." },
-      { title: "Escalation management", body: "Surface at-risk clients and trigger intervention workflows before dissatisfaction becomes a complaint." },
-      { title: "Experience reporting", body: "Understand service quality trends across teams, regions, and client segments." },
+      {
+        title: "Service standard enforcement",
+        body: "Embed service protocols into workflows so the right steps happen automatically — regardless of who's involved.",
+      },
+      {
+        title: "Omnichannel interaction tracking",
+        body: "See every client touchpoint — calls, emails, portal, in-person — in a single timeline.",
+      },
+      {
+        title: "Client satisfaction surveys",
+        body: "Trigger feedback requests at key moments and collect structured responses against each service record.",
+      },
+      {
+        title: "Satisfaction scoring",
+        body: "Track NPS, CSAT, or custom satisfaction metrics at client and cohort level over time.",
+      },
+      {
+        title: "Escalation management",
+        body: "Surface at-risk clients and trigger intervention workflows before dissatisfaction becomes a complaint.",
+      },
+      {
+        title: "Experience reporting",
+        body: "Understand service quality trends across teams, regions, and client segments.",
+      },
     ],
     platform: {
       label: "Dynamics 365 Customer Service & Customer Voice",
@@ -196,17 +271,35 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "No audit trail",
-          body: "When something goes wrong, there&apos;s no way to reconstruct what happened, who was responsible, or what was promised.",
+          body: "When something goes wrong, there's no way to reconstruct what happened, who was responsible, or what was promised.",
         },
       ],
     },
     capabilities: [
-      { title: "Unified case management", body: "Log, categorise, and track every case from first contact to resolution in a single system." },
-      { title: "Intelligent case routing", body: "Automatically assign cases to the right person based on type, priority, team capacity, and skill." },
-      { title: "SLA monitoring", body: "Set response and resolution targets per case type. Surface breaches before they happen." },
-      { title: "Knowledge base integration", body: "Surface relevant articles and resolution guides while workers are actively handling a case." },
-      { title: "Escalation workflows", body: "Trigger escalation paths automatically when cases breach thresholds or remain unresolved." },
-      { title: "Resolution reporting", body: "Track resolution rates, handling time, and SLA compliance across teams and case types." },
+      {
+        title: "Unified case management",
+        body: "Log, categorise, and track every case from first contact to resolution in a single system.",
+      },
+      {
+        title: "Intelligent case routing",
+        body: "Automatically assign cases to the right person based on type, priority, team capacity, and skill.",
+      },
+      {
+        title: "SLA monitoring",
+        body: "Set response and resolution targets per case type. Surface breaches before they happen.",
+      },
+      {
+        title: "Knowledge base integration",
+        body: "Surface relevant articles and resolution guides while workers are actively handling a case.",
+      },
+      {
+        title: "Escalation workflows",
+        body: "Trigger escalation paths automatically when cases breach thresholds or remain unresolved.",
+      },
+      {
+        title: "Resolution reporting",
+        body: "Track resolution rates, handling time, and SLA compliance across teams and case types.",
+      },
     ],
     platform: {
       label: "Dynamics 365 Customer Service",
@@ -225,15 +318,15 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     },
     whatItSolves: {
       intro:
-        "Most operations teams have process gaps that generic software doesn&apos;t cover. Power Platform closes those gaps without the cost or complexity of custom development.",
+        "Most operations teams have process gaps that generic software doesn't cover. Power Platform closes those gaps without the cost or complexity of custom development.",
       painPoints: [
         {
           title: "Rigid out-of-the-box systems",
-          body: "Standard software doesn&apos;t fit your exact process. Workarounds pile up and the gap between how you work and how the system works keeps growing.",
+          body: "Standard software doesn't fit your exact process. Workarounds pile up and the gap between how you work and how the system works keeps growing.",
         },
         {
           title: "Integration gaps between tools",
-          body: "Your systems don&apos;t talk to each other. Data moves by hand, errors accumulate, and your team spends time on data transfer rather than service delivery.",
+          body: "Your systems don't talk to each other. Data moves by hand, errors accumulate, and your team spends time on data transfer rather than service delivery.",
         },
         {
           title: "Automation backlog",
@@ -242,12 +335,30 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       ],
     },
     capabilities: [
-      { title: "Power Apps", body: "Build custom-fit apps for your specific operational workflows — without writing code." },
-      { title: "Power Automate", body: "Automate repetitive processes: approvals, notifications, data sync, and cross-system triggers." },
-      { title: "Power BI", body: "Build rich, interactive dashboards that pull from Dynamics, Excel, or any connected data source." },
-      { title: "Custom connectors", body: "Integrate with external systems — NDIS portals, payroll, scheduling tools — via pre-built or custom connectors." },
-      { title: "Process automation", body: "Replace manual steps in scheduling, case management, and compliance with automated flows." },
-      { title: "Self-service tools", body: "Give clients, workers, and managers the access they need without requiring IT involvement." },
+      {
+        title: "Power Apps",
+        body: "Build custom-fit apps for your specific operational workflows — without writing code.",
+      },
+      {
+        title: "Power Automate",
+        body: "Automate repetitive processes: approvals, notifications, data sync, and cross-system triggers.",
+      },
+      {
+        title: "Power BI",
+        body: "Build rich, interactive dashboards that pull from Dynamics, Excel, or any connected data source.",
+      },
+      {
+        title: "Custom connectors",
+        body: "Integrate with external systems — NDIS portals, payroll, scheduling tools — via pre-built or custom connectors.",
+      },
+      {
+        title: "Process automation",
+        body: "Replace manual steps in scheduling, case management, and compliance with automated flows.",
+      },
+      {
+        title: "Self-service tools",
+        body: "Give clients, workers, and managers the access they need without requiring IT involvement.",
+      },
     ],
     platform: {
       label: "Microsoft Power Platform",
@@ -274,26 +385,44 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "Complexity before confidence",
-          body: "Organisations get locked into a full platform before they&apos;ve validated whether it fits their operation. Quick Start lets you start smaller.",
+          body: "Organisations get locked into a full platform before they've validated whether it fits their operation. Quick Start lets you start smaller.",
         },
         {
           title: "Slow time to value",
-          body: "Most software projects spend months in setup before delivering any operational benefit. That&apos;s months of cost with no return.",
+          body: "Most software projects spend months in setup before delivering any operational benefit. That's months of cost with no return.",
         },
       ],
     },
     capabilities: [
-      { title: "Pre-configured templates", body: "Start from a production-ready configuration tuned for your sector — not a blank canvas." },
-      { title: "Guided implementation", body: "A structured delivery playbook keeps the project on track from kickoff to go-live." },
-      { title: "Training and enablement", body: "Your team is ready to use the system on day one — not weeks after go-live." },
-      { title: "Data migration support", body: "Structured migration of your existing client, case, and worker data into the new system." },
-      { title: "Go-live support", body: "Dedicated support during your first live period so issues are caught and resolved quickly." },
-      { title: "Hypercare period", body: "Extended post-launch support gives your team confidence as they settle into the new system." },
+      {
+        title: "Pre-configured templates",
+        body: "Start from a production-ready configuration tuned for your sector — not a blank canvas.",
+      },
+      {
+        title: "Guided implementation",
+        body: "A structured delivery playbook keeps the project on track from kickoff to go-live.",
+      },
+      {
+        title: "Training and enablement",
+        body: "Your team is ready to use the system on day one — not weeks after go-live.",
+      },
+      {
+        title: "Data migration support",
+        body: "Structured migration of your existing client, case, and worker data into the new system.",
+      },
+      {
+        title: "Go-live support",
+        body: "Dedicated support during your first live period so issues are caught and resolved quickly.",
+      },
+      {
+        title: "Hypercare period",
+        body: "Extended post-launch support gives your team confidence as they settle into the new system.",
+      },
     ],
     platform: {
       label: "Dynamics 365 + Power Platform",
       description:
-        "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos&apos;s proven implementation approach — reducing time, risk, and cost.",
+        "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos's proven implementation approach — reducing time, risk, and cost.",
     },
     worksWithCare: true,
     worksWithRoster: true,

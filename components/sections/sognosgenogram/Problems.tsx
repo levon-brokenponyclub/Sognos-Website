@@ -19,7 +19,7 @@ export default function GenogramProblems() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-center gap-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
-            Case records have facts. They&apos;re missing people.
+            Case records have facts. They're missing people.
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
             Standard case management captures what happened. Sognos Genogram

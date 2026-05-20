@@ -145,7 +145,7 @@ export default function IndustriesPage() {
 
       <CTASection
         headline="Which industry are you in?"
-        subtext="Our team has experience across all five sectors. Book a call and we&apos;ll show you how Sognos fits your specific operational context."
+        subtext="Our team has experience across all five sectors. Book a call and we'll show you how Sognos fits your specific operational context."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
       />

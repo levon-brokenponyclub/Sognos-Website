@@ -686,7 +686,7 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
       <ProofStories data={data} />
       <RelatedEditions data={data} />
       <div id="calendar">
-        <CTASection />
+        <CTASection defaultProduct="sognoscare" />
       </div>
 
       {/* Mobile hero drawer — fixed, rendered at page level to escape hero overflow-hidden */}

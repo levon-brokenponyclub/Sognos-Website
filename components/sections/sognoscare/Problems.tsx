@@ -48,7 +48,7 @@ export default function SognoscareProblems() {
         {/* Header */}
         <div className="mb-16 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
-            Care providers shouldn&apos;t operate like this
+            Care providers shouldn't operate like this
           </h2>
           <p className="text-lg text-sognos-text-body">
             Fragmented systems, manual compliance, and disconnected data are the

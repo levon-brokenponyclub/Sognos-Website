@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import Workforce from "@/components/ui/Workforce";
+import OutcomesFlow from "@/components/ui/OutcomesFlow";
+import ProcessFlow from "@/components/ui/ProcessFlow";
 
 const TABS = [
   {
@@ -10,21 +12,21 @@ const TABS = [
     label: "Manage demand",
     description:
       "SognosCare captures every referral, care plan and service request — triaged, assigned and compliance-tracked from day one.",
-    image: "/images/how-it-works/01.webp",
+    Component: ProcessFlow,
   },
   {
     id: "workforce",
     label: "Coordinate workforce",
     description:
       "SognosRoster matches the right worker to every job in real time — factoring skills, location, availability and compliance.",
-    image: "/images/how-it-works/02.webp",
+    Component: Workforce,
   },
   {
     id: "outcomes",
     label: "Track outcomes",
     description:
       "Live dashboards surface utilisation, compliance and costs across every service, site and workforce team.",
-    image: "/images/how-it-works/03.webp",
+    Component: OutcomesFlow,
   },
 ] as const;
 
@@ -137,29 +139,25 @@ export default function HowSognosWorksPreview() {
             ))}
           </div>
 
-          {/* Image — images stacked, active slides up from below */}
-          <div className="[grid-area:image] rounded-lg border border-gray-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-gray-200">
-            {TABS.map((tab, i) => (
-              <motion.div
-                key={tab.id}
-                className="absolute inset-0"
-                style={{ zIndex: active === i ? 10 : 0 }}
-                initial={{ y: i === 0 ? "0%" : "100%" }}
-                animate={{ y: active === i ? "0%" : "100%" }}
-                transition={
-                  active === i ? SLIDE : { duration: 0, delay: 0 } // instant reset, hidden behind active
-                }
-              >
-                <Image
-                  src={tab.image}
-                  alt={tab.label}
-                  fill
-                  className="object-cover"
-                  sizes="60vw"
-                  priority={i === 0}
-                />
-              </motion.div>
-            ))}
+          {/* Visual — components stacked, active slides up from below */}
+          <div className="[grid-area:image] rounded-lg border border-gray-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-white">
+            {TABS.map((tab, i) => {
+              const Component = tab.Component;
+              return (
+                <motion.div
+                  key={tab.id}
+                  className="absolute inset-0 flex items-center justify-center p-6 lg:p-10"
+                  style={{ zIndex: active === i ? 10 : 0 }}
+                  initial={{ y: i === 0 ? "0%" : "100%" }}
+                  animate={{ y: active === i ? "0%" : "100%" }}
+                  transition={
+                    active === i ? SLIDE : { duration: 0, delay: 0 }
+                  }
+                >
+                  <Component trigger={active === i} />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

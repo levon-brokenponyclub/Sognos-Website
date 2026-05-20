@@ -26,7 +26,7 @@ export type NavGroup = {
 // ─── Shared lists ─────────────────────────────────────────────────────────────
 
 const SOLUTIONS: NavItem[] = [
-  { name: "Field Service", href: "/solutions/field-service" },
+  { name: "Frontline", href: "/solutions/frontline" },
   { name: "CRM", href: "/solutions/customer-relationship-management" },
   { name: "Customer Insights", href: "/solutions/customer-insights" },
   { name: "Customer Experience", href: "/solutions/customer-experience" },
@@ -80,20 +80,14 @@ export const nav: NavGroup[] = [
     href: "#",
     megaMenu: [
       {
-        heading: "Why Choose Us",
+        heading: "Company",
         items: [
-          { name: "Built for complexity", href: "#" },
-          { name: "Microsoft-first platform", href: "#" },
-          { name: "Designed for frontline", href: "#" },
+          { name: "About", href: "/company/about" },
+          { name: "Social Responsibility", href: "/company/social-responsibility" },
+          { name: "Careers", href: "/company/careers" },
         ],
       },
-      {
-        heading: "Explore",
-        items: [
-          { name: "Customer Stories", href: "/customers" },
-          { name: "Partners", href: "#" },
-        ],
-      },
+      { heading: "", items: [] },
       { heading: "", items: [] },
     ],
   },
@@ -158,19 +152,12 @@ export const nav: NavGroup[] = [
       {
         heading: "Knowledge Hub",
         items: [
-          { name: "Blog", href: "/knowledge-hub" },
-          { name: "News", href: "/knowledge-hub" },
+          { name: "Insights", href: "/knowledge-hub" },
+          { name: "News", href: "/knowledge-hub?category=News" },
           { name: "Customer Stories", href: "/customers" },
         ],
       },
-      {
-        heading: "Company",
-        items: [
-          { name: "About", href: "/company/about" },
-          { name: "Social Responsibility", href: "/company/social-responsibility" },
-          { name: "Careers", href: "/company/careers" },
-        ],
-      },
+      { heading: "", items: [] },
       { heading: "", items: [] },
     ],
   },

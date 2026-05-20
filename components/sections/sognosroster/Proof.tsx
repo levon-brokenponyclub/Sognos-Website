@@ -141,7 +141,7 @@ export default function SognoscareRosterProof() {
           <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
             SognosRoster is built for organisations that need to demonstrate
             efficiency — fewer scheduling hours, better coverage, and a workforce
-            that&apos;s always in the right place.
+            that's always in the right place.
           </p>
         </div>
 
