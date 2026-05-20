@@ -187,9 +187,7 @@ export default function AboutPage() {
               Our Mission & Vision
             </span>
             <h2 className="font-heading text-4xl lg:text-6xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
-              Healthcare First. Field Service Always. AI at the Centre. <br />
-              <span className="text-gray-400">Our vision & mission</span> ex
-              ined
+              Healthcare First. Field Service Always. AI at the Centre.
             </h2>
           </div>
 
