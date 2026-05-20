@@ -30,7 +30,10 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     return { ok: false, error: "Please fill in all required fields." };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey =
+    process.env.RESEND_API_KEY ??
+    process.env.RESEND ??
+    process.env["Resend"];
   if (!apiKey) {
     return {
       ok: false,
