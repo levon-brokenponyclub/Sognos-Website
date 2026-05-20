@@ -69,10 +69,10 @@ export default function TeamSection() {
               <button
                 key={member.name}
                 onClick={() => setActive(member)}
-                className="flex flex-col text-left group bg-white p-2 rounded-lg transition-all duration-500 hover:-translate-y-1 cursor-pointer"
+                className="flex flex-col text-left group bg-white p-2 rounded-lg transition-all duration-500 hover:-trangray-y-1 cursor-pointer"
               >
                 {/* Photo - Reduced height (aspect 4/5) */}
-                <div className="relative w-full rounded-lg h-72 overflow-hidden bg-slate-50 mb-5 lg:mb-6">
+                <div className="relative w-full rounded-lg h-72 overflow-hidden bg-gray-50 mb-5 lg:mb-6">
                   <Image
                     src={member.image}
                     alt={member.name}
@@ -93,7 +93,7 @@ export default function TeamSection() {
                   {/* Visual trigger */}
                   <div className="mt-6 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity">
                     <span>Read profile</span>
-                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
                       <svg
                         width="12"
                         height="12"
@@ -129,7 +129,7 @@ export default function TeamSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-50 bg-prussian-blue-900/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-[#052048]/60 backdrop-blur-sm"
               onClick={() => setActive(null)}
             />
 
@@ -145,7 +145,7 @@ export default function TeamSection() {
             >
               {/* Drag handle + close */}
               <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
-                <div className="w-10 h-1 rounded-full bg-slate-200 mx-auto absolute left-1/2 -translate-x-1/2" />
+                <div className="w-10 h-1 rounded-full bg-gray-200 mx-auto absolute left-1/2 -trangray-x-1/2" />
                 <div />
                 <button
                   onClick={() => setActive(null)}
@@ -174,7 +174,7 @@ export default function TeamSection() {
                 <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] max-w-5xl mx-auto px-6 pb-10 gap-0">
                   {/* Col 1 — photo + identity + social */}
                   <div className="flex flex-col items-start py-6 md:pr-8 md:border-r border-sognos-border-subtle">
-                    <div className="relative w-48 aspect-[3/4] rounded-lg overflow-hidden bg-slate-100 mb-6">
+                    <div className="relative w-48 aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 mb-6">
                       <Image
                         src={active.image}
                         alt={active.name}
@@ -186,7 +186,7 @@ export default function TeamSection() {
                     <p className="font-heading text-lg font-semibold text-prussian-blue-800 leading-snug">
                       {active.name}
                     </p>
-                    <p className="text-sm text-brand mt-1">{active.role}</p>
+                    <p className="text-sm text-[#052048] mt-1">{active.role}</p>
                     <a
                       href={active.linkedin}
                       target="_blank"

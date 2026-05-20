@@ -68,13 +68,13 @@ export default function HowSognosWorksPreview() {
   };
 
   return (
-    <section className="w-full border-sognos-border-subtle bg-slate-100">
+    <section className="w-full border-sognos-border-subtle bg-gray-100">
       <div className="max-w-7xl w-full mx-auto px-4 py-24">
         <div className="grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-[40%_1fr] lg:grid-rows-[auto_1fr] lg:items-stretch [grid-template-areas:'heading''image''tabs'] lg:[grid-template-areas:'heading_image''tabs_image']">
           {/* Heading */}
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
             Stop managing complexity. <br />
-            <span className="text-soft text-prussian-blue-900/60">
+            <span className="text-soft text-[#052048]/60">
               Start delivering outcomes.
             </span>
           </h2>
@@ -85,7 +85,7 @@ export default function HowSognosWorksPreview() {
               <button
                 key={tab.id}
                 onClick={() => handleTab(i)}
-                className="relative w-full text-left border-t border-slate-300 cursor-pointer overflow-hidden"
+                className="relative w-full text-left border-t border-gray-300 cursor-pointer overflow-hidden"
               >
                 {/* Progress bar — top border */}
                 <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-transparent">
@@ -138,7 +138,7 @@ export default function HowSognosWorksPreview() {
           </div>
 
           {/* Image — images stacked, active slides up from below */}
-          <div className="[grid-area:image] rounded-lg border border-slate-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-slate-200">
+          <div className="[grid-area:image] rounded-lg border border-gray-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-gray-200">
             {TABS.map((tab, i) => (
               <motion.div
                 key={tab.id}

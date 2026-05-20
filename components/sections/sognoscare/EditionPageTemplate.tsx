@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import AnimatedButton from "@/components/ui/AnimatedButton";
@@ -6,6 +8,7 @@ import EditionCards from "@/components/sections/sognoscare/EditionCards";
 import ProductDrawer from "@/components/ui/ProductDrawer";
 import CTASection from "@/components/sections/CTASection";
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
+import ProductSubNav from "@/components/ui/ProductSubNav";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -35,6 +38,14 @@ const EDITION_LOGOS: Record<string, string> = {
   "Disability & Mental Health": "/logos/sognoscare-edition-dmh-white.svg",
   "Residential Aged Care": "/logos/sognoscare-edition-rac-white.svg",
   "Support at Home": "/logos/sognoscare-edition-sah-white.svg",
+};
+
+// Dark logos for the sticky sub-nav bar.
+const EDITION_LOGOS_DARK: Record<string, string> = {
+  "Allied Health": "/logos/sognoscare-edition-ahc.svg",
+  "Disability & Mental Health": "/logos/sognoscare-edition-dmh.svg",
+  "Residential Aged Care": "/logos/sognoscare-edition-rac.svg",
+  "Support at Home": "/logos/sognoscare-edition-sah.svg",
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -193,7 +204,7 @@ function Hero({ data }: { data: EditionData }) {
 
 function WhatItSolves({ data }: { data: EditionData }) {
   return (
-    <section className="w-full bg-white">
+    <section id="problems" className="w-full bg-white">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         <div className="text-center mb-14">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
@@ -247,13 +258,14 @@ function WhatItSolves({ data }: { data: EditionData }) {
 function Features({ data }: { data: EditionData }) {
   return (
     <section
+      id="features"
       className="w-full"
       style={{ backgroundColor: `${data.accentHex}1a` }}
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Left column — sticky, vertically centered in viewport */}
-          <div className="lg:col-span-5 lg:sticky lg:top-1/2 lg:-translate-y-1/2">
+          <div className="lg:col-span-5 lg:sticky lg:top-1/2 lg:-trangray-y-1/2">
             <div
               className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6"
               style={{ borderColor: `${data.accentHex}4d` }}
@@ -345,7 +357,7 @@ const ADVANTAGE_PATTERN: CellVariant[] = [
 
 function Advantages({ data }: { data: EditionData }) {
   return (
-    <section className="w-full bg-gray-200/70">
+    <section id="advantages" className="w-full bg-gray-200/70">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         {/* Heading */}
         <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
@@ -449,7 +461,10 @@ function ProofStories({ data }: { data: EditionData }) {
   const company = cs.company ?? data.name;
 
   return (
-    <section className="w-full bg-gray-200/70 overflow-hidden border-b border-sognos-border-subtle">
+    <section
+      id="stories"
+      className="w-full bg-gray-200/70 overflow-hidden border-b border-sognos-border-subtle"
+    >
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Section header */}
         <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
@@ -608,7 +623,7 @@ function RelatedEditions({ data }: { data: EditionData }) {
   );
 
   return (
-    <section className="w-full bg-gray-200">
+    <section id="editions" className="w-full bg-gray-200">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         {/* Section header */}
         <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
@@ -653,12 +668,26 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
   return (
     <main className="w-full bg-white">
       <Hero data={data} />
+      <ProductSubNav
+        productName={`SognosCare — ${data.name}`}
+        logoSrc={EDITION_LOGOS_DARK[data.name] ?? "/logos/sognos-care-logo-color.svg"}
+        sections={[
+          { label: "What it solves", id: "problems" },
+          { label: "Features", id: "features" },
+          { label: "Key Advantages", id: "advantages" },
+          { label: "Customer Stories", id: "stories" },
+          { label: "Other Editions", id: "editions" },
+          { label: "Schedule a Call", id: "calendar" },
+        ]}
+      />
       <WhatItSolves data={data} />
       <Features data={data} />
       <Advantages data={data} />
       <ProofStories data={data} />
       <RelatedEditions data={data} />
-      <CTASection />
+      <div id="calendar">
+        <CTASection />
+      </div>
 
       {/* Mobile hero drawer — fixed, rendered at page level to escape hero overflow-hidden */}
       <ProductDrawer

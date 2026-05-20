@@ -111,7 +111,7 @@ export default function CTASection({
   ];
 
   return (
-    <section className="w-full bg-slate-200/70">
+    <section className="w-full bg-gray-200/70">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         <div className="rounded-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -122,7 +122,7 @@ export default function CTASection({
                   <h3 className="text-lg lg:text-xl font-heading font-semibold mb-1 text-gray-900 tracking-tight">
                     Book a Demo
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed max-w-sm">
+                  <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
                     Schedule a 45-minute call to see how Sognos can unify your
                     operations and boost efficiency.
                   </p>
@@ -144,7 +144,7 @@ export default function CTASection({
                         <div className="flex items-center justify-between mb-5 flex-shrink-0">
                           <button
                             type="button"
-                            className="p-1.5 hover:bg-slate-100 rounded-md transition-colors text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +165,7 @@ export default function CTASection({
                           </h4>
                           <button
                             type="button"
-                            className="p-1.5 hover:bg-slate-100 rounded-md transition-colors text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +220,7 @@ export default function CTASection({
                                   className={`h-8 w-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#1D96FC] ${
                                     isSelected
                                       ? "bg-[#1D96FC] text-white shadow-md ring-2 ring-[#1D96FC] ring-offset-1"
-                                      : "text-slate-700 hover:bg-[#1D96FC]/10 hover:text-[#1D96FC]"
+                                      : "text-gray-700 hover:bg-[#1D96FC]/10 hover:text-[#1D96FC]"
                                   }`}
                                 >
                                   {day}
@@ -238,7 +238,7 @@ export default function CTASection({
                           <button
                             type="button"
                             onClick={() => setStep(1)}
-                            className="p-1.5 hover:bg-slate-100 rounded-md transition-colors text-slate-600 mr-2"
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 mr-2"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -282,7 +282,7 @@ export default function CTASection({
                           <button
                             type="button"
                             onClick={() => setStep(2)}
-                            className="p-1.5 hover:bg-slate-100 rounded-md transition-colors text-slate-600 mr-2"
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 mr-2"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -315,7 +315,7 @@ export default function CTASection({
                           }}
                         >
                           <div>
-                            <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                            <label className="block text-xs font-medium text-gray-700 mb-1.5">
                               First Name *
                             </label>
                             <input
@@ -326,7 +326,7 @@ export default function CTASection({
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                            <label className="block text-xs font-medium text-gray-700 mb-1.5">
                               Work Email *
                             </label>
                             <input
@@ -349,8 +349,8 @@ export default function CTASection({
                     )}
 
                     {step === 4 && (
-                      <div className="flex-1 min-h-0 border border-slate-200 bg-slate-50 rounded-lg p-6 lg:p-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
-                        <div className="w-14 h-14 bg-slate-200 rounded-full flex items-center justify-center mb-5 shadow-sm">
+                      <div className="flex-1 min-h-0 border border-gray-200 bg-gray-50 rounded-lg p-6 lg:p-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
+                        <div className="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center mb-5 shadow-sm">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="28"
@@ -369,7 +369,7 @@ export default function CTASection({
                         <h4 className="text-xl font-bold text-gray-900 mb-2">
                           You&apos;re booked!
                         </h4>
-                        <p className="text-sm text-slate-600 max-w-[250px] mx-auto">
+                        <p className="text-sm text-gray-600 max-w-[250px] mx-auto">
                           A calendar invitation has been sent to your email for{" "}
                           <strong>
                             May {selectedDate} at {selectedTime}

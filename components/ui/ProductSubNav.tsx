@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,28 +12,27 @@ export interface SubNavSection {
 
 interface ProductSubNavProps {
   productName: string;
+  logoSrc: string;
+  logoAlt?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   sections: SubNavSection[];
 }
 
 export default function ProductSubNav({
   productName,
+  logoSrc,
+  logoAlt,
+  logoWidth = 140,
+  logoHeight = 28,
   sections,
 }: ProductSubNavProps) {
-  const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
-
-  // Show sub-nav once the sentinel (bottom of hero) scrolls out of view
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setVisible(!entry.isIntersecting),
-      { threshold: 0 },
-    );
-    io.observe(sentinel);
-    return () => io.disconnect();
-  }, []);
+  const barRef = useRef<HTMLDivElement>(null);
+  const [docked, setDocked] = useState(false);
+  const dockedRef = useRef(false);
+  const [logoVisible, setLogoVisible] = useState(false);
 
   // Track which section is in view for active highlight
   useEffect(() => {
@@ -55,58 +55,140 @@ export default function ProductSubNav({
     return () => io.disconnect();
   }, [sections]);
 
+  // "Handoff" behavior with the fixed header:
+  // - While not docked: keep the sub-nav sticky *below* the header.
+  // - When it reaches the header: dock it at the very top and request the header hide.
+  useEffect(() => {
+    const el = barRef.current;
+    const sentinel = sentinelRef.current;
+    if (!el) return;
+
+    let ticking = false;
+    const update = () => {
+      const header = document.querySelector<HTMLElement>("[data-site-header]");
+      const headerH = header ? header.getBoundingClientRect().height : 0;
+      // Use the sentinel (normal flow) to determine how close the sub-nav is to the header.
+      // This avoids the sticky element "locking" its rect.top and preventing push from updating.
+      const probe = sentinel ?? el;
+      const probeRect = probe.getBoundingClientRect();
+
+      // Push ramps from 0 → headerH as the sub-nav area moves into the header zone.
+      const overlap = headerH - probeRect.top;
+      const push = Math.max(0, Math.min(headerH, overlap));
+      document.documentElement.style.setProperty(
+        "--sognos-header-push",
+        `${push}px`,
+      );
+
+      // Dock once the header has been fully pushed out.
+      const nextDocked = push >= headerH - 0.5;
+
+      // While we're pushing, reduce the sub-nav's sticky offset so it moves up with the header.
+      // This creates the "sub-nav pushes header away" feel.
+      const offsetPx = nextDocked ? 0 : Math.max(0, headerH - push);
+      document.documentElement.style.setProperty(
+        "--sognos-header-offset",
+        `${offsetPx}px`,
+      );
+
+      if (nextDocked !== dockedRef.current) {
+        dockedRef.current = nextDocked;
+        setDocked(nextDocked);
+        window.dispatchEvent(
+          new CustomEvent("sognos:productSubnavDocked", {
+            detail: { docked: nextDocked },
+          }),
+        );
+      }
+
+      // Reveal the logo only once the bar is actually at top:0 (docked).
+      // Keep the state stable to avoid extra renders on scroll.
+      setLogoVisible((prev) => (prev === nextDocked ? prev : nextDocked));
+      ticking = false;
+    };
+
+    const onScrollOrResize = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      // Ensure header is restored when leaving the page/component unmounts.
+      document.documentElement.style.removeProperty("--sognos-header-offset");
+      document.documentElement.style.removeProperty("--sognos-header-push");
+      window.dispatchEvent(
+        new CustomEvent("sognos:productSubnavDocked", {
+          detail: { docked: false },
+        }),
+      );
+    };
+  }, []);
+
   return (
     <>
-      {/* Sentinel placed at end of hero — triggers sub-nav visibility */}
-      <div ref={sentinelRef} aria-hidden />
+      {/* Normal-flow probe so header push can be computed even when the bar is sticky. */}
+      <div ref={sentinelRef} aria-hidden className="h-px" />
 
-      <AnimatePresence>
-        {visible && (
-          <motion.div
-            key="product-subnav"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-[85px] inset-x-0 z-40 bg-white border-b border-gray-200 pointer-events-auto"
-          >
-            <div className="mx-auto max-w-7xl px-6">
-              <div className="flex items-center justify-between h-11">
-                {/* Product name */}
-                <span className="text-sm font-semibold text-gray-900">
-                  {productName}
-                </span>
-
-                {/* Section links */}
-                <nav className="flex items-center gap-0">
-                  {sections.map(({ label, id }) => {
-                    const isActive = activeId === id;
-                    return (
-                      <Link
-                        key={id}
-                        href={`#${id}`}
-                        className={`relative px-4 h-11 flex items-center text-sm transition-colors duration-200 ${
-                          isActive
-                            ? "text-brand font-medium"
-                            : "text-gray-500 hover:text-gray-900"
-                        }`}
-                      >
-                        {label}
-                        {isActive && (
-                          <motion.span
-                            layoutId="subnav-indicator"
-                            className="absolute bottom-0 inset-x-4 h-0.5 bg-brand rounded-full"
-                          />
-                        )}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
+      <motion.div
+        ref={barRef}
+        key="product-subnav"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="sticky inset-x-0 z-50 bg-white border-b border-gray-200 pointer-events-auto"
+        style={{ top: docked ? 0 : "var(--sognos-header-offset, 0px)" }}
+        data-product-subnav
+      >
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex items-center h-18 gap-6">
+            {/* Left identity (logo) will be revisited once interaction is approved. */}
+            <div className="flex items-center">
+              <span className="sr-only">{productName}</span>
+              {logoVisible && (
+                <Image
+                  src={logoSrc}
+                  alt={logoAlt ?? productName}
+                  width={logoWidth}
+                  height={logoHeight}
+                  className="h-auto w-36 hidden"
+                />
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            {/* Section links */}
+            <nav className="flex items-center gap-0 ml-auto">
+              {sections.map(({ label, id }) => {
+                const isActive = activeId === id;
+                return (
+                  <Link
+                    key={id}
+                    href={`#${id}`}
+                    className={`relative px-4 h-18 flex items-center text-sm transition-colors duration-200 ${
+                      isActive
+                        ? "text-brand font-medium"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    {label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="subnav-indicator"
+                        className="absolute bottom-0 inset-x-4 h-0.5 bg-brand rounded-full"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      </motion.div>
     </>
   );
 }

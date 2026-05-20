@@ -24,7 +24,7 @@ function EditionsDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 bg-prussian-blue-900/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-[#052048]/60 backdrop-blur-sm"
             onClick={onClose}
           />
 
@@ -34,12 +34,12 @@ function EditionsDrawer({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-slate-100 rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100 rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle + close */}
             <div className="flex items-center justify-between px-6 pt-4 pb-3 shrink-0">
-              <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto absolute left-1/2 -translate-x-1/2" />
+              <div className="w-10 h-1 rounded-full bg-gray-300 mx-auto absolute left-1/2 -trangray-x-1/2" />
               <div />
               <button
                 onClick={onClose}
@@ -52,7 +52,7 @@ function EditionsDrawer({
 
             {/* Scrollable content */}
             <div className="overflow-y-auto flex-1">
-              <div className="mx-auto px-6 lg:px-26 pb-10">
+              <div className="mx-auto px-6 lg:px-16 pb-10">
                 <div className="py-4 items-center text-center max-w-4xl mx-auto mb-6 border-b border-sognos-border-subtle">
                   <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
                     Choose the Right SognosCare Edition for Your Service
@@ -117,7 +117,7 @@ export default function ProductSection() {
       >
         {/* Heading */}
         <div className="mx-auto lg:mb-2 max-w-7xl px-6 flex flex-col items-left lg:items-left gap-5 pb-6">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1.5 text-sm  font-heading font-medium border-white/20 text-white/80 bg-prussian-blue-900/30">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1.5 text-sm  font-heading font-medium border-white/20 text-white/80 bg-[#052048]/30">
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"
@@ -154,7 +154,7 @@ export default function ProductSection() {
         <div className="mx-auto max-w-7xl px-6 lg:px-6 mt-2">
           <div
             ref={sliderRef}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none lg:gap-7 -mx-6 px-6 lg:mx-0 lg:px-0"
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none lg:gap-4 -mx-6 px-6 lg:mx-0 lg:px-0"
           >
             {PRODUCT_CARDS.map((card, index) => (
               <ProductCard

@@ -86,7 +86,7 @@ const TESTIMONIALS = [
 
 function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
   return (
-    <div className="flex h-full min-h-[220px] flex-col justify-end rounded-[2rem] bg-[#0F172A] p-8 lg:p-10 shadow-sm transform transition hover:-translate-y-1 hover:shadow-xl duration-500">
+    <div className="flex h-full min-h-[220px] flex-col justify-end rounded-[2rem] bg-[#0F172A] p-8 lg:p-10 shadow-sm transform transition hover:-trangray-y-1 hover:shadow-xl duration-500">
       <div className="mb-4 text-white">
         <p className="font-heading text-5xl lg:text-6xl font-semibold mb-3 tracking-tight">
           <AnimatedCounter value={stat.numericValue} />{stat.suffix}
@@ -113,7 +113,7 @@ function TestimonialTile({
 }) {
   return (
     <div
-      className={`flex h-full min-h-[220px] flex-col justify-between rounded-[2rem] p-8 lg:p-10 shadow-sm transform transition hover:-translate-y-1 hover:shadow-xl duration-500 ${
+      className={`flex h-full min-h-[220px] flex-col justify-between rounded-[2rem] p-8 lg:p-10 shadow-sm transform transition hover:-trangray-y-1 hover:shadow-xl duration-500 ${
         dark
           ? "bg-prussian-blue-800 text-white"
           : "bg-white border border-gray-100"

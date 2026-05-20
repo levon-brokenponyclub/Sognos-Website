@@ -319,7 +319,7 @@ function SolutionCard({
           <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200">
             {solution.label}
           </h3>
-          <p className="mt-4 font-heading font-normal text-balance leading-relaxed lg:text-lg text-prussian-blue-900/65 line-clamp-4 flex-1 transition-colors duration-200">
+          <p className="mt-4 font-heading font-normal text-balance leading-relaxed lg:text-lg text-brand/65 line-clamp-4 flex-1 transition-colors duration-200">
             {solution.copy}
           </p>
         </div>
@@ -429,12 +429,12 @@ export default function SolutionsSection() {
   // }, [startAutoplay, stopAutoplay]);
 
   return (
-    <section className="w-full bg-slate-200/70 overflow-hidden">
+    <section className="w-full bg-gray-200/70 overflow-hidden">
       {/* Header — h2 left, arrows right */}
       <div className="max-w-7xl w-full mx-auto px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pt-16 lg:pt-24 pb-6 lg:pb-8">
           <div className="flex flex-col items-center lg:items-start gap-4">
-            <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1 text-sm  font-heading font-medium border-prussian-blue-900/50 text-prussian-blue-800/80">
+            <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1 text-sm  font-heading font-medium border-brand/50 text-prussian-blue-800/80">
               <span
                 aria-hidden
                 className="animate-shine pointer-events-none absolute inset-0 rounded-full"
@@ -463,14 +463,14 @@ export default function SolutionsSection() {
             <button
               onClick={() => handleStep(-1)}
               aria-label="Previous"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-brand transition-colors cursor-pointer"
             >
               <ArrowLeft size={16} />
             </button>
             <button
               onClick={() => handleStep(1)}
               aria-label="Next"
-              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-brand transition-colors cursor-pointer"
             >
               <ArrowRight size={16} />
             </button>
@@ -506,14 +506,14 @@ export default function SolutionsSection() {
           <button
             onClick={() => handleStep(-1)}
             aria-label="Previous"
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-brand transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={() => handleStep(1)}
             aria-label="Next"
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-prussian-blue-900 transition-colors cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-prussian-blue-800/30 text-prussian-blue-800 hover:border-prussian-blue-800 hover:text-brand transition-colors cursor-pointer"
           >
             <ArrowRight size={16} />
           </button>

@@ -68,7 +68,7 @@ export default function SognoscareRosterProblems() {
               >
                 {/* Problem panel */}
                 <div
-                  className={`flex flex-col justify-between bg-prussian-blue-900 p-8 lg:p-10 ${
+                  className={`flex flex-col justify-between bg-[#052048] p-8 lg:p-10 ${
                     isEven ? "lg:order-last" : ""
                   }`}
                 >

@@ -116,7 +116,7 @@ function ArticleCard({ article }: { article: Article }) {
           {article.title}
         </h3>
         <div className="flex-1" />
-        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
+        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
           Read More
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

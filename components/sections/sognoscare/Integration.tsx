@@ -35,7 +35,7 @@ export default function SognoscareIntegration() {
             </div>
 
             {/* Right — flow diagram placeholder */}
-            <div className="flex items-center justify-center border-l border-white/5 bg-prussian-blue-900/50 px-10 py-14 lg:px-14">
+            <div className="flex items-center justify-center border-l border-white/5 bg-[#052048]/50 px-10 py-14 lg:px-14">
               <div className="flex flex-col items-center gap-3 text-center">
                 {/* SognosCare node */}
                 <div className="rounded-xl border border-(--sognos-edition-green)/30 bg-(--sognos-edition-green)/10 px-6 py-4">

@@ -24,7 +24,7 @@ export default function LogoStrip() {
       aria-label="Trusted organisations"
       className="w-full overflow-hidden bg-white py-10 border-b border-dashed border-sognos-border-subtle"
     >
-      {/*  <h4 className="font-heading text-lg text-center my-1 font-semibold text-brand">
+      {/*  <h4 className="font-heading text-lg text-center my-1 font-semibold text-[#052048]">
         Trusted by Leading Companies
       </h4> */}
       <div className="trust-marquee-wrap">

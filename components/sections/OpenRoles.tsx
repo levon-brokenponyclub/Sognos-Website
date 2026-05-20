@@ -123,7 +123,7 @@ export default function OpenRoles() {
                   className="flex items-center justify-between gap-6 py-6 group"
                 >
                   <div>
-                    <p className="font-heading text-xl font-medium text-prussian-blue-800 tracking-tight group-hover:text-brand transition-colors">
+                    <p className="font-heading text-xl font-medium text-prussian-blue-800 tracking-tight group-hover:text-[#052048] transition-colors">
                       {role.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5 flex-wrap">

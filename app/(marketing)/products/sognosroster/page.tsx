@@ -47,7 +47,11 @@ export default function SognoscareRosterPage() {
           </div>
         </div>
       </ProductDrawer>
-      <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
+      <ProductSubNav
+        productName="SognosRoster"
+        logoSrc="/logos/sognos-roster-logo-color.svg"
+        sections={SECTIONS}
+      />
       <SognoscareRosterProblems />
       <SognoscareRosterFeatures />
       <SognoscareRosterAdvantages />

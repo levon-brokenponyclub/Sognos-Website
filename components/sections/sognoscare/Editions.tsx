@@ -9,7 +9,7 @@ export default function SognoscareEditions() {
       <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="mb-14 flex flex-col items-start lg:items-start gap-4">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-900/50 text-prussian-blue-800 font-medium">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-[#052048]/50 text-prussian-blue-800 font-medium">
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"

@@ -9,7 +9,7 @@ const STATS = [
     value: "1,100+",
     label: "Workers coordinated daily",
     context: "Across active SognosRoster clients",
-    theme: "brand",
+    theme: "[#052048]",
   },
   {
     value: "95%",
@@ -42,14 +42,14 @@ const TESTIMONIALS = [
 
 function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
   const themes = {
-    light: "bg-white border border-(--sognos-card-border) text-prussian-blue-900",
-    dark: "bg-prussian-blue-900 text-white",
-    brand: "bg-brand text-white",
+    light: "bg-white border border-(--sognos-card-border) text-[#052048]",
+    dark: "bg-[#052048] text-white",
+    [#052048]: "bg-[#052048] text-white",
   };
   const contextColor = {
-    light: "text-prussian-blue-900/60",
+    light: "text-[#052048]/60",
     dark: "text-white/60",
-    brand: "text-white/80",
+    [#052048]: "text-white/80",
   };
 
   return (
@@ -58,7 +58,7 @@ function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
     >
       <p
         className={`text-xs font-semibold uppercase tracking-widest ${
-          stat.theme === "light" ? "text-prussian-blue-900/50" : "text-white/60"
+          stat.theme === "light" ? "text-[#052048]/50" : "text-white/60"
         }`}
       >
         {stat.label}
@@ -86,7 +86,7 @@ function TestimonialTile({
     <div
       className={`flex h-full min-h-52 flex-col justify-between rounded-xl p-8 ${
         dark
-          ? "bg-prussian-blue-900 text-white"
+          ? "bg-[#052048] text-white"
           : "bg-white border border-(--sognos-card-border)"
       }`}
     >
@@ -96,7 +96,7 @@ function TestimonialTile({
         viewBox="0 0 28 22"
         fill="none"
         aria-hidden
-        className={`mb-6 ${dark ? "text-white/20" : "text-prussian-blue-900/15"}`}
+        className={`mb-6 ${dark ? "text-white/20" : "text-[#052048]/15"}`}
       >
         <path
           d="M0 22V13.6C0 5.87 4.1 1.4 12.3 0l1.4 2.4C9.8 3.47 7.77 5.6 7.1 9H12V22H0zm16 0V13.6C16 5.87 20.1 1.4 28.3 0l1.4 2.4C25.8 3.47 23.77 5.6 23.1 9H28V22H16z"
@@ -113,10 +113,10 @@ function TestimonialTile({
         </p>
       </blockquote>
       <footer className="mt-6">
-        <p className={`text-sm font-semibold ${dark ? "text-white" : "text-prussian-blue-900"}`}>
+        <p className={`text-sm font-semibold ${dark ? "text-white" : "text-[#052048]"}`}>
           {testimonial.role}
         </p>
-        <p className={`mt-1 text-sm ${dark ? "text-white/60" : "text-prussian-blue-900/60"}`}>
+        <p className={`mt-1 text-sm ${dark ? "text-white/60" : "text-[#052048]/60"}`}>
           {testimonial.organisation}
         </p>
       </footer>
@@ -134,7 +134,7 @@ export default function SognoscareRosterProof() {
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Results
               </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-[#052048] tracking-tight mb-6">
               Results workforce managers can measure
             </h2>
           </div>

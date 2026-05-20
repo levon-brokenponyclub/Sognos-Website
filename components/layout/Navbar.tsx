@@ -372,9 +372,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [hoveredSubmenuItem, setHoveredSubmenuItem] = useState<string | null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hideHeaderForSubnav, setHideHeaderForSubnav] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const activeIndexRef = useRef<number>(-1);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const logoSrc = "/logos/sognos-logo.svg";
 
@@ -408,6 +409,11 @@ export default function Navbar() {
       const el = headerRef.current;
       if (el) {
         const rect = el.getBoundingClientRect();
+        // Let product sub-nav stick below the header until it "takes over".
+        document.documentElement.style.setProperty(
+          "--sognos-header-offset",
+          hideHeaderForSubnav ? "0px" : `${rect.height}px`,
+        );
         const probeY = rect.top + rect.height / 2;
         let mode: "dark" | "light" = "light";
         document.querySelectorAll("[data-header-dark]").forEach((section) => {
@@ -432,34 +438,48 @@ export default function Navbar() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
     };
+  }, [hideHeaderForSubnav]);
+
+  // Product sub-nav can request that the header hides when it docks to the top.
+  useEffect(() => {
+    const onDocked = (e: Event) => {
+      const ce = e as CustomEvent<{ docked: boolean }>;
+      const next = Boolean(ce.detail?.docked);
+
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = null;
+      }
+
+      // When docked, allow the header to fade as it's pushed out.
+      setHideHeaderForSubnav(next);
+
+      if (next) {
+        // Match the header's CSS transition duration so sub-nav can animate in after.
+        hideTimerRef.current = setTimeout(() => {
+          window.dispatchEvent(
+            new CustomEvent("sognos:headerHidden", { detail: { hidden: true } }),
+          );
+        }, 310);
+      } else {
+        window.dispatchEvent(
+          new CustomEvent("sognos:headerHidden", { detail: { hidden: false } }),
+        );
+      }
+    };
+    window.addEventListener("sognos:productSubnavDocked", onDocked);
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      window.removeEventListener("sognos:productSubnavDocked", onDocked);
+    };
   }, []);
 
-  // Hover-intent delay
-  const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => {
-      setOpenMenu(null);
-      activeIndexRef.current = -1;
-    }, 200);
-  };
-
-  const cancelClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  };
-
-  const handleTriggerEnter = (label: string, index: number) => {
-    cancelClose();
-    if (activeIndexRef.current !== -1 && index !== activeIndexRef.current) {
-      setDirection(index > activeIndexRef.current ? "rtl" : "ltr");
-    }
-    activeIndexRef.current = index;
-    setOpenMenu(label);
-  };
-
   const toggleMenu = (label: string, index: number) => {
-    cancelClose();
     if (openMenu === label) {
       setOpenMenu(null);
       activeIndexRef.current = -1;
+      setHoveredProduct(null);
+      setHoveredSubmenuItem(null);
     } else {
       if (activeIndexRef.current !== -1 && index !== activeIndexRef.current) {
         setDirection(index > activeIndexRef.current ? "rtl" : "ltr");
@@ -470,10 +490,24 @@ export default function Navbar() {
   };
 
   const closeAll = () => {
-    cancelClose();
     setOpenMenu(null);
     activeIndexRef.current = -1;
+    setHoveredProduct(null);
+    setHoveredSubmenuItem(null);
   };
+
+  // Close any open desktop dropdown on scroll.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onScroll = () => {
+      setOpenMenu(null);
+      activeIndexRef.current = -1;
+      setHoveredProduct(null);
+      setHoveredSubmenuItem(null);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [openMenu]);
 
   // Mobile helpers
   const drillTo = (panelId: string) => {
@@ -491,7 +525,6 @@ export default function Navbar() {
   };
 
   const openMobile = () => {
-    cancelClose();
     closeAll();
     setMobilePanel("root");
     setMobileHistory([]);
@@ -528,14 +561,20 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="fixed top-0 left-0 w-full z-99 bg-transparent pointer-events-none"
+      data-site-header
+      className="fixed top-0 left-0 w-full z-99 bg-transparent pointer-events-none will-change-transform"
+      style={{
+        transform: `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
+      }}
     >
       {/* ── Nav bar ── */}
       <div
         className={[
           `pointer-events-auto w-full ${scrolled || colorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
           scrolled ? "py-2" : "pt-4 pb-2",
-          "transition-[background-color,border-color,padding] duration-300",
+          "transition-[background-color,border-color,padding,transform,opacity] duration-300 will-change-transform",
+          // Keep opacity stable; the push interaction should handle the handoff visually.
+          "opacity-100",
           colorMode === "light"
             ? "bg-white border-b border-sognos-border"
             : scrolled
@@ -577,14 +616,6 @@ export default function Navbar() {
                 <div
                   key={group.label}
                   className="relative"
-                  onMouseEnter={() => {
-                    if (group.megaMenu || group.items) {
-                      handleTriggerEnter(group.label, groupIndex);
-                    } else {
-                      scheduleClose();
-                    }
-                  }}
-                  onMouseLeave={() => scheduleClose()}
                 >
                   {group.megaMenu || group.items ? (
                     <button
@@ -696,8 +727,6 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2, ease: SHELL_EASE }}
             className="mega-panel pointer-events-auto absolute inset-x-0 top-full bg-white border-t border-b border-gray-200 shadow-sm"
-            onMouseEnter={cancelClose}
-            onMouseLeave={() => scheduleClose()}
           >
             <div className="mx-auto max-w-7xl px-6">
               <AnimatePresence
@@ -777,8 +806,6 @@ export default function Navbar() {
             transition={{ duration: 0.18, ease: SHELL_EASE }}
             className="mega-panel pointer-events-auto absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
             style={{ left: "auto" }}
-            onMouseEnter={cancelClose}
-            onMouseLeave={() => scheduleClose()}
           >
             <div className="px-3 py-3">
               {activeSimpleGroup.items!.map((item) => (

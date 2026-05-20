@@ -81,7 +81,7 @@ export default function IndustrySection() {
                     />
                   )}
                 </div>
-                <div className="bg-slate-200 rounded-lg p-5 flex flex-col gap-4">
+                <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
                   <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                     {ind.name}
                   </h2>
@@ -93,7 +93,7 @@ export default function IndustrySection() {
                     className="inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                   >
                     Read more
-                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
                       <svg
                         width="12"
                         height="12"
@@ -128,7 +128,7 @@ export default function IndustrySection() {
                 className={`w-full text-left py-3 px-5 font-heading text-xl font-medium tracking-tight transition-colors cursor-pointer ${
                   i === activeIndex
                     ? "text-white border-l-3 border-l-[#1D96FC]"
-                    : "text-white/70 border-l-3 border-l-prussian-blue-900 hover:text-white"
+                    : "text-white/70 border-l-3 border-l-[#052048] hover:text-white"
                 }`}
               >
                 {ind.name}
@@ -147,7 +147,7 @@ export default function IndustrySection() {
               className="flex gap-2 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
               {/* Left column — grey info panel */}
-              <div className="shrink-0 w-[45%] bg-slate-200/70 rounded-lg p-7 flex flex-col justify-between">
+              <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
                   <h2 className="mt-1 mb-5 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
@@ -161,7 +161,7 @@ export default function IndustrySection() {
                   className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                 >
                   Read more
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#052048] text-white shrink-0">
                     <svg
                       width="12"
                       height="12"

@@ -135,7 +135,7 @@ function ArticleCard({ article }: { article: Article }) {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-text-body line-clamp-2">
           {article.excerpt}
         </p>
-        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors duration-200 group-hover:text-brand/70">
+        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
           Read More
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path

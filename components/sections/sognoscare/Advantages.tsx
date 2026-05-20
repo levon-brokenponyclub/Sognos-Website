@@ -21,7 +21,7 @@ const GRID: Cell[] = [
 
 export default function SognoscareAdvantages() {
   return (
-    <section id="advantages" className="w-full bg-slate-200/90">
+    <section id="advantages" className="w-full bg-gray-200/90">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr_1fr_1fr] gap-3 lg:gap-4">
           {GRID.map((cell, i) => {
@@ -31,7 +31,7 @@ export default function SognoscareAdvantages() {
                   key="header-card"
                   className="lg:row-span-2 rounded-lg lg:p-2 h-full bg-white text-prussian-blue-800"
                 >
-                  <div className="h-full shrink-0 bg-slate-100/70 rounded-lg p-6 flex flex-col justify-between">
+                  <div className="h-full shrink-0 bg-gray-100/70 rounded-lg p-6 flex flex-col justify-between">
                     <div>
                       <div className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-1 text-sm text-prussian-blue-800 font-medium mb-6">
                         <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>

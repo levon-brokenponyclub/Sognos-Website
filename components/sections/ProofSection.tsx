@@ -2,7 +2,7 @@
 const COMPLIANCE_VIDEO =
   "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm";
 
-type StatTheme = "dark" | "video" | "light" | "brand";
+type StatTheme = "dark" | "video" | "light" | "[#052048]";
 type Stat = {
   value: string;
   label: string;
@@ -34,7 +34,7 @@ const STATS: Stat[] = [
     value: "1,100+",
     label: "Workers coordinated daily",
     context: "Across active SognosRoster clients",
-    theme: "brand",
+    theme: "[#052048]",
     image: "/images/industries/health-social-care.webp",
   },
 ];
@@ -62,30 +62,30 @@ function StatTile({ stat }: { stat: Stat }) {
   const isVideo = stat.theme === "video";
 
   const bgClass = {
-    light: "bg-white border border-sognos-border-subtle text-brand",
+    light: "bg-white border border-sognos-border-subtle text-[#052048]",
     dark: "bg-prussian-blue-800 text-white",
-    brand: "bg-brand text-white",
+    [#052048]: "bg-[#052048] text-white",
     video: "text-white",
   }[stat.theme];
 
   const labelColor = {
-    light: "text-brand",
+    light: "text-[#052048]",
     dark: "text-white",
-    brand: "text-white",
+    [#052048]: "text-white",
     video: "text-white",
   }[stat.theme];
 
   const contextColor = {
-    light: "text-brand",
+    light: "text-[#052048]",
     dark: "text-white",
-    brand: "text-white",
+    [#052048]: "text-white",
     video: "text-white",
   }[stat.theme];
 
   const valueColor = {
-    light: "text-brand",
+    light: "text-[#052048]",
     dark: "text-white",
-    brand: "text-white",
+    [#052048]: "text-white",
     video: "text-white",
   }[stat.theme];
 
@@ -115,7 +115,7 @@ function StatTile({ stat }: { stat: Stat }) {
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-prussian-blue-900/55" />
+          <div className="absolute inset-0 bg-[#052048]/55" />
         </>
       )}
 
@@ -172,7 +172,7 @@ function TestimonialTile({
         viewBox="0 0 28 22"
         fill="none"
         aria-hidden="true"
-        className={dark ? "text-white" : "text-brand"}
+        className={dark ? "text-white" : "text-[#052048]"}
       >
         <path
           d="M0 22V13.6C0 5.87 4.1 1.4 12.3 0l1.4 2.4C9.8 3.47 7.77 5.6 7.1 9H12V22H0zm16 0V13.6C16 5.87 20.1 1.4 28.3 0l1.4 2.4C25.8 3.47 23.77 5.6 23.1 9H28V22H16z"
@@ -182,7 +182,7 @@ function TestimonialTile({
 
       <blockquote className="mt-4 flex-1">
         <p
-          className={`text-sm leading-relaxed ${dark ? "text-white" : "text-brand"}`}
+          className={`text-sm leading-relaxed ${dark ? "text-white" : "text-[#052048]"}`}
         >
           {testimonial.quote}
         </p>
@@ -190,11 +190,11 @@ function TestimonialTile({
 
       <footer className="mt-6">
         <p
-          className={`text-sm font-semibold ${dark ? "text-white" : "text-brand"}`}
+          className={`text-sm font-semibold ${dark ? "text-white" : "text-[#052048]"}`}
         >
           {testimonial.role}
         </p>
-        <p className={`text-xs mt-0.5 ${dark ? "text-white" : "text-brand"}`}>
+        <p className={`text-xs mt-0.5 ${dark ? "text-white" : "text-[#052048]"}`}>
           {testimonial.organisation}
         </p>
       </footer>
@@ -206,11 +206,11 @@ function TestimonialTile({
 
 export default function ProofSection() {
   return (
-    <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
+    <section className="w-full border-b border-sognos-border-subtle bg-gray-50">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 border-x border-dashed border-sognos-border-subtle">
         {/* Heading row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end justify-items-between pb-6">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-[#052048] tracking-tight mb-6">
             Results
             <br />
             Results organisations can point to

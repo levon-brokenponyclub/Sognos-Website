@@ -45,12 +45,12 @@ export default function LifeAtSognos() {
         <div className="flex gap-4 min-h-[420px]">
 
           {/* Col 1 — tab list */}
-          <div className="shrink-0 w-[22%] bg-slate-100 rounded-lg p-7 flex flex-col justify-center gap-0">
+          <div className="shrink-0 w-[22%] bg-gray-100 rounded-lg p-7 flex flex-col justify-center gap-0">
             {TABS.map((tab, i) => (
               <button
                 key={tab.name}
                 onClick={() => setActiveIndex(i)}
-                className="text-left border-t border-slate-300 py-5 cursor-pointer"
+                className="text-left border-t border-gray-300 py-5 cursor-pointer"
               >
                 <span
                   className={`block font-heading text-lg font-semibold leading-snug tracking-tight transition-opacity duration-200 text-prussian-blue-800 ${
@@ -71,7 +71,7 @@ export default function LifeAtSognos() {
           </div>
 
           {/* Col 2 — image placeholder */}
-          <div className="flex-1 rounded-lg overflow-hidden bg-slate-300 relative">
+          <div className="flex-1 rounded-lg overflow-hidden bg-gray-300 relative">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}

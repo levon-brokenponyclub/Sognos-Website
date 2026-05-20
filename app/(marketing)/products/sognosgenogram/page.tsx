@@ -45,7 +45,11 @@ export default function SognosGenogramPage() {
           </div>
         </div>
       </ProductDrawer>
-      <ProductSubNav productName="Sognos Genogram" sections={SECTIONS} />
+      <ProductSubNav
+        productName="Sognos Genogram"
+        logoSrc="/logos/sognos-genogram-logo-color.svg"
+        sections={SECTIONS}
+      />
       <GenogramProblems />
       <GenogramFeatures />
       <GenogramStories />

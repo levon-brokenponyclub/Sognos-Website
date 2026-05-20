@@ -184,6 +184,34 @@
 
   /* Surface */
   --color-surface-100: var(--sognos-surface-100);
+
+  /* ========================
+     WORKHORSE TOKENS — temporary design system for new homepage
+     Swap values to Sognos brand after layout is locked.
+  ======================== */
+
+  /* Workhorse colors */
+  --color-wh-blue: #79a7ed;
+  --color-wh-blue-light: #c7d8e4;
+  --color-wh-teal: #80c3b9;
+  --color-wh-bg: #f5f4f1;
+  --color-wh-text: #203e71;
+  --color-wh-text-muted: rgb(39 39 39 / 0.65);
+  --color-wh-text-soft: rgb(39 39 39 / 0.45);
+  --color-wh-border: rgb(39 39 39 / 0.1);
+  --color-wh-card: #ffffff;
+  --color-wh-pink: #f5aaaa;
+  --color-wh-green: #a9ee81;
+
+  /* Workhorse radii */
+  --radius-wh-xs: 2px;
+  --radius-wh-sm: 6px;
+  --radius-wh-md: 12px;
+  --radius-wh-pill: 200px;
+
+  /* Workhorse shadows */
+  --shadow-wh-card: 0 4px 12px rgb(0 0 0 / 0.1);
+  --shadow-wh-card-lg: 0 4px 24px rgb(39 39 39 / 0.1);
 }
 
 /* ========================
@@ -406,8 +434,12 @@ span.text-shine-settle {
       var(--color-cornflower-ocean-400) 0%,
       var(--color-cornflower-ocean-500) 100%
     );
-  background-size: 260% 260%, 100% 100%;
-  background-position: 0% 100%, 0 0;
+  background-size:
+    260% 260%,
+    100% 100%;
+  background-position:
+    0% 100%,
+    0 0;
   background-repeat: no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
@@ -428,10 +460,14 @@ span.text-shine-settle {
 
 @keyframes text-shine-diagonal {
   0% {
-    background-position: 0% 100%, 0 0;
+    background-position:
+      0% 100%,
+      0 0;
   }
   100% {
-    background-position: 100% 0%, 0 0;
+    background-position:
+      100% 0%,
+      0 0;
   }
 }
 

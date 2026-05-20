@@ -20,15 +20,23 @@ interface EditionCardsProps {
   containerClassName?: string;
 }
 
-function EditionCard({ edition, cardWidthClass = "lg:w-[31.5%]" }: { edition: Edition; cardWidthClass?: string }) {
+function EditionCard({
+  edition,
+  cardWidthClass = "lg:w-[31.5%]",
+}: {
+  edition: Edition;
+  cardWidthClass?: string;
+}) {
   const title = edition.label || edition.name || "";
 
   return (
-    <article className={`rounded-lg bg-white p-2 h-[450px] lg:h-[500px] flex-shrink-0 snap-center w-[82vw] ${cardWidthClass}`}>
+    <article
+      className={`rounded-lg bg-white p-2 h-[450px] lg:h-[445px] flex-shrink-0 snap-center w-[82vw] ${cardWidthClass}`}
+    >
       {/* Inner panel — accent colour throughout (no video bg) */}
       <div className="relative h-full rounded-lg overflow-hidden flex flex-col">
         {/* Logo — centered in upper zone */}
-        <div className="flex-1 flex items-center justify-center px-8 pb-[270px] lg:pb-[315px]">
+        <div className="flex-1 flex items-center justify-center px-8 lg:pb-[265px]">
           <Image
             src={edition.logo}
             alt={title}
@@ -40,15 +48,15 @@ function EditionCard({ edition, cardWidthClass = "lg:w-[31.5%]" }: { edition: Ed
 
         {/* Content — bottom panel, accent bg, white text */}
         <div
-          className="absolute bottom-0 rounded-lg left-0 right-0 z-10 px-8 pt-10 pb-8"
+          className="absolute bottom-0 rounded-lg left-0 right-0 z-10 px-7 pt-10 pb-8"
           style={{
             backgroundColor: `${edition.accentColor}e6`,
           }}
         >
-          <h2 className="font-heading text-2xl font-medium leading-tight tracking-normal whitespace-pre-line lg:text-2xl transition-colors duration-500 text-white">
+          <h2 className="font-heading text-[24px] font-medium leading-tight tracking-normal whitespace-pre-line  transition-colors duration-500 text-white">
             {title}
           </h2>
-          <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-white/90 lg:text-lg">
+          <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-white/90 lg:text-md">
             {edition.description}
           </p>
           <div className="mt-5">
@@ -105,10 +113,14 @@ export default function EditionCards({
     <div className={`relative ${containerClassName}`}>
       <div
         ref={sliderRef}
-        className="flex gap-4 lg:gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
+        className="flex gap-4 lg:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
       >
         {editions.map((edition) => (
-          <EditionCard key={edition.href} edition={edition} cardWidthClass={cardWidthClass} />
+          <EditionCard
+            key={edition.href}
+            edition={edition}
+            cardWidthClass={cardWidthClass}
+          />
         ))}
       </div>
 

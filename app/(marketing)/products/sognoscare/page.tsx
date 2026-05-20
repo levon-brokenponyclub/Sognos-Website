@@ -49,7 +49,12 @@ export default function SognosCarePage() {
           </div>
         </div>
       </ProductDrawer>
-      <ProductSubNav productName="SognosCare" sections={SECTIONS} />
+      <ProductSubNav
+        productName="SognosCare"
+        logoSrc="/logos/sognos-care-logo-color.svg"
+        
+        sections={SECTIONS}
+      />
       <SognoscareProblems />
       <SognoscareFeatures />
       <SognoscareEditions />

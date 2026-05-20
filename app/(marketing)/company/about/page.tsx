@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import TeamSection from "@/components/sections/TeamSection";
 import SocialResponsibilitySection from "@/components/sections/SocialResponsibilitySection";
+import CTASection from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -64,16 +65,33 @@ export default function AboutPage() {
   return (
     <main className="w-full bg-white">
       {/* Hero Bento */}
-      <section className="w-full bg-gray-100 py-42 lg:pb-16 border-b border-gray-100">
+      <section className="w-full bg-gray-200/50 pt-40 lg:pt-44 pb-16 lg:pb-24">
         <div className="max-w-7xl w-full mx-auto px-6">
           {/* Heading */}
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10 lg:mb-16 gap-4">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
+            <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-3 pr-4 py-1 text-sm uppercase tracking-tight font-heading font-semibold bg-cornflower-ocean-200/50 text-[#173465]/80">
+              <span
+                aria-hidden
+                className="animate-shine pointer-events-none absolute inset-0 rounded-full"
+                style={
+                  {
+                    padding: "1px",
+                    background:
+                      "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                    ["--shine-duration" as string]: "4s",
+                  } as React.CSSProperties
+                }
+              />
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               About Sognos
             </div>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium text-prussian-blue-800 tracking-tight">
-              Company
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-4xl font-medium text-[#122E58] tracking-tight">
+              Building smarter automation for modern teams
             </h1>
             <p className="text-base lg:text-lg text-sognos-text-body leading-relaxed">
               Built to serve the organisations that serve others. Since 2016,
@@ -86,16 +104,15 @@ export default function AboutPage() {
           {/* Bento grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-4 lg:gap-5">
             {/* Left Column */}
-            <div className="grid grid-cols-2 gap-4 md:col-span-2 md:flex md:flex-col md:gap-4 lg:col-span-3 lg:gap-5">
+            <div className="md:col-span-2 lg:col-span-3 flex flex-col gap-4 lg:gap-5">
               {/* Stat 1 — Dark */}
-              <div className="rounded-lg bg-prussian-blue-800 text-white p-8 lg:p-10 flex flex-col justify-end h-[200px] md:h-[260px] lg:h-[310px] transition-all duration-500 hover:-translate-y-1">
-                <p className="text-5xl text-white lg:text-6xl font-heading font-medium mb-3 tracking-tight">
+              <div className="rounded-lg bg-[#203E71] text-white p-8 lg:p-10 flex flex-col justify-end h-[200px] md:h-[260px] lg:h-[310px] transition-all duration-500 hover:-translate-y-1">
+                <p className="text-5xl text-white lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                   2016
                 </p>
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                  <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                <p className="text-xs font-semibold uppercase tracking-widest text-white">
                   Founded
-                </div>
+                </p>
               </div>
 
               {/* Stat 2 — Video */}
@@ -113,10 +130,9 @@ export default function AboutPage() {
                   <p className="text-5xl text-white lg:text-6xl font-heading font-medium mb-3 tracking-tight">
                     9+
                   </p>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-white">
                     Years in field service
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -143,25 +159,24 @@ export default function AboutPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-row lg:gap-5 flex-1">
+              <div className="flex flex-col sm:flex-row gap-4 lg:gap-5 flex-1">
                 {/* Stat 3 — Dark */}
                 <div className="rounded-lg bg-[#1D96FC] text-white p-6 lg:p-8 flex flex-col justify-end flex-1 min-h-[160px] transition-all duration-500 hover:-translate-y-1">
                   <p className="text-4xl text-white lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                     3
                   </p>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-white">
                     Countries served
-                  </div>
+                  </p>
                 </div>
 
                 {/* Stat 4 — Image */}
-                <div className="rounded-lg bg-white relative overflow-hidden flex-1 p-6 lg:p-8 flex flex-col justify-end min-h-[200px] transition-all duration-500 hover:-translate-y-1 group">
+                <div className="rounded-lg bg-[#122E58] relative overflow-hidden flex-1 p-6 lg:p-8 flex flex-col justify-end min-h-[200px] transition-all duration-500 hover:-translate-y-1 group">
                   <div className="relative z-10 text-white">
                     <p className="text-4xl lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                       1,100+
                     </p>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-prussian-blue-800">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#173465]">
                       Users on platform
                     </p>
                   </div>
@@ -177,11 +192,10 @@ export default function AboutPage() {
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
           {/* Section Header */}
           <div className="mb-16 lg:mb-20">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
               Our Mission & Vision
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+            </span>
+            <h2 className="font-heading text-4xl lg:text-6xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
               First in field service: <br />
               <span className="text-gray-400">our vision & mission</span>{" "}
               explained
@@ -192,9 +206,9 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden mb-24 lg:mb-32">
             {/* Mission Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-8">
                 Mission
-              </h2>
+              </h3>
               <p className="text-gray-600 leading-relaxed text-lg mb-10">
                 By leveraging modern business applications — centred on
                 Microsoft Dynamics 365 — we simplify processes, solve
@@ -206,7 +220,7 @@ export default function AboutPage() {
                   We simplify processes, solve operational challenges, and
                   deliver measurable value for those who serve others.
                 </p>
-                <p className="text-xs font-bold text-prussian-blue-800 uppercase tracking-wide">
+                <p className="text-xs font-bold text-[#173465] uppercase tracking-wide">
                   — Our Commitment
                 </p>
               </div>
@@ -214,9 +228,9 @@ export default function AboutPage() {
 
             {/* Vision Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-8">
                 Vision
-              </h2>
+              </h3>
               <p className="text-gray-600 leading-relaxed text-lg mb-10">
                 To be first in field service. We aim to set the global standard
                 for operational excellence in service-led organisations through
@@ -244,15 +258,14 @@ export default function AboutPage() {
 
           {/* Values Section */}
           <div className="border-t border-gray-200 pt-20">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-sognos-text-muted mb-10">
               Our Core Values
-            </div>
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {VALUES.map((v) => (
                 <div key={v.title} className="group">
                   <div className="w-12 h-px bg-[#1D96FC] mb-6 transition-all duration-500 group-hover:w-full" />
-                  <h4 className="font-heading text-xl font-semibold text-prussian-blue-800 mb-4 transition-colors group-hover:text-[#1D96FC]">
+                  <h4 className="font-heading text-xl font-semibold text-[#173465] mb-4 transition-colors group-hover:text-[#1D96FC]">
                     {v.title}
                   </h4>
                   <p className="text-sm text-sognos-text-body leading-relaxed text-gray-600">
@@ -273,11 +286,10 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
             {/* Left column - Sticky */}
             <div className="lg:col-span-5 lg:sticky lg:top-32">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
                 Partners
-              </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+              </p>
+              <h2 className="font-heading text-4xl lg:text-5xl font-medium text-[#173465] tracking-tight mb-6">
                 Our Partners
               </h2>
               <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
@@ -292,7 +304,7 @@ export default function AboutPage() {
               {PARTNERS.map((partner) => (
                 <div
                   key={partner.name}
-                  className="group bg-gray-200/70 border border-sognos-border-subtle rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-[#1D96FC]/30"
+                  className="group bg-slate-50 border border-sognos-border-subtle rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-[#1D96FC]/30"
                 >
                   {/* Logo cell */}
                   <div className="shrink-0 w-full sm:w-48 flex items-center justify-center p-8 bg-white border-b sm:border-b-0 sm:border-r border-sognos-border-subtle">
@@ -310,9 +322,9 @@ export default function AboutPage() {
                     <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#1D96FC] mb-2">
                       {partner.type}
                     </p>
-                    <h2 className="font-heading text-xl font-semibold text-prussian-blue-800 mb-4">
+                    <h3 className="font-heading text-xl font-semibold text-[#173465] mb-4">
                       {partner.name}
-                    </h2>
+                    </h3>
                     <p className="text-sm text-sognos-text-body leading-relaxed ">
                       {partner.description}
                     </p>
@@ -326,16 +338,17 @@ export default function AboutPage() {
 
       <SocialResponsibilitySection />
 
+      <CTASection />
+
       {/* Careers overview */}
-      <section className="w-full bg-prussian-blue-800">
+      <section className="w-full bg-[#173465]">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50 mb-4">
                 Careers
-              </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
+              </p>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
                 Join Sognos to drive innovation together.
               </h2>
               <p className="mt-6 text-white/70 leading-relaxed">
@@ -346,7 +359,7 @@ export default function AboutPage() {
               </p>
               <Link
                 href="/company/careers"
-                className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-prussian-blue-800 text-sm font-semibold hover:opacity-90 transition-opacity"
+                className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#173465] text-sm font-semibold hover:opacity-90 transition-opacity"
               >
                 View open roles
               </Link>

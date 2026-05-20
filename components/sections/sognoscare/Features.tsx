@@ -419,7 +419,7 @@ export default function SognoscareFeatures() {
                 className={`w-full text-left py-3 px-5 font-heading text-xl font-medium tracking-tight transition-colors cursor-pointer ${
                   i === activeIndex
                     ? "text-white border-l-3 border-l-[#1D96FC]"
-                    : "text-white/70 border-l-3 border-l-prussian-blue-900 hover:text-white"
+                    : "text-white/70 border-l-3 border-l-[#052048] hover:text-white"
                 }`}
               >
                 {feat.name}
@@ -438,7 +438,7 @@ export default function SognoscareFeatures() {
               className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
               {/* Left column — grey info panel */}
-              <div className="shrink-0 w-[45%] bg-slate-200/70 rounded-lg p-7 flex flex-col justify-between">
+              <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
                   {/* <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
                     {active.tagline}
@@ -478,7 +478,7 @@ export default function SognoscareFeatures() {
                   className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                 >
                   Book a Demo
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
                     <svg
                       width="12"
                       height="12"

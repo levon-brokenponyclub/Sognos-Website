@@ -129,7 +129,7 @@ export default function SocialResponsibilitySection() {
                     className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
                   >
                     Read more
-                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-900 text-white shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
                       <svg
                         width="12"
                         height="12"
