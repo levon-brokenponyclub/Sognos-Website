@@ -37,7 +37,7 @@ export default function ComingSoonHero() {
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
                 Allocate the right people, at the right time, to the right
-                services — automatically. Putting real-time optimisation in the
+                services automatically. Putting real-time optimisation in the
                 hands of your operations team.
               </p>
             </div>
