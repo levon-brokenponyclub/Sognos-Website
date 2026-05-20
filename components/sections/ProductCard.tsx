@@ -23,7 +23,6 @@ export type ProductCardData = {
   description: string;
   ctaText: string;
   ctaLink: string;
-  video: string;
   hoverBg: string;
   editions?: readonly Edition[];
 };
@@ -37,8 +36,6 @@ export const PRODUCT_CARDS: ProductCardData[] = [
       "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
     ctaText: "Explore SognosCare",
     ctaLink: "/products/sognoscare",
-    video:
-      "https://www.shutterstock.com/shutterstock/videos/3783412759/preview/stock-footage-happy-face-hug-and-senior-patient-with-nurse-for-healthcare-or-assisted-living-at-old-age-home.webm",
     hoverBg: "#4ECCD6",
     editions: SOGNOSCARE_EDITIONS,
   },
@@ -50,8 +47,6 @@ export const PRODUCT_CARDS: ProductCardData[] = [
       "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
     ctaText: "Explore SognosRoster",
     ctaLink: "/products/sognosroster",
-    video:
-      "https://www.shutterstock.com/shutterstock/videos/3920712075/preview/stock-footage-typing-supply-chain-and-man-in-warehouse-tablet-and-digital-checklist-for-export-report-person.webm",
     hoverBg: "#1d96fc",
   },
   {
@@ -62,8 +57,6 @@ export const PRODUCT_CARDS: ProductCardData[] = [
       "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery — giving your team the context they need to deliver better outcomes.",
     ctaText: "Explore Sognos Genogram",
     ctaLink: "/products/sognosgenogram",
-    video:
-      "https://www.shutterstock.com/shutterstock/videos/3992307185/preview/stock-footage-vertical-portrait-of-cheerful-caucasian-girl-child-posing-for-camera-holding-handmade-paper-bunny.webm",
     hoverBg: "#92278D",
   },
 ];
@@ -102,7 +95,6 @@ export function ProductCard({
   byline,
   description,
   ctaLink,
-  video,
   hoverBg,
   editions,
   index,
@@ -130,22 +122,6 @@ export function ProductCard({
       className="shrink-0 w-[calc(100vw-3rem)] snap-center lg:flex-1 lg:w-auto h-[510px] overflow-hidden rounded-md bg-white p-2"
     >
       <div className="relative h-full rounded-lg overflow-hidden bg-white">
-        <video
-          src={video}
-          autoPlay
-          muted
-          playsInline
-          loop
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${active ? "opacity-100" : "opacity-0"}`}
-        />
-
-        <div
-          className={`absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none transition-opacity duration-500 ${active ? "opacity-100" : "opacity-0"}`}
-        />
-        <div
-          className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none transition-opacity duration-500 ${active ? "opacity-100" : "opacity-0"}`}
-        />
-
         <motion.div
           animate={{ y: active ? -20 : 0 }}
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
@@ -156,7 +132,7 @@ export function ProductCard({
             alt={logoAlt}
             width={160}
             height={40}
-            className={`h-11 w-auto object-contain transition-all duration-500 ${active ? "brightness-0 invert" : ""}`}
+            className="h-11 w-auto object-contain transition-all duration-500"
           />
         </motion.div>
 

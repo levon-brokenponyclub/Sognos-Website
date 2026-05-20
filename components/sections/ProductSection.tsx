@@ -169,7 +169,7 @@ export default function ProductSection() {
           </div>
 
           {/* Nav arrows */}
-          <div className="flex items-center justify-end gap-3 mt-6">
+          <div className="mt-6 flex items-center justify-end gap-3 lg:hidden">
             <button
               onClick={() => scroll("prev")}
               className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/30 text-white hover:border-white/60 transition-colors"
