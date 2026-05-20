@@ -44,12 +44,12 @@ function StatTile({ stat }: { stat: (typeof STATS)[number] }) {
   const themes = {
     light: "bg-white border border-(--sognos-card-border) text-[#052048]",
     dark: "bg-[#052048] text-white",
-    [#052048]: "bg-[#052048] text-white",
+    "[#052048]": "bg-[#052048] text-white",
   };
   const contextColor = {
     light: "text-[#052048]/60",
     dark: "text-white/60",
-    [#052048]: "text-white/80",
+    "[#052048]": "text-white/80",
   };
 
   return (
