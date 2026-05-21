@@ -415,10 +415,11 @@ const POSTS: Record<string, Post> = {
           not just their slice of it.
         </p>
         <p>
-          Predictive maintenance capabilities mean you&apos;re flagging equipment
-          issues before they become service calls. Intelligent scheduling ensures
-          the right technician arrives with the right parts. Mobile access gives
-          frontline staff what they need without having to call back to base.
+          Predictive maintenance capabilities mean you&apos;re flagging
+          equipment issues before they become service calls. Intelligent
+          scheduling ensures the right technician arrives with the right parts.
+          Mobile access gives frontline staff what they need without having to
+          call back to base.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           Where Sognos Comes In
@@ -427,9 +428,9 @@ const POSTS: Record<string, Post> = {
           Sognos works with facilities management organisations to implement and
           configure Dynamics 365 Field Service so it reflects the complexity of
           real operations — multi-site, multi-contractor, and multi-compliance.
-          We don&apos;t hand you a platform and walk away. We map your workflows,
-          build the integrations you need, and train your team so adoption
-          actually sticks.
+          We don&apos;t hand you a platform and walk away. We map your
+          workflows, build the integrations you need, and train your team so
+          adoption actually sticks.
         </p>
         <p>
           If your team is still stitching together operations across email,
@@ -478,8 +479,8 @@ const POSTS: Record<string, Post> = {
         <p>
           Modernising doesn&apos;t mean ripping everything out at once. It means
           identifying where visibility breaks down, where decisions are made
-          without enough information, and building toward a model where the right
-          data reaches the right person at the right time.
+          without enough information, and building toward a model where the
+          right data reaches the right person at the right time.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           What the Shift Looks Like in Practice
@@ -502,133 +503,136 @@ const POSTS: Record<string, Post> = {
     ),
   },
 
-  "the-aged-care-quality-standards-whats-changing-in-2026-and-how-to-implement": {
-    category: "Insights",
-    title:
-      "The aged care quality standards: What's changing in 2026, and how to implement",
-    date: "2025-02-20",
-    readTime: "6 min read",
-    author: "Sognos Solutions",
-    image: "/images/news/innovation-aged-care-scaled.avif",
-    excerpt:
-      "Under the strengthened Aged Care Quality Standards brought in on November 1, 2025, quality of care is judged less by intent and more by what you can demonstrate in everyday records.",
-    twoCol: true,
-    body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>
-          Under the strengthened Aged Care Quality Standards brought in on
-          November 1, 2025, quality of care is judged less by intent and more by
-          what you can demonstrate in everyday records. For aged care providers,
-          this is a fundamental shift — one that demands more from your systems,
-          not just your staff.
-        </p>
-        <p>
-          The revised standards place stronger emphasis on individual outcomes,
-          organisational governance, and evidence of continuous improvement. If
-          your compliance approach still relies on manual documentation and
-          periodic audits, you are carrying risk that you may not yet be able to
-          see.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          What the New Standards Require
-        </h2>
-        <p>
-          The eight revised standards span safety, dignity, care delivery,
-          services and supports, clinical care, food and nutrition, the living
-          environment, and organisational governance. Each standard now requires
-          demonstrable evidence — not just policy documentation, but records of
-          how care decisions were made, reviewed, and acted on in individual
-          cases.
-        </p>
-        <p>
-          For providers operating across multiple sites or with complex caseloads,
-          the challenge is consistency. A strong outcome in one location means
-          little if documentation practices vary across your organisation.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          How Technology Supports Implementation
-        </h2>
-        <p>
-          Microsoft Dynamics 365, configured for aged care, gives providers a
-          single environment for care plans, progress notes, incident reporting,
-          and audit trails. When the data is structured and searchable, compliance
-          reporting becomes a byproduct of good care delivery — not an additional
-          burden.
-        </p>
-        <p>
-          SognosCare is built on this foundation, with the workflow design and
-          reporting structures that aged care providers need to meet the
-          strengthened standards and demonstrate continuous improvement to the
-          Aged Care Quality and Safety Commission.
-        </p>
-      </div>
-    ),
-  },
+  "the-aged-care-quality-standards-whats-changing-in-2026-and-how-to-implement":
+    {
+      category: "Insights",
+      title:
+        "The aged care quality standards: What's changing in 2026, and how to implement",
+      date: "2025-02-20",
+      readTime: "6 min read",
+      author: "Sognos Solutions",
+      image: "/images/news/innovation-aged-care-scaled.avif",
+      excerpt:
+        "Under the strengthened Aged Care Quality Standards brought in on November 1, 2025, quality of care is judged less by intent and more by what you can demonstrate in everyday records.",
+      twoCol: true,
+      body: (
+        <div className="prose prose-lg max-w-none text-sognos-text-body">
+          <p>
+            Under the strengthened Aged Care Quality Standards brought in on
+            November 1, 2025, quality of care is judged less by intent and more
+            by what you can demonstrate in everyday records. For aged care
+            providers, this is a fundamental shift — one that demands more from
+            your systems, not just your staff.
+          </p>
+          <p>
+            The revised standards place stronger emphasis on individual
+            outcomes, organisational governance, and evidence of continuous
+            improvement. If your compliance approach still relies on manual
+            documentation and periodic audits, you are carrying risk that you
+            may not yet be able to see.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            What the New Standards Require
+          </h2>
+          <p>
+            The eight revised standards span safety, dignity, care delivery,
+            services and supports, clinical care, food and nutrition, the living
+            environment, and organisational governance. Each standard now
+            requires demonstrable evidence — not just policy documentation, but
+            records of how care decisions were made, reviewed, and acted on in
+            individual cases.
+          </p>
+          <p>
+            For providers operating across multiple sites or with complex
+            caseloads, the challenge is consistency. A strong outcome in one
+            location means little if documentation practices vary across your
+            organisation.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            How Technology Supports Implementation
+          </h2>
+          <p>
+            Microsoft Dynamics 365, configured for aged care, gives providers a
+            single environment for care plans, progress notes, incident
+            reporting, and audit trails. When the data is structured and
+            searchable, compliance reporting becomes a byproduct of good care
+            delivery — not an additional burden.
+          </p>
+          <p>
+            SognosCare is built on this foundation, with the workflow design and
+            reporting structures that aged care providers need to meet the
+            strengthened standards and demonstrate continuous improvement to the
+            Aged Care Quality and Safety Commission.
+          </p>
+        </div>
+      ),
+    },
 
-  "innovation-in-aged-care-what-australia-can-learn-from-systems-already-under-strain": {
-    category: "Insights",
-    title:
-      "Innovation in aged care: What Australia can learn from systems already under strain",
-    date: "2025-02-10",
-    readTime: "6 min read",
-    author: "Sognos Solutions",
-    image: "/images/news/NDIS-768x513.avif",
-    excerpt:
-      "Australia has entered a new era in aged care. With the rights-based Aged Care Act and the Support at Home program now in place, expectations are shifting from 'having policies' to consistently demonstrating safe, person-centred care.",
-    twoCol: true,
-    body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>
-          Australia has entered a new era in aged care. With the rights-based
-          Aged Care Act and the Support at Home program now in place, expectations
-          are shifting from &apos;having policies&apos; to consistently
-          demonstrating safe, person-centred care. This is not a gradual
-          evolution — it is a structural reset.
-        </p>
-        <p>
-          Other healthcare systems further down this path offer a useful lens.
-          Countries that moved early to rights-based care frameworks faced the
-          same challenges now arriving in Australia: workforce pressure, funding
-          complexity, compliance overhead, and the need for data systems that
-          actually reflect what happens in care.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          The Lessons Worth Borrowing
-        </h2>
-        <p>
-          In systems that have already navigated this transition, several patterns
-          stand out. Providers that invested early in digital care records were
-          better positioned to respond to audit requirements and demonstrate
-          quality outcomes. Those that continued relying on paper or disconnected
-          systems found compliance reporting becoming a separate workstream —
-          which added cost and slowed care teams down.
-        </p>
-        <p>
-          Workforce management also proved critical. Providers that could match
-          staff skills to participant needs, manage rosters dynamically, and
-          maintain continuity of care performed better on both quality metrics and
-          staff retention.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          What This Means for Australian Providers Now
-        </h2>
-        <p>
-          The reform window is open now. Providers that act on their systems and
-          processes in 2025 will be in a stronger position when the compliance
-          environment tightens further. Waiting for stability in the reform
-          program before investing in capability is a risk — the organisations
-          that adapt early tend to lead on quality outcomes and attract funding
-          accordingly.
-        </p>
-        <p>
-          Sognos works with aged care providers to implement care management and
-          workforce tools that are built for this environment. If you&apos;re
-          assessing what your systems need to handle the next phase of reform,
-          we&apos;re worth talking to.
-        </p>
-      </div>
-    ),
-  },
+  "innovation-in-aged-care-what-australia-can-learn-from-systems-already-under-strain":
+    {
+      category: "Insights",
+      title:
+        "Innovation in aged care: What Australia can learn from systems already under strain",
+      date: "2025-02-10",
+      readTime: "6 min read",
+      author: "Sognos Solutions",
+      image: "/images/news/NDIS-768x513.avif",
+      excerpt:
+        "Australia has entered a new era in aged care. With the rights-based Aged Care Act and the Support at Home program now in place, expectations are shifting from 'having policies' to consistently demonstrating safe, person-centred care.",
+      twoCol: true,
+      body: (
+        <div className="prose prose-lg max-w-none text-sognos-text-body">
+          <p>
+            Australia has entered a new era in aged care. With the rights-based
+            Aged Care Act and the Support at Home program now in place,
+            expectations are shifting from &apos;having policies&apos; to
+            consistently demonstrating safe, person-centred care. This is not a
+            gradual evolution — it is a structural reset.
+          </p>
+          <p>
+            Other healthcare systems further down this path offer a useful lens.
+            Countries that moved early to rights-based care frameworks faced the
+            same challenges now arriving in Australia: workforce pressure,
+            funding complexity, compliance overhead, and the need for data
+            systems that actually reflect what happens in care.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            The Lessons Worth Borrowing
+          </h2>
+          <p>
+            In systems that have already navigated this transition, several
+            patterns stand out. Providers that invested early in digital care
+            records were better positioned to respond to audit requirements and
+            demonstrate quality outcomes. Those that continued relying on paper
+            or disconnected systems found compliance reporting becoming a
+            separate workstream — which added cost and slowed care teams down.
+          </p>
+          <p>
+            Workforce management also proved critical. Providers that could
+            match staff skills to participant needs, manage rosters dynamically,
+            and maintain continuity of care performed better on both quality
+            metrics and staff retention.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            What This Means for Australian Providers Now
+          </h2>
+          <p>
+            The reform window is open now. Providers that act on their systems
+            and processes in 2025 will be in a stronger position when the
+            compliance environment tightens further. Waiting for stability in
+            the reform program before investing in capability is a risk — the
+            organisations that adapt early tend to lead on quality outcomes and
+            attract funding accordingly.
+          </p>
+          <p>
+            Sognos works with aged care providers to implement care management
+            and workforce tools that are built for this environment. If
+            you&apos;re assessing what your systems need to handle the next
+            phase of reform, we&apos;re worth talking to.
+          </p>
+        </div>
+      ),
+    },
 
   "data-residency-in-australian-healthcare-sorting-fact-from-fiction": {
     category: "Insights",
@@ -644,119 +648,122 @@ const POSTS: Record<string, Post> = {
       <div className="prose prose-lg max-w-none text-sognos-text-body">
         <p>
           A persistent myth in healthcare IT is that data must stay onshore to
-          stay safe. Many providers — especially in mental health, disability, and
-          aged care — are told that hosting data overseas is non-compliant or even
-          illegal. This claim has shaped procurement decisions, delayed
-          modernisation projects, and led some organisations to maintain expensive
-          on-premises infrastructure well past its useful life.
+          stay safe. Many providers — especially in mental health, disability,
+          and aged care — are told that hosting data overseas is non-compliant
+          or even illegal. This claim has shaped procurement decisions, delayed
+          modernisation projects, and led some organisations to maintain
+          expensive on-premises infrastructure well past its useful life.
         </p>
         <p>
           The reality is more nuanced, and understanding it matters — because
-          acting on misinformation about data residency can cost your organisation
-          both money and agility.
+          acting on misinformation about data residency can cost your
+          organisation both money and agility.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           What Australian Law Actually Requires
         </h2>
         <p>
-          The Privacy Act 1988 and the Australian Privacy Principles (APPs) govern
-          how health information is handled. They require that personal information
-          be protected from misuse, interference, and unauthorised access — but
-          they do not mandate that data be stored on Australian soil. The
-          obligation is to ensure adequate protections are in place wherever the
-          data resides.
+          The Privacy Act 1988 and the Australian Privacy Principles (APPs)
+          govern how health information is handled. They require that personal
+          information be protected from misuse, interference, and unauthorised
+          access — but they do not mandate that data be stored on Australian
+          soil. The obligation is to ensure adequate protections are in place
+          wherever the data resides.
         </p>
         <p>
           For cloud services, this means assessing the provider&apos;s security
-          controls, certifications, and contractual commitments — not simply their
-          data centre location. Microsoft Azure, for example, holds IRAP
-          assessments across multiple services and operates Australian data centre
-          regions, which satisfies the expectations of most healthcare regulators.
+          controls, certifications, and contractual commitments — not simply
+          their data centre location. Microsoft Azure, for example, holds IRAP
+          assessments across multiple services and operates Australian data
+          centre regions, which satisfies the expectations of most healthcare
+          regulators.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           Where Genuine Risk Sits
         </h2>
         <p>
           Real data risk in healthcare tends to come from access control gaps,
-          unencrypted storage, inadequate audit trails, and poor incident response
-          — not from geography. Providers that focus exclusively on residency
-          while leaving other security fundamentals unaddressed are solving the
-          wrong problem.
+          unencrypted storage, inadequate audit trails, and poor incident
+          response — not from geography. Providers that focus exclusively on
+          residency while leaving other security fundamentals unaddressed are
+          solving the wrong problem.
         </p>
         <p>
-          Sognos helps health and care organisations assess their data governance
-          posture and implement Microsoft cloud environments that meet regulatory
-          expectations. If your organisation is weighing up cloud adoption and
-          has questions about compliance, we can help you separate fact from
-          fiction.
+          Sognos helps health and care organisations assess their data
+          governance posture and implement Microsoft cloud environments that
+          meet regulatory expectations. If your organisation is weighing up
+          cloud adoption and has questions about compliance, we can help you
+          separate fact from fiction.
         </p>
       </div>
     ),
   },
 
-  "compliance-without-the-paperwork-finding-the-right-ndis-reporting-tools-for-your-organisation": {
-    category: "Insights",
-    title:
-      "Compliance without the paperwork: Finding the right NDIS reporting tools for your organisation",
-    date: "2025-01-15",
-    readTime: "6 min read",
-    author: "Sognos Solutions",
-    image: "/images/news/Good-compliance-768x511.avif",
-    excerpt:
-      "If you lead a disability service today, you can feel it — compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
-    twoCol: true,
-    body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>
-          If you lead a disability service today, you can feel it — compliance is
-          back at the centre of everything. The NDIS Commission expects every
-          provider to run a working incident management system, document outcomes,
-          and respond to audits with confidence. The expectation isn&apos;t just
-          that you&apos;re compliant. It&apos;s that you can prove it.
-        </p>
-        <p>
-          For many providers, the gap between what the Commission expects and what
-          their current tools can actually produce is significant. Reporting is
-          manual, incident records are inconsistent, and pulling together the data
-          for an audit means hours of work that could have gone into direct
-          support.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          What Good NDIS Reporting Tools Actually Do
-        </h2>
-        <p>
-          The right tools do two things: they make it easy for support workers to
-          capture the right information at the point of care, and they make it
-          easy for managers to report on it without extra effort. When those two
-          things happen, compliance stops being a separate workstream and becomes
-          a byproduct of normal operations.
-        </p>
-        <p>
-          This means incident management that is genuinely easy to use on a mobile
-          device, progress notes that are structured without being rigid, and
-          reporting dashboards that give management visibility across the whole
-          organisation — not just a snapshot of one program.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          Evaluating Your Options
-        </h2>
-        <p>
-          When assessing NDIS reporting tools, the questions that matter most are
-          not about features lists. They are about fit: Does this tool reflect how
-          your workers actually deliver support? Can it handle your participant
-          mix? Does it connect to your rostering and billing systems, or does it
-          create another silo?
-        </p>
-        <p>
-          SognosCare is built on Microsoft Dynamics 365 and designed to meet the
-          specific reporting requirements of NDIS providers — from incident
-          management and outcome tracking to audit-ready records and NDIS
-          Commission reporting. If you&apos;re evaluating your options, we&apos;re
-          worth adding to the list.
-        </p>
-      </div>
-    ),
-  },
+  "compliance-without-the-paperwork-finding-the-right-ndis-reporting-tools-for-your-organisation":
+    {
+      category: "Insights",
+      title:
+        "Compliance without the paperwork: Finding the right NDIS reporting tools for your organisation",
+      date: "2025-01-15",
+      readTime: "6 min read",
+      author: "Sognos Solutions",
+      image: "/images/news/Good-compliance-768x511.avif",
+      excerpt:
+        "If you lead a disability service today, you can feel it — compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
+      twoCol: true,
+      body: (
+        <div className="prose prose-lg max-w-none text-sognos-text-body">
+          <p>
+            If you lead a disability service today, you can feel it — compliance
+            is back at the centre of everything. The NDIS Commission expects
+            every provider to run a working incident management system, document
+            outcomes, and respond to audits with confidence. The expectation
+            isn&apos;t just that you&apos;re compliant. It&apos;s that you can
+            prove it.
+          </p>
+          <p>
+            For many providers, the gap between what the Commission expects and
+            what their current tools can actually produce is significant.
+            Reporting is manual, incident records are inconsistent, and pulling
+            together the data for an audit means hours of work that could have
+            gone into direct support.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            What Good NDIS Reporting Tools Actually Do
+          </h2>
+          <p>
+            The right tools do two things: they make it easy for support workers
+            to capture the right information at the point of care, and they make
+            it easy for managers to report on it without extra effort. When
+            those two things happen, compliance stops being a separate
+            workstream and becomes a byproduct of normal operations.
+          </p>
+          <p>
+            This means incident management that is genuinely easy to use on a
+            mobile device, progress notes that are structured without being
+            rigid, and reporting dashboards that give management visibility
+            across the whole organisation — not just a snapshot of one program.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            Evaluating Your Options
+          </h2>
+          <p>
+            When assessing NDIS reporting tools, the questions that matter most
+            are not about features lists. They are about fit: Does this tool
+            reflect how your workers actually deliver support? Can it handle
+            your participant mix? Does it connect to your rostering and billing
+            systems, or does it create another silo?
+          </p>
+          <p>
+            SognosCare is built on Microsoft Dynamics 365 and designed to meet
+            the specific reporting requirements of NDIS providers — from
+            incident management and outcome tracking to audit-ready records and
+            NDIS Commission reporting. If you&apos;re evaluating your options,
+            we&apos;re worth adding to the list.
+          </p>
+        </div>
+      ),
+    },
 
   "aged-care-reform-2025-26-what-providers-need-to-do-now": {
     category: "Insights",
@@ -787,17 +794,18 @@ const POSTS: Record<string, Post> = {
         </h2>
         <p>
           The Support at Home program introduces a new assessment and budget
-          framework that places individual choice at the centre of care planning.
-          For providers, this means care plans need to be more dynamic, service
-          delivery records need to be more granular, and reporting needs to be
-          structured around individual outcomes rather than just service hours.
+          framework that places individual choice at the centre of care
+          planning. For providers, this means care plans need to be more
+          dynamic, service delivery records need to be more granular, and
+          reporting needs to be structured around individual outcomes rather
+          than just service hours.
         </p>
         <p>
           At the governance level, the new Act strengthens the obligations of
           approved providers on quality systems, incident management, and
           continuous improvement. These are not tick-box requirements — they
-          require organisations to demonstrate that their systems actually work as
-          intended.
+          require organisations to demonstrate that their systems actually work
+          as intended.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           Where to Start
@@ -805,15 +813,15 @@ const POSTS: Record<string, Post> = {
         <p>
           Providers who are still running care management on legacy systems or
           disconnected tools should treat 2025 as the year to address that. The
-          compliance expectations under the new Act are not compatible with manual
-          documentation at scale.
+          compliance expectations under the new Act are not compatible with
+          manual documentation at scale.
         </p>
         <p>
-          Sognos works with aged care providers to implement SognosCare —
-          a purpose-built care management platform on Microsoft Dynamics 365 —
-          that is designed for exactly this operating environment. If you want to
-          understand what implementation looks like for your organisation, reach
-          out to our team.
+          Sognos works with aged care providers to implement SognosCare — a
+          purpose-built care management platform on Microsoft Dynamics 365 —
+          that is designed for exactly this operating environment. If you want
+          to understand what implementation looks like for your organisation,
+          reach out to our team.
         </p>
       </div>
     ),
@@ -832,26 +840,27 @@ const POSTS: Record<string, Post> = {
     body: (
       <div className="prose prose-lg max-w-none text-sognos-text-body">
         <p>
-          Across Australia and New Zealand, frontline teams in care and community
-          services are under pressure. Time with people is shrinking as screens
-          take over the workday — and it&apos;s pushing good workers out the door.
+          Across Australia and New Zealand, frontline teams in care and
+          community services are under pressure. Time with people is shrinking
+          as screens take over the workday — and it&apos;s pushing good workers
+          out the door.
         </p>
         <p>
-          The problem is not that workers have too much to do. The problem is that
-          too much of what they do is not care. It is documentation. Duplicate
-          data entry. Chasing approvals. Filling out forms that no one reads in
-          full. For workers who came into the sector to make a difference for
-          people, this disconnect is demoralising.
+          The problem is not that workers have too much to do. The problem is
+          that too much of what they do is not care. It is documentation.
+          Duplicate data entry. Chasing approvals. Filling out forms that no one
+          reads in full. For workers who came into the sector to make a
+          difference for people, this disconnect is demoralising.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           The Scale of the Problem
         </h2>
         <p>
-          Research consistently shows that care workers in the NDIS and aged care
-          sectors spend a disproportionate amount of time on administrative tasks
-          relative to direct support time. In some settings, this ratio is close
-          to 1:1. That means for every hour a worker spends with a participant,
-          they spend roughly another hour on paperwork.
+          Research consistently shows that care workers in the NDIS and aged
+          care sectors spend a disproportionate amount of time on administrative
+          tasks relative to direct support time. In some settings, this ratio is
+          close to 1:1. That means for every hour a worker spends with a
+          participant, they spend roughly another hour on paperwork.
         </p>
         <p>
           This is not sustainable, and it is not inevitable. It is a systems
@@ -863,83 +872,85 @@ const POSTS: Record<string, Post> = {
         <p>
           Reducing admin burden for frontline care workers requires rethinking
           how information is captured and shared — not just digitising existing
-          paper forms. When notes are structured at the point of care on a mobile
-          device, when shift handover happens in the platform rather than via
-          phone, and when compliance reporting is generated automatically from
-          care records, the time equation changes.
+          paper forms. When notes are structured at the point of care on a
+          mobile device, when shift handover happens in the platform rather than
+          via phone, and when compliance reporting is generated automatically
+          from care records, the time equation changes.
         </p>
         <p>
           SognosCare is designed with frontline workers in mind — mobile-first,
-          structured for compliance, and built to reduce the time between care and
-          documentation. If your team is burning out on admin, let&apos;s talk
-          about what better looks like.
+          structured for compliance, and built to reduce the time between care
+          and documentation. If your team is burning out on admin, let&apos;s
+          talk about what better looks like.
         </p>
       </div>
     ),
   },
 
-  "mobile-care-app-solutions-empowering-your-frontline-workforce-with-dataverse": {
-    category: "Insights",
-    title:
-      "Mobile care app solutions: Empowering your frontline workforce with Dataverse",
-    date: "2024-11-20",
-    readTime: "5 min read",
-    author: "Sognos Solutions",
-    image: "/images/news/mobile-care-app-solutions-768x512.avif",
-    excerpt:
-      "Frontline care relies on connection — between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
-    twoCol: true,
-    body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
-        <p>
-          Frontline care relies on connection — between people, information, and
-          place. Yet for many teams, mobile tools still slow things down. Coverage
-          drops. Logins fail. Notes get written on paper and entered hours later.
-          The technology meant to support care workers often creates friction
-          instead.
-        </p>
-        <p>
-          The gap between what mobile tools promise and what they deliver in the
-          field comes down to how they are built and what they are built on.
-          Consumer-grade apps adapted for care often lack the offline capability,
-          data structure, and integration depth that professional care environments
-          require.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          Why Dataverse Changes the Equation
-        </h2>
-        <p>
-          Microsoft Dataverse provides the data layer that makes mobile care apps
-          work the way they should. Information captured in the field — notes,
-          observations, task completions — is stored in a structured format that
-          connects directly to care plans, rostering, compliance records, and
-          reporting. There is no secondary sync required, no manual reconciliation,
-          and no data that exists only on a device.
-        </p>
-        <p>
-          Offline capability means workers can continue recording in low-signal
-          environments and have their data synced automatically when connectivity
-          returns. For community care workers covering regional or rural areas,
-          this is not a nice-to-have — it is essential.
-        </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
-          What This Looks Like in Practice
-        </h2>
-        <p>
-          Sognos builds mobile care apps on Power Apps and Dataverse that are
-          tailored to the specific workflows of NDIS providers, aged care
-          organisations, and allied health teams. The apps are designed for
-          workers, not system administrators — simple interfaces, structured inputs,
-          and the data connections that matter.
-        </p>
-        <p>
-          If your frontline team is working around their mobile tools rather than
-          with them, that is a problem worth solving. We can show you what a
-          purpose-built approach looks like for your organisation.
-        </p>
-      </div>
-    ),
-  },
+  "mobile-care-app-solutions-empowering-your-frontline-workforce-with-dataverse":
+    {
+      category: "Insights",
+      title:
+        "Mobile care app solutions: Empowering your frontline workforce with Dataverse",
+      date: "2024-11-20",
+      readTime: "5 min read",
+      author: "Sognos Solutions",
+      image: "/images/news/mobile-care-app-solutions-768x512.avif",
+      excerpt:
+        "Frontline care relies on connection — between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
+      twoCol: true,
+      body: (
+        <div className="prose prose-lg max-w-none text-sognos-text-body">
+          <p>
+            Frontline care relies on connection — between people, information,
+            and place. Yet for many teams, mobile tools still slow things down.
+            Coverage drops. Logins fail. Notes get written on paper and entered
+            hours later. The technology meant to support care workers often
+            creates friction instead.
+          </p>
+          <p>
+            The gap between what mobile tools promise and what they deliver in
+            the field comes down to how they are built and what they are built
+            on. Consumer-grade apps adapted for care often lack the offline
+            capability, data structure, and integration depth that professional
+            care environments require.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            Why Dataverse Changes the Equation
+          </h2>
+          <p>
+            Microsoft Dataverse provides the data layer that makes mobile care
+            apps work the way they should. Information captured in the field —
+            notes, observations, task completions — is stored in a structured
+            format that connects directly to care plans, rostering, compliance
+            records, and reporting. There is no secondary sync required, no
+            manual reconciliation, and no data that exists only on a device.
+          </p>
+          <p>
+            Offline capability means workers can continue recording in
+            low-signal environments and have their data synced automatically
+            when connectivity returns. For community care workers covering
+            regional or rural areas, this is not a nice-to-have — it is
+            essential.
+          </p>
+          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+            What This Looks Like in Practice
+          </h2>
+          <p>
+            Sognos builds mobile care apps on Power Apps and Dataverse that are
+            tailored to the specific workflows of NDIS providers, aged care
+            organisations, and allied health teams. The apps are designed for
+            workers, not system administrators — simple interfaces, structured
+            inputs, and the data connections that matter.
+          </p>
+          <p>
+            If your frontline team is working around their mobile tools rather
+            than with them, that is a problem worth solving. We can show you
+            what a purpose-built approach looks like for your organisation.
+          </p>
+        </div>
+      ),
+    },
 
   "mental-health-and-disability-workforce-burnout-a-growing-crisis": {
     category: "Insights",
@@ -956,16 +967,16 @@ const POSTS: Record<string, Post> = {
         <p>
           Across Australia, providers in mental health and disability care are
           facing a growing crisis. Recruitment is harder. Retention is slipping.
-          Rosters are stretched thin — and the people who remain are carrying more
-          than they should. Burnout is not a future risk in this sector. It is a
-          present reality.
+          Rosters are stretched thin — and the people who remain are carrying
+          more than they should. Burnout is not a future risk in this sector. It
+          is a present reality.
         </p>
         <p>
           The causes are well documented: high emotional demands, inadequate
           supervision, excessive administrative burden, and rosters that leave
           workers feeling like variables rather than people. What is less often
-          discussed is the role that operational systems play in either containing
-          or compounding these pressures.
+          discussed is the role that operational systems play in either
+          containing or compounding these pressures.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           How Workforce Systems Contribute to Burnout
@@ -979,18 +990,18 @@ const POSTS: Record<string, Post> = {
         </p>
         <p>
           These are not just inconveniences — they are stressors that compound
-          over weeks and months. Workers who feel unsupported by their systems are
-          more likely to feel unsupported by their organisation.
+          over weeks and months. Workers who feel unsupported by their systems
+          are more likely to feel unsupported by their organisation.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           What Better Operations Look Like for Workforce Wellbeing
         </h2>
         <p>
           Organisations that invest in connected workforce and care management
-          tools tend to see measurable improvements in workforce stability. Stable
-          rosters reduce uncertainty. Mobile tools that reduce after-hours admin
-          give workers back their time. Structured handovers mean workers arrive
-          prepared, not guessing.
+          tools tend to see measurable improvements in workforce stability.
+          Stable rosters reduce uncertainty. Mobile tools that reduce
+          after-hours admin give workers back their time. Structured handovers
+          mean workers arrive prepared, not guessing.
         </p>
         <p>
           SognosRoster is built to give workforce managers the visibility and
@@ -1025,41 +1036,42 @@ const POSTS: Record<string, Post> = {
           right job.
         </p>
         <p>
-          This approach has a ceiling. As teams grow and job volumes increase, the
-          overhead of manual compliance tracking scales linearly with operations.
-          At some point, it becomes a constraint on growth — or a liability when
-          an audit reveals gaps.
+          This approach has a ceiling. As teams grow and job volumes increase,
+          the overhead of manual compliance tracking scales linearly with
+          operations. At some point, it becomes a constraint on growth — or a
+          liability when an audit reveals gaps.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           What Automated Compliance Tracking Changes
         </h2>
         <p>
           Automated compliance tracking embeds the compliance requirements into
-          the work order itself. Technicians complete structured checklists in the
-          field on a mobile device. Required certifications are verified before
-          dispatch. Audit trails are generated automatically as work is completed.
+          the work order itself. Technicians complete structured checklists in
+          the field on a mobile device. Required certifications are verified
+          before dispatch. Audit trails are generated automatically as work is
+          completed.
         </p>
         <p>
           The result is that compliance becomes a byproduct of normal operations
           rather than a separate reporting exercise. Managers gain real-time
-          visibility across their compliance status, and audit preparation becomes
-          a matter of running a report rather than reconstructing records from
-          multiple systems.
+          visibility across their compliance status, and audit preparation
+          becomes a matter of running a report rather than reconstructing
+          records from multiple systems.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           The Right Platform for Regulated Field Service
         </h2>
         <p>
-          Microsoft Dynamics 365 Field Service provides the workflow infrastructure
-          to automate compliance at scale. Sognos configures these capabilities
-          to reflect the specific requirements of your industry — whether that is
-          AS/NZS standards in utilities, care delivery compliance in health, or
-          safety protocols in infrastructure.
+          Microsoft Dynamics 365 Field Service provides the workflow
+          infrastructure to automate compliance at scale. Sognos configures
+          these capabilities to reflect the specific requirements of your
+          industry — whether that is AS/NZS standards in utilities, care
+          delivery compliance in health, or safety protocols in infrastructure.
         </p>
         <p>
-          If your team is spending more time documenting compliance than delivering
-          service, it is worth exploring what an automated approach can do for
-          your operations.
+          If your team is spending more time documenting compliance than
+          delivering service, it is worth exploring what an automated approach
+          can do for your operations.
         </p>
       </div>
     ),
@@ -1089,8 +1101,8 @@ const POSTS: Record<string, Post> = {
         <p>
           This is where Power Apps changes what is possible. Rather than forcing
           your operations into a standard template, Power Apps allows field
-          service platforms to be shaped around your specific workflows — without
-          the cost of custom software development.
+          service platforms to be shaped around your specific workflows —
+          without the cost of custom software development.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           What Customisation With Power Apps Looks Like
@@ -1100,14 +1112,14 @@ const POSTS: Record<string, Post> = {
           directly to Dynamics 365 Field Service data. Custom apps can be built
           for specific roles — a technician app that surfaces only the job
           information relevant to that worker, a supervisor dashboard built for
-          rapid status review, or a client-facing portal for booking and tracking
-          service requests.
+          rapid status review, or a client-facing portal for booking and
+          tracking service requests.
         </p>
         <p>
           These are not bolt-ons. They are native extensions of the same data
           platform, which means information captured in a Power App flows
-          immediately into the broader system — no manual exports, no sync delays,
-          no duplicate records.
+          immediately into the broader system — no manual exports, no sync
+          delays, no duplicate records.
         </p>
         <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
           Industry-Specific Applications Sognos Has Built
@@ -1130,58 +1142,20 @@ const POSTS: Record<string, Post> = {
   },
 };
 
-// ─── Meta sidebar ─────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function PostMeta({ post }: { post: Post }) {
-  const badge =
-    BADGE_STYLES[post.category] ??
-    "bg-neutral-50 text-neutral-600 border-neutral-100";
-  return (
-    <aside className="flex flex-col gap-6">
-      <Link
-        href="/knowledge-hub"
-        className="inline-flex items-center gap-2 text-sm font-medium text-sognos-text-muted hover:text-prussian-blue-800 transition-colors"
-      >
-        <ArrowLeft size={14} />
-        Back to Knowledge Hub
-      </Link>
-
-      <span
-        className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge}`}
-      >
-        {post.category}
-      </span>
-
-      <h1 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800">
-        {post.title}
-      </h1>
-
-      <p className="text-sm text-sognos-text-body leading-relaxed">
-        {post.excerpt}
-      </p>
-
-      <div className="border-t border-sognos-border-subtle pt-5 flex flex-col gap-3 text-sm text-sognos-text-muted">
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-prussian-blue-800">Author</span>
-          <span>{post.author}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-prussian-blue-800">Published</span>
-          <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString("en-AU", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </time>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-prussian-blue-800">Read time</span>
-          <span>{post.readTime}</span>
-        </div>
-      </div>
-    </aside>
-  );
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  const day = d.getDate();
+  const suffix =
+    day === 1 || day === 21 || day === 31
+      ? "st"
+      : day === 2 || day === 22
+        ? "nd"
+        : day === 3 || day === 23
+          ? "rd"
+          : "th";
+  return `${day}${suffix} ${d.toLocaleDateString("en-AU", { month: "long" })} ${d.getFullYear()}`;
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -1212,31 +1186,151 @@ export default async function KnowledgeHubPost({
     );
   }
 
+  const badge =
+    BADGE_STYLES[post.category] ??
+    "bg-neutral-50 text-neutral-600 border-neutral-100";
+  const postUrl = `https://sognos.com.au/knowledge-hub/${slug}`;
+
   return (
     <main className="bg-white">
-      <div className="w-full h-64 lg:h-96 overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {/* ── Hero ── */}
+      <section className="bg-gray-100 pb-12 pt-14 md:pb-18 md:pt-40">
+        <div className="mx-auto max-w-7xl px-6">
+          {/* Two-col */}
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
+            {/* Left */}
+            <div className="lg:w-1/2 lg:max-w-[32.5rem]">
+              {/* Back */}
+              <Link
+                href="/knowledge-hub"
+                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
+              >
+                <ArrowLeft
+                  size={14}
+                  className="transition-transform duration-200 group-hover:-translate-x-0.5"
+                />
+                Back to Knowledge Hub
+              </Link>
 
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
-        {post.twoCol ? (
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[340px_1fr]">
-            <div className="lg:sticky lg:top-[100px] lg:self-start">
-              <PostMeta post={post} />
+              {/* Category + date */}
+              <div className="mb-5 flex items-center gap-3">
+                <span
+                  className={`inline-flex items-center rounded border px-2 py-1 text-xs font-medium ${badge}`}
+                >
+                  {post.category}
+                </span>
+                <span className="text-sm text-prussian-blue-800/60">
+                  {formatDate(post.date)}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h1 className="font-heading text-3xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
+                {post.title}
+              </h1>
+
+              {/* Author + share */}
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 lg:mt-14">
+                {/* Author */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-prussian-blue-800/10">
+                    <span className="text-xs font-semibold text-prussian-blue-800">
+                      {post.author.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-xs text-prussian-blue-800/60">
+                      Written by
+                    </span>
+                    <span className="text-sm font-medium leading-none text-prussian-blue-800">
+                      {post.author}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Share */}
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-prussian-blue-800/60">
+                    Share
+                  </span>
+                  <a
+                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    aria-label="Share on LinkedIn"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 25 24"
+                      fill="none"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        d="M7.44 5C7.44 5.81 6.95 6.55 6.19 6.85 5.44 7.16 4.57 6.98 4.01 6.39 3.44 5.81 3.28 4.94 3.61 4.19 3.94 3.45 4.69 2.98 5.5 3c1.08.03 1.94.92 1.94 2ZM7.5 8.48H3.5V21h4V8.48Zm6.32 0H9.84V21h3.82v-6.57c0-3.66 4.77-3.96 4.77 0V21H22.5v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${postUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    aria-label="Share on X"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 21 20"
+                      fill="none"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        d="M15.67 1.875H18.43L12.4 8.758l7.09 9.367h-5.55L9.6 12.444l-4.97 5.681H1.87l6.44-7.363L1.51 1.875H7.2l3.93 5.192 4.54-5.192Zm-.97 15.6h1.53L6.37 3.438H4.73l10.97 14.037Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    aria-label="Share on Facebook"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        d="M14 13.5h2.5l1-4H14V7.5c0-1.03 0-2 2-2H17.5V2.14C17.17 2.1 15.94 2 14.64 2 11.93 2 10 3.66 10 6.7V9.5H7v4h3V22h4v-8.5Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              {/* Dotted divider */}
+              <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
             </div>
-            <div>{post.body}</div>
+
+            {/* Right — image */}
+            <div className="overflow-hidden rounded-lg h-80 max-h-80 lg:w-1/2 lg:max-w-[41rem] lg:min-h-[380px] lg:max-h-[380px]">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
-        ) : (
-          <div className="mx-auto max-w-3xl flex flex-col gap-10">
-            <PostMeta post={post} />
-            <div>{post.body}</div>
-          </div>
-        )}
-      </div>
+        </div>
+      </section>
+
+      {/* ── Body ── */}
+      <div className="mx-auto max-w-3xl px-6 py-12 lg:py-16">{post.body}</div>
     </main>
   );
 }
