@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 import { appendToCsv } from "@/lib/csv-logger";
 
 export type DhfConversationInput = {
@@ -14,6 +15,13 @@ export type DhfConversationInput = {
 };
 
 export type DhfConversationResult = { ok: true } | { ok: false; error: string };
+
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 export async function dhfConversation(
   input: DhfConversationInput,
@@ -54,7 +62,7 @@ export async function dhfConversation(
 
   try {
     const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
+    const { error: emailError } = await resend.emails.send({
       from: "Sognos DHF <onboarding@resend.dev>",
       to: ["levongravett@gmail.com"],
       replyTo: email,
@@ -62,16 +70,31 @@ export async function dhfConversation(
       text: lines.join("\n"),
     });
 
-    if (error) {
-      return { ok: false, error: error.message ?? "Email send failed." };
+    if (emailError) {
+      return { ok: false, error: emailError.message ?? "Email send failed." };
     }
 
+    // Write to Supabase
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      await supabase.from("dhf_submissions").insert({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        company: company || null,
+        phone: input.phone || null,
+        interests: input.interests,
+        improvement: input.improvement || null,
+      });
+    }
+
+    // Also write to CSV as local backup
     appendToCsv("dhf-conversation.csv", {
       timestamp: new Date().toISOString(),
-      firstName: input.firstName.trim(),
-      lastName: input.lastName.trim(),
-      email: input.email.trim(),
-      company: input.company.trim(),
+      firstName,
+      lastName,
+      email,
+      company,
       phone: input.phone,
       interests: input.interests.join("; "),
       improvement: input.improvement,

@@ -56,12 +56,9 @@ export default function DhfConversationPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero band */}
-      <div className="bg-gradient-brand pt-28 pb-16 lg:pt-36 lg:pb-20 px-6">
+      <div className="bg-gradient-brand pt-28 pb-16 lg:pt-42 lg:pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <p className="text-sm font-semibold uppercase tracking-widest text-white/50 mb-4">
-            Digital Health Festival 2026
-          </p>
-          <h1 className="font-heading text-4xl lg:text-5xl font-normal leading-heading tracking-heading text-white max-w-3xl">
+          <h1 className="font-heading text-4xl lg:text-5xl font-normal leading-heading text-center tracking-heading text-white">
             Start the conversation
           </h1>
         </div>
@@ -70,7 +67,6 @@ export default function DhfConversationPage() {
       {/* Body */}
       <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-
           {/* Left — context */}
           <div>
             <p className="text-lg text-prussian-blue-800 leading-relaxed mb-8">
