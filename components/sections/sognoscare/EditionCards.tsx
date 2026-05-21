@@ -36,7 +36,7 @@ function EditionCard({
       {/* Inner panel — accent colour throughout (no video bg) */}
       <div className="relative h-full rounded-lg overflow-hidden flex flex-col">
         {/* Logo — centered in upper zone */}
-        <div className="flex-1 flex items-center justify-center px-8 pb-[265px]">
+        <div className="flex-1 flex items-center justify-center px-8 pb-[285px]">
           <Image
             src={edition.logo}
             alt={title}

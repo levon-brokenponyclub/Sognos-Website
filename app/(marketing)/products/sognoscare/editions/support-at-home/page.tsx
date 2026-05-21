@@ -6,7 +6,7 @@ import EditionPageTemplate, {
 export const metadata: Metadata = {
   title: "SognosCare for Support at Home | Sognos",
   description:
-    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — with funding model changes tracked and compliance pre-configured.",
+    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — funding model changes tracked and compliance pre-configured.",
 };
 
 const data: EditionData = {

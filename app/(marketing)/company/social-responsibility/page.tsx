@@ -46,18 +46,19 @@ const PILLARS = [
 export default function SocialResponsibilityPage() {
   return (
     <main className="w-full bg-white">
-
       {/* Hero */}
-      <section className="bg-seagrass-700/30 w-full border-b border-sognos-border-subtle">
-        <div className="max-w-7xl w-full mx-auto px-6 py-28">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Company
-              </div>
-          <h1 className="font-heading text-4xl md:text-6xl font-medium text-prussian-blue-800 tracking-tight max-w-3xl">
+      <section className="bg-gradient-hero w-full border-b border-sognos-border-subtle">
+        <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
+          <div className="">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Social Responsibility
+            </div>
+          </div>
+          <h1 className="mx-auto max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
             Our commitment to community and planet.
           </h1>
-          <p className="mt-6 text-lg text-sognos-text-body max-w-2xl leading-relaxed">
+          <p className="mt-6 text-lg max-w-3xl leading-relaxed text-white/80">
             At Sognos we understand that our impact extends far beyond the
             services we provide. Social responsibility is at the core of our
             values — we are committed to making a difference where we live,
@@ -69,9 +70,10 @@ export default function SocialResponsibilityPage() {
       {/* Mission statement */}
       <section className="w-full border-b border-sognos-border-subtle">
         <div className="max-w-7xl w-full mx-auto px-6 py-20">
-          <p className="font-heading text-2xl md:text-3xl font-medium text-prussian-blue-800 tracking-tight max-w-3xl">
-            &ldquo;It is our goal to benefit the communities in which we live and do
-            business. We are committed to creating a healthier world.&rdquo;
+          <p className="font-heading text-2xl md:text-3xl font-medium text-prussian-blue-800 tracking-tight max-w-5xl">
+            &ldquo;It is our goal to benefit the communities in which we live
+            and do business. We are committed to creating a healthier
+            world.&rdquo;
           </p>
         </div>
       </section>
@@ -121,7 +123,6 @@ export default function SocialResponsibilityPage() {
           </a>
         </div>
       </section>
-
     </main>
   );
 }

@@ -38,8 +38,8 @@ const EDITION_LOGOS: Record<string, string> = {
   "Disability & Mental Health": "/logos/sognoscare-edition-dmh-white.svg",
   "Residential Aged Care": "/logos/sognoscare-edition-rac-white.svg",
   "Support at Home": "/logos/sognoscare-edition-sah-white.svg",
-  "Hospital in the Home": "/logos/SognosCare-HITH-Logo.svg",
-  "Child & Family Services": "/logos/SognosCare-C&FS-Logo.svg",
+  "Hospital in the Home": "/logos/SognosCare-HITH-Logo-White.svg",
+  "Child & Family Services": "/logos/SognosCare-C&FS-Logo-White.svg",
 };
 
 // Dark logos for the sticky sub-nav bar.

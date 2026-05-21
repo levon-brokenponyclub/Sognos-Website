@@ -26,19 +26,19 @@ export default function SocialResponsibilitySection() {
   const [activeSR, setActiveSR] = useState(0);
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle bg-gray-100 overflow-hidden">
+    <section className="w-full bg-prussian-blue-800 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           {/* Left Content - Sticky */}
           <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               Social Responsibility
             </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
               Our commitment to <br /> community and planet.
             </h2>
-            <p className="font-heading font-normal leading-relaxed lg:text-lg mb-10">
+            <p className="font-heading font-normal leading-relaxed lg:text-lg mb-10 text-white/80">
               At Sognos, our impact extends far beyond the services we provide.
               Social responsibility is at the core of our values — we are
               committed to making a difference where we live, work, and do
@@ -115,7 +115,7 @@ export default function SocialResponsibilitySection() {
             <div className="bg-white rounded-lg p-2 overflow-hidden relative group">
               <div className="flex flex-col lg:flex-row min-h-[460px]">
                 {/* Left Column — Info Panel */}
-                <div className="shrink-0 lg:w-[40%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
+                <div className="shrink-0 lg:w-[40%] bg-gray-200/60 rounded-lg p-7 flex flex-col justify-between">
                   <div className="flex flex-col">
                     <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
                       {SR_PILLARS[activeSR].title}

@@ -39,15 +39,14 @@ const BENEFITS = [
 export default function CareersPage() {
   return (
     <main className="w-full bg-white">
-
       {/* Hero */}
-      <section className="bg-prussian-blue-800 w-full">
-        <div className="max-w-7xl w-full mx-auto px-6 py-28">
+      <section className="bg-gradient-hero w-full">
+        <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Careers
-              </div>
-          <h1 className="font-heading text-4xl md:text-6xl font-medium text-white tracking-tight max-w-3xl">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            Careers
+          </div>
+          <h1 className="mx-auto max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
             Join Sognos to drive innovation together.
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
@@ -62,7 +61,6 @@ export default function CareersPage() {
       <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 md:grid-cols-3">
-
             {/* Row 1, Col 1 — section title */}
             <div className="border-t border-dashed border-sognos-border-subtle md:border-r p-8 flex items-start">
               <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
@@ -104,7 +102,6 @@ export default function CareersPage() {
                 </p>
               </div>
             ))}
-
           </div>
         </div>
       </section>
@@ -125,7 +122,6 @@ export default function CareersPage() {
           </p>
         </div>
       </section>
-
     </main>
   );
 }

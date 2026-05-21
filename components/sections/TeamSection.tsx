@@ -57,11 +57,11 @@ export default function TeamSection() {
     <>
       <section className="w-full bg-prussian-blue-800">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Leadership
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white lg:text-left tracking-tight mb-6">
             Senior Leadership Team
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

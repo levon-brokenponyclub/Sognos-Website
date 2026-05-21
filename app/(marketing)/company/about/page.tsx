@@ -33,13 +33,17 @@ const PARTNERS = [
     name: "Microsoft",
     logo: "/logos/partners/mslogo.webp",
     type: "Solutions Partner",
+    logoBg: "bg-white",
+    logoFilter: "",
     description:
       "As a Microsoft Solutions Partner, Sognos builds natively on Dynamics 365, Power Platform, and Azure — giving clients access to continuous innovation and enterprise-grade security.",
   },
   {
     name: "SoftwareOne",
-    logo: "/logos/partners/One-Software.png",
+    logo: "/logos/partners/One-Software-dark.png",
     type: "Software & Licensing",
+    logoBg: "bg-black",
+    logoFilter: "",
     description:
       "SoftwareOne helps organisations manage and optimise their Microsoft licensing. Our partnership ensures clients get the right entitlements, at the right cost, from day one.",
   },
@@ -47,13 +51,16 @@ const PARTNERS = [
     name: "Ingram Micro",
     logo: "/logos/partners/ingram-micro.png",
     type: "Distribution & Services",
+    logoBg: "bg-[#146FEE]",
+    logoFilter: "",
     description:
       "Ingram Micro's global distribution network and services capabilities support Sognos clients with deployment, logistics, and lifecycle management.",
   },
   {
     name: "Resco",
-    logo: "/logos/partners/Resco.webp",
+    logo: "/logos/partners/resco-blue-bg.png",
     type: "Mobile Solutions",
+    logoBg: "bg-[#0065CC]",
     description:
       "Resco extends Dynamics 365 Field Service with powerful offline-capable mobile applications, keeping frontline teams productive regardless of connectivity.",
   },
@@ -116,12 +123,12 @@ export default function AboutPage() {
               </div>
 
               {/* Stat 2 — Video */}
-              <div className="rounded-lg relative overflow-hidden h-[200px] md:h-[260px] lg:flex-1 p-8 lg:p-10 flex flex-col justify-end transition-all duration-500 hover:-translate-y-1 group">
-                <div className="relative z-10 text-white">
-                  <p className="text-5xl text-white lg:text-6xl font-heading font-medium mb-3 tracking-tight">
+              <div className="rounded-lg relative overflow-hidden bg-white h-[200px] md:h-[260px] lg:flex-1 p-8 lg:p-10 flex flex-col justify-end transition-all duration-500 hover:-translate-y-1 group">
+                <div className="relative z-10 text-brand">
+                  <p className="text-5xl text-brand lg:text-6xl font-heading font-medium mb-3 tracking-tight">
                     10+
                   </p>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-white">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-brand">
                     Years
                   </p>
                 </div>
@@ -164,10 +171,10 @@ export default function AboutPage() {
                 {/* Stat 4 — Built on Microsoft */}
                 <div className="rounded-lg bg-[#122E58] relative overflow-hidden flex-1 p-6 lg:p-8 flex flex-col justify-end min-h-[200px] transition-all duration-500 hover:-translate-y-1 group">
                   <div className="relative z-10 text-white">
-                    <p className="text-2xl lg:text-3xl font-heading font-medium tracking-tight">
+                    <p className="text-2xl lg:text-3xl font-heading font-medium text-white tracking-tight">
                       Built on Microsoft
                     </p>
-                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-white/80">
                       Dynamics 365 Native
                     </p>
                   </div>
@@ -179,23 +186,23 @@ export default function AboutPage() {
       </section>
 
       {/* Mission / Vision / Values */}
-      <section className="w-full bg-gray-200/70 border-b border-sognos-border-subtle">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
+      <section className="w-full bg-[#1D96FC]">
+        <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32 lg:pb-24">
           {/* Section Header */}
           <div className="mb-16 lg:mb-4">
-            <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
+            {/* <span className="inline-block px-3 py-1 rounded-full border border-gray-200 bg-white text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-6">
               Our Mission & Vision
-            </span>
-            <h2 className="font-heading text-4xl lg:text-5xl font-semibold text-[#173465] tracking-tight leading-[1.1]">
+            </span> */}
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
               Healthcare First. Field Service Always. AI at the Centre.
             </h2>
           </div>
 
           {/* About | Mission & Vision */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden mb-24 lg:mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden mb-3 lg:mb-3">
             {/* About Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-8">
+              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-8">
                 About Sognos
               </h3>
               <div className="space-y-6 text-gray-600 leading-relaxed text-base">
@@ -229,7 +236,7 @@ export default function AboutPage() {
 
             {/* Mission + Vision Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-6">
+              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-6">
                 Mission
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-12">
@@ -239,7 +246,7 @@ export default function AboutPage() {
                 real-world service delivery.
               </p>
 
-              <h3 className="font-heading text-3xl font-semibold text-[#173465] mb-6">
+              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-6">
                 Vision
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-8">
@@ -275,18 +282,18 @@ export default function AboutPage() {
           </div>
 
           {/* Values Section */}
-          <div className="border-t border-gray-200 pt-20">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-sognos-text-muted mb-10">
+          <div className="pt-10">
+            {/* <p className="text-xs font-bold uppercase tracking-[0.14em] text-sognos-text-muted mb-10">
               Our Core Values
-            </p>
+            </p> */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {VALUES.map((v) => (
-                <div key={v.title} className="group">
+                <div key={v.title} className="group bg-white p-12 rounded-lg">
                   <div className="w-12 h-px bg-[#1D96FC] mb-6 transition-all duration-500 group-hover:w-full" />
-                  <h4 className="font-heading text-xl font-semibold text-[#173465] mb-4 transition-colors group-hover:text-[#1D96FC]">
+                  <h4 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance duration-200 mb-4 transition-colors group-hover:text-[#1D96FC]">
                     {v.title}
                   </h4>
-                  <p className="text-sm text-sognos-text-body leading-relaxed text-gray-600">
+                  <p className="text text-sognos-text-body leading-relaxed text-gray-600">
                     {v.body}
                   </p>
                 </div>
@@ -301,13 +308,13 @@ export default function AboutPage() {
       {/* Partners - Sticky Scroll Layout */}
       <section className="w-full border-b border-sognos-border-subtle bg-white">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             {/* Left column - Sticky */}
             <div className="lg:col-span-5 lg:sticky lg:top-32">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
                 Partners
               </p>
-              <h2 className="font-heading text-4xl lg:text-5xl font-medium text-[#173465] tracking-tight mb-6">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand lg:text-left tracking-tight mb-6">
                 Our Partners
               </h2>
               <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
@@ -325,13 +332,15 @@ export default function AboutPage() {
                   className="group bg-slate-50 border border-sognos-border-subtle rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-[#1D96FC]/30"
                 >
                   {/* Logo cell */}
-                  <div className="shrink-0 w-full sm:w-48 flex items-center justify-center p-8 bg-white border-b sm:border-b-0 sm:border-r border-sognos-border-subtle">
-                    <div className="relative w-28 h-14 transition-transform duration-500 group-hover:scale-110">
+                  <div
+                    className={`shrink-0 w-full sm:w-48 flex items-center justify-center p-8 ${partner.logoBg} border-b sm:border-b-0 sm:border-r border-sognos-border-subtle`}
+                  >
+                    <div className="relative w-48 h-28 transition-transform duration-500 group-hover:scale-110">
                       <Image
                         src={partner.logo}
                         alt={partner.name}
                         fill
-                        className="object-contain"
+                        className={`object-contain ${partner.logoFilter}`}
                       />
                     </div>
                   </div>
@@ -340,10 +349,10 @@ export default function AboutPage() {
                     <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#1D96FC] mb-2">
                       {partner.type}
                     </p>
-                    <h3 className="font-heading text-xl font-semibold text-[#173465] mb-4">
+                    <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-4">
                       {partner.name}
                     </h3>
-                    <p className="text-sm text-sognos-text-body leading-relaxed ">
+                    <p className="text text-sognos-text-body leading-relaxed ">
                       {partner.description}
                     </p>
                   </div>
@@ -360,7 +369,7 @@ export default function AboutPage() {
 
       {/* Careers overview */}
       <section className="w-full bg-[#173465]">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
+        {/* <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50 mb-4">
@@ -415,7 +424,7 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     </main>
   );

@@ -103,7 +103,7 @@ export default function Footer() {
                   Social Responsibility
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/company/careers"
                   className="text-sm text-white hover:text-white"
@@ -118,7 +118,7 @@ export default function Footer() {
                 >
                   Customers
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/knowledge-hub"

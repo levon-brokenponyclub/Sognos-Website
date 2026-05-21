@@ -42,16 +42,9 @@ export default async function SolutionPage({
       {/* Hero */}
       <section
         data-header-dark
-        className="relative overflow-hidden bg-prussian-blue-950 pb-24 pt-36"
+        className="relative overflow-hidden bg-gradient-hero pb-18 pt-40"
       >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-20"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, var(--color-prussian-blue-700) 0%, transparent 70%)",
-          }}
-        />
-        <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
             <Link
               href="/solutions"
@@ -64,11 +57,11 @@ export default async function SolutionPage({
               {meta.name}
             </span>
           </div>
-          <div className="max-w-3xl">
-            <h1 className="mb-6 font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
+          <div className="max-w-5xl text-center">
+            <h1 className="mb-6 font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
               {content.hero.headline}
             </h1>
-            <p className="max-w-xl text-lg leading-relaxed text-white/60">
+            <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/80">
               {content.hero.subtext}
             </p>
           </div>
@@ -119,9 +112,9 @@ export default async function SolutionPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Capabilities
-              </div>
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Capabilities
+            </div>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
               What you get with {meta.name}
             </h2>
@@ -150,9 +143,9 @@ export default async function SolutionPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="overflow-hidden rounded-2xl bg-prussian-blue-950 px-10 py-14 lg:px-14 lg:py-16">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Platform
-              </div>
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Platform
+            </div>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
               Built on {content.platform.label}
             </h2>

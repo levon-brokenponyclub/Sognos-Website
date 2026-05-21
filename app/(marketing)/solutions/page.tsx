@@ -15,23 +15,17 @@ export default function SolutionsPage() {
       {/* Hero */}
       <section
         data-header-dark
-        className="relative overflow-hidden bg-prussian-blue-950 pb-24 pt-36"
+        className="relative overflow-hidden bg-gradient-hero pb-24 pt-36"
       >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-20"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, var(--color-prussian-blue-700) 0%, transparent 70%)",
-          }}
-        />
+        <div className="pointer-events-none absolute inset-0 opacity-20" />
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Solutions
-              </div>
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Solutions
+            </div>
           </div>
-          <h1 className="mx-auto mb-6 max-w-3xl font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
+          <h1 className="mx-auto mb-6 max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
             Supporting engagements built for service operations
           </h1>
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/60">
@@ -47,9 +41,9 @@ export default function SolutionsPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                All solutions
-              </div>
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              All solutions
+            </div>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
               Seven capability areas. One platform.
             </h2>
@@ -64,9 +58,9 @@ export default function SolutionsPage() {
               >
                 <div>
                   <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Solution
-              </div>
+                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                    Solution
+                  </div>
                   <h2 className="mb-3 font-heading text-xl font-normal text-sognos-text-heading">
                     {solution.name}
                   </h2>

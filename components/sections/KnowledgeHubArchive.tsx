@@ -23,8 +23,10 @@ const ARTICLES: Article[] = [
   {
     slug: "sognos-9-years",
     category: "Milestone",
-    title: "Sognos Solutions Celebrates 9 Years of Growth, Innovation, and Microsoft Dynamics 365 Expertise",
-    excerpt: "Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions.",
+    title:
+      "Sognos Solutions Celebrates 9 Years of Growth, Innovation, and Microsoft Dynamics 365 Expertise",
+    excerpt:
+      "Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions.",
     href: "/knowledge-hub/sognos-9-years",
     image: "/images/news/sognos-9-years.webp",
     industry: null,
@@ -34,7 +36,8 @@ const ARTICLES: Article[] = [
     slug: "north-sydney-office",
     category: "News",
     title: "Sognos Solutions Moves to New Office in North Sydney",
-    excerpt: "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.",
+    excerpt:
+      "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.",
     href: "/knowledge-hub/north-sydney-office",
     image: "/images/news/north-sydney-office.webp",
     industry: null,
@@ -43,8 +46,10 @@ const ARTICLES: Article[] = [
   {
     slug: "new-zealand-launch",
     category: "News",
-    title: "Sognos Solutions Expands to New Zealand with Official Launch at Microsoft House in Auckland",
-    excerpt: "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This expansion was marked by a milestone event at Microsoft's Auckland offices.",
+    title:
+      "Sognos Solutions Expands to New Zealand with Official Launch at Microsoft House in Auckland",
+    excerpt:
+      "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This expansion was marked by a milestone event at Microsoft's Auckland offices.",
     href: "/knowledge-hub/new-zealand-launch",
     image: "/images/news/new-zealand-launch.webp",
     industry: null,
@@ -54,7 +59,8 @@ const ARTICLES: Article[] = [
     slug: "india-office",
     category: "News",
     title: "New Beginnings | Office Premises in India",
-    excerpt: "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India — expanding our delivery capability and global footprint.",
+    excerpt:
+      "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India — expanding our delivery capability and global footprint.",
     href: "/knowledge-hub/india-office",
     image: "/images/news/india-office.webp",
     industry: null,
@@ -63,8 +69,10 @@ const ARTICLES: Article[] = [
   {
     slug: "fsm-summit-2024",
     category: "Events",
-    title: "Sognos at FSM Summit 2024: Driving the Future of Field Service in Sydney",
-    excerpt: "The Field Service Management (FSM) Summit 2024 in Sydney brought together industry innovators. Sognos participated as a Microsoft partner specialising in field service technology.",
+    title:
+      "Sognos at FSM Summit 2024: Driving the Future of Field Service in Sydney",
+    excerpt:
+      "The Field Service Management (FSM) Summit 2024 in Sydney brought together industry innovators. Sognos participated as a Microsoft partner specialising in field service technology.",
     href: "/knowledge-hub/fsm-summit-2024",
     image: "/images/news/fsm-summit-2024.webp",
     industry: "Facilities Management",
@@ -74,7 +82,8 @@ const ARTICLES: Article[] = [
     slug: "participant-care-webinar",
     category: "Webinar",
     title: "Enhancing Participant Care with Field Service Management",
-    excerpt: "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
+    excerpt:
+      "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
     href: "/knowledge-hub/participant-care-webinar",
     image: "/images/news/participant-care-webinar.webp",
     industry: "Health & Social Care",
@@ -129,7 +138,13 @@ function ArticleCard({ article }: { article: Article }) {
         </p>
         <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
           Read More
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
             <path
               d="M3 7h8M7 3l4 4-4 4"
               stroke="currentColor"
@@ -152,7 +167,8 @@ export default function KnowledgeHubArchive({
   initialCategory?: string | null;
 } = {}) {
   const safeInitialCategory =
-    initialCategory && (CATEGORIES as readonly string[]).includes(initialCategory)
+    initialCategory &&
+    (CATEGORIES as readonly string[]).includes(initialCategory)
       ? initialCategory
       : null;
   const [activeCategory, setActiveCategory] = useState<string | null>(
@@ -171,7 +187,6 @@ export default function KnowledgeHubArchive({
   return (
     <section className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
-
         {/* Header row */}
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
@@ -188,7 +203,9 @@ export default function KnowledgeHubArchive({
               >
                 <option value="">Select by Industry</option>
                 {INDUSTRIES.map((ind) => (
-                  <option key={ind} value={ind}>{ind}</option>
+                  <option key={ind} value={ind}>
+                    {ind}
+                  </option>
                 ))}
               </select>
               <ChevronDown
@@ -212,8 +229,7 @@ export default function KnowledgeHubArchive({
         </div>
 
         {/* Body: sidebar + grid */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[160px_1fr]">
-
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[220px_1fr]">
           {/* Col 1: Category filters — sticky */}
           <aside className="lg:sticky lg:top-[100px] lg:self-start">
             <div className="flex flex-row flex-wrap gap-2 lg:flex-col">
@@ -231,7 +247,9 @@ export default function KnowledgeHubArchive({
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                  onClick={() =>
+                    setActiveCategory(activeCategory === cat ? null : cat)
+                  }
                   className={[
                     "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 text-left",
                     activeCategory === cat

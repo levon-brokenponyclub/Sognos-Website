@@ -48,7 +48,7 @@ const SOGNOSCARE_SECTIONS: NavItem[] = [
   { name: "Features", href: "/products/sognoscare#features" },
   { name: "Editions", href: "/products/sognoscare#editions" },
   { name: "Key Advantages", href: "/products/sognoscare#advantages" },
-  { name: "Customer Stories", href: "/products/sognoscare#stories" },
+  // { name: "Customer Stories", href: "/products/sognoscare#stories" },
 ];
 
 const SOGNOSCARE_EDITIONS: NavItem[] = [
@@ -62,13 +62,13 @@ const SOGNOSROSTER_SECTIONS: NavItem[] = [
   { name: "What it solves", href: "/products/sognosroster#problems" },
   { name: "Features", href: "/products/sognosroster#features" },
   { name: "Key Advantages", href: "/products/sognosroster#advantages" },
-  { name: "Customer Stories", href: "/products/sognosroster#stories" },
+  // { name: "Customer Stories", href: "/products/sognosroster#stories" },
 ];
 
 const SOGNOSGENOGRAM_SECTIONS: NavItem[] = [
   { name: "What it solves", href: "/products/sognosgenogram#problems" },
   { name: "Features", href: "/products/sognosgenogram#features" },
-  { name: "Customer Stories", href: "/products/sognosgenogram#stories" },
+  // { name: "Customer Stories", href: "/products/sognosgenogram#stories" },
   { name: "Schedule a Call", href: "/products/sognosgenogram#calendar" },
 ];
 
@@ -84,7 +84,7 @@ export const nav: NavGroup[] = [
         items: [
           { name: "About", href: "/company/about" },
           { name: "Social Responsibility", href: "/company/social-responsibility" },
-          { name: "Careers", href: "/company/careers" },
+          // { name: "Careers", href: "/company/careers" },
         ],
       },
       { heading: "", items: [] },
@@ -154,7 +154,7 @@ export const nav: NavGroup[] = [
         items: [
           { name: "Insights", href: "/knowledge-hub" },
           { name: "News", href: "/knowledge-hub?category=News" },
-          { name: "Customer Stories", href: "/customers" },
+          // { name: "Customer Stories", href: "/customers" },
         ],
       },
       { heading: "", items: [] },
