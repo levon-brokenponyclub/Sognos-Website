@@ -1,6 +1,5 @@
 "use server";
 
-import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 import { appendToCsv } from "@/lib/csv-logger";
 
@@ -35,49 +34,10 @@ export async function dhfConversation(
     return { ok: false, error: "Please fill in all required fields." };
   }
 
-  const apiKey =
-    process.env.RESEND_API_KEY ??
-    process.env.RESEND ??
-    process.env["Resend"];
-
-  if (!apiKey) {
-    return {
-      ok: false,
-      error: "Email service is not configured. Please contact us directly.",
-    };
-  }
-
-  const lines = [
-    "New DHF conversation request from the Sognos website.",
-    "",
-    `Name: ${firstName} ${lastName}`,
-    `Email: ${email}`,
-    `Company: ${company || "Not provided"}`,
-    `Phone: ${input.phone || "Not provided"}`,
-    `Interested in: ${input.interests.length ? input.interests.join(", ") : "Not specified"}`,
-    "",
-    "What they're looking to improve:",
-    input.improvement || "Not provided",
-  ];
-
   try {
-    const resend = new Resend(apiKey);
-    const { error: emailError } = await resend.emails.send({
-      from: "Sognos DHF <onboarding@resend.dev>",
-      to: ["levongravett@gmail.com"],
-      replyTo: email,
-      subject: `DHF Conversation: ${firstName} ${lastName} — ${company}`,
-      text: lines.join("\n"),
-    });
-
-    if (emailError) {
-      return { ok: false, error: emailError.message ?? "Email send failed." };
-    }
-
-    // Write to Supabase
     const supabase = getSupabaseClient();
     if (supabase) {
-      await supabase.from("dhf_submissions").insert({
+      const { error } = await supabase.from("dhf_submissions").insert({
         first_name: firstName,
         last_name: lastName,
         email,
@@ -86,9 +46,12 @@ export async function dhfConversation(
         interests: input.interests,
         improvement: input.improvement || null,
       });
+
+      if (error) {
+        return { ok: false, error: error.message ?? "Database insert failed." };
+      }
     }
 
-    // Also write to CSV as local backup
     appendToCsv("dhf-conversation.csv", {
       timestamp: new Date().toISOString(),
       firstName,
