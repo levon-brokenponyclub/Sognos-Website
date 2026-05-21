@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, type MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { navCTA } from "@/lib/navigation";
 import FlowCanvas from "@/components/ui/FlowCanvas";
 import AnimatedButton from "@/components/ui/AnimatedButton";
+import { useBookDemo } from "@/lib/BookDemoContext";
 
 type HeroProps = {
   headline?: React.ReactNode;
@@ -109,7 +109,7 @@ export default function Hero({
   primaryCTA = { ...navCTA.primary, href: "#book-demo" },
   secondaryCTA = { name: "Talk to us", href: "/contact" },
 }: HeroProps) {
-  const router = useRouter();
+  const { openModal } = useBookDemo();
   // Cycles between trust bar (false) and logo strip (true) on mobile
   const [showLogos, setShowLogos] = useState(false);
 
@@ -117,19 +117,6 @@ export default function Hero({
     const id = setInterval(() => setShowLogos((v) => !v), 3000);
     return () => clearInterval(id);
   }, []);
-
-  const onBookDemoClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    const target = document.getElementById("book-demo");
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.replaceState(null, "", "#book-demo");
-      return;
-    }
-
-    e.preventDefault();
-    router.push("/contact");
-  };
 
   return (
     <section
@@ -152,8 +139,8 @@ export default function Hero({
                 </p>
                 <div className="mt-10 flex flex-row items-center justify-center gap-3">
                   <AnimatedButton
-                    href={primaryCTA.href}
-                    onClick={onBookDemoClick}
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); openModal(); }}
                     variant="white"
                   >
                     {primaryCTA.name}

@@ -141,7 +141,7 @@ export default async function SolutionPage({
       {/* Platform */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="overflow-hidden rounded-2xl bg-prussian-blue-950 px-10 py-14 lg:px-14 lg:py-16">
+          <div className="overflow-hidden rounded-lg bg-prussian-blue-800 px-10 py-14 lg:px-14 lg:py-16">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               Platform

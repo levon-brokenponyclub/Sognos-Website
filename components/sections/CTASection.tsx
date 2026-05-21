@@ -92,6 +92,12 @@ const STATS = [
   },
 ];
 
+// ─── Form styles (matches contact page) ────────────────────────────────────
+
+const INPUT =
+  "w-full rounded-lg border border-sognos-border-subtle bg-slate-50 px-4 py-3 text-sm text-prussian-blue-800 placeholder:text-sognos-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+const LABEL = "mb-1.5 block text-sm font-medium text-prussian-blue-800";
+
 // ─── Section ────────────────────────────────────────────────────────────────
 
 export default function CTASection({
@@ -151,12 +157,12 @@ export default function CTASection({
       >
         {/* Left — Calendar / Book a Demo */}
         <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm border border-gray-200 flex flex-col w-full">
-          <div className="w-full h-[420px] flex flex-col">
+          <div className="w-full h-[480px] flex flex-col">
             <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
-              <h3 className="text-lg lg:text-xl font-heading font-semibold mb-1 text-gray-900 tracking-tight">
+              <h3 className="mb-2 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                 Book a Demo
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
+              <p className="text-gray-600 leading-relaxed text-base mb-1 balanced">
                 Schedule a 45-minute call to see how Sognos can unify your
                 operations and boost efficiency.
               </p>
@@ -376,53 +382,45 @@ export default function CTASection({
                       }}
                     >
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          Full Name *
-                        </label>
+                        <label className={LABEL}>Full Name *</label>
                         <input
                           required
                           type="text"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                          className={INPUT}
                           placeholder="Jane Doe"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          Work Email *
-                        </label>
+                        <label className={LABEL}>Work Email *</label>
                         <input
                           required
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                          className={INPUT}
                           placeholder="jane@company.com"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          Company *
-                        </label>
+                        <label className={LABEL}>Company *</label>
                         <input
                           required
                           type="text"
                           value={company}
                           onChange={(e) => setCompany(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                          className={INPUT}
                           placeholder="Acme Health Group"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          Product of interest *
-                        </label>
+                        <label className={LABEL}>Product of interest *</label>
                         <select
                           required
                           value={product}
                           onChange={(e) => setProduct(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-[#1D96FC] focus:border-[#1D96FC] outline-none transition-shadow"
+                          className={INPUT}
                         >
                           <option value="" disabled>
                             Select a product
@@ -447,7 +445,7 @@ export default function CTASection({
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-full bg-[#1D96FC] hover:bg-[#1582e0] disabled:bg-[#1D96FC]/60 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-md text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1D96FC] focus:ring-offset-1"
+                          className="w-full rounded-full bg-prussian-blue-800 px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                         >
                           {submitting ? "Sending…" : "Confirm Demo"}
                         </button>

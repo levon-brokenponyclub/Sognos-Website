@@ -5,7 +5,7 @@ export default function SognoscareIntegration() {
   return (
     <section id="integration" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-2xl bg-prussian-blue-950">
+        <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
           <div className="grid lg:grid-cols-2">
             {/* Left — text */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">

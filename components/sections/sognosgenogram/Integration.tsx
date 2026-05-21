@@ -5,18 +5,18 @@ export default function GenogramIntegration() {
   return (
     <section id="integration" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-2xl bg-prussian-blue-950 px-10 py-14 lg:px-14 lg:py-16">
+        <div className="overflow-hidden rounded-lg bg-prussian-blue-800 px-10 py-14 lg:px-14 lg:py-16">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Better together
-              </div>
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            Better together
+          </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
             Context that lives inside the case, not beside it
           </h2>
           <p className="mb-12 max-w-xl text-base leading-relaxed text-white/60">
-            Sognos Genogram is designed to work alongside SognosCare. Relationship
-            maps sit directly inside case records — no separate system, no
-            copy-pasting, no version mismatch.
+            Sognos Genogram is designed to work alongside SognosCare.
+            Relationship maps sit directly inside case records — no separate
+            system, no copy-pasting, no version mismatch.
           </p>
 
           {/* Flow */}

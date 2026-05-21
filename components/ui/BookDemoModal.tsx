@@ -32,7 +32,7 @@ export default function BookDemoModal() {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="pointer-events-auto w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white rounded-lg relative">
+            <div className="pointer-events-auto w-full max-w-3xl max-h-[98vh] overflow-y-auto bg-white rounded-lg relative">
               {/* Close button */}
               <button
                 onClick={closeModal}

@@ -56,7 +56,7 @@ export default function DhfConversationPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero band */}
-      <div className="bg-gradient-brand pt-28 pb-16 lg:pt-42 lg:pb-20 px-6">
+      <div className="bg-gradient-hero pt-28 pb-16 lg:pt-50 lg:pb-26 px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="font-heading text-4xl lg:text-5xl font-normal leading-heading text-center tracking-heading text-white">
             Start the conversation

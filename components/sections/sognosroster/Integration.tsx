@@ -5,7 +5,7 @@ export default function SognoscareRosterIntegration() {
   return (
     <section id="integration" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-2xl bg-prussian-blue-950">
+        <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
           <div className="grid lg:grid-cols-2">
             {/* Left — text */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
@@ -17,14 +17,14 @@ export default function SognoscareRosterIntegration() {
                 SognosRoster + SognosCare
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
-                SognosRoster schedules and dispatches the workforce.
-                SognosCare manages the case, the plan, and the compliance record
-                for every service they deliver.
+                SognosRoster schedules and dispatches the workforce. SognosCare
+                manages the case, the plan, and the compliance record for every
+                service they deliver.
               </p>
               <p className="mb-10 text-base leading-relaxed text-white/60">
-                Together, they close the loop from workforce allocation to service
-                outcome — without the handoff gaps that come from disconnected
-                systems.
+                Together, they close the loop from workforce allocation to
+                service outcome — without the handoff gaps that come from
+                disconnected systems.
               </p>
               <Link
                 href="/products/sognoscare"
@@ -51,15 +51,37 @@ export default function SognoscareRosterIntegration() {
                 {/* Arrow */}
                 <div className="flex flex-col items-center gap-1">
                   <div className="h-6 w-px bg-white/10" />
-                  <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className="h-4 w-4 text-white/20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                   <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Delivers to
-              </div>
-                  <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                    Delivers to
+                  </div>
+                  <svg
+                    className="h-4 w-4 text-white/20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                   <div className="h-6 w-px bg-white/10" />
                 </div>

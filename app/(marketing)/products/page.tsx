@@ -129,7 +129,9 @@ function ProductCard({
         {badge && (
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-(--sognos-card-border) bg-(--sognos-bg-sunken) px-3 py-1.5">
             <span className={`h-1.5 w-1.5 rounded-full ${accentDot}`} />
-            <span className="text-xs font-medium text-sognos-text-body">{badge}</span>
+            <span className="text-xs font-medium text-sognos-text-body">
+              {badge}
+            </span>
           </div>
         )}
 
@@ -150,7 +152,7 @@ function BetterTogether() {
   return (
     <section className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-2xl bg-prussian-blue-950">
+        <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
           <div className="grid lg:grid-cols-[1fr_1px_1fr]">
             {/* Left */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
@@ -180,11 +182,26 @@ function BetterTogether() {
             <div className="flex items-center justify-center border-t border-white/5 px-10 py-14 lg:border-t-0 lg:px-14">
               <div className="w-full max-w-xs space-y-3">
                 {[
-                  { label: "Service intake & case setup", product: "SognosCare" },
-                  { label: "Service plan & compliance checks", product: "SognosCare" },
-                  { label: "Workforce allocation & scheduling", product: "SognosRoster" },
-                  { label: "Field delivery & attendance capture", product: "SognosRoster" },
-                  { label: "Outcome recording & audit trail", product: "SognosCare" },
+                  {
+                    label: "Service intake & case setup",
+                    product: "SognosCare",
+                  },
+                  {
+                    label: "Service plan & compliance checks",
+                    product: "SognosCare",
+                  },
+                  {
+                    label: "Workforce allocation & scheduling",
+                    product: "SognosRoster",
+                  },
+                  {
+                    label: "Field delivery & attendance capture",
+                    product: "SognosRoster",
+                  },
+                  {
+                    label: "Outcome recording & audit trail",
+                    product: "SognosCare",
+                  },
                   { label: "AI insights & optimisation", product: "Both" },
                 ].map((step, i) => {
                   const isCare = step.product === "SognosCare";
@@ -199,18 +216,20 @@ function BetterTogether() {
                           isBoth
                             ? "bg-white/40"
                             : isCare
-                            ? "bg-(--sognos-edition-green)"
-                            : "bg-(--sognos-accent)"
+                              ? "bg-(--sognos-edition-green)"
+                              : "bg-(--sognos-accent)"
                         }`}
                       />
-                      <span className="flex-1 text-xs text-white/70">{step.label}</span>
+                      <span className="flex-1 text-xs text-white/70">
+                        {step.label}
+                      </span>
                       <span
                         className={`text-[10px] font-semibold ${
                           isBoth
                             ? "text-white/40"
                             : isCare
-                            ? "text-(--sognos-edition-green)/80"
-                            : "text-(--sognos-accent)/80"
+                              ? "text-(--sognos-edition-green)/80"
+                              : "text-(--sognos-accent)/80"
                         }`}
                       >
                         {step.product}
@@ -223,11 +242,15 @@ function BetterTogether() {
                 <div className="flex items-center gap-5 pt-2">
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-(--sognos-edition-green)" />
-                    <span className="text-[10px] text-white/40">SognosCare</span>
+                    <span className="text-[10px] text-white/40">
+                      SognosCare
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-(--sognos-accent)" />
-                    <span className="text-[10px] text-white/40">SognosRoster</span>
+                    <span className="text-[10px] text-white/40">
+                      SognosRoster
+                    </span>
                   </div>
                 </div>
               </div>
@@ -259,9 +282,9 @@ export default function ProductsPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Products
-              </div>
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              Products
+            </div>
           </div>
           <h1 className="mx-auto mb-6 max-w-3xl font-heading text-5xl font-normal leading-[1.08] text-white lg:text-6xl">
             Three products. One operating system for service delivery.

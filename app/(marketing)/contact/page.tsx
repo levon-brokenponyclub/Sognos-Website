@@ -33,7 +33,10 @@ const OFFICES = [
     region: "New Zealand",
     label: "Office",
     entity: "Sognos Solutions NZ Limited",
-    address: ["Ground Level, 155 Fanshawe Street", "Auckland 1010, New Zealand"],
+    address: [
+      "Ground Level, 155 Fanshawe Street",
+      "Auckland 1010, New Zealand",
+    ],
     phone: "+64 9 802 0402",
     email: "contact@sognos.co.nz",
   },
@@ -41,7 +44,10 @@ const OFFICES = [
     region: "India",
     label: "Offshore Delivery Centre",
     entity: "Sognos Solutions India Limited",
-    address: ["713, Silver Radiance, 2 Science City Rd", "Ahmedabad 380060, India"],
+    address: [
+      "713, Silver Radiance, 2 Science City Rd",
+      "Ahmedabad 380060, India",
+    ],
     phone: "+91 93160 908408",
     email: "contact@sognos.in",
   },
@@ -84,18 +90,17 @@ export default function ContactPage() {
 
   return (
     <main className="w-full bg-white">
-
       {/* Hero */}
-      <section className="bg-prussian-blue-800 w-full">
-        <div className="max-w-7xl w-full mx-auto px-6 py-28">
+      <section className="bg-gradient-hero w-full">
+        <div className="max-w-7xl w-full mx-auto text-center px-6 py-28 pb-18 pt-40">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Contact
-              </div>
-          <h1 className="font-heading text-4xl md:text-6xl font-medium text-white tracking-tight max-w-2xl">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            Contact
+          </div>
+          <h1 className="mx-auto mb-6 max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
             Get in touch.
           </h1>
-          <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
+          <p className="mt-6 text-lg text-white/80 max-w-xl mx-auto leading-relaxed">
             Contact us to discuss how we can assist your organisation and foster
             a valuable partnership. We respond within one business day.
           </p>
@@ -106,7 +111,6 @@ export default function ContactPage() {
       <section className="w-full bg-slate-50 border-b border-sognos-border-subtle">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
-
             {/* Form */}
             <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8 lg:p-10">
               <h2 className="mb-8 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
@@ -115,9 +119,12 @@ export default function ContactPage() {
 
               {success ? (
                 <div className="rounded-xl bg-green-50 border border-green-200 px-6 py-8 text-center">
-                  <p className="text-lg font-medium text-prussian-blue-800">Message sent!</p>
+                  <p className="text-lg font-medium text-prussian-blue-800">
+                    Message sent!
+                  </p>
                   <p className="mt-2 text-sm text-sognos-text-body">
-                    Thanks for reaching out. We'll be in touch within one business day.
+                    Thanks for reaching out. We'll be in touch within one
+                    business day.
                   </p>
                 </div>
               ) : (
@@ -125,7 +132,9 @@ export default function ContactPage() {
                   {/* Name row */}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="first-name" className={LABEL}>First name</label>
+                      <label htmlFor="first-name" className={LABEL}>
+                        First name
+                      </label>
                       <input
                         id="first-name"
                         name="first-name"
@@ -137,7 +146,9 @@ export default function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="last-name" className={LABEL}>Last name</label>
+                      <label htmlFor="last-name" className={LABEL}>
+                        Last name
+                      </label>
                       <input
                         id="last-name"
                         name="last-name"
@@ -153,7 +164,9 @@ export default function ContactPage() {
                   {/* Email + Phone row */}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="email" className={LABEL}>Work email</label>
+                      <label htmlFor="email" className={LABEL}>
+                        Work email
+                      </label>
                       <input
                         id="email"
                         name="email"
@@ -165,7 +178,9 @@ export default function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="phone" className={LABEL}>Phone number</label>
+                      <label htmlFor="phone" className={LABEL}>
+                        Phone number
+                      </label>
                       <input
                         id="phone"
                         name="phone"
@@ -180,7 +195,9 @@ export default function ContactPage() {
 
                   {/* Organisation */}
                   <div>
-                    <label htmlFor="organisation" className={LABEL}>Organisation</label>
+                    <label htmlFor="organisation" className={LABEL}>
+                      Organisation
+                    </label>
                     <input
                       id="organisation"
                       name="organisation"
@@ -194,20 +211,28 @@ export default function ContactPage() {
                   {/* Reason + Product row */}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="reason" className={LABEL}>How can we help?</label>
+                      <label htmlFor="reason" className={LABEL}>
+                        How can we help?
+                      </label>
                       <select id="reason" name="reason" className={INPUT}>
                         <option value="">Select a reason</option>
                         {REASONS.map((r) => (
-                          <option key={r.value} value={r.value}>{r.label}</option>
+                          <option key={r.value} value={r.value}>
+                            {r.label}
+                          </option>
                         ))}
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="product" className={LABEL}>Product interest</label>
+                      <label htmlFor="product" className={LABEL}>
+                        Product interest
+                      </label>
                       <select id="product" name="product" className={INPUT}>
                         <option value="">Select a product</option>
                         {PRODUCTS_LIST.map((p) => (
-                          <option key={p.value} value={p.value}>{p.label}</option>
+                          <option key={p.value} value={p.value}>
+                            {p.label}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -217,7 +242,9 @@ export default function ContactPage() {
                   <div>
                     <label htmlFor="message" className={LABEL}>
                       Message{" "}
-                      <span className="font-normal text-sognos-text-muted">(optional)</span>
+                      <span className="font-normal text-sognos-text-muted">
+                        (optional)
+                      </span>
                     </label>
                     <textarea
                       id="message"
@@ -228,9 +255,7 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  {error && (
-                    <p className="text-sm text-red-600">{error}</p>
-                  )}
+                  {error && <p className="text-sm text-red-600">{error}</p>}
 
                   <button
                     type="submit"
@@ -242,7 +267,10 @@ export default function ContactPage() {
 
                   <p className="text-xs leading-relaxed text-sognos-text-muted">
                     By submitting this form you agree to our{" "}
-                    <Link href="/privacy" className="underline hover:text-prussian-blue-800 transition-colors">
+                    <Link
+                      href="/privacy"
+                      className="underline hover:text-prussian-blue-800 transition-colors"
+                    >
                       Privacy Policy
                     </Link>
                     . We'll never share your information with third parties.
@@ -253,13 +281,12 @@ export default function ContactPage() {
 
             {/* Sidebar */}
             <div className="flex flex-col gap-6">
-
               {/* Response time */}
               <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
                 <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Response time
-              </div>
+                  <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  Response time
+                </div>
                 <p className="font-heading text-2xl font-medium text-prussian-blue-800">
                   Within 1 business day
                 </p>
@@ -280,15 +307,21 @@ export default function ContactPage() {
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
                         {office.region}
                       </p>
-                      <span className="text-xs text-sognos-text-muted/50">—</span>
-                      <p className="text-xs text-sognos-text-muted">{office.label}</p>
+                      <span className="text-xs text-sognos-text-muted/50">
+                        —
+                      </span>
+                      <p className="text-xs text-sognos-text-muted">
+                        {office.label}
+                      </p>
                     </div>
                     <p className="text-sm font-semibold text-prussian-blue-800 mb-2">
                       {office.entity}
                     </p>
                     <address className="not-italic text-sm text-sognos-text-body leading-relaxed mb-3">
                       {office.address.map((line) => (
-                        <span key={line} className="block">{line}</span>
+                        <span key={line} className="block">
+                          {line}
+                        </span>
                       ))}
                     </address>
                     <div className="space-y-1">
@@ -296,8 +329,20 @@ export default function ContactPage() {
                         href={`tel:${office.phone.replace(/\s/g, "")}`}
                         className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
                       >
-                        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                          <path d="M2 2.5C2 8.299 5.701 12 11.5 12l.5-.5v-2l-.5-.5-2-.5-.5.5-.75.75C7.25 9 5 6.75 4.25 5.75L5 5l.5-.5L5 3 4.5 1 4 .5H2L1.5 1C1.5 1 2 2 2 2.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                        <svg
+                          width="13"
+                          height="13"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M2 2.5C2 8.299 5.701 12 11.5 12l.5-.5v-2l-.5-.5-2-.5-.5.5-.75.75C7.25 9 5 6.75 4.25 5.75L5 5l.5-.5L5 3 4.5 1 4 .5H2L1.5 1C1.5 1 2 2 2 2.5Z"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                         {office.phone}
                       </a>
@@ -305,9 +350,28 @@ export default function ContactPage() {
                         href={`mailto:${office.email}`}
                         className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
                       >
-                        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                          <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
-                          <path d="M1 4l6 4 6-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+                        <svg
+                          width="13"
+                          height="13"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <rect
+                            x="1"
+                            y="3"
+                            width="12"
+                            height="8"
+                            rx="1.5"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                          />
+                          <path
+                            d="M1 4l6 4 6-4"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                            strokeLinecap="round"
+                          />
                         </svg>
                         {office.email}
                       </a>
@@ -319,13 +383,15 @@ export default function ContactPage() {
               {/* ABN + LinkedIn */}
               <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
                 <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                Company info
-              </div>
+                  <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  Company info
+                </div>
                 <dl className="space-y-2 text-sm">
                   <div className="flex gap-2">
                     <dt className="text-sognos-text-muted shrink-0">ABN</dt>
-                    <dd className="text-prussian-blue-800 font-medium">53 611 121 870</dd>
+                    <dd className="text-prussian-blue-800 font-medium">
+                      53 611 121 870
+                    </dd>
                   </div>
                 </dl>
                 <a
@@ -334,18 +400,22 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 hover:text-prussian-blue-800 transition-colors"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                   Sognos on LinkedIn
                 </a>
               </div>
-
             </div>
           </div>
         </div>
       </section>
-
     </main>
   );
 }

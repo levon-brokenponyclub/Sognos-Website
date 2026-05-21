@@ -111,15 +111,27 @@ function ArticleCard({ article }: { article: Article }) {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col px-1 pt-3 pb-1">
-        <h3 className="font-heading text-xl lg:text-2xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
+      <div className="flex flex-1 flex-col px-3 pt-4 pb-3">
+        <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
           {article.title}
         </h3>
         <div className="flex-1" />
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
           Read More
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 7h8M7 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </span>
       </div>
@@ -156,9 +168,7 @@ export default function NewsInsightSection() {
       if (!trackRef.current || !viewportRef.current) return;
       const containerWidth = viewportRef.current.clientWidth;
       const isMobile = window.innerWidth < 1024;
-      const cw = isMobile
-        ? containerWidth
-        : (containerWidth - GAP) / 2;
+      const cw = isMobile ? containerWidth : (containerWidth - GAP) / 2;
       cardWidthRef.current = cw;
       setCardWidth(cw);
       periodRef.current = ARTICLES.length * (cw + GAP);
@@ -217,19 +227,19 @@ export default function NewsInsightSection() {
   return (
     <section className="w-full bg-prussian-blue-800 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-8 lg:gap-12">
           {/* Left column — h2 and button, aligned top */}
           <div className="w-full lg:w-[35%] lg:shrink-0 flex flex-col items-center lg:items-start gap-4">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
+            {/* <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               News &amp; Insights
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
+            </div> */}
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-0">
               News &amp; Insights
             </h2>
-            <div className="mt-2 lg:mt-6 hidden lg:block">
+            <div className="mt-2 lg:mt-4 hidden lg:block">
               <AnimatedButton href="/knowledge-hub" variant="white">
-                Visit Blog
+                View All
               </AnimatedButton>
             </div>
           </div>
@@ -283,20 +293,20 @@ export default function NewsInsightSection() {
                 Visit Blog
               </AnimatedButton>
               <div className="flex items-center gap-3">
-              <button
-                onClick={() => handleStep(-1)}
-                aria-label="Previous slide"
-                className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
-              >
-                <ArrowLeft size={16} />
-              </button>
-              <button
-                onClick={() => handleStep(1)}
-                aria-label="Next slide"
-                className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
-              >
-                <ArrowRight size={16} />
-              </button>
+                <button
+                  onClick={() => handleStep(-1)}
+                  aria-label="Previous slide"
+                  className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
+                >
+                  <ArrowLeft size={16} />
+                </button>
+                <button
+                  onClick={() => handleStep(1)}
+                  aria-label="Next slide"
+                  className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
+                >
+                  <ArrowRight size={16} />
+                </button>
               </div>
             </div>
           </div>
