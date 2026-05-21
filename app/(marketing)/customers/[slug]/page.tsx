@@ -591,30 +591,29 @@ export default async function CustomerStoryPage({
             </div>
 
             {/* Right — image */}
-            <div className="overflow-hidden rounded-lg h-100 max-h-100 w-full lg:w-1/2 lg:shrink-0 relative flex flex-col">
+            <div className="overflow-hidden rounded-lg h-64 lg:h-100 lg:max-h-100 w-full lg:w-1/2 lg:shrink-0 relative flex flex-col">
               <img
                 src={story.image}
                 alt={story.company}
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 35vw"
+                className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Logos — left: product + customer */}
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 lg:gap-6">
                   <img
                     src={story.productLogo ?? "/logos/sognos-logo.svg"}
                     alt="Sognos product"
-                    className="h-14 w-auto object-contain brightness-0 invert"
+                    className="h-7 lg:h-14 w-auto max-w-[100px] lg:max-w-none object-contain brightness-0 invert"
                   />
                   {story.logo && (
                     <>
-                      <span className="text-5xl font-regular font-heading text-white">
+                      <span className="text-2xl lg:text-5xl font-light text-white/70">
                         +
                       </span>
                       <img
                         src={story.logo}
                         alt={story.company}
-                        className="h-14 w-auto max-w-[190px] object-contain brightness-0 invert"
+                        className="h-7 lg:h-14 w-auto max-w-[100px] lg:max-w-[190px] object-contain brightness-0 invert"
                       />
                     </>
                   )}
@@ -649,9 +648,9 @@ export default async function CustomerStoryPage({
 
       {/* ── Body ── */}
       <div className="mx-auto max-w-7xl px-6 pb-20 pt-12 lg:pb-32 lg:pt-16">
-        <div className="grid grid-cols-2 gap-22 lg:grid-cols-[260px_1fr]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr] lg:gap-22">
           {/* Sidebar */}
-          <aside className="lg:sticky lg:top-25 lg:self-start max-w-65 w-65">
+          <aside className="lg:sticky lg:top-25 lg:self-start w-full lg:max-w-65 lg:w-65">
             <div className="">
               <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800">
                 {story.company}
