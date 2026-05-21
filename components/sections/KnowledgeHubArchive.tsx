@@ -229,7 +229,13 @@ const ARTICLES: Article[] = [
   },
 ];
 
-const CATEGORIES = ["Milestone", "News", "Events", "Webinar", "Insights"] as const;
+const CATEGORIES = [
+  "Milestone",
+  "News",
+  "Events",
+  "Webinar",
+  "Insights",
+] as const;
 const INDUSTRIES = [
   "Health & Social Care",
   "Facilities Management",
@@ -368,7 +374,7 @@ export default function KnowledgeHubArchive({
         </div>
 
         {/* Body: sidebar + grid */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[160px_1fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
           {/* Col 1: Category filters — sticky */}
           <aside className="lg:sticky lg:top-[100px] lg:self-start">
             <div className="flex flex-row flex-wrap gap-2 lg:flex-col">

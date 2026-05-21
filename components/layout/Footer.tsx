@@ -14,7 +14,9 @@ export default function Footer() {
             >
               {SITE.name}
             </Link>
-            <p className="mt-2 text-sm text-white/80 max-w-sm">{SITE.tagline}</p>
+            <p className="mt-2 text-sm text-white/80 max-w-sm">
+              {SITE.tagline}
+            </p>
           </div>
 
           {/* Products */}
@@ -110,7 +112,7 @@ export default function Footer() {
                 >
                   Careers
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/customers"
@@ -118,7 +120,7 @@ export default function Footer() {
                 >
                   Customers
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <Link
                   href="/knowledge-hub"
@@ -151,10 +153,7 @@ export default function Footer() {
             >
               Privacy
             </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-white hover:text-white"
-            >
+            <Link href="/terms" className="text-sm text-white hover:text-white">
               Terms
             </Link>
           </div>
