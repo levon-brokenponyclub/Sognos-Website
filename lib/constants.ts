@@ -182,9 +182,9 @@ export const SOGNOSCARE_EDITIONS = [
   },
   {
     label: "Hospital in the Home",
-    logo: "/logos/sognos-care-logo-color.svg",
+    logo: "/logos/SognosCare-HITH-Logo.svg",
     href: "/products/sognoscare/editions/hospital-in-the-home",
-    accentColor: "#4ECCD6",
+    accentColor: "#BFD731",
     tagline: "Hospital-level care, delivered at home",
     description:
       "Manage home-based treatment, mobile clinical teams, patient visits, and care documentation while maintaining visibility across Hospital in the Home delivery.",
@@ -209,9 +209,9 @@ export const SOGNOSCARE_EDITIONS = [
   },
   {
     label: "Child & Family Services",
-    logo: "/logos/sognos-care-logo-color.svg",
+    logo: "/logos/SognosCare-C&FS-Logo.svg",
     href: "/products/sognoscare/editions/child-and-family-services",
-    accentColor: "#F59E3B",
+    accentColor: "#FF5CAC",
     tagline: "Connected care for vulnerable children and families",
     description:
       "Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.",

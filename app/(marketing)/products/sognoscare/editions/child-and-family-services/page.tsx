@@ -15,10 +15,10 @@ const data: EditionData = {
   description:
     "Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.",
   gradient: "/images/sognoscare/gradient-1.png",
-  accentHex: "#F59E3B",
-  accentTextClass: "text-[#F59E3B]",
-  accentBgClass: "bg-[#F59E3B]",
-  accentBorderClass: "border-[#F59E3B]",
+  accentHex: "#FF5CAC",
+  accentTextClass: "text-[#FF5CAC]",
+  accentBgClass: "bg-[#FF5CAC]",
+  accentBorderClass: "border-[#FF5CAC]",
   problems: [
     {
       label: "Disconnected family and case records",

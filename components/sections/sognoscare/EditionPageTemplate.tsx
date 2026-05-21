@@ -38,6 +38,8 @@ const EDITION_LOGOS: Record<string, string> = {
   "Disability & Mental Health": "/logos/sognoscare-edition-dmh-white.svg",
   "Residential Aged Care": "/logos/sognoscare-edition-rac-white.svg",
   "Support at Home": "/logos/sognoscare-edition-sah-white.svg",
+  "Hospital in the Home": "/logos/SognosCare-HITH-Logo.svg",
+  "Child & Family Services": "/logos/SognosCare-C&FS-Logo.svg",
 };
 
 // Dark logos for the sticky sub-nav bar.
@@ -46,6 +48,8 @@ const EDITION_LOGOS_DARK: Record<string, string> = {
   "Disability & Mental Health": "/logos/sognoscare-edition-dmh.svg",
   "Residential Aged Care": "/logos/sognoscare-edition-rac.svg",
   "Support at Home": "/logos/sognoscare-edition-sah.svg",
+  "Hospital in the Home": "/logos/SognosCare-HITH-Logo.svg",
+  "Child & Family Services": "/logos/SognosCare-C&FS-Logo.svg",
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -446,19 +450,21 @@ function QuoteIcon({ className }: { className: string }) {
   );
 }
 
+const FLOURISH_STORY = {
+  company: "Flourish Australia",
+  companySize: "1,100+",
+  industry: "Health & Social Care",
+  logo: "/logos/flourish-australia-logo.png",
+  panelImage: "/images/customers/flourish-australia.avif",
+  quote:
+    "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
+  author: "Susan McCarthy",
+  role: "Chief Operating Officer, Flourish Australia",
+  href: "/customers/flourish-australia",
+};
+
 function ProofStories({ data }: { data: EditionData }) {
-  const cs = data.caseStudy;
-  // Fallbacks: pull quote/author from proofQuotes if rich fields not provided
-  const firstProof = data.proofQuotes[0];
-  const quote = cs.quote ?? firstProof?.quote ?? cs.description;
-  const attribution = cs.author ?? firstProof?.attribution ?? cs.eyebrow;
-  // Author / role split: if rich author provided use cs.author + cs.role,
-  // otherwise treat full attribution as the author and leave role blank.
-  const author = cs.author ?? attribution;
-  const role = cs.role ?? (cs.author ? "" : "");
-  const industry = cs.industry ?? `SognosCare for ${data.name}`;
-  const companySize = cs.companySize ?? "—";
-  const company = cs.company ?? data.name;
+  const cs = FLOURISH_STORY;
 
   return (
     <section
@@ -503,37 +509,24 @@ function ProofStories({ data }: { data: EditionData }) {
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]">
           {/* Left — image with logo + stats */}
           <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto bg-prussian-blue-800/10">
-            {cs.panelVideo ? (
-              <video
-                src={cs.panelVideo}
-                autoPlay
-                muted
-                playsInline
-                loop
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : cs.panelImage ? (
-              <Image
-                src={cs.panelImage}
-                alt={company}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 35vw"
-              />
-            ) : null}
+            <Image
+              src={cs.panelImage}
+              alt={cs.company}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 50vw, 35vw"
+            />
 
             {/* White logo — centered */}
-            {cs.logo && (
-              <div className="relative z-10 flex-1 flex items-center justify-center">
-                <Image
-                  src={cs.logo}
-                  alt={company}
-                  width={160}
-                  height={56}
-                  className="w-auto max-w-[220px] object-contain brightness-0 invert"
-                />
-              </div>
-            )}
+            <div className="relative z-10 flex-1 flex items-center justify-center">
+              <Image
+                src={cs.logo}
+                alt={cs.company}
+                width={160}
+                height={56}
+                className="w-auto max-w-[220px] object-contain brightness-0 invert"
+              />
+            </div>
 
             {/* Stats — bottom */}
             <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
@@ -542,7 +535,7 @@ function ProofStories({ data }: { data: EditionData }) {
                   Company Size
                 </p>
                 <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">
-                  {companySize}
+                  {cs.companySize}
                 </p>
               </div>
               <div>
@@ -550,7 +543,7 @@ function ProofStories({ data }: { data: EditionData }) {
                   Industry
                 </p>
                 <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">
-                  {industry}
+                  {cs.industry}
                 </p>
               </div>
             </div>
@@ -566,18 +559,16 @@ function ProofStories({ data }: { data: EditionData }) {
               <QuoteIcon className="text-prussian-blue-800/20" />
               <blockquote className="mt-4">
                 <p className="font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight text-prussian-blue-800">
-                  {quote}
+                  {cs.quote}
                 </p>
               </blockquote>
               <div className="mt-6">
                 <p className="text-sm font-semibold text-prussian-blue-800">
-                  {author}
+                  {cs.author}
                 </p>
-                {role && (
-                  <p className="text-sm mt-0.5 text-prussian-blue-800/75">
-                    {role}
-                  </p>
-                )}
+                <p className="text-sm mt-0.5 text-prussian-blue-800/75">
+                  {cs.role}
+                </p>
               </div>
             </div>
 
