@@ -8,7 +8,9 @@ const ADVANTAGES = [
 ];
 
 // 8-cell grid pattern: col 1 is a spanning header card, cols 2-4 hold content
-type Cell = { type: "header" } | { type: "accent" | "dark" | "white"; idx: number };
+type Cell =
+  | { type: "header" }
+  | { type: "accent" | "dark" | "white"; idx: number };
 const GRID: Cell[] = [
   { type: "header" },
   { type: "accent", idx: 0 },
@@ -40,9 +42,9 @@ export default function SognoscareAdvantages() {
                       <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
                         Key Advantages
                       </h2>
-                      <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 text-sognos-text-body">
+                      {/* <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 text-sognos-text-body">
                         Hello
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>
@@ -55,15 +57,18 @@ export default function SognoscareAdvantages() {
             return (
               <div
                 key={text}
-                className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${isWhite
-                  ? "bg-white text-prussian-blue-800"
-                  : isAccent
-                    ? "text-white"
-                    : "bg-prussian-blue-800 text-white"
-                  }`}
+                className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${
+                  isWhite
+                    ? "bg-white text-prussian-blue-800"
+                    : isAccent
+                      ? "text-white"
+                      : "bg-prussian-blue-800 text-white"
+                }`}
                 style={isAccent ? { backgroundColor: "#1d96fc" } : undefined}
               >
-                <p className={`font-heading text-base lg:text-lg font-medium leading-snug ${isWhite ? "text-prussian-blue-800" : "text-white"}`}>
+                <p
+                  className={`font-heading text-base lg:text-lg font-medium leading-snug ${isWhite ? "text-prussian-blue-800" : "text-white"}`}
+                >
                   {text}
                 </p>
               </div>
