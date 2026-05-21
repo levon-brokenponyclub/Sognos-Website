@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useBookDemo } from "@/lib/BookDemoContext";
 
 export interface SubNavSection {
   label: string;
@@ -33,6 +34,7 @@ export default function ProductSubNav({
   const [docked, setDocked] = useState(false);
   const dockedRef = useRef(false);
   const [logoVisible, setLogoVisible] = useState(false);
+  const { openModal } = useBookDemo();
 
   // Track which section is in view for active highlight
   useEffect(() => {
@@ -189,6 +191,14 @@ export default function ProductSubNav({
                 );
               })}
             </nav>
+
+            {/* Book a Demo button */}
+            <button
+              onClick={() => openModal()}
+              className="ml-auto hidden lg:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand rounded-lg hover:bg-brand/90 transition-colors duration-200 shrink-0"
+            >
+              Book a Demo
+            </button>
           </div>
         </div>
       </motion.div>

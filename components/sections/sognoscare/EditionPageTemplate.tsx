@@ -103,7 +103,7 @@ export type EditionData = {
 
 function Hero({ data }: { data: EditionData }) {
   const flowColors = flowColorsFromHex(data.accentHex);
-  const logoSrc = EDITION_LOGOS[data.name];
+  const logoSrc = EDITION_LOGOS[data.name] ?? "/logos/sognos-care-logo.svg";
 
   return (
     <section

@@ -181,6 +181,15 @@ export const SOGNOSCARE_EDITIONS = [
       "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
   },
   {
+    label: "Hospital in the Home",
+    logo: "/logos/sognos-care-logo-color.svg",
+    href: "/products/sognoscare/editions/hospital-in-the-home",
+    accentColor: "#4ECCD6",
+    tagline: "Hospital-level care, delivered at home",
+    description:
+      "Manage home-based treatment, mobile clinical teams, patient visits, and care documentation while maintaining visibility across Hospital in the Home delivery.",
+  },
+  {
     label: "Support at Home",
     logo: "/logos/sognoscare-edition-sah.svg",
     href: "/products/sognoscare/editions/support-at-home",
@@ -197,5 +206,14 @@ export const SOGNOSCARE_EDITIONS = [
     tagline: "Care planning, clinical documentation, and compliance",
     description:
       "From care planning to staff coordination and resident reporting — built for residential providers demonstrating quality against Aged Care Quality Standards.",
+  },
+  {
+    label: "Child & Family Services",
+    logo: "/logos/sognos-care-logo-color.svg",
+    href: "/products/sognoscare/editions/child-and-family-services",
+    accentColor: "#F59E3B",
+    tagline: "Connected care for vulnerable children and families",
+    description:
+      "Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.",
   },
 ] as const;

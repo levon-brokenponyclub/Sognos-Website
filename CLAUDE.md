@@ -65,6 +65,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
           /allied-health/page.tsx             ✅
           /support-at-home/page.tsx           ✅
           /residential-aged-care/page.tsx     ✅
+          /child-and-family-services/page.tsx ✅
       /sognosroster
         page.tsx                   ✅
       /sognosgenogram
@@ -158,6 +159,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /products/sognoscare/editions/allied-health          ✅
 /products/sognoscare/editions/support-at-home        ✅
 /products/sognoscare/editions/residential-aged-care  ✅
+/products/sognoscare/editions/child-and-family-services  ✅
 /products/sognosroster                               ✅
 /products/sognosgenogram                             ✅
 /solutions                                           ✅

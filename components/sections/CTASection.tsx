@@ -52,6 +52,8 @@ type CTASectionProps = {
   primaryCTA?: { label: string; href: string };
   secondaryCTA?: { label: string; href: string };
   defaultProduct?: ProductKey;
+  hideStats?: boolean;
+  bare?: boolean;
 };
 
 // ─── Proof stats ────────────────────────────────────────────────────────────
@@ -92,9 +94,12 @@ const STATS = [
 
 // ─── Section ────────────────────────────────────────────────────────────────
 
-export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
+export default function CTASection({ defaultProduct, hideStats, bare }: CTASectionProps = {}) {
+  const today = new Date();
+  const todayDay = today.getFullYear() === 2026 && today.getMonth() === 4 ? today.getDate() : 1;
+
   const [step, setStep] = useState(1);
-  const [selectedDate, setSelectedDate] = useState<number | null>(22);
+  const [selectedDate, setSelectedDate] = useState<number | null>(todayDay);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -113,11 +118,9 @@ export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
     "04:00 PM",
   ];
 
-  return (
-    <section id="book-demo" className="w-full bg-gray-200/70 scroll-mt-[140px]">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        <div className="rounded-md overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  const inner = (
+    <div className={bare ? "" : "rounded-md overflow-hidden"}>
+      <div className={`grid gap-4 ${hideStats ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"}`}>
             {/* Left — Calendar / Book a Demo */}
             <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm border border-gray-200 flex flex-col w-full">
               <div className="w-full h-[420px] flex flex-col">
@@ -212,18 +215,23 @@ export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
                             {Array.from({ length: 31 }).map((_, i) => {
                               const day = i + 1;
                               const isSelected = day === selectedDate;
+                              const isPast = day < todayDay;
                               return (
                                 <button
                                   key={day}
                                   type="button"
+                                  disabled={isPast}
                                   onClick={() => {
+                                    if (isPast) return;
                                     setSelectedDate(day);
                                     setStep(2);
                                   }}
                                   className={`h-8 w-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#1D96FC] ${
-                                    isSelected
-                                      ? "bg-[#1D96FC] text-white shadow-md ring-2 ring-[#1D96FC] ring-offset-1"
-                                      : "text-gray-700 hover:bg-[#1D96FC]/10 hover:text-[#1D96FC]"
+                                    isPast
+                                      ? "text-gray-300 cursor-not-allowed"
+                                      : isSelected
+                                        ? "bg-[#1D96FC] text-white shadow-md ring-2 ring-[#1D96FC] ring-offset-1"
+                                        : "text-gray-700 hover:bg-[#1D96FC]/10 hover:text-[#1D96FC]"
                                   }`}
                                 >
                                   {day}
@@ -460,6 +468,7 @@ export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
             </div>
 
             {/* Right — Stats 2×2 */}
+            {!hideStats && (
             <div className="grid grid-cols-2 gap-3 lg:gap-4">
               {STATS.map((stat, i) => (
                 <div
@@ -500,8 +509,17 @@ export default function CTASection({ defaultProduct }: CTASectionProps = {}) {
                 </div>
               ))}
             </div>
+            )}
           </div>
-        </div>
+    </div>
+  );
+
+  if (bare) return inner;
+
+  return (
+    <section id="book-demo" className="w-full bg-gray-200/70 scroll-mt-[140px]">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+        {inner}
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
@@ -61,14 +61,21 @@ export default function ProductDrawer({
   }, [state]);
 
   // Collapse on scroll down, peek on scroll up — frozen when expanded
+  const lastUpdateRef = useRef(0);
   useEffect(() => {
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
+      const now = Date.now();
+      // Debounce: only update state if 100ms has passed since last update
+      if (now - lastUpdateRef.current < 100) return;
+
       if (y > lastY) {
         setState((s) => (s === "expanded" ? s : "hidden"));
+        lastUpdateRef.current = now;
       } else if (y < lastY) {
         setState((s) => (s === "expanded" ? s : "peek"));
+        lastUpdateRef.current = now;
       }
       lastY = y;
     };

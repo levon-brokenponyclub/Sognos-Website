@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { appendToCsv } from "@/lib/csv-logger";
 
 export type BookDemoInput = {
   fullName: string;
@@ -70,6 +71,16 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     if (error) {
       return { ok: false, error: error.message ?? "Email send failed." };
     }
+
+    appendToCsv("book-demo.csv", {
+      timestamp: new Date().toISOString(),
+      fullName,
+      email,
+      company,
+      product: productLabel,
+      requestedSlot,
+    });
+
     return { ok: true };
   } catch (e) {
     return {

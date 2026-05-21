@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
+import { useBookDemo } from "@/lib/BookDemoContext";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
@@ -539,22 +540,13 @@ export default function Navbar() {
     setMobileHistory([]);
   };
 
+  const { openModal } = useBookDemo();
+
   const onBookDemoClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     closeAll();
     closeMobile();
-
-    const target = document.getElementById("book-demo");
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      // Keep the URL in sync without forcing a jump.
-      window.history.replaceState(null, "", "#book-demo");
-      return;
-    }
-
-    // Fallback when the current page doesn't render the CTA section.
-    e.preventDefault();
-    router.push("/contact");
+    openModal();
   };
 
   const mobileTitle =
