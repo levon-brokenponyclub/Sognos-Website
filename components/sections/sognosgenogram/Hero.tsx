@@ -36,7 +36,7 @@ export default function GenogramHero() {
                 width={220}
                 height={48}
                 priority
-                className="mb-14 h-10 w-auto lg:h-13"
+                className="mb-14 h-12 w-auto lg:h-13"
               />
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
                 Family context. Built into every record.

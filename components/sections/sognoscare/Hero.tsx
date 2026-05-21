@@ -1,4 +1,4 @@
-  import Image from "next/image";
+import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import Link from "next/link";
 import FlowCanvas from "@/components/ui/FlowCanvas";
@@ -36,7 +36,7 @@ export default function SognoscareHero() {
                 width={220}
                 height={48}
                 priority
-                className="mb-14 h-10 w-auto lg:h-13"
+                className="mb-14 h-12 w-auto lg:h-13"
               />
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
                 One platform. From intake to outcome.

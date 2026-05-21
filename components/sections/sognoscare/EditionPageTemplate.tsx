@@ -135,7 +135,7 @@ function Hero({ data }: { data: EditionData }) {
                   width={150}
                   height={64}
                   priority
-                  className="mb-14 h-10 w-auto lg:h-19"
+                  className="mb-14 h-16 w-auto lg:h-19"
                 />
               )}
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
@@ -661,7 +661,9 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
       <Hero data={data} />
       <ProductSubNav
         productName={`SognosCare — ${data.name}`}
-        logoSrc={EDITION_LOGOS_DARK[data.name] ?? "/logos/sognos-care-logo-color.svg"}
+        logoSrc={
+          EDITION_LOGOS_DARK[data.name] ?? "/logos/sognos-care-logo-color.svg"
+        }
         sections={[
           { label: "What it solves", id: "problems" },
           { label: "Features", id: "features" },

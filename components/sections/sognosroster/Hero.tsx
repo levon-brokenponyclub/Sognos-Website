@@ -36,7 +36,7 @@ export default function SognosRosterHero() {
                 width={220}
                 height={48}
                 priority
-                className="mb-14 h-10 w-auto lg:h-13"
+                className="mb-14 h-12 w-auto lg:h-13"
               />
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
                 The right worker - for every job - in real time.
@@ -57,8 +57,8 @@ export default function SognosRosterHero() {
                   What SognosRoster Solves
                 </h2>
                 <p className="text-left text-base text-prussian-blue-800/75 text-balance">
-                  Manual rostering can't keep up with shifting demand,
-                  complex skill matching, and last-minute changes.
+                  Manual rostering can't keep up with shifting demand, complex
+                  skill matching, and last-minute changes.
                 </p>
               </div>
 
