@@ -44,7 +44,7 @@ function AnimatedCounter({ value }: { value: number }) {
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
-type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram";
+type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram" | "not-sure";
 
 type CTASectionProps = {
   headline?: string;
