@@ -127,20 +127,23 @@ export default function Hero({
         <FlowCanvas />
 
         <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-1 flex-col px-4 pt-25 pb-2 sm:px-8 sm:pt-27.5 sm:pb-20 lg:px-6 lg:pt-25 lg:pb-0">
-          <div className="flex flex-1 flex-col lg:justify-between gap-14 pt-0 lg:pt-8 pb-0 lg:py-8 mt-12">
+          <div className="flex flex-1 flex-col lg:justify-between gap-14 pt-0 lg:pt-16 pb-0 lg:py-8 mt-12">
             {/* Centre content — flex-1 on mobile centers it in the remaining space */}
             <div className="flex-1 lg:flex-none flex items-center justify-center">
               <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
                 <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
                   {headline}
                 </h1>
-                <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-2xl">
+                <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
                   {subtext}
                 </p>
                 <div className="mt-10 flex flex-row items-center justify-center gap-3">
                   <AnimatedButton
                     href="#"
-                    onClick={(e) => { e.preventDefault(); openModal(); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openModal();
+                    }}
                     variant="white"
                   >
                     {primaryCTA.name}
