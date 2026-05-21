@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
-import { appendToCsv } from "@/lib/csv-logger";
 
 export type DhfConversationInput = {
   firstName: string;
@@ -34,40 +33,24 @@ export async function dhfConversation(
     return { ok: false, error: "Please fill in all required fields." };
   }
 
-  try {
-    const supabase = getSupabaseClient();
-    if (supabase) {
-      const { error } = await supabase.from("dhf_submissions").insert({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        company: company || null,
-        phone: input.phone || null,
-        interests: input.interests,
-        improvement: input.improvement || null,
-      });
-
-      if (error) {
-        return { ok: false, error: error.message ?? "Database insert failed." };
-      }
-    }
-
-    appendToCsv("dhf-conversation.csv", {
-      timestamp: new Date().toISOString(),
-      firstName,
-      lastName,
-      email,
-      company,
-      phone: input.phone,
-      interests: input.interests.join("; "),
-      improvement: input.improvement,
-    });
-
-    return { ok: true };
-  } catch (e) {
-    return {
-      ok: false,
-      error: e instanceof Error ? e.message : "Unexpected error.",
-    };
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return { ok: false, error: "Database is not configured." };
   }
+
+  const { error } = await supabase.from("dhf_submissions").insert({
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    company: company || null,
+    phone: input.phone || null,
+    interests: input.interests,
+    improvement: input.improvement || null,
+  });
+
+  if (error) {
+    return { ok: false, error: error.message ?? "Submission failed." };
+  }
+
+  return { ok: true };
 }
