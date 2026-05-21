@@ -18,7 +18,7 @@ const SECTIONS = [
   { label: "Features", id: "features" },
   { label: "Key Advantages", id: "advantages" },
   { label: "Customer Stories", id: "stories" },
-  { label: "Schedule a Call", id: "calendar" },
+  { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 
 export default function SognoscareRosterPage() {

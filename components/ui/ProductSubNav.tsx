@@ -9,6 +9,7 @@ import { useBookDemo } from "@/lib/BookDemoContext";
 export interface SubNavSection {
   label: string;
   id: string;
+  href?: string;
 }
 
 interface ProductSubNavProps {
@@ -168,12 +169,12 @@ export default function ProductSubNav({
               className="flex flex-1 items-center gap-0 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:ml-auto lg:flex-none lg:overflow-visible"
               aria-label={`${productName} sections`}
             >
-              {sections.map(({ label, id }) => {
+              {sections.map(({ label, id, href }) => {
                 const isActive = activeId === id;
                 return (
                   <Link
                     key={id}
-                    href={`#${id}`}
+                    href={href ?? `#${id}`}
                     className={`relative px-4 h-18 flex items-center text-sm whitespace-nowrap shrink-0 transition-colors duration-200 ${
                       isActive
                         ? "text-brand font-medium"

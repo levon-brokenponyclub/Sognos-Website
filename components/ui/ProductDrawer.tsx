@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
 import AnimatedButton from "@/components/ui/AnimatedButton";
+import { useBookDemo } from "@/lib/BookDemoContext";
 
 type DrawerState = "hidden" | "peek" | "expanded";
 
@@ -41,6 +42,7 @@ export default function ProductDrawer({
 }: ProductDrawerProps) {
   const [state, setState] = useState<DrawerState>("peek");
   const [isMobile, setIsMobile] = useState(true);
+  const { openModal } = useBookDemo();
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -161,7 +163,8 @@ export default function ProductDrawer({
         {/* Right col — buttons (full-width on mobile, shrink on desktop) */}
         <div className="flex items-center gap-2 flex-1 lg:flex-none">
           <AnimatedButton
-            href={bookHref}
+            href="#"
+            onClick={(e) => { e.preventDefault(); openModal(); }}
             className="flex lg:flex-none justify-center"
           >
             Book a Demo

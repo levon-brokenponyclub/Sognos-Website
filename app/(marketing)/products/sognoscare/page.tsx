@@ -20,7 +20,7 @@ const SECTIONS = [
   { label: "Editions", id: "editions" },
   { label: "Key Advantages", id: "advantages" },
   { label: "Customer Stories", id: "stories" },
-  { label: "Schedule a Call", id: "calendar" },
+  { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 
 export default function SognosCarePage() {
