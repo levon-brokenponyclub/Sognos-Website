@@ -1,7 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
-import { appendToCsv } from "@/lib/csv-logger";
+import { createClient } from "@supabase/supabase-js";
 
 export type BookDemoInput = {
   fullName: string;
@@ -21,6 +20,13 @@ const PRODUCT_LABELS: Record<string, string> = {
   "not-sure": "Not sure yet",
 };
 
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SECRET_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
+
 export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
   const fullName = input.fullName.trim();
   const email = input.email.trim();
@@ -31,61 +37,28 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     return { ok: false, error: "Please fill in all required fields." };
   }
 
-  const apiKey =
-    process.env.RESEND_API_KEY ??
-    process.env.RESEND ??
-    process.env["Resend"];
-  if (!apiKey) {
-    return {
-      ok: false,
-      error: "Email service is not configured. Please contact us directly.",
-    };
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return { ok: false, error: "Database is not configured." };
   }
 
   const productLabel = PRODUCT_LABELS[product] ?? product;
   const requestedSlot =
     input.date && input.time
       ? `May ${input.date}, 2026 at ${input.time}`
-      : "Not specified";
+      : null;
 
-  const lines = [
-    "New demo booking from the Sognos website.",
-    "",
-    `Name: ${fullName}`,
-    `Email: ${email}`,
-    `Company: ${company}`,
-    `Product of interest: ${productLabel}`,
-    `Requested slot: ${requestedSlot}`,
-  ];
+  const { error } = await supabase.from("book_demo_submissions").insert({
+    full_name: fullName,
+    email,
+    company,
+    product: productLabel,
+    requested_slot: requestedSlot,
+  });
 
-  try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: "Sognos Demo Bookings <onboarding@resend.dev>",
-      to: ["levongravett@gmail.com"],
-      replyTo: email,
-      subject: `Demo booking: ${fullName} — ${company}`,
-      text: lines.join("\n"),
-    });
-
-    if (error) {
-      return { ok: false, error: error.message ?? "Email send failed." };
-    }
-
-    appendToCsv("book-demo.csv", {
-      timestamp: new Date().toISOString(),
-      fullName,
-      email,
-      company,
-      product: productLabel,
-      requestedSlot,
-    });
-
-    return { ok: true };
-  } catch (e) {
-    return {
-      ok: false,
-      error: e instanceof Error ? e.message : "Unexpected error.",
-    };
+  if (error) {
+    return { ok: false, error: error.message ?? "Submission failed." };
   }
+
+  return { ok: true };
 }
