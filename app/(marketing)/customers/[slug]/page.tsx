@@ -597,28 +597,16 @@ export default async function CustomerStoryPage({
                 alt={story.company}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              {/* Logos — left: product + customer */}
-              <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
-                <div className="flex items-center gap-3 lg:gap-6">
+              {/* Logo — customer only, centered */}
+              {story.logo && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
                   <img
-                    src={story.productLogo ?? "/logos/sognos-logo.svg"}
-                    alt="Sognos product"
-                    className="h-7 lg:h-14 w-auto max-w-[100px] lg:max-w-none object-contain brightness-0 invert"
+                    src={story.logo}
+                    alt={story.company}
+                    className="h-10 lg:h-16 w-auto max-w-[200px] lg:max-w-[260px] object-contain brightness-0 invert"
                   />
-                  {story.logo && (
-                    <>
-                      <span className="text-2xl lg:text-5xl font-light text-white/70">
-                        +
-                      </span>
-                      <img
-                        src={story.logo}
-                        alt={story.company}
-                        className="h-7 lg:h-14 w-auto max-w-[100px] lg:max-w-[190px] object-contain brightness-0 invert"
-                      />
-                    </>
-                  )}
                 </div>
-              </div>
+              )}
 
               {/* Gradient overlay — top dark fading down + bottom dark fading up */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />

@@ -42,7 +42,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
     author: "Susan McCarthy",
     role: "Chief Operating Officer, Flourish Australia",
-    href: "/customers/summit-fm",
+    href: "/customers/flourish-australia",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -64,7 +64,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
     author: "Anthony Hart",
     role: "Operations Delivery Lead, Auckland Airport",
-    href: "/customers/meridian-care-group",
+    href: "/customers/auckland-airport",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -81,14 +81,12 @@ export const ALL_STORIES: CaseStudy[] = [
     companySize: "300+",
     industry: "Local Government",
     logo: "/logos/penrith-city-council-logo.png",
-    panelImage: "",
-    panelVideo:
-      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm",
+    panelImage: "/images/customers/penrith-city-council.png",
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",
     role: "Service Delivery Manager, Penrith City Council",
-    href: "/customers/lakeshore-council",
+    href: "/customers/penrith-city-council",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -110,7 +108,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "For us it is of the utmost importance to give our technicians visibility of the history of each of the farms that they service in their routine PMs and capture data at the same time. Dynamics 365 Field Service has not disappointed us in any of our key requirements.",
     author: "Operations Team",
     role: "Gentari Solar Australia",
-    href: "/customers/gentari-solar",
+    href: "/customers/gentari",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -145,7 +143,9 @@ interface ProductCustomerStoriesProps {
   stories?: CaseStudy[];
 }
 
-export default function ProductCustomerStories({ stories = ALL_STORIES }: ProductCustomerStoriesProps) {
+export default function ProductCustomerStories({
+  stories = ALL_STORIES,
+}: ProductCustomerStoriesProps) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const total = stories.length;
@@ -175,7 +175,11 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
   };
 
   const study = stories[index];
-  const buttonClassName = cn(study.buttonBorderClass, study.buttonTextClass, study.buttonHoverClass);
+  const buttonClassName = cn(
+    study.buttonBorderClass,
+    study.buttonTextClass,
+    study.buttonHoverClass,
+  );
 
   return (
     <section id="stories" className="w-full bg-gray-200/70 overflow-hidden">
@@ -185,17 +189,19 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={{
-                padding: "1px",
-                background:
-                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-                ["--shine-duration" as string]: "7s",
-              } as React.CSSProperties}
+              style={
+                {
+                  padding: "1px",
+                  background:
+                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "7s",
+                } as React.CSSProperties
+              }
             />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
             Customers
@@ -217,13 +223,32 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
             {/* Left — image/video panel */}
             <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
               {study.panelVideo ? (
-                <video src={study.panelVideo} autoPlay muted playsInline loop className="absolute inset-0 w-full h-full object-cover" />
+                <video
+                  src={study.panelVideo}
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
               ) : (
-                <Image src={study.panelImage} alt={study.company} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" />
+                <Image
+                  src={study.panelImage}
+                  alt={study.company}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 35vw"
+                />
               )}
               {study.logo && (
                 <div className="relative z-10 flex-1 flex items-center justify-center">
-                  <Image src={study.logo} alt={study.company} width={160} height={56} className="w-auto max-w-[220px] object-contain brightness-0 invert" />
+                  <Image
+                    src={study.logo}
+                    alt={study.company}
+                    width={160}
+                    height={56}
+                    className="w-auto max-w-[220px] object-contain brightness-0 invert"
+                  />
                 </div>
               )}
               <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
@@ -231,13 +256,17 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
                     Company Size
                   </p>
-                  <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">{study.companySize}</p>
+                  <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">
+                    {study.companySize}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
                     Industry
                   </p>
-                  <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">{study.industry}</p>
+                  <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">
+                    {study.industry}
+                  </p>
                 </div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
@@ -249,17 +278,28 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
               <div className="flex-1 flex flex-col justify-center">
                 <QuoteIcon className={study.quoteIconColor} />
                 <blockquote className="mt-4">
-                  <p className={`font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}>
+                  <p
+                    className={`font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}
+                  >
                     {study.quote}
                   </p>
                 </blockquote>
                 <div className="mt-6">
-                  <p className={`text-sm font-semibold ${study.authorClass}`}>{study.author}</p>
-                  <p className={`text-sm mt-0.5 ${study.roleClass}`}>{study.role}</p>
+                  <p className={`text-sm font-semibold ${study.authorClass}`}>
+                    {study.author}
+                  </p>
+                  <p className={`text-sm mt-0.5 ${study.roleClass}`}>
+                    {study.role}
+                  </p>
                 </div>
               </div>
               <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
-                <AnimatedButton href={study.href} variant="transparent" className={buttonClassName} bubbleClassName={study.buttonIconBgClass}>
+                <AnimatedButton
+                  href={study.href}
+                  variant="transparent"
+                  className={buttonClassName}
+                  bubbleClassName={study.buttonIconBgClass}
+                >
                   Read case study
                 </AnimatedButton>
               </div>
@@ -273,13 +313,19 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
           className={cn(
             "flex overflow-x-auto snap-x snap-mandatory gap-4 mt-4 -mx-6 px-6 scrollbar-none",
             "lg:grid lg:overflow-hidden lg:snap-none lg:gap-10 lg:mt-0 lg:mx-0 lg:px-0",
-            total === 4 ? "lg:grid-cols-4" : total === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+            total === 4
+              ? "lg:grid-cols-4"
+              : total === 3
+                ? "lg:grid-cols-3"
+                : "lg:grid-cols-2",
           )}
         >
           {stories.map((s, i) => (
             <button
               key={i}
-              ref={(el) => { tabRefs.current[i] = el; }}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
               onClick={() => go(i)}
               className="relative flex items-center justify-center py-5 px-3 lg:py-8 lg:px-6 cursor-pointer shrink-0 basis-[calc(50%-0.5rem)] snap-start lg:shrink lg:basis-auto"
             >
@@ -290,10 +336,14 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
                   width={140}
                   height={48}
                   className="h-7 lg:h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
-                  style={{ filter: i === index ? "none" : "grayscale(1) opacity(0.35)" }}
+                  style={{
+                    filter: i === index ? "none" : "grayscale(1) opacity(0.35)",
+                  }}
                 />
               ) : (
-                <span className={`text-sm font-semibold tracking-tight transition-all duration-300 ${i === index ? "text-prussian-blue-800 opacity-100" : "text-prussian-blue-800 opacity-35"}`}>
+                <span
+                  className={`text-sm font-semibold tracking-tight transition-all duration-300 ${i === index ? "text-prussian-blue-800 opacity-100" : "text-prussian-blue-800 opacity-35"}`}
+                >
                   {s.company}
                 </span>
               )}
@@ -304,7 +354,10 @@ export default function ProductCustomerStories({ stories = ALL_STORIES }: Produc
                     className="h-full bg-cornflower-ocean-400"
                     initial={{ width: "0%" }}
                     animate={paused ? false : { width: "100%" }}
-                    transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
+                    transition={{
+                      duration: AUTOPLAY_MS / 1000,
+                      ease: "linear",
+                    }}
                   />
                 )}
               </div>

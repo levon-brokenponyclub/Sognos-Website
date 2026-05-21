@@ -93,21 +93,13 @@ function StoryCard({ story }: { story: StoryCard }) {
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        {/* Logo overlay */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
-          <div className="flex items-center gap-3">
-            <img
-              src={story.productLogo ?? "/logos/sognos-logo.svg"}
-              alt="Sognos product"
-              className="h-10 w-auto object-contain brightness-0 invert"
-            />
-            <span className="text-2xl font-light text-white/90">+</span>
-            <img
-              src={story.logo}
-              alt={story.company}
-              className="h-11 w-auto max-w-[120px] object-contain brightness-0 invert"
-            />
-          </div>
+        {/* Logo — customer only, centered */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
+          <img
+            src={story.logo}
+            alt={story.company}
+            className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
+          />
         </div>
 
         {/* Gradient overlays */}
