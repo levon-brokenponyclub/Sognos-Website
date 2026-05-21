@@ -1194,7 +1194,7 @@ export default async function KnowledgeHubPost({
   return (
     <main className="bg-white">
       {/* ── Hero ── */}
-      <section className="bg-gray-100 pb-12 pt-14 md:pb-18 md:pt-40">
+      <section className="bg-gray-100 pb-12 pt-36 md:pb-18 md:pt-40">
         <div className="mx-auto max-w-7xl px-6">
           {/* Two-col */}
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
@@ -1225,7 +1225,7 @@ export default async function KnowledgeHubPost({
               </div>
 
               {/* Title */}
-              <h1 className="font-heading text-3xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
+              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
                 {post.title}
               </h1>
 
