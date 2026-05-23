@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { headers } from "next/headers";
+import CookieBanner from "@/components/ui/CookieBanner";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,11 +34,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const hdrs = await headers();
+  const consent = hdrs.get("x-cookie-consent");
+  const pathname = hdrs.get("x-pathname") ?? "";
+  const isStudio = pathname.startsWith("/studio");
+  const analyticsEnabled = consent === "true";
+  const showBanner = !isStudio && (consent === "unset" || consent === null);
+
   return (
     <html
       lang="en"
@@ -44,8 +53,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col font-sans">
         {children}
-        <Analytics />
-        <SpeedInsights />
+        {analyticsEnabled && <Analytics />}
+        {analyticsEnabled && <SpeedInsights />}
+        {showBanner && <CookieBanner />}
       </body>
     </html>
   );
