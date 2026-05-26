@@ -136,7 +136,7 @@ export default function ProductSection() {
               }
             />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Product thats work
+            Products that work
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
             Building{" "}
