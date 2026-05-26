@@ -453,7 +453,7 @@ export default function SolutionsSection() {
                 }
               />
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              Product that work
+              Products that work
             </div>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
               Designed for how organisations actually operate
