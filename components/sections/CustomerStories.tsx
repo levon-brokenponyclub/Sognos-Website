@@ -304,7 +304,7 @@ export default function CustomerStories() {
                   className={slideButtonClasses.buttonClassName}
                   bubbleClassName={slideButtonClasses.bubbleClassName}
                 >
-                  Read case study
+                  Read Customer Story
                 </AnimatedButton>
               </div>
             </div>

@@ -578,7 +578,7 @@ function ProofStories({ data }: { data: EditionData }) {
                 href={cs.href}
                 className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-prussian-blue-800 text-prussian-blue-800 text-sm font-semibold hover:bg-prussian-blue-800/8 transition-colors"
               >
-                Read case study
+                Read Customer Story
                 <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-800 text-white shrink-0">
                   <svg
                     width="12"

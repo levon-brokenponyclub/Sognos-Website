@@ -300,7 +300,7 @@ export default function ProductCustomerStories({
                   className={buttonClassName}
                   bubbleClassName={study.buttonIconBgClass}
                 >
-                  Read case study
+                  Read Customer Story
                 </AnimatedButton>
               </div>
             </div>
