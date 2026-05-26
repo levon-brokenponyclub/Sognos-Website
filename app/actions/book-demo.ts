@@ -1,5 +1,6 @@
 "use server";
 
+import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
 export type BookDemoInput = {
@@ -22,7 +23,9 @@ const PRODUCT_LABELS: Record<string, string> = {
 
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SECRET_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key =
+    process.env.SUPABASE_SECRET_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return null;
   return createClient(url, key);
 }
@@ -37,6 +40,14 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     return { ok: false, error: "Please fill in all required fields." };
   }
 
+  const apiKey =
+    process.env.RESEND_API_KEY ?? process.env.RESEND ?? process.env["Resend"];
+  if (!apiKey) {
+    return {
+      ok: false,
+      error: "Email service is not configured. Please contact us directly.",
+    };
+  }
   const supabase = getSupabaseClient();
   if (!supabase) {
     return { ok: false, error: "Database is not configured." };
@@ -48,17 +59,47 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
       ? `May ${input.date}, 2026 at ${input.time}`
       : null;
 
-  const { error } = await supabase.from("book_demo_submissions").insert({
-    full_name: fullName,
-    email,
-    company,
-    product: productLabel,
-    requested_slot: requestedSlot,
-  });
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from: "Sognos Demo Bookings <website@sognos.com.au>",
+      to: ["levongravett@gmail.com", "Paula@sognos.com.au"],
+      replyTo: email,
+      subject: `Demo booking: ${fullName} — ${company}`,
+      text: [
+        "New demo booking from the Sognos website.",
+        "",
+        `Name: ${fullName}`,
+        `Email: ${email}`,
+        `Company: ${company}`,
+        `Product of interest: ${productLabel}`,
+        `Requested slot: ${requestedSlot}`,
+      ].join("\n"),
+    });
 
-  if (error) {
-    return { ok: false, error: error.message ?? "Submission failed." };
+    if (error) {
+      return { ok: false, error: error.message ?? "Email send failed." };
+    }
+
+    const { error: dbError } = await supabase
+      .from("book_demo_submissions")
+      .insert({
+        full_name: fullName,
+        email,
+        company,
+        product: productLabel,
+        requested_slot: requestedSlot,
+      });
+
+    if (dbError) {
+      return { ok: false, error: dbError.message ?? "Submission failed." };
+    }
+
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Unexpected error.",
+    };
   }
-
-  return { ok: true };
 }

@@ -1,5 +1,6 @@
 "use server";
 
+import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
 export type ContactInput = {
@@ -29,21 +30,62 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
     return { ok: false, error: "Please fill in all required fields." };
   }
 
+  const apiKey =
+    process.env.RESEND_API_KEY ?? process.env.RESEND ?? process.env["Resend"];
+  if (!apiKey) {
+    return {
+      ok: false,
+      error: "Email service is not configured. Please contact us directly.",
+    };
+  }
   const supabase = getSupabaseClient();
   if (!supabase) return { ok: false, error: "Database is not configured." };
 
-  const { error } = await supabase.from("contact_submissions").insert({
-    first_name: firstName.trim(),
-    last_name: lastName.trim(),
-    email: email.trim(),
-    phone: phone.trim(),
-    organisation: input.organisation.trim() || null,
-    reason: input.reason || null,
-    product: input.product || null,
-    message: input.message.trim() || null,
-  });
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from: "Sognos <website@sognos.com.au>",
+      to: ["levongravett@gmail.com", "Paula@sognos.com.au"],
+      replyTo: email,
+      subject: `New contact form submission: ${firstName} ${lastName} — ${input.organisation}`,
+      text: [
+        "New contact form submission from the Sognos website.",
+        "",
+        `First Name: ${firstName.trim()}`,
+        `Last Name: ${lastName.trim()}`,
+        `Email: ${email.trim()}`,
+        `Phone: ${phone.trim()}`,
+        `Organisation: ${input.organisation.trim() || "Not provided"}`,
+        `Reason: ${input.reason || "Not provided"}`,
+        `Product: ${input.product || "Not provided"}`,
+        `Message: ${input.message.trim() || "Not provided"}`,
+      ].join("\n"),
+    });
 
-  if (error) return { ok: false, error: error.message ?? "Submission failed." };
+    if (error) {
+      return { ok: false, error: error.message ?? "Email send failed." };
+    }
 
-  return { ok: true };
+    const { error: dbError } = await supabase.from("contact_submissions").insert({
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      organisation: input.organisation.trim() || null,
+      reason: input.reason || null,
+      product: input.product || null,
+      message: input.message.trim() || null,
+    });
+
+    if (dbError) {
+      return { ok: false, error: dbError.message ?? "Submission failed." };
+    }
+
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Unexpected error.",
+    };
+  }
 }

@@ -267,12 +267,12 @@ export default function ContactPage() {
 
                   <p className="text-xs leading-relaxed text-sognos-text-muted">
                     By submitting this form you agree to our{" "}
-                    <Link
-                      href="/privacy"
-                      className="underline hover:text-prussian-blue-800 transition-colors"
-                    >
-                      Privacy Policy
-                    </Link>
+                     <Link
+                       href="/company/privacy-policy"
+                       className="underline hover:text-prussian-blue-800 transition-colors"
+                     >
+                       Privacy Policy
+                     </Link>
                     . We'll never share your information with third parties.
                   </p>
                 </form>

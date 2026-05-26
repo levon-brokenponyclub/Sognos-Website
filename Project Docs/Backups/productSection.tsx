@@ -170,7 +170,7 @@ export default function ProductSection() {
         </div>
 
         {/* 3-card grid */}
-        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-12 bg-slate-100/90 p-8 rounded-xl h-[560px]">
+        <div className="relative grid grid-cols-3 lg:grid-cols-3 gap-12 bg-slate-100/90 p-8 rounded-xl h-140">
           {/* ── Card 1 — SognosCare ── */}
           <div className="flex flex-col group transition-all duration-700 ease-out w-full rounded-lg relative overflow-hidden border border-card-border bg-biscay-950">
             <div className="z-20 side-stack text-center card pt-10 pr-8 pb-0 pl-8 relative items-start justify-between h-full">
@@ -279,7 +279,7 @@ export default function ProductSection() {
 
               {/* White block */}
               <div className="absolute bottom-0 left-0 w-full px-4 pb-4 translate-y-[calc(100%_-_55px)] group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 shadow shadow-2xl">
+                <div className="relative flex flex-col justify-between rounded-2xl bg-white gap-4 p-6 shadow-2xl">
                   {/* Drawer bar */}
                   <div
                     aria-hidden="true"

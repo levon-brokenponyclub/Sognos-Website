@@ -20,16 +20,16 @@ export default function CookieBanner() {
       className="fixed bottom-4 left-0 right-0 z-50 px-4 mx-auto max-w-7xl"
     >
       <div className="flex flex-col gap-4 rounded-lg bg-prussian-blue-800 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-white/80 max-w-xl">
-          We use cookies to analyse site usage and improve your experience. You
-          can accept or decline non-essential cookies.{" "}
-          <a
-            href="/company/privacy"
-            className="underline underline-offset-2 hover:text-white transition-colors"
-          >
-            Privacy policy
-          </a>
-        </p>
+         <p className="text-sm text-white/80 max-w-xl">
+           We use cookies to analyse site usage and improve your experience. You
+           can accept or decline non-essential cookies.{" "}
+           <a
+             href="/company/privacy-policy"
+             className="underline underline-offset-2 hover:text-white transition-colors"
+           >
+             Privacy Policy
+           </a>
+         </p>
 
         <div className="flex items-center gap-2 shrink-0">
           <button

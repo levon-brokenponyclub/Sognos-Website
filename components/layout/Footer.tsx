@@ -106,13 +106,13 @@ export default function Footer() {
                 </Link>
               </li>
               {/* <li>
-                <Link
-                  href="/company/careers"
-                  className="text-sm text-white hover:text-white"
-                >
-                  Careers
-                </Link>
-              </li> */}
+                 <Link
+                   href="/company/careers"
+                   className="text-sm text-white hover:text-white"
+                 >
+                   Careers
+                 </Link>
+               </li> */}
               <li>
                 <Link
                   href="/customer-stories"
@@ -148,13 +148,18 @@ export default function Footer() {
           </p>
           <div className="flex gap-6">
             <Link
-              href="/privacy"
+              href="/company/privacy-policy"
               className="text-sm text-white hover:text-white"
             >
-              Privacy
+              Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm text-white hover:text-white">
-              Terms
+            <Link href="/company/privacy-collection-notice"
+              className="text-sm text-white hover:text-white">
+              Privacy Collection Notice
+            </Link>
+            <Link href="/company/isms-policy"
+              className="text-sm text-white hover:text-white">
+                ISMS Policy
             </Link>
           </div>
         </div>
