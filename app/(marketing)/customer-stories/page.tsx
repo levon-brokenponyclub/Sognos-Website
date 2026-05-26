@@ -82,7 +82,7 @@ function formatDate(dateStr: string): string {
 function StoryCard({ story }: { story: StoryCard }) {
   return (
     <Link
-      href={`/customers/${story.slug}`}
+      href={`/customer-stories/${story.slug}`}
       className="group flex flex-col bg-white rounded-lg p-2"
     >
       {/* Image */}

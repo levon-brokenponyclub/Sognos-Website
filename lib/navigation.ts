@@ -18,9 +18,9 @@ export type ProductSubmenu = {
 export type NavGroup = {
   label: string;
   href: string;
-  items?: NavItem[];                               // used on mobile for groups without megaMenu
+  items?: NavItem[]; // used on mobile for groups without megaMenu
   megaMenu?: [MegaColumn, MegaColumn, MegaColumn]; // always 3 cols; col3 empty → bg-slate-100
-  submenu?: Record<string, ProductSubmenu>;        // product-specific submenus (keyed by product name)
+  submenu?: Record<string, ProductSubmenu>; // product-specific submenus (keyed by product name)
 };
 
 // ─── Shared lists ─────────────────────────────────────────────────────────────
@@ -52,10 +52,22 @@ const SOGNOSCARE_SECTIONS: NavItem[] = [
 ];
 
 const SOGNOSCARE_EDITIONS: NavItem[] = [
-  { name: "Disability & Mental Health", href: "/products/sognoscare/editions/disability-mental-health" },
-  { name: "Allied Health", href: "/products/sognoscare/editions/allied-health" },
-  { name: "Support at Home", href: "/products/sognoscare/editions/support-at-home" },
-  { name: "Residential Aged Care", href: "/products/sognoscare/editions/residential-aged-care" },
+  {
+    name: "Disability & Mental Health",
+    href: "/products/sognoscare/editions/disability-mental-health",
+  },
+  {
+    name: "Allied Health",
+    href: "/products/sognoscare/editions/allied-health",
+  },
+  {
+    name: "Support at Home",
+    href: "/products/sognoscare/editions/support-at-home",
+  },
+  {
+    name: "Residential Aged Care",
+    href: "/products/sognoscare/editions/residential-aged-care",
+  },
 ];
 
 const SOGNOSROSTER_SECTIONS: NavItem[] = [
@@ -83,8 +95,11 @@ export const nav: NavGroup[] = [
         heading: "Company",
         items: [
           { name: "About", href: "/company/about" },
-          { name: "Social Responsibility", href: "/company/social-responsibility" },
-          { name: "Customers", href: "/customers" },
+          {
+            name: "Social Responsibility",
+            href: "/company/social-responsibility",
+          },
+          { name: "Customer Stories", href: "/customer-stories" },
           { name: "Contact", href: "/contact" },
           // { name: "Careers", href: "/company/careers" },
         ],
@@ -97,29 +112,53 @@ export const nav: NavGroup[] = [
     label: "Products",
     href: "/products",
     items: [
-      { name: "SognosCare", href: "/products/sognoscare", description: "Care operations & compliance" },
-      { name: "SognosRoster", href: "/products/sognosroster", description: "Workforce scheduling & optimisation" },
-      { name: "Sognos Genogram", href: "/products/sognosgenogram", description: "Relationship & family context mapping" },
+      {
+        name: "SognosCare",
+        href: "/products/sognoscare",
+        description: "Care operations & compliance",
+      },
+      {
+        name: "SognosRoster",
+        href: "/products/sognosroster",
+        description: "Workforce scheduling & optimisation",
+      },
+      {
+        name: "Sognos Genogram",
+        href: "/products/sognosgenogram",
+        description: "Relationship & family context mapping",
+      },
     ],
     megaMenu: [
       {
         heading: "Products",
         variant: "feature",
         items: [
-          { name: "SognosCare", href: "/products/sognoscare", description: "Care operations & compliance" },
-          { name: "SognosRoster", href: "/products/sognosroster", description: "Workforce scheduling & optimisation" },
-          { name: "Sognos Genogram", href: "/products/sognosgenogram", description: "Relationship & family context mapping" },
+          {
+            name: "SognosCare",
+            href: "/products/sognoscare",
+            description: "Care operations & compliance",
+          },
+          {
+            name: "SognosRoster",
+            href: "/products/sognosroster",
+            description: "Workforce scheduling & optimisation",
+          },
+          {
+            name: "Sognos Genogram",
+            href: "/products/sognosgenogram",
+            description: "Relationship & family context mapping",
+          },
         ],
       },
       { heading: "", items: [] },
       { heading: "", items: [] },
     ],
     submenu: {
-      "SognosCare": {
+      SognosCare: {
         col2: { heading: "SognosCare", items: SOGNOSCARE_SECTIONS },
         col3: { heading: "Editions", items: SOGNOSCARE_EDITIONS },
       },
-      "SognosRoster": {
+      SognosRoster: {
         col2: { heading: "SognosRoster", items: SOGNOSROSTER_SECTIONS },
       },
       "Sognos Genogram": {
@@ -156,7 +195,7 @@ export const nav: NavGroup[] = [
         items: [
           { name: "Insights", href: "/knowledge-hub" },
           { name: "News", href: "/knowledge-hub?category=News" },
-          // { name: "Customer Stories", href: "/customers" },
+          // { name: "Customer Stories", href: "/customer-stories" },
         ],
       },
       { heading: "", items: [] },

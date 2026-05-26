@@ -121,7 +121,7 @@ const data: EditionData = {
       "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
       "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
-    href: "/customers",
+    href: "/customer-stories",
     company: "Penrith City Council",
     companySize: "300+",
     industry: "Local Government",

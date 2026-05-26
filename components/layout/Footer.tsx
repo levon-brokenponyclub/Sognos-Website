@@ -115,10 +115,10 @@ export default function Footer() {
               </li> */}
               <li>
                 <Link
-                  href="/customers"
+                  href="/customer-stories"
                   className="text-sm text-white hover:text-white"
                 >
-                  Customers
+                  Customer Stories
                 </Link>
               </li>
               <li>

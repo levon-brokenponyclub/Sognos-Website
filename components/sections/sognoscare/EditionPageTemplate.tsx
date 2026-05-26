@@ -460,7 +460,7 @@ const FLOURISH_STORY = {
     "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
   author: "Susan McCarthy",
   role: "Chief Operating Officer, Flourish Australia",
-  href: "/customers/flourish-australia",
+  href: "/customer-stories/flourish-australia",
 };
 
 function ProofStories({ data }: { data: EditionData }) {

@@ -42,7 +42,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
     author: "Susan McCarthy",
     role: "Chief Operating Officer, Flourish Australia",
-    href: "/customers/flourish-australia",
+    href: "/customer-stories/flourish-australia",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -64,7 +64,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
     author: "Anthony Hart",
     role: "Operations Delivery Lead, Auckland Airport",
-    href: "/customers/auckland-airport",
+    href: "/customer-stories/auckland-airport",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -86,7 +86,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",
     role: "Service Delivery Manager, Penrith City Council",
-    href: "/customers/penrith-city-council",
+    href: "/customer-stories/penrith-city-council",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -108,7 +108,7 @@ export const ALL_STORIES: CaseStudy[] = [
       "For us it is of the utmost importance to give our technicians visibility of the history of each of the farms that they service in their routine PMs and capture data at the same time. Dynamics 365 Field Service has not disappointed us in any of our key requirements.",
     author: "Operations Team",
     role: "Gentari Solar Australia",
-    href: "/customers/gentari",
+    href: "/customer-stories/gentari",
     panelClass: "bg-prussian-blue-800/10",
     quoteClass: "text-prussian-blue-800",
     authorClass: "text-prussian-blue-800",
@@ -204,7 +204,7 @@ export default function ProductCustomerStories({
               }
             />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
-            Customers
+            Customers Stories
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 lg:text-left tracking-tight">
             Customer Stories

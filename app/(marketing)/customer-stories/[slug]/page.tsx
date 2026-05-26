@@ -473,7 +473,7 @@ export default async function CustomerStoryPage({
             Story not found
           </p>
           <Link
-            href="/customers"
+            href="/customer-stories"
             className="mt-4 inline-block text-sm text-brand hover:underline"
           >
             Back to Customer Stories
@@ -495,7 +495,7 @@ export default async function CustomerStoryPage({
             <div className="lg:w-1/2 lg:max-w-[32.5rem]">
               {/* Back */}
               <Link
-                href="/customers"
+                href="/customer-stories"
                 className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
               >
                 <ArrowLeft
