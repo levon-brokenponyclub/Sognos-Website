@@ -47,7 +47,7 @@ const STORIES: Record<string, CustomerStory> = {
       { label: "Size", value: "1,100+ staff" },
       { label: "Product", value: "SognosCare" },
     ],
-    downloadUrl: "/customer-stories/Sognos_Flourish_Cusotmer-Story.pdf",
+    downloadUrl: "/customer-stories/Sognos_Flourish_Customer-Story.pdf",
     body: (
       <div className="prose prose-lg max-w-none text-sognos-text-body">
         <p>
