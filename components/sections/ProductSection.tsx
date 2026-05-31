@@ -24,7 +24,7 @@ function EditionsDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 bg-[#052048]/60 backdrop-blur-sm"
+            className="fixed inset-0 z-99 bg-brand/60 backdrop-blur-xs"
             onClick={onClose}
           />
 
@@ -34,7 +34,7 @@ function EditionsDrawer({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100 rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-100 bg-gray-100 rounded-t-2xl max-w-7xl mx-auto shadow-2xl max-h-[80vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Handle + close */}

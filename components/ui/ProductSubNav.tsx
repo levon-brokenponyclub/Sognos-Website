@@ -35,7 +35,6 @@ export default function ProductSubNav({
   const [docked, setDocked] = useState(false);
   const dockedRef = useRef(false);
   const [logoVisible, setLogoVisible] = useState(false);
-  const [scrollNavHidden, setScrollNavHidden] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const { openModal } = useBookDemo();
 
@@ -72,16 +71,6 @@ export default function ProductSubNav({
     const offset = linkRect.left - navRect.left - navRect.width / 2 + linkRect.width / 2;
     nav.scrollBy({ left: offset, behavior: "smooth" });
   }, [activeId]);
-
-  // Listen for scroll-hide nav state from Navbar so the docked subnav yields space when header returns.
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const ce = e as CustomEvent<{ hidden: boolean }>;
-      setScrollNavHidden(Boolean(ce.detail?.hidden));
-    };
-    window.addEventListener("sognos:scrollNavHidden", handler);
-    return () => window.removeEventListener("sognos:scrollNavHidden", handler);
-  }, []);
 
   // "Handoff" behavior with the fixed header:
   // - While not docked: keep the sub-nav sticky *below* the header.
@@ -169,8 +158,8 @@ export default function ProductSubNav({
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="sticky inset-x-0 z-50 bg-white border-b border-gray-200 pointer-events-auto transition-[top] duration-300"
-        style={{ top: docked && scrollNavHidden ? 0 : "var(--sognos-header-offset, 0px)" }}
+        className="sticky inset-x-0 z-50 bg-white border-b border-gray-200 pointer-events-auto"
+        style={{ top: 0 }}
         data-product-subnav
       >
         <div className="mx-auto max-w-7xl px-6">
