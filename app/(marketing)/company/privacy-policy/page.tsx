@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
       <section className="w-full">
         <div className="max-w-5xl w-full mx-auto px-6 py-14">
           {/* Preamble */}
-          <h1 className="mb-6 font-heading text-3xl font-normal leading-heading tracking-heading text-prussian-blue-800 sm:text-4xl">
+          <h1 className="mb-6 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
             Sognos Solutions Pty Ltd &ndash; Privacy Policy
           </h1>
           <p className={P}>
