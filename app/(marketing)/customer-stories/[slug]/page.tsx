@@ -916,7 +916,7 @@ export default async function CustomerStoryPage({
     );
   }
 
-  const postUrl = `https://sognos.com.au/customers/${slug}`;
+  const postUrl = `https://sognos.com.au/customer-stories/${slug}`;
 
   // Prev / next
   const currentIdx = STORY_SLUGS.indexOf(slug);

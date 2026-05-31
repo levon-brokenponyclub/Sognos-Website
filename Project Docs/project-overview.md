@@ -230,6 +230,8 @@ All redirects are wired in `next.config.ts` as 301 (permanent) for SEO preservat
 | `/first-in-field-service` | `/` | Old landing |
 | `/privacy-collection-notice` | `/company/privacy-collection-notice` | Restructured |
 | `/isms-policy` | `/` | Removed |
+| `/customers` | `/customer-stories` | Section renamed |
+| `/customers/:slug` | `/customer-stories/:slug` | Section renamed (all slugs) |
 | `/customer-stories/gentari-case-study` | `/customer-stories/gentari` | Slug normalised |
 | `/customer-stories/penrith-city-council-case-study` | `/customer-stories/penrith-city-council` | Slug normalised |
 | `/customer-stories/nps-case-study` | `/customer-stories/natural-power-solutions` | Slug renamed |

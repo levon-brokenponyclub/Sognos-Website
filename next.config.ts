@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
       { source: "/privacy-collection-notice", destination: "/company/privacy-collection-notice", permanent: true },
       { source: "/isms-policy", destination: "/", permanent: true },
 
+      // Customers → customer-stories (legacy path renamed)
+      { source: "/customers", destination: "/customer-stories", permanent: true },
+      { source: "/customers/:slug", destination: "/customer-stories/:slug", permanent: true },
+
       // Customer stories — slug normalisation (dropped "-case-study" suffix; nps renamed)
       { source: "/customer-stories/gentari-case-study", destination: "/customer-stories/gentari", permanent: true },
       { source: "/customer-stories/penrith-city-council-case-study", destination: "/customer-stories/penrith-city-council", permanent: true },
