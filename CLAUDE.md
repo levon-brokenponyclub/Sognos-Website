@@ -3,7 +3,7 @@
 ## 1. Project Understanding
 
 ### What Sognos Is
-Sognos is an **AI-powered service operations platform** built on Microsoft Dynamics 365. It enables organisations to deliver services efficiently, coordinate complex workforces, and maintain compliance.
+Sognos is an **Field Service Innovations with Microsoft Dynamics** built on Microsoft Dynamics 365. It enables organisations to deliver services efficiently, coordinate complex workforces, and maintain compliance.
 
 **Positioning:** Product-led SaaS platform. NOT a consulting or Microsoft partner site.
 

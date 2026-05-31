@@ -182,10 +182,10 @@ export default function ProductCustomerStories({
   );
 
   return (
-    <section id="stories" className="w-full bg-gray-200/70 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
+    <section id="stories" className="w-full bg-[#1D96FC] overflow-hidden">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         <div className="mb-8 flex flex-col items-start gap-4">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"
@@ -193,7 +193,7 @@ export default function ProductCustomerStories({
                 {
                   padding: "1px",
                   background:
-                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.75) 60deg, transparent 120deg, transparent 360deg)",
                   WebkitMask:
                     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
@@ -203,10 +203,10 @@ export default function ProductCustomerStories({
                 } as React.CSSProperties
               }
             />
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
-            Customers Stories
+            <span className="w-2 h-2 bg-white rounded-full" />
+            Customer Stories
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 lg:text-left tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white lg:text-left tracking-tight">
             Customer Stories
           </h2>
         </div>
@@ -337,21 +337,21 @@ export default function ProductCustomerStories({
                   height={48}
                   className="h-7 lg:h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
                   style={{
-                    filter: i === index ? "none" : "grayscale(1) opacity(0.35)",
+                    filter: i === index ? "brightness(0) invert(1)" : "brightness(0) invert(1) opacity(0.35)",
                   }}
                 />
               ) : (
                 <span
-                  className={`text-sm font-semibold tracking-tight transition-all duration-300 ${i === index ? "text-prussian-blue-800 opacity-100" : "text-prussian-blue-800 opacity-35"}`}
+                  className={`text-sm font-semibold tracking-tight transition-all duration-300 ${i === index ? "text-white opacity-100" : "text-white opacity-35"}`}
                 >
                   {s.company}
                 </span>
               )}
-              <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-gray-300">
+              <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-white/30">
                 {i === index && (
                   <motion.div
                     key={`progress-${i}-${index}`}
-                    className="h-full bg-cornflower-ocean-400"
+                    className="h-full bg-white"
                     initial={{ width: "0%" }}
                     animate={paused ? false : { width: "100%" }}
                     transition={{

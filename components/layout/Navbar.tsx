@@ -217,7 +217,6 @@ function FeatureItems({
               href={item.href}
               onClick={onClose}
               onMouseEnter={() => onHover?.(item.name)}
-              onMouseLeave={() => onHover?.(null)}
               className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
             >
               {meta && (
@@ -285,7 +284,6 @@ function SimpleItems({
             href={item.href}
             onClick={onClose}
             onMouseEnter={() => onHover?.(item.name)}
-            onMouseLeave={() => onHover?.(null)}
             className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
           >
             <ChevronRight />
@@ -560,13 +558,15 @@ export default function Navbar() {
     (g) => g.label === openMenu && !g.megaMenu && g.items,
   );
 
+  const effectiveColorMode = mobileOpen ? "light" : colorMode;
+
   const linkClass =
-    colorMode === "dark"
+    effectiveColorMode === "dark"
       ? "text-white hover:text-white"
       : "text-[rgb(18_35_72/0.75)] hover:text-brand";
 
   const ctaClass =
-    colorMode === "dark"
+    effectiveColorMode === "dark"
       ? "bg-white text-brand hover:opacity-90"
       : "bg-brand text-white hover:bg-brand-dark";
 
@@ -586,12 +586,12 @@ export default function Navbar() {
       {/* ── Nav bar ── */}
       <div
         className={[
-          `pointer-events-auto w-full ${scrolled || colorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
-          scrolled ? "py-2" : "pt-4 pb-2",
+          `pointer-events-auto w-full ${scrolled || effectiveColorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
+          scrolled ? "py-2" : mobileOpen ? "pt-2 pb-2" : "pt-4 pb-2",
           "transition-[background-color,border-color,padding,transform,opacity] duration-300 will-change-transform",
           // Keep opacity stable; the push interaction should handle the handoff visually.
           "opacity-100",
-          colorMode === "light"
+          effectiveColorMode === "light"
             ? "bg-white border-b border-sognos-border"
             : scrolled
               ? "bg-transparent"
@@ -619,7 +619,7 @@ export default function Navbar() {
                   scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
                 }`}
                 style={
-                  colorMode === "dark"
+                  effectiveColorMode === "dark"
                     ? { color: "transparent", filter: "brightness(0) invert(1)" }
                     : undefined
                 }
@@ -691,7 +691,7 @@ export default function Navbar() {
               {/* Mobile hamburger */}
               <button
                 className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
-                  colorMode === "dark"
+                  effectiveColorMode === "dark"
                     ? "text-white/80 hover:text-white"
                     : "text-gray-500 hover:text-gray-900"
                 }`}
@@ -793,7 +793,7 @@ export default function Navbar() {
 
                     return displayColumns.map((col, colIdx) => (
                       <MegaCol
-                        key={`${activeGroup.label}-col-${colIdx}-${hoveredProduct ?? ""}`}
+                        key={`${activeGroup.label}-col-${colIdx}`}
                         col={col}
                         colIdx={colIdx}
                         onClose={closeAll}

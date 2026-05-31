@@ -5,6 +5,15 @@
 
 @custom-variant dark (.dark &);
 
+/* Hide scrollbar */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @theme inline {
   /* Fonts */
   --font-sans: var(--font-inter, sans-serif);
@@ -293,6 +302,20 @@
   .trust-marquee-track {
     animation: none;
   }
+}
+
+/* CTA logo marquee */
+.cta-logo-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 2.5rem;
+  animation: trust-marquee-scroll 20s linear infinite;
+}
+
+.cta-logo-wrap:hover .cta-logo-track {
+  animation-play-state: paused;
 }
 
 @keyframes diagram-flow {

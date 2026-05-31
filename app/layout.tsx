@@ -17,7 +17,7 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Sognos — AI-powered service operations platform",
+  title: "Sognos — Field Service Innovations with Microsoft Dynamics",
   description:
     "Sognos combines care management and workforce scheduling on Microsoft Dynamics 365.",
   icons: {
@@ -28,8 +28,18 @@ export const metadata: Metadata = {
     ],
     apple: { url: "/favicon/apple-touch-icon.png" },
     other: [
-      { rel: "icon", url: "/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { rel: "icon", url: "/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+      {
+        rel: "icon",
+        url: "/favicon/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        url: "/favicon/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
     ],
   },
 };

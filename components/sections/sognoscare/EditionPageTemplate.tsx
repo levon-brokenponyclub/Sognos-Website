@@ -171,7 +171,7 @@ function Hero({ data }: { data: EditionData }) {
                   href="/products/sognoscare"
                   className="inline-flex items-start justify-center rounded-md px-8 py-3 font-medium text-prussian-blue-800 border border-white/0 transition-colors hover:bg-white/10 hover:border-white/20"
                 >
-                  Back to SognosCare
+                  Explore Editions
                 </Link>
               </div>
 
@@ -469,22 +469,20 @@ function ProofStories({ data }: { data: EditionData }) {
   return (
     <section
       id="stories"
-      className="w-full bg-gray-200/70 overflow-hidden border-b border-sognos-border-subtle"
+      className="w-full bg-[#1D96FC] overflow-hidden"
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Section header */}
         <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
-          <div
-            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
-            style={{ borderColor: `${data.accentHex}4d` }}
-          >
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"
               style={
                 {
                   padding: "1px",
-                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
+                  background:
+                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.75) 60deg, transparent 120deg, transparent 360deg)",
                   WebkitMask:
                     "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
@@ -494,13 +492,10 @@ function ProofStories({ data }: { data: EditionData }) {
                 } as React.CSSProperties
               }
             />
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: data.accentHex }}
-            />
-            Customers
+            <span className="w-2 h-2 rounded-full bg-white" />
+            Customer Stories
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
             Customer Stories
           </h2>
         </div>
@@ -614,40 +609,21 @@ function RelatedEditions({ data }: { data: EditionData }) {
   );
 
   return (
-    <section id="editions" className="w-full bg-gray-200">
+    <section id="editions" data-header-dark className="w-full bg-gradient-hero">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         {/* Section header */}
-        <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
-          <div
-            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
-            style={{ borderColor: `${data.accentHex}4d` }}
-          >
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={
-                {
-                  padding: "1px",
-                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  ["--shine-duration" as string]: "7s",
-                } as React.CSSProperties
-              }
-            />
+        <div className="mb-12 lg:mb-3 flex flex-col items-start gap-4">
+          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Explore other editions
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
             Other SognosCare Editions
           </h2>
         </div>
 
         {/* Editions grid — 3 visible, no overflow */}
-        <EditionCards editions={relatedEditions} showSliderButtons={false} />
+        <EditionCards editions={relatedEditions} showSliderButtons dark />
       </div>
     </section>
   );
@@ -684,9 +660,8 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
 
       {/* Mobile hero drawer — fixed, rendered at page level to escape hero overflow-hidden */}
       <ProductDrawer
-        bookHref="/contact"
-        secondaryHref="/products/sognoscare"
-        secondaryLabel="Back to SognosCare"
+        secondaryLabel="Explore Editions"
+        currentProduct="sognoscare"
         peekTitle={`Built for ${data.name}`}
         peekDescription={data.tagline}
         drawerTitle="SognosCare Editions"

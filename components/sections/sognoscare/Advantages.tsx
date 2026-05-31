@@ -35,10 +35,10 @@ export default function SognoscareAdvantages() {
                 >
                   <div className="h-full shrink-0 bg-gray-100/70 rounded-lg p-6 flex flex-col justify-between">
                     <div>
-                      <div className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-1 text-sm text-prussian-blue-800 font-medium mb-6">
+                      {/* <div className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-1 text-sm text-prussian-blue-800 font-medium mb-6">
                         <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                         Advantages
-                      </div>
+                      </div> */}
                       <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
                         Key Advantages
                       </h2>

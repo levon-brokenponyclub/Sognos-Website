@@ -56,23 +56,21 @@ type CTASectionProps = {
   bare?: boolean;
 };
 
+// ─── Platform logos ─────────────────────────────────────────────────────────
+
+const PLATFORM_LOGOS = [
+  { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
+  { src: "/logos/copilot-logo.png", alt: "Microsoft Copilot" },
+  { src: "/logos/platform/PowerBI_scalable.svg", alt: "Power BI" },
+  { src: "/logos/platform/PowerAutomate_scalable.svg", alt: "Power Automate" },
+  { src: "/logos/platform/PowerApps_scalable.svg", alt: "Power Apps" },
+  { src: "/logos/platform/PowerPages_scalable.svg", alt: "Power Pages" },
+  { src: "/logos/platform/Dataverse_scalable.svg", alt: "Dataverse" },
+];
+
 // ─── Proof stats ────────────────────────────────────────────────────────────
 
-const TEAM_TILE_IMAGE = "/images/team/sognos-team.png";
-
 const STATS = [
-  {
-    imageSrc: TEAM_TILE_IMAGE,
-    imageAlt: "Sognos team group photo",
-  },
-  {
-    numericValue: 40,
-    suffix: "%",
-    label: "Reduction in Scheduling Time",
-    bgClass: "bg-prussian-blue-800",
-    textClass: "text-white",
-    labelClass: "text-[#8E9EBB]",
-  },
   {
     numericValue: 3,
     suffix: "×",
@@ -85,10 +83,9 @@ const STATS = [
     numericValue: 99,
     suffix: "%",
     label: "Quality Standard Compliance",
-    bgClass: "bg-white",
-    textClass: "text-[#0A1629]",
-    labelClass: "text-neutral-500",
-    pattern: true,
+    bgClass: "bg-prussian-blue-800",
+    textClass: "text-white",
+    labelClass: "text-[#8E9EBB]",
   },
 ];
 
@@ -100,19 +97,39 @@ const LABEL = "mb-1.5 block text-sm font-medium text-prussian-blue-800";
 
 // ─── Section ────────────────────────────────────────────────────────────────
 
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export default function CTASection({
   defaultProduct,
   hideStats,
   bare,
 }: CTASectionProps = {}) {
-  const today = new Date();
-  const todayDay =
-    today.getFullYear() === 2026 && today.getMonth() === 4
-      ? today.getDate()
-      : 1;
+  const melbourneNow = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Australia/Melbourne" }),
+  );
+  const todayDate = melbourneNow.getDate();
+  const todayMonth = melbourneNow.getMonth();
+  const todayYear = melbourneNow.getFullYear();
 
   const [step, setStep] = useState(1);
-  const [selectedDate, setSelectedDate] = useState<number | null>(todayDay);
+  const [calMonth, setCalMonth] = useState(todayMonth);
+  const [calYear, setCalYear] = useState(todayYear);
+  const [selectedDate, setSelectedDate] = useState<number | null>(todayDate);
+  const [selectedMonth, setSelectedMonth] = useState(todayMonth);
+  const [selectedYear, setSelectedYear] = useState(todayYear);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -131,13 +148,33 @@ export default function CTASection({
     "04:00 PM",
   ];
 
-  const melbourneNow = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "Australia/Melbourne" }),
-  );
+  // Calendar helpers
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay();
+  const isCurrentMonth = calMonth === todayMonth && calYear === todayYear;
+  const isPastMonth =
+    calYear < todayYear || (calYear === todayYear && calMonth < todayMonth);
+
+  const prevMonth = () => {
+    if (isPastMonth || isCurrentMonth) return;
+    if (calMonth === 0) {
+      setCalMonth(11);
+      setCalYear(calYear - 1);
+    } else setCalMonth(calMonth - 1);
+  };
+  const nextMonth = () => {
+    if (calMonth === 11) {
+      setCalMonth(0);
+      setCalYear(calYear + 1);
+    } else setCalMonth(calMonth + 1);
+  };
+
   const isToday =
-    selectedDate === melbourneNow.getDate() &&
-    melbourneNow.getFullYear() === 2026 &&
-    melbourneNow.getMonth() === 4;
+    selectedDate === todayDate &&
+    selectedMonth === todayMonth &&
+    selectedYear === todayYear;
+
+  const selectedDateLabel = `${MONTH_NAMES[selectedMonth]} ${selectedDate}, ${selectedYear}`;
 
   function isTimePast(t: string): boolean {
     if (!isToday) return false;
@@ -153,11 +190,11 @@ export default function CTASection({
   const inner = (
     <div className={bare ? "" : "rounded-md overflow-hidden"}>
       <div
-        className={`grid gap-4 ${hideStats ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"}`}
+        className={`grid gap-4 ${hideStats ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[3fr_2fr]"}`}
       >
         {/* Left — Calendar / Book a Demo */}
-        <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm border border-gray-200 flex flex-col w-full">
-          <div className="w-full h-[480px] flex flex-col">
+        <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm flex flex-col w-full">
+          <div className="w-full flex flex-col">
             <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
               <h3 className="mb-2 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                 Book a Demo
@@ -184,7 +221,13 @@ export default function CTASection({
                     <div className="flex items-center justify-between mb-5 flex-shrink-0">
                       <button
                         type="button"
-                        className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
+                        onClick={prevMonth}
+                        disabled={isPastMonth || isCurrentMonth}
+                        className={`p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50 ${
+                          isPastMonth || isCurrentMonth
+                            ? "text-gray-300 cursor-not-allowed"
+                            : "text-gray-600 hover:bg-gray-100"
+                        }`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -201,10 +244,11 @@ export default function CTASection({
                         </svg>
                       </button>
                       <h4 className="text-sm font-semibold text-gray-900">
-                        May 2026
+                        {MONTH_NAMES[calMonth]} {calYear}
                       </h4>
                       <button
                         type="button"
+                        onClick={nextMonth}
                         className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
                       >
                         <svg
@@ -236,30 +280,35 @@ export default function CTASection({
                       </div>
 
                       <div className="grid grid-cols-7 gap-y-2 gap-x-1 flex-1 content-start justify-items-center">
-                        {/* Empty offsets */}
-                        {Array.from({ length: 5 }).map((_, i) => (
+                        {/* Empty offsets for first day of month */}
+                        {Array.from({ length: firstDayOfWeek }).map((_, i) => (
                           <div
                             key={`empty-${i}`}
                             className="h-8 w-8 lg:w-9 lg:h-9"
                           ></div>
                         ))}
                         {/* Days */}
-                        {Array.from({ length: 31 }).map((_, i) => {
+                        {Array.from({ length: daysInMonth }).map((_, i) => {
                           const day = i + 1;
-                          const isSelected = day === selectedDate;
-                          const isPast = day < todayDay;
+                          const isSelected =
+                            day === selectedDate &&
+                            calMonth === selectedMonth &&
+                            calYear === selectedYear;
+                          const isDayPast = isCurrentMonth && day < todayDate;
                           return (
                             <button
                               key={day}
                               type="button"
-                              disabled={isPast}
+                              disabled={isDayPast}
                               onClick={() => {
-                                if (isPast) return;
+                                if (isDayPast) return;
                                 setSelectedDate(day);
+                                setSelectedMonth(calMonth);
+                                setSelectedYear(calYear);
                                 setStep(2);
                               }}
                               className={`h-8 w-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#1D96FC] ${
-                                isPast
+                                isDayPast
                                   ? "text-gray-300 cursor-not-allowed"
                                   : isSelected
                                     ? "bg-[#1D96FC] text-white shadow-md ring-2 ring-[#1D96FC] ring-offset-1"
@@ -298,7 +347,7 @@ export default function CTASection({
                         </svg>
                       </button>
                       <h4 className="text-sm font-semibold text-gray-900">
-                        May {selectedDate}, 2026
+                        {selectedDateLabel}
                       </h4>
                     </div>
                     <div className="flex-1 overflow-y-auto pr-1 grid grid-cols-2 gap-3 content-start pb-2">
@@ -354,7 +403,7 @@ export default function CTASection({
                           Demo length: 45 min
                         </p>
                         <h4 className="text-xs sm:text-sm font-semibold text-gray-900">
-                          May {selectedDate}, {selectedTime}
+                          {selectedDateLabel}, {selectedTime}
                         </h4>
                       </div>
                     </div>
@@ -371,6 +420,8 @@ export default function CTASection({
                           company,
                           product,
                           date: selectedDate,
+                          month: selectedMonth,
+                          year: selectedYear,
                           time: selectedTime,
                         });
                         setSubmitting(false);
@@ -478,7 +529,7 @@ export default function CTASection({
                     <p className="text-sm text-gray-600 max-w-[250px] mx-auto">
                       We have received your booking request for{" "}
                       <strong>
-                        May {selectedDate} at {selectedTime}
+                        {selectedDateLabel} at {selectedTime}
                       </strong>
                       .
                     </p>
@@ -499,47 +550,59 @@ export default function CTASection({
           </div>
         </div>
 
-        {/* Right — Stats 2×2 */}
+        {/* Right — Logo slider + Stats */}
         {!hideStats && (
-          <div className="grid grid-cols-2 gap-3 lg:gap-4">
-            {STATS.map((stat, i) => (
-              <div
-                key={stat.label ?? stat.imageSrc ?? i}
-                className={
-                  stat.imageSrc
-                    ? "relative min-h-[220px] overflow-hidden rounded-md shadow-sm"
-                    : `relative flex h-full flex-col justify-between rounded-md overflow-hidden p-6 shadow-sm lg:p-8 ${stat.bgClass}`
-                }
-              >
-                {stat.imageSrc ? (
-                  <Image
-                    src={stat.imageSrc}
-                    alt={stat.imageAlt ?? ""}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
-                  />
-                ) : (
-                  <>
-                    <div className="relative z-10 text-left">
-                      <p
-                        className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
-                      >
-                        <AnimatedCounter value={stat.numericValue!} />
-                        {stat.suffix}
-                      </p>
+          <div className="flex flex-col gap-3 lg:gap-4">
+            {/* Logo slider */}
+            <div className="rounded-md bg-white p-5 lg:p-6 border border-gray-200 max-w-xl overflow-hidden">
+              <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-4">
+                Powered by Microsoft
+              </p>
+              <div className="cta-logo-wrap overflow-hidden">
+                <div className="cta-logo-track" aria-hidden="true">
+                  {[...PLATFORM_LOGOS, ...PLATFORM_LOGOS].map((logo, i) => (
+                    <div
+                      key={`${logo.alt}-${i}`}
+                      className="flex shrink-0 items-center justify-center"
+                    >
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={36}
+                        height={36}
+                        className="object-contain"
+                      />
                     </div>
-                    <div className="relative z-10 mt-8 text-left lg:mt-10">
-                      <p
-                        className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}
-                      >
-                        {stat.label}
-                      </p>
-                    </div>
-                  </>
-                )}
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-2 gap-3 lg:gap-4 flex-1">
+              {STATS.map((stat) => (
+                <div
+                  key={stat.label}
+                  className={`relative flex h-full flex-col justify-between rounded-md overflow-hidden p-6 lg:p-8 ${stat.bgClass}`}
+                >
+                  <div className="relative z-10 text-left">
+                    <p
+                      className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
+                    >
+                      <AnimatedCounter value={stat.numericValue!} />
+                      {stat.suffix}
+                    </p>
+                  </div>
+                  <div className="relative z-10 mt-8 text-left lg:mt-10">
+                    <p
+                      className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}
+                    >
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

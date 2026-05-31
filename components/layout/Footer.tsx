@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { INDUSTRIES, PRODUCTS, SITE, SOLUTIONS } from "@/lib/constants";
 
 export default function Footer() {
@@ -7,16 +8,39 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <Link
-              href="/"
-              className="text-xl font-bold tracking-tight text-white"
-            >
-              {SITE.name}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2 flex flex-col">
+            <Link href="/" className="inline-block">
+              <Image
+                src="/logos/sognos-logo.svg"
+                alt={SITE.name}
+                width={140}
+                height={36}
+                className="brightness-0 invert"
+              />
             </Link>
             <p className="mt-2 text-sm text-white/80 max-w-sm">
               {SITE.tagline}
             </p>
+            <div className="mt-auto flex items-center gap-4 pt-6">
+              <Image
+                src="/logos/Microsoft-icon-logo.svg"
+                alt="Microsoft"
+                width={20}
+                height={20}
+              />
+              <Image
+                src="/logos/Dynamics365.svg"
+                alt="Dynamics 365"
+                width={24}
+                height={24}
+              />
+              <Image
+                src="/logos/copilot-logo.png"
+                alt="Microsoft Copilot"
+                width={24}
+                height={24}
+              />
+            </div>
           </div>
 
           {/* Products */}
@@ -141,8 +165,19 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Acknowledgement of Country */}
+        <div className="mt-12 border-t border-white/15 pt-8">
+          <p className="text-xs leading-relaxed text-white/60 max-w-4xl">
+            We respect and honour Aboriginal and Torres Strait Islander Elders
+            past, present, and future. We acknowledge the stories, traditions,
+            and living cultures of Aboriginal and Torres Strait Islander peoples
+            on the lands upon which we work and live, and commit to building a
+            brighter future together.
+          </p>
+        </div>
+
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-8 sm:flex-row sm:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-8 sm:flex-row sm:items-center">
           <p className="text-sm text-white">
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>

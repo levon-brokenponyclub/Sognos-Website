@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -25,6 +25,13 @@ const BADGE_STYLES: Record<string, string> = {
   Insights: "bg-violet-50 text-violet-700 border-violet-100",
 };
 
+// ─── Shared styles ──────────────────────────────────────────────────────────
+
+const H2 =
+  "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800";
+const PROSE =
+  "max-w-none text-base leading-relaxed text-sognos-text-body [&_p]:mb-4 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
+
 // ─── Post data ────────────────────────────────────────────────────────────────
 
 const POSTS: Record<string, Post> = {
@@ -39,7 +46,7 @@ const POSTS: Record<string, Post> = {
     excerpt: "Today marks a major milestone – 9 years of Sognos Solutions.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Today marks a major milestone – 9 years of Sognos Solutions. Since our
           founding in Australia, our journey through digital transformation has
@@ -54,7 +61,7 @@ const POSTS: Record<string, Post> = {
           India. Additionally, there are exciting new opportunities emerging in
           the United Arab Emirates (UAE).
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           9 Years of Impact and Digital Transformation
         </h2>
         <p>Over nearly a decade, we've achieved:</p>
@@ -73,7 +80,7 @@ const POSTS: Record<string, Post> = {
             success.
           </li>
         </ul>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Thank You to Our Clients, Partners, and Team
         </h2>
         <p>
@@ -83,7 +90,7 @@ const POSTS: Record<string, Post> = {
           we've built a track record of delivering field service excellence,
           operational optimisation, and technology-driven growth.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Looking Ahead
         </h2>
         <p>
@@ -112,7 +119,7 @@ const POSTS: Record<string, Post> = {
       "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           We're thrilled to share that Sognos Solutions has officially moved to
           our new office at 1 Denison Street, North Sydney. The new office
@@ -161,7 +168,7 @@ const POSTS: Record<string, Post> = {
       "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Sognos Solutions is proud to announce the official launch of Sognos
           Solutions New Zealand Limited. This New Zealand expansion was marked
@@ -177,7 +184,7 @@ const POSTS: Record<string, Post> = {
           Airport, Function10, and Microsoft — who joined us to celebrate this
           next chapter for Sognos and our New Zealand expansion.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Introducing SognosCare for Allied Health and Social Care in New
           Zealand
         </h2>
@@ -191,7 +198,7 @@ const POSTS: Record<string, Post> = {
           Dynamics 365, SognosCare helps providers deliver more connected,
           transparent, and impactful care.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           A Thank You to Our Partners
         </h2>
         <p>
@@ -201,7 +208,7 @@ const POSTS: Record<string, Post> = {
           online, reflects the strength of our growing New Zealand community and
           the shared vision we have for transforming service experiences.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Looking Ahead
         </h2>
         <p>
@@ -225,7 +232,7 @@ const POSTS: Record<string, Post> = {
       "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           As we continue to grow and evolve, we are excited to announce the
           opening of our new office premises in India. This move is a key part
@@ -273,7 +280,7 @@ const POSTS: Record<string, Post> = {
       "The Field Service Management (FSM) Summit 2024 in Sydney brought together the brightest minds in service innovation, and Sognos Solutions was proud to be part of the conversation.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           The Field Service Management (FSM) Summit 2024 in Sydney brought
           together the brightest minds in service innovation, and Sognos
@@ -290,7 +297,7 @@ const POSTS: Record<string, Post> = {
           clients modernise operations through Microsoft Dynamics 365 and the
           Power Platform.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Key Takeaways from FSM Summit 2024
         </h2>
         <ol>
@@ -316,7 +323,7 @@ const POSTS: Record<string, Post> = {
             empower people as much as they optimise process.
           </li>
         </ol>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Sognos Team in Action
         </h2>
         <p>
@@ -353,7 +360,7 @@ const POSTS: Record<string, Post> = {
       "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
     twoCol: false,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Watch the playback of our webinar with Microsoft and Flourish
           Australia — exploring how field service management is transforming
@@ -390,7 +397,7 @@ const POSTS: Record<string, Post> = {
       "Facilities management can often be an intricate balancing act. You're balancing assets, people, contractors, compliance, and customer expectations across multiple sites, often with work that can't wait until tomorrow.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Facilities management can often be an intricate balancing act.
           You&apos;re balancing assets, people, contractors, compliance, and
@@ -404,7 +411,7 @@ const POSTS: Record<string, Post> = {
           the whole operation slows down. Costs rise. SLAs slip. Customers
           notice.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Connected Facilities Management Looks Like
         </h2>
         <p>
@@ -421,7 +428,7 @@ const POSTS: Record<string, Post> = {
           Mobile access gives frontline staff what they need without having to
           call back to base.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Where Sognos Comes In
         </h2>
         <p>
@@ -452,7 +459,7 @@ const POSTS: Record<string, Post> = {
       "Field services do not usually fall into chaos overnight. It creeps in. A handful of urgent jobs arrive, priorities change mid-day, and the schedule gets stitched together with phone calls, spreadsheets, and best guesses.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Field services do not usually fall into chaos overnight. It creeps in.
           A handful of urgent jobs arrive, priorities change mid-day, and the
@@ -465,7 +472,7 @@ const POSTS: Record<string, Post> = {
           looking to modernise. The tools they&apos;re using were built for
           simpler times, and the team has been compensating ever since.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Hidden Cost of Reactive Operations
         </h2>
         <p>
@@ -482,7 +489,7 @@ const POSTS: Record<string, Post> = {
           without enough information, and building toward a model where the
           right data reaches the right person at the right time.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What the Shift Looks Like in Practice
         </h2>
         <p>
@@ -516,7 +523,7 @@ const POSTS: Record<string, Post> = {
         "Under the strengthened Aged Care Quality Standards brought in on November 1, 2025, quality of care is judged less by intent and more by what you can demonstrate in everyday records.",
       twoCol: true,
       body: (
-        <div className="prose prose-lg max-w-none text-sognos-text-body">
+        <div className={PROSE}>
           <p>
             Under the strengthened Aged Care Quality Standards brought in on
             November 1, 2025, quality of care is judged less by intent and more
@@ -531,7 +538,7 @@ const POSTS: Record<string, Post> = {
             documentation and periodic audits, you are carrying risk that you
             may not yet be able to see.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             What the New Standards Require
           </h2>
           <p>
@@ -548,7 +555,7 @@ const POSTS: Record<string, Post> = {
             location means little if documentation practices vary across your
             organisation.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             How Technology Supports Implementation
           </h2>
           <p>
@@ -581,7 +588,7 @@ const POSTS: Record<string, Post> = {
         "Australia has entered a new era in aged care. With the rights-based Aged Care Act and the Support at Home program now in place, expectations are shifting from 'having policies' to consistently demonstrating safe, person-centred care.",
       twoCol: true,
       body: (
-        <div className="prose prose-lg max-w-none text-sognos-text-body">
+        <div className={PROSE}>
           <p>
             Australia has entered a new era in aged care. With the rights-based
             Aged Care Act and the Support at Home program now in place,
@@ -596,7 +603,7 @@ const POSTS: Record<string, Post> = {
             funding complexity, compliance overhead, and the need for data
             systems that actually reflect what happens in care.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             The Lessons Worth Borrowing
           </h2>
           <p>
@@ -613,7 +620,7 @@ const POSTS: Record<string, Post> = {
             and maintain continuity of care performed better on both quality
             metrics and staff retention.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             What This Means for Australian Providers Now
           </h2>
           <p>
@@ -645,7 +652,7 @@ const POSTS: Record<string, Post> = {
       "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers — especially in mental health, disability, and aged care — are told that hosting data overseas is non-compliant or even illegal.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           A persistent myth in healthcare IT is that data must stay onshore to
           stay safe. Many providers — especially in mental health, disability,
@@ -659,7 +666,7 @@ const POSTS: Record<string, Post> = {
           acting on misinformation about data residency can cost your
           organisation both money and agility.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Australian Law Actually Requires
         </h2>
         <p>
@@ -678,7 +685,7 @@ const POSTS: Record<string, Post> = {
           centre regions, which satisfies the expectations of most healthcare
           regulators.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Where Genuine Risk Sits
         </h2>
         <p>
@@ -712,7 +719,7 @@ const POSTS: Record<string, Post> = {
         "If you lead a disability service today, you can feel it — compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
       twoCol: true,
       body: (
-        <div className="prose prose-lg max-w-none text-sognos-text-body">
+        <div className={PROSE}>
           <p>
             If you lead a disability service today, you can feel it — compliance
             is back at the centre of everything. The NDIS Commission expects
@@ -728,7 +735,7 @@ const POSTS: Record<string, Post> = {
             together the data for an audit means hours of work that could have
             gone into direct support.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             What Good NDIS Reporting Tools Actually Do
           </h2>
           <p>
@@ -744,7 +751,7 @@ const POSTS: Record<string, Post> = {
             rigid, and reporting dashboards that give management visibility
             across the whole organisation — not just a snapshot of one program.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             Evaluating Your Options
           </h2>
           <p>
@@ -776,7 +783,7 @@ const POSTS: Record<string, Post> = {
       "Reform has landed. Now the real work begins. The new Aged Care Act and Support at Home program came into force, reshaping how aged care operates, funds and proves quality. It is the most significant structural change in a generation.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Reform has landed. Now the real work begins. The new Aged Care Act and
           Support at Home program came into force, reshaping how aged care
@@ -789,7 +796,7 @@ const POSTS: Record<string, Post> = {
           The question for providers in 2025 and 2026 is not whether to act, but
           what to prioritise first.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What the Reform Requires Operationally
         </h2>
         <p>
@@ -807,7 +814,7 @@ const POSTS: Record<string, Post> = {
           require organisations to demonstrate that their systems actually work
           as intended.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Where to Start
         </h2>
         <p>
@@ -838,7 +845,7 @@ const POSTS: Record<string, Post> = {
       "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday — and it's pushing good workers out the door.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Across Australia and New Zealand, frontline teams in care and
           community services are under pressure. Time with people is shrinking
@@ -852,7 +859,7 @@ const POSTS: Record<string, Post> = {
           reads in full. For workers who came into the sector to make a
           difference for people, this disconnect is demoralising.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Scale of the Problem
         </h2>
         <p>
@@ -866,7 +873,7 @@ const POSTS: Record<string, Post> = {
           This is not sustainable, and it is not inevitable. It is a systems
           problem — and systems problems can be solved.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Reducing Admin Actually Requires
         </h2>
         <p>
@@ -900,7 +907,7 @@ const POSTS: Record<string, Post> = {
         "Frontline care relies on connection — between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
       twoCol: true,
       body: (
-        <div className="prose prose-lg max-w-none text-sognos-text-body">
+        <div className={PROSE}>
           <p>
             Frontline care relies on connection — between people, information,
             and place. Yet for many teams, mobile tools still slow things down.
@@ -915,7 +922,7 @@ const POSTS: Record<string, Post> = {
             capability, data structure, and integration depth that professional
             care environments require.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             Why Dataverse Changes the Equation
           </h2>
           <p>
@@ -933,7 +940,7 @@ const POSTS: Record<string, Post> = {
             regional or rural areas, this is not a nice-to-have — it is
             essential.
           </p>
-          <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+          <h2 className={H2}>
             What This Looks Like in Practice
           </h2>
           <p>
@@ -963,7 +970,7 @@ const POSTS: Record<string, Post> = {
       "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin — and the people who remain are carrying more than they should.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Across Australia, providers in mental health and disability care are
           facing a growing crisis. Recruitment is harder. Retention is slipping.
@@ -978,7 +985,7 @@ const POSTS: Record<string, Post> = {
           discussed is the role that operational systems play in either
           containing or compounding these pressures.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           How Workforce Systems Contribute to Burnout
         </h2>
         <p>
@@ -993,7 +1000,7 @@ const POSTS: Record<string, Post> = {
           over weeks and months. Workers who feel unsupported by their systems
           are more likely to feel unsupported by their organisation.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Better Operations Look Like for Workforce Wellbeing
         </h2>
         <p>
@@ -1026,7 +1033,7 @@ const POSTS: Record<string, Post> = {
       "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional — it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           In highly regulated industries like utilities, healthcare, and
           infrastructure, compliance isn&apos;t optional — it&apos;s a daily
@@ -1041,7 +1048,7 @@ const POSTS: Record<string, Post> = {
           operations. At some point, it becomes a constraint on growth — or a
           liability when an audit reveals gaps.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Automated Compliance Tracking Changes
         </h2>
         <p>
@@ -1058,7 +1065,7 @@ const POSTS: Record<string, Post> = {
           becomes a matter of running a report rather than reconstructing
           records from multiple systems.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Right Platform for Regulated Field Service
         </h2>
         <p>
@@ -1089,7 +1096,7 @@ const POSTS: Record<string, Post> = {
       "One-size-fits-all rarely works in field service management. Industries like utilities, healthcare, logistics, and infrastructure have unique operational needs, compliance requirements, and customer expectations.",
     twoCol: true,
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           One-size-fits-all rarely works in field service management. Industries
           like utilities, healthcare, logistics, and infrastructure have unique
@@ -1104,7 +1111,7 @@ const POSTS: Record<string, Post> = {
           service platforms to be shaped around your specific workflows —
           without the cost of custom software development.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           What Customisation With Power Apps Looks Like
         </h2>
         <p>
@@ -1121,7 +1128,7 @@ const POSTS: Record<string, Post> = {
           immediately into the broader system — no manual exports, no sync
           delays, no duplicate records.
         </p>
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Industry-Specific Applications Sognos Has Built
         </h2>
         <p>
@@ -1141,6 +1148,8 @@ const POSTS: Record<string, Post> = {
     ),
   },
 };
+
+const POST_SLUGS = Object.keys(POSTS);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -1167,6 +1176,13 @@ export default async function KnowledgeHubPost({
 }) {
   const { slug } = await params;
   const post = POSTS[slug];
+
+  const currentIdx = POST_SLUGS.indexOf(slug);
+  const prevSlug = currentIdx > 0 ? POST_SLUGS[currentIdx - 1] : null;
+  const nextSlug =
+    currentIdx < POST_SLUGS.length - 1 ? POST_SLUGS[currentIdx + 1] : null;
+  const prevPost = prevSlug ? POSTS[prevSlug] : null;
+  const nextPost = nextSlug ? POSTS[nextSlug] : null;
 
   if (!post) {
     return (
@@ -1331,6 +1347,58 @@ export default async function KnowledgeHubPost({
 
       {/* ── Body ── */}
       <div className="mx-auto max-w-3xl px-6 py-12 lg:py-16">{post.body}</div>
+
+      {/* ── Prev / Next ── */}
+      {(prevPost || nextPost) && (
+        <section className="border-t border-gray-200 bg-gray-200/70">
+          <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {prevPost && prevSlug ? (
+                <Link
+                  href={`/knowledge-hub/${prevSlug}`}
+                  className="group flex items-center gap-4 rounded-lg bg-white p-5 transition-colors hover:bg-gray-50"
+                >
+                  <ArrowLeft
+                    size={16}
+                    className="shrink-0 text-gray-400 transition-transform duration-200 group-hover:-translate-x-0.5"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Previous
+                    </p>
+                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                      {prevPost.title}
+                    </p>
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {nextPost && nextSlug ? (
+                <Link
+                  href={`/knowledge-hub/${nextSlug}`}
+                  className="group flex items-center justify-end gap-4 rounded-lg bg-white p-5 transition-colors hover:bg-gray-50 text-right"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Next
+                    </p>
+                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                      {nextPost.title}
+                    </p>
+                  </div>
+                  <ArrowRight
+                    size={16}
+                    className="shrink-0 text-gray-400 transition-transform duration-200 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

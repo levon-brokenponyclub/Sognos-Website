@@ -48,7 +48,8 @@ const SOGNOSCARE_SECTIONS: NavItem[] = [
   { name: "Features", href: "/products/sognoscare#features" },
   { name: "Editions", href: "/products/sognoscare#editions" },
   { name: "Key Advantages", href: "/products/sognoscare#advantages" },
-  // { name: "Customer Stories", href: "/products/sognoscare#stories" },
+  { name: "Customer Stories", href: "/products/sognoscare#stories" },
+  { name: "Schedule a Call", href: "/contact" },
 ];
 
 const SOGNOSCARE_EDITIONS: NavItem[] = [
@@ -68,20 +69,25 @@ const SOGNOSCARE_EDITIONS: NavItem[] = [
     name: "Residential Aged Care",
     href: "/products/sognoscare/editions/residential-aged-care",
   },
+  {
+    name: "Child & Family Services",
+    href: "/products/sognoscare/editions/child-and-family-services",
+  },
 ];
 
 const SOGNOSROSTER_SECTIONS: NavItem[] = [
   { name: "What it solves", href: "/products/sognosroster#problems" },
   { name: "Features", href: "/products/sognosroster#features" },
   { name: "Key Advantages", href: "/products/sognosroster#advantages" },
-  // { name: "Customer Stories", href: "/products/sognosroster#stories" },
+  { name: "Customer Stories", href: "/products/sognosroster#stories" },
+  { name: "Schedule a Call", href: "/contact" },
 ];
 
 const SOGNOSGENOGRAM_SECTIONS: NavItem[] = [
   { name: "What it solves", href: "/products/sognosgenogram#problems" },
   { name: "Features", href: "/products/sognosgenogram#features" },
-  // { name: "Customer Stories", href: "/products/sognosgenogram#stories" },
-  { name: "Schedule a Call", href: "/products/sognosgenogram#calendar" },
+  { name: "Customer Stories", href: "/products/sognosgenogram#stories" },
+  { name: "Schedule a Call", href: "/contact" },
 ];
 
 // ─── Navigation ───────────────────────────────────────────────────────────────

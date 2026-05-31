@@ -3,15 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import { useBookDemo } from "@/lib/BookDemoContext";
+import {
+  PRODUCT_CARDS,
+  ViewProductLink,
+} from "@/components/sections/ProductCard";
 
 type DrawerState = "hidden" | "peek" | "expanded";
 
 interface ProductDrawerProps {
-  bookHref?: string;
-  secondaryHref: string;
   secondaryLabel: string;
   /** Desktop peek — left column heading */
   peekTitle?: string;
@@ -21,6 +23,8 @@ interface ProductDrawerProps {
   drawerTitle?: string;
   /** Expanded state — section header description */
   drawerDescription?: string;
+  /** Current product slug — filters it out of the "Other Products" cards */
+  currentProduct?: "sognoscare" | "sognosroster" | "sognosgenogram";
   children?: React.ReactNode;
 }
 
@@ -31,13 +35,12 @@ const MOBILE_PEEK = 96;
 const DESKTOP_PEEK = 110;
 
 export default function ProductDrawer({
-  bookHref = "/contact",
-  secondaryHref,
   secondaryLabel,
   peekTitle,
   peekDescription,
   drawerTitle,
   drawerDescription,
+  currentProduct,
   children,
 }: ProductDrawerProps) {
   const [state, setState] = useState<DrawerState>("peek");
@@ -93,14 +96,17 @@ export default function ProductDrawer({
         ? `calc(${DRAWER_H} - ${peekPx}px)`
         : `calc(${DRAWER_H} - 20px)`;
 
-  const hasContent = Boolean(children);
+  const otherProducts = currentProduct
+    ? PRODUCT_CARDS.filter((c) => !c.ctaLink.includes(currentProduct))
+    : [];
+  const hasContent = Boolean(children) || otherProducts.length > 0;
 
   return (
     <motion.div
       initial={{ y: `calc(${DRAWER_H} - ${MOBILE_PEEK}px)` }}
       animate={{ y: animateY }}
       transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-      className="fixed bottom-0 left-0 right-0 z-40 bg-gray-200 rounded-t-xl flex flex-col mx-auto max-w-[90%] overflow-hidden lg:max-w-7xl"
+      className="fixed bottom-0 left-0 right-0 z-100 bg-gray-100 rounded-t-xl flex flex-col mx-auto max-w-[100%] overflow-hidden lg:max-w-7xl"
       style={{ height: DRAWER_H }}
     >
       {/* Handle bar */}
@@ -164,17 +170,22 @@ export default function ProductDrawer({
         <div className="flex items-center gap-2 flex-1 lg:flex-none">
           <AnimatedButton
             href="#"
-            onClick={(e) => { e.preventDefault(); openModal(); }}
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
             className="flex lg:flex-none justify-center"
           >
             Book a Demo
           </AnimatedButton>
-          <Link
-            href={secondaryHref}
+          <button
+            onClick={() =>
+              setState((s) => (s === "expanded" ? "peek" : "expanded"))
+            }
             className="inline-flex items-center justify-center rounded-md px-6 py-3 text-sm font-medium text-prussian-blue-800 border-0 border-transparent transition-colors hover:bg-prussian-blue-800/5 hover:border-prussian-blue-800/20 whitespace-nowrap"
           >
             {secondaryLabel}
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -204,7 +215,54 @@ export default function ProductDrawer({
               </button>
             </div>
           )}
-          <div className="px-5 pb-8">{children}</div>
+          {children && <div className="px-5 pb-4">{children}</div>}
+
+          {/* Other products */}
+          {otherProducts.length > 0 && (
+            <div className="px-5 pb-8">
+              {children && (
+                <div className="border-t border-sognos-border-subtle pt-6 mb-4">
+                  <h3 className="font-heading text-xl font-medium text-prussian-blue-800">
+                    Other Products
+                  </h3>
+                </div>
+              )}
+              <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+                {otherProducts.map((card) => (
+                  <article
+                    key={card.ctaLink}
+                    className="shrink-0 w-[75vw] snap-center lg:flex-1 lg:w-auto h-[420px] overflow-hidden rounded-lg bg-white p-2"
+                  >
+                    <div className="relative h-full rounded-lg overflow-hidden bg-white">
+                      <div className="relative z-10 flex items-center justify-center h-full px-8 pb-60">
+                        <Image
+                          src={card.logo}
+                          alt={card.logoAlt}
+                          width={160}
+                          height={40}
+                          className="h-11 w-auto object-contain"
+                        />
+                      </div>
+                      <div
+                        className="absolute bottom-0 left-0 right-0 z-10 rounded-lg px-6 pt-8 pb-7"
+                        style={{ backgroundColor: `${card.hoverBg}e6` }}
+                      >
+                        <h3 className="font-body text-xl font-medium leading-tight tracking-normal whitespace-pre-line text-white">
+                          {card.byline}
+                        </h3>
+                        <p className="mt-3 max-w-sm font-heading font-normal leading-relaxed text-white/90 text-sm line-clamp-3">
+                          {card.description}
+                        </p>
+                        <div className="mt-4">
+                          <ViewProductLink href={card.ctaLink} />
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </motion.div>

@@ -28,31 +28,16 @@ export default function SognosCarePage() {
     <>
       <SognoscareHero />
       <ProductDrawer
-        secondaryHref="#editions"
-        secondaryLabel="Explore editions"
+        secondaryLabel="Other Products"
+        currentProduct="sognoscare"
         peekTitle="What SognosCare Solves"
         peekDescription="Manage cases, track service delivery, meet compliance obligations, and report with confidence — end-to-end."
-        drawerTitle="Expanded Content"
-        drawerDescription="Tap the handle to see this section"
-      >
-        <div className="space-y-6">
-          <div className="p-6 bg-gray-200/70 rounded-lg">
-            <h4 className="font-heading text-lg font-medium text-prussian-blue-800 mb-3">Placeholder Drawer Content</h4>
-            <p className="text-sm text-sognos-text-body mb-4">
-              This is the expanded state of the ProductDrawer. Replace this with actual content from the product page.
-            </p>
-            <ul className="space-y-2 text-sm text-sognos-text-body">
-              <li>• Key feature 1</li>
-              <li>• Key feature 2</li>
-              <li>• Key feature 3</li>
-            </ul>
-          </div>
-        </div>
-      </ProductDrawer>
+        drawerTitle="Other Products"
+        drawerDescription="Explore the full Sognos platform."
+      />
       <ProductSubNav
         productName="SognosCare"
         logoSrc="/logos/sognos-care-logo-color.svg"
-        
         sections={SECTIONS}
       />
       <SognoscareProblems />

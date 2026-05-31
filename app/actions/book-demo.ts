@@ -9,6 +9,8 @@ export type BookDemoInput = {
   company: string;
   product: string;
   date: number | null;
+  month: number | null; // 0-indexed
+  year: number | null;
   time: string | null;
 };
 
@@ -54,9 +56,12 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
   }
 
   const productLabel = PRODUCT_LABELS[product] ?? product;
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const monthName = input.month != null ? MONTHS[input.month] : "Unknown";
+  const yearStr = input.year ?? "Unknown";
   const requestedSlot =
     input.date && input.time
-      ? `May ${input.date}, 2026 at ${input.time}`
+      ? `${monthName} ${input.date}, ${yearStr} at ${input.time}`
       : null;
 
   try {

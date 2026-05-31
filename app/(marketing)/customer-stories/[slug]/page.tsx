@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+// ─── Shared styles ──────────────────────────────────────────────────────────
+
+const H2 =
+  "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800";
+const PROSE =
+  "max-w-none text-base leading-relaxed text-sognos-text-body [&_p]:mb-4 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
+const IMG = "my-8 w-full rounded-lg object-cover";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -49,7 +57,7 @@ const STORIES: Record<string, CustomerStory> = {
     ],
     downloadUrl: "/customer-stories/Sognos_Flourish_Customer-Story.pdf",
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Flourish Australia is a leading not-for-profit organisation supporting
           people with lived experience of mental health issues to live
@@ -58,7 +66,9 @@ const STORIES: Record<string, CustomerStory> = {
           employment support, and recovery-focused programs.
         </p>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/flourish-australia-1.avif" alt="Flourish Australia team" className={IMG} />
+
+        <h2 className={H2}>
           The Situation
         </h2>
         <p>
@@ -72,7 +82,9 @@ const STORIES: Record<string, CustomerStory> = {
           functions with no unified view.
         </p>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/flourish-australia-2.avif" alt="Flourish Australia operations" className={IMG} />
+
+        <h2 className={H2}>
           The Solution
         </h2>
         <p>
@@ -113,7 +125,9 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/flourish-australia-3.avif" alt="Flourish Australia platform" className={IMG} />
+
+        <h2 className={H2}>
           The Impact
         </h2>
         <p>
@@ -138,7 +152,7 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Looking Ahead
         </h2>
         <p>
@@ -172,7 +186,7 @@ const STORIES: Record<string, CustomerStory> = {
       { label: "Product", value: "SognosRoster" },
     ],
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Auckland Airport is New Zealand's largest and busiest airport, serving
           as a critical gateway for international and domestic travel and
@@ -188,7 +202,9 @@ const STORIES: Record<string, CustomerStory> = {
           applications with modern, cloud-based tools.
         </p>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/auckland-airport-1.webp" alt="Auckland Airport" className={IMG} />
+
+        <h2 className={H2}>
           The Situation
         </h2>
         <ul>
@@ -207,7 +223,9 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/auckland-airport-2.webp" alt="Auckland Airport operations" className={IMG} />
+
+        <h2 className={H2}>
           The Solution
         </h2>
         <ul>
@@ -228,7 +246,9 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/auckland-airport-3.webp" alt="Auckland Airport field service" className={IMG} />
+
+        <h2 className={H2}>
           The Impact
         </h2>
         <ul>
@@ -276,7 +296,7 @@ const STORIES: Record<string, CustomerStory> = {
       { label: "Product", value: "SognosRoster" },
     ],
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Deloitte Digital subcontracted Sognos to deliver a fully custom
           solution for Penrith City Council, enabling their Field Operations
@@ -285,7 +305,7 @@ const STORIES: Record<string, CustomerStory> = {
           data accuracy.
         </p>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Situation
         </h2>
         <ul>
@@ -305,7 +325,7 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Solution
         </h2>
         <ul>
@@ -324,7 +344,7 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           The Impact
         </h2>
         <ul>
@@ -366,7 +386,7 @@ const STORIES: Record<string, CustomerStory> = {
       { label: "Product", value: "SognosRoster" },
     ],
     body: (
-      <div className="prose prose-lg max-w-none text-sognos-text-body">
+      <div className={PROSE}>
         <p>
           Gentari Solar Australia, formerly known as Wirsol Energy, is a clean
           energy leader focused on accelerating the transition to net zero.
@@ -377,7 +397,9 @@ const STORIES: Record<string, CustomerStory> = {
           workflows, and provide real-time field visibility.
         </p>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/gentari-1.webp" alt="Gentari solar farm" className={IMG} />
+
+        <h2 className={H2}>
           The Challenge
         </h2>
         <ul>
@@ -394,7 +416,9 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/gentari-2.webp" alt="Gentari field operations" className={IMG} />
+
+        <h2 className={H2}>
           The Solution
         </h2>
         <p>
@@ -408,7 +432,9 @@ const STORIES: Record<string, CustomerStory> = {
           <li>Improves scheduling efficiency and operational oversight</li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <img src="/images/customers/gentari-3.webp" alt="Gentari asset management" className={IMG} />
+
+        <h2 className={H2}>
           The Results
         </h2>
         <ul>
@@ -425,7 +451,7 @@ const STORIES: Record<string, CustomerStory> = {
           <li>Better decision-making with data captured in real time</li>
         </ul>
 
-        <h2 className="font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800 my-3">
+        <h2 className={H2}>
           Looking Ahead
         </h2>
         <p>
@@ -437,9 +463,416 @@ const STORIES: Record<string, CustomerStory> = {
       </div>
     ),
   },
+
+  "all-purpose-pumps": {
+    company: "All Purpose Pumps",
+    description:
+      "Leading Australian provider of water and wastewater pumping solutions, offering design, manufacturing, installation, and servicing for commercial, industrial, and residential applications.",
+    title:
+      "All Purpose Pumps: From System Repair to Strategic Technology Partnership",
+    date: "2024-05-15",
+    readTime: "4 min read",
+    image: "/images/customers/all-purpose-pumps.webp",
+    logo: "/logos/all-purpose-pumps-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+    sidebar: [
+      { label: "Industry", value: "Pumping Solutions — Install & Maintain" },
+      { label: "State", value: "Victoria, Australia" },
+      { label: "Size", value: "100–150 staff" },
+      { label: "Product", value: "SognosRoster" },
+    ],
+    body: (
+      <div className={PROSE}>
+        <p>
+          All Purpose Pumps (APP) is a leading Australian provider of water and
+          wastewater pumping solutions, offering design, manufacturing,
+          installation, and servicing for commercial, industrial, and
+          residential applications. With a strong focus on quality, reliability,
+          and innovation, APP supports customers nationwide with end-to-end
+          pumping solutions.
+        </p>
+
+        <img src="/images/customers/all-purpose-pumps-1.webp" alt="All Purpose Pumps" className={IMG} />
+
+        <h2 className={H2}>
+          From System Repair to Strategic Technology Partnership
+        </h2>
+        <p>
+          Sognos first partnered with All Purpose Pumps to repair and stabilise
+          their heavily customised Dynamics 365 CRM system, which had become
+          difficult to manage and upgrade. When the time came to transition to
+          the new Unified Interface as part of the 2020 Wave 1 upgrade, the
+          extent of the existing customisations made a direct upgrade risky.
+          Sognos worked closely with APP to deliver a safe, strategic migration
+          path — ensuring minimal disruption and maximum platform stability.
+        </p>
+        <p>
+          Building on this success, Sognos then implemented Dynamics 365 Field
+          Service, integrated with APP&apos;s Sales CRM, to manage day-to-day
+          service and installation operations. This transformation provided APP
+          with complete end-to-end visibility of customers, prospects, and
+          operational activities.
+        </p>
+        <p>
+          Today, APP&apos;s team is able to proactively manage every aspect of
+          customer engagement — from initial sales interactions to
+          post-installation service — with confidence and efficiency.
+        </p>
+
+        <img src="/images/customers/all-purpose-pumps-2.webp" alt="All Purpose Pumps operations" className={IMG} />
+
+        <h2 className={H2}>
+          The Situation
+        </h2>
+        <ul>
+          <li>Discrete systems with no unified view</li>
+          <li>Manual and inconsistent processes to create quotes</li>
+          <li>Agreements being managed in Excel files</li>
+          <li>Running behind schedule for PM jobs</li>
+          <li>
+            Quote to Work Order process was not in one system, adding delays,
+            inconsistencies, and inefficiency
+          </li>
+        </ul>
+
+        <img src="/images/customers/all-purpose-pumps-3.webp" alt="All Purpose Pumps field service" className={IMG} />
+
+        <h2 className={H2}>
+          The Solution
+        </h2>
+        <ul>
+          <li>
+            Dynamics 365 Field Service deployed on top of their existing
+            Dynamics 365 for Sales solution
+          </li>
+          <li>
+            Integration with the back-end inventory system to give dispatchers
+            visibility of van stock and main warehouses
+          </li>
+          <li>
+            APP is also in the process of replacing their current ERP with
+            Business Central, with Sognos&apos;s support
+          </li>
+        </ul>
+
+        <h2 className={H2}>
+          The Impact
+        </h2>
+        <ul>
+          <li>Single source of truth for information</li>
+          <li>
+            Ability to execute end-to-end service process in one system
+          </li>
+          <li>Better customer experience</li>
+          <li>
+            Agreements helped schedulers to efficiently manage agreements once
+            set up
+          </li>
+          <li>
+            Integration with backend system gave right visibility to each
+            department
+          </li>
+          <li>Visibility of inventory for technicians and dispatchers</li>
+        </ul>
+      </div>
+    ),
+  },
+
+  "asset-security-concepts": {
+    company: "Asset Security Concepts",
+    description:
+      "National provider of advanced security solutions across Australia, part of the global SECOM Group.",
+    title:
+      "Asset Security Concepts: A Unified Platform for Growth with Dynamics 365 and Business Central",
+    date: "2024-04-22",
+    readTime: "4 min read",
+    image: "/images/customers/asc.webp",
+    logo: "/logos/asc-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+    sidebar: [
+      { label: "Industry", value: "Intelligent Security Solutions" },
+      { label: "State", value: "National, Australia" },
+      { label: "Size", value: "50–70 staff" },
+      { label: "Product", value: "SognosRoster" },
+    ],
+    body: (
+      <div className={PROSE}>
+        <p>
+          Asset Security Concepts (ASC), a member of the global SECOM Group, is
+          a national provider of advanced security solutions across Australia.
+          As their operations expanded rapidly, ASC faced growing complexity
+          across key business functions. With accounting, inventory, and
+          scheduling all managed through disconnected systems — ranging from
+          Excel spreadsheets to physical whiteboards — they needed a
+          centralised, scalable solution to streamline operations and support
+          their nationwide growth.
+        </p>
+
+        <img src="/images/customers/asc-1.webp" alt="Asset Security Concepts" className={IMG} />
+
+        <h2 className={H2}>
+          A Unified Platform for Growth
+        </h2>
+        <p>
+          ASC partnered with Sognos to implement Microsoft Dynamics 365 Field
+          Service and Business Central, delivering a seamless, end-to-end
+          platform to unify their core business processes. The solution provided
+          a single source of truth, eliminating manual inefficiencies, reducing
+          duplication, and ensuring consistency across finance, inventory, field
+          service scheduling, and operations.
+        </p>
+        <p>
+          Now over two years into their Dynamics journey, ASC continues to
+          evolve with confidence. The integrated solution has empowered users at
+          every level to operate efficiently and accurately, with built-in
+          controls and workflows that &ldquo;just work&rdquo;.
+        </p>
+
+        <img src="/images/customers/asc-2.webp" alt="ASC security operations" className={IMG} />
+
+        <h2 className={H2}>
+          The Situation
+        </h2>
+        <ul>
+          <li>Broken systems for ERP and Field Service Management</li>
+          <li>Inability to push jobs to technicians</li>
+          <li>
+            Massive issues with visibility leading to delays, misleading data,
+            inconsistencies, and inefficiency
+          </li>
+          <li>Used whiteboards to schedule jobs</li>
+          <li>
+            Job costing and accounting was a major issue due to various discrete
+            systems
+          </li>
+        </ul>
+
+        <img src="/images/customers/asc-3.webp" alt="ASC field technician" className={IMG} />
+
+        <h2 className={H2}>
+          The Solution
+        </h2>
+        <ul>
+          <li>
+            An end-to-end solution of Dynamics 365 Field Service integrated with
+            Dynamics 365 Business Central
+          </li>
+          <li>
+            A single database underneath ERP and Field Service Management to
+            provide complete visibility in real time
+          </li>
+        </ul>
+
+        <h2 className={H2}>
+          The Impact
+        </h2>
+        <ul>
+          <li>
+            Visibility for management, customers, employees, and technicians
+          </li>
+          <li>Streamlined processes</li>
+          <li>Advanced reporting and analytics</li>
+          <li>
+            Increased productivity due to automated smart processes
+          </li>
+          <li>Nearly zero paper-based work</li>
+          <li>
+            Job profitability visibility with the detailed Job Costing Module
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+
+  neca: {
+    company: "NECA",
+    description:
+      "Australia's peak industry body representing over 6,000 electrical and communications contracting businesses.",
+    title:
+      "NECA: Transforming Operations with Microsoft Dynamics 365 and Power Platform",
+    date: "2024-02-10",
+    readTime: "4 min read",
+    image: "/images/customers/neca.webp",
+    logo: "/logos/neca-logo.webp",
+    sidebar: [
+      { label: "Industry", value: "Not for Profit" },
+      { label: "State", value: "National, Australia" },
+      { label: "Size", value: "300+ staff" },
+      {
+        label: "Products",
+        value: "Dynamics 365 Sales, Dynamics NAV, Self Service Portal",
+      },
+    ],
+    body: (
+      <div className={PROSE}>
+        <p>
+          The National Electrical and Communications Association (NECA) is
+          Australia&apos;s peak industry body representing the interests of over
+          6,000 electrical and communications contracting businesses. NECA
+          provides a broad range of essential services to its members, including
+          Industrial Relations, Workplace Health &amp; Safety, Technical
+          Knowledge Base support, Registered Training Organisation training, and
+          apprentice training through its Group Training Organisations.
+        </p>
+
+        <img src="/images/customers/neca-1.webp" alt="NECA" className={IMG} />
+
+        <h2 className={H2}>
+          Transforming Operations with Microsoft Dynamics 365
+        </h2>
+        <p>
+          NECA engaged Sognos to enhance operational efficiency and member
+          service delivery through a strategic implementation of Microsoft
+          Dynamics 365 and the Power Platform. The successful deployment has
+          given NECA confidence in their long-term investment in the Microsoft
+          ecosystem.
+        </p>
+        <p>
+          Sognos is now NECA&apos;s strategic partner for Dynamics 365,
+          supporting continuous improvement and helping NECA expand its digital
+          footprint by modernising and integrating key business processes.
+        </p>
+
+        <img src="/images/customers/neca-2.webp" alt="NECA operations" className={IMG} />
+
+        <h2 className={H2}>
+          The Situation
+        </h2>
+        <ul>
+          <li>Multiple legacy systems</li>
+          <li>Disjointed systems leading to multiple sources of truth</li>
+          <li>
+            Increasing member base with limited staff leading to growing member
+            frustrations due to ever-growing turnaround time
+          </li>
+          <li>
+            Manual payment systems — no online payments for offered services
+          </li>
+        </ul>
+
+        <img src="/images/customers/neca-3.webp" alt="NECA team" className={IMG} />
+
+        <h2 className={H2}>
+          The Solution
+        </h2>
+        <ul>
+          <li>
+            Fully integrated end-to-end system with Dynamics 365 Sales at the
+            centre, supported by Dynamics NAV and a client Self Service Portal
+          </li>
+          <li>Single sign-on for all employees</li>
+          <li>
+            Online payment integrated in the Client Self Service Portals
+          </li>
+          <li>
+            Ad hoc and predefined reports for general users, managers, and
+            executives
+          </li>
+        </ul>
+
+        <h2 className={H2}>
+          The Impact
+        </h2>
+        <ul>
+          <li>Single source of truth</li>
+          <li>
+            Client Self Service Portal decreasing redundant activities across
+            disjointed systems
+          </li>
+          <li>Better employee productivity</li>
+          <li>
+            Increased visibility of business and employees for management
+          </li>
+          <li>
+            Faster reconciliation in NAV due to integrated CRM and online
+            payment system
+          </li>
+        </ul>
+      </div>
+    ),
+  },
+
+  "natural-power-solutions": {
+    company: "Natural Power Solutions",
+    description:
+      "Premier provider for designing, building, and construction of customised, bespoke power protection solutions in Australia and New Zealand.",
+    title:
+      "Natural Power Solutions: End-to-End Digital Transformation with Dynamics 365",
+    date: "2024-01-18",
+    readTime: "4 min read",
+    image: "/images/customers/nps.webp",
+    logo: "/logos/nps-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+    quote:
+      "The experience of working with Sognos has been very positive. Their skills, their knowledge, their capabilities and their ability to translate our needs, our requirements into a technical solution has been second to nobody else.",
+    quoteAuthor: "Daniel Sargent, Head of Sales — Natural Power Solutions",
+    sidebar: [
+      { label: "Industry", value: "Power & Lighting Protection" },
+      { label: "State", value: "National, Australia" },
+      { label: "Size", value: "30–50 staff" },
+      { label: "Product", value: "SognosRoster" },
+    ],
+    body: (
+      <div className={PROSE}>
+        <p>
+          Natural Power Solutions (NPS) is a premier provider for designing,
+          building, and construction of customised, bespoke power protection
+          solutions in Australia and New Zealand.
+        </p>
+
+        <h2 className={H2}>
+          The Situation
+        </h2>
+        <ul>
+          <li>Over 5,000 PM contracts being managed via Excel</li>
+          <li>Failure to adhere to promised dates</li>
+          <li>No visibility of Work Order statuses</li>
+          <li>Assets managed via MS Excel, no visibility of service history</li>
+        </ul>
+
+        <h2 className={H2}>
+          The Solution
+        </h2>
+        <ul>
+          <li>
+            Deliver an end-to-end digital solution that streamlined business
+            processes from lead generation through to invoicing
+          </li>
+          <li>
+            Provide a 360-degree view of each customer to support a premium
+            customer experience
+          </li>
+          <li>
+            Integrate Microsoft Dynamics 365 Sales, Field Service, Power BI,
+            Power App, and MYOB
+          </li>
+        </ul>
+
+        <h2 className={H2}>
+          The Impact
+        </h2>
+        <ul>
+          <li>Pro-active PM renewals</li>
+          <li>System self-managing long-term PM contracts</li>
+          <li>Visibility of work in pipeline to plan accordingly</li>
+          <li>End-to-end service history visibility for assets</li>
+          <li>Increased sales due to advanced reporting</li>
+          <li>Sales and service team have a single source of truth</li>
+          <li>
+            End-to-end process management from quoting to Work Order execution
+            to invoicing
+          </li>
+        </ul>
+      </div>
+    ),
+  },
 };
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Story order (for prev/next nav) ─────────────────────────────────────────
+
+const STORY_SLUGS = Object.keys(STORIES);
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -484,6 +917,14 @@ export default async function CustomerStoryPage({
   }
 
   const postUrl = `https://sognos.com.au/customers/${slug}`;
+
+  // Prev / next
+  const currentIdx = STORY_SLUGS.indexOf(slug);
+  const prevSlug = currentIdx > 0 ? STORY_SLUGS[currentIdx - 1] : null;
+  const nextSlug =
+    currentIdx < STORY_SLUGS.length - 1 ? STORY_SLUGS[currentIdx + 1] : null;
+  const prevStory = prevSlug ? STORIES[prevSlug] : null;
+  const nextStory = nextSlug ? STORIES[nextSlug] : null;
 
   return (
     <main className="bg-white">
@@ -695,6 +1136,58 @@ export default async function CustomerStoryPage({
           <div className="flex-1">{story.body}</div>
         </div>
       </div>
+
+      {/* ── Prev / Next ── */}
+      {(prevStory || nextStory) && (
+        <section className="border-t border-gray-200 bg-gray-200/70">
+          <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {prevStory && prevSlug ? (
+                <Link
+                  href={`/customer-stories/${prevSlug}`}
+                  className="group flex items-center gap-4 rounded-lg bg-white p-5 transition-colors hover:bg-gray-50"
+                >
+                  <ArrowLeft
+                    size={16}
+                    className="shrink-0 text-gray-400 transition-transform duration-200 group-hover:-translate-x-0.5"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Previous
+                    </p>
+                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                      {prevStory.company}
+                    </p>
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {nextStory && nextSlug ? (
+                <Link
+                  href={`/customer-stories/${nextSlug}`}
+                  className="group flex items-center justify-end gap-4 rounded-lg bg-white p-5 transition-colors hover:bg-gray-50 text-right"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
+                      Next
+                    </p>
+                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                      {nextStory.company}
+                    </p>
+                  </div>
+                  <ArrowRight
+                    size={16}
+                    className="shrink-0 text-gray-400 transition-transform duration-200 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

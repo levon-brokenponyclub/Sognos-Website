@@ -1,6 +1,6 @@
 export const SITE = {
   name: "Sognos",
-  tagline: "AI-powered service operations platform",
+  tagline: "Field Service Innovations with Microsoft Dynamics",
   url: "https://sognos.com.au",
 } as const;
 

@@ -35,6 +35,7 @@ export default function ProductSubNav({
   const [docked, setDocked] = useState(false);
   const dockedRef = useRef(false);
   const [logoVisible, setLogoVisible] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const { openModal } = useBookDemo();
 
   // Track which section is in view for active highlight
@@ -57,6 +58,19 @@ export default function ProductSubNav({
     targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, [sections]);
+
+  // Auto-scroll the nav so the active link is visible on mobile
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !activeId) return;
+    const link = nav.querySelector<HTMLElement>(`[data-section-id="${activeId}"]`);
+    if (!link) return;
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    // Scroll so the active link is roughly centred in the nav
+    const offset = linkRect.left - navRect.left - navRect.width / 2 + linkRect.width / 2;
+    nav.scrollBy({ left: offset, behavior: "smooth" });
+  }, [activeId]);
 
   // "Handoff" behavior with the fixed header:
   // - While not docked: keep the sub-nav sticky *below* the header.
@@ -166,7 +180,8 @@ export default function ProductSubNav({
 
             {/* Section links */}
             <nav
-              className="flex flex-1 items-center gap-0 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:ml-auto lg:flex-none lg:overflow-visible"
+              ref={navRef}
+              className="flex flex-1 items-center gap-0 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-visible"
               aria-label={`${productName} sections`}
             >
               {sections.map(({ label, id, href }) => {
@@ -175,6 +190,7 @@ export default function ProductSubNav({
                   <Link
                     key={id}
                     href={href ?? `#${id}`}
+                    data-section-id={id}
                     className={`relative px-4 h-18 flex items-center text-sm whitespace-nowrap shrink-0 transition-colors duration-200 ${
                       isActive
                         ? "text-brand font-medium"

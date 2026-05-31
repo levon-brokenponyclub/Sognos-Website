@@ -191,7 +191,7 @@ export default function CustomerStories() {
 
   return (
     <section className="w-full bg-gray-200/70 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24 border-x border-dashed border-sognos-border-subtle">
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Section header */}
         <div className="mb-2 flex flex-col items-center lg:items-start gap-4">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">

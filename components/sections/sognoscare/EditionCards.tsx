@@ -18,6 +18,7 @@ interface EditionCardsProps {
   editions: readonly Edition[];
   showSliderButtons?: boolean;
   containerClassName?: string;
+  dark?: boolean;
 }
 
 function EditionCard({
@@ -56,7 +57,7 @@ function EditionCard({
           <h2 className="font-heading text-[24px] font-medium leading-tight tracking-normal whitespace-pre-line  transition-colors duration-500 text-white">
             {title}
           </h2>
-          <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-white/90 lg:text-md">
+          <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-white/90 lg:text-md line-clamp-4">
             {edition.description}
           </p>
           <div className="mt-5">
@@ -94,6 +95,7 @@ export default function EditionCards({
   editions,
   showSliderButtons = true,
   containerClassName = "",
+  dark = false,
 }: EditionCardsProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
   // When > 3 cards, reduce width so 4th card peeks (indicate scroll)
@@ -128,14 +130,22 @@ export default function EditionCards({
         <div className="flex items-center justify-end gap-3 mt-4">
           <button
             onClick={() => scroll("prev")}
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-sognos-border-subtle text-prussian-blue-800 hover:border-prussian-blue-800 transition-colors"
+            className={`flex items-center justify-center w-10 h-10 rounded-full border border-dashed transition-colors ${
+              dark
+                ? "border-white/30 text-white hover:border-white"
+                : "border-sognos-border-subtle text-prussian-blue-800 hover:border-prussian-blue-800"
+            }`}
             aria-label="Previous edition"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={() => scroll("next")}
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-sognos-border-subtle text-prussian-blue-800 hover:border-prussian-blue-800 transition-colors"
+            className={`flex items-center justify-center w-10 h-10 rounded-full border border-dashed transition-colors ${
+              dark
+                ? "border-white/30 text-white hover:border-white"
+                : "border-sognos-border-subtle text-prussian-blue-800 hover:border-prussian-blue-800"
+            }`}
             aria-label="Next edition"
           >
             <ArrowRight size={16} />

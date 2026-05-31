@@ -65,6 +65,49 @@ const STORIES: StoryCard[] = [
     logo: "/logos/gentari-logo-rect.webp",
     productLogo: "/logos/sognos-roster-logo.svg",
   },
+  {
+    slug: "all-purpose-pumps",
+    company: "All Purpose Pumps",
+    title:
+      "All Purpose Pumps: From System Repair to Strategic Technology Partnership",
+    date: "2024-05-15",
+    readTime: "4 min read",
+    image: "/images/customers/all-purpose-pumps.webp",
+    logo: "/logos/all-purpose-pumps-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+  },
+  {
+    slug: "asset-security-concepts",
+    company: "Asset Security Concepts",
+    title:
+      "Asset Security Concepts: A Unified Platform for Growth with Dynamics 365 and Business Central",
+    date: "2024-04-22",
+    readTime: "4 min read",
+    image: "/images/customers/asc.webp",
+    logo: "/logos/asc-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+  },
+  {
+    slug: "neca",
+    company: "NECA",
+    title:
+      "NECA: Transforming Operations with Microsoft Dynamics 365 and Power Platform",
+    date: "2024-02-10",
+    readTime: "4 min read",
+    image: "/images/customers/neca.webp",
+    logo: "/logos/neca-logo.webp",
+  },
+  {
+    slug: "natural-power-solutions",
+    company: "Natural Power Solutions",
+    title:
+      "Natural Power Solutions: End-to-End Digital Transformation with Dynamics 365",
+    date: "2024-01-18",
+    readTime: "4 min read",
+    image: "/images/customers/nps.webp",
+    logo: "/logos/nps-logo.webp",
+    productLogo: "/logos/sognos-roster-logo.svg",
+  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
