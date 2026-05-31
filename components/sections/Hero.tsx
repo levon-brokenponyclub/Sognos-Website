@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { navCTA } from "@/lib/navigation";
 import FlowCanvas from "@/components/ui/FlowCanvas";
@@ -15,10 +16,10 @@ type HeroProps = {
 };
 
 const AVATAR_SRCS = [
-  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
-  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
-  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
-  "https://randomuser.me/api/portraits/men/75.jpg",
+  "/images/avatars/avatar-1.jpg",
+  "/images/avatars/avatar-2.jpg",
+  "/images/avatars/avatar-3.jpg",
+  "/images/avatars/avatar-4.jpg",
 ];
 
 function TrustBar() {
@@ -26,12 +27,14 @@ function TrustBar() {
     <div className="flex items-center divide-x divide-white/15">
       <div className="flex -space-x-2.5 pr-4">
         {AVATAR_SRCS.map((src, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             key={i}
             src={src}
             alt=""
             aria-hidden="true"
+            width={36}
+            height={36}
+            priority={i === 0}
             className="w-9 h-9 rounded-full border-2 border-white/20 object-cover"
             style={{ zIndex: i + 1 }}
           />
