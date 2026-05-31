@@ -8,7 +8,8 @@ export default function CookieBanner() {
 
   function setConsent(value: "true" | "false") {
     const maxAge = 60 * 60 * 24 * 365; // 1 year
-    document.cookie = `cookie_consent=${value}; path=/; max-age=${maxAge}; SameSite=Lax`;
+    const secure = location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `cookie_consent=${value}; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
     router.refresh();
   }
 
