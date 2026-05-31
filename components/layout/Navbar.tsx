@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
@@ -364,6 +364,7 @@ function getMobilePanelId(label: string) {
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -371,12 +372,15 @@ export default function Navbar() {
   const [mobileHistory, setMobileHistory] = useState<string[]>([]);
   const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
   const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [hoveredSubmenuItem, setHoveredSubmenuItem] = useState<string | null>(null);
   const [hideHeaderForSubnav, setHideHeaderForSubnav] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const activeIndexRef = useRef<number>(-1);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollYRef = useRef(0);
+  const isProductPage = pathname?.startsWith("/products");
 
   const logoSrc = "/logos/sognos-logo.svg";
 
@@ -423,7 +427,20 @@ export default function Navbar() {
         });
         setColorMode(mode);
       }
-      setScrolled(window.scrollY > 8);
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 8);
+
+      if (isProductPage) {
+        const delta = scrollY - lastScrollYRef.current;
+        if (scrollY > 80) {
+          if (delta > 2) setNavHidden(true);
+          else if (delta < -2) setNavHidden(false);
+        } else {
+          setNavHidden(false);
+        }
+        lastScrollYRef.current = scrollY;
+      }
+
       ticking = false;
     };
     const onScroll = () => {
@@ -439,7 +456,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
     };
-  }, [hideHeaderForSubnav]);
+  }, [hideHeaderForSubnav, isProductPage]);
 
   // Product sub-nav can request that the header hides when it docks to the top.
   useEffect(() => {
@@ -525,8 +542,20 @@ export default function Navbar() {
     });
   };
 
+  useEffect(() => {
+    setNavHidden(false);
+    lastScrollYRef.current = 0;
+  }, [pathname]);
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("sognos:scrollNavHidden", { detail: { hidden: navHidden } }),
+    );
+  }, [navHidden]);
+
   const openMobile = () => {
     closeAll();
+    setNavHidden(false);
     setMobilePanel("root");
     setMobileHistory([]);
     setMobileOpen(true);
@@ -580,7 +609,7 @@ export default function Navbar() {
       style={{
         transform: mobileOpen
           ? "none"
-          : `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
+          : `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)${navHidden ? " - 100%" : ""}), 0)`,
       }}
     >
       {/* ── Nav bar ── */}

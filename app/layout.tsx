@@ -3,6 +3,7 @@ import { Inter, Inter_Tight } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { headers } from "next/headers";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import CookieBanner from "@/components/ui/CookieBanner";
 import "./globals.css";
 
@@ -65,6 +66,7 @@ export default async function RootLayout({
         {children}
         {analyticsEnabled && <Analytics />}
         {analyticsEnabled && <SpeedInsights />}
+        {analyticsEnabled && <GoogleAnalytics />}
         {showBanner && <CookieBanner />}
       </body>
     </html>
