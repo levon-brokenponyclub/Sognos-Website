@@ -31,6 +31,23 @@ export default defineConfig({
                   .schemaType("sognosrosterPage")
                   .documentId("sognosrosterPage"),
               ),
+            S.divider(),
+            S.listItem()
+              .title("Customer Stories")
+              .id("customerStories")
+              .child(
+                S.documentTypeList("customerStory")
+                  .title("Customer Stories")
+                  .defaultOrdering([{ field: "order", direction: "asc" }]),
+              ),
+            S.listItem()
+              .title("Logo Strip")
+              .id("logoStrip")
+              .child(
+                S.document()
+                  .schemaType("logoStrip")
+                  .documentId("logoStrip"),
+              ),
           ]),
     }),
     visionTool(),

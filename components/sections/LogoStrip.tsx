@@ -1,24 +1,29 @@
-type Logo = { src: string; alt: string };
+import Image from "next/image";
+import type { SanityImageSource } from "@sanity/image-url";
+import { DEFAULT_LOGOS } from "@/lib/content/logoStrip";
+import { getLogoStripContent } from "@/lib/sanity/queries";
+import { urlFor } from "@/lib/sanity/image";
 
-const LOGOS: Logo[] = [
-  { src: "/logos/clients/client-01.png", alt: "Sognos client" },
-  { src: "/logos/clients/asc-secom.png", alt: "ASC Secom" },
-  { src: "/logos/clients/client-03.webp", alt: "Sognos client" },
-  { src: "/logos/clients/nci.webp", alt: "NCI" },
-  { src: "/logos/clients/countplus.png", alt: "CountPlus" },
-  { src: "/logos/clients/water-nsw.webp", alt: "Water NSW" },
-  { src: "/logos/clients/sa.webp", alt: "Sognos client" },
-  { src: "/logos/clients/mcs.webp", alt: "MCS" },
-  { src: "/logos/clients/neca.webp", alt: "NECA" },
-  { src: "/logos/clients/nps.webp", alt: "NPS" },
-  { src: "/logos/clients/deloitte.webp", alt: "Deloitte" },
-  { src: "/logos/clients/apm.webp", alt: "APM" },
-];
+type Logo = {
+  alt: string;
+  src?: string;
+  image?: SanityImageSource;
+};
 
 // Duplicate for seamless infinite loop (-50% = one full set)
-const TRACK = [...LOGOS, ...LOGOS];
+function resolveLogoSrc(logo: Logo) {
+  return logo.image
+    ? urlFor(logo.image).width(360).auto("format").url()
+    : logo.src;
+}
 
-export default function LogoStrip() {
+export default async function LogoStrip() {
+  const content = await getLogoStripContent();
+  const logos = content?.logos?.length
+    ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
+    : DEFAULT_LOGOS;
+  const track = [...logos, ...logos];
+
   return (
     <section
       aria-label="Trusted organisations"
@@ -29,20 +34,27 @@ export default function LogoStrip() {
       </h4> */}
       <div className="trust-marquee-wrap">
         <div className="trust-marquee-track" aria-hidden="true">
-          {TRACK.map((logo, i) => (
+          {track.map((logo, i) => {
+            const src = resolveLogoSrc(logo);
+            if (!src) return null;
+
+            return (
             <div
               key={i}
               className="flex items-center justify-center px-1 lg:px-2 min-w-[150px] lg:min-w-[260px]"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={logo.src}
+              <Image
+                src={src}
                 alt={logo.alt}
+                width={220}
+                height={72}
                 className="max-h-10 lg:max-h-14 w-auto max-w-[110px] lg:max-w-[190px] object-contain"
                 style={{ filter: "brightness(0) opacity(0.8)" }}
+                sizes="(min-width: 1024px) 190px, 110px"
               />
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

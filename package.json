@@ -7,11 +7,15 @@
     "build": "next build",
     "postbuild": "sanity schema deploy",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:customer-stories": "tsx scripts/migrate-customer-stories.ts",
+    "seed:logo-strip": "tsx scripts/seed-logo-strip.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
     "@phosphor-icons/react": "^2.1.10",
+    "@portabletext/react": "^6.2.0",
+    "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.26.0",
     "@supabase/supabase-js": "^2.106.1",
     "@vercel/analytics": "^2.0.1",
@@ -38,9 +42,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }
