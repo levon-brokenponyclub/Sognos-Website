@@ -75,9 +75,9 @@ const STATS = [
     numericValue: 3,
     suffix: "×",
     label: "Faster Compliance Reporting",
-    bgClass: "bg-[#1D96FC]",
-    textClass: "text-white",
-    labelClass: "text-blue-100",
+    bgClass: "bg-white",
+    textClass: "text-[#0A1629]",
+    labelClass: "text-neutral-500",
   },
   {
     numericValue: 99,
@@ -192,7 +192,7 @@ export default function CTASection({
       <div
         className={`grid gap-4 ${hideStats ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[3fr_2fr]"}`}
       >
-        {/* Left — Calendar / Book a Demo */}
+        {/* Left - Calendar / Book a Demo */}
         <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm flex flex-col w-full">
           <div className="w-full flex flex-col">
             <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
@@ -550,7 +550,7 @@ export default function CTASection({
           </div>
         </div>
 
-        {/* Right — Logo slider + Stats */}
+        {/* Right - Logo slider + Stats */}
         {!hideStats && (
           <div className="flex flex-col gap-3 lg:gap-4">
             {/* Logo slider */}
@@ -612,7 +612,7 @@ export default function CTASection({
   if (bare) return inner;
 
   return (
-    <section id="book-demo" className="w-full bg-gray-200/70 scroll-mt-[140px]">
+    <section id="book-demo" className="w-full bg-[#1D96FC] scroll-mt-[140px]">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {inner}
       </div>

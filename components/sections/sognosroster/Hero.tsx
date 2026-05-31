@@ -43,13 +43,13 @@ export default function SognosRosterHero() {
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
                 Allocate the right people, at the right time, to the right
-                services — automatically. Putting real-time optimisation in the
+                services - automatically. Putting real-time optimisation in the
                 hands of your operations team.
               </p>
             </div>
           </div>
 
-          {/* Bottom bar — hidden, replaced by ProductDrawer */}
+          {/* Bottom bar - hidden, replaced by ProductDrawer */}
           <div className="hidden relative z-10 pb-4 lg:pb-0">
             <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
               <div className="flex flex-col gap-2 max-w-xl">

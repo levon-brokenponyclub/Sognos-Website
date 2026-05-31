@@ -18,7 +18,7 @@ export async function generateMetadata({
   const meta = getSolutionMeta(slug);
   if (!meta) return {};
   return {
-    title: `${meta.name} — Solutions | Sognos`,
+    title: `${meta.name} - Solutions | Sognos`,
     description: meta.description,
   };
 }

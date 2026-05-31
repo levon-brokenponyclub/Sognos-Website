@@ -10,7 +10,7 @@ const PRODUCTS = [
     name: "SognosCare",
     tagline: "Plan the work",
     description:
-      "SognosCare captures every referral, care plan, and service request — with compliance tracking built into every step.",
+      "SognosCare captures every referral, care plan, and service request - with compliance tracking built into every step.",
     features: [
       "Care plan and case management",
       "NDIS and funder compliance tracking",
@@ -31,7 +31,7 @@ const PRODUCTS = [
     name: "SognosRoster",
     tagline: "Assign the right people",
     description:
-      "SognosRoster matches the right worker to every job — based on skills, location, availability, and compliance.",
+      "SognosRoster matches the right worker to every job - based on skills, location, availability, and compliance.",
     features: [
       "Intelligent worker-to-job matching",
       "Real-time schedule optimisation",
@@ -97,7 +97,7 @@ export default function PlatformPillars() {
           ))}
         </div>
 
-        {/* Tab content — 2-col */}
+        {/* Tab content - 2-col */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
           {/* Left: content */}
@@ -149,7 +149,7 @@ export default function PlatformPillars() {
 
           {/* Right: illustration placeholder */}
           <div className="w-full aspect-[4/3] rounded-wh-md border border-white/10 flex items-center justify-center">
-            <span className="text-xs text-white/30">{product.name} — illustration</span>
+            <span className="text-xs text-white/30">{product.name} - illustration</span>
           </div>
 
         </div>

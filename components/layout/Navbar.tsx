@@ -587,7 +587,7 @@ export default function Navbar() {
     (g) => g.label === openMenu && !g.megaMenu && g.items,
   );
 
-  const effectiveColorMode = mobileOpen ? "light" : colorMode;
+  const effectiveColorMode = mobileOpen || openMenu ? "light" : colorMode;
 
   const linkClass =
     effectiveColorMode === "dark"

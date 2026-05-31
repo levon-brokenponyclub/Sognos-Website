@@ -34,7 +34,7 @@ export default function SognoscareEditions() {
             Choose the Right SognosCare Edition for Your Service
           </h2>
           <p className="mt-2 text-lg text-sognos-text-body">
-            SognosCare offers four tailored editions — each pre-configured for
+            SognosCare offers four tailored editions - each pre-configured for
             its funding model, compliance framework, and operational workflows.
           </p>
           {/* <p className="mx-auto mt-4 max-w-xl text-sm text-sognos-text-muted">

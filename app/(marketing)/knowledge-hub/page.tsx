@@ -1,7 +1,7 @@
 import KnowledgeHubArchive from "@/components/sections/KnowledgeHubArchive";
 
 export const metadata = {
-  title: "Knowledge Hub — Sognos",
+  title: "Knowledge Hub - Sognos",
   description:
     "News, guides, case studies, and product updates from the Sognos team. Filter by category, industry, or use case.",
 };
@@ -31,7 +31,7 @@ export default async function KnowledgeHubPage({
               Insights for service operations professionals
             </h1>
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/80">
-              News, guides, case studies, and product updates — covering care
+              News, guides, case studies, and product updates - covering care
               operations, workforce scheduling, compliance, and the sectors we
               serve.
             </p>

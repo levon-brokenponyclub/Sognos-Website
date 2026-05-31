@@ -31,7 +31,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "SLA compliance under pressure",
-          body: "Without automated tracking, SLA breaches are only visible after they've happened — not when there's still time to act.",
+          body: "Without automated tracking, SLA breaches are only visible after they've happened - not when there's still time to act.",
         },
         {
           title: "No real-time ground visibility",
@@ -78,7 +78,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "One place for every client relationship",
       subtext:
-        "Centralise client records, service history, and interactions so your team always has the context they need — and nothing falls through the cracks.",
+        "Centralise client records, service history, and interactions so your team always has the context they need - and nothing falls through the cracks.",
     },
     whatItSolves: {
       intro:
@@ -90,7 +90,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "Missed follow-ups and handoffs",
-          body: "Without structured pipelines and task tracking, client commitments get dropped — especially across team handoffs.",
+          body: "Without structured pipelines and task tracking, client commitments get dropped - especially across team handoffs.",
         },
         {
           title: "No unified service history",
@@ -101,7 +101,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     capabilities: [
       {
         title: "Unified contact management",
-        body: "Every client, contact, and relationship in one structured record — accessible by your whole team.",
+        body: "Every client, contact, and relationship in one structured record - accessible by your whole team.",
       },
       {
         title: "Service history timeline",
@@ -137,7 +137,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "Understand your service demand before it happens",
       subtext:
-        "Surface patterns in client behaviour, service demand, and operational outcomes so your team can make decisions with data — not instinct.",
+        "Surface patterns in client behaviour, service demand, and operational outcomes so your team can make decisions with data - not instinct.",
     },
     whatItSolves: {
       intro:
@@ -149,11 +149,11 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
         {
           title: "Decisions based on gut feel",
-          body: "Team leaders make workforce and resource decisions without structured data — and often get it wrong.",
+          body: "Team leaders make workforce and resource decisions without structured data - and often get it wrong.",
         },
         {
           title: "Data locked in separate systems",
-          body: "Useful information exists across your CRM, scheduling, and case management tools — but it's never in one place when you need it.",
+          body: "Useful information exists across your CRM, scheduling, and case management tools - but it's never in one place when you need it.",
         },
       ],
     },
@@ -164,7 +164,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       },
       {
         title: "Outcome tracking",
-        body: "Measure what gets delivered against what was planned — at client, team, and service level.",
+        body: "Measure what gets delivered against what was planned - at client, team, and service level.",
       },
       {
         title: "Segment analysis",
@@ -196,7 +196,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "Consistent service across every interaction",
       subtext:
-        "Deliver the same standard of care and communication at every touchpoint — so clients always know what to expect and your team always knows what to do.",
+        "Deliver the same standard of care and communication at every touchpoint - so clients always know what to expect and your team always knows what to do.",
     },
     whatItSolves: {
       intro:
@@ -204,11 +204,11 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       painPoints: [
         {
           title: "Inconsistent service handoffs",
-          body: "When clients move between workers, teams, or channels, context gets lost — and the client feels it.",
+          body: "When clients move between workers, teams, or channels, context gets lost - and the client feels it.",
         },
         {
           title: "No feedback loop",
-          body: "Without structured satisfaction tracking, you find out about service failures from complaints — not from data.",
+          body: "Without structured satisfaction tracking, you find out about service failures from complaints - not from data.",
         },
         {
           title: "Standards that exist on paper only",
@@ -219,11 +219,11 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     capabilities: [
       {
         title: "Service standard enforcement",
-        body: "Embed service protocols into workflows so the right steps happen automatically — regardless of who's involved.",
+        body: "Embed service protocols into workflows so the right steps happen automatically - regardless of who's involved.",
       },
       {
         title: "Omnichannel interaction tracking",
-        body: "See every client touchpoint — calls, emails, portal, in-person — in a single timeline.",
+        body: "See every client touchpoint - calls, emails, portal, in-person - in a single timeline.",
       },
       {
         title: "Client satisfaction surveys",
@@ -255,7 +255,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "Resolve cases faster with unified tracking",
       subtext:
-        "Give your service team a single place to log, track, and close every case — with full context, SLA visibility, and a complete audit trail.",
+        "Give your service team a single place to log, track, and close every case - with full context, SLA visibility, and a complete audit trail.",
     },
     whatItSolves: {
       intro:
@@ -263,11 +263,11 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       painPoints: [
         {
           title: "Scattered case data",
-          body: "Cases are logged in email, phone notes, and spreadsheets. No one has a complete picture — especially when a case changes hands.",
+          body: "Cases are logged in email, phone notes, and spreadsheets. No one has a complete picture - especially when a case changes hands.",
         },
         {
           title: "Slow resolution times",
-          body: "Without routing logic or SLA tracking, cases queue unpredictably. The loudest client gets attention — not the most urgent case.",
+          body: "Without routing logic or SLA tracking, cases queue unpredictably. The loudest client gets attention - not the most urgent case.",
         },
         {
           title: "No audit trail",
@@ -314,7 +314,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "Extend your operations with low-code tools",
       subtext:
-        "Build custom apps, automate workflows, and connect your systems without a development team. Power Platform turns your operational needs into working solutions — fast.",
+        "Build custom apps, automate workflows, and connect your systems without a development team. Power Platform turns your operational needs into working solutions - fast.",
     },
     whatItSolves: {
       intro:
@@ -337,7 +337,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     capabilities: [
       {
         title: "Power Apps",
-        body: "Build custom-fit apps for your specific operational workflows — without writing code.",
+        body: "Build custom-fit apps for your specific operational workflows - without writing code.",
       },
       {
         title: "Power Automate",
@@ -349,7 +349,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       },
       {
         title: "Custom connectors",
-        body: "Integrate with external systems — NDIS portals, payroll, scheduling tools — via pre-built or custom connectors.",
+        body: "Integrate with external systems - NDIS portals, payroll, scheduling tools - via pre-built or custom connectors.",
       },
       {
         title: "Process automation",
@@ -363,7 +363,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     platform: {
       label: "Microsoft Power Platform",
       description:
-        "Built entirely on the Microsoft Power Platform — Power Apps, Power Automate, Power BI, and Power Pages — with Copilot AI embedded throughout for intelligent process suggestions.",
+        "Built entirely on the Microsoft Power Platform - Power Apps, Power Automate, Power BI, and Power Pages - with Copilot AI embedded throughout for intelligent process suggestions.",
     },
     worksWithCare: true,
     worksWithRoster: true,
@@ -373,7 +373,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     hero: {
       headline: "Live in weeks, not months",
       subtext:
-        "A fixed-scope, fast-track implementation of Sognos that gets your core operations running quickly — without the risk or cost of a long enterprise project.",
+        "A fixed-scope, fast-track implementation of Sognos that gets your core operations running quickly - without the risk or cost of a long enterprise project.",
     },
     whatItSolves: {
       intro:
@@ -396,7 +396,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     capabilities: [
       {
         title: "Pre-configured templates",
-        body: "Start from a production-ready configuration tuned for your sector — not a blank canvas.",
+        body: "Start from a production-ready configuration tuned for your sector - not a blank canvas.",
       },
       {
         title: "Guided implementation",
@@ -404,7 +404,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       },
       {
         title: "Training and enablement",
-        body: "Your team is ready to use the system on day one — not weeks after go-live.",
+        body: "Your team is ready to use the system on day one - not weeks after go-live.",
       },
       {
         title: "Data migration support",
@@ -422,7 +422,7 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
     platform: {
       label: "Dynamics 365 + Power Platform",
       description:
-        "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos's proven implementation approach — reducing time, risk, and cost.",
+        "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos's proven implementation approach - reducing time, risk, and cost.",
     },
     worksWithCare: true,
     worksWithRoster: true,

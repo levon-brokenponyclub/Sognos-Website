@@ -11,7 +11,7 @@ const FEATURES = [
     name: "Case Management",
     tagline: "Full lifecycle, one place",
     description:
-      "Manage every stage of a participant's journey — from initial referral and intake through assessment, goal setting, service delivery, review, and case closure. Every touchpoint recorded, every team member aligned.",
+      "Manage every stage of a participant's journey - from initial referral and intake through assessment, goal setting, service delivery, review, and case closure. Every touchpoint recorded, every team member aligned.",
     capabilities: [
       "Intake forms and referral management",
       "Goal tracking linked to funding streams",
@@ -26,7 +26,7 @@ const FEATURES = [
     name: "Service Delivery Tracking",
     tagline: "Real-time visibility",
     description:
-      "Know exactly what services were scheduled, what was delivered, and what was missed — in real time. Field workers record visits on mobile, coordinators see variance instantly, and nothing falls through the gaps.",
+      "Know exactly what services were scheduled, what was delivered, and what was missed - in real time. Field workers record visits on mobile, coordinators see variance instantly, and nothing falls through the gaps.",
     capabilities: [
       "Scheduled vs actual service comparison",
       "Mobile-first visit recording",
@@ -41,7 +41,7 @@ const FEATURES = [
     name: "Compliance & Audit Trail",
     tagline: "Audit-ready by default",
     description:
-      "Every action timestamped. Every document versioned. Every funding rule enforced at the point of care, not retrospectively. SognosCare treats compliance as infrastructure — not a reporting exercise.",
+      "Every action timestamped. Every document versioned. Every funding rule enforced at the point of care, not retrospectively. SognosCare treats compliance as infrastructure - not a reporting exercise.",
     capabilities: [
       "Immutable audit log across all case activity",
       "Support at Home rule enforcement",
@@ -71,7 +71,7 @@ const FEATURES = [
     name: "Microsoft Copilot AI",
     tagline: "AI where staff already work",
     description:
-      "AI-assisted documentation, anomaly detection, and operational insights — surfaced inside Dynamics 365, not in a separate tool. Staff don't change their workflow to access AI.",
+      "AI-assisted documentation, anomaly detection, and operational insights - surfaced inside Dynamics 365, not in a separate tool. Staff don't change their workflow to access AI.",
     capabilities: [
       "Copilot-assisted progress note drafting",
       "Anomaly detection on service delivery",
@@ -85,7 +85,7 @@ const FEATURES = [
     name: "Power Platform Automation",
     tagline: "Workflows your way",
     description:
-      "Configurable low-code automation for approvals, escalations, and notifications — built to match your organisation's specific processes without requiring a developer.",
+      "Configurable low-code automation for approvals, escalations, and notifications - built to match your organisation's specific processes without requiring a developer.",
     capabilities: [
       "Approval workflows for care plan changes",
       "Automated notifications to staff",
@@ -240,7 +240,7 @@ function FeatureVisual({ id }: { id: string }) {
             </div>
           </div>
           <p className="text-[15px] font-medium leading-relaxed text-prussian-blue-800">
-            Participant attended support session on time. Goals reviewed —
+            Participant attended support session on time. Goals reviewed -
             community access goal progressing well. Discussed transport support
             for upcoming medical appointment.
           </p>
@@ -332,36 +332,21 @@ export default function SognoscareFeatures() {
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
-        <div className="flex flex-col items-start lg:items-start gap-4 pb-6">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={{
-                padding: "1px",
-                background:
-                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.9) 60deg, transparent 120deg, transparent 360deg)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-                ["--shine-duration" as string]: "8s",
-              } as React.CSSProperties}
-            />
+        <div className="flex flex-col items-center gap-4 pb-6">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Features
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight text-center">
             Everything a care operation needs
           </h2>
           {/* <p className="text-lg text-white/80 max-w-2xl">
-            SognosCare brings the full operational stack into one platform —
+            SognosCare brings the full operational stack into one platform -
             case management, compliance, reporting, and AI assistance.
           </p> */}
         </div>
 
-        {/* Mobile — stacked cards */}
+        {/* Mobile - stacked cards */}
         <div className="lg:hidden mt-10 flex flex-col gap-6">
           {FEATURES.map((feat) => (
             <div
@@ -408,9 +393,9 @@ export default function SognoscareFeatures() {
           ))}
         </div>
 
-        {/* Desktop — vertical tabs | animated panel */}
-        <div className="hidden lg:flex gap-4 h-[460px] mt-10">
-          {/* Left column — vertical tab list */}
+        {/* Desktop - vertical tabs | animated panel */}
+        <div className="hidden lg:flex gap-4 h-[520px] mt-10">
+          {/* Left column - vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
             {FEATURES.map((feat, i) => (
               <button
@@ -427,7 +412,7 @@ export default function SognoscareFeatures() {
             ))}
           </div>
 
-          {/* Right — animated panel */}
+          {/* Right - animated panel */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -437,26 +422,26 @@ export default function SognoscareFeatures() {
               transition={{ duration: 0.2 }}
               className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
-              {/* Left column — grey info panel */}
+              {/* Left column - grey info panel */}
               <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
                   {/* <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
                     {active.tagline}
                   </p> */}
-                  <h2 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                  <h2 className="mt-1 mb-2 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
                   </h2>
-                  <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
+                  <p className="mt-1 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
                     {active.description}
                   </p>
-                  {/* <ul className="mt-6 space-y-2.5">
+                  <ul className="mt-6 space-y-2.5">
                     {active.capabilities.map((cap) => (
                       <li
                         key={cap}
-                        className="flex items-start gap-2.5 text-md text-sognos-text-body"
+                        className="flex items-start gap-2.5 font-heading font-normal leading-relaxed text-sognos-body text-base"
                       >
                         <svg
-                          className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800"
+                          className="mt-1 h-4 w-4 shrink-0 text-prussian-blue-800"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -471,7 +456,7 @@ export default function SognoscareFeatures() {
                         {cap}
                       </li>
                     ))}
-                  </ul> */}
+                  </ul>
                 </div>
                 <a
                   href="/contact"
@@ -498,7 +483,7 @@ export default function SognoscareFeatures() {
                 </a>
               </div>
 
-              {/* Right column — visual mock */}
+              {/* Right column - visual mock */}
               <div className="flex-1 relative rounded-lg overflow-hidden bg-white flex items-center justify-center p-8">
                 <div className="w-full max-w-sm">
                   <FeatureVisual id={active.id} />

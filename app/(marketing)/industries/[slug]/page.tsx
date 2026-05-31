@@ -17,7 +17,7 @@ export async function generateMetadata({
   const meta = getIndustryMeta(slug);
   if (!meta) return {};
   return {
-    title: `${meta.name} — Industries | Sognos`,
+    title: `${meta.name} - Industries | Sognos`,
     description: meta.description,
   };
 }

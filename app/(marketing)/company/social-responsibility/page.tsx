@@ -12,12 +12,12 @@ const PILLARS = [
   {
     number: "01",
     title: "Community Engagement",
-    body: "Engaging with local communities is fundamental to who we are. We actively seek opportunities to support community development projects — through volunteering, resources, and expertise. By fostering strong relationships with the communities we serve, we create long-lasting positive impacts.",
+    body: "Engaging with local communities is fundamental to who we are. We actively seek opportunities to support community development projects - through volunteering, resources, and expertise. By fostering strong relationships with the communities we serve, we create long-lasting positive impacts.",
   },
   {
     number: "02",
     title: "Environmental Sustainability",
-    body: "We are dedicated to minimising our environmental impact and promoting sustainability throughout our operations. Sognos continuously seeks ways to operate more efficiently and responsibly — protecting the environment for future generations.",
+    body: "We are dedicated to minimising our environmental impact and promoting sustainability throughout our operations. Sognos continuously seeks ways to operate more efficiently and responsibly - protecting the environment for future generations.",
   },
   {
     number: "03",
@@ -61,7 +61,7 @@ export default function SocialResponsibilityPage() {
           <p className="mt-6 text-lg max-w-3xl leading-relaxed text-white/80">
             At Sognos we understand that our impact extends far beyond the
             services we provide. Social responsibility is at the core of our
-            values — we are committed to making a difference where we live,
+            values - we are committed to making a difference where we live,
             work, and do business.
           </p>
         </div>

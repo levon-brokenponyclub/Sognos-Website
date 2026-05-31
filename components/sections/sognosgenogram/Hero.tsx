@@ -43,13 +43,13 @@ export default function GenogramHero() {
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
                 Manage cases, track service delivery, meet compliance
-                obligations, and report with confidence — in one platform built
+                obligations, and report with confidence - in one platform built
                 end-to-end for care.
               </p>
             </div>
           </div>
 
-          {/* Bottom bar — hidden, replaced by ProductDrawer */}
+          {/* Bottom bar - hidden, replaced by ProductDrawer */}
           <div className="hidden relative z-10 pb-4 lg:pb-0">
             <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
               <div className="flex flex-col gap-2 max-w-xl">

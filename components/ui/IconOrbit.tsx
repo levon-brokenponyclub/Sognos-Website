@@ -36,7 +36,7 @@ export default function IconOrbit() {
       {/* Orbit ring */}
       <div className="absolute rounded-full border border-sognos-border-subtle" style={{ width: 320, height: 320 }} aria-hidden="true" />
 
-      {/* Outer orbit — 4 logos, equally spaced at 90° */}
+      {/* Outer orbit - 4 logos, equally spaced at 90° */}
       <OrbitingCircles iconSize={40} radius={160} duration={30} speed={1}>
         <IconBubble bg="bg-white/90">
           <Image src="/logos/PowerApps_scalable.svg" width={24} height={24} alt="Power Apps" />

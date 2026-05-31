@@ -180,8 +180,8 @@ const POSTS: Record<string, Post> = {
         </p>
         <p>
           The launch event brought together an impressive line-up of local
-          organisations, customers, and partners — including APM Group, Auckland
-          Airport, Function10, and Microsoft — who joined us to celebrate this
+          organisations, customers, and partners - including APM Group, Auckland
+          Airport, Function10, and Microsoft - who joined us to celebrate this
           next chapter for Sognos and our New Zealand expansion.
         </p>
         <h2 className={H2}>
@@ -213,8 +213,8 @@ const POSTS: Record<string, Post> = {
         </h2>
         <p>
           With our New Zealand office now officially launched, Sognos Solutions
-          is excited to partner with organisations across industries — from
-          healthcare and social care to utilities and beyond — to solve field
+          is excited to partner with organisations across industries - from
+          healthcare and social care to utilities and beyond - to solve field
           service challenges and enable digital transformation at scale.
         </p>
       </div>
@@ -293,7 +293,7 @@ const POSTS: Record<string, Post> = {
           The FSM Summit Sydney event was packed with valuable insights on
           automation, customer expectations, workforce challenges, and the
           impact of AI on field service delivery. For Sognos, it was more than a
-          networking opportunity — it was a reaffirmation of our mission to help
+          networking opportunity - it was a reaffirmation of our mission to help
           clients modernise operations through Microsoft Dynamics 365 and the
           Power Platform.
         </p>
@@ -302,7 +302,7 @@ const POSTS: Record<string, Post> = {
         </h2>
         <ol>
           <li>
-            <strong>AI is no longer on the horizon — it's here.</strong> The
+            <strong>AI is no longer on the horizon - it's here.</strong> The
             field service industry is rapidly embracing AI to optimise
             scheduling, anticipate equipment failure, and enhance customer
             experiences. Microsoft's Copilot capabilities were front and centre,
@@ -317,7 +317,7 @@ const POSTS: Record<string, Post> = {
           </li>
           <li>
             <strong>People-first innovation is critical.</strong> Amid all the
-            tech, there was a strong focus on workforce enablement — ensuring
+            tech, there was a strong focus on workforce enablement - ensuring
             field technicians have the right tools, training, and support to
             succeed. At Sognos, we're passionate about building systems that
             empower people as much as they optimise process.
@@ -338,7 +338,7 @@ const POSTS: Record<string, Post> = {
           <p>
             &ldquo;So great to see this incredible community of service leaders
             coming together at FSM Summit Sydney. The energy and insight were
-            unmatched.&rdquo; — Rick Vosila, Co-Founder at Sognos
+            unmatched.&rdquo; - Rick Vosila, Co-Founder at Sognos
           </p>
         </blockquote>
         <p>
@@ -357,13 +357,13 @@ const POSTS: Record<string, Post> = {
     author: "Sognos Solutions",
     image: "/images/news/participant-care-webinar.webp",
     excerpt:
-      "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
+      "Watch the playback of our webinar with Microsoft and Flourish Australia - exploring how field service management is transforming participant care delivery.",
     twoCol: false,
     body: (
       <div className={PROSE}>
         <p>
           Watch the playback of our webinar with Microsoft and Flourish
-          Australia — exploring how field service management is transforming
+          Australia - exploring how field service management is transforming
           participant care delivery.
         </p>
         <p>
@@ -401,7 +401,7 @@ const POSTS: Record<string, Post> = {
         <p>
           Facilities management can often be an intricate balancing act.
           You&apos;re balancing assets, people, contractors, compliance, and
-          customer expectations across multiple sites — often with work that
+          customer expectations across multiple sites - often with work that
           can&apos;t wait until tomorrow.
         </p>
         <p>
@@ -418,7 +418,7 @@ const POSTS: Record<string, Post> = {
           Microsoft Dynamics 365 Field Service brings the key components of FM
           together on one platform: work order management, asset tracking,
           preventive maintenance scheduling, technician dispatch, and real-time
-          reporting. When these are connected, your team sees the full picture —
+          reporting. When these are connected, your team sees the full picture -
           not just their slice of it.
         </p>
         <p>
@@ -434,7 +434,7 @@ const POSTS: Record<string, Post> = {
         <p>
           Sognos works with facilities management organisations to implement and
           configure Dynamics 365 Field Service so it reflects the complexity of
-          real operations — multi-site, multi-contractor, and multi-compliance.
+          real operations - multi-site, multi-contractor, and multi-compliance.
           We don&apos;t hand you a platform and walk away. We map your
           workflows, build the integrations you need, and train your team so
           adoption actually sticks.
@@ -496,14 +496,14 @@ const POSTS: Record<string, Post> = {
           Organisations that move from reactive to proactive field service
           typically see three changes early: scheduling accuracy improves,
           first-time fix rates go up, and the volume of inbound status calls
-          drops. These aren&apos;t abstract improvements — they reflect a team
+          drops. These aren&apos;t abstract improvements - they reflect a team
           that has the tools to see what&apos;s coming before it becomes a
           problem.
         </p>
         <p>
           Dynamics 365 Field Service, combined with the right implementation
           partner, gives field service managers the platform to make that shift.
-          Sognos helps organisations move from chaos to control — one workflow
+          Sognos helps organisations move from chaos to control - one workflow
           at a time.
         </p>
       </div>
@@ -528,7 +528,7 @@ const POSTS: Record<string, Post> = {
             Under the strengthened Aged Care Quality Standards brought in on
             November 1, 2025, quality of care is judged less by intent and more
             by what you can demonstrate in everyday records. For aged care
-            providers, this is a fundamental shift — one that demands more from
+            providers, this is a fundamental shift - one that demands more from
             your systems, not just your staff.
           </p>
           <p>
@@ -545,7 +545,7 @@ const POSTS: Record<string, Post> = {
             The eight revised standards span safety, dignity, care delivery,
             services and supports, clinical care, food and nutrition, the living
             environment, and organisational governance. Each standard now
-            requires demonstrable evidence — not just policy documentation, but
+            requires demonstrable evidence - not just policy documentation, but
             records of how care decisions were made, reviewed, and acted on in
             individual cases.
           </p>
@@ -563,7 +563,7 @@ const POSTS: Record<string, Post> = {
             single environment for care plans, progress notes, incident
             reporting, and audit trails. When the data is structured and
             searchable, compliance reporting becomes a byproduct of good care
-            delivery — not an additional burden.
+            delivery - not an additional burden.
           </p>
           <p>
             SognosCare is built on this foundation, with the workflow design and
@@ -594,7 +594,7 @@ const POSTS: Record<string, Post> = {
             Aged Care Act and the Support at Home program now in place,
             expectations are shifting from &apos;having policies&apos; to
             consistently demonstrating safe, person-centred care. This is not a
-            gradual evolution — it is a structural reset.
+            gradual evolution - it is a structural reset.
           </p>
           <p>
             Other healthcare systems further down this path offer a useful lens.
@@ -612,7 +612,7 @@ const POSTS: Record<string, Post> = {
             records were better positioned to respond to audit requirements and
             demonstrate quality outcomes. Those that continued relying on paper
             or disconnected systems found compliance reporting becoming a
-            separate workstream — which added cost and slowed care teams down.
+            separate workstream - which added cost and slowed care teams down.
           </p>
           <p>
             Workforce management also proved critical. Providers that could
@@ -627,7 +627,7 @@ const POSTS: Record<string, Post> = {
             The reform window is open now. Providers that act on their systems
             and processes in 2025 will be in a stronger position when the
             compliance environment tightens further. Waiting for stability in
-            the reform program before investing in capability is a risk — the
+            the reform program before investing in capability is a risk - the
             organisations that adapt early tend to lead on quality outcomes and
             attract funding accordingly.
           </p>
@@ -649,20 +649,20 @@ const POSTS: Record<string, Post> = {
     author: "Sognos Solutions",
     image: "/images/news/data-residency-768x512.avif",
     excerpt:
-      "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers — especially in mental health, disability, and aged care — are told that hosting data overseas is non-compliant or even illegal.",
+      "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers - especially in mental health, disability, and aged care - are told that hosting data overseas is non-compliant or even illegal.",
     twoCol: true,
     body: (
       <div className={PROSE}>
         <p>
           A persistent myth in healthcare IT is that data must stay onshore to
-          stay safe. Many providers — especially in mental health, disability,
-          and aged care — are told that hosting data overseas is non-compliant
+          stay safe. Many providers - especially in mental health, disability,
+          and aged care - are told that hosting data overseas is non-compliant
           or even illegal. This claim has shaped procurement decisions, delayed
           modernisation projects, and led some organisations to maintain
           expensive on-premises infrastructure well past its useful life.
         </p>
         <p>
-          The reality is more nuanced, and understanding it matters — because
+          The reality is more nuanced, and understanding it matters - because
           acting on misinformation about data residency can cost your
           organisation both money and agility.
         </p>
@@ -673,13 +673,13 @@ const POSTS: Record<string, Post> = {
           The Privacy Act 1988 and the Australian Privacy Principles (APPs)
           govern how health information is handled. They require that personal
           information be protected from misuse, interference, and unauthorised
-          access — but they do not mandate that data be stored on Australian
+          access - but they do not mandate that data be stored on Australian
           soil. The obligation is to ensure adequate protections are in place
           wherever the data resides.
         </p>
         <p>
           For cloud services, this means assessing the provider&apos;s security
-          controls, certifications, and contractual commitments — not simply
+          controls, certifications, and contractual commitments - not simply
           their data centre location. Microsoft Azure, for example, holds IRAP
           assessments across multiple services and operates Australian data
           centre regions, which satisfies the expectations of most healthcare
@@ -691,7 +691,7 @@ const POSTS: Record<string, Post> = {
         <p>
           Real data risk in healthcare tends to come from access control gaps,
           unencrypted storage, inadequate audit trails, and poor incident
-          response — not from geography. Providers that focus exclusively on
+          response - not from geography. Providers that focus exclusively on
           residency while leaving other security fundamentals unaddressed are
           solving the wrong problem.
         </p>
@@ -716,12 +716,12 @@ const POSTS: Record<string, Post> = {
       author: "Sognos Solutions",
       image: "/images/news/Good-compliance-768x511.avif",
       excerpt:
-        "If you lead a disability service today, you can feel it — compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
+        "If you lead a disability service today, you can feel it - compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
       twoCol: true,
       body: (
         <div className={PROSE}>
           <p>
-            If you lead a disability service today, you can feel it — compliance
+            If you lead a disability service today, you can feel it - compliance
             is back at the centre of everything. The NDIS Commission expects
             every provider to run a working incident management system, document
             outcomes, and respond to audits with confidence. The expectation
@@ -749,7 +749,7 @@ const POSTS: Record<string, Post> = {
             This means incident management that is genuinely easy to use on a
             mobile device, progress notes that are structured without being
             rigid, and reporting dashboards that give management visibility
-            across the whole organisation — not just a snapshot of one program.
+            across the whole organisation - not just a snapshot of one program.
           </p>
           <h2 className={H2}>
             Evaluating Your Options
@@ -763,7 +763,7 @@ const POSTS: Record<string, Post> = {
           </p>
           <p>
             SognosCare is built on Microsoft Dynamics 365 and designed to meet
-            the specific reporting requirements of NDIS providers — from
+            the specific reporting requirements of NDIS providers - from
             incident management and outcome tracking to audit-ready records and
             NDIS Commission reporting. If you&apos;re evaluating your options,
             we&apos;re worth adding to the list.
@@ -788,7 +788,7 @@ const POSTS: Record<string, Post> = {
           Reform has landed. Now the real work begins. The new Aged Care Act and
           Support at Home program came into force, reshaping how aged care
           operates, funds, and proves quality. It is the most significant
-          structural change in a generation — and providers are now operating
+          structural change in a generation - and providers are now operating
           inside a compliance environment that rewards organisations that are
           ready, and exposes those that are not.
         </p>
@@ -810,7 +810,7 @@ const POSTS: Record<string, Post> = {
         <p>
           At the governance level, the new Act strengthens the obligations of
           approved providers on quality systems, incident management, and
-          continuous improvement. These are not tick-box requirements — they
+          continuous improvement. These are not tick-box requirements - they
           require organisations to demonstrate that their systems actually work
           as intended.
         </p>
@@ -824,8 +824,8 @@ const POSTS: Record<string, Post> = {
           manual documentation at scale.
         </p>
         <p>
-          Sognos works with aged care providers to implement SognosCare — a
-          purpose-built care management platform on Microsoft Dynamics 365 —
+          Sognos works with aged care providers to implement SognosCare - a
+          purpose-built care management platform on Microsoft Dynamics 365 -
           that is designed for exactly this operating environment. If you want
           to understand what implementation looks like for your organisation,
           reach out to our team.
@@ -842,14 +842,14 @@ const POSTS: Record<string, Post> = {
     author: "Sognos Solutions",
     image: "/images/news/admin-overload-768x405.avif",
     excerpt:
-      "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday — and it's pushing good workers out the door.",
+      "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday - and it's pushing good workers out the door.",
     twoCol: true,
     body: (
       <div className={PROSE}>
         <p>
           Across Australia and New Zealand, frontline teams in care and
           community services are under pressure. Time with people is shrinking
-          as screens take over the workday — and it&apos;s pushing good workers
+          as screens take over the workday - and it&apos;s pushing good workers
           out the door.
         </p>
         <p>
@@ -871,21 +871,21 @@ const POSTS: Record<string, Post> = {
         </p>
         <p>
           This is not sustainable, and it is not inevitable. It is a systems
-          problem — and systems problems can be solved.
+          problem - and systems problems can be solved.
         </p>
         <h2 className={H2}>
           What Reducing Admin Actually Requires
         </h2>
         <p>
           Reducing admin burden for frontline care workers requires rethinking
-          how information is captured and shared — not just digitising existing
+          how information is captured and shared - not just digitising existing
           paper forms. When notes are structured at the point of care on a
           mobile device, when shift handover happens in the platform rather than
           via phone, and when compliance reporting is generated automatically
           from care records, the time equation changes.
         </p>
         <p>
-          SognosCare is designed with frontline workers in mind — mobile-first,
+          SognosCare is designed with frontline workers in mind - mobile-first,
           structured for compliance, and built to reduce the time between care
           and documentation. If your team is burning out on admin, let&apos;s
           talk about what better looks like.
@@ -904,12 +904,12 @@ const POSTS: Record<string, Post> = {
       author: "Sognos Solutions",
       image: "/images/news/mobile-care-app-solutions-768x512.avif",
       excerpt:
-        "Frontline care relies on connection — between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
+        "Frontline care relies on connection - between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
       twoCol: true,
       body: (
         <div className={PROSE}>
           <p>
-            Frontline care relies on connection — between people, information,
+            Frontline care relies on connection - between people, information,
             and place. Yet for many teams, mobile tools still slow things down.
             Coverage drops. Logins fail. Notes get written on paper and entered
             hours later. The technology meant to support care workers often
@@ -927,8 +927,8 @@ const POSTS: Record<string, Post> = {
           </h2>
           <p>
             Microsoft Dataverse provides the data layer that makes mobile care
-            apps work the way they should. Information captured in the field —
-            notes, observations, task completions — is stored in a structured
+            apps work the way they should. Information captured in the field -
+            notes, observations, task completions - is stored in a structured
             format that connects directly to care plans, rostering, compliance
             records, and reporting. There is no secondary sync required, no
             manual reconciliation, and no data that exists only on a device.
@@ -937,7 +937,7 @@ const POSTS: Record<string, Post> = {
             Offline capability means workers can continue recording in
             low-signal environments and have their data synced automatically
             when connectivity returns. For community care workers covering
-            regional or rural areas, this is not a nice-to-have — it is
+            regional or rural areas, this is not a nice-to-have - it is
             essential.
           </p>
           <h2 className={H2}>
@@ -947,7 +947,7 @@ const POSTS: Record<string, Post> = {
             Sognos builds mobile care apps on Power Apps and Dataverse that are
             tailored to the specific workflows of NDIS providers, aged care
             organisations, and allied health teams. The apps are designed for
-            workers, not system administrators — simple interfaces, structured
+            workers, not system administrators - simple interfaces, structured
             inputs, and the data connections that matter.
           </p>
           <p>
@@ -967,14 +967,14 @@ const POSTS: Record<string, Post> = {
     author: "Sognos Solutions",
     image: "/images/news/Heathcare-burnout_blog-768x576.avif",
     excerpt:
-      "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin — and the people who remain are carrying more than they should.",
+      "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin - and the people who remain are carrying more than they should.",
     twoCol: true,
     body: (
       <div className={PROSE}>
         <p>
           Across Australia, providers in mental health and disability care are
           facing a growing crisis. Recruitment is harder. Retention is slipping.
-          Rosters are stretched thin — and the people who remain are carrying
+          Rosters are stretched thin - and the people who remain are carrying
           more than they should. Burnout is not a future risk in this sector. It
           is a present reality.
         </p>
@@ -996,7 +996,7 @@ const POSTS: Record<string, Post> = {
           relationship building.
         </p>
         <p>
-          These are not just inconveniences — they are stressors that compound
+          These are not just inconveniences - they are stressors that compound
           over weeks and months. Workers who feel unsupported by their systems
           are more likely to feel unsupported by their organisation.
         </p>
@@ -1012,7 +1012,7 @@ const POSTS: Record<string, Post> = {
         </p>
         <p>
           SognosRoster is built to give workforce managers the visibility and
-          control to run stable, sustainable rosters — and to give frontline
+          control to run stable, sustainable rosters - and to give frontline
           workers the information they need to do their jobs without additional
           friction. If workforce stability is a priority for your organisation,
           let&apos;s talk.
@@ -1030,13 +1030,13 @@ const POSTS: Record<string, Post> = {
     author: "Sognos Solutions",
     image: "/images/news/admin-blog-768x576.webp",
     excerpt:
-      "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional — it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
+      "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional - it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
     twoCol: true,
     body: (
       <div className={PROSE}>
         <p>
           In highly regulated industries like utilities, healthcare, and
-          infrastructure, compliance isn&apos;t optional — it&apos;s a daily
+          infrastructure, compliance isn&apos;t optional - it&apos;s a daily
           operational necessity. Yet many field service organisations still rely
           on manual compliance tracking: spreadsheets, printed checklists, and
           follow-up calls to confirm whether the right steps were taken on the
@@ -1045,7 +1045,7 @@ const POSTS: Record<string, Post> = {
         <p>
           This approach has a ceiling. As teams grow and job volumes increase,
           the overhead of manual compliance tracking scales linearly with
-          operations. At some point, it becomes a constraint on growth — or a
+          operations. At some point, it becomes a constraint on growth - or a
           liability when an audit reveals gaps.
         </p>
         <h2 className={H2}>
@@ -1072,7 +1072,7 @@ const POSTS: Record<string, Post> = {
           Microsoft Dynamics 365 Field Service provides the workflow
           infrastructure to automate compliance at scale. Sognos configures
           these capabilities to reflect the specific requirements of your
-          industry — whether that is AS/NZS standards in utilities, care
+          industry - whether that is AS/NZS standards in utilities, care
           delivery compliance in health, or safety protocols in infrastructure.
         </p>
         <p>
@@ -1108,7 +1108,7 @@ const POSTS: Record<string, Post> = {
         <p>
           This is where Power Apps changes what is possible. Rather than forcing
           your operations into a standard template, Power Apps allows field
-          service platforms to be shaped around your specific workflows —
+          service platforms to be shaped around your specific workflows -
           without the cost of custom software development.
         </p>
         <h2 className={H2}>
@@ -1117,7 +1117,7 @@ const POSTS: Record<string, Post> = {
         <p>
           Power Apps sits on top of Microsoft Dataverse, which means it connects
           directly to Dynamics 365 Field Service data. Custom apps can be built
-          for specific roles — a technician app that surfaces only the job
+          for specific roles - a technician app that surfaces only the job
           information relevant to that worker, a supervisor dashboard built for
           rapid status review, or a client-facing portal for booking and
           tracking service requests.
@@ -1125,7 +1125,7 @@ const POSTS: Record<string, Post> = {
         <p>
           These are not bolt-ons. They are native extensions of the same data
           platform, which means information captured in a Power App flows
-          immediately into the broader system — no manual exports, no sync
+          immediately into the broader system - no manual exports, no sync
           delays, no duplicate records.
         </p>
         <h2 className={H2}>
@@ -1133,7 +1133,7 @@ const POSTS: Record<string, Post> = {
         </h2>
         <p>
           Sognos has built Power Apps customisations for field service clients
-          across facilities management, health and social care, and utilities —
+          across facilities management, health and social care, and utilities -
           including mobile job checklists with industry-specific compliance
           requirements, technician certification validation, and real-time asset
           condition reporting.
@@ -1333,7 +1333,7 @@ export default async function KnowledgeHubPost({
               <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
             </div>
 
-            {/* Right — image */}
+            {/* Right - image */}
             <div className="overflow-hidden rounded-lg h-80 max-h-80 lg:w-1/2 lg:max-w-[41rem] lg:min-h-[380px] lg:max-h-[380px]">
               <img
                 src={post.image}

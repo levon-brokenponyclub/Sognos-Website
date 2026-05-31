@@ -3,9 +3,9 @@ const PROBLEMS = [
     number: "01",
     problem: "Manual rostering consumes weeks every month",
     problemDetail:
-      "Workforce managers in high-volume environments spend 20–30% of their week on scheduling. Spreadsheets, phone calls, and calendar juggling are the norm — and the first disruption unravels everything.",
+      "Workforce managers in high-volume environments spend 20–30% of their week on scheduling. Spreadsheets, phone calls, and calendar juggling are the norm - and the first disruption unravels everything.",
     solution:
-      "Demand-driven roster generation — services are matched to workers based on skills, availability, location, and compliance status automatically, from the moment a service request is confirmed.",
+      "Demand-driven roster generation - services are matched to workers based on skills, availability, location, and compliance status automatically, from the moment a service request is confirmed.",
     iconPath:
       "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
   },
@@ -13,9 +13,9 @@ const PROBLEMS = [
     number: "02",
     problem: "Skills matching is error-prone at scale",
     problemDetail:
-      "Checking that every worker holds the right qualifications, active certifications, and client-specific clearances manually at volume is a compliance liability — and it breaks down when things move fast.",
+      "Checking that every worker holds the right qualifications, active certifications, and client-specific clearances manually at volume is a compliance liability - and it breaks down when things move fast.",
     solution:
-      "Every worker allocation is validated against qualification requirements, compliance certifications, and client preferences before it's confirmed — automatically, at the point of scheduling.",
+      "Every worker allocation is validated against qualification requirements, compliance certifications, and client preferences before it's confirmed - automatically, at the point of scheduling.",
     iconPath:
       "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
   },
@@ -23,9 +23,9 @@ const PROBLEMS = [
     number: "03",
     problem: "Real-time changes break the day's schedule",
     problemDetail:
-      "A sick-leave call at 6am can trigger hours of phone calls to find a replacement. The cascading effect — travel rerouting, coverage gaps, client notifications — compounds through the whole day.",
+      "A sick-leave call at 6am can trigger hours of phone calls to find a replacement. The cascading effect - travel rerouting, coverage gaps, client notifications - compounds through the whole day.",
     solution:
-      "When plans change — sick leave, service additions, cancellations — SognosRoster reoptimises the affected day in minutes and notifies the right workers automatically. No phone cascade.",
+      "When plans change - sick leave, service additions, cancellations - SognosRoster reoptimises the affected day in minutes and notifies the right workers automatically. No phone cascade.",
     iconPath:
       "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
   },
@@ -35,7 +35,7 @@ const PROBLEMS = [
     problemDetail:
       "When rostering runs separately from care management, visit records don't match care plans, coordinators reconcile discrepancies daily, and nothing is where regulators expect it to be.",
     solution:
-      "SognosRoster and SognosCare share the same data layer. Visit records, care plans, and participant history stay in sync automatically — without manual reconciliation or duplicate entry.",
+      "SognosRoster and SognosCare share the same data layer. Visit records, care plans, and participant history stay in sync automatically - without manual reconciliation or duplicate entry.",
     iconPath:
       "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4",
   },

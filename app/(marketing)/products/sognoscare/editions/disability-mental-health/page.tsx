@@ -13,7 +13,7 @@ const data: EditionData = {
   name: "Disability & Mental Health",
   tagline: "Purpose-built for psychosocial providers.",
   description:
-    "Smart systems to support participant goals, reduce admin, and stay NDIS-compliant — all built on Microsoft using the latest AI technology.",
+    "Smart systems to support participant goals, reduce admin, and stay NDIS-compliant - all built on Microsoft using the latest AI technology.",
   gradient: "/images/sognoscare/gradient-1.png",
   accentHex: "#009982",
   accentTextClass: "text-(--sognos-edition-green)",
@@ -23,7 +23,7 @@ const data: EditionData = {
     {
       label: "Endless admin and disconnected systems",
       description:
-        "Teams juggle multiple platforms for referrals, notes, and compliance — creating errors and burning time.",
+        "Teams juggle multiple platforms for referrals, notes, and compliance - creating errors and burning time.",
     },
     {
       label: "NDIS compliance headaches",
@@ -55,7 +55,7 @@ const data: EditionData = {
     {
       title: "Core Features",
       description:
-        "Everything a NDIS or psychosocial support provider needs — pre-configured, compliant, and ready to deploy.",
+        "Everything a NDIS or psychosocial support provider needs - pre-configured, compliant, and ready to deploy.",
     },
     {
       title: "Intake & Onboarding",
@@ -120,7 +120,7 @@ const data: EditionData = {
     title:
       "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption - using SognosCare to manage the change from day one.",
     href: "/customer-stories",
     company: "Penrith City Council",
     companySize: "300+",

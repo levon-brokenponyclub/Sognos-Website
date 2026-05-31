@@ -14,7 +14,7 @@ const TABS = [
     name: "Rishit Patel",
     role: "Dynamics 365 Technical Consultant",
     quote:
-      "At Sognos, I've discovered more than just a workplace — it's a close-knit family dedicated to fostering improvement. Every challenge is a chance to grow.",
+      "At Sognos, I've discovered more than just a workplace - it's a close-knit family dedicated to fostering improvement. Every challenge is a chance to grow.",
   },
   {
     name: "Praneetha Pulivendula",
@@ -44,7 +44,7 @@ export default function LifeAtSognos() {
         {/* 3-col panel */}
         <div className="flex gap-4 min-h-[420px]">
 
-          {/* Col 1 — tab list */}
+          {/* Col 1 - tab list */}
           <div className="shrink-0 w-[22%] bg-gray-100 rounded-lg p-7 flex flex-col justify-center gap-0">
             {TABS.map((tab, i) => (
               <button
@@ -70,7 +70,7 @@ export default function LifeAtSognos() {
             ))}
           </div>
 
-          {/* Col 2 — image placeholder */}
+          {/* Col 2 - image placeholder */}
           <div className="flex-1 rounded-lg overflow-hidden bg-gray-300 relative">
             <AnimatePresence mode="wait">
               <motion.div
@@ -89,7 +89,7 @@ export default function LifeAtSognos() {
             </AnimatePresence>
           </div>
 
-          {/* Col 3 — quote */}
+          {/* Col 3 - quote */}
           <div className="shrink-0 w-[34%] bg-prussian-blue-800 rounded-lg p-8 flex flex-col justify-between">
             <AnimatePresence mode="wait">
               <motion.div

@@ -5,7 +5,7 @@ const PAIN_POINTS = [
   },
   {
     title: "Disconnected family picture",
-    body: "Information about family dynamics lives in handwritten notes, old files, and people's memory — not in the system where it can inform active service decisions.",
+    body: "Information about family dynamics lives in handwritten notes, old files, and people's memory - not in the system where it can inform active service decisions.",
   },
   {
     title: "Context lost between workers",
@@ -23,7 +23,7 @@ export default function GenogramProblems() {
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
             Standard case management captures what happened. Sognos Genogram
-            captures who is involved — and what those relationships mean for
+            captures who is involved - and what those relationships mean for
             service delivery.
           </p>
         </div>

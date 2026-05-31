@@ -11,7 +11,7 @@ export const PRODUCTS = {
     href: "/products/sognoscare",
     tagline: "Care operations & compliance platform",
     description:
-      "Manage service delivery, maintain compliance, and report with confidence — all in one platform.",
+      "Manage service delivery, maintain compliance, and report with confidence - all in one platform.",
   },
   roster: {
     name: "SognosRoster",
@@ -19,7 +19,7 @@ export const PRODUCTS = {
     href: "/products/sognosroster",
     tagline: "Workforce scheduling & optimisation engine",
     description:
-      "Allocate the right people, at the right time, to the right services — automatically.",
+      "Allocate the right people, at the right time, to the right services - automatically.",
   },
   genogram: {
     name: "Sognos Genogram",
@@ -27,7 +27,7 @@ export const PRODUCTS = {
     href: "/products/sognosgenogram",
     tagline: "Relationship & family context platform",
     description:
-      "Map family structures, support networks, and relationship histories directly into case records — so every worker has the context they need.",
+      "Map family structures, support networks, and relationship histories directly into case records - so every worker has the context they need.",
   },
 } as const;
 
@@ -78,7 +78,7 @@ export const SOLUTIONS = [
     name: "Quick Start",
     slug: "quick-start",
     href: "/solutions/quick-start",
-    description: "Get up and running with Sognos in weeks — not months.",
+    description: "Get up and running with Sognos in weeks - not months.",
   },
 ] as const;
 
@@ -168,7 +168,7 @@ export const SOGNOSCARE_EDITIONS = [
     accentColor: "#00A98F",
     tagline: "NDIS, psychosocial support, and participant outcome tracking",
     description:
-      "Plan around participant goals, manage incidents, and streamline progress notes — with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
+      "Plan around participant goals, manage incidents, and streamline progress notes - with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
   },
   {
     label: "Allied Health",
@@ -178,7 +178,7 @@ export const SOGNOSCARE_EDITIONS = [
     tagline:
       "Mobile therapy , referral management, and multi-disciplinary records",
     description:
-      "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
+      "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access designed for practitioners who work across multiple sites.",
   },
   {
     label: "Hospital in the Home",
@@ -196,7 +196,7 @@ export const SOGNOSCARE_EDITIONS = [
     accentColor: "#FF7276",
     tagline: "Support at Home reform, and client independence",
     description:
-      "Manage client services, budgets, and care workers while staying ahead of the Support at Home program — with funding model changes tracked and compliance pre-configured.",
+      "Manage client services, budgets, and care workers while staying ahead of the Support at Home program - with funding model changes tracked and compliance pre-configured.",
   },
   {
     label: "Residential Aged Care",
@@ -205,7 +205,7 @@ export const SOGNOSCARE_EDITIONS = [
     accentColor: "#BE8FFF",
     tagline: "Care planning, clinical documentation, and compliance",
     description:
-      "From care planning to staff coordination and resident reporting — built for residential providers demonstrating quality against Aged Care Quality Standards.",
+      "From care planning to staff coordination and resident reporting - built for residential providers demonstrating quality against Aged Care Quality Standards.",
   },
   {
     label: "Child & Family Services",

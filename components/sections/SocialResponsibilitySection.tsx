@@ -7,7 +7,7 @@ import Link from "next/link";
 const SR_PILLARS = [
   {
     title: "Community Engagement",
-    body: "We actively seek opportunities to support community development — through volunteering, resources, and expertise.",
+    body: "We actively seek opportunities to support community development - through volunteering, resources, and expertise.",
     image: "/images/industries/local-government.webp",
   },
   {
@@ -17,7 +17,7 @@ const SR_PILLARS = [
   },
   {
     title: "Ethical Business Practices",
-    body: "Integrity and transparency are cornerstones of how we operate — we believe in doing the right thing, always.",
+    body: "Integrity and transparency are cornerstones of how we operate - we believe in doing the right thing, always.",
     image: "/images/industries/industrial-services.webp",
   },
 ];
@@ -40,7 +40,7 @@ export default function SocialResponsibilitySection() {
             </h2>
             <p className="font-heading font-normal leading-relaxed lg:text-lg mb-10 text-white/80">
               At Sognos, our impact extends far beyond the services we provide.
-              Social responsibility is at the core of our values — we are
+              Social responsibility is at the core of our values - we are
               committed to making a difference where we live, work, and do
               business.
             </p>
@@ -114,7 +114,7 @@ export default function SocialResponsibilitySection() {
             {/* Active Card - 2 Columns */}
             <div className="bg-white rounded-lg p-2 overflow-hidden relative group">
               <div className="flex flex-col lg:flex-row min-h-[460px]">
-                {/* Left Column — Info Panel */}
+                {/* Left Column - Info Panel */}
                 <div className="shrink-0 lg:w-[40%] bg-gray-200/60 rounded-lg p-7 flex flex-col justify-between">
                   <div className="flex flex-col">
                     <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
@@ -149,7 +149,7 @@ export default function SocialResponsibilitySection() {
                   </Link>
                 </div>
 
-                {/* Right Column — Image */}
+                {/* Right Column - Image */}
                 <div className="flex-1 relative rounded-lg overflow-hidden lg:ml-4 lg:mt-0 mt-4">
                   <Image
                     src={SR_PILLARS[activeSR].image}

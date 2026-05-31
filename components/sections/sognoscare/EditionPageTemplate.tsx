@@ -153,7 +153,7 @@ function Hero({ data }: { data: EditionData }) {
             </div>
           </div>
 
-          {/* The problem — bottom-aligned card inside the hero */}
+          {/* The problem - bottom-aligned card inside the hero */}
           <div className="hidden relative z-10 pb-4 lg:pb-0">
             <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
               <div className="flex flex-col gap-2 max-w-xl">
@@ -227,7 +227,7 @@ function WhatItSolves({ data }: { data: EditionData }) {
                 i % 3 !== 2 ? "lg:border-r" : ""
               } ${i % 2 !== 1 ? "border-r sm:border-r lg:border-r-0" : ""} lg:[&:nth-child(3n)]:border-r-0 sm:[&:nth-child(2n)]:border-r-0`}
             >
-              {/* Problem icon — numbered */}
+              {/* Problem icon - numbered */}
               <span
                 className="inline-block text-xs font-mono font-bold mb-3"
                 style={{ color: data.accentHex }}
@@ -268,7 +268,7 @@ function Features({ data }: { data: EditionData }) {
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          {/* Left column — sticky, vertically centered in viewport */}
+          {/* Left column - sticky, vertically centered in viewport */}
           <div className="lg:col-span-5 lg:sticky lg:top-1/2 lg:-trangray-y-1/2">
             <div
               className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6"
@@ -300,13 +300,13 @@ function Features({ data }: { data: EditionData }) {
               Core Features
             </h2>
             <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
-              Purpose-built for {data.name.toLowerCase()} providers — every
+              Purpose-built for {data.name.toLowerCase()} providers - every
               capability is engineered to remove friction from frontline service
               delivery.
             </p>
           </div>
 
-          {/* Right column — numbered feature list with accent fill on hover */}
+          {/* Right column - numbered feature list with accent fill on hover */}
           <ul className="lg:col-span-7">
             {data.features.map((feature, i) => (
               <li
@@ -502,7 +502,7 @@ function ProofStories({ data }: { data: EditionData }) {
 
         {/* Card */}
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]">
-          {/* Left — image with logo + stats */}
+          {/* Left - image with logo + stats */}
           <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto bg-prussian-blue-800/10">
             <Image
               src={cs.panelImage}
@@ -512,7 +512,7 @@ function ProofStories({ data }: { data: EditionData }) {
               sizes="(max-width: 1024px) 50vw, 35vw"
             />
 
-            {/* White logo — centered */}
+            {/* White logo - centered */}
             <div className="relative z-10 flex-1 flex items-center justify-center">
               <Image
                 src={cs.logo}
@@ -523,7 +523,7 @@ function ProofStories({ data }: { data: EditionData }) {
               />
             </div>
 
-            {/* Stats — bottom */}
+            {/* Stats - bottom */}
             <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
@@ -548,7 +548,7 @@ function ProofStories({ data }: { data: EditionData }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
           </div>
 
-          {/* Right — quote panel */}
+          {/* Right - quote panel */}
           <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
             <div className="flex-1 flex flex-col justify-center">
               <QuoteIcon className="text-prussian-blue-800/20" />
@@ -622,7 +622,7 @@ function RelatedEditions({ data }: { data: EditionData }) {
           </h2>
         </div>
 
-        {/* Editions grid — 3 visible, no overflow */}
+        {/* Editions grid - 3 visible, no overflow */}
         <EditionCards editions={relatedEditions} showSliderButtons dark />
       </div>
     </section>
@@ -636,7 +636,7 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
     <main className="w-full bg-white">
       <Hero data={data} />
       <ProductSubNav
-        productName={`SognosCare — ${data.name}`}
+        productName={`SognosCare - ${data.name}`}
         logoSrc={
           EDITION_LOGOS_DARK[data.name] ?? "/logos/sognos-care-logo-color.svg"
         }
@@ -658,7 +658,7 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
         <CTASection defaultProduct="sognoscare" />
       </div>
 
-      {/* Mobile hero drawer — fixed, rendered at page level to escape hero overflow-hidden */}
+      {/* Mobile hero drawer - fixed, rendered at page level to escape hero overflow-hidden */}
       <ProductDrawer
         secondaryLabel="Explore Editions"
         currentProduct="sognoscare"

@@ -19,7 +19,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Compliance pressure is constant",
-        body: "NDIS, aged care, and state-level regulations require evidence of service delivery, participant outcomes, and audit-ready records — at all times.",
+        body: "NDIS, aged care, and state-level regulations require evidence of service delivery, participant outcomes, and audit-ready records - at all times.",
       },
       {
         title: "Workforce complexity is high",
@@ -33,7 +33,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     howSognosHelps: [
       {
         title: "Compliance built into every workflow",
-        body: "SognosCare embeds compliance checks, audit trails, and outcome recording directly into service delivery — so evidence exists without extra admin effort.",
+        body: "SognosCare embeds compliance checks, audit trails, and outcome recording directly into service delivery - so evidence exists without extra admin effort.",
       },
       {
         title: "Intelligent workforce matching",
@@ -41,7 +41,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
       },
       {
         title: "Reporting without the overhead",
-        body: "Generate funder and regulatory reports from live operational data — no manual compilation, no reconciliation.",
+        body: "Generate funder and regulatory reports from live operational data - no manual compilation, no reconciliation.",
       },
     ],
   },
@@ -50,7 +50,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     hero: {
       headline: "Field operations that run on time",
       subtext:
-        "Sognos helps facilities management organisations dispatch field teams, track SLA performance, and deliver consistently — across every client and site.",
+        "Sognos helps facilities management organisations dispatch field teams, track SLA performance, and deliver consistently - across every client and site.",
     },
     challenges: [
       {
@@ -105,7 +105,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Accountability without visibility",
-        body: "Council services are expected to be transparent and auditable — but records are often scattered, incomplete, or stored in systems that can't report effectively. Budget pressure is constant.",
+        body: "Council services are expected to be transparent and auditable - but records are often scattered, incomplete, or stored in systems that can't report effectively. Budget pressure is constant.",
       },
       {
         title: "Workforce coordination across departments",
@@ -113,7 +113,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
       },
       {
         title: "Reporting to multiple stakeholders",
-        body: "Elected officials, executive teams, and funding bodies all need different views of the same operational data — and getting there takes hours of manual work.",
+        body: "Elected officials, executive teams, and funding bodies all need different views of the same operational data - and getting there takes hours of manual work.",
       },
     ],
     howSognosHelpsIntro:
@@ -155,11 +155,11 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Large workforces are hard to coordinate",
-        body: "Hundreds of workers across multiple sites, shifts, and contractors — getting the right people in the right place requires coordination that manual tools can't handle.",
+        body: "Hundreds of workers across multiple sites, shifts, and contractors - getting the right people in the right place requires coordination that manual tools can't handle.",
       },
       {
         title: "Asset and job linkage is complex",
-        body: "Field workers need to know what asset they're servicing, what history it has, and what tools or parts are required — and that information rarely reaches them efficiently.",
+        body: "Field workers need to know what asset they're servicing, what history it has, and what tools or parts are required - and that information rarely reaches them efficiently.",
       },
       {
         title: "Real-time changes disrupt the schedule",
@@ -169,7 +169,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     howSognosHelps: [
       {
         title: "Demand-driven scheduling at scale",
-        body: "SognosRoster generates and optimises schedules for large field workforces automatically — factoring skills, location, shift constraints, and workload.",
+        body: "SognosRoster generates and optimises schedules for large field workforces automatically - factoring skills, location, shift constraints, and workload.",
       },
       {
         title: "Asset-linked job management",
@@ -177,7 +177,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
       },
       {
         title: "Real-time reoptimisation",
-        body: "When the schedule breaks, SognosRoster recalculates and reassigns in real time — minimising disruption and maintaining output.",
+        body: "When the schedule breaks, SognosRoster recalculates and reassigns in real time - minimising disruption and maintaining output.",
       },
     ],
   },
@@ -191,7 +191,7 @@ export const INDUSTRIES_CONTENT: IndustryContent[] = [
     challenges: [
       {
         title: "Compliance requirements are severe",
-        body: "Regulatory obligations, safety standards, and licensing requirements mean every job must be performed by the right person with the right qualifications — and evidenced.",
+        body: "Regulatory obligations, safety standards, and licensing requirements mean every job must be performed by the right person with the right qualifications - and evidenced.",
       },
       {
         title: "Asset-intensive operations are hard to track",

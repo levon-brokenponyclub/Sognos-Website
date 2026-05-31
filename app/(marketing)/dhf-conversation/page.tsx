@@ -67,7 +67,7 @@ export default function DhfConversationPage() {
       {/* Body */}
       <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Left — context */}
+          {/* Left - context */}
           <div>
             <p className="text-lg text-prussian-blue-800 leading-relaxed mb-8">
               Sognos Solutions is your health, social, and community care
@@ -105,7 +105,7 @@ export default function DhfConversationPage() {
             </div>
           </div>
 
-          {/* Right — form */}
+          {/* Right - form */}
           <div>
             {submitted ? (
               <div className="flex flex-col items-start gap-4 py-12">
@@ -125,7 +125,7 @@ export default function DhfConversationPage() {
                   </svg>
                 </div>
                 <h2 className="font-heading text-2xl font-medium text-prussian-blue-800">
-                  Thanks — we'll be in touch.
+                  Thanks - we'll be in touch.
                 </h2>
                 <p className="text-base text-sognos-text-body max-w-sm">
                   One of our team will reach out shortly to arrange a time to

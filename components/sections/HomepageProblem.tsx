@@ -16,7 +16,7 @@ const CARDS = [
     type: "role" as const,
     role: "Operations & Service Managers",
     heading: "You need to know what's happening before anyone calls you.",
-    body: "You run the day. Every change in schedule, every missed job, every compliance gap — it lands on you. Right now you're piecing it together across multiple systems.",
+    body: "You run the day. Every change in schedule, every missed job, every compliance gap - it lands on you. Right now you're piecing it together across multiple systems.",
     features: [
       { label: "Workforce Scheduling", icon: CalendarCheck },
       { label: "Real-time Visibility", icon: Eye },
@@ -26,7 +26,7 @@ const CARDS = [
   {
     type: "role" as const,
     role: "Executive & Leadership",
-    heading: "You need accurate data fast — not a report that takes two days.",
+    heading: "You need accurate data fast - not a report that takes two days.",
     body: "You make decisions based on what's in the system. When the system is three spreadsheets and a shared inbox, you make decisions on incomplete information.",
     features: [
       { label: "Reporting & Insights", icon: ChartBar },
@@ -38,7 +38,7 @@ const CARDS = [
     type: "proof" as const,
     stat: "25 min → 10 sec",
     customer: "Penrith City Council",
-    body: "Coordinators managing team movements — a task that was refused before — now done in 3 clicks.",
+    body: "Coordinators managing team movements - a task that was refused before - now done in 3 clicks.",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function HomepageProblem() {
             If you're juggling systems, things fall through the cracks
           </h2>
           <p className="mt-4 text-wh-text-muted text-base lg:text-lg leading-relaxed max-w-2xl">
-            You plan work in one place. Schedule it in another. Track it somewhere else — if at all.
+            You plan work in one place. Schedule it in another. Track it somewhere else - if at all.
           </p>
         </div>
 
@@ -153,7 +153,7 @@ function ProofCard({ card }: { card: ProofCardData }) {
       <div>
         <p className="text-white/80 text-sm leading-relaxed mb-3">{card.body}</p>
         <p className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
-          — {card.customer}
+          - {card.customer}
         </p>
       </div>
     </div>

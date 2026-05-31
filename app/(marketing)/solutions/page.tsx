@@ -4,9 +4,9 @@ import CTASection from "@/components/sections/CTASection";
 import { SOLUTIONS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Solutions — Sognos",
+  title: "Solutions - Sognos",
   description:
-    "Supporting engagements built on Microsoft Dynamics 365. From Frontline and CRM to Power Platform and Quick Start — Sognos delivers the right solution for your operations.",
+    "Supporting engagements built on Microsoft Dynamics 365. From Frontline and CRM to Power Platform and Quick Start - Sognos delivers the right solution for your operations.",
 };
 
 export default function SolutionsPage() {
@@ -31,7 +31,7 @@ export default function SolutionsPage() {
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/60">
             Sognos solutions are built on Microsoft Dynamics 365 and Power
             Platform. They support the specific capability areas your
-            organisation needs — independently or alongside our core products.
+            organisation needs - independently or alongside our core products.
           </p>
         </div>
       </section>

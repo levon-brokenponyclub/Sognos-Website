@@ -35,7 +35,7 @@ const ITEMS = [
       avatar: "/images/avatar-emma-real.png",
       accent: "#1E40AF",
     },
-    job: { label: "Morning Round", detail: "Meadowbrook — 08:00" },
+    job: { label: "Morning Round", detail: "Meadowbrook - 08:00" },
     matchPct: 97,
     y: 60,
   },
@@ -47,7 +47,7 @@ const ITEMS = [
       avatar: "/images/avatar-james-real.png",
       accent: "#065F46",
     },
-    job: { label: "Home Visit", detail: "Thornton St — 09:30" },
+    job: { label: "Home Visit", detail: "Thornton St - 09:30" },
     matchPct: 94,
     y: 180,
   },
@@ -59,7 +59,7 @@ const ITEMS = [
       avatar: "/images/avatar-priya-real.png",
       accent: "#6B21A8",
     },
-    job: { label: "Medication Admin", detail: "St Luke's — 10:00" },
+    job: { label: "Medication Admin", detail: "St Luke's - 10:00" },
     matchPct: 99,
     y: 300,
   },
@@ -110,7 +110,7 @@ function WorkerAvatar({
           className="aspect-square h-full w-full object-cover"
         />
       </span>
-      {/* Status indicator — top-right */}
+      {/* Status indicator - top-right */}
       <span
         className={`absolute inline-flex h-4 w-4 items-center justify-center rounded-full transition-all duration-500 ${
           matched ? "bg-teal-600" : "bg-yellow-400"
@@ -397,7 +397,7 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
         />
       ))}
 
-      {/* Match rings — z-10 sits above SVG lines, shifted 50px above line */}
+      {/* Match rings - z-10 sits above SVG lines, shifted 50px above line */}
       {ITEMS.map((item, i) => (
         <div
           key={item.id + "-r"}
@@ -412,7 +412,7 @@ export default function Workforce({ trigger = false }: { trigger?: boolean }) {
         </div>
       ))}
 
-      {/* SVG — connection lines */}
+      {/* SVG - connection lines */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full z-1"
         viewBox={`0 0 ${VB_W} ${VB_H}`}

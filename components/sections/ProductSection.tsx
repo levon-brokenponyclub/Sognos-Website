@@ -58,7 +58,7 @@ function EditionsDrawer({
                     Choose the Right SognosCare Edition for Your Service
                   </h2>
                   <p className="mt-2 text-lg text-sognos-text-body">
-                    SognosCare offers four tailored editions — each
+                    SognosCare offers four tailored editions - each
                     pre-configured for its funding model, compliance framework,
                     and operational workflows.
                   </p>

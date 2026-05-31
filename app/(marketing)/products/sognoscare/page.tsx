@@ -9,9 +9,9 @@ import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
-  title: "SognosCare — Care Operations & Compliance | Sognos",
+  title: "SognosCare - Care Operations & Compliance | Sognos",
   description:
-    "Manage service delivery, maintain compliance, and report with confidence — all in one platform built for care providers.",
+    "Manage service delivery, maintain compliance, and report with confidence - all in one platform built for care providers.",
 };
 
 const SECTIONS = [
@@ -31,7 +31,7 @@ export default function SognosCarePage() {
         secondaryLabel="Other Products"
         currentProduct="sognoscare"
         peekTitle="What SognosCare Solves"
-        peekDescription="Manage cases, track service delivery, meet compliance obligations, and report with confidence — end-to-end."
+        peekDescription="Manage cases, track service delivery, meet compliance obligations, and report with confidence - end-to-end."
         drawerTitle="Other Products"
         drawerDescription="Explore the full Sognos platform."
       />

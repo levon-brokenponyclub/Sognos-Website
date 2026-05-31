@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const BENEFITS = [
   {
     title: "Engage with empathy",
-    body: "Have empathy and a deep understanding for your peers and our customers. No ego — actively listen to each other.",
+    body: "Have empathy and a deep understanding for your peers and our customers. No ego - actively listen to each other.",
   },
   {
     title: "Volunteer assistance",
@@ -50,21 +50,21 @@ export default function CareersPage() {
             Join Sognos to drive innovation together.
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
-            We're not just a company — we're a community of passionate
+            We're not just a company - we're a community of passionate
             individuals committed to driving innovation and creating positive
             change.
           </p>
         </div>
       </section>
 
-      {/* Our People — Our Planet: 3×2 grid, title in row-1 col-1 */}
+      {/* Our People - Our Planet: 3×2 grid, title in row-1 col-1 */}
       <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 md:grid-cols-3">
-            {/* Row 1, Col 1 — section title */}
+            {/* Row 1, Col 1 - section title */}
             <div className="border-t border-dashed border-sognos-border-subtle md:border-r p-8 flex items-start">
               <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
-                Our People —{" "}
+                Our People -{" "}
                 <span className="text-sognos-text-muted">Our Planet</span>
               </h2>
             </div>
@@ -106,7 +106,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Life at Sognos — tabs | image | quote */}
+      {/* Life at Sognos - tabs | image | quote */}
       <LifeAtSognos />
 
       {/* Open roles */}

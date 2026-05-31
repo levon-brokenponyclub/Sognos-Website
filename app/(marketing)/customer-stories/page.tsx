@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Clock } from "lucide-react";
 
 export const metadata = {
-  title: "Customer Stories — Sognos",
+  title: "Customer Stories - Sognos",
   description:
     "See how organisations across health, transport, local government, and energy use Sognos to transform their service operations.",
 };
@@ -136,7 +136,7 @@ function StoryCard({ story }: { story: StoryCard }) {
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        {/* Logo — customer only, centered */}
+        {/* Logo - customer only, centered */}
         <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
           <img
             src={story.logo}

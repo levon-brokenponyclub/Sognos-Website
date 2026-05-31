@@ -4,7 +4,7 @@ import CTASection from "@/components/sections/CTASection";
 import { INDUSTRIES, PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Industries — Sognos",
+  title: "Industries - Sognos",
   description:
     "Sognos serves health and social care, facilities management, local government, industrial services, and energy and utilities organisations.",
 };
@@ -34,7 +34,7 @@ export default function IndustriesPage() {
             Built for organisations that deliver services in the field
           </h1>
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/80">
-            Sognos is configured for the operational complexity of your sector —
+            Sognos is configured for the operational complexity of your sector -
             not adapted from a generic platform after the fact.
           </p>
         </div>

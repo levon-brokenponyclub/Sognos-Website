@@ -30,7 +30,7 @@ export default function HomepageHero() {
               New
             </span>
             <span className="text-wh-text">
-              Sognos Genogram is here — see context like never before
+              Sognos Genogram is here - see context like never before
             </span>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function HomepageHero() {
 
         {/* Subtext */}
         <p className="mt-6 text-center text-wh-text-muted text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
-          Plan the work, schedule your team, and see what's actually happening —
+          Plan the work, schedule your team, and see what's actually happening -
           without jumping between systems.
         </p>
 
@@ -65,7 +65,7 @@ export default function HomepageHero() {
           <div className="flex flex-col items-start lg:items-start gap-6 lg:border-l lg:border-wh-border lg:pl-12">
             <p className="text-base lg:text-lg text-wh-text leading-relaxed">
               Flourish Australia uses Sognos to support 1,100+ staff across
-              their national mental health network — on a single source of
+              their national mental health network - on a single source of
               truth.
             </p>
             <Link

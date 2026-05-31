@@ -34,9 +34,9 @@ function EditionCard({
     <article
       className={`rounded-lg bg-white p-2 h-[450px] lg:h-[445px] flex-shrink-0 snap-center w-[82vw] ${cardWidthClass}`}
     >
-      {/* Inner panel — accent colour throughout (no video bg) */}
+      {/* Inner panel - accent colour throughout (no video bg) */}
       <div className="relative h-full rounded-lg overflow-hidden flex flex-col">
-        {/* Logo — centered in upper zone */}
+        {/* Logo - centered in upper zone */}
         <div className="flex-1 flex items-center justify-center px-8 pb-[285px]">
           <Image
             src={edition.logo}
@@ -47,7 +47,7 @@ function EditionCard({
           />
         </div>
 
-        {/* Content — bottom panel, accent bg, white text */}
+        {/* Content - bottom panel, accent bg, white text */}
         <div
           className="absolute bottom-0 rounded-lg left-0 right-0 z-10 px-7 pt-10 pb-8"
           style={{

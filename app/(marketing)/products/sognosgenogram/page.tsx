@@ -7,7 +7,7 @@ import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
-  title: "Sognos Genogram — Relationship & Family Context Platform | Sognos",
+  title: "Sognos Genogram - Relationship & Family Context Platform | Sognos",
   description:
     "Map family structures, support networks, and relationship histories directly into case records. Sognos Genogram gives every worker the relational context they need.",
 };

@@ -160,7 +160,7 @@ export default function OpenRoles() {
           >
             Send us your CV anyway
           </a>{" "}
-          — we're always interested in hearing from talented people.
+          - we're always interested in hearing from talented people.
         </p>
       </div>
     </section>

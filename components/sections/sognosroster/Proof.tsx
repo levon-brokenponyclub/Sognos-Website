@@ -28,7 +28,7 @@ const STATS = [
 const TESTIMONIALS = [
   {
     quote:
-      "SognosRoster cut our manual scheduling from two days a week to a couple of hours. The AI matching means we're not just filling shifts — we're putting the right people in the right place.",
+      "SognosRoster cut our manual scheduling from two days a week to a couple of hours. The AI matching means we're not just filling shifts - we're putting the right people in the right place.",
     role: "Workforce Manager",
     organisation: "NDIS Service Organisation",
   },
@@ -140,7 +140,7 @@ export default function SognoscareRosterProof() {
           </div>
           <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
             SognosRoster is built for organisations that need to demonstrate
-            efficiency — fewer scheduling hours, better coverage, and a workforce
+            efficiency - fewer scheduling hours, better coverage, and a workforce
             that's always in the right place.
           </p>
         </div>

@@ -7,9 +7,9 @@ export default function SognoscareIntegration() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
           <div className="grid lg:grid-cols-2">
-            {/* Left — text */}
+            {/* Left - text */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Better together
               </div>
@@ -17,12 +17,12 @@ export default function SognoscareIntegration() {
                 SognosCare + SognosRoster
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
-                SognosCare manages the service — the case, the plan, the compliance
-                record. SognosRoster coordinates the workforce that delivers it —
+                SognosCare manages the service - the case, the plan, the compliance
+                record. SognosRoster coordinates the workforce that delivers it -
                 scheduling, dispatch, and real-time optimisation.
               </p>
               <p className="mb-10 text-base leading-relaxed text-white/60">
-                Together, they close the loop from intake to delivery to outcome —
+                Together, they close the loop from intake to delivery to outcome -
                 without the gaps that come from using disconnected systems.
               </p>
               <Link
@@ -34,7 +34,7 @@ export default function SognoscareIntegration() {
               </Link>
             </div>
 
-            {/* Right — flow diagram placeholder */}
+            {/* Right - flow diagram placeholder */}
             <div className="flex items-center justify-center border-l border-white/5 bg-[#052048]/50 px-10 py-14 lg:px-14">
               <div className="flex flex-col items-center gap-3 text-center">
                 {/* SognosCare node */}
@@ -53,7 +53,7 @@ export default function SognoscareIntegration() {
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                   </svg>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Hands off
               </div>

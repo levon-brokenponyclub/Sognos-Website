@@ -6,14 +6,14 @@ import EditionPageTemplate, {
 export const metadata: Metadata = {
   title: "SognosCare for Residential Aged Care | Sognos",
   description:
-    "From care planning and progress documentation to staff coordination and resident outcome reporting — built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
+    "From care planning and progress documentation to staff coordination and resident outcome reporting - built for residential providers who need to demonstrate quality against the Aged Care Quality Standards.",
 };
 
 const data: EditionData = {
   name: "Residential Aged Care",
   tagline: "Planning, documentation, and compliance.",
   description:
-    "From care planning and progress documentation to staff coordination and resident outcome reporting — built for providers.",
+    "From care planning and progress documentation to staff coordination and resident outcome reporting - built for providers.",
   gradient: "/images/sognoscare/gradient-4.png",
   accentHex: "#a666ff",
   accentTextClass: "text-(--sognos-edition-purple)",
@@ -106,7 +106,7 @@ const data: EditionData = {
   proofQuotes: [
     {
       quote:
-        "Our audit results have never been better — and we spend half the time preparing for them.",
+        "Our audit results have never been better - and we spend half the time preparing for them.",
       attribution: "Director of Nursing, Residential Aged Care Facility",
     },
     {
@@ -120,7 +120,7 @@ const data: EditionData = {
     title:
       "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption - using SognosCare to manage the change from day one.",
     href: "/customer-stories",
     company: "Penrith City Council",
     companySize: "300+",

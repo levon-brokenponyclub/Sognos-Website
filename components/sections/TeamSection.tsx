@@ -24,14 +24,14 @@ const TEAM: TeamMember[] = [
     name: "Rick Vosila",
     role: "Chief Commercial Officer & Co-Founder",
     image: "/images/team/Rick.webp",
-    bio: "Rick is a co-founding director of Sognos Solutions. Together with co-founder Kunal Joshi, Rick recognised a gap in the Microsoft business applications partner ecosystem for a Field Service Management specialist integrator back in 2016 — the genesis of Sognos, and what places us today as the premier Field Service Management consultants in the Microsoft ecosystem in Australia.\n\nA 40-year veteran in the Australian tech sector, Rick has held C-suite roles in global multinational organisations across FMCG, Industrial Services, IT, and Higher Education. He holds both a Bachelor of Commerce and an MBA, bringing together training and experience to drive strategy and execution excellence.\n\nOutside of work, Rick is a proud Rotarian, working to serve communities and individuals in need through the reach, scale, and capacity of Rotary International.",
+    bio: "Rick is a co-founding director of Sognos Solutions. Together with co-founder Kunal Joshi, Rick recognised a gap in the Microsoft business applications partner ecosystem for a Field Service Management specialist integrator back in 2016 - the genesis of Sognos, and what places us today as the premier Field Service Management consultants in the Microsoft ecosystem in Australia.\n\nA 40-year veteran in the Australian tech sector, Rick has held C-suite roles in global multinational organisations across FMCG, Industrial Services, IT, and Higher Education. He holds both a Bachelor of Commerce and an MBA, bringing together training and experience to drive strategy and execution excellence.\n\nOutside of work, Rick is a proud Rotarian, working to serve communities and individuals in need through the reach, scale, and capacity of Rotary International.",
     linkedin: "https://www.linkedin.com/in/vosila/",
   },
   {
     name: "Miloni Mehta",
     role: "Microsoft D365 & Power Platform Practice Lead",
     image: "/images/team/Miloni.webp",
-    bio: "As the Microsoft D365 & Power Platform Practice Lead for Sognos, Miloni has made a career of solving business problems by applying innovative solutions in the Microsoft technology suite. Her goal: delivering exceptional outcomes for our customers across Healthcare, Services, Utilities, and Facility Maintenance.\n\nMiloni's in-depth experience with Dynamics 365 Field Service and her ability to architect and design end-to-end, business requirement-oriented solutions is a real advantage for the businesses Sognos partners with. Her leadership extends beyond project delivery — she is dedicated to nurturing talent and fostering a culture of continuous learning.\n\nMiloni holds a Master's in Data Analytics from the University of Technology, Sydney. She is also an emerging runner who completed her first half marathon at the 2023 Sydney Marathon, raising money for children on the Autism Spectrum — with plans to run her first full marathon soon.",
+    bio: "As the Microsoft D365 & Power Platform Practice Lead for Sognos, Miloni has made a career of solving business problems by applying innovative solutions in the Microsoft technology suite. Her goal: delivering exceptional outcomes for our customers across Healthcare, Services, Utilities, and Facility Maintenance.\n\nMiloni's in-depth experience with Dynamics 365 Field Service and her ability to architect and design end-to-end, business requirement-oriented solutions is a real advantage for the businesses Sognos partners with. Her leadership extends beyond project delivery - she is dedicated to nurturing talent and fostering a culture of continuous learning.\n\nMiloni holds a Master's in Data Analytics from the University of Technology, Sydney. She is also an emerging runner who completed her first half marathon at the 2023 Sydney Marathon, raising money for children on the Autism Spectrum - with plans to run her first full marathon soon.",
     linkedin: "https://www.linkedin.com/in/miloni-mehta/",
   },
 ];
@@ -172,7 +172,7 @@ export default function TeamSection() {
               {/* Scrollable 2-col content */}
               <div className="overflow-y-auto flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] max-w-5xl mx-auto px-6 pb-10 gap-0">
-                  {/* Col 1 — photo + identity + social */}
+                  {/* Col 1 - photo + identity + social */}
                   <div className="flex flex-col items-start py-6 md:pr-8 md:border-r border-sognos-border-subtle">
                     <div className="relative w-48 aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 mb-6">
                       <Image
@@ -199,7 +199,7 @@ export default function TeamSection() {
                     </a>
                   </div>
 
-                  {/* Col 2 — bio */}
+                  {/* Col 2 - bio */}
                   <div className="py-6 md:pl-8 border-t md:border-t-0 border-sognos-border-subtle">
                     <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
                       <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>

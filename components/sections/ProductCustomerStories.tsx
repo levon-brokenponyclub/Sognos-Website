@@ -182,28 +182,11 @@ export default function ProductCustomerStories({
   );
 
   return (
-    <section id="stories" className="w-full bg-[#1D96FC] overflow-hidden">
+    <section id="stories" className="w-full bg-gradient-hero overflow-hidden" data-header-dark>
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         <div className="mb-8 flex flex-col items-start gap-4">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={
-                {
-                  padding: "1px",
-                  background:
-                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.75) 60deg, transparent 120deg, transparent 360deg)",
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  ["--shine-duration" as string]: "7s",
-                } as React.CSSProperties
-              }
-            />
-            <span className="w-2 h-2 bg-white rounded-full" />
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
             Customer Stories
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white lg:text-left tracking-tight">
@@ -220,7 +203,7 @@ export default function ProductCustomerStories({
             transition={{ duration: 0.2 }}
             className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]"
           >
-            {/* Left — image/video panel */}
+            {/* Left - image/video panel */}
             <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
               {study.panelVideo ? (
                 <video
@@ -273,7 +256,7 @@ export default function ProductCustomerStories({
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
             </div>
 
-            {/* Right — quote panel */}
+            {/* Right - quote panel */}
             <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
               <div className="flex-1 flex flex-col justify-center">
                 <QuoteIcon className={study.quoteIconColor} />

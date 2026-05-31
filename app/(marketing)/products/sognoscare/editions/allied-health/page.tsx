@@ -6,14 +6,14 @@ import EditionPageTemplate, {
 export const metadata: Metadata = {
   title: "SognosCare for Allied Health | Sognos",
   description:
-    "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access for allied health practitioners.",
+    "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access for allied health practitioners.",
 };
 
 const data: EditionData = {
   name: "Allied Health",
   tagline: "Unified therapy, referrals, and multidisciplinary records.",
   description:
-    "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place — with mobile-first access designed for practitioners who work across multiple sites.",
+    "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access designed for practitioners who work across multiple sites.",
   gradient: "/images/sognoscare/gradient-2.png",
   accentHex: "#ff9233",
   accentTextClass: "text-(--sognos-edition-orange)",
@@ -55,7 +55,7 @@ const data: EditionData = {
     {
       title: "Core Features",
       description:
-        "Everything an allied health practice needs — from referral intake to outcome measurement.",
+        "Everything an allied health practice needs - from referral intake to outcome measurement.",
     },
     {
       title: "Referral & Intake Management",
@@ -65,7 +65,7 @@ const data: EditionData = {
     {
       title: "Multi-disciplinary Care Records",
       description:
-        "Shared client records accessible by all treating practitioners — with discipline-specific note templates.",
+        "Shared client records accessible by all treating practitioners - with discipline-specific note templates.",
     },
     {
       title: "Practitioner Scheduling & Rostering",
@@ -111,7 +111,7 @@ const data: EditionData = {
     },
     {
       quote:
-        "Finally a system that understands how we work — not the other way around.",
+        "Finally a system that understands how we work - not the other way around.",
       attribution: "Director of Services, Allied Health Provider",
     },
   ],
@@ -120,7 +120,7 @@ const data: EditionData = {
     title:
       "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption - using SognosCare to manage the change from day one.",
     href: "/customer-stories",
     company: "Penrith City Council",
     companySize: "300+",

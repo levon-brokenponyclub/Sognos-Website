@@ -10,7 +10,7 @@ const FEATURES = [
     name: "Intelligent Scheduling",
     tagline: "Demand-driven, automatically",
     description:
-      "Demand-driven roster generation that works from confirmed service demand — matching workers to shifts based on skills, certifications, availability, and location in a single automated pass.",
+      "Demand-driven roster generation that works from confirmed service demand - matching workers to shifts based on skills, certifications, availability, and location in a single automated pass.",
     capabilities: [
       "Automated roster generation from confirmed service requests",
       "Configurable scheduling rules per service type and client requirement",
@@ -23,7 +23,7 @@ const FEATURES = [
     name: "Skills & Compliance Matching",
     tagline: "Qualified, every time",
     description:
-      "Every worker allocation is validated against qualification requirements, active certifications, and client-specific preferences before confirmation. Compliance isn't a post-hoc check — it's a scheduling precondition.",
+      "Every worker allocation is validated against qualification requirements, active certifications, and client-specific preferences before confirmation. Compliance isn't a post-hoc check - it's a scheduling precondition.",
     capabilities: [
       "Multi-dimensional matching: skills, certs, client preferences, gender requirements",
       "Real-time certification expiry tracking with automated alerts",
@@ -36,7 +36,7 @@ const FEATURES = [
     name: "Route Optimisation",
     tagline: "Less travel, more service",
     description:
-      "Geography and travel time are factored into every scheduling decision — reducing drive time, fuel cost, and lateness across field-based service environments.",
+      "Geography and travel time are factored into every scheduling decision - reducing drive time, fuel cost, and lateness across field-based service environments.",
     capabilities: [
       "Real-time distance and travel time factored into scheduling",
       "Geographic clustering to minimise cross-city dispatching",
@@ -49,7 +49,7 @@ const FEATURES = [
     name: "Real-Time Adjustments",
     tagline: "Respond in minutes, not hours",
     description:
-      "When plans change — sick leave, service additions, cancellations — SognosRoster reoptimises the affected day in minutes and notifies the right workers automatically. No phone cascade.",
+      "When plans change - sick leave, service additions, cancellations - SognosRoster reoptimises the affected day in minutes and notifies the right workers automatically. No phone cascade.",
     capabilities: [
       "One-click replacement worker suggestions ranked by proximity and skills",
       "Automated worker and client notifications on schedule changes",
@@ -62,7 +62,7 @@ const FEATURES = [
     name: "Mobile Worker App",
     tagline: "Field-ready, offline-capable",
     description:
-      "Field workers see their schedule, accept shifts, check in on arrival, record service notes, and capture signatures — entirely from their phone. No paper, no manual entry, no separate login.",
+      "Field workers see their schedule, accept shifts, check in on arrival, record service notes, and capture signatures - entirely from their phone. No paper, no manual entry, no separate login.",
     capabilities: [
       "Shift acceptance and full schedule view for workers",
       "GPS-verified check-in and check-out per service visit",
@@ -75,7 +75,7 @@ const FEATURES = [
     name: "Copilot AI Optimisation",
     tagline: "AI where operations happen",
     description:
-      "AI surfaces scheduling inefficiencies, predicts demand gaps, and recommends workforce actions — embedded directly in the Dynamics 365 environment. No new tool to log into.",
+      "AI surfaces scheduling inefficiencies, predicts demand gaps, and recommends workforce actions - embedded directly in the Dynamics 365 environment. No new tool to log into.",
     capabilities: [
       "Demand gap prediction based on historical service patterns",
       "AI-suggested scheduling improvements surfaced in the roster view",
@@ -234,7 +234,7 @@ function FeatureVisual({ id }: { id: string }) {
             Disruption detected
           </p>
           <p className="mt-0.5 text-[11px] text-amber-700">
-            Sarah K. — sick leave. 3 services affected.
+            Sarah K. - sick leave. 3 services affected.
           </p>
         </div>
         {[
@@ -281,7 +281,7 @@ function FeatureVisual({ id }: { id: string }) {
     "mobile-app": (
       <div className="mx-auto w-48 overflow-hidden rounded-lg border border-gray-100 bg-white">
         <div className="bg-[#1D96FC] px-4 py-3">
-          <p className="text-xs font-semibold text-white">Today — 4 visits</p>
+          <p className="text-xs font-semibold text-white">Today - 4 visits</p>
           <p className="text-[10px] text-white/60">Sarah K.</p>
         </div>
         <div className="divide-y divide-gray-100">
@@ -310,7 +310,7 @@ function FeatureVisual({ id }: { id: string }) {
       <div className="space-y-3">
         <div className="rounded-lg border border-gray-100 bg-white p-4">
           <p className="mb-2 text-xs font-semibold text-gray-400">
-            Copilot insight — Thursday roster
+            Copilot insight - Thursday roster
           </p>
           <p className="text-sm leading-relaxed text-prussian-blue-800">
             3 workers are scheduled within 500m of each other between 10am–12pm.
@@ -347,55 +347,40 @@ export default function SognoscareRosterFeatures() {
       id="features"
       className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden"
     >
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+      <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
-        <div className="flex flex-col items-start lg:items-start gap-4 pb-6">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={{
-                padding: "1px",
-                background:
-                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.9) 60deg, transparent 120deg, transparent 360deg)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-                ["--shine-duration" as string]: "8s",
-              } as React.CSSProperties}
-            />
-            <span className="w-2 h-2 bg-white rounded-full"></span>
+        <div className="flex flex-col items-center gap-4 pb-6">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
+            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Features
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight text-center">
             Built for the full scheduling lifecycle
           </h2>
         </div>
 
-        {/* Mobile — stacked cards */}
-        <div className="lg:hidden mt-10">
+        {/* Mobile - stacked cards */}
+        <div className="lg:hidden mt-10 flex flex-col gap-6">
           {FEATURES.map((feat) => (
             <div
               key={feat.id}
-              className="mb-3 last:mb-0 bg-white rounded-lg p-2 flex flex-col gap-3"
+              className="bg-white rounded-lg p-2 flex flex-col gap-3"
             >
-              <div className="bg-gray-200 rounded-lg p-5 flex flex-col gap-4">
+              <div className="bg-gray-200 rounded-lg p-6 min-h-[220px] flex items-center justify-center">
+                <FeatureVisual id={feat.id} />
+              </div>
+              <div className="p-5 flex flex-col gap-4">
                 <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                   {feat.name}
                 </h2>
-                <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
+                <p className="text-sm leading-relaxed text-gray-600">
                   {feat.description}
                 </p>
-                <ul className="space-y-2 mt-1">
+                <ul className="space-y-3 mt-2 border-t border-gray-100 pt-5">
                   {feat.capabilities.map((cap) => (
-                    <li
-                      key={cap}
-                      className="flex items-start gap-2.5 text-md text-sognos-text-body"
-                    >
+                    <li key={cap} className="flex items-start gap-3">
                       <svg
-                        className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-[#10B981]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -403,25 +388,24 @@ export default function SognoscareRosterFeatures() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={3}
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      {cap}
+                      <span className="text-sm font-medium text-gray-700">
+                        {cap}
+                      </span>
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="rounded-lg overflow-hidden bg-gray-200/50 p-4 min-h-[200px] flex items-center justify-center">
-                <FeatureVisual id={feat.id} />
               </div>
             </div>
           ))}
         </div>
 
-        {/* Desktop — vertical tabs | animated panel */}
-        <div className="hidden lg:flex gap-4 h-[460px] mt-10">
-          {/* Left column — vertical tab list */}
+        {/* Desktop - vertical tabs | animated panel */}
+        <div className="hidden lg:flex gap-4 h-[580px] mt-10">
+          {/* Left column - vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
             {FEATURES.map((feat, i) => (
               <button
@@ -438,7 +422,7 @@ export default function SognoscareRosterFeatures() {
             ))}
           </div>
 
-          {/* Center + right — animated panel */}
+          {/* Center + right - animated panel */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -448,26 +432,23 @@ export default function SognoscareRosterFeatures() {
               transition={{ duration: 0.2 }}
               className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
-              {/* Left — grey info panel */}
-              <div className="shrink-0 w-[45%] bg-gray-200 rounded-lg p-7 flex flex-col justify-between">
+              {/* Left column - grey info panel */}
+              <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
-                    {active.tagline}
-                  </p>
-                  <h3 className="mt-1 mb-5 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
+                  <h2 className="mt-1 mb-2 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
-                  </h3>
-                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body">
+                  </h2>
+                  <p className="mt-1 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
                     {active.description}
                   </p>
                   <ul className="mt-6 space-y-2.5">
                     {active.capabilities.map((cap) => (
                       <li
                         key={cap}
-                        className="flex items-start gap-2.5 text-md text-sognos-text-body"
+                        className="flex items-start gap-2.5 font-heading font-normal leading-relaxed text-sognos-body text-base"
                       >
                         <svg
-                          className="mt-0.5 h-4 w-4 shrink-0 text-prussian-blue-800"
+                          className="mt-1 h-4 w-4 shrink-0 text-prussian-blue-800"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -509,8 +490,8 @@ export default function SognoscareRosterFeatures() {
                 </Link>
               </div>
 
-              {/* Right — visual */}
-              <div className="flex-1 relative rounded-lg overflow-hidden bg-gray-200/40 flex items-center justify-center p-8">
+              {/* Right column - visual mock */}
+              <div className="flex-1 relative rounded-lg overflow-hidden bg-white flex items-center justify-center p-8">
                 <div className="w-full max-w-sm">
                   <FeatureVisual id={active.id} />
                 </div>

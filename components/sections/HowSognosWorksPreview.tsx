@@ -11,14 +11,14 @@ const TABS = [
     id: "demand",
     label: "Manage demand",
     description:
-      "SognosCare captures every referral, care plan and service request — triaged, assigned and compliance-tracked from day one.",
+      "SognosCare captures every referral, care plan and service request - triaged, assigned and compliance-tracked from day one.",
     Component: ProcessFlow,
   },
   {
     id: "workforce",
     label: "Coordinate workforce",
     description:
-      "SognosRoster matches the right worker to every job in real time — factoring skills, location, availability and compliance.",
+      "SognosRoster matches the right worker to every job in real time - factoring skills, location, availability and compliance.",
     Component: Workforce,
   },
   {
@@ -34,7 +34,7 @@ const AUTOPLAY_MS = 5000;
 
 // Crisp spring for description expand/collapse
 const EXPAND = { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const };
-// Image slide — fast deceleration
+// Image slide - fast deceleration
 const SLIDE = { duration: 0.6, ease: [0.32, 0.72, 0, 1] as const };
 
 export default function HowSognosWorksPreview() {
@@ -89,7 +89,7 @@ export default function HowSognosWorksPreview() {
                 onClick={() => handleTab(i)}
                 className="relative w-full text-left border-t border-gray-300 cursor-pointer overflow-hidden"
               >
-                {/* Progress bar — top border */}
+                {/* Progress bar - top border */}
                 <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-transparent">
                   {active === i && (
                     <motion.div
@@ -119,7 +119,7 @@ export default function HowSognosWorksPreview() {
                   </span>
                 </div>
 
-                {/* Description — height + opacity expand, no layout jump */}
+                {/* Description - height + opacity expand, no layout jump */}
                 <AnimatePresence initial={false}>
                   {active === i && (
                     <motion.div
@@ -139,7 +139,7 @@ export default function HowSognosWorksPreview() {
             ))}
           </div>
 
-          {/* Visual — components stacked, active slides up from below */}
+          {/* Visual - components stacked, active slides up from below */}
           <div className="[grid-area:image] rounded-lg border border-gray-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-white">
             {TABS.map((tab, i) => {
               const Component = tab.Component;

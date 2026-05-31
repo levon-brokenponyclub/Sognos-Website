@@ -308,7 +308,7 @@ export default function ContactPage() {
                         {office.region}
                       </p>
                       <span className="text-xs text-sognos-text-muted/50">
-                        —
+                        -
                       </span>
                       <p className="text-xs text-sognos-text-muted">
                         {office.label}

@@ -35,7 +35,7 @@ const SOLUTIONS = [
     label: "CRM",
     href: "/solutions/customer-relationship-management",
     title: "A complete client relationship record",
-    copy: "Centralise every client interaction, service history, and communication in one place — giving every team member the context they need.",
+    copy: "Centralise every client interaction, service history, and communication in one place - giving every team member the context they need.",
     accentBg: "#eaeefb",
   },
   {
@@ -43,7 +43,7 @@ const SOLUTIONS = [
     label: "Customer Insights",
     href: "/solutions/customer-insights",
     title: "Turn service data into operational intelligence",
-    copy: "Unified data from care records, rostering, and field operations — surfaced as live dashboards that show what's working and where to act.",
+    copy: "Unified data from care records, rostering, and field operations - surfaced as live dashboards that show what's working and where to act.",
     accentBg: "#e6f3ff",
   },
   {
@@ -59,7 +59,7 @@ const SOLUTIONS = [
     label: "Customer Service",
     href: "/solutions/customer-service",
     title: "Faster resolution, clearer accountability",
-    copy: "Unified case management, escalation workflows, and response tracking — so every issue is owned, actioned, and closed on time.",
+    copy: "Unified case management, escalation workflows, and response tracking - so every issue is owned, actioned, and closed on time.",
     accentBg: "#fff1e5",
   },
   {
@@ -75,7 +75,7 @@ const SOLUTIONS = [
     label: "Quick Start",
     href: "/solutions/quick-start",
     title: "Live in weeks, not months",
-    copy: "Sognos Quick Start delivers a production-ready deployment in four weeks — pre-built configuration, training, and go-live support included.",
+    copy: "Sognos Quick Start delivers a production-ready deployment in four weeks - pre-built configuration, training, and go-live support included.",
     accentBg: "#ffe5e6",
   },
 ] as const;
@@ -430,7 +430,7 @@ export default function SolutionsSection() {
 
   return (
     <section className="w-full bg-gray-200/70 overflow-hidden">
-      {/* Header — h2 left, arrows right */}
+      {/* Header - h2 left, arrows right */}
       <div className="max-w-7xl w-full mx-auto px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pt-16 lg:pt-24 pb-6 lg:pb-8">
           <div className="flex flex-col items-center lg:items-start gap-4">
@@ -501,7 +501,7 @@ export default function SolutionsSection() {
           </motion.div>
         </div>
 
-        {/* Mobile arrows — below cards, right-aligned */}
+        {/* Mobile arrows - below cards, right-aligned */}
         <div className="flex lg:hidden items-center justify-end gap-3 mt-6">
           <button
             onClick={() => handleStep(-1)}

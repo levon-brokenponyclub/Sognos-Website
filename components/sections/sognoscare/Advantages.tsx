@@ -1,5 +1,5 @@
 const ADVANTAGES = [
-  "Purpose-built for Australian care compliance — not adapted from generic CRM",
+  "Purpose-built for Australian care compliance - not adapted from generic CRM",
   "Reduces documentation time with AI-assisted clinical notes",
   "Keeps you audit-ready with continuous compliance tracking",
   "Integrates with Microsoft 365, Teams, and Dynamics 365 out of the box",

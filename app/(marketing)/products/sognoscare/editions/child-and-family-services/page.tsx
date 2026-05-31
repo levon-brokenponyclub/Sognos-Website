@@ -111,7 +111,7 @@ const data: EditionData = {
     },
     {
       quote:
-        "Our teams can see the full family picture — relationships, risks, and case history — without chasing records across systems.",
+        "Our teams can see the full family picture - relationships, risks, and case history - without chasing records across systems.",
       attribution: "Service Manager, Child & Family Services Program",
     },
   ],

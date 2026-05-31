@@ -47,10 +47,10 @@ const STORIES: Record<string, CustomerStory> = {
     logo: "/logos/flourish-australia-logo.png",
     productLogo: "/logos/sognos-care-logo.svg",
     quote:
-      "Congratulations and WELL DONE to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud — THANK YOU!",
-    quoteAuthor: "Susan McCarthy, Chief Operating Officer — Flourish Australia",
+      "Congratulations and WELL DONE to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
+    quoteAuthor: "Susan McCarthy, Chief Operating Officer - Flourish Australia",
     sidebar: [
-      { label: "Industry", value: "Healthcare — Mental Health" },
+      { label: "Industry", value: "Healthcare - Mental Health" },
       { label: "State", value: "National, Australia" },
       { label: "Size", value: "1,100+ staff" },
       { label: "Product", value: "SognosCare" },
@@ -90,22 +90,22 @@ const STORIES: Record<string, CustomerStory> = {
         <p>
           Flourish Australia partnered with Sognos to design and implement a
           modern, cloud-based solution built on Microsoft Dynamics 365 and Power
-          Platform. The new system — known internally as{" "}
-          <em>Flourish Connect</em> — serves as the central operational platform
+          Platform. The new system - known internally as{" "}
+          <em>Flourish Connect</em> - serves as the central operational platform
           for the organisation, consolidating multiple business functions into a
           single source of truth.
         </p>
         <p>
           Flourish Connect manages everything from support operations and
           stakeholder engagement to participant self-service, marketing, and
-          feedback management — delivering seamless visibility tailored to each
+          feedback management - delivering seamless visibility tailored to each
           user's role and context.
         </p>
         <p>Key capabilities delivered include:</p>
         <ul>
           <li>
             Configurable modules for Enquiry, Intake, Support Delivery, Billing,
-            and Claiming — integrated with the NDIS PRODA Portal
+            and Claiming - integrated with the NDIS PRODA Portal
           </li>
           <li>
             Custom Program Profiles and Assessment Tools to support program
@@ -158,7 +158,7 @@ const STORIES: Record<string, CustomerStory> = {
         <p>
           With Dynamics 365 and Power Platform at its core, Flourish Australia
           now has a unified digital foundation to support innovation, continuous
-          improvement, and sustainable growth — ensuring technology keeps pace
+          improvement, and sustainable growth - ensuring technology keeps pace
           with its mission to support mental health recovery across Australia.
         </p>
       </div>
@@ -177,8 +177,8 @@ const STORIES: Record<string, CustomerStory> = {
     logo: "/logos/auckland-airport-logo.png",
     productLogo: "/logos/sognos-roster-logo.svg",
     quote:
-      "Thank you to the Sognos team — hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
-    quoteAuthor: "Anthony Hart, Operations Delivery Lead — Auckland Airport",
+      "Thank you to the Sognos team - hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
+    quoteAuthor: "Anthony Hart, Operations Delivery Lead - Auckland Airport",
     sidebar: [
       { label: "Industry", value: "Transport" },
       { label: "State", value: "Auckland, New Zealand" },
@@ -198,7 +198,7 @@ const STORIES: Record<string, CustomerStory> = {
           Following a successful Dynamics 365 implementation, Auckland Airport
           engaged Sognos as their strategic Microsoft Dynamics 365 partner to
           drive continuous improvement and progressively expand platform
-          capabilities across Dynamics 365 and Power Platform — replacing legacy
+          capabilities across Dynamics 365 and Power Platform - replacing legacy
           applications with modern, cloud-based tools.
         </p>
 
@@ -214,7 +214,7 @@ const STORIES: Record<string, CustomerStory> = {
             faults across all engineering assets
           </li>
           <li>
-            Manual rules and processes for managing and scheduling faults — from
+            Manual rules and processes for managing and scheduling faults - from
             inception through cost recovery and regulatory reporting
           </li>
           <li>
@@ -236,7 +236,7 @@ const STORIES: Record<string, CustomerStory> = {
           </li>
           <li>
             End-to-end Fault Management solution built on Dynamics 365 Field
-            Service — managing faults from logging, diagnosis, auto-routing,
+            Service - managing faults from logging, diagnosis, auto-routing,
             scheduling, and mobile capture through to cost recovery and
             regulatory reporting
           </li>
@@ -266,7 +266,7 @@ const STORIES: Record<string, CustomerStory> = {
             disconnected platforms
           </li>
           <li>
-            Continuous Improvement mode established — with ongoing investment in
+            Continuous Improvement mode established - with ongoing investment in
             new features and capability expansion
           </li>
         </ul>
@@ -288,9 +288,9 @@ const STORIES: Record<string, CustomerStory> = {
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     quoteAuthor:
-      "Claire Donovan, Service Delivery Manager — Penrith City Council",
+      "Claire Donovan, Service Delivery Manager - Penrith City Council",
     sidebar: [
-      { label: "Industry", value: "City Council — Public Sector" },
+      { label: "Industry", value: "City Council - Public Sector" },
       { label: "State", value: "New South Wales, Australia" },
       { label: "Size", value: "300 Technicians" },
       { label: "Product", value: "SognosRoster" },
@@ -300,7 +300,7 @@ const STORIES: Record<string, CustomerStory> = {
         <p>
           Deloitte Digital subcontracted Sognos to deliver a fully custom
           solution for Penrith City Council, enabling their Field Operations
-          team to manage day-to-day Resource Crew movements — a task that had
+          team to manage day-to-day Resource Crew movements - a task that had
           previously consumed significant coordinator time with no guarantee of
           data accuracy.
         </p>
@@ -310,7 +310,7 @@ const STORIES: Record<string, CustomerStory> = {
         </h2>
         <ul>
           <li>
-            Entirely manual process to move team members between crews —
+            Entirely manual process to move team members between crews -
             coordinators previously refused to use the Field Service solution
             due to excessive manual overhead
           </li>
@@ -334,7 +334,7 @@ const STORIES: Record<string, CustomerStory> = {
             across different crews
           </li>
           <li>
-            A custom 3-click interface for coordinators to record movements — a
+            A custom 3-click interface for coordinators to record movements - a
             task that previously took 25+ minutes now completed in under 10
             seconds
           </li>
@@ -357,7 +357,7 @@ const STORIES: Record<string, CustomerStory> = {
             workflow automation
           </li>
           <li>
-            Drastic increase in coordinator productivity — all manual operations
+            Drastic increase in coordinator productivity - all manual operations
             eliminated
           </li>
         </ul>
@@ -378,7 +378,7 @@ const STORIES: Record<string, CustomerStory> = {
     productLogo: "/logos/sognos-roster-logo.svg",
     quote:
       "Dynamics 365 Field Service has not disappointed us in any of our key requirements. It has been over a year for us to use the system and the techs love it, and so do we.",
-    quoteAuthor: "Operations Team — Gentari Solar Australia",
+    quoteAuthor: "Operations Team - Gentari Solar Australia",
     sidebar: [
       { label: "Industry", value: "Renewable Energy" },
       { label: "State", value: "National, Australia" },
@@ -423,7 +423,7 @@ const STORIES: Record<string, CustomerStory> = {
         </h2>
         <p>
           Partnering with Sognos, Gentari implemented Microsoft Dynamics 365
-          Field Service — delivering a connected, end-to-end platform that:
+          Field Service - delivering a connected, end-to-end platform that:
         </p>
         <ul>
           <li>Centralises asset records and service histories</li>
@@ -456,7 +456,7 @@ const STORIES: Record<string, CustomerStory> = {
         </h2>
         <p>
           With Sognos as their strategic technology partner, Gentari continues
-          to expand the capabilities of their Dynamics 365 platform — replacing
+          to expand the capabilities of their Dynamics 365 platform - replacing
           legacy systems, improving workflows, and unlocking new opportunities
           for innovation in renewable energy operations.
         </p>
@@ -476,7 +476,7 @@ const STORIES: Record<string, CustomerStory> = {
     logo: "/logos/all-purpose-pumps-logo.webp",
     productLogo: "/logos/sognos-roster-logo.svg",
     sidebar: [
-      { label: "Industry", value: "Pumping Solutions — Install & Maintain" },
+      { label: "Industry", value: "Pumping Solutions - Install & Maintain" },
       { label: "State", value: "Victoria, Australia" },
       { label: "Size", value: "100–150 staff" },
       { label: "Product", value: "SognosRoster" },
@@ -504,7 +504,7 @@ const STORIES: Record<string, CustomerStory> = {
           the new Unified Interface as part of the 2020 Wave 1 upgrade, the
           extent of the existing customisations made a direct upgrade risky.
           Sognos worked closely with APP to deliver a safe, strategic migration
-          path — ensuring minimal disruption and maximum platform stability.
+          path - ensuring minimal disruption and maximum platform stability.
         </p>
         <p>
           Building on this success, Sognos then implemented Dynamics 365 Field
@@ -515,8 +515,8 @@ const STORIES: Record<string, CustomerStory> = {
         </p>
         <p>
           Today, APP&apos;s team is able to proactively manage every aspect of
-          customer engagement — from initial sales interactions to
-          post-installation service — with confidence and efficiency.
+          customer engagement - from initial sales interactions to
+          post-installation service - with confidence and efficiency.
         </p>
 
         <img src="/images/customers/all-purpose-pumps-2.webp" alt="All Purpose Pumps operations" className={IMG} />
@@ -602,8 +602,8 @@ const STORIES: Record<string, CustomerStory> = {
           a national provider of advanced security solutions across Australia.
           As their operations expanded rapidly, ASC faced growing complexity
           across key business functions. With accounting, inventory, and
-          scheduling all managed through disconnected systems — ranging from
-          Excel spreadsheets to physical whiteboards — they needed a
+          scheduling all managed through disconnected systems - ranging from
+          Excel spreadsheets to physical whiteboards - they needed a
           centralised, scalable solution to streamline operations and support
           their nationwide growth.
         </p>
@@ -746,7 +746,7 @@ const STORIES: Record<string, CustomerStory> = {
             frustrations due to ever-growing turnaround time
           </li>
           <li>
-            Manual payment systems — no online payments for offered services
+            Manual payment systems - no online payments for offered services
           </li>
         </ul>
 
@@ -805,7 +805,7 @@ const STORIES: Record<string, CustomerStory> = {
     productLogo: "/logos/sognos-roster-logo.svg",
     quote:
       "The experience of working with Sognos has been very positive. Their skills, their knowledge, their capabilities and their ability to translate our needs, our requirements into a technical solution has been second to nobody else.",
-    quoteAuthor: "Daniel Sargent, Head of Sales — Natural Power Solutions",
+    quoteAuthor: "Daniel Sargent, Head of Sales - Natural Power Solutions",
     sidebar: [
       { label: "Industry", value: "Power & Lighting Protection" },
       { label: "State", value: "National, Australia" },
@@ -1033,14 +1033,14 @@ export default async function CustomerStoryPage({
               <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
             </div>
 
-            {/* Right — image */}
+            {/* Right - image */}
             <div className="overflow-hidden rounded-lg h-64 lg:h-100 lg:max-h-100 w-full lg:w-1/2 lg:shrink-0 relative flex flex-col">
               <img
                 src={story.image}
                 alt={story.company}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              {/* Logo — customer only, centered */}
+              {/* Logo - customer only, centered */}
               {story.logo && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
                   <img
@@ -1051,7 +1051,7 @@ export default async function CustomerStoryPage({
                 </div>
               )}
 
-              {/* Gradient overlay — top dark fading down + bottom dark fading up */}
+              {/* Gradient overlay - top dark fading down + bottom dark fading up */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
             </div>

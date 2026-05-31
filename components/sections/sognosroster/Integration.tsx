@@ -7,9 +7,9 @@ export default function SognoscareRosterIntegration() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
           <div className="grid lg:grid-cols-2">
-            {/* Left — text */}
+            {/* Left - text */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Better together
               </div>
@@ -23,7 +23,7 @@ export default function SognoscareRosterIntegration() {
               </p>
               <p className="mb-10 text-base leading-relaxed text-white/60">
                 Together, they close the loop from workforce allocation to
-                service outcome — without the handoff gaps that come from
+                service outcome - without the handoff gaps that come from
                 disconnected systems.
               </p>
               <Link
@@ -35,7 +35,7 @@ export default function SognoscareRosterIntegration() {
               </Link>
             </div>
 
-            {/* Right — flow diagram */}
+            {/* Right - flow diagram */}
             <div className="flex items-center justify-center border-l border-white/5 bg-[#052048]/50 px-10 py-14 lg:px-14">
               <div className="flex flex-col items-center gap-3 text-center">
                 {/* SognosRoster node */}
@@ -65,7 +65,7 @@ export default function SognoscareRosterIntegration() {
                       d="M19 9l-7 7-7-7"
                     />
                   </svg>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
                     <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                     Delivers to
                   </div>

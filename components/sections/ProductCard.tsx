@@ -33,7 +33,7 @@ export const PRODUCT_CARDS: ProductCardData[] = [
     logoAlt: "SognosCare",
     byline: "One platform.\nFrom intake to outcome.",
     description:
-      "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready — whatever changes come next.",
+      "Deliver safer, simpler care in the field. From mental health to aged care, we help providers reduce admin and stay service-ready - whatever changes come next.",
     ctaText: "Explore SognosCare",
     ctaLink: "/products/sognoscare",
     hoverBg: "#4ECCD6",
@@ -44,7 +44,7 @@ export const PRODUCT_CARDS: ProductCardData[] = [
     logoAlt: "SognosRoster",
     byline: "The right worker, for every job, in real time",
     description:
-      "From scheduling to routing, SognosRoster puts the right worker on every shift — factoring skills, location, availability and compliance automatically.",
+      "From scheduling to routing, SognosRoster puts the right worker on every shift - factoring skills, location, availability and compliance automatically.",
     ctaText: "Explore SognosRoster",
     ctaLink: "/products/sognosroster",
     hoverBg: "#1d96fc",
@@ -54,7 +54,7 @@ export const PRODUCT_CARDS: ProductCardData[] = [
     logoAlt: "Sognos Genogram",
     byline: "Family context.\nBuilt into every record.",
     description:
-      "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery — giving your team the context they need to deliver better outcomes.",
+      "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery - giving your team the context they need to deliver better outcomes.",
     ctaText: "Explore Sognos Genogram",
     ctaLink: "/products/sognosgenogram",
     hoverBg: "#92278D",

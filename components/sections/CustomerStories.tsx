@@ -203,7 +203,7 @@ export default function CustomerStories() {
           </h2>
         </div>
 
-        {/* Card — industry panel style */}
+        {/* Card - industry panel style */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={index}
@@ -213,7 +213,7 @@ export default function CustomerStories() {
             transition={{ duration: 0.2 }}
             className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]"
           >
-            {/* Left column — image/video with logo + stats */}
+            {/* Left column - image/video with logo + stats */}
             <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
               {study.panelVideo ? (
                 <video
@@ -234,7 +234,7 @@ export default function CustomerStories() {
                 />
               )}
 
-              {/* White logo — centered */}
+              {/* White logo - centered */}
               {study.logo && (
                 <div className="relative z-10 flex-1 flex items-center justify-center">
                   <Image
@@ -247,7 +247,7 @@ export default function CustomerStories() {
                 </div>
               )}
 
-              {/* Stats — bottom */}
+              {/* Stats - bottom */}
               <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
@@ -267,14 +267,14 @@ export default function CustomerStories() {
                 </div>
               </div>
 
-              {/* Gradient overlay — top dark fading down + bottom dark fading up */}
+              {/* Gradient overlay - top dark fading down + bottom dark fading up */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
             </div>
 
-            {/* Right column — quote info panel */}
+            {/* Right column - quote info panel */}
             <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
-              {/* Quote + author — vertically centered */}
+              {/* Quote + author - vertically centered */}
               <div className="flex-1 flex flex-col justify-center">
                 <QuoteIcon className={study.quoteIconColor} />
 
@@ -296,7 +296,7 @@ export default function CustomerStories() {
                 </div>
               </div>
 
-              {/* CTA — right aligned */}
+              {/* CTA - right aligned */}
               <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
                 <AnimatedButton
                   href={study.href}
@@ -311,7 +311,7 @@ export default function CustomerStories() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Logo tab row — below card */}
+        {/* Logo tab row - below card */}
         <div
           ref={tabsContainerRef}
           className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory gap-4 lg:gap-10 mt-4 lg:mt-0 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none"
@@ -352,7 +352,7 @@ export default function CustomerStories() {
                 </span>
               )}
 
-              {/* Progress bar — bottom edge of active tab */}
+              {/* Progress bar - bottom edge of active tab */}
               <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-gray-300">
                 {i === index && (
                   <motion.div

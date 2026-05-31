@@ -126,7 +126,7 @@ function ComplianceRing({ trigger }: { trigger: boolean }) {
   );
 }
 
-// ─── Left tile — Utilisation (full height) ────────────────────────────────────
+// ─── Left tile - Utilisation (full height) ────────────────────────────────────
 
 function UtilisationTile({ trigger }: { trigger: boolean }) {
   const hrs = useCountUp(8420, { duration: 1.8, trigger, delay: 0.2 });
@@ -166,7 +166,7 @@ function UtilisationTile({ trigger }: { trigger: boolean }) {
         </div>
       </div>
 
-      {/* Sparkbars — fills available width */}
+      {/* Sparkbars - fills available width */}
       <div className="w-full">
         <SparkBars trigger={trigger} accent="#4f46e5" w={220} h={48} />
       </div>
@@ -194,7 +194,7 @@ function UtilisationTile({ trigger }: { trigger: boolean }) {
   );
 }
 
-// ─── Right top — Compliance ───────────────────────────────────────────────────
+// ─── Right top - Compliance ───────────────────────────────────────────────────
 
 function ComplianceTile({ trigger }: { trigger: boolean }) {
   return (
@@ -224,7 +224,7 @@ function ComplianceTile({ trigger }: { trigger: boolean }) {
   );
 }
 
-// ─── Right bottom — Cost & Coverage ──────────────────────────────────────────
+// ─── Right bottom - Cost & Coverage ──────────────────────────────────────────
 
 function CostTile({ trigger }: { trigger: boolean }) {
   const saving = useCountUp(31, { duration: 1.5, trigger, delay: 0.5 });
@@ -269,7 +269,7 @@ export default function OutcomesFlow({
 }) {
   return (
     <div className="flex w-full h-full items-stretch gap-4">
-      {/* Left column — full height */}
+      {/* Left column - full height */}
       <motion.div
         className="flex flex-[3] flex-col"
         initial={{ opacity: 0, y: 16 }}
@@ -279,7 +279,7 @@ export default function OutcomesFlow({
         <UtilisationTile trigger={trigger} />
       </motion.div>
 
-      {/* Right column — two stacked tiles */}
+      {/* Right column - two stacked tiles */}
       <div className="flex flex-[2] flex-col gap-4">
         <motion.div
           className="flex flex-1 flex-col"

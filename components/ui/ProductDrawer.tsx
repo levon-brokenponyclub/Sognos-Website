@@ -15,15 +15,15 @@ type DrawerState = "hidden" | "peek" | "expanded";
 
 interface ProductDrawerProps {
   secondaryLabel: string;
-  /** Desktop peek — left column heading */
+  /** Desktop peek - left column heading */
   peekTitle?: string;
-  /** Desktop peek — left column body text */
+  /** Desktop peek - left column body text */
   peekDescription?: string;
-  /** Expanded state — section header title */
+  /** Expanded state - section header title */
   drawerTitle?: string;
-  /** Expanded state — section header description */
+  /** Expanded state - section header description */
   drawerDescription?: string;
-  /** Current product slug — filters it out of the "Other Products" cards */
+  /** Current product slug - filters it out of the "Other Products" cards */
   currentProduct?: "sognoscare" | "sognosroster" | "sognosgenogram";
   children?: React.ReactNode;
 }
@@ -45,6 +45,8 @@ export default function ProductDrawer({
 }: ProductDrawerProps) {
   const [state, setState] = useState<DrawerState>("peek");
   const [isMobile, setIsMobile] = useState(true);
+  const [carouselIdx, setCarouselIdx] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const { openModal } = useBookDemo();
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function ProductDrawer({
     }
   }, [state]);
 
-  // Collapse on scroll down, peek on scroll up — frozen when expanded
+  // Collapse on scroll down, peek on scroll up - frozen when expanded
   const lastUpdateRef = useRef(0);
   useEffect(() => {
     let lastY = window.scrollY;
@@ -87,6 +89,14 @@ export default function ProductDrawer({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const scrollCarousel = (idx: number) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const card = el.children[idx] as HTMLElement | undefined;
+    card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    setCarouselIdx(idx);
+  };
 
   const peekPx = isMobile ? MOBILE_PEEK : DESKTOP_PEEK;
   const animateY =
@@ -124,7 +134,7 @@ export default function ProductDrawer({
 
       {/* Peek row
           Mobile: buttons only, centred
-          Desktop: 2-col — title/description left, buttons right (mirrors hero bar) */}
+          Desktop: 2-col - title/description left, buttons right (mirrors hero bar) */}
       <div
         className="relative flex items-center gap-3 px-5 pt-2 pb-4 lg:justify-between lg:gap-14 lg:px-8 lg:pb-1 lg:pt-1 shrink-0"
         style={{ order: state === "expanded" ? 1 : undefined }}
@@ -150,7 +160,7 @@ export default function ProductDrawer({
               "radial-gradient(circle at 100% 100%, transparent 19px, black 20px)",
           }}
         />
-        {/* Left col — desktop only */}
+        {/* Left col - desktop only */}
         {(peekTitle || peekDescription) && (
           <div className="hidden lg:flex flex-col gap-2 max-w-xl">
             {peekTitle && (
@@ -166,8 +176,8 @@ export default function ProductDrawer({
           </div>
         )}
 
-        {/* Right col — buttons (full-width on mobile, shrink on desktop) */}
-        <div className="flex items-center gap-2 flex-1 lg:flex-none">
+        {/* Right col - buttons (centred on mobile, shrink on desktop) */}
+        <div className="flex items-center justify-center gap-2 flex-1 lg:flex-none lg:justify-start">
           <AnimatedButton
             href="#"
             onClick={(e) => {
@@ -227,7 +237,7 @@ export default function ProductDrawer({
                   </h3>
                 </div>
               )}
-              <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+              <div ref={carouselRef} className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                 {otherProducts.map((card) => (
                   <article
                     key={card.ctaLink}
@@ -261,6 +271,32 @@ export default function ProductDrawer({
                   </article>
                 ))}
               </div>
+
+              {/* Prev / Next arrows — mobile only */}
+              {otherProducts.length > 1 && (
+                <div className="flex justify-end gap-2 pt-4 lg:hidden">
+                  <button
+                    onClick={() => scrollCarousel(Math.max(0, carouselIdx - 1))}
+                    disabled={carouselIdx === 0}
+                    aria-label="Previous product"
+                    className="w-10 h-10 rounded-full bg-brand flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => scrollCarousel(Math.min(otherProducts.length - 1, carouselIdx + 1))}
+                    disabled={carouselIdx === otherProducts.length - 1}
+                    aria-label="Next product"
+                    className="w-10 h-10 rounded-full bg-brand flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

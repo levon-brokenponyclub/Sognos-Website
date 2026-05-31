@@ -1,4 +1,4 @@
-// Server Component — no "use client" needed.
+// Server Component - no "use client" needed.
 // All animation via CSS @keyframes and SVG <animateMotion>. No hooks.
 
 const TOP_PATHS = [
@@ -60,17 +60,17 @@ export default function SystemFlowDiagram() {
       {/* Dot grid background */}
       <div className="sfd-dot-grid" aria-hidden="true" />
 
-      {/* Zone 1 — Service Demand */}
+      {/* Zone 1 - Service Demand */}
       <p className="sfd-zone-label">Service Demand</p>
 
       <div className="sfd-demand-row">
-        {/* Left card — Referrals / Care Plans */}
+        {/* Left card - Referrals / Care Plans */}
         <div className="sfd-card">
           <div className="sfd-shimmer" aria-hidden="true" />
           <span className="sfd-card-service sfd-card-service--a">Referrals</span>
           <span className="sfd-card-service sfd-card-service--b">Care Plans</span>
         </div>
-        {/* Right card — Field Jobs / Schedules (2.5s offset) */}
+        {/* Right card - Field Jobs / Schedules (2.5s offset) */}
         <div className="sfd-card sfd-card--offset">
           <div className="sfd-shimmer" aria-hidden="true" style={{ animationDelay: "1.2s" }} />
           <span className="sfd-card-service sfd-card-service--c">Field Jobs</span>
@@ -115,7 +115,7 @@ export default function SystemFlowDiagram() {
         ))}
       </svg>
 
-      {/* Zone 2 — Sognos Platform */}
+      {/* Zone 2 - Sognos Platform */}
       <div className="sfd-platform">
         <span className="sfd-platform-dot" aria-hidden="true" />
         <span className="sfd-platform-label">Sognos Platform</span>
@@ -155,7 +155,7 @@ export default function SystemFlowDiagram() {
         ))}
       </svg>
 
-      {/* Zone 3 — Outcomes & Compliance */}
+      {/* Zone 3 - Outcomes & Compliance */}
       <p className="sfd-zone-label">Outcomes &amp; Compliance</p>
 
       <div className="sfd-outcomes-row">

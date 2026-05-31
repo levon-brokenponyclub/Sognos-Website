@@ -70,7 +70,7 @@ const STATS = [
 const TESTIMONIALS = [
   {
     quote:
-      "Sognos gave us one system for everything — care management, rostering, compliance. We went from three disconnected tools to one platform that actually reflects how we operate.",
+      "Sognos gave us one system for everything - care management, rostering, compliance. We went from three disconnected tools to one platform that actually reflects how we operate.",
     role: "Operations Director",
     organisation: "Health & Social Care Provider",
   },
@@ -178,7 +178,7 @@ export default function SognoscareProof() {
             </h2>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-gray-600 lg:justify-self-end">
-            SognosCare is built for providers who must demonstrate outcomes — to
+            SognosCare is built for providers who must demonstrate outcomes - to
             funding bodies, auditors, and boards. These are results from active
             deployments.
           </p>

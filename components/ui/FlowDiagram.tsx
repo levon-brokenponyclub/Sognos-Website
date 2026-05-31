@@ -126,7 +126,7 @@ export default function FlowDiagram() {
       style={{ height: VB_H }}
       aria-hidden="true"
     >
-      {/* Icon nodes — positioned via % matching SVG viewBox coordinates */}
+      {/* Icon nodes - positioned via % matching SVG viewBox coordinates */}
 
       {/* Left node: Outcomes */}
       <div
@@ -169,7 +169,7 @@ export default function FlowDiagram() {
         </div>
       ))}
 
-      {/* SVG overlay — animated beams */}
+      {/* SVG overlay - animated beams */}
       <svg
         className="pointer-events-none absolute inset-0 w-full h-full"
         viewBox={`0 0 ${VB_W} ${VB_H}`}

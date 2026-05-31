@@ -1,4 +1,4 @@
-// Server Component — SMIL animations only, no React state required
+// Server Component - SMIL animations only, no React state required
 
 const INPUTS = [
   {
@@ -112,7 +112,7 @@ export default function SognosWorkflow() {
             strokeDasharray="4 3"
           />
 
-          {/* ── Orange beam — top L-shape (path ≈ 420px) ── */}
+          {/* ── Orange beam - top L-shape (path ≈ 420px) ── */}
           <path
             d="M 210 26 L 370 26 L 370 144 L 512 144"
             stroke="#F17463"
@@ -129,7 +129,7 @@ export default function SognosWorkflow() {
             />
           </path>
 
-          {/* ── Blue beam — straight horizontal (path ≈ 302px) ── */}
+          {/* ── Blue beam - straight horizontal (path ≈ 302px) ── */}
           <path
             d="M 210 144 L 512 144"
             stroke="#5D64FE"
@@ -147,7 +147,7 @@ export default function SognosWorkflow() {
             />
           </path>
 
-          {/* ── Amber beam — bottom L-shape (path ≈ 420px) ── */}
+          {/* ── Amber beam - bottom L-shape (path ≈ 420px) ── */}
           <path
             d="M 210 262 L 370 262 L 370 144 L 512 144"
             stroke="#f59e0b"
@@ -264,7 +264,7 @@ export default function SognosWorkflow() {
           </line>
         </svg>
 
-        {/* Chain A — column 1 (Dynamics 365, Power Platform) */}
+        {/* Chain A - column 1 (Dynamics 365, Power Platform) */}
         <div className="absolute left-[151px] top-[4px]">
           <IconBubble label="Dynamics 365" bg="#0078d4" letter="D" />
         </div>
@@ -275,7 +275,7 @@ export default function SognosWorkflow() {
           />
         </div>
 
-        {/* Chain B — column 2 (Teams, Copilot AI) */}
+        {/* Chain B - column 2 (Teams, Copilot AI) */}
         <div className="absolute left-[231px] top-[4px]">
           <IconBubble label="Teams" bg="#6264a7" letter="T" />
         </div>

@@ -1,7 +1,7 @@
 const OUTCOMES = [
   {
     heading: "Nothing falls through",
-    body: "Every job tracked from plan to completion — automatically",
+    body: "Every job tracked from plan to completion - automatically",
   },
   {
     heading: "Staff arrive prepared",

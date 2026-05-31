@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const VALUES = [
   {
     title: "Respect for the individual",
-    body: "Every person — client, partner, or team member — is treated with dignity and care.",
+    body: "Every person - client, partner, or team member - is treated with dignity and care.",
   },
   {
     title: "Value to our customers",
@@ -36,7 +36,7 @@ const PARTNERS = [
     logoBg: "bg-white",
     logoFilter: "",
     description:
-      "As a Microsoft Solutions Partner, Sognos builds natively on Dynamics 365, Power Platform, and Azure — giving clients access to continuous innovation and enterprise-grade security.",
+      "As a Microsoft Solutions Partner, Sognos builds natively on Dynamics 365, Power Platform, and Azure - giving clients access to continuous innovation and enterprise-grade security.",
   },
   {
     name: "SoftwareOne",
@@ -102,7 +102,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-base lg:text-lg text-sognos-text-body leading-relaxed">
               Built to serve the organisations that serve others. Since 2016,
-              Sognos has helped service organisations work smarter — replacing
+              Sognos has helped service organisations work smarter - replacing
               disconnected tools with a single intelligent platform built
               natively on Microsoft Dynamics 365.
             </p>
@@ -112,7 +112,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-4 lg:gap-5">
             {/* Left Column */}
             <div className="md:col-span-2 lg:col-span-3 flex flex-col gap-4 lg:gap-5">
-              {/* Stat 1 — Dark */}
+              {/* Stat 1 - Dark */}
               <div className="rounded-lg bg-[#203E71] text-white p-8 lg:p-10 flex flex-col justify-end h-[200px] md:h-[260px] lg:h-[310px] transition-all duration-500 hover:-translate-y-1">
                 <p className="text-5xl text-white lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                   2016
@@ -122,7 +122,7 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              {/* Stat 2 — Video */}
+              {/* Stat 2 - Video */}
               <div className="rounded-lg relative overflow-hidden bg-white h-[200px] md:h-[260px] lg:flex-1 p-8 lg:p-10 flex flex-col justify-end transition-all duration-500 hover:-translate-y-1 group">
                 <div className="relative z-10 text-brand">
                   <p className="text-5xl text-brand lg:text-6xl font-heading font-medium mb-3 tracking-tight">
@@ -135,7 +135,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Center Column — portrait image */}
+            {/* Center Column - portrait image */}
             <div className="md:col-span-2 lg:col-span-5 relative rounded-lg overflow-hidden h-[300px] md:h-auto md:min-h-[500px] lg:min-h-0 transition-all duration-500 hover:-translate-y-1 group">
               <Image
                 src="/images/industries/health-social-care.webp"
@@ -158,7 +158,7 @@ export default function AboutPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 lg:gap-5 flex-1">
-                {/* Stat 3 — Dark */}
+                {/* Stat 3 - Dark */}
                 <div className="rounded-lg bg-[#1D96FC] text-white p-6 lg:p-8 flex flex-col justify-end flex-1 min-h-[160px] transition-all duration-500 hover:-translate-y-1">
                   <p className="text-4xl text-white lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                     3
@@ -168,7 +168,7 @@ export default function AboutPage() {
                   </p>
                 </div>
 
-                {/* Stat 4 — Built on Microsoft */}
+                {/* Stat 4 - Built on Microsoft */}
                 <div className="rounded-lg bg-[#122E58] relative overflow-hidden flex-1 p-6 lg:p-8 flex flex-col justify-end min-h-[200px] transition-all duration-500 hover:-translate-y-1 group">
                   <div className="relative z-10 text-white">
                     <p className="text-2xl lg:text-3xl font-heading font-medium text-white tracking-tight">
@@ -241,7 +241,7 @@ export default function AboutPage() {
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-12">
                 Built to support the people delivering care, services and
-                frontline operations every day — simplifying the complexity of
+                frontline operations every day - simplifying the complexity of
                 healthcare through modern business applications designed for
                 real-world service delivery.
               </p>
@@ -319,7 +319,7 @@ export default function AboutPage() {
               </h2>
               <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
                 We've partnered with some of the best innovators in the industry
-                to bring you new and exciting possibilities — enhanced and
+                to bring you new and exciting possibilities - enhanced and
                 integrated business solutions to your most complex problems.
               </p>
             </div>

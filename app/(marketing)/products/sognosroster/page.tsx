@@ -8,9 +8,9 @@ import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
-  title: "SognosRoster — Workforce Scheduling & Optimisation | Sognos",
+  title: "SognosRoster - Workforce Scheduling & Optimisation | Sognos",
   description:
-    "Allocate the right people, at the right time, to the right services — automatically. Built for complex service operations.",
+    "Allocate the right people, at the right time, to the right services - automatically. Built for complex service operations.",
 };
 
 const SECTIONS = [

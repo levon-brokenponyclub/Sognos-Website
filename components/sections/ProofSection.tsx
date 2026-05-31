@@ -1,4 +1,4 @@
-// Placeholder — swap for a compliance/healthcare video before launch
+// Placeholder - swap for a compliance/healthcare video before launch
 const COMPLIANCE_VIDEO =
   "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm";
 
@@ -42,14 +42,14 @@ const STATS: Stat[] = [
 const TESTIMONIALS = [
   {
     quote:
-      "Sognos gave us one system for everything — care management, rostering, compliance. We went from three disconnected tools to one platform that actually reflects how we operate.",
+      "Sognos gave us one system for everything - care management, rostering, compliance. We went from three disconnected tools to one platform that actually reflects how we operate.",
     role: "Operations Director",
     organisation: "Health & Social Care Provider",
     dark: false,
   },
   {
     quote:
-      "SognosRoster cut our manual scheduling from two days a week to a couple of hours. The AI matching means we're not just filling shifts — we're putting the right people in the right place.",
+      "SognosRoster cut our manual scheduling from two days a week to a couple of hours. The AI matching means we're not just filling shifts - we're putting the right people in the right place.",
     role: "Workforce Manager",
     organisation: "NDIS Service Organisation",
     dark: true,
@@ -93,7 +93,7 @@ function StatTile({ stat }: { stat: Stat }) {
     <div
       className={`relative flex flex-col justify-end overflow-hidden rounded-lg p-7 h-full ${bgClass}`}
     >
-      {/* Video background — no overlay, full opacity */}
+      {/* Video background - no overlay, full opacity */}
       {isVideo && (
         <video
           src={COMPLIANCE_VIDEO}
@@ -119,7 +119,7 @@ function StatTile({ stat }: { stat: Stat }) {
         </>
       )}
 
-      {/* Content — hide all text for video card */}
+      {/* Content - hide all text for video card */}
       {!isVideo && (
         <>
           {stat.label && (
@@ -222,7 +222,7 @@ export default function ProofSection() {
           </p>
         </div>
 
-        {/* Bento grid — 4 cols */}
+        {/* Bento grid - 4 cols */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-55">
           {/* Row 1 */}
           <div className="lg:col-span-1">

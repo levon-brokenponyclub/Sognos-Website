@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { INDUSTRIES } from "@/lib/constants";
 
-// Header bar height (h-14 = 56px) — cards stick just below it
+// Header bar height (h-14 = 56px) - cards stick just below it
 const HEADER_H = 112;
 // Each card in the stack peeks this many px above the one covering it
 const PEEK = 0;
@@ -30,7 +30,7 @@ export default function IndustrySection() {
           </h2>
         </div>
 
-        {/* Mobile — scroll-stacked cards */}
+        {/* Mobile - scroll-stacked cards */}
         <div className="lg:hidden mt-10">
           {INDUSTRIES.map((ind, i) => {
             // Earlier cards stick higher (peek above later cards); later cards have higher z-index
@@ -87,9 +87,9 @@ export default function IndustrySection() {
           })}
         </div>
 
-        {/* Desktop — vertical tabs | animated panel */}
+        {/* Desktop - vertical tabs | animated panel */}
         <div className="hidden lg:flex gap-4 h-[460px] mt-10">
-          {/* Left column — vertical tab list */}
+          {/* Left column - vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
             {INDUSTRIES.map((ind, i) => (
               <button
@@ -106,7 +106,7 @@ export default function IndustrySection() {
             ))}
           </div>
 
-          {/* Center + right — animated panel */}
+          {/* Center + right - animated panel */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -116,10 +116,10 @@ export default function IndustrySection() {
               transition={{ duration: 0.2 }}
               className="flex gap-2 flex-1 min-w-0 bg-white rounded-lg p-2"
             >
-              {/* Left column — grey info panel */}
+              {/* Left column - grey info panel */}
               <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
                 <div className="flex flex-col">
-                  <h2 className="mt-1 mb-5 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
+                  <h2 className="mt-1 mb-1 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                     {active.name}
                   </h2>
                   <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
@@ -151,7 +151,7 @@ export default function IndustrySection() {
                 </Link>
               </div>
 
-              {/* Center column — portrait image or video */}
+              {/* Center column - portrait image or video */}
               <div className="flex-1 relative rounded-lg overflow-hidden">
                 <Image
                   src={active.image}

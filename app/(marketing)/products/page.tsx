@@ -5,7 +5,7 @@ import CTASection from "@/components/sections/CTASection";
 import { PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Products — SognosCare, SognosRoster & Sognos Genogram | Sognos",
+  title: "Products - SognosCare, SognosRoster & Sognos Genogram | Sognos",
   description:
     "Three products built for service operations. SognosCare for care management, SognosRoster for workforce scheduling, and Sognos Genogram for relationship and family context.",
 };
@@ -156,7 +156,7 @@ function BetterTogether() {
           <div className="grid lg:grid-cols-[1fr_1px_1fr]">
             {/* Left */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
                 <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
                 Better together
               </div>
@@ -164,21 +164,21 @@ function BetterTogether() {
                 One operating system for the full service loop
               </h2>
               <p className="mb-6 text-base leading-relaxed text-white/60">
-                SognosCare and SognosRoster are designed to work independently —
+                SognosCare and SognosRoster are designed to work independently -
                 but they're built to work together. When combined, they close
                 the loop from service intake to workforce delivery to compliance
                 outcome, without the gaps that come from disconnected systems.
               </p>
               <p className="text-base leading-relaxed text-white/60">
                 Care manages what needs to be delivered. Roster manages who
-                delivers it — and when, and where.
+                delivers it - and when, and where.
               </p>
             </div>
 
             {/* Divider */}
             <div className="hidden bg-white/5 lg:block" />
 
-            {/* Right — flow */}
+            {/* Right - flow */}
             <div className="flex items-center justify-center border-t border-white/5 px-10 py-14 lg:border-t-0 lg:px-14">
               <div className="w-full max-w-xs space-y-3">
                 {[
@@ -281,7 +281,7 @@ export default function ProductsPage() {
         />
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
               <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
               Products
             </div>
@@ -291,7 +291,7 @@ export default function ProductsPage() {
           </h1>
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/60">
             SognosCare, SognosRoster, and Sognos Genogram are built to stand
-            alone — and designed to work together. All run on Microsoft Dynamics
+            alone - and designed to work together. All run on Microsoft Dynamics
             365, enhanced with Copilot AI.
           </p>
         </div>

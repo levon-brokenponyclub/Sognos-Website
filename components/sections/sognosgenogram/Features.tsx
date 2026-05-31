@@ -1,7 +1,7 @@
 const FEATURES = [
   {
     title: "Interactive genogram builder",
-    body: "Create structured family and relationship maps directly within a case record using standard clinical genogram notation — without leaving the platform.",
+    body: "Create structured family and relationship maps directly within a case record using standard clinical genogram notation - without leaving the platform.",
   },
   {
     title: "Support network mapping",
@@ -9,7 +9,7 @@ const FEATURES = [
   },
   {
     title: "Risk and protective factor tagging",
-    body: "Tag relationships with clinical context — who provides stability, who presents risk, and which connections need monitoring or intervention.",
+    body: "Tag relationships with clinical context - who provides stability, who presents risk, and which connections need monitoring or intervention.",
   },
   {
     title: "Embedded in the case record",
@@ -21,7 +21,7 @@ const FEATURES = [
   },
   {
     title: "Copilot AI narrative",
-    body: "Generate a plain-language summary of the family and support picture from the genogram data — ready to include in reports, referrals, or handover notes.",
+    body: "Generate a plain-language summary of the family and support picture from the genogram data - ready to include in reports, referrals, or handover notes.",
   },
 ];
 
@@ -34,17 +34,19 @@ export default function GenogramFeatures() {
             <span
               aria-hidden
               className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={{
-                padding: "1px",
-                background:
-                  "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-                ["--shine-duration" as string]: "7s",
-              } as React.CSSProperties}
+              style={
+                {
+                  padding: "1px",
+                  background:
+                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(9,18,42,0.75) 60deg, transparent 120deg, transparent 360deg)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "exclude",
+                  ["--shine-duration" as string]: "7s",
+                } as React.CSSProperties
+              }
             />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
             Features

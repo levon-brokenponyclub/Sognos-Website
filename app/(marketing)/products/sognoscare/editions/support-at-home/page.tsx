@@ -6,7 +6,7 @@ import EditionPageTemplate, {
 export const metadata: Metadata = {
   title: "SognosCare for Support at Home | Sognos",
   description:
-    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program — funding model changes tracked and compliance pre-configured.",
+    "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program - funding model changes tracked and compliance pre-configured.",
 };
 
 const data: EditionData = {
@@ -43,7 +43,7 @@ const data: EditionData = {
     {
       label: "Paper-based progress notes and reporting",
       description:
-        "Care workers complete paper notes in the field that are entered manually — late, lost, or incomplete.",
+        "Care workers complete paper notes in the field that are entered manually - late, lost, or incomplete.",
     },
     {
       label: "Difficulty demonstrating consumer-directed care",
@@ -120,7 +120,7 @@ const data: EditionData = {
     title:
       "How a Home Care Provider Prepared for Support at Home Reform with SognosCare",
     description:
-      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption — using SognosCare to manage the change from day one.",
+      "Discover how a leading home care provider transitioned to the new Support at Home program without service disruption - using SognosCare to manage the change from day one.",
     href: "/customer-stories",
     company: "Penrith City Council",
     companySize: "300+",

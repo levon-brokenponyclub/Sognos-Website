@@ -60,7 +60,7 @@ const ARTICLES: Article[] = [
     category: "News",
     title: "New Beginnings | Office Premises in India",
     excerpt:
-      "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India — expanding our delivery capability and global footprint.",
+      "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India - expanding our delivery capability and global footprint.",
     href: "/knowledge-hub/india-office",
     image: "/images/news/india-office.webp",
     industry: null,
@@ -83,7 +83,7 @@ const ARTICLES: Article[] = [
     category: "Webinar",
     title: "Enhancing Participant Care with Field Service Management",
     excerpt:
-      "Watch the playback of our webinar with Microsoft and Flourish Australia — exploring how field service management is transforming participant care delivery.",
+      "Watch the playback of our webinar with Microsoft and Flourish Australia - exploring how field service management is transforming participant care delivery.",
     href: "/knowledge-hub/participant-care-webinar",
     image: "/images/news/participant-care-webinar.webp",
     industry: "Health & Social Care",
@@ -140,7 +140,7 @@ const ARTICLES: Article[] = [
     category: "Insights",
     title: "Data residency in Australian healthcare: Sorting fact from fiction",
     excerpt:
-      "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers — especially in mental health, disability, and aged care — are told that hosting data overseas is non-compliant or even illegal.",
+      "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers - especially in mental health, disability, and aged care - are told that hosting data overseas is non-compliant or even illegal.",
     href: "/knowledge-hub/data-residency-in-australian-healthcare-sorting-fact-from-fiction",
     image: "/images/news/data-residency-768x512.avif",
     industry: "Health & Social Care",
@@ -152,7 +152,7 @@ const ARTICLES: Article[] = [
     title:
       "Compliance without the paperwork: Finding the right NDIS reporting tools for your organisation",
     excerpt:
-      "If you lead a disability service today, you can feel it — compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
+      "If you lead a disability service today, you can feel it - compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
     href: "/knowledge-hub/compliance-without-the-paperwork-finding-the-right-ndis-reporting-tools-for-your-organisation",
     image: "/images/news/Good-compliance-768x511.avif",
     industry: "Health & Social Care",
@@ -174,7 +174,7 @@ const ARTICLES: Article[] = [
     category: "Insights",
     title: "Admin overload in care: Why it's burning out frontline workers",
     excerpt:
-      "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday — and it's pushing good workers out the door.",
+      "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday - and it's pushing good workers out the door.",
     href: "/knowledge-hub/admin-overload-in-care-why-its-burning-out-frontline-workers",
     image: "/images/news/admin-overload-768x405.avif",
     industry: "Health & Social Care",
@@ -186,7 +186,7 @@ const ARTICLES: Article[] = [
     title:
       "Mobile care app solutions: Empowering your frontline workforce with Dataverse",
     excerpt:
-      "Frontline care relies on connection — between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
+      "Frontline care relies on connection - between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
     href: "/knowledge-hub/mobile-care-app-solutions-empowering-your-frontline-workforce-with-dataverse",
     image: "/images/news/mobile-care-app-solutions-768x512.avif",
     industry: "Health & Social Care",
@@ -197,7 +197,7 @@ const ARTICLES: Article[] = [
     category: "Insights",
     title: "Mental health and disability workforce burnout: A growing crisis",
     excerpt:
-      "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin — and the people who remain are carrying more than they should.",
+      "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin - and the people who remain are carrying more than they should.",
     href: "/knowledge-hub/mental-health-and-disability-workforce-burnout-a-growing-crisis",
     image: "/images/news/Heathcare-burnout_blog-768x576.avif",
     industry: "Health & Social Care",
@@ -209,7 +209,7 @@ const ARTICLES: Article[] = [
     title:
       "Reducing Administrative Burden Through Automated Compliance Tracking in Field Service",
     excerpt:
-      "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional — it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
+      "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional - it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
     href: "/knowledge-hub/reducing-administrative-burden-through-automated-compliance-tracking",
     image: "/images/news/admin-blog-768x576.webp",
     industry: null,
@@ -375,7 +375,7 @@ export default function KnowledgeHubArchive({
 
         {/* Body: sidebar + grid */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
-          {/* Col 1: Category filters — sticky */}
+          {/* Col 1: Category filters - sticky */}
           <aside className="lg:sticky lg:top-[100px] lg:self-start">
             <div className="flex flex-row flex-wrap gap-2 lg:flex-col">
               <button
