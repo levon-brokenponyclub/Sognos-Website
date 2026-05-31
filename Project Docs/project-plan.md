@@ -13,7 +13,8 @@ Also complete outside the original phase plan:
 
 Immediate focus:
 - Phase 6 — design system application pass (in progress, started 2026-05-01)
-- `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
+- `/customer-stories` hub + `/customer-stories/[slug]` — live (8 case study slugs)
+- Legacy URL redirects from `sognos.com.au` — wired in `next.config.ts` (23 × 301)
 
 ## Phase Plan
 
@@ -137,9 +138,23 @@ Complete:
 - performance review
 - deployment and launch setup
 
+## Legacy URL Redirects
+
+301 redirects from legacy `sognos.com.au` URLs are configured in `next.config.ts` to preserve SEO equity through the rebuild. Full mapping is documented in `project-overview.md` under "Legacy URL Redirects". 23 total redirects covering:
+
+- Conversation funnels (`/start-the-conversation`, `/dhf-conversation/`)
+- Company restructure (`/about-us/*`, `/contact-us`)
+- Knowledge Hub consolidation (`/news-updates`, `/industry-insights`)
+- Slug changes (`/industries/health-and-social-care`, `/solutions/power-platform-solutions`)
+- Product restructure (`/sognoscare`, `/sognos-genogram`)
+- Customer story slug normalisation (`-case-study` suffix dropped; `nps` → `natural-power-solutions`)
+- Legal/policy (`/privacy-collection-notice`, `/isms-policy`)
+- Old landing page (`/first-in-field-service`)
+
 ## Working Rules
 
 - Update docs in the same task as any structural code change
 - Do not introduce a top-level Platform content layer
 - Do not add industries to `SolutionsSection`
 - Keep products primary in nav, homepage, and page hierarchy
+- Any new route or slug change must be paired with a `next.config.ts` redirect from the legacy URL

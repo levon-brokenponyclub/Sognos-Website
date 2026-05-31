@@ -1,6 +1,6 @@
 # Sognos Website — Project State
 
-> Last updated: 2026-04-25
+> Last updated: 2026-06-01
 
 ## Build Phase
 
@@ -21,10 +21,12 @@ Phases 1–5b complete. 27 routes statically generated.
 | `/industries/[slug]` × 5 | ✅ | health-social-care, facilities-management, local-government, industrial-services, energy-utilities |
 | `/knowledge-hub` | ✅ | Renamed from /resources. KnowledgeHubArchive with sticky sidebar + 6 real articles |
 | `/contact` | ✅ | |
-| `/customers` | 🔲 | Directory exists, no page.tsx |
-| `/customers/[slug]` | 🔲 | |
-| `/company/about` | 🔲 | Directory exists, no page.tsx |
-| `/company/careers` | 🔲 | Directory exists, no page.tsx |
+| `/customer-stories` | ✅ | Hub page |
+| `/customer-stories/[slug]` × 8 | ✅ | auckland-airport, flourish-australia, penrith-city-council, gentari, all-purpose-pumps, asset-security-concepts, neca, natural-power-solutions |
+| `/company/about` | ✅ | |
+| `/company/social-responsibility` | ✅ | |
+| `/company/careers` | ✅ | |
+| `/dhf-conversation` | ✅ | |
 
 ## Homepage Sections (Live)
 
@@ -52,15 +54,17 @@ Phases 1–5b complete. 27 routes statically generated.
 ## Known Gaps / Pre-launch Items
 
 - `COMPLIANCE_VIDEO` in ProofSection is a placeholder Shutterstock URL — swap before launch
-- `/customers` hub and `/customers/[slug]` case study pages not built — CustomerStories and nav reference these
-- `/company/about` and `/company/careers` not built
-- Individual article pages (`/knowledge-hub/[slug]`) not built — article hrefs point to sognos.com.au
 - Client logos `client-03`, `client-14` through `client-21` not yet identified by name
+
+## Legacy URL Redirects
+
+23 × 301 redirects configured in `next.config.ts` from legacy `sognos.com.au` URLs. Full mapping documented in `project-overview.md` under "Legacy URL Redirects".
+
+Covers: conversation funnels, `/about-us/*` restructure, `/contact-us`, Knowledge Hub consolidation, slug changes (`industries/health-and-social-care`, `solutions/power-platform-solutions`), product restructure (`/sognoscare`, `/sognos-genogram`), customer-story slug normalisation (drop `-case-study`, `nps` → `natural-power-solutions`), legal/policy, and old landing pages.
 
 ## Next Tasks (Ordered)
 
 1. Phase 6 — design system application pass
-2. `/customers` hub + case study pages
-3. Phase 7 — UI polish and motion
-4. `/company/about` and `/company/careers`
-5. Replace COMPLIANCE_VIDEO placeholder
+2. Phase 7 — UI polish and motion
+3. Replace COMPLIANCE_VIDEO placeholder
+4. Verify redirects post-deploy (manual hit + Google Search Console URL Inspection)

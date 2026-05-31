@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { headers } from "next/headers";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { LinkedInInsight } from "@/components/LinkedInInsight";
 import CookieBanner from "@/components/ui/CookieBanner";
 import "./globals.css";
 
@@ -67,6 +68,7 @@ export default async function RootLayout({
         {analyticsEnabled && <Analytics />}
         {analyticsEnabled && <SpeedInsights />}
         {analyticsEnabled && <GoogleAnalytics />}
+        {analyticsEnabled && <LinkedInInsight />}
         {showBanner && <CookieBanner />}
       </body>
     </html>

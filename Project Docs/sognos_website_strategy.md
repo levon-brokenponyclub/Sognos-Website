@@ -62,10 +62,12 @@ Rules:
 
 /products
   /products/sognoscare
+  /products/sognoscare/editions/[edition]
   /products/sognosroster
+  /products/sognosgenogram
 
 /solutions
-  /solutions/field-service
+  /solutions/frontline
   /solutions/customer-relationship-management
   /solutions/customer-insights
   /solutions/customer-experience
@@ -76,19 +78,24 @@ Rules:
 /industries
   /industries/[slug]
 
-/customers
-  /customers/[slug]
+/customer-stories
+  /customer-stories/[slug]
 
-/resources
+/knowledge-hub
 
 /company
   /company/about
+  /company/social-responsibility
   /company/careers
+  /company/privacy-collection-notice
 
 /contact
+/dhf-conversation
 ```
 
 There is no `/platform` section in the sitemap.
+
+Legacy `sognos.com.au` URLs are redirected via 301 in `next.config.ts` — see `project-overview.md` → "Legacy URL Redirects" for the full mapping.
 
 ## Final Navigation
 
@@ -97,8 +104,9 @@ Header structure:
 - Products
   - SognosCare
   - SognosRoster
+  - Sognos Genogram
 - Solutions
-  - Field Service
+  - Frontline
   - Customer Relationship Management
   - Customer Insights
   - Customer Experience
@@ -111,10 +119,14 @@ Header structure:
   - Local Government
   - Industrial Services
   - Energy & Utilities
-- Customers
-- Resources
+- Customer Stories
+- Knowledge Hub
+  - Blog
+  - News
+  - Customer Stories
 - Company
   - About
+  - Social Responsibility
   - Careers
 
 Right-side CTAs:

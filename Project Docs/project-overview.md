@@ -87,10 +87,12 @@ Industries:
 - `/industries/energy-utilities` ✅
 - `/knowledge-hub` ✅ (renamed from /resources)
 - `/contact` ✅
-- `/customers` 🔲
-- `/customers/[slug]` 🔲
-- `/company/about` 🔲
-- `/company/careers` 🔲
+- `/customer-stories` ✅
+- `/customer-stories/[slug]` ✅ (auckland-airport, flourish-australia, penrith-city-council, gentari, all-purpose-pumps, asset-security-concepts, neca, natural-power-solutions)
+- `/company/about` ✅
+- `/company/social-responsibility` ✅
+- `/company/careers` ✅
+- `/dhf-conversation` ✅
 
 ## Final Navigation
 - Products
@@ -204,3 +206,35 @@ Every page should clearly communicate:
 - what the product is
 - how it works
 - why it matters
+
+## Legacy URL Redirects
+
+All redirects are wired in `next.config.ts` as 301 (permanent) for SEO preservation from the legacy `sognos.com.au` site.
+
+| Legacy URL | New URL | Reason |
+|------------|---------|--------|
+| `/start-the-conversation` | `/dhf-conversation` | Funnel rename |
+| `/dhf-conversation/` | `/dhf-conversation` | Trailing slash |
+| `/about-us` | `/company/about` | Restructured |
+| `/about-us/our-team` | `/company/about` | Merged |
+| `/about-us/partners` | `/company/about` | Merged |
+| `/about-us/social-responsibility` | `/company/social-responsibility` | Restructured |
+| `/about-us/careers` | `/company/careers` | Restructured |
+| `/contact-us` | `/contact` | Renamed |
+| `/news-updates` | `/knowledge-hub` | Consolidated |
+| `/industry-insights` | `/knowledge-hub` | Consolidated |
+| `/industries/health-and-social-care` | `/industries/health-social-care` | Slug change |
+| `/solutions/power-platform-solutions` | `/solutions/power-platform` | Slug change |
+| `/sognoscare` | `/products/sognoscare` | Restructured |
+| `/sognos-genogram` | `/products/sognosgenogram` | Restructured |
+| `/first-in-field-service` | `/` | Old landing |
+| `/privacy-collection-notice` | `/company/privacy-collection-notice` | Restructured |
+| `/isms-policy` | `/` | Removed |
+| `/customer-stories/gentari-case-study` | `/customer-stories/gentari` | Slug normalised |
+| `/customer-stories/penrith-city-council-case-study` | `/customer-stories/penrith-city-council` | Slug normalised |
+| `/customer-stories/nps-case-study` | `/customer-stories/natural-power-solutions` | Slug renamed |
+| `/customer-stories/neca-case-study` | `/customer-stories/neca` | Slug normalised |
+| `/customer-stories/asset-security-concepts-case-study` | `/customer-stories/asset-security-concepts` | Slug normalised |
+| `/customer-stories/all-purpose-pumps-case-study` | `/customer-stories/all-purpose-pumps` | Slug normalised |
+
+Note: `/customer-stories/auckland-airport`, `/customer-stories/flourish-australia`, and `/customer-stories/` retain their original paths — no redirect required.
