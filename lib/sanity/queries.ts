@@ -6,6 +6,10 @@ import {
   type CtaSectionContent,
   type CtaStatVariant,
 } from "@/lib/content/ctaSection";
+import {
+  DEFAULT_FOOTER_CONTENT,
+  type FooterContent,
+} from "@/lib/content/footer";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 
@@ -321,4 +325,114 @@ export async function getCtaSectionContent(): Promise<CtaSectionContent> {
     logos: logos.length > 0 ? logos : DEFAULT_CTA_CONTENT.logos,
     stats: stats.length > 0 ? stats : DEFAULT_CTA_CONTENT.stats,
   };
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+
+const FOOTER_QUERY = `*[_type == "footer"][0]{
+  brandLogo,
+  tagline,
+  platformLogos[]{ alt, image },
+  columns[]{ title, links[]{ label, href } },
+  acknowledgement,
+  copyrightSuffix,
+  legalLinks[]{ label, href }
+}`;
+
+type RawFooterLink = { label?: string; href?: string };
+type RawFooterColumn = { title?: string; links?: RawFooterLink[] };
+type RawFooter = {
+  brandLogo?: SanityImageSource;
+  tagline?: string;
+  platformLogos?: { alt?: string; image?: SanityImageSource }[];
+  columns?: RawFooterColumn[];
+  acknowledgement?: string;
+  copyrightSuffix?: string;
+  legalLinks?: RawFooterLink[];
+};
+
+export async function getFooterContent(): Promise<FooterContent> {
+  const result = await client
+    .fetch<RawFooter | null>(
+      FOOTER_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => null);
+
+  if (!result) return DEFAULT_FOOTER_CONTENT;
+
+  const platformLogos =
+    result.platformLogos?.flatMap((l) =>
+      l.image && l.alt
+        ? [{ src: urlFor(l.image).width(80).auto("format").url(), alt: l.alt }]
+        : [],
+    ) ?? [];
+
+  const columns =
+    result.columns?.flatMap((c) => {
+      if (!c.title) return [];
+      const links =
+        c.links?.flatMap((l) =>
+          l.label && l.href ? [{ label: l.label, href: l.href }] : [],
+        ) ?? [];
+      return links.length > 0 ? [{ title: c.title, links }] : [];
+    }) ?? [];
+
+  const legalLinks =
+    result.legalLinks?.flatMap((l) =>
+      l.label && l.href ? [{ label: l.label, href: l.href }] : [],
+    ) ?? [];
+
+  return {
+    brandLogo: result.brandLogo
+      ? urlFor(result.brandLogo).width(280).auto("format").url()
+      : DEFAULT_FOOTER_CONTENT.brandLogo,
+    brandLogoAlt: DEFAULT_FOOTER_CONTENT.brandLogoAlt,
+    tagline: result.tagline || DEFAULT_FOOTER_CONTENT.tagline,
+    platformLogos:
+      platformLogos.length > 0
+        ? platformLogos
+        : DEFAULT_FOOTER_CONTENT.platformLogos,
+    columns: columns.length > 0 ? columns : DEFAULT_FOOTER_CONTENT.columns,
+    acknowledgement:
+      result.acknowledgement || DEFAULT_FOOTER_CONTENT.acknowledgement,
+    copyrightSuffix:
+      result.copyrightSuffix || DEFAULT_FOOTER_CONTENT.copyrightSuffix,
+    legalLinks:
+      legalLinks.length > 0 ? legalLinks : DEFAULT_FOOTER_CONTENT.legalLinks,
+  };
+}
+
+// ─── Legal Pages ──────────────────────────────────────────────────────────────
+
+const ALL_LEGAL_PAGE_SLUGS_QUERY = `*[_type == "legalPage" && defined(slug.current)]{
+  "slug": slug.current
+}`;
+
+const LEGAL_PAGE_BY_SLUG_QUERY = `*[_type == "legalPage" && slug.current == $slug][0]{
+  title,
+  "slug": slug.current,
+  metaDescription,
+  badgeLabel,
+  heroHeading,
+  heroSubhead,
+  body,
+  footerNote
+}`;
+
+export async function getAllLegalPageSlugs(): Promise<{ slug: string }[]> {
+  return client.fetch(
+    ALL_LEGAL_PAGE_SLUGS_QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
+}
+
+export async function getLegalPageBySlug(slug: string) {
+  return client.fetch(
+    LEGAL_PAGE_BY_SLUG_QUERY,
+    { slug },
+    { next: { revalidate: 60 } },
+  );
 }

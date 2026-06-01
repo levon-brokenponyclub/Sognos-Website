@@ -64,24 +64,65 @@ export default defineConfig({
                           .schemaType("ctaSection")
                           .documentId("ctaSection"),
                       ),
+                    S.listItem()
+                      .title("Footer")
+                      .id("footer")
+                      .child(
+                        S.document()
+                          .schemaType("footer")
+                          .documentId("footer"),
+                      ),
                   ]),
               ),
             S.divider(),
             S.listItem()
-              .title("Customer Stories")
-              .id("customerStories")
+              .title("Pages")
+              .id("pages")
               .child(
-                S.documentTypeList("customerStory")
-                  .title("Customer Stories")
-                  .defaultOrdering([{ field: "order", direction: "asc" }]),
+                S.list()
+                  .title("Pages")
+                  .items([
+                    S.listItem()
+                      .title("Legals")
+                      .id("legals")
+                      .child(
+                        S.documentTypeList("legalPage")
+                          .title("Legals")
+                          .defaultOrdering([
+                            { field: "title", direction: "asc" },
+                          ]),
+                      ),
+                  ]),
               ),
+            S.divider(),
             S.listItem()
-              .title("Knowledge Hub")
-              .id("knowledgeHub")
+              .title("Posts")
+              .id("posts")
               .child(
-                S.documentTypeList("knowledgePost")
-                  .title("Knowledge Hub")
-                  .defaultOrdering([{ field: "date", direction: "desc" }]),
+                S.list()
+                  .title("Posts")
+                  .items([
+                    S.listItem()
+                      .title("Customer Stories")
+                      .id("customerStories")
+                      .child(
+                        S.documentTypeList("customerStory")
+                          .title("Customer Stories")
+                          .defaultOrdering([
+                            { field: "order", direction: "asc" },
+                          ]),
+                      ),
+                    S.listItem()
+                      .title("Knowledge Hub")
+                      .id("knowledgeHub")
+                      .child(
+                        S.documentTypeList("knowledgePost")
+                          .title("Knowledge Hub")
+                          .defaultOrdering([
+                            { field: "date", direction: "desc" },
+                          ]),
+                      ),
+                  ]),
               ),
           ]),
     }),
