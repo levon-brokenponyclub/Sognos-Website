@@ -13,7 +13,7 @@ type Logo = {
 // Duplicate for seamless infinite loop (-50% = one full set)
 function resolveLogoSrc(logo: Logo) {
   return logo.image
-    ? urlFor(logo.image).width(360).auto("format").url()
+    ? urlFor(logo.image).width(220).auto("format").url()
     : logo.src;
 }
 
