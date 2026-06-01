@@ -61,6 +61,10 @@ export default async function RootLayout({
   const analyticsEnabled = consent === "true" && !isStudio;
   const showBanner = !isStudio && (consent === "unset" || consent === null);
 
+  const settings = await getSiteSettings();
+  const gaId = settings.googleAnalyticsId?.trim();
+  const liPartnerId = settings.linkedinPartnerId?.trim();
+
   return (
     <html
       lang="en"
@@ -70,8 +74,10 @@ export default async function RootLayout({
         {children}
         {analyticsEnabled && <Analytics />}
         {analyticsEnabled && <SpeedInsights />}
-        {analyticsEnabled && <GoogleAnalytics />}
-        {analyticsEnabled && <LinkedInInsight />}
+        {analyticsEnabled && gaId && <GoogleAnalytics measurementId={gaId} />}
+        {analyticsEnabled && liPartnerId && (
+          <LinkedInInsight partnerId={liPartnerId} />
+        )}
         {showBanner && <CookieBanner />}
       </body>
     </html>

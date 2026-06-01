@@ -2,12 +2,16 @@
 
 import Script from "next/script";
 
-export function LinkedInInsight() {
+type Props = {
+  partnerId: string;
+};
+
+export function LinkedInInsight({ partnerId }: Props) {
   return (
     <>
       <Script id="linkedin-insight" strategy="afterInteractive">
         {`
-          _linkedin_partner_id = "9522481";
+          _linkedin_partner_id = "${partnerId}";
           window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
           window._linkedin_data_partner_ids.push(_linkedin_partner_id);
           (function(l) {
@@ -28,7 +32,7 @@ export function LinkedInInsight() {
           width="1"
           style={{ display: "none" }}
           alt=""
-          src="https://px.ads.linkedin.com/collect/?pid=9522481&fmt=gif"
+          src={`https://px.ads.linkedin.com/collect/?pid=${partnerId}&fmt=gif`}
         />
       </noscript>
     </>

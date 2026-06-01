@@ -206,7 +206,9 @@ const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
     email
   },
   abn,
-  linkedinUrl
+  linkedinUrl,
+  googleAnalyticsId,
+  linkedinPartnerId
 }`;
 
 export type SiteOffice = {
@@ -226,6 +228,8 @@ export type SiteSettings = {
   offices?: SiteOffice[];
   abn?: string;
   linkedinUrl?: string;
+  googleAnalyticsId?: string;
+  linkedinPartnerId?: string;
 };
 
 const FALLBACK_SITE_SETTINGS: SiteSettings = {

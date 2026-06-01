@@ -7,6 +7,7 @@ export const siteSettings = defineType({
   groups: [
     { name: "seo", title: "SEO" },
     { name: "contact", title: "Contact" },
+    { name: "analytics", title: "Analytics" },
   ],
   fields: [
     defineField({
@@ -109,6 +110,28 @@ export const siteSettings = defineType({
       group: "contact",
       validation: (R) =>
         R.uri({ scheme: ["http", "https"] }),
+    }),
+    defineField({
+      name: "googleAnalyticsId",
+      title: "Google Analytics Measurement ID",
+      description:
+        "GA4 measurement ID, e.g. G-XXXXXXXXXX or GT-XXXXXXXXX. Leave blank to disable Google Analytics.",
+      type: "string",
+      group: "analytics",
+    }),
+    defineField({
+      name: "linkedinPartnerId",
+      title: "LinkedIn Insight Partner ID",
+      description:
+        "Numeric LinkedIn Partner ID, e.g. 9522481. Leave blank to disable the LinkedIn Insight Tag.",
+      type: "string",
+      group: "analytics",
+      validation: (R) =>
+        R.custom((value) =>
+          !value || /^\d+$/.test(String(value))
+            ? true
+            : "Must be a numeric Partner ID (digits only)",
+        ),
     }),
   ],
   preview: {

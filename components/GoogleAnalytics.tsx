@@ -2,11 +2,15 @@
 
 import Script from "next/script";
 
-export function GoogleAnalytics() {
+type Props = {
+  measurementId: string;
+};
+
+export function GoogleAnalytics({ measurementId }: Props) {
   return (
     <>
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=GT-TWQ5ZNF3"
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
         strategy="afterInteractive"
       />
       <Script
@@ -19,7 +23,7 @@ export function GoogleAnalytics() {
             gtag("set","linker",{"domains":["sognos.com.au"]});
             gtag("js", new Date());
             gtag("set", "developer_id.dZTNiMT", true);
-            gtag("config", "GT-TWQ5ZNF3");
+            gtag("config", "${measurementId}");
           `,
         }}
       />
