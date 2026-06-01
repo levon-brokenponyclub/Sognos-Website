@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { LinkedInInsight } from "@/components/LinkedInInsight";
 import CookieBanner from "@/components/ui/CookieBanner";
+import { getSiteSettings } from "@/lib/sanity/queries";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,33 +19,35 @@ const interTight = Inter_Tight({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Sognos — Field Service Innovations with Microsoft Dynamics",
-  description:
-    "Sognos combines care management and workforce scheduling on Microsoft Dynamics 365.",
-  icons: {
-    icon: [
-      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon/favicon.ico" },
-    ],
-    apple: { url: "/favicon/apple-touch-icon.png" },
-    other: [
-      {
-        rel: "icon",
-        url: "/favicon/android-chrome-192x192.png",
-        sizes: "192x192",
-        type: "image/png",
-      },
-      {
-        rel: "icon",
-        url: "/favicon/android-chrome-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
-      },
-    ],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: settings.siteTitle,
+    description: settings.metaDescription,
+    icons: {
+      icon: [
+        { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon/favicon.ico" },
+      ],
+      apple: { url: "/favicon/apple-touch-icon.png" },
+      other: [
+        {
+          rel: "icon",
+          url: "/favicon/android-chrome-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          rel: "icon",
+          url: "/favicon/android-chrome-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    },
+  };
+}
 
 export default async function RootLayout({
   children,

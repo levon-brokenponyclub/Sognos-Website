@@ -15,7 +15,7 @@ export default defineConfig({
         S.list()
           .title("Content")
           .items([
-            S.listItem()
+            /* S.listItem()
               .title("SognosCare Page")
               .id("sognoscarePage")
               .child(
@@ -31,6 +31,15 @@ export default defineConfig({
                   .schemaType("sognosrosterPage")
                   .documentId("sognosrosterPage"),
               ),
+            S.divider(), */
+            S.listItem()
+              .title("Site Settings")
+              .id("siteSettings")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings"),
+              ),
             S.divider(),
             S.listItem()
               .title("Customer Stories")
@@ -41,12 +50,29 @@ export default defineConfig({
                   .defaultOrdering([{ field: "order", direction: "asc" }]),
               ),
             S.listItem()
-              .title("Logo Strip")
-              .id("logoStrip")
+              .title("Knowledge Hub")
+              .id("knowledgeHub")
               .child(
-                S.document()
-                  .schemaType("logoStrip")
-                  .documentId("logoStrip"),
+                S.documentTypeList("knowledgePost")
+                  .title("Knowledge Hub")
+                  .defaultOrdering([{ field: "date", direction: "desc" }]),
+              ),
+            S.listItem()
+              .title("Global Content")
+              .id("globalContent")
+              .child(
+                S.list()
+                  .title("Global Content")
+                  .items([
+                    S.listItem()
+                      .title("Logo Strip")
+                      .id("logoStrip")
+                      .child(
+                        S.document()
+                          .schemaType("logoStrip")
+                          .documentId("logoStrip"),
+                      ),
+                  ]),
               ),
           ]),
     }),

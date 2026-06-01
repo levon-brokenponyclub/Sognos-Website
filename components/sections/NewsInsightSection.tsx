@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import {
   motion,
   animate,
@@ -13,166 +13,12 @@ import AnimatedButton from "@/components/ui/AnimatedButton";
 
 const GAP = 20;
 
-type Article = {
+export type NewsInsightArticle = {
   category: string;
   title: string;
-  excerpt: string;
   href: string;
   image: string;
 };
-
-const ARTICLES: Article[] = [
-  {
-    category: "Milestone",
-    title:
-      "Sognos Solutions Celebrates 9 Years of Growth, Innovation, and Microsoft Dynamics 365 Expertise",
-    excerpt:
-      "Today marks a major milestone – 9 years of Sognos Solutions. Since our founding in Australia, our journey through digital transformation has been shaped by bold thinking, trusted partnerships, and a passion for delivering impactful technology solutions.",
-    href: "/knowledge-hub/sognos-9-years",
-    image: "/images/news/sognos-9-years.webp",
-  },
-  {
-    category: "News",
-    title: "Sognos Solutions Moves to New Office in North Sydney",
-    excerpt:
-      "We're thrilled to share that Sognos Solutions has officially moved to our new office at 1 Denison Street, North Sydney. The new office offers a great location with ample opportunities.",
-    href: "/knowledge-hub/north-sydney-office",
-    image: "/images/news/north-sydney-office.webp",
-  },
-  {
-    category: "News",
-    title:
-      "Sognos Solutions Expands to New Zealand with Official Launch at Microsoft House in Auckland",
-    excerpt:
-      "Sognos Solutions is proud to announce the official launch of Sognos Solutions New Zealand Limited. This expansion was marked by a milestone event at Microsoft's Auckland offices.",
-    href: "/knowledge-hub/new-zealand-launch",
-    image: "/images/news/new-zealand-launch.webp",
-  },
-  {
-    category: "News",
-    title: "New Beginnings | Office Premises in India",
-    excerpt:
-      "As we continue to grow and evolve, we are excited to announce the opening of our new office premises in India - expanding our delivery capability and global footprint.",
-    href: "/knowledge-hub/india-office",
-    image: "/images/news/india-office.webp",
-  },
-  {
-    category: "Events",
-    title:
-      "Sognos at FSM Summit 2024: Driving the Future of Field Service in Sydney",
-    excerpt:
-      "The Field Service Management (FSM) Summit 2024 in Sydney brought together industry innovators. Sognos participated as a Microsoft partner specialising in field service technology.",
-    href: "/knowledge-hub/fsm-summit-2024",
-    image: "/images/news/fsm-summit-2024.webp",
-  },
-  {
-    category: "Webinar",
-    title: "Enhancing Participant Care with Field Service Management",
-    excerpt:
-      "Watch the playback of our webinar with Microsoft and Flourish Australia - exploring how field service management is transforming participant care delivery.",
-    href: "/knowledge-hub/participant-care-webinar",
-    image: "/images/news/participant-care-webinar.webp",
-  },
-  {
-    category: "Insights",
-    title: "Smarter facilities management with Dynamics 365",
-    excerpt:
-      "Facilities management can often be an intricate balancing act. You're balancing assets, people, contractors, compliance, and customer expectations across multiple sites, often with work that can't wait until tomorrow.",
-    href: "/knowledge-hub/smarter-facilities-management-with-dynamics-365",
-    image: "/images/news/smarter-facilities-mngmt-scaled.avif",
-  },
-  {
-    category: "Insights",
-    title: "From chaos to control: Modernising field services",
-    excerpt:
-      "Field services do not usually fall into chaos overnight. It creeps in. A handful of urgent jobs arrive, priorities change mid-day, and the schedule gets stitched together with phone calls, spreadsheets, and best guesses.",
-    href: "/knowledge-hub/from-chaos-to-control-modernising-field-services",
-    image: "/images/news/chaos-to-calm-scaled.avif",
-  },
-  {
-    category: "Insights",
-    title: "The aged care quality standards: What's changing in 2026, and how to implement",
-    excerpt:
-      "Under the strengthened Aged Care Quality Standards brought in on November 1, 2025, quality of care is judged less by intent and more by what you can demonstrate in everyday records.",
-    href: "/knowledge-hub/the-aged-care-quality-standards-whats-changing-in-2026-and-how-to-implement",
-    image: "/images/news/innovation-aged-care-scaled.avif",
-  },
-  {
-    category: "Insights",
-    title: "Innovation in aged care: What Australia can learn from systems already under strain",
-    excerpt:
-      "Australia has entered a new era in aged care. With the rights-based Aged Care Act and the Support at Home program now in place, expectations are shifting from 'having policies' to consistently demonstrating safe, person-centred care.",
-    href: "/knowledge-hub/innovation-in-aged-care-what-australia-can-learn-from-systems-already-under-strain",
-    image: "/images/news/NDIS-768x513.avif",
-  },
-  {
-    category: "Insights",
-    title: "Data residency in Australian healthcare: Sorting fact from fiction",
-    excerpt:
-      "A persistent myth in healthcare IT is that data must stay onshore to stay safe. Many providers - especially in mental health, disability, and aged care - are told that hosting data overseas is non-compliant or even illegal.",
-    href: "/knowledge-hub/data-residency-in-australian-healthcare-sorting-fact-from-fiction",
-    image: "/images/news/data-residency-768x512.avif",
-  },
-  {
-    category: "Insights",
-    title: "Compliance without the paperwork: Finding the right NDIS reporting tools for your organisation",
-    excerpt:
-      "If you lead a disability service today, you can feel it - compliance is back at the centre of everything. The NDIS Commission expects every provider to run a working incident management system, document outcomes, and respond to audits with confidence.",
-    href: "/knowledge-hub/compliance-without-the-paperwork-finding-the-right-ndis-reporting-tools-for-your-organisation",
-    image: "/images/news/Good-compliance-768x511.avif",
-  },
-  {
-    category: "Insights",
-    title: "Aged care reform 2025/26: What providers need to do now",
-    excerpt:
-      "Reform has landed. Now the real work begins. The new Aged Care Act and Support at Home program came into force, reshaping how aged care operates, funds and proves quality. It is the most significant structural change in a generation.",
-    href: "/knowledge-hub/aged-care-reform-2025-26-what-providers-need-to-do-now",
-    image: "/images/news/aged-care-reform-768x512.avif",
-  },
-  {
-    category: "Insights",
-    title: "Admin overload in care: Why it's burning out frontline workers",
-    excerpt:
-      "Across Australia and New Zealand, frontline teams in care and community services are under pressure. Time with people is shrinking as screens take over the workday - and it's pushing good workers out the door.",
-    href: "/knowledge-hub/admin-overload-in-care-why-its-burning-out-frontline-workers",
-    image: "/images/news/admin-overload-768x405.avif",
-  },
-  {
-    category: "Insights",
-    title: "Mobile care app solutions: Empowering your frontline workforce with Dataverse",
-    excerpt:
-      "Frontline care relies on connection - between people, information, and place. Yet for many teams, mobile tools still slow things down. Coverage drops. Logins fail. Notes get written on paper and entered hours later.",
-    href: "/knowledge-hub/mobile-care-app-solutions-empowering-your-frontline-workforce-with-dataverse",
-    image: "/images/news/mobile-care-app-solutions-768x512.avif",
-  },
-  {
-    category: "Insights",
-    title: "Mental health and disability workforce burnout: A growing crisis",
-    excerpt:
-      "Across Australia, providers in mental health and disability care are facing a growing crisis. Recruitment is harder. Retention is slipping. Rosters are stretched thin - and the people who remain are carrying more than they should.",
-    href: "/knowledge-hub/mental-health-and-disability-workforce-burnout-a-growing-crisis",
-    image: "/images/news/Heathcare-burnout_blog-768x576.avif",
-  },
-  {
-    category: "Insights",
-    title: "Reducing Administrative Burden Through Automated Compliance Tracking in Field Service",
-    excerpt:
-      "In highly regulated industries like utilities, healthcare, and infrastructure, compliance isn't optional - it's a daily operational necessity. Yet many field service organisations still rely on manual compliance tracking.",
-    href: "/knowledge-hub/reducing-administrative-burden-through-automated-compliance-tracking",
-    image: "/images/news/admin-blog-768x576.webp",
-  },
-  {
-    category: "Insights",
-    title: "Power Apps in Action – Customising Your FSM for Industry-Specific Needs",
-    excerpt:
-      "One-size-fits-all rarely works in field service management. Industries like utilities, healthcare, logistics, and infrastructure have unique operational needs, compliance requirements, and customer expectations.",
-    href: "/knowledge-hub/power-apps-in-action-customising-your-fsm-for-industry-specific-needs",
-    image: "/images/news/power-app-blog-2-768x576.webp",
-  },
-];
-
-// Doubled for seamless infinite loop
-const LOOPED_ARTICLES = [...ARTICLES, ...ARTICLES];
 
 const BADGE_STYLES: Record<string, string> = {
   Milestone: "bg-indigo-50 text-indigo-700 border-indigo-100",
@@ -184,7 +30,7 @@ const BADGE_STYLES: Record<string, string> = {
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
-function ArticleCard({ article }: { article: Article }) {
+function ArticleCard({ article }: { article: NewsInsightArticle }) {
   return (
     <Link
       href={article.href}
@@ -192,6 +38,7 @@ function ArticleCard({ article }: { article: Article }) {
     >
       {/* Image + badge overlay */}
       <div className="relative h-48 lg:h-56 w-full shrink-0 overflow-hidden rounded-lg">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={article.image}
           alt={article.title}
@@ -238,17 +85,22 @@ function ArticleCard({ article }: { article: Article }) {
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 
-export default function NewsInsightSection() {
+export default function NewsInsightSection({
+  articles,
+}: {
+  articles: NewsInsightArticle[];
+}) {
+  const looped = useMemo(() => [...articles, ...articles], [articles]);
+
   const x = useMotionValue(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const maxDragRef = useRef(0);
   const cardWidthRef = useRef(0);
-  const periodRef = useRef(0); // width of one full set = ARTICLES.length * (cardWidth + GAP)
+  const periodRef = useRef(0);
   const [maxDrag, setMaxDrag] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 
-  // Autoplay refs
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -268,7 +120,7 @@ export default function NewsInsightSection() {
       const cw = isMobile ? containerWidth : (containerWidth - GAP) / 2;
       cardWidthRef.current = cw;
       setCardWidth(cw);
-      periodRef.current = ARTICLES.length * (cw + GAP);
+      periodRef.current = articles.length * (cw + GAP);
       const trackWidth = trackRef.current.scrollWidth;
       const md = Math.min(0, -(trackWidth - containerWidth));
       maxDragRef.current = md;
@@ -277,7 +129,7 @@ export default function NewsInsightSection() {
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-  }, []);
+  }, [articles.length]);
 
   const stepFn = useCallback(
     (dir: 1 | -1) => {
@@ -321,16 +173,14 @@ export default function NewsInsightSection() {
     return stopAutoplay;
   }, [startAutoplay, stopAutoplay]);
 
+  if (articles.length === 0) return null;
+
   return (
     <section className="w-full bg-prussian-blue-800 overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-8 lg:gap-12">
           {/* Left column - h2 and button, aligned top */}
           <div className="w-full lg:w-[35%] lg:shrink-0 flex flex-col items-center lg:items-start gap-4">
-            {/* <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              News &amp; Insights
-            </div> */}
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-0">
               News &amp; Insights
             </h2>
@@ -354,7 +204,7 @@ export default function NewsInsightSection() {
                 onDragStart={pauseAndResume}
                 className="flex gap-5 cursor-grab active:cursor-grabbing items-stretch"
               >
-                {LOOPED_ARTICLES.map((article, i) => (
+                {looped.map((article, i) => (
                   <div
                     key={i}
                     className="shrink-0 flex flex-col"

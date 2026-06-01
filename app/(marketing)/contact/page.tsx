@@ -1,92 +1,11 @@
-"use client";
+import { getSiteSettings } from "@/lib/sanity/queries";
+import ContactForm from "./ContactForm";
 
-import Link from "next/link";
-import { useState } from "react";
-import { submitContact } from "@/app/actions/contact";
+export const revalidate = 60;
 
-const REASONS = [
-  { label: "Book a Demo", value: "demo" },
-  { label: "Contact Sales", value: "sales" },
-  { label: "Implementation enquiry", value: "implementation" },
-  { label: "Support", value: "support" },
-  { label: "Partnership", value: "partnership" },
-  { label: "Other", value: "other" },
-];
-
-const PRODUCTS_LIST = [
-  { label: "SognosCare", value: "sognoscare" },
-  { label: "SognosRoster", value: "sognosroster" },
-  { label: "Sognos Genogram", value: "sognosgenogram" },
-  { label: "Not sure yet", value: "unsure" },
-];
-
-const OFFICES = [
-  {
-    region: "Australia",
-    label: "Head Office",
-    entity: "Sognos Solutions Pty Ltd",
-    address: ["Level 17, 1 Denison Street", "North Sydney NSW 2060, Australia"],
-    phone: "+61 2 8527 3608",
-    email: "contact@sognos.com.au",
-  },
-  {
-    region: "New Zealand",
-    label: "Office",
-    entity: "Sognos Solutions NZ Limited",
-    address: [
-      "Ground Level, 155 Fanshawe Street",
-      "Auckland 1010, New Zealand",
-    ],
-    phone: "+64 9 802 0402",
-    email: "contact@sognos.co.nz",
-  },
-  {
-    region: "India",
-    label: "Offshore Delivery Centre",
-    entity: "Sognos Solutions India Limited",
-    address: [
-      "713, Silver Radiance, 2 Science City Rd",
-      "Ahmedabad 380060, India",
-    ],
-    phone: "+91 93160 908408",
-    email: "contact@sognos.in",
-  },
-];
-
-const INPUT =
-  "w-full rounded-lg border border-sognos-border-subtle bg-slate-50 px-4 py-3 text-sm text-prussian-blue-800 placeholder:text-sognos-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
-
-const LABEL = "mb-1.5 block text-sm font-medium text-prussian-blue-800";
-
-export default function ContactPage() {
-  const [pending, setPending] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setPending(true);
-    setError(null);
-
-    const fd = new FormData(e.currentTarget);
-    const result = await submitContact({
-      firstName: fd.get("first-name") as string,
-      lastName: fd.get("last-name") as string,
-      email: fd.get("email") as string,
-      phone: fd.get("phone") as string,
-      organisation: fd.get("organisation") as string,
-      reason: fd.get("reason") as string,
-      product: fd.get("product") as string,
-      message: fd.get("message") as string,
-    });
-
-    setPending(false);
-    if (result.ok) {
-      setSuccess(true);
-    } else {
-      setError(result.error);
-    }
-  }
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+  const offices = settings.offices ?? [];
 
   return (
     <main className="w-full bg-white">
@@ -116,302 +35,163 @@ export default function ContactPage() {
               <h2 className="mb-8 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
                 Send us a message
               </h2>
-
-              {success ? (
-                <div className="rounded-xl bg-green-50 border border-green-200 px-6 py-8 text-center">
-                  <p className="text-lg font-medium text-prussian-blue-800">
-                    Message sent!
-                  </p>
-                  <p className="mt-2 text-sm text-sognos-text-body">
-                    Thanks for reaching out. We'll be in touch within one
-                    business day.
-                  </p>
-                </div>
-              ) : (
-                <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-                  {/* Name row */}
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="first-name" className={LABEL}>
-                        First name
-                      </label>
-                      <input
-                        id="first-name"
-                        name="first-name"
-                        type="text"
-                        autoComplete="given-name"
-                        required
-                        className={INPUT}
-                        placeholder="First name"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="last-name" className={LABEL}>
-                        Last name
-                      </label>
-                      <input
-                        id="last-name"
-                        name="last-name"
-                        type="text"
-                        autoComplete="family-name"
-                        required
-                        className={INPUT}
-                        placeholder="Last name"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Email + Phone row */}
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="email" className={LABEL}>
-                        Work email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        className={INPUT}
-                        placeholder="you@organisation.com"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className={LABEL}>
-                        Phone number
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        required
-                        className={INPUT}
-                        placeholder="+61 2 0000 0000"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Organisation */}
-                  <div>
-                    <label htmlFor="organisation" className={LABEL}>
-                      Organisation
-                    </label>
-                    <input
-                      id="organisation"
-                      name="organisation"
-                      type="text"
-                      autoComplete="organization"
-                      className={INPUT}
-                      placeholder="Your organisation"
-                    />
-                  </div>
-
-                  {/* Reason + Product row */}
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="reason" className={LABEL}>
-                        How can we help?
-                      </label>
-                      <select id="reason" name="reason" className={INPUT}>
-                        <option value="">Select a reason</option>
-                        {REASONS.map((r) => (
-                          <option key={r.value} value={r.value}>
-                            {r.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="product" className={LABEL}>
-                        Product interest
-                      </label>
-                      <select id="product" name="product" className={INPUT}>
-                        <option value="">Select a product</option>
-                        {PRODUCTS_LIST.map((p) => (
-                          <option key={p.value} value={p.value}>
-                            {p.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className={LABEL}>
-                      Message{" "}
-                      <span className="font-normal text-sognos-text-muted">
-                        (optional)
-                      </span>
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      className={`${INPUT} resize-none`}
-                      placeholder="Tell us about your organisation and what you're looking to achieve"
-                    />
-                  </div>
-
-                  {error && <p className="text-sm text-red-600">{error}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={pending}
-                    className="w-full rounded-full bg-prussian-blue-800 px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                  >
-                    {pending ? "Sending…" : "Send message"}
-                  </button>
-
-                  <p className="text-xs leading-relaxed text-sognos-text-muted">
-                    By submitting this form you agree to our{" "}
-                     <Link
-                       href="/company/privacy-policy"
-                       className="underline hover:text-prussian-blue-800 transition-colors"
-                     >
-                       Privacy Policy
-                     </Link>
-                    . We'll never share your information with third parties.
-                  </p>
-                </form>
-              )}
+              <ContactForm />
             </div>
 
             {/* Sidebar */}
             <div className="flex flex-col gap-6">
               {/* Response time */}
-              <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                  <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                  Response time
+              {(settings.responseTimeHeading || settings.responseTimeBody) && (
+                <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                    Response time
+                  </div>
+                  {settings.responseTimeHeading && (
+                    <p className="font-heading text-2xl font-medium text-prussian-blue-800">
+                      {settings.responseTimeHeading}
+                    </p>
+                  )}
+                  {settings.responseTimeBody && (
+                    <p className="mt-2 text-sm leading-relaxed text-sognos-text-body">
+                      {settings.responseTimeBody}
+                    </p>
+                  )}
                 </div>
-                <p className="font-heading text-2xl font-medium text-prussian-blue-800">
-                  Within 1 business day
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-sognos-text-body">
-                  Our team is based in Australia. We respond to all enquiries
-                  promptly during business hours.
-                </p>
-              </div>
+              )}
 
               {/* Office locations */}
-              <div className="rounded-2xl border border-sognos-border-subtle bg-white overflow-hidden">
-                {OFFICES.map((office, i) => (
-                  <div
-                    key={office.region}
-                    className={`p-8 ${i > 0 ? "border-t border-sognos-border-subtle" : ""}`}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
-                        {office.region}
+              {offices.length > 0 && (
+                <div className="rounded-2xl border border-sognos-border-subtle bg-white overflow-hidden">
+                  {offices.map((office, i) => (
+                    <div
+                      key={office.region}
+                      className={`p-8 ${i > 0 ? "border-t border-sognos-border-subtle" : ""}`}
+                    >
+                      <div className="flex items-center gap-2 mb-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
+                          {office.region}
+                        </p>
+                        {office.label && (
+                          <>
+                            <span className="text-xs text-sognos-text-muted/50">
+                              -
+                            </span>
+                            <p className="text-xs text-sognos-text-muted">
+                              {office.label}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      <p className="text-sm font-semibold text-prussian-blue-800 mb-2">
+                        {office.entity}
                       </p>
-                      <span className="text-xs text-sognos-text-muted/50">
-                        -
-                      </span>
-                      <p className="text-xs text-sognos-text-muted">
-                        {office.label}
-                      </p>
+                      <address className="not-italic text-sm text-sognos-text-body leading-relaxed mb-3">
+                        {office.address.map((line) => (
+                          <span key={line} className="block">
+                            {line}
+                          </span>
+                        ))}
+                      </address>
+                      <div className="space-y-1">
+                        {office.phone && (
+                          <a
+                            href={`tel:${office.phone.replace(/\s/g, "")}`}
+                            className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                          >
+                            <svg
+                              width="13"
+                              height="13"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M2 2.5C2 8.299 5.701 12 11.5 12l.5-.5v-2l-.5-.5-2-.5-.5.5-.75.75C7.25 9 5 6.75 4.25 5.75L5 5l.5-.5L5 3 4.5 1 4 .5H2L1.5 1C1.5 1 2 2 2 2.5Z"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            {office.phone}
+                          </a>
+                        )}
+                        {office.email && (
+                          <a
+                            href={`mailto:${office.email}`}
+                            className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                          >
+                            <svg
+                              width="13"
+                              height="13"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                              aria-hidden="true"
+                            >
+                              <rect
+                                x="1"
+                                y="3"
+                                width="12"
+                                height="8"
+                                rx="1.5"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                              />
+                              <path
+                                d="M1 4l6 4 6-4"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                            {office.email}
+                          </a>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-sm font-semibold text-prussian-blue-800 mb-2">
-                      {office.entity}
-                    </p>
-                    <address className="not-italic text-sm text-sognos-text-body leading-relaxed mb-3">
-                      {office.address.map((line) => (
-                        <span key={line} className="block">
-                          {line}
-                        </span>
-                      ))}
-                    </address>
-                    <div className="space-y-1">
-                      <a
-                        href={`tel:${office.phone.replace(/\s/g, "")}`}
-                        className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
-                      >
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M2 2.5C2 8.299 5.701 12 11.5 12l.5-.5v-2l-.5-.5-2-.5-.5.5-.75.75C7.25 9 5 6.75 4.25 5.75L5 5l.5-.5L5 3 4.5 1 4 .5H2L1.5 1C1.5 1 2 2 2 2.5Z"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        {office.phone}
-                      </a>
-                      <a
-                        href={`mailto:${office.email}`}
-                        className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
-                      >
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            x="1"
-                            y="3"
-                            width="12"
-                            height="8"
-                            rx="1.5"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                          />
-                          <path
-                            d="M1 4l6 4 6-4"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        {office.email}
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               {/* ABN + LinkedIn */}
-              <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                  <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-                  Company info
-                </div>
-                <dl className="space-y-2 text-sm">
-                  <div className="flex gap-2">
-                    <dt className="text-sognos-text-muted shrink-0">ABN</dt>
-                    <dd className="text-prussian-blue-800 font-medium">
-                      53 611 121 870
-                    </dd>
+              {(settings.abn || settings.linkedinUrl) && (
+                <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                    Company info
                   </div>
-                </dl>
-                <a
-                  href="https://www.linkedin.com/company/sognos-solutions-pty-ltd"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 hover:text-prussian-blue-800 transition-colors"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                  Sognos on LinkedIn
-                </a>
-              </div>
+                  {settings.abn && (
+                    <dl className="space-y-2 text-sm">
+                      <div className="flex gap-2">
+                        <dt className="text-sognos-text-muted shrink-0">ABN</dt>
+                        <dd className="text-prussian-blue-800 font-medium">
+                          {settings.abn}
+                        </dd>
+                      </div>
+                    </dl>
+                  )}
+                  {settings.linkedinUrl && (
+                    <a
+                      href={settings.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 hover:text-prussian-blue-800 transition-colors"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                      </svg>
+                      Sognos on LinkedIn
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
