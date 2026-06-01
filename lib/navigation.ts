@@ -62,6 +62,10 @@ const SOGNOSCARE_EDITIONS: NavItem[] = [
     href: "/products/sognoscare/editions/allied-health",
   },
   {
+    name: "Hospital in the Home",
+    href: "/products/sognoscare/editions/hospital-in-the-home",
+  },
+  {
     name: "Support at Home",
     href: "/products/sognoscare/editions/support-at-home",
   },
