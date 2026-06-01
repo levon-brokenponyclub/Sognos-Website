@@ -10,6 +10,7 @@
     "lint": "eslint",
     "migrate:customer-stories": "tsx scripts/migrate-customer-stories.ts",
     "migrate:knowledge-posts": "tsx scripts/migrate-knowledge-posts.ts",
+    "seed:cta-section": "tsx scripts/seed-cta-section.ts",
     "seed:logo-strip": "tsx scripts/seed-logo-strip.ts",
     "seed:site-settings": "tsx scripts/seed-site-settings.ts"
   },

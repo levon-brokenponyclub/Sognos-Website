@@ -1,5 +1,11 @@
 import { client } from "./client";
+import { urlFor } from "./image";
 import type { SanityImageSource } from "@sanity/image-url";
+import {
+  DEFAULT_CTA_CONTENT,
+  type CtaSectionContent,
+  type CtaStatVariant,
+} from "@/lib/content/ctaSection";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 
@@ -233,4 +239,86 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     )
     .catch(() => null);
   return { ...FALLBACK_SITE_SETTINGS, ...(result ?? {}) };
+}
+
+// ─── CTA Section ──────────────────────────────────────────────────────────────
+
+const CTA_SECTION_QUERY = `*[_type == "ctaSection"][0]{
+  bookDemoHeading,
+  bookDemoDescription,
+  logoBlockHeading,
+  logos[]{
+    alt,
+    image
+  },
+  stats[]{
+    numericValue,
+    suffix,
+    label,
+    variant
+  }
+}`;
+
+type RawCtaLogo = { alt?: string; image?: SanityImageSource };
+type RawCtaStat = {
+  numericValue?: number;
+  suffix?: string;
+  label?: string;
+  variant?: CtaStatVariant;
+};
+type RawCtaSection = {
+  bookDemoHeading?: string;
+  bookDemoDescription?: string;
+  logoBlockHeading?: string;
+  logos?: RawCtaLogo[];
+  stats?: RawCtaStat[];
+};
+
+export async function getCtaSectionContent(): Promise<CtaSectionContent> {
+  const result = await client
+    .fetch<RawCtaSection | null>(
+      CTA_SECTION_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => null);
+
+  if (!result) return DEFAULT_CTA_CONTENT;
+
+  const logos =
+    result.logos?.flatMap((l) =>
+      l.image && l.alt
+        ? [
+            {
+              src: urlFor(l.image).width(120).auto("format").url(),
+              alt: l.alt,
+            },
+          ]
+        : [],
+    ) ?? [];
+
+  const stats =
+    result.stats?.flatMap((s) =>
+      typeof s.numericValue === "number" && s.label
+        ? [
+            {
+              numericValue: s.numericValue,
+              suffix: s.suffix ?? "",
+              label: s.label,
+              variant: s.variant ?? "light",
+            },
+          ]
+        : [],
+    ) ?? [];
+
+  return {
+    bookDemoHeading:
+      result.bookDemoHeading || DEFAULT_CTA_CONTENT.bookDemoHeading,
+    bookDemoDescription:
+      result.bookDemoDescription || DEFAULT_CTA_CONTENT.bookDemoDescription,
+    logoBlockHeading:
+      result.logoBlockHeading || DEFAULT_CTA_CONTENT.logoBlockHeading,
+    logos: logos.length > 0 ? logos : DEFAULT_CTA_CONTENT.logos,
+    stats: stats.length > 0 ? stats : DEFAULT_CTA_CONTENT.stats,
+  };
 }

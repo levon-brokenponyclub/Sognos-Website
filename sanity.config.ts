@@ -42,22 +42,6 @@ export default defineConfig({
               ),
             S.divider(),
             S.listItem()
-              .title("Customer Stories")
-              .id("customerStories")
-              .child(
-                S.documentTypeList("customerStory")
-                  .title("Customer Stories")
-                  .defaultOrdering([{ field: "order", direction: "asc" }]),
-              ),
-            S.listItem()
-              .title("Knowledge Hub")
-              .id("knowledgeHub")
-              .child(
-                S.documentTypeList("knowledgePost")
-                  .title("Knowledge Hub")
-                  .defaultOrdering([{ field: "date", direction: "desc" }]),
-              ),
-            S.listItem()
               .title("Global Content")
               .id("globalContent")
               .child(
@@ -72,7 +56,32 @@ export default defineConfig({
                           .schemaType("logoStrip")
                           .documentId("logoStrip"),
                       ),
+                    S.listItem()
+                      .title("CTA Section")
+                      .id("ctaSection")
+                      .child(
+                        S.document()
+                          .schemaType("ctaSection")
+                          .documentId("ctaSection"),
+                      ),
                   ]),
+              ),
+            S.divider(),
+            S.listItem()
+              .title("Customer Stories")
+              .id("customerStories")
+              .child(
+                S.documentTypeList("customerStory")
+                  .title("Customer Stories")
+                  .defaultOrdering([{ field: "order", direction: "asc" }]),
+              ),
+            S.listItem()
+              .title("Knowledge Hub")
+              .id("knowledgeHub")
+              .child(
+                S.documentTypeList("knowledgePost")
+                  .title("Knowledge Hub")
+                  .defaultOrdering([{ field: "date", direction: "desc" }]),
               ),
           ]),
     }),

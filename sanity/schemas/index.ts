@@ -1,3 +1,4 @@
+import { ctaSection } from "./ctaSection";
 import { customerStory } from "./customerStory";
 import { knowledgePost } from "./knowledgePost";
 import { logoStrip } from "./logoStrip";
@@ -12,4 +13,5 @@ export const schemas = [
   knowledgePost,
   logoStrip,
   siteSettings,
+  ctaSection,
 ];

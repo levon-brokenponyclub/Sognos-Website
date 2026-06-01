@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { bookDemo } from "@/app/actions/book-demo";
+import { useCtaContent } from "@/lib/CtaContentContext";
+import { CTA_VARIANT_STYLES } from "@/lib/content/ctaSection";
 
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -56,39 +58,6 @@ type CTASectionProps = {
   bare?: boolean;
 };
 
-// ─── Platform logos ─────────────────────────────────────────────────────────
-
-const PLATFORM_LOGOS = [
-  { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
-  { src: "/logos/copilot-logo.png", alt: "Microsoft Copilot" },
-  { src: "/logos/platform/PowerBI_scalable.svg", alt: "Power BI" },
-  { src: "/logos/platform/PowerAutomate_scalable.svg", alt: "Power Automate" },
-  { src: "/logos/platform/PowerApps_scalable.svg", alt: "Power Apps" },
-  { src: "/logos/platform/PowerPages_scalable.svg", alt: "Power Pages" },
-  { src: "/logos/platform/Dataverse_scalable.svg", alt: "Dataverse" },
-];
-
-// ─── Proof stats ────────────────────────────────────────────────────────────
-
-const STATS = [
-  {
-    numericValue: 3,
-    suffix: "×",
-    label: "Faster Compliance Reporting",
-    bgClass: "bg-white",
-    textClass: "text-[#0A1629]",
-    labelClass: "text-neutral-500",
-  },
-  {
-    numericValue: 99,
-    suffix: "%",
-    label: "Quality Standard Compliance",
-    bgClass: "bg-prussian-blue-800",
-    textClass: "text-white",
-    labelClass: "text-[#8E9EBB]",
-  },
-];
-
 // ─── Form styles (matches contact page) ────────────────────────────────────
 
 const INPUT =
@@ -117,6 +86,8 @@ export default function CTASection({
   hideStats,
   bare,
 }: CTASectionProps = {}) {
+  const cta = useCtaContent();
+
   const melbourneNow = new Date(
     new Date().toLocaleString("en-US", { timeZone: "Australia/Melbourne" }),
   );
@@ -197,11 +168,10 @@ export default function CTASection({
           <div className="w-full flex flex-col">
             <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
               <h3 className="mb-2 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
-                Book a Demo
+                {cta.bookDemoHeading}
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-1 balanced">
-                Schedule a 45-minute call to see how Sognos can unify your
-                operations and boost efficiency.
+                {cta.bookDemoDescription}
               </p>
             </div>
 
@@ -556,11 +526,11 @@ export default function CTASection({
             {/* Logo slider */}
             <div className="rounded-md bg-white p-5 lg:p-6 border border-gray-200 max-w-xl overflow-hidden">
               <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-4">
-                Powered by Microsoft
+                {cta.logoBlockHeading}
               </p>
               <div className="cta-logo-wrap overflow-hidden">
                 <div className="cta-logo-track" aria-hidden="true">
-                  {[...PLATFORM_LOGOS, ...PLATFORM_LOGOS].map((logo, i) => (
+                  {[...cta.logos, ...cta.logos].map((logo, i) => (
                     <div
                       key={`${logo.alt}-${i}`}
                       className="flex shrink-0 items-center justify-center"
@@ -580,28 +550,31 @@ export default function CTASection({
 
             {/* Stats row */}
             <div className="grid grid-cols-2 gap-3 lg:gap-4 flex-1">
-              {STATS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className={`relative flex h-full flex-col justify-between rounded-md overflow-hidden p-6 lg:p-8 ${stat.bgClass}`}
-                >
-                  <div className="relative z-10 text-left">
-                    <p
-                      className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${stat.textClass}`}
-                    >
-                      <AnimatedCounter value={stat.numericValue!} />
-                      {stat.suffix}
-                    </p>
+              {cta.stats.map((stat) => {
+                const v = CTA_VARIANT_STYLES[stat.variant];
+                return (
+                  <div
+                    key={stat.label}
+                    className={`relative flex h-full flex-col justify-between rounded-md overflow-hidden p-6 lg:p-8 ${v.bgClass}`}
+                  >
+                    <div className="relative z-10 text-left">
+                      <p
+                        className={`font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none ${v.textClass}`}
+                      >
+                        <AnimatedCounter value={stat.numericValue} />
+                        {stat.suffix}
+                      </p>
+                    </div>
+                    <div className="relative z-10 mt-8 text-left lg:mt-10">
+                      <p
+                        className={`text-xs font-semibold uppercase tracking-widest ${v.labelClass}`}
+                      >
+                        {stat.label}
+                      </p>
+                    </div>
                   </div>
-                  <div className="relative z-10 mt-8 text-left lg:mt-10">
-                    <p
-                      className={`text-xs font-semibold uppercase tracking-widest ${stat.labelClass}`}
-                    >
-                      {stat.label}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
