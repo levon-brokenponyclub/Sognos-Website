@@ -112,7 +112,8 @@ export default async function CustomerStoryPage({
 
   const currentIdx = nav.findIndex((n) => n.slug === slug);
   const prev = currentIdx > 0 ? nav[currentIdx - 1] : null;
-  const next = currentIdx >= 0 && currentIdx < nav.length - 1 ? nav[currentIdx + 1] : null;
+  const next =
+    currentIdx >= 0 && currentIdx < nav.length - 1 ? nav[currentIdx + 1] : null;
 
   const heroUrl = story.heroImage
     ? urlFor(story.heroImage).width(1400).auto("format").url()
@@ -266,8 +267,8 @@ export default async function CustomerStoryPage({
 
       {/* ── Body ── */}
       <div className="mx-auto max-w-7xl px-6 pb-20 pt-12 lg:pb-32 lg:pt-16">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr] lg:gap-22">
-          <aside className="lg:sticky lg:top-25 lg:self-start w-full lg:max-w-65 lg:w-65">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[360px_1fr] lg:gap-12">
+          <aside className="lg:sticky lg:top-25 lg:self-start w-full lg:max-w-90 lg:w-90">
             <div>
               <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800">
                 {story.company}
