@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
       { source: "/contact-us", destination: "/contact", permanent: true },
 
       // Knowledge Hub consolidation
+      { source: "/blog", destination: "/knowledge-hub", permanent: true },
       { source: "/news-updates", destination: "/knowledge-hub", permanent: true },
       { source: "/industry-insights", destination: "/knowledge-hub", permanent: true },
 
