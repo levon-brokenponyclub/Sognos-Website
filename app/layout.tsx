@@ -58,7 +58,7 @@ export default async function RootLayout({
   const consent = hdrs.get("x-cookie-consent");
   const pathname = hdrs.get("x-pathname") ?? "";
   const isStudio = pathname.startsWith("/studio");
-  const analyticsEnabled = consent === "true";
+  const analyticsEnabled = consent === "true" && !isStudio;
   const showBanner = !isStudio && (consent === "unset" || consent === null);
 
   return (
