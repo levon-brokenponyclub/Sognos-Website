@@ -45,7 +45,13 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: "Sognos <website@sognos.com.au>",
-      to: ["levongravett@gmail.com", "Paula@sognos.com.au"],
+      to: [
+        "levongravett@gmail.com",
+        "Paula@sognos.com.au",
+        "matthew.thelmo@sognos.com.au",
+        "reem@sognos.com.au",
+        "contact@sognos.com.au",
+      ],
       replyTo: email,
       subject: `New contact form submission: ${firstName} ${lastName} — ${input.organisation}`,
       text: [

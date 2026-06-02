@@ -68,7 +68,13 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: "Sognos Demo Bookings <website@sognos.com.au>",
-      to: ["levongravett@gmail.com", "Paula@sognos.com.au"],
+      to: [
+        "levongravett@gmail.com",
+        "Paula@sognos.com.au",
+        "matthew.thelmo@sognos.com.au",
+        "reem@sognos.com.au",
+        "contact@sognos.com.au",
+      ],
       replyTo: email,
       subject: `Demo booking: ${fullName} — ${company}`,
       text: [
