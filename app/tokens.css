@@ -177,18 +177,12 @@
   --sognos-info-light: #dbeafe;
 
   /* ---- Editions — SognosCare sector identity colours ---- */
-  --sognos-edition-green: var(
-    --color-seagrass-700
-  ); /* #009982 — Disability & Mental Health */
-  --sognos-edition-orange: var(
-    --color-sandy-brown-400
-  ); /* #ff9233 — Allied Health */
-  --sognos-edition-coral: var(
-    --color-grapefruit-pink-300
-  ); /* #ff666b — Support at Home */
-  --sognos-edition-purple: var(
-    --color-bright-lavender-300
-  ); /* #a666ff — Aged Care */
+  --sognos-edition-green: #36b19a; /* Disability & Mental Health */
+  --sognos-edition-orange: #fea65d; /* Allied Health */
+  --sognos-edition-lime: #c6da4c; /* Hospital in the Home */
+  --sognos-edition-coral: #ff8184; /* Support at Home */
+  --sognos-edition-purple: #c49aff; /* Residential Aged Care */
+  --sognos-edition-pink: #ff6db4; /* Child & Family Services */
 
   /* Gradients */
   --sognos-gradient-brand: radial-gradient(

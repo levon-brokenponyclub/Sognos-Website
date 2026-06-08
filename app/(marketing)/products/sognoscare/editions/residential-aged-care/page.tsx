@@ -15,7 +15,7 @@ const data: EditionData = {
   description:
     "From care planning and progress documentation to staff coordination and resident outcome reporting - built for providers.",
   gradient: "/images/sognoscare/gradient-4.png",
-  accentHex: "#a666ff",
+  accentHex: "#c49aff",
   accentTextClass: "text-(--sognos-edition-purple)",
   accentBgClass: "bg-(--sognos-edition-purple)",
   accentBorderClass: "border-(--sognos-edition-purple)",

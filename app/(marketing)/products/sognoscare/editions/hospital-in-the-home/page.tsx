@@ -15,10 +15,10 @@ const data: EditionData = {
   description:
     "Manage home-based treatment, mobile clinical teams, patient visits, and care documentation while maintaining visibility across Hospital in the Home delivery.",
   gradient: "/images/sognoscare/gradient-1.png",
-  accentHex: "#BFD731",
-  accentTextClass: "text-[#BFD731]",
-  accentBgClass: "bg-[#BFD731]",
-  accentBorderClass: "border-[#BFD731]",
+  accentHex: "#c6da4c",
+  accentTextClass: "text-[#c6da4c]",
+  accentBgClass: "bg-[#c6da4c]",
+  accentBorderClass: "border-[#c6da4c]",
   problems: [
     {
       label: "Manual clinical scheduling",

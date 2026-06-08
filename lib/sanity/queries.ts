@@ -10,6 +10,11 @@ import {
   DEFAULT_FOOTER_CONTENT,
   type FooterContent,
 } from "@/lib/content/footer";
+import {
+  DEFAULT_SOGNOSCARE_PAGE_CONTENT,
+  type SognoscarePageContent,
+} from "@/lib/content/sognoscarePage";
+import type { CaseStudy } from "@/components/sections/ProductCustomerStories";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 
@@ -33,19 +38,305 @@ export async function getLogoStripContent(): Promise<
 
 // ─── SognosCare ───────────────────────────────────────────────────────────────
 
+export type EditionCardItem = {
+  name: string;
+  label: string;
+  href: string;
+  accentColor: string;
+  logo: string;
+  description: string;
+};
+
+export type SognoscarePageRendered = Omit<
+  SognoscarePageContent,
+  "hero" | "editionsHeader" | "storiesHeader"
+> & {
+  hero: {
+    logoSrc: string;
+    headline: string;
+    subtext: string;
+  };
+  editionsHeader: SognoscarePageContent["editionsHeader"];
+  editions: EditionCardItem[];
+  storiesHeader: SognoscarePageContent["storiesHeader"];
+  featuredStories: CaseStudy[] | null;
+};
+
 const SOGNOSCARE_PAGE_QUERY = `*[_type == "sognoscarePage"][0]{
+  seo,
   hero,
-  problems,
-  features,
-  editions,
+  productDrawer,
+  subNav[]{ label, id, href },
+  problemsHeader,
+  problems[]{ number, problem, problemDetail, solution, iconPath },
+  featuresHeader,
+  features[]{ id, name, tagline, description, capabilities, iconPath },
+  editionsHeader,
+  "editions": editions[]->{
+    "slug": slug.current,
+    name,
+    accentHex,
+    cardLogo,
+    cardTagline,
+    cardDescription
+  },
+  advantagesHeader,
   advantages,
-  stats,
-  testimonials,
-  stories
+  storiesHeader,
+  "featuredStories": featuredStories[]->{
+    "slug": slug.current,
+    company,
+    quote,
+    quoteAuthor,
+    sidebar,
+    heroImage,
+    companyLogo
+  },
+  cta
 }`;
 
-export async function getSognoscarePageContent() {
-  return client.fetch(SOGNOSCARE_PAGE_QUERY, {}, { next: { revalidate: 60 } });
+type RawSanityImage = SanityImageSource;
+type RawSubNav = { label?: string; id?: string; href?: string };
+type RawHero = { logo?: RawSanityImage; headline?: string; subtext?: string };
+type RawProductDrawer = Partial<SognoscarePageContent["productDrawer"]>;
+type RawSectionHeader = Partial<SognoscarePageContent["problemsHeader"]>;
+type RawProblem = Partial<SognoscarePageContent["problems"][number]>;
+type RawFeature = Partial<SognoscarePageContent["features"][number]> & {
+  capabilities?: string[];
+};
+type RawEditionRef = {
+  slug?: string;
+  name?: string;
+  accentHex?: string;
+  cardLogo?: RawSanityImage;
+  cardTagline?: string;
+  cardDescription?: string;
+};
+type RawSidebarRow = { label?: string; value?: string };
+type RawStoryRef = {
+  slug?: string;
+  company?: string;
+  quote?: string;
+  quoteAuthor?: string;
+  sidebar?: RawSidebarRow[];
+  heroImage?: RawSanityImage;
+  companyLogo?: RawSanityImage;
+};
+type RawCta = Partial<SognoscarePageContent["cta"]>;
+type RawSognoscarePage = {
+  seo?: Partial<SognoscarePageContent["seo"]>;
+  hero?: RawHero;
+  productDrawer?: RawProductDrawer;
+  subNav?: RawSubNav[];
+  problemsHeader?: RawSectionHeader;
+  problems?: RawProblem[];
+  featuresHeader?: RawSectionHeader;
+  features?: RawFeature[];
+  editionsHeader?: RawSectionHeader;
+  editions?: (RawEditionRef | null)[];
+  advantagesHeader?: RawSectionHeader;
+  advantages?: string[];
+  storiesHeader?: RawSectionHeader;
+  featuredStories?: (RawStoryRef | null)[];
+  cta?: RawCta;
+};
+
+const STORY_THEME_CLASSES = {
+  panelClass: "bg-prussian-blue-800/10",
+  quoteClass: "text-prussian-blue-800",
+  authorClass: "text-prussian-blue-800",
+  roleClass: "text-prussian-blue-800/75",
+  quoteIconColor: "text-prussian-blue-800/40",
+  contentBorderClass: "border-prussian-blue-800/20",
+  buttonBorderClass: "border-prussian-blue-800",
+  buttonTextClass: "text-prussian-blue-800",
+  buttonHoverClass: "hover:bg-prussian-blue-800/8",
+  buttonIconBgClass: "bg-prussian-blue-800",
+} as const;
+
+function parseQuoteAuthor(raw?: string): { author: string; role: string } {
+  if (!raw) return { author: "", role: "" };
+  const m = raw.match(/^(.*?),\s*(.*)$/);
+  return m ? { author: m[1].trim(), role: m[2].trim() } : { author: raw.trim(), role: "" };
+}
+
+function sidebarValue(rows: RawSidebarRow[] | undefined, key: string): string {
+  const row = rows?.find(
+    (r) => r.label?.toLowerCase().trim() === key.toLowerCase().trim(),
+  );
+  return row?.value ?? "";
+}
+
+function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
+  if (!raw || !raw.slug || !raw.company) return null;
+  const { author, role } = parseQuoteAuthor(raw.quoteAuthor);
+  return {
+    company: raw.company,
+    companySize: sidebarValue(raw.sidebar, "Size") || sidebarValue(raw.sidebar, "Company Size"),
+    industry: sidebarValue(raw.sidebar, "Industry"),
+    logo: raw.companyLogo
+      ? urlFor(raw.companyLogo).width(280).auto("format").url()
+      : "",
+    panelImage: raw.heroImage
+      ? urlFor(raw.heroImage).width(1200).auto("format").url()
+      : "",
+    quote: raw.quote ?? "",
+    author,
+    role,
+    href: `/customer-stories/${raw.slug}`,
+    ...STORY_THEME_CLASSES,
+  };
+}
+
+function mapEdition(raw: RawEditionRef | null | undefined): EditionCardItem | null {
+  if (!raw || !raw.slug || !raw.name) return null;
+  return {
+    name: raw.name,
+    label: raw.name,
+    href: `/products/sognoscare/editions/${raw.slug}`,
+    accentColor: raw.accentHex ?? "#1D96FC",
+    logo: raw.cardLogo
+      ? urlFor(raw.cardLogo).width(320).auto("format").url()
+      : "",
+    description: raw.cardDescription ?? raw.cardTagline ?? "",
+  };
+}
+
+function mergeHeader(
+  raw: RawSectionHeader | undefined,
+  fallback: SognoscarePageContent["problemsHeader"],
+): SognoscarePageContent["problemsHeader"] {
+  return {
+    eyebrow: raw?.eyebrow ?? fallback.eyebrow,
+    heading: raw?.heading ?? fallback.heading,
+    intro: raw?.intro ?? fallback.intro,
+  };
+}
+
+export async function getSognoscarePageContent(): Promise<SognoscarePageRendered> {
+  const result = await client
+    .fetch<RawSognoscarePage | null>(
+      SOGNOSCARE_PAGE_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => null);
+
+  const d = DEFAULT_SOGNOSCARE_PAGE_CONTENT;
+
+  if (!result) {
+    return {
+      ...d,
+      hero: {
+        logoSrc: d.hero.logoSrc,
+        headline: d.hero.headline,
+        subtext: d.hero.subtext,
+      },
+      editions: [],
+      featuredStories: null,
+    };
+  }
+
+  const heroLogoSrc = result.hero?.logo
+    ? urlFor(result.hero.logo).auto("format").url()
+    : d.hero.logoSrc;
+
+  const subNav =
+    result.subNav?.flatMap((s) =>
+      s.label && s.id
+        ? [{ label: s.label, id: s.id, href: s.href ?? undefined }]
+        : [],
+    ) ?? [];
+
+  const editions =
+    result.editions?.flatMap((e) => {
+      const mapped = mapEdition(e);
+      return mapped ? [mapped] : [];
+    }) ?? [];
+
+  const featuredStories =
+    result.featuredStories
+      ?.flatMap((s) => {
+        const mapped = mapStory(s);
+        return mapped ? [mapped] : [];
+      }) ?? [];
+
+  const problems =
+    result.problems?.flatMap((p) =>
+      p.number && p.problem && p.problemDetail && p.solution && p.iconPath
+        ? [
+            {
+              number: p.number,
+              problem: p.problem,
+              problemDetail: p.problemDetail,
+              solution: p.solution,
+              iconPath: p.iconPath,
+            },
+          ]
+        : [],
+    ) ?? [];
+
+  const features =
+    result.features?.flatMap((f) =>
+      f.id && f.name && f.tagline && f.description && f.iconPath
+        ? [
+            {
+              id: f.id,
+              name: f.name,
+              tagline: f.tagline,
+              description: f.description,
+              capabilities: f.capabilities ?? [],
+              iconPath: f.iconPath,
+            },
+          ]
+        : [],
+    ) ?? [];
+
+  const advantages =
+    result.advantages?.filter((a): a is string => typeof a === "string" && a.length > 0) ?? [];
+
+  return {
+    seo: {
+      title: result.seo?.title ?? d.seo.title,
+      description: result.seo?.description ?? d.seo.description,
+    },
+    hero: {
+      logoSrc: heroLogoSrc,
+      headline: result.hero?.headline ?? d.hero.headline,
+      subtext: result.hero?.subtext ?? d.hero.subtext,
+    },
+    productDrawer: {
+      peekTitle: result.productDrawer?.peekTitle ?? d.productDrawer.peekTitle,
+      peekDescription:
+        result.productDrawer?.peekDescription ?? d.productDrawer.peekDescription,
+      drawerTitle: result.productDrawer?.drawerTitle ?? d.productDrawer.drawerTitle,
+      drawerDescription:
+        result.productDrawer?.drawerDescription ?? d.productDrawer.drawerDescription,
+    },
+    subNav: subNav.length > 0 ? subNav : d.subNav,
+    problemsHeader: mergeHeader(result.problemsHeader, d.problemsHeader),
+    problems: problems.length > 0 ? problems : d.problems,
+    featuresHeader: mergeHeader(result.featuresHeader, d.featuresHeader),
+    features: features.length > 0 ? features : d.features,
+    editionsHeader: mergeHeader(result.editionsHeader, d.editionsHeader),
+    editions,
+    advantagesHeader: mergeHeader(result.advantagesHeader, d.advantagesHeader),
+    advantages: advantages.length > 0 ? advantages : d.advantages,
+    storiesHeader: mergeHeader(result.storiesHeader, d.storiesHeader),
+    featuredStories: featuredStories.length > 0 ? featuredStories : null,
+    cta: {
+      headline: result.cta?.headline ?? d.cta.headline,
+      subtext: result.cta?.subtext ?? d.cta.subtext,
+      primaryCTA: {
+        label: result.cta?.primaryCTA?.label ?? d.cta.primaryCTA.label,
+        href: result.cta?.primaryCTA?.href ?? d.cta.primaryCTA.href,
+      },
+      secondaryCTA: {
+        label: result.cta?.secondaryCTA?.label ?? d.cta.secondaryCTA.label,
+        href: result.cta?.secondaryCTA?.href ?? d.cta.secondaryCTA.href,
+      },
+    },
+  };
 }
 
 // ─── SognosRoster ─────────────────────────────────────────────────────────────

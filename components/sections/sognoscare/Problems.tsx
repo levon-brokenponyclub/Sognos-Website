@@ -1,4 +1,29 @@
-const PROBLEMS = [
+type ProblemItem = {
+  number: string;
+  problem: string;
+  problemDetail: string;
+  solution: string;
+  iconPath: string;
+};
+
+type SectionHeader = {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+};
+
+interface SognoscareProblemsProps {
+  header?: SectionHeader;
+  problems?: readonly ProblemItem[];
+}
+
+const DEFAULT_HEADER: SectionHeader = {
+  heading: "Care providers shouldn't operate like this",
+  intro:
+    "Fragmented systems, manual compliance, and disconnected data are the default for most care organisations. SognosCare fixes the root causes, not the symptoms.",
+};
+
+const DEFAULT_PROBLEMS: ProblemItem[] = [
   {
     number: "01",
     problem: "Referrals and records spread across disconnected tools",
@@ -41,25 +66,26 @@ const PROBLEMS = [
   },
 ];
 
-export default function SognoscareProblems() {
+export default function SognoscareProblems({
+  header = DEFAULT_HEADER,
+  problems = DEFAULT_PROBLEMS,
+}: SognoscareProblemsProps = {}) {
   return (
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="mb-16 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
-            Care providers shouldn't operate like this
+            {header.heading}
           </h2>
-          <p className="text-lg text-sognos-text-body">
-            Fragmented systems, manual compliance, and disconnected data are the
-            default for most care organisations. SognosCare fixes the root causes,
-            not the symptoms.
-          </p>
+          {header.intro && (
+            <p className="text-lg text-sognos-text-body">{header.intro}</p>
+          )}
         </div>
 
         {/* Problem/solution rows */}
         <div className="flex flex-col gap-4">
-          {PROBLEMS.map((item, i) => {
+          {problems.map((item, i) => {
             const isEven = i % 2 === 1;
             return (
               <div

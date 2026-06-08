@@ -7,49 +7,61 @@ import SognoscareAdvantages from "@/components/sections/sognoscare/Advantages";
 import SognoscareStories from "@/components/sections/sognoscare/Stories";
 import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
+import { getSognoscarePageContent } from "@/lib/sanity/queries";
 
-export const metadata = {
-  title: "SognosCare - Care Operations & Compliance | Sognos",
-  description:
-    "Manage service delivery, maintain compliance, and report with confidence - all in one platform built for care providers.",
-};
+export async function generateMetadata() {
+  const content = await getSognoscarePageContent();
+  return {
+    title: content.seo.title,
+    description: content.seo.description,
+  };
+}
 
-const SECTIONS = [
-  { label: "What it solves", id: "problems" },
-  { label: "Features", id: "features" },
-  { label: "Editions", id: "editions" },
-  { label: "Key Advantages", id: "advantages" },
-  { label: "Customer Stories", id: "stories" },
-  { label: "Schedule a Call", id: "calendar", href: "/contact" },
-];
+export default async function SognosCarePage() {
+  const content = await getSognoscarePageContent();
 
-export default function SognosCarePage() {
   return (
     <>
-      <SognoscareHero />
+      <SognoscareHero
+        logoSrc={content.hero.logoSrc}
+        headline={content.hero.headline}
+        subtext={content.hero.subtext}
+      />
       <ProductDrawer
         secondaryLabel="Other Products"
         currentProduct="sognoscare"
-        peekTitle="What SognosCare Solves"
-        peekDescription="Manage cases, track service delivery, meet compliance obligations, and report with confidence - end-to-end."
-        drawerTitle="Other Products"
-        drawerDescription="Explore the full Sognos platform."
+        peekTitle={content.productDrawer.peekTitle}
+        peekDescription={content.productDrawer.peekDescription}
+        drawerTitle={content.productDrawer.drawerTitle}
+        drawerDescription={content.productDrawer.drawerDescription}
       />
       <ProductSubNav
         productName="SognosCare"
         logoSrc="/logos/sognos-care-logo-color.svg"
-        sections={SECTIONS}
+        sections={content.subNav}
       />
-      <SognoscareProblems />
-      <SognoscareFeatures />
-      <SognoscareEditions />
-      <SognoscareAdvantages />
-      <SognoscareStories />
+      <SognoscareProblems
+        header={content.problemsHeader}
+        problems={content.problems}
+      />
+      <SognoscareFeatures
+        header={content.featuresHeader}
+        features={content.features}
+      />
+      <SognoscareEditions
+        header={content.editionsHeader}
+        editions={content.editions}
+      />
+      <SognoscareAdvantages
+        header={content.advantagesHeader}
+        advantages={content.advantages}
+      />
+      <SognoscareStories stories={content.featuredStories} />
       <CTASection
-        headline="Ready to see SognosCare in action?"
-        subtext="Book a personalised demo and see how SognosCare handles your specific service delivery, compliance, and reporting requirements."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
+        headline={content.cta.headline}
+        subtext={content.cta.subtext}
+        primaryCTA={content.cta.primaryCTA}
+        secondaryCTA={content.cta.secondaryCTA}
         defaultProduct="sognoscare"
       />
     </>

@@ -15,7 +15,7 @@ const data: EditionData = {
   description:
     "Smart systems to support participant goals, reduce admin, and stay NDIS-compliant - all built on Microsoft using the latest AI technology.",
   gradient: "/images/sognoscare/gradient-1.png",
-  accentHex: "#009982",
+  accentHex: "#36b19a",
   accentTextClass: "text-(--sognos-edition-green)",
   accentBgClass: "bg-(--sognos-edition-green)",
   accentBorderClass: "border-(--sognos-edition-green)",

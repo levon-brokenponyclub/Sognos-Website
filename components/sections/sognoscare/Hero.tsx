@@ -3,7 +3,24 @@ import AnimatedButton from "@/components/ui/AnimatedButton";
 import Link from "next/link";
 import FlowCanvas from "@/components/ui/FlowCanvas";
 
-export default function SognoscareHero() {
+interface SognoscareHeroProps {
+  logoSrc?: string;
+  headline?: string;
+  subtext?: string;
+}
+
+const DEFAULTS = {
+  logoSrc: "/logos/sognos-care-logo.svg",
+  headline: "One platform. From intake to outcome.",
+  subtext:
+    "Manage cases, track service delivery, meet compliance obligations, and report with confidence - in one platform built end-to-end for care.",
+};
+
+export default function SognoscareHero({
+  logoSrc = DEFAULTS.logoSrc,
+  headline = DEFAULTS.headline,
+  subtext = DEFAULTS.subtext,
+}: SognoscareHeroProps = {}) {
   return (
     <section
       data-header-dark
@@ -31,7 +48,7 @@ export default function SognoscareHero() {
           <div className="flex flex-1 items-center justify-center">
             <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
               <Image
-                src="/logos/sognos-care-logo.svg"
+                src={logoSrc}
                 alt="SognosCare"
                 width={220}
                 height={48}
@@ -39,12 +56,10 @@ export default function SognoscareHero() {
                 className="mb-14 h-12 w-auto lg:h-13"
               />
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-                One platform. From intake to outcome.
+                {headline}
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
-                Manage cases, track service delivery, meet compliance
-                obligations, and report with confidence - in one platform built
-                end-to-end for care.
+                {subtext}
               </p>
             </div>
           </div>

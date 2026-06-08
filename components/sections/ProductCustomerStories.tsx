@@ -6,7 +6,7 @@ import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import { cn } from "@/lib/utils";
 
-type CaseStudy = {
+export type CaseStudy = {
   company: string;
   companySize: string;
   industry: string;

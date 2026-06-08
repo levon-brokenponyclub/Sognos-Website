@@ -12,9 +12,11 @@
     "migrate:knowledge-posts": "tsx scripts/migrate-knowledge-posts.ts",
     "migrate:legals": "tsx scripts/migrate-legals.ts",
     "seed:cta-section": "tsx scripts/seed-cta-section.ts",
+    "seed:editions": "tsx scripts/seed-editions.ts",
     "seed:footer": "tsx scripts/seed-footer.ts",
     "seed:logo-strip": "tsx scripts/seed-logo-strip.ts",
-    "seed:site-settings": "tsx scripts/seed-site-settings.ts"
+    "seed:site-settings": "tsx scripts/seed-site-settings.ts",
+    "seed:sognoscare-page": "tsx scripts/seed-sognoscare-page.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

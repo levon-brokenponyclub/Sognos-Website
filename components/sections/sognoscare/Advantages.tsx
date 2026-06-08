@@ -1,4 +1,17 @@
-const ADVANTAGES = [
+type SectionHeader = {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+};
+
+interface SognoscareAdvantagesProps {
+  header?: SectionHeader;
+  advantages?: readonly string[];
+}
+
+const DEFAULT_HEADER: SectionHeader = { heading: "Key Advantages" };
+
+const DEFAULT_ADVANTAGES = [
   "Purpose-built for Australian care compliance - not adapted from generic CRM",
   "Reduces documentation time with AI-assisted clinical notes",
   "Keeps you audit-ready with continuous compliance tracking",
@@ -21,7 +34,11 @@ const GRID: Cell[] = [
   { type: "white", idx: 5 },
 ];
 
-export default function SognoscareAdvantages() {
+export default function SognoscareAdvantages({
+  header = DEFAULT_HEADER,
+  advantages = DEFAULT_ADVANTAGES,
+}: SognoscareAdvantagesProps = {}) {
+  const items = advantages.length > 0 ? advantages : DEFAULT_ADVANTAGES;
   return (
     <section id="advantages" className="w-full bg-gray-200/90">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
@@ -40,7 +57,7 @@ export default function SognoscareAdvantages() {
                         Advantages
                       </div> */}
                       <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
-                        Key Advantages
+                        {header.heading}
                       </h2>
                       {/* <p className="mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 text-sognos-text-body">
                         Hello
@@ -51,7 +68,7 @@ export default function SognoscareAdvantages() {
               );
             }
 
-            const text = ADVANTAGES[cell.idx];
+            const text = items[cell.idx] ?? DEFAULT_ADVANTAGES[cell.idx];
             const isAccent = cell.type === "accent";
             const isWhite = cell.type === "white";
             return (

@@ -5,7 +5,32 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
-const FEATURES = [
+type FeatureItem = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  capabilities: readonly string[];
+  iconPath?: string;
+};
+
+type SectionHeader = {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+};
+
+interface SognoscareFeaturesProps {
+  header?: SectionHeader;
+  features?: readonly FeatureItem[];
+}
+
+const DEFAULT_HEADER: SectionHeader = {
+  eyebrow: "Features",
+  heading: "Everything a care operation needs",
+};
+
+const DEFAULT_FEATURES = [
   {
     id: "case-management",
     name: "Case Management",
@@ -321,9 +346,12 @@ function FeatureVisual({ id }: { id: string }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function SognoscareFeatures() {
+export default function SognoscareFeatures({
+  header = DEFAULT_HEADER,
+  features = DEFAULT_FEATURES,
+}: SognoscareFeaturesProps = {}) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const active = FEATURES[activeIndex];
+  const active = features[activeIndex] ?? features[0];
 
   return (
     <section
@@ -333,12 +361,14 @@ export default function SognoscareFeatures() {
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
         <div className="flex flex-col items-center gap-4 pb-6">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Features
-          </div>
+          {header.eyebrow && (
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
+              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              {header.eyebrow}
+            </div>
+          )}
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight text-center">
-            Everything a care operation needs
+            {header.heading}
           </h2>
           {/* <p className="text-lg text-white/80 max-w-2xl">
             SognosCare brings the full operational stack into one platform -
@@ -348,7 +378,7 @@ export default function SognoscareFeatures() {
 
         {/* Mobile - stacked cards */}
         <div className="lg:hidden mt-10 flex flex-col gap-6">
-          {FEATURES.map((feat) => (
+          {features.map((feat) => (
             <div
               key={feat.id}
               className="bg-white rounded-lg p-2 flex flex-col gap-3"
@@ -397,7 +427,7 @@ export default function SognoscareFeatures() {
         <div className="hidden lg:flex gap-4 h-[520px] mt-10">
           {/* Left column - vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
-            {FEATURES.map((feat, i) => (
+            {features.map((feat, i) => (
               <button
                 key={feat.id}
                 onClick={() => setActiveIndex(i)}

@@ -15,7 +15,7 @@ const data: EditionData = {
   description:
     "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access designed for practitioners who work across multiple sites.",
   gradient: "/images/sognoscare/gradient-2.png",
-  accentHex: "#ff9233",
+  accentHex: "#fea65d",
   accentTextClass: "text-(--sognos-edition-orange)",
   accentBgClass: "bg-(--sognos-edition-orange)",
   accentBorderClass: "border-(--sognos-edition-orange)",

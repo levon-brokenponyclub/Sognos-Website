@@ -15,23 +15,6 @@ export default defineConfig({
         S.list()
           .title("Content")
           .items([
-            /* S.listItem()
-              .title("SognosCare Page")
-              .id("sognoscarePage")
-              .child(
-                S.document()
-                  .schemaType("sognoscarePage")
-                  .documentId("sognoscarePage"),
-              ),
-            S.listItem()
-              .title("SognosRoster Page")
-              .id("sognosrosterPage")
-              .child(
-                S.document()
-                  .schemaType("sognosrosterPage")
-                  .documentId("sognosrosterPage"),
-              ),
-            S.divider(), */
             S.listItem()
               .title("Site Settings")
               .id("siteSettings")
@@ -71,6 +54,44 @@ export default defineConfig({
                         S.document()
                           .schemaType("footer")
                           .documentId("footer"),
+                      ),
+                  ]),
+              ),
+            S.divider(),
+            S.listItem()
+              .title("Products")
+              .id("products")
+              .child(
+                S.list()
+                  .title("Products")
+                  .items([
+                    S.listItem()
+                      .title("SognosCare")
+                      .id("sognoscarePage")
+                      .child(
+                        S.document()
+                          .schemaType("sognoscarePage")
+                          .documentId("sognoscarePage"),
+                      ),
+                    S.listItem()
+                      .title("SognosRoster")
+                      .id("sognosrosterPage")
+                      .child(
+                        S.document()
+                          .schemaType("sognosrosterPage")
+                          .documentId("sognosrosterPage"),
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Editions")
+                      .id("editions")
+                      .child(
+                        S.documentTypeList("edition")
+                          .title("SognosCare Editions")
+                          .defaultOrdering([
+                            { field: "order", direction: "asc" },
+                            { field: "name", direction: "asc" },
+                          ]),
                       ),
                   ]),
               ),

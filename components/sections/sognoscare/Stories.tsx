@@ -1,5 +1,11 @@
-import ProductCustomerStories from "@/components/sections/ProductCustomerStories";
+import ProductCustomerStories, {
+  type CaseStudy,
+} from "@/components/sections/ProductCustomerStories";
 
-export default function SognoscareStories() {
-  return <ProductCustomerStories />;
+interface SognoscareStoriesProps {
+  stories?: CaseStudy[] | null;
+}
+
+export default function SognoscareStories({ stories }: SognoscareStoriesProps = {}) {
+  return <ProductCustomerStories stories={stories ?? undefined} />;
 }

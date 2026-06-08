@@ -15,7 +15,7 @@ const data: EditionData = {
   description:
     "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program.",
   gradient: "/images/sognoscare/gradient-3.png",
-  accentHex: "#ff666b",
+  accentHex: "#ff8184",
   accentTextClass: "text-(--sognos-edition-coral)",
   accentBgClass: "bg-(--sognos-edition-coral)",
   accentBorderClass: "border-(--sognos-edition-coral)",
