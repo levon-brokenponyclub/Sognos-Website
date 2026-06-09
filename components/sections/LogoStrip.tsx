@@ -10,7 +10,6 @@ type Logo = {
   image?: SanityImageSource;
 };
 
-// Duplicate for seamless infinite loop (-50% = one full set)
 function resolveLogoSrc(logo: Logo) {
   return logo.image
     ? urlFor(logo.image).width(220).auto("format").url()
@@ -22,39 +21,39 @@ export default async function LogoStrip() {
   const logos = content?.logos?.length
     ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
     : DEFAULT_LOGOS;
+  // Duplicated for seamless -50% marquee loop
   const track = [...logos, ...logos];
 
   return (
     <section
       aria-label="Trusted organisations"
-      className="w-full overflow-hidden bg-white py-10 border-b border-dashed border-sognos-border-subtle"
+      className="w-full bg-background py-8 md:py-10"
     >
-      {/*  <h4 className="font-heading text-lg text-center my-1 font-semibold text-[#052048]">
-        Trusted by Leading Companies
-      </h4> */}
-      <div className="trust-marquee-wrap">
-        <div className="trust-marquee-track" aria-hidden="true">
-          {track.map((logo, i) => {
-            const src = resolveLogoSrc(logo);
-            if (!src) return null;
+      <div className="mx-auto max-w-[1250px] px-4">
+        <div className="trust-marquee-wrap overflow-hidden">
+          <div className="trust-marquee-track gap-3" aria-hidden="true">
+            {track.map((logo, i) => {
+              const src = resolveLogoSrc(logo);
+              if (!src) return null;
 
-            return (
-            <div
-              key={i}
-              className="flex items-center justify-center px-1 lg:px-2 min-w-[150px] lg:min-w-[260px]"
-            >
-              <Image
-                src={src}
-                alt={logo.alt}
-                width={220}
-                height={72}
-                className="max-h-10 lg:max-h-14 w-auto max-w-[110px] lg:max-w-[190px] object-contain"
-                style={{ filter: "brightness(0) opacity(0.8)" }}
-                sizes="(min-width: 1024px) 190px, 110px"
-              />
-            </div>
-            );
-          })}
+              return (
+                <div
+                  key={i}
+                  className="flex h-[88px] w-[180px] shrink-0 items-center justify-center rounded-xl bg-prussian-blue-800/5 p-5"
+                >
+                  <Image
+                    src={src}
+                    alt={logo.alt}
+                    width={220}
+                    height={72}
+                    sizes="180px"
+                    className="h-auto w-auto max-h-10 max-w-[140px] object-contain"
+                    style={{ filter: "brightness(0)", opacity: 0.55 }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

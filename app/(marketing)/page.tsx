@@ -1,14 +1,14 @@
 import Hero from "@/components/sections/Hero";
 import LogoStrip from "@/components/sections/LogoStrip";
-import HowSognosWorksPreview from "@/components/sections/HowSognosWorksPreview";
-import ProductSection from "@/components/sections/ProductSection";
-import CustomerStories from "@/components/sections/CustomerStories";
-import SolutionsSection from "@/components/sections/SolutionsSection";
+import HowSognosWorks from "@/components/sections/HowSognosWorks";
+import SognosCareCard from "@/components/sections/SognosCareCard";
 import IndustrySection from "@/components/sections/IndustrySection";
+import SolutionsSection from "@/components/sections/SolutionsSection";
+import SognosRosterCard from "@/components/sections/SognosRosterCard";
 import NewsInsightSection, {
   type NewsInsightArticle,
 } from "@/components/sections/NewsInsightSection";
-import CTASection from "@/components/sections/CTASection";
+import CTABand from "@/components/sections/CTABand";
 import { getKnowledgePostArchive } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -20,6 +20,7 @@ export default async function HomePage() {
     category: p.category,
     title: p.title,
     href: `/knowledge-hub/${p.slug}`,
+    date: p.date,
     image: p.heroImage
       ? urlFor(p.heroImage).width(720).auto("format").url()
       : "",
@@ -27,15 +28,16 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
-      <LogoStrip />
-      <HowSognosWorksPreview />
-      <ProductSection />
-      <SolutionsSection />
-      <IndustrySection />
-      <CustomerStories />
-      <NewsInsightSection articles={newsArticles} />
-      <CTASection />
+      {/* Home framework — section order mapped from Cohere Home.html */}
+      <Hero /> {/* Hero · "Own your AI" */}
+      <LogoStrip /> {/* "Trusted by industry leaders and developers worldwide" */}
+      <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
+      <SognosCareCard /> {/* "Your sovereign AI workplace" */}
+      <SognosRosterCard /> {/* "Developer resources" */}
+      <IndustrySection /> {/* "Powering progress across industries" */}
+      <SolutionsSection /> {/* "Our models. Your business." */}
+      <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
+      <CTABand /> {/* "Ready to put AI to work?" — Book a Demo band */}
     </>
   );
 }

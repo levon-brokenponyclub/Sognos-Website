@@ -133,19 +133,21 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 
 ---
 
-## 4. Homepage Composition (Live)
+## 4. Homepage Composition (Live — Cohere scaffold, 2026-06-09)
 
 ```tsx
-<Hero />
-<LogoStrip />
-<HowSognosWorksPreview />
-<ProductSection />
-<SolutionsSection />
-<HowItWorks />
-<IndustrySection />
-<ProofSection />
-<CTASection />
+<Hero />            {/* "Own your AI" — centered, fadeInUp, white-pill + underline */}
+<LogoStrip />       {/* "Trusted by…" */}
+<HowSognosWorks />  {/* NEW — "Safe. Flexible. Independent." 3 blocks */}
+<SognosCareCard />  {/* NEW — "Your sovereign AI workplace" full-bleed product card */}
+<SognosRosterCard />{/* NEW — "Developer resources" full-bleed product card */}
+<IndustrySection /> {/* "Powering progress…" arrow snap-scroll square cards */}
+<SolutionsSection />{/* "Our models. Your business." */}
+<NewsInsightSection />{/* "The latest news" — 3 callout cards w/ morphing SVG notch */}
+<CTABand />         {/* NEW — "Ready to put AI to work?" text + dual logo marquees */}
 ```
+
+**Scaffold context:** Homepage cloned section-by-section from Cohere (`docs/Cohere/`, live `cohere.com` in Dia) as a testing scaffold — Cohere images/branding are placeholder, NOT shipping. See memory `session-2026-06-09-cohere-scaffold.md` for full mapping, conventions, and accepted design-system deviations (solid card bg for SVG notch, container 1380px). `CTASection.tsx` is the SHARED booking-calendar/modal — never gut it; homepage CTA is the separate `CTABand`.
 
 ---
 
@@ -225,24 +227,14 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Phase 6 — Mobile Refactor (Homepage → all pages)**
+**Cohere Scaffold Clone — page-by-page (started 2026-06-09)**
 
-Homepage mobile refactor in progress. Pattern is documented in `Project Docs/mobile-refactor-pattern.md`.
+Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live `cohere.com` (open in Dia), keeping Sognos copy/assets. Full conventions + accepted deviations in memory `session-2026-06-09-cohere-scaffold.md`.
 
-Homepage sections complete:
-- [x] Hero — 100vh, vertically centred content, crossfade trust bar/logo strip, scroll-driven navbar padding
-- [x] Navbar — scroll padding collapse, colorMode-conditional px, h-14/h-12 height
-- [x] LogoStrip, HowSognosWorksPreview, ProductSection, SolutionsSection, HowItWorks
-- [x] IndustrySection — scroll-stacked cards (sticky), HEADER_H 112px, PEEK 18px
-- [x] ProofSection, CTASection, Footer
+- [x] **Homepage** — DONE (see §4). New components: `HowSognosWorks`, `SognosCareCard`, `SognosRosterCard`, `CTABand`. Reworked: `Hero`, `IndustrySection`, `NewsInsightSection` (morphing SVG notch). Container token → 1380px.
+- [ ] **Solutions pages** — IN PROGRESS. `app/(marketing)/solutions/[slug]/page.tsx` (7 solutions) + sections → Cohere `docs/Cohere/Solution.html`. Content in `lib/solutions-content.ts`. Page still uses pre-scaffold `rounded-xl`/`shadow-md`/`bg-white py-24`. **Need user's per-section Cohere mapping before refactoring — ask, don't guess.**
 
-**Awaiting homepage sign-off before applying pattern to product/solution/industry pages.**
-
-Pending:
-- [ ] Homepage sign-off
-- [ ] Apply mobile pattern to all product, solution, and industry pages
-- [ ] `/customers` hub + `/customers/[slug]` — referenced by CustomerStories and nav
-- [ ] Phase 6 — design system pass across all pages
+Pending after solutions: Product pages, Industry pages, Blog/CustomerStories, then design-system polish pass across all.
 
 ---
 

@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import AnimatedButton from "@/components/ui/AnimatedButton";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type CaseStudy = {
   company: string;
@@ -17,19 +16,9 @@ type CaseStudy = {
   author: string;
   role: string;
   href: string;
-  panelClass: string;
-  quoteClass: string;
-  authorClass: string;
-  roleClass: string;
-  quoteIconColor: string;
-  contentBorderClass: string;
-  buttonBorderClass: string;
-  buttonTextClass: string;
-  buttonHoverClass: string;
-  buttonIconBgClass: string;
 };
 
-const AUTOPLAY_MS = 10000;
+const AUTOPLAY_MS = 8000;
 
 const CASE_STUDIES: CaseStudy[] = [
   {
@@ -41,18 +30,8 @@ const CASE_STUDIES: CaseStudy[] = [
     quote:
       "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
     author: "Susan McCarthy",
-    role: "Chief Operating Officer, Flourish Australia",
+    role: "Chief Operating Officer @ Flourish Australia",
     href: "/customer-stories/flourish-australia",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/20",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Auckland Airport",
@@ -63,18 +42,8 @@ const CASE_STUDIES: CaseStudy[] = [
     quote:
       "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
     author: "Anthony Hart",
-    role: "Operations Delivery Lead, Auckland Airport",
+    role: "Operations Delivery Lead @ Auckland Airport",
     href: "/customer-stories/auckland-airport",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Penrith City Council",
@@ -82,23 +51,11 @@ const CASE_STUDIES: CaseStudy[] = [
     industry: "Local Government",
     logo: "/logos/penrith-city-council-logo.png",
     panelImage: "/images/customers/penrith-city-council.png",
-    /* panelVideo:
-      "https://www.shutterstock.com/shutterstock/videos/3849131045/preview/stock-footage-industrial-engineer-wearing-protective-safety-equipment-gesturing-and-instructing-near-machinery.webm", */
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
     author: "Claire Donovan",
-    role: "Service Delivery Manager, Penrith City Council",
+    role: "Service Delivery Manager @ Penrith City Council",
     href: "/customer-stories/penrith-city-council",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Gentari Solar Australia",
@@ -111,264 +68,288 @@ const CASE_STUDIES: CaseStudy[] = [
     author: "Operations Team",
     role: "Gentari Solar Australia",
     href: "/customer-stories/gentari",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
 ];
 
-function QuoteIcon({ className }: { className: string }) {
-  return (
-    <svg
-      viewBox="0 0 39 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`w-8 h-7 shrink-0 ${className}`}
-      aria-hidden="true"
-    >
-      <path
-        d="m16.3 4-4.333-4C4.189 5.557.078 12.89.078 20.668v.445C.078 27.779 3.745 32 8.856 32c4.222 0 7.778-3.334 7.778-7.89 0-4.444-3.111-7.332-7.334-7.332a7.15 7.15 0 0 0-2.666.555C7.41 12.223 11.3 7.78 16.3 4.001Zm21.667 0-4.333-4c-7.778 5.556-11.89 12.89-11.89 20.667v.445c0 6.667 3.668 10.889 8.779 10.889 4.222 0 7.777-3.334 7.777-7.89 0-4.444-3.11-7.332-7.333-7.332a7.15 7.15 0 0 0-2.667.555c.778-5.111 4.667-9.555 9.667-13.333Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function getSlideButtonClasses(study: CaseStudy) {
-  return {
-    contentBorderClass: study.contentBorderClass,
-    buttonClassName: cn(
-      study.buttonBorderClass,
-      study.buttonTextClass,
-      study.buttonHoverClass,
-    ),
-    bubbleClassName: study.buttonIconBgClass,
-  };
-}
-
 export default function CustomerStories() {
-  const [index, setIndex] = useState(0);
+  const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const total = CASE_STUDIES.length;
-  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
 
-  // Autoplay
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scrollToSlide = useCallback((i: number) => {
+    const slide = slideRefs.current[i];
+    const container = scrollRef.current;
+    if (!slide || !container) return;
+    const offset =
+      slide.offsetLeft - (container.clientWidth - slide.clientWidth) / 2;
+    container.scrollTo({ left: offset, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let bestIdx = -1;
+        let bestRatio = 0;
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio < 0.5) return;
+          const idx = slideRefs.current.findIndex((el) => el === entry.target);
+          if (idx === -1) return;
+          if (bestIdx === -1 || entry.intersectionRatio > bestRatio) {
+            bestIdx = idx;
+            bestRatio = entry.intersectionRatio;
+          }
+        });
+        if (bestIdx !== -1) setActive(bestIdx);
+      },
+      {
+        root: container,
+        threshold: [0.5, 0.75, 0.9, 1.0],
+      },
+    );
+
+    slideRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (paused) return;
     const t = setTimeout(() => {
-      setIndex((i) => (i + 1) % total);
+      const next = (active + 1) % total;
+      scrollToSlide(next);
     }, AUTOPLAY_MS);
     return () => clearTimeout(t);
-  }, [index, paused, total]);
+  }, [active, paused, total, scrollToSlide]);
 
-  // Scroll active tab into view inside the tab strip only (no page scroll)
-  useEffect(() => {
-    const container = tabsContainerRef.current;
-    const el = tabRefs.current[index];
-    if (!container || !el) return;
-    container.scrollTo({ left: el.offsetLeft, behavior: "smooth" });
-  }, [index]);
-
-  const go = (next: number) => {
-    if (next < 0 || next >= total) return;
-    setIndex(next);
+  const handlePill = (i: number) => {
+    if (i === active) return;
     setPaused(true);
+    scrollToSlide(i);
     if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
-    pauseTimerRef.current = setTimeout(() => setPaused(false), AUTOPLAY_MS);
+    pauseTimerRef.current = setTimeout(
+      () => setPaused(false),
+      AUTOPLAY_MS * 2,
+    );
   };
 
-  const study = CASE_STUDIES[index];
-  const slideButtonClasses = getSlideButtonClasses(study);
-
   return (
-    <section className="w-full bg-gray-200/70 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+    <section className="overflow-hidden bg-background pt-0 pb-10 md:pb-20">
+      <div className="w-full py-16">
         {/* Section header */}
-        <div className="mb-2 flex flex-col items-center lg:items-start gap-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Customers
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center tracking-tight mb-6">
-            What our eco-supply clients say
+        <div className="mx-auto flex flex-col items-center px-6 text-center">
+          <p className="mb-4 flex items-center gap-2 text-sm text-sognos-text-muted">
+            <span className="size-1.5 shrink-0 rounded-full bg-brand" />
+            Testimonials
+          </p>
+          <h2 className="max-w-[920px] font-heading text-3xl font-normal leading-tight tracking-tight text-sognos-text-heading text-balance md:text-4xl">
+            Don&apos;t just take our word for it
           </h2>
         </div>
 
-        {/* Card - industry panel style */}
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]"
-          >
-            {/* Left column - image/video with logo + stats */}
-            <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
-              {study.panelVideo ? (
-                <video
-                  src={study.panelVideo}
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              ) : (
-                <Image
-                  src={study.panelImage}
-                  alt={study.company}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 35vw"
-                />
-              )}
-
-              {/* White logo - centered */}
-              {study.logo && (
-                <div className="relative z-10 flex-1 flex items-center justify-center">
-                  <Image
-                    src={study.logo}
-                    alt={study.company}
-                    width={160}
-                    height={56}
-                    className="w-auto max-w-[220px] object-contain brightness-0 invert"
-                  />
-                </div>
-              )}
-
-              {/* Stats - bottom */}
-              <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                    Company Size
-                  </p>
-                  <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">
-                    {study.companySize}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                    Industry
-                  </p>
-                  <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">
-                    {study.industry}
-                  </p>
-                </div>
-              </div>
-
-              {/* Gradient overlay - top dark fading down + bottom dark fading up */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-            </div>
-
-            {/* Right column - quote info panel */}
-            <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
-              {/* Quote + author - vertically centered */}
-              <div className="flex-1 flex flex-col justify-center">
-                <QuoteIcon className={study.quoteIconColor} />
-
-                <blockquote className="mt-4">
-                  <p
-                    className={`font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}
-                  >
-                    {study.quote}
-                  </p>
-                </blockquote>
-
-                <div className="mt-6">
-                  <p className={`text-sm font-semibold ${study.authorClass}`}>
-                    {study.author}
-                  </p>
-                  <p className={`text-sm mt-0.5 ${study.roleClass}`}>
-                    {study.role}
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA - right aligned */}
-              <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
-                <AnimatedButton
-                  href={study.href}
-                  variant="transparent"
-                  className={slideButtonClasses.buttonClassName}
-                  bubbleClassName={slideButtonClasses.bubbleClassName}
-                >
-                  Read Customer Story
-                </AnimatedButton>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Logo tab row - below card */}
+        {/* Carousel */}
         <div
-          ref={tabsContainerRef}
-          className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory gap-4 lg:gap-10 mt-4 lg:mt-0 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none"
+          ref={scrollRef}
+          className="scrollbar-hide mt-[64px] flex w-full gap-5 overflow-x-auto pb-4 md:mt-[106px] md:gap-8"
+          style={{
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
-          {CASE_STUDIES.map((s, i) => (
-            <button
-              key={i}
-              ref={(el) => {
-                tabRefs.current[i] = el;
-              }}
-              onClick={() => go(i)}
-              className={cn(
-                "relative flex items-center justify-center py-5 px-3 lg:py-8 lg:px-6 cursor-pointer transition-colors duration-300",
-                "shrink-0 basis-[calc(50%-0.5rem)] snap-start lg:shrink lg:basis-auto",
-                i === index ? "" : "",
-              )}
-            >
-              {s.logo ? (
-                <Image
-                  src={s.logo}
-                  alt={s.company}
-                  width={140}
-                  height={48}
-                  className="h-7 lg:h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
-                  style={{
-                    filter: i === index ? "none" : "grayscale(1) opacity(0.35)",
-                  }}
-                />
-              ) : (
-                <span
-                  className={`text-sm font-semibold tracking-tight transition-all duration-300 ${
-                    i === index
-                      ? "text-prussian-blue-800 opacity-100"
-                      : "text-prussian-blue-800 opacity-35"
+          <div
+            className="shrink-0"
+            style={{
+              width: "max(2rem, calc((100vw - min(870px, 80vw)) / 2))",
+            }}
+            aria-hidden
+          />
+
+          {CASE_STUDIES.map((study, i) => {
+            const isActive = i === active;
+            return (
+              <div
+                key={study.company}
+                ref={(el) => {
+                  slideRefs.current[i] = el;
+                }}
+                className="shrink-0"
+                style={{ scrollSnapAlign: "center" }}
+              >
+                <div className="relative flex w-[80vw] max-w-[870px] flex-col gap-5 md:gap-8">
+                  {/* Media with quote/author/role overlaid */}
+                  <Link
+                    href={study.href}
+                    aria-label={`Open testimonial for ${study.author}`}
+                    className="group relative block w-full cursor-pointer overflow-hidden rounded-xl bg-prussian-blue-900"
+                    style={{ aspectRatio: "870 / 489" }}
+                  >
+                    {study.panelVideo ? (
+                      <video
+                        src={study.panelVideo}
+                        loop
+                        muted
+                        playsInline
+                        autoPlay
+                        preload="metadata"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={study.panelImage}
+                        alt={study.company}
+                        fill
+                        sizes="(min-width: 870px) 870px, 80vw"
+                        className="object-cover"
+                      />
+                    )}
+
+                    {/* Bottom gradient — taller for text readability */}
+                    <div
+                      className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent"
+                      aria-hidden
+                    />
+
+                    {/* Customer logo top-left */}
+                    {study.logo && (
+                      <div className="absolute top-3 left-3 md:top-8 md:left-8">
+                        <Image
+                          src={study.logo}
+                          alt={study.company}
+                          width={109}
+                          height={21}
+                          className="h-[16px] w-auto brightness-0 invert drop-shadow-md md:h-[21px]"
+                        />
+                      </div>
+                    )}
+
+                    {/* Quote + author overlaid bottom-left, play button bottom-right */}
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 lg:p-10">
+                      <div className="flex items-end justify-between gap-4">
+                        <blockquote className="max-w-[85%] flex-1">
+                          <p className="font-heading text-base leading-snug tracking-tight text-white text-balance md:text-lg lg:text-xl">
+                            &ldquo;{study.quote}&rdquo;
+                          </p>
+                          <footer className="mt-3 md:mt-4">
+                            <p className="text-sm font-medium text-white">
+                              {study.author}
+                            </p>
+                            <p className="mt-0.5 text-xs text-white/65 md:text-sm">
+                              {study.role}
+                            </p>
+                          </footer>
+                        </blockquote>
+
+                        {/* Play button */}
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand shadow-md transition-transform duration-200 group-hover:scale-110 md:h-11 md:w-11">
+                          <svg
+                            width="12"
+                            height="14"
+                            viewBox="0 0 12 14"
+                            fill="none"
+                            className="ml-0.5"
+                            aria-hidden
+                          >
+                            <path
+                              d="M0.5 0.5L11.5 7L0.5 13.5V0.5Z"
+                              fill="white"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* White overlay — dims inactive slides */}
+                    <div
+                      className="pointer-events-none absolute inset-0 rounded-xl bg-white transition-opacity duration-500"
+                      style={{ opacity: isActive ? 0 : 0.55 }}
+                      aria-hidden
+                    />
+                  </Link>
+
+                  {/* Caption — stats + Read story */}
+                  <div
+                    className="flex flex-col items-start gap-4 px-6 transition-opacity duration-500 md:flex-row md:items-end md:gap-[40px]"
+                    style={{ opacity: isActive ? 1 : 0.4 }}
+                  >
+                    <div className="flex flex-1 flex-wrap items-end gap-x-10 gap-y-5">
+                      <div>
+                        <p className="font-heading text-3xl font-light leading-none tracking-tight text-sognos-text-heading lg:text-[40px]">
+                          {study.companySize}
+                        </p>
+                        <p className="mt-2 text-xs uppercase tracking-wide text-sognos-text-muted">
+                          Company size
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-heading text-xl font-normal leading-snug tracking-tight text-sognos-text-heading lg:text-2xl">
+                          {study.industry}
+                        </p>
+                        <p className="mt-2 text-xs uppercase tracking-wide text-sognos-text-muted">
+                          Industry
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link
+                      href={study.href}
+                      className="flex h-10 shrink-0 items-center justify-center self-start rounded-full bg-sognos-text-heading px-5 text-sm font-medium text-white transition-colors hover:bg-sognos-text-heading/90 md:w-[174px] md:px-0 md:self-end"
+                    >
+                      Read customer story
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          <div
+            className="shrink-0"
+            style={{
+              width: "max(2rem, calc((100vw - min(870px, 80vw)) / 2))",
+            }}
+            aria-hidden
+          />
+        </div>
+
+        {/* Pill indicator */}
+        <div className="mt-5 flex justify-center md:mt-6">
+          <div className="flex items-center gap-x-1.5 rounded-full bg-sognos-text-heading/5 px-4 py-3">
+            {CASE_STUDIES.map((_, i) => {
+              const isActive = i === active;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handlePill(i)}
+                  aria-label={`Show testimonial ${i + 1} of ${total}`}
+                  className={`relative h-1 cursor-pointer overflow-hidden rounded-full bg-sognos-text-heading/20 shrink-0 transition-[width] duration-300 ${
+                    isActive ? "w-8" : "w-1.5"
                   }`}
                 >
-                  {s.company}
-                </span>
-              )}
-
-              {/* Progress bar - bottom edge of active tab */}
-              <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-gray-300">
-                {i === index && (
-                  <motion.div
-                    key={`progress-${i}-${index}`}
-                    className="h-full bg-cornflower-ocean-400"
-                    initial={{ width: "0%" }}
-                    animate={paused ? false : { width: "100%" }}
-                    transition={{
-                      duration: AUTOPLAY_MS / 1000,
-                      ease: "linear",
-                    }}
-                  />
-                )}
-              </div>
-            </button>
-          ))}
+                  {isActive && (
+                    <motion.span
+                      key={`fill-${active}`}
+                      className="block h-full bg-sognos-text-heading"
+                      initial={{ width: "0%" }}
+                      animate={paused ? false : { width: "100%" }}
+                      transition={{
+                        duration: AUTOPLAY_MS / 1000,
+                        ease: "linear",
+                      }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Inter_Tight } from "next/font/google";
+import localFont from "next/font/local";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { headers } from "next/headers";
@@ -9,14 +9,29 @@ import CookieBanner from "@/components/ui/CookieBanner";
 import { getSiteSettings } from "@/lib/sanity/queries";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+const bureauSans = localFont({
+  src: [
+    {
+      path: "../public/fonts/bureau-sans-book.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/bureau-sans-medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+  variable: "--font-bureau-sans",
+  display: "swap",
 });
 
-const interTight = Inter_Tight({
-  variable: "--font-inter-tight",
-  subsets: ["latin"],
+const bureauSerif = localFont({
+  src: "../public/fonts/bureau-serif-book.woff2",
+  weight: "400",
+  style: "normal",
+  variable: "--font-bureau-serif",
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -68,7 +83,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${interTight.variable} h-full antialiased`}
+      className={`${bureauSans.variable} ${bureauSerif.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         {children}

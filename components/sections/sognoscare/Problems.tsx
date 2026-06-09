@@ -1,3 +1,8 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+
 type ProblemItem = {
   number: string;
   problem: string;
@@ -66,78 +71,136 @@ const DEFAULT_PROBLEMS: ProblemItem[] = [
   },
 ];
 
+const AUTOPLAY_MS = 6000;
+
 export default function SognoscareProblems({
   header = DEFAULT_HEADER,
   problems = DEFAULT_PROBLEMS,
 }: SognoscareProblemsProps = {}) {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const transitioning = useRef(false);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const total = problems.length;
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setTimeout(() => {
+      if (!transitioning.current) {
+        transitioning.current = true;
+        setActive((a) => (a + 1) % total);
+        setTimeout(() => {
+          transitioning.current = false;
+        }, 500);
+      }
+    }, AUTOPLAY_MS);
+    return () => clearTimeout(t);
+  }, [active, paused, total]);
+
+  const handlePill = (i: number) => {
+    if (i === active || transitioning.current) return;
+    transitioning.current = true;
+    setActive(i);
+    setPaused(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      setPaused(false);
+      transitioning.current = false;
+    }, AUTOPLAY_MS);
+  };
+
   return (
-    <section id="problems" className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+    <section id="problems" className="overflow-clip bg-background py-12 md:py-[120px]">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Centred header */}
+        <div className="mx-auto flex w-full max-w-[800px] flex-col gap-y-4 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-normal leading-tight tracking-tight text-sognos-text-heading text-balance">
             {header.heading}
           </h2>
           {header.intro && (
-            <p className="text-lg text-sognos-text-body">{header.intro}</p>
+            <p className="text-lg text-sognos-text-body text-pretty">
+              {header.intro}
+            </p>
           )}
         </div>
 
-        {/* Problem/solution rows */}
-        <div className="flex flex-col gap-4">
-          {problems.map((item, i) => {
-            const isEven = i % 2 === 1;
-            return (
+        {/* Two-column layout */}
+        <div className="mt-5 space-y-8 pt-10 md:flex md:gap-x-10 md:space-y-0 xl:gap-x-14">
+          {/* Left column — title top, pill bottom (justified) */}
+          <div className="max-w-[260px] shrink-0">
+            <div className="flex flex-col justify-between gap-y-12 md:sticky md:top-8 md:min-h-[400px]">
+              <h2 className="font-heading text-3xl font-normal leading-tight tracking-tight text-sognos-text-heading text-balance lg:text-4xl md:max-w-[215px]">
+                What We Solve
+              </h2>
+              <div className="inline-flex h-9 items-center gap-x-2 self-start rounded-full bg-sognos-text-heading/5 px-4">
+                {problems.map((_, i) => {
+                  const isActive = i === active;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handlePill(i)}
+                      aria-label={`Show problem ${i + 1} of ${total}`}
+                      className={`relative h-1.5 cursor-pointer overflow-hidden rounded-full bg-sognos-text-heading/20 transition-[width] duration-300 ${
+                        isActive ? "w-8" : "w-1.5"
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.span
+                          key={`fill-${active}`}
+                          className="block h-full bg-sognos-text-heading"
+                          initial={{ width: "0%" }}
+                          animate={paused ? false : { width: "100%" }}
+                          transition={{
+                            duration: AUTOPLAY_MS / 1000,
+                            ease: "linear",
+                          }}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Right column — crossfading panels */}
+          <div className="relative w-full max-w-[854px] min-h-[520px] flex-1 md:min-h-[400px]">
+            {problems.map((item, i) => (
               <div
                 key={item.number}
-                className="grid overflow-hidden rounded-2xl lg:grid-cols-2"
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  i === active ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
+                aria-hidden={i !== active}
               >
-                {/* Problem panel */}
-                <div
-                  className={`flex flex-col justify-between bg-[#052048] p-8 lg:p-10 ${
-                    isEven ? "lg:order-last" : ""
-                  }`}
-                >
-                  {/* number hidden */}
-                  <div className="mt-8">
-                    <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-white/8">
-                      <svg
-                        className="h-5 w-5 text-white/50"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d={item.iconPath}
-                        />
-                      </svg>
+                <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+                  {/* Problem card */}
+                  <div className="rounded-2xl p-6 md:p-8 lg:p-10">
+                    <div className="space-y-4">
+                      <h3 className="font-heading text-xl font-normal leading-tight tracking-tight text-sognos-text-heading text-balance lg:text-2xl">
+                        {item.problem}
+                      </h3>
+                      <p className="text-base leading-relaxed text-sognos-text-body">
+                        {item.problemDetail}
+                      </p>
                     </div>
-                    <h2 className="mb-3 text-xl font-semibold leading-snug text-white">
-                      {item.problem}
-                    </h2>
-                    <p className="text-sm leading-relaxed text-white/55">
-                      {item.problemDetail}
-                    </p>
+                  </div>
+                  {/* Solution card (dark) */}
+                  <div className="rounded-2xl bg-prussian-blue-900 p-6 text-white md:p-8 lg:p-10">
+                    <div className="space-y-4">
+                      <h3 className="font-heading text-xl font-normal leading-tight tracking-tight text-white lg:text-2xl">
+                        The Solution
+                      </h3>
+                      <p className="font-heading text-base leading-relaxed text-white/80">
+                        {item.solution}
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-                {/* Solution panel */}
-                <div
-                  className={`flex flex-col justify-center border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-8 lg:p-10 ${
-                    isEven ? "lg:order-first" : ""
-                  }`}
-                >
-                  <p className="text-base leading-relaxed text-sognos-text-body">
-                    {item.solution}
-                  </p>
-                </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>

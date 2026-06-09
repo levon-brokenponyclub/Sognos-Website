@@ -1,263 +1,154 @@
-"use client";
-
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import {
-  motion,
-  animate,
-  useMotionValue,
-  useMotionValueEvent,
-} from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import AnimatedButton from "@/components/ui/AnimatedButton";
-
-const GAP = 20;
 
 export type NewsInsightArticle = {
   category: string;
   title: string;
   href: string;
   image: string;
+  date?: string;
 };
 
-const BADGE_STYLES: Record<string, string> = {
-  Milestone: "bg-indigo-50 text-indigo-700 border-indigo-100",
-  News: "bg-blue-50 text-blue-700 border-blue-100",
-  Events: "bg-amber-50 text-amber-700 border-amber-100",
-  Webinar: "bg-emerald-50 text-emerald-700 border-emerald-100",
-  Insights: "bg-violet-50 text-violet-700 border-violet-100",
-};
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 12 13"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M0.75 6.46875H11.25M11.25 6.46875L6 11.7188M11.25 6.46875L6 1.21875"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
-// ─── Card ─────────────────────────────────────────────────────────────────────
+function formatDate(iso?: string): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
-function ArticleCard({ article }: { article: NewsInsightArticle }) {
+// Cohere Home slot: "The latest news"
+// Header: heading left + "See more on the blog" link right.
+// Body: 3 callout cards — tinted panel, image on top (aspect 2/1), category, title,
+// then date + Read more/arrow row. Hover: image zoom, panel lift, arrow nudge.
+function SeeMoreLink({ className }: { className?: string }) {
+  return (
+    <Link
+      href="/knowledge-hub"
+      className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-text-heading ${className ?? ""}`}
+    >
+      <span>See more on the blog</span>
+      <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
+        <ArrowIcon className="w-3" />
+      </span>
+    </Link>
+  );
+}
+
+function CalloutCard({ article }: { article: NewsInsightArticle }) {
+  const date = formatDate(article.date);
   return (
     <Link
       href={article.href}
-      className="group flex h-full flex-col overflow-hidden rounded-lg bg-white p-2"
+      className="callout-card group/card relative flex h-full w-full max-w-[617px] flex-col overflow-hidden rounded-lg"
     >
-      {/* Image + badge overlay */}
-      <div className="relative h-48 lg:h-56 w-full shrink-0 overflow-hidden rounded-lg">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={article.image}
-          alt={article.title}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <span
-          className={`absolute bottom-3 left-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
-            BADGE_STYLES[article.category] ??
-            "bg-neutral-50 text-neutral-600 border-neutral-100"
-          }`}
-        >
-          {article.category}
-        </span>
-      </div>
+      {/* Top panel — image, category, title */}
+      <div className="flex flex-1 flex-col rounded-t-lg bg-gray-200 p-4">
+        {article.image && (
+          <div className="relative mb-5 aspect-[2/1] w-full overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={article.image}
+              alt={article.title}
+              loading="lazy"
+              className="h-full w-full object-cover object-center"
+            />
+          </div>
+        )}
 
-      {/* Body */}
-      <div className="flex flex-1 flex-col px-3 pt-4 pb-3">
-        <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800 leading-snug tracking-tight line-clamp-3">
+        {(article.category || date) && (
+          <div className="mb-3 flex items-center justify-between gap-x-3 text-xs text-sognos-text-muted">
+            {article.category ? (
+              <span className="flex items-center gap-x-2">
+                <span className="size-1.5 rounded-full bg-sognos-text-muted" />
+                <span>{article.category}</span>
+              </span>
+            ) : (
+              <span />
+            )}
+            {date && <time>{date}</time>}
+          </div>
+        )}
+
+        <h3 className="font-heading text-lg font-medium leading-snug tracking-tight text-sognos-text-heading text-balance transition-colors duration-300 group-hover/card:text-black lg:text-xl">
           {article.title}
         </h3>
-        <div className="flex-1" />
-        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
-          Read More
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M3 7h8M7 3l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+      </div>
+
+      {/* Morphing footer notch (Cohere exact path) */}
+      <svg
+        className="callout-card__svg -mt-px h-[72px]"
+        viewBox="0 0 670 111"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          fill="#e5e7eb"
+          d="M670 0H0V91C0 102.046 8.9543 111 20 111H518.641C526.216 111 533.14 106.721 536.529 99.9469L570.988 31.0531C574.377 24.2789 581.301 20 588.875 20H650C661.046 20 670 11.0457 670 0Z"
+        />
+      </svg>
+
+      {/* Footer row — Read More text (left), arrow in notch (right) */}
+      <div className="absolute inset-x-0 bottom-3 flex items-center justify-between px-4 md:bottom-4">
+        <span className="text-sm font-medium text-sognos-text-heading transition-colors duration-300 group-hover/card:text-black">
+          Read more
+        </span>
+        <span className="inline-flex text-sognos-text-heading transition-all duration-300 group-hover/card:translate-x-0.5 group-hover/card:text-black">
+          <ArrowIcon className="w-4" />
         </span>
       </div>
     </Link>
   );
 }
 
-// ─── Section ──────────────────────────────────────────────────────────────────
-
 export default function NewsInsightSection({
   articles,
 }: {
   articles: NewsInsightArticle[];
 }) {
-  const looped = useMemo(() => [...articles, ...articles], [articles]);
-
-  const x = useMotionValue(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const maxDragRef = useRef(0);
-  const cardWidthRef = useRef(0);
-  const periodRef = useRef(0);
-  const [maxDrag, setMaxDrag] = useState(0);
-  const [cardWidth, setCardWidth] = useState(0);
-
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const resumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Seamless infinite loop: teleport x when it crosses set boundaries
-  useMotionValueEvent(x, "change", (latest) => {
-    const p = periodRef.current;
-    if (!p) return;
-    if (latest <= -p) x.set(latest + p);
-    else if (latest > 0) x.set(latest - p);
-  });
-
-  useEffect(() => {
-    const update = () => {
-      if (!trackRef.current || !viewportRef.current) return;
-      const containerWidth = viewportRef.current.clientWidth;
-      const isMobile = window.innerWidth < 1024;
-      const cw = isMobile ? containerWidth : (containerWidth - GAP) / 2;
-      cardWidthRef.current = cw;
-      setCardWidth(cw);
-      periodRef.current = articles.length * (cw + GAP);
-      const trackWidth = trackRef.current.scrollWidth;
-      const md = Math.min(0, -(trackWidth - containerWidth));
-      maxDragRef.current = md;
-      setMaxDrag(md);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [articles.length]);
-
-  const stepFn = useCallback(
-    (dir: 1 | -1) => {
-      const next = x.get() - dir * (cardWidthRef.current + GAP);
-      animate(x, next, { type: "spring", damping: 30, stiffness: 300 });
-    },
-    [x],
-  );
-
-  const stopAutoplay = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    if (resumeRef.current) {
-      clearTimeout(resumeRef.current);
-      resumeRef.current = null;
-    }
-  }, []);
-
-  const startAutoplay = useCallback(() => {
-    stopAutoplay();
-    intervalRef.current = setInterval(() => stepFn(1), 4000);
-  }, [stopAutoplay, stepFn]);
-
-  const pauseAndResume = useCallback(() => {
-    stopAutoplay();
-    resumeRef.current = setTimeout(startAutoplay, 5000);
-  }, [stopAutoplay, startAutoplay]);
-
-  const handleStep = useCallback(
-    (dir: 1 | -1) => {
-      stepFn(dir);
-      pauseAndResume();
-    },
-    [stepFn, pauseAndResume],
-  );
-
-  useEffect(() => {
-    startAutoplay();
-    return stopAutoplay;
-  }, [startAutoplay, stopAutoplay]);
-
   if (articles.length === 0) return null;
 
+  const cards = articles.slice(0, 3);
+
   return (
-    <section className="w-full bg-prussian-blue-800 overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-8 lg:gap-12">
-          {/* Left column - h2 and button, aligned top */}
-          <div className="w-full lg:w-[35%] lg:shrink-0 flex flex-col items-center lg:items-start gap-4">
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-0">
-              News &amp; Insights
-            </h2>
-            <div className="mt-2 lg:mt-4 hidden lg:block">
-              <AnimatedButton href="/knowledge-hub" variant="white">
-                View All
-              </AnimatedButton>
-            </div>
-          </div>
-
-          {/* Right column - strip wrapper, overflow-hidden clips right arrow */}
-          <div className="flex-1 min-w-0 relative overflow-hidden">
-            {/* Slider viewport */}
-            <div ref={viewportRef}>
-              <motion.div
-                ref={trackRef}
-                style={{ x }}
-                drag="x"
-                dragConstraints={{ left: maxDrag, right: 0 }}
-                dragElastic={0.05}
-                onDragStart={pauseAndResume}
-                className="flex gap-5 cursor-grab active:cursor-grabbing items-stretch"
-              >
-                {looped.map((article, i) => (
-                  <div
-                    key={i}
-                    className="shrink-0 flex flex-col"
-                    style={{ width: cardWidth > 0 ? cardWidth : undefined }}
-                  >
-                    <ArticleCard article={article} />
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Prev - left edge, vertically centered */}
-            <button
-              onClick={() => handleStep(-1)}
-              aria-label="Previous slide"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center w-10 h-10 rounded-full border border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-            >
-              <ArrowLeft size={16} />
-            </button>
-
-            {/* Next - right edge, half-clipped by overflow-hidden */}
-            <button
-              onClick={() => handleStep(1)}
-              aria-label="Next slide"
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-            >
-              <ArrowRight size={16} />
-            </button>
-
-            {/* Mobile arrows - below cards, button left, arrows right */}
-            <div className="flex lg:hidden items-center justify-between gap-3 mt-6">
-              <AnimatedButton href="/knowledge-hub" variant="white">
-                Visit Blog
-              </AnimatedButton>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => handleStep(-1)}
-                  aria-label="Previous slide"
-                  className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
-                >
-                  <ArrowLeft size={16} />
-                </button>
-                <button
-                  onClick={() => handleStep(1)}
-                  aria-label="Next slide"
-                  className="flex items-center justify-center w-10 h-10 rounded-full border border-dashed border-white/40 text-white/80 hover:border-white hover:text-white transition-colors"
-                >
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
+    <section className="w-full overflow-clip bg-background pt-10 pb-12 md:pt-24 md:pb-20">
+      <div className="mx-auto max-w-7xl px-4 lg:px-10">
+        <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-[54px]">
+          <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-text-heading text-balance md:text-4xl">
+            The latest news
+          </h2>
+          <SeeMoreLink className="max-sm:hidden" />
         </div>
+
+        <div className="flex flex-col items-center justify-center gap-6 lg:grid lg:grid-cols-3 lg:place-content-center">
+          {cards.map((article, i) => (
+            <CalloutCard key={`${article.href}-${i}`} article={article} />
+          ))}
+        </div>
+
+        <SeeMoreLink className="mt-8 sm:hidden" />
       </div>
     </section>
   );

@@ -16,10 +16,22 @@
 
 @theme inline {
   /* Fonts */
-  --font-sans: var(--font-inter, sans-serif);
-  --font-heading: var(--font-inter-tight, sans-serif);
+  --font-sans: var(--font-bureau-sans, sans-serif);
+  --font-heading: var(--font-bureau-serif, serif);
 
-  /* Font sizes */
+  /* Font sizes — pixel scale */
+  --text-10: 10px;
+  --text-12: 12px;
+  --text-14: 14px;
+  --text-15: 15px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20: 20px;
+  --text-32: 32px;
+  --text-40: 40px;
+  --text-50: 50px;
+
+  /* Font sizes — Tailwind defaults + Sognos */
   --text-4xl: 2.25rem;
   --text-sognos-text-sm: var(--sognos-text-sm);
 
@@ -316,6 +328,65 @@
 
 .cta-logo-wrap:hover .cta-logo-track {
   animation-play-state: paused;
+}
+
+/* CTA band dual marquees (homepage "Book a Demo" band) */
+.cta-band-track {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 1rem;
+  animation: trust-marquee-scroll 32s linear infinite;
+}
+
+.cta-band-track.reverse {
+  animation: cta-band-scroll-reverse 32s linear infinite;
+}
+
+.cta-band-wrap:hover .cta-band-track {
+  animation-play-state: paused;
+}
+
+@keyframes cta-band-scroll-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* News callout card — Cohere morphing footer notch (exact path) */
+.callout-card__svg {
+  display: block;
+  width: 100%;
+}
+
+.callout-card__svg path {
+  d: path(
+    "M670 0H0V91C0 102.046 8.9543 111 20 111H518.641C526.216 111 533.14 106.721 536.529 99.9469L570.988 31.0531C574.377 24.2789 581.301 20 588.875 20H650C661.046 20 670 11.0457 670 0Z"
+  );
+  transition: d 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.callout-card:hover .callout-card__svg path,
+.callout-card:focus-visible .callout-card__svg path {
+  d: path(
+    "M670 0H0V91C0 102.046 8.9543 111 20 111H518.641C526.216 111 533.14 111 536.529 111L570.988 111C574.377 111 581.301 111 588.875 111H650C661.046 111 670 102.046 670 91Z"
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .callout-card__svg path {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-band-track {
+    animation: none;
+  }
 }
 
 @keyframes diagram-flow {

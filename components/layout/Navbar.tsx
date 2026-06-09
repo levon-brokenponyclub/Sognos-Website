@@ -569,7 +569,7 @@ export default function Navbar() {
 
   const linkClass =
     effectiveColorMode === "dark"
-      ? "text-white hover:text-white"
+      ? "text-white/80 hover:text-white"
       : "text-[rgb(18_35_72/0.75)] hover:text-brand";
 
   const ctaClass =
@@ -607,84 +607,91 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-3 lg:px-6 py-2">
           <div
-            className={`flex items-center justify-between transition-[height] duration-300 ${
+            className={`flex items-center justify-between gap-x-8 transition-[height] duration-300 ${
               scrolled ? "h-12 lg:h-13" : "h-14 lg:h-17"
             }`}
           >
-            {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center shrink-0"
-              onClick={closeAll}
-            >
-              <Image
-                src={logoSrc}
-                alt="Sognos"
-                width={160}
-                height={40}
-                className={`w-auto transition-[height,filter] duration-300 ${
-                  scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
-                }`}
-                style={
-                  effectiveColorMode === "dark"
-                    ? { color: "transparent", filter: "brightness(0) invert(1)" }
-                    : undefined
-                }
-              />
-            </Link>
+            {/* Left group: logo + desktop nav */}
+            <div className="flex items-center gap-x-8 lg:gap-x-16">
+              <Link
+                href="/"
+                className="flex items-center shrink-0"
+                onClick={closeAll}
+              >
+                <Image
+                  src={logoSrc}
+                  alt="Sognos"
+                  width={160}
+                  height={40}
+                  className={`w-auto transition-[height,filter] duration-300 ${
+                    scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
+                  }`}
+                  style={
+                    effectiveColorMode === "dark"
+                      ? { color: "transparent", filter: "brightness(0) invert(1)" }
+                      : undefined
+                  }
+                />
+              </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-0.5">
-              {nav.map((group, groupIndex) => (
-                <div
-                  key={group.label}
-                  className="relative"
-                >
-                  {group.megaMenu || group.items ? (
-                    <button
-                      type="button"
-                      aria-expanded={openMenu === group.label}
-                      onClick={() => toggleMenu(group.label, groupIndex)}
-                      className={`flex items-center gap-1 font-semibold px-4 py-2 rounded-md text transition-colors duration-300 ${
-                        openMenu === group.label
-                          ? "opacity-100"
-                          : "opacity-80 hover:opacity-100"
-                      } ${linkClass}`}
-                    >
-                      {group.label}
-                      <ChevronDown open={openMenu === group.label} />
-                    </button>
-                  ) : (
-                    <Link
-                      href={group.href}
-                      className={`font-medium px-4 py-2 rounded-md text-sm opacity-80 hover:opacity-100 transition-colors duration-300 ${linkClass}`}
-                      onClick={closeAll}
-                    >
-                      {group.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </nav>
+              {/* Desktop nav */}
+              <nav className="hidden lg:flex items-center gap-x-8">
+                {nav.map((group, groupIndex) => (
+                  <div key={group.label} className="relative">
+                    {group.megaMenu || group.items ? (
+                      <button
+                        type="button"
+                        aria-expanded={openMenu === group.label}
+                        onClick={() => toggleMenu(group.label, groupIndex)}
+                        className={`flex items-center gap-1.5 text-sm font-medium cursor-pointer transition-colors duration-300 ${linkClass}`}
+                      >
+                        {group.label}
+                        <ChevronDown open={openMenu === group.label} />
+                      </button>
+                    ) : (
+                      <Link
+                        href={group.href}
+                        className={`text-sm font-medium transition-colors duration-300 ${linkClass}`}
+                        onClick={closeAll}
+                      >
+                        {group.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            </div>
 
-            {/* CTAs */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* Right group: desktop CTAs */}
+            <div className="hidden lg:flex items-center gap-x-6">
               <Link
                 href={navCTA.secondary.href}
-                className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
+                className={`text-sm font-medium transition-colors duration-300 ${linkClass}`}
                 onClick={closeAll}
               >
                 {navCTA.secondary.name}
               </Link>
               <Link
                 href="#book-demo"
-                className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
                 onClick={onBookDemoClick}
+                className={`group inline-flex items-center justify-center gap-x-2 whitespace-nowrap relative rounded-full overflow-hidden px-4 py-[0.78125rem] text-sm font-medium ring-1 ring-inset backdrop-blur-xs transition-colors duration-200 ${
+                  effectiveColorMode === "dark"
+                    ? "ring-white/20 text-white bg-transparent hover:bg-white/5"
+                    : "ring-sognos-text-heading/15 text-sognos-text-heading bg-sognos-text-heading/[0.03] hover:bg-sognos-text-heading/[0.06]"
+                }`}
               >
-                {navCTA.primary.name}
+                <span className="relative inline-block">
+                  <span className="block transition-transform duration-300 group-hover:-translate-y-[200%]">
+                    {navCTA.primary.name}
+                  </span>
+                  <span className="absolute inset-0 block translate-y-[200%] transition-transform duration-300 group-hover:translate-y-0">
+                    {navCTA.primary.name}
+                  </span>
+                </span>
               </Link>
             </div>
 
+            {/* Mobile CTAs (preserved as-is) */}
             <div className="lg:hidden flex justify-center items-center gap-3">
               {/* Mobile CTA */}
               <Link
