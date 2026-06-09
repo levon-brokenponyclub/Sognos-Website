@@ -58,3 +58,6 @@ certificates/data/
 # Sanity build artifacts
 dist/
 schema.json
+
+# Scaffold reference dumps (not shipping)
+public/images/new/
