@@ -18,12 +18,16 @@ export type ContactResult = { ok: true } | { ok: false; error: string };
 
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SECRET_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key =
+    process.env.SUPABASE_SECRET_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return null;
   return createClient(url, key);
 }
 
-export async function submitContact(input: ContactInput): Promise<ContactResult> {
+export async function submitContact(
+  input: ContactInput,
+): Promise<ContactResult> {
   const { firstName, lastName, email, phone } = input;
 
   if (!firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim()) {
@@ -46,8 +50,6 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
     const { error } = await resend.emails.send({
       from: "Sognos <website@sognos.com.au>",
       to: [
-        "levongravett@gmail.com",
-        "Paula@sognos.com.au",
         "matthew.thelmo@sognos.com.au",
         "reem@sognos.com.au",
         "contact@sognos.com.au",
@@ -72,16 +74,18 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
       return { ok: false, error: error.message ?? "Email send failed." };
     }
 
-    const { error: dbError } = await supabase.from("contact_submissions").insert({
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      organisation: input.organisation.trim() || null,
-      reason: input.reason || null,
-      product: input.product || null,
-      message: input.message.trim() || null,
-    });
+    const { error: dbError } = await supabase
+      .from("contact_submissions")
+      .insert({
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        organisation: input.organisation.trim() || null,
+        reason: input.reason || null,
+        product: input.product || null,
+        message: input.message.trim() || null,
+      });
 
     if (dbError) {
       return { ok: false, error: dbError.message ?? "Submission failed." };

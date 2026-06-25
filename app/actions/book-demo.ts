@@ -56,7 +56,20 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
   }
 
   const productLabel = PRODUCT_LABELS[product] ?? product;
-  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const MONTHS = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const monthName = input.month != null ? MONTHS[input.month] : "Unknown";
   const yearStr = input.year ?? "Unknown";
   const requestedSlot =
@@ -69,8 +82,6 @@ export async function bookDemo(input: BookDemoInput): Promise<BookDemoResult> {
     const { error } = await resend.emails.send({
       from: "Sognos Demo Bookings <website@sognos.com.au>",
       to: [
-        "levongravett@gmail.com",
-        "Paula@sognos.com.au",
         "matthew.thelmo@sognos.com.au",
         "reem@sognos.com.au",
         "contact@sognos.com.au",
