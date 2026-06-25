@@ -41,8 +41,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | ✅ Complete |
 | **Phase 5** | Solutions & industry pages | ✅ Complete |
 | **Phase 5b** | Sognos Genogram — product page, routing, nav wiring | ✅ Complete |
-| **Phase 6** | Design system application | 🔲 Pending |
-| **Phase 7** | UI polish & motion | 🔲 Pending |
+| **Phase 6** | Cohere scaffold clone — homepage ✅, solutions pages 🔄, product/industry/blog pending | 🔄 In Progress |
+| **Phase 7** | UI polish & motion — Navbar ✅, scroll ✅, SubNav ✅, Hero zoom ✅, Editions ✅, Footer mobile ✅, nav transitions ✅, mobile/tablet nav ✅, Care Problems dark ✅, Care colour ✅ | 🔄 In Progress |
 | **Phase 8** | Conversion & integrations | 🔲 Pending |
 | **Phase 9** | QA & launch | 🔲 Pending |
 
@@ -204,7 +204,7 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ---
 
-## 7. Design System (Approved — Phase 6)
+## 7. Design System (Active — applied inline)
 
 - **Headings:** Inter Tight, weight 400 default
 - **Body:** Inter
@@ -227,22 +227,54 @@ CTAs: `Contact Sales` | `Book a Demo`
 
 ## 8. Current Task
 
-**Cohere Scaffold Clone — page-by-page (started 2026-06-09)**
+**Phase 6 + Phase 7 running in parallel (as of 2026-06-12)**
 
-Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live `cohere.com` (open in Dia), keeping Sognos copy/assets. Full conventions + accepted deviations in memory `session-2026-06-09-cohere-scaffold.md`.
+### Colour Token Rollout — ✅ Complete (2026-06-12)
+
+Four-phase migration from old `sognos-brand`/`sognos-accent`/`prussian-blue-*` system to lean `sognos-*` tokens.
+
+- [x] **Phase 1** — Additive token layer: `--sognos-navy`, `--sognos-blue-accent`, `--sognos-heading/body/muted/line`, per-product dark/base/gradient pairs. Navy bridge: `prussian-blue-800/900/950` re-pointed to new vars.
+- [x] **Phase 2** — Mechanical rename: semantic utility → new names, `prussian-blue-*` utilities → `sognos-navy*`, hardcoded `[#1D96FC]` / `[#052048]` → tokens.
+- [x] **Phase 3** — Per-product theming: Care/Roster/Genogram hero backgrounds, gradients, accent hexes → product tokens.
+- [x] **Phase 4** — Final migration + dead token purge: `*-brand` → `*-sognos-blue-accent`, `(--sognos-accent)` → `sognos-blue-accent`, globals.css @theme + @layer base repointed, ~40 dead semantic tokens deleted, `@theme` ramp forwards for prussian-blue/cornflower-ocean/true-cobalt removed, orphan `components/sections/tokens.css` deleted.
+
+**Token system state:** `app/tokens.css` is now lean — primitive ramps kept only as raw CSS vars for gradient tokens; all semantic colours use `--sognos-*` lean tokens.
+
+### Phase 6 — Cohere Scaffold Clone
+
+Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live `cohere.com`, keeping Sognos copy/assets. Full conventions + accepted deviations in memory `session-2026-06-09-cohere-scaffold.md`.
 
 - [x] **Homepage** — DONE (see §4). New components: `HowSognosWorks`, `SognosCareCard`, `SognosRosterCard`, `CTABand`. Reworked: `Hero`, `IndustrySection`, `NewsInsightSection` (morphing SVG notch). Container token → 1380px.
-- [ ] **Solutions pages** — IN PROGRESS. `app/(marketing)/solutions/[slug]/page.tsx` (7 solutions) + sections → Cohere `docs/Cohere/Solution.html`. Content in `lib/solutions-content.ts`. Page still uses pre-scaffold `rounded-xl`/`shadow-md`/`bg-white py-24`. **Need user's per-section Cohere mapping before refactoring — ask, don't guess.**
+- [ ] **Solutions pages** — `app/(marketing)/solutions/[slug]/page.tsx` (7 solutions). Still uses pre-scaffold `rounded-xl`/`shadow-md`/`bg-white py-24`. **Need per-section Cohere mapping before refactoring — ask, don't guess.**
+- [ ] **Product pages** — pending after solutions
+- [ ] **Industry pages** — pending
+- [ ] **Blog / Customer Stories** — pending
 
-Pending after solutions: Product pages, Industry pages, Blog/CustomerStories, then design-system polish pass across all.
+### Phase 7 — UI Polish & Motion (started 2026-06-10)
+
+- [x] **Navbar full rewrite** — `AnimatePresence mode="popLayout"` cross-fade, hover intent (100ms open / 150ms close), `grid grid-cols-[1fr_auto_1fr]`, mobile accordion + orange dot.
+- [x] **Three-state scroll behavior** — `top` → `hidden` → `peek`. `HIDE_AFTER=80`, `DELTA_MIN=6`, rAF-throttled.
+- [x] **Nav transitions overhaul** — `duration-300` unified; logo `transition-[filter]`; `pt-3` hover bridge; `mode="popLayout"` + `position: "absolute"` exit.
+- [x] **Mobile/tablet nav improvements** — hamburger right-aligned; `h-[76px] lg:h-[68px]`; tablet panel `md:w-[380px]`; "Book a Demo" `hidden sm:inline-flex lg:hidden`; backdrop-blur overlay with 72% CSS mask.
+- [x] **ProductSubNav → pills-only** — IntersectionObserver scroll-spy, `layoutId="subnav-pill"`. Removed dock/sticky/logo/button machinery.
+- [x] **SognosCare brand colour** — `#11102B` → `#03112f` across all affected files.
+- [x] **SognosCare Hero — cinematic scroll** — `useScroll`/`useTransform`: scale 0.9→1, y 0→−160px, opacity fade; all-four-corner rounding.
+- [x] **SognosCare Editions — CalloutCard style** — morphing notch, accent gradient bay, white logo, "Read more" arrow; IndustrySection slider; EditionsDrawer removed from `ProductSection`.
+- [x] **SognosCare Editions section** — `#03112f` bg, white heading + `text-white/70` intro, eyebrow pill removed.
+- [x] **SognosCare Problems dark bg** — `#03112f` bg, inverted text, `subNav` slot.
+- [x] **Footer mobile accordions** — `FooterColumns.tsx` as `"use client"`, Framer Motion height/opacity, acknowledgement own row.
+- [ ] **ProductSubNav dock-from-bottom** — reappears fixed under navbar when scrolled past in-section position. See `features.md`.
+- [ ] **Roster + Genogram Problems dark sections** — same pattern; Roster `#3990c5`, Genogram `#250438`. See `features.md`.
 
 ---
 
 ## 9. Next Tasks (Ordered)
 
-1. Build customers hub and case study pages (`/customers`, `/customers/[slug]`)
-2. Phase 6 — design system application pass
-3. Phase 7 — UI polish and motion
+1. **ProductSubNav dock-from-bottom** — reappears fixed under navbar when scrolled past its in-section position (Phase 7)
+2. **Solutions pages Cohere port** — section-by-section refactor of `solutions/[slug]/page.tsx` (Phase 6); ask for per-section mapping first
+3. **Roster + Genogram Problems dark sections** — same `#PROBLEM_BG` + inverted text pattern as SognosCare (Phase 7); use `--sognos-roster-dark` / `--sognos-genogram-dark` tokens
+4. **Edition token pass** — reconcile old `--sognos-edition-green/orange/lime/coral/purple/pink` vs new lean `--sognos-edition-*` tokens; migrate `EditionCards.tsx`
+5. **Build customers hub and case study pages** — `/customers`, `/customers/[slug]`
 
 ---
 
@@ -261,6 +293,8 @@ Pending after solutions: Product pages, Industry pages, Blog/CustomerStories, th
 - **Drawer scroll isolation** — requires both `document.body.style.overflow = "hidden"` on expand AND `overscroll-contain` on the inner scroll div; both are needed
 - **ProductCustomerStories** — shared customer stories component at `components/sections/ProductCustomerStories.tsx`; product `Stories.tsx` files are thin wrappers around it
 - **Knowledge Hub post template** — `app/(marketing)/knowledge-hub/[slug]/page.tsx`; all 6 posts hardcoded for dev, `twoCol: true` enables sticky-meta + scrollable-content layout
+- **Navbar scroll model** — three states: `top` (transparent, white), `hidden` (slides off on scroll-down), `peek` (white bar on scroll-up). `headerHidden` guard includes `!openMenu && !mobileOpen` so an open dropdown never hides the bar. State lives in `Navbar.tsx`; do not add per-section `data-header-dark` listeners back.
+- **ProductSubNav sections prop** — shape is `{ label: string; id: string; href?: string }[]` (matches `SubNavSection` exported from `ProductSubNav.tsx`). `href` is optional — defaults to `#${id}` if omitted.
 
 ---
 
@@ -273,7 +307,6 @@ Pending after solutions: Product pages, Industry pages, Blog/CustomerStories, th
 - CTA label: **"Book a Demo"** everywhere
 - Doc sync: any routing, permalink, or page title change must update `project-overview.md` and `project-plan.md` in the same task
 - Server Components by default
-- No styling decisions until Phase 6
 - Claude = Builder + Architect only (NOT designer)
 - - If you cannot locate a file on the first attempt, stop and ask — do not keep searching and burning tokens
 - Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
@@ -281,3 +314,8 @@ Pending after solutions: Product pages, Industry pages, Blog/CustomerStories, th
 - Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
 - Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
 - Do not add features, abstractions, or complexity beyond what the task requires — keep it minimal
+
+## Source of truth & session loop
+- `docs/DESIGN_MIGRATION_STATE.md` is the authoritative state of record. Read it at the START of every task.
+- At the END of every task: update DESIGN_MIGRATION_STATE.md to reflect reality, and append one entry to `docs/CHANGELOG.md` (date · what changed · files · why).
+- `docs/FEATURE_LOG.md` is the granular backlog. `docs/archive/` holds superseded audits/plans — historical only, never current.

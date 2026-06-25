@@ -15,10 +15,10 @@ const data: EditionData = {
   description:
     "From care planning and progress documentation to staff coordination and resident outcome reporting - built for providers.",
   gradient: "/images/sognoscare/gradient-4.png",
-  accentHex: "#c49aff",
-  accentTextClass: "text-(--sognos-edition-purple)",
-  accentBgClass: "bg-(--sognos-edition-purple)",
-  accentBorderClass: "border-(--sognos-edition-purple)",
+  accentHex: "#caa4ff",
+  accentTextClass: "text-sognos-edition-aged-care",
+  accentBgClass: "bg-sognos-edition-aged-care",
+  accentBorderClass: "border-sognos-edition-aged-care",
   problems: [
     {
       label: "Complex resident care planning",

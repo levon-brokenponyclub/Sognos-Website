@@ -53,12 +53,12 @@ export const CTA_VARIANT_STYLES: Record<
     labelClass: "text-neutral-500",
   },
   dark: {
-    bgClass: "bg-prussian-blue-800",
+    bgClass: "bg-sognos-navy",
     textClass: "text-white",
     labelClass: "text-[#8E9EBB]",
   },
   blue: {
-    bgClass: "bg-[#1D96FC]",
+    bgClass: "bg-sognos-blue-accent",
     textClass: "text-white",
     labelClass: "text-blue-100",
   },

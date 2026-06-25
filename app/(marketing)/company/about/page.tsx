@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import TeamSection from "@/components/sections/TeamSection";
 import SocialResponsibilitySection from "@/components/sections/SocialResponsibilitySection";
-import CTASection from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -94,13 +93,13 @@ export default function AboutPage() {
                   } as React.CSSProperties
                 }
               />
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               About Sognos
             </div>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-4xl font-medium text-[#122E58] tracking-tight">
               Building smarter automation for modern teams
             </h1>
-            <p className="text-base lg:text-lg text-sognos-text-body leading-relaxed">
+            <p className="text-base lg:text-lg text-sognos-body leading-relaxed">
               Built to serve the organisations that serve others. Since 2016,
               Sognos has helped service organisations work smarter - replacing
               disconnected tools with a single intelligent platform built
@@ -124,11 +123,11 @@ export default function AboutPage() {
 
               {/* Stat 2 - Video */}
               <div className="rounded-lg relative overflow-hidden bg-white h-[200px] md:h-[260px] lg:flex-1 p-8 lg:p-10 flex flex-col justify-end transition-all duration-500 hover:-translate-y-1 group">
-                <div className="relative z-10 text-brand">
-                  <p className="text-5xl text-brand lg:text-6xl font-heading font-medium mb-3 tracking-tight">
+                <div className="relative z-10 text-sognos-blue-accent">
+                  <p className="text-5xl text-sognos-blue-accent lg:text-6xl font-heading font-medium mb-3 tracking-tight">
                     10+
                   </p>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-brand">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-sognos-blue-accent">
                     Years
                   </p>
                 </div>
@@ -159,7 +158,7 @@ export default function AboutPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 lg:gap-5 flex-1">
                 {/* Stat 3 - Dark */}
-                <div className="rounded-lg bg-[#1D96FC] text-white p-6 lg:p-8 flex flex-col justify-end flex-1 min-h-[160px] transition-all duration-500 hover:-translate-y-1">
+                <div className="rounded-lg bg-sognos-blue-accent text-white p-6 lg:p-8 flex flex-col justify-end flex-1 min-h-[160px] transition-all duration-500 hover:-translate-y-1">
                   <p className="text-4xl text-white lg:text-5xl font-heading font-medium mb-3 tracking-tight">
                     3
                   </p>
@@ -186,7 +185,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission / Vision / Values */}
-      <section className="w-full bg-[#1D96FC]">
+      <section className="w-full bg-sognos-blue-accent">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32 lg:pb-24">
           {/* Section Header */}
           <div className="mb-16 lg:mb-4">
@@ -202,7 +201,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden mb-3 lg:mb-3">
             {/* About Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-8">
+              <h3 className="text-2xl font-medium text-sognos-body leading-tight text-balance transition-colors duration-200 mb-8">
                 About Sognos
               </h3>
               <div className="space-y-6 text-gray-600 leading-relaxed text-base">
@@ -236,7 +235,7 @@ export default function AboutPage() {
 
             {/* Mission + Vision Card */}
             <div className="bg-white p-10 lg:p-14 flex flex-col">
-              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-6">
+              <h3 className="text-2xl font-medium text-sognos-body leading-tight text-balance transition-colors duration-200 mb-6">
                 Mission
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-12">
@@ -246,7 +245,7 @@ export default function AboutPage() {
                 real-world service delivery.
               </p>
 
-              <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-6">
+              <h3 className="text-2xl font-medium text-sognos-body leading-tight text-balance transition-colors duration-200 mb-6">
                 Vision
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-8">
@@ -283,17 +282,17 @@ export default function AboutPage() {
 
           {/* Values Section */}
           <div className="pt-10">
-            {/* <p className="text-xs font-bold uppercase tracking-[0.14em] text-sognos-text-muted mb-10">
+            {/* <p className="text-xs font-bold uppercase tracking-[0.14em] text-sognos-muted mb-10">
               Our Core Values
             </p> */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {VALUES.map((v) => (
                 <div key={v.title} className="group bg-white p-12 rounded-lg">
-                  <div className="w-12 h-px bg-[#1D96FC] mb-6 transition-all duration-500 group-hover:w-full" />
-                  <h4 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance duration-200 mb-4 transition-colors group-hover:text-[#1D96FC]">
+                  <div className="w-12 h-px bg-sognos-blue-accent mb-6 transition-all duration-500 group-hover:w-full" />
+                  <h4 className="text-2xl font-medium text-sognos-body leading-tight text-balance duration-200 mb-4 transition-colors group-hover:text-sognos-blue-accent">
                     {v.title}
                   </h4>
-                  <p className="text text-sognos-text-body leading-relaxed text-gray-600">
+                  <p className="text text-sognos-body leading-relaxed text-gray-600">
                     {v.body}
                   </p>
                 </div>
@@ -306,18 +305,18 @@ export default function AboutPage() {
       <TeamSection />
 
       {/* Partners - Sticky Scroll Layout */}
-      <section className="w-full border-b border-sognos-border-subtle bg-white">
+      <section className="w-full border-b border-sognos-line bg-white">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             {/* Left column - Sticky */}
             <div className="lg:col-span-5 lg:sticky lg:top-32">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted mb-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-muted mb-4">
                 Partners
               </p>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand lg:text-left tracking-tight mb-6">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-blue-accent lg:text-left tracking-tight mb-6">
                 Our Partners
               </h2>
-              <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
+              <p className="text-lg text-sognos-body leading-relaxed max-w-md">
                 We've partnered with some of the best innovators in the industry
                 to bring you new and exciting possibilities - enhanced and
                 integrated business solutions to your most complex problems.
@@ -329,11 +328,11 @@ export default function AboutPage() {
               {PARTNERS.map((partner) => (
                 <div
                   key={partner.name}
-                  className="group bg-slate-50 border border-sognos-border-subtle rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-[#1D96FC]/30"
+                  className="group bg-slate-50 border border-sognos-line rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-sognos-blue-accent/30"
                 >
                   {/* Logo cell */}
                   <div
-                    className={`shrink-0 w-full sm:w-48 flex items-center justify-center p-8 ${partner.logoBg} border-b sm:border-b-0 sm:border-r border-sognos-border-subtle`}
+                    className={`shrink-0 w-full sm:w-48 flex items-center justify-center p-8 ${partner.logoBg} border-b sm:border-b-0 sm:border-r border-sognos-line`}
                   >
                     <div className="relative w-48 h-28 transition-transform duration-500 group-hover:scale-110">
                       <Image
@@ -346,13 +345,13 @@ export default function AboutPage() {
                   </div>
                   {/* Info cell */}
                   <div className="flex-1 p-8 lg:p-10">
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#1D96FC] mb-2">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-sognos-blue-accent mb-2">
                       {partner.type}
                     </p>
-                    <h3 className="text-2xl font-medium text-prussian-blue-800 leading-tight text-balance transition-colors duration-200 mb-4">
+                    <h3 className="text-2xl font-medium text-sognos-body leading-tight text-balance transition-colors duration-200 mb-4">
                       {partner.name}
                     </h3>
-                    <p className="text text-sognos-text-body leading-relaxed ">
+                    <p className="text text-sognos-body leading-relaxed ">
                       {partner.description}
                     </p>
                   </div>
@@ -364,8 +363,6 @@ export default function AboutPage() {
       </section>
 
       <SocialResponsibilitySection />
-
-      <CTASection />
 
       {/* Careers overview */}
       <section className="w-full bg-[#173465]">

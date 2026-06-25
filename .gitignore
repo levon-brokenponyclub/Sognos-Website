@@ -26,8 +26,10 @@
 # claude
 .claude/
 
-# docs
-docs/
+# docs — scaffold reference dirs (not markdown)
+docs/Cohere/
+docs/design-explorations/
+docs/Sites/
 
 # misc
 .DS_Store

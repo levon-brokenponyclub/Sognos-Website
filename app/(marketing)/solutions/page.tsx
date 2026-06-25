@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import CTASection from "@/components/sections/CTASection";
 import { SOLUTIONS } from "@/lib/constants";
 
 export const metadata = {
@@ -20,10 +19,10 @@ export default function SolutionsPage() {
         <div className="pointer-events-none absolute inset-0 opacity-20" />
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="h-2 w-2 rounded-full bg-sognos-blue-accent" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
               Solutions
-            </div>
+            </span>
           </div>
           <h1 className="mx-auto mb-6 max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
             Supporting engagements built for service operations
@@ -37,38 +36,38 @@ export default function SolutionsPage() {
       </section>
 
       {/* Solutions grid */}
-      <section className="bg-(--sognos-bg-sunken) py-24">
+      <section className="bg-gray-200/70 py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               All solutions
             </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
               Seven capability areas. One platform.
             </h2>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 lg:gap-4 md:grid-cols-2 lg:grid-cols-3">
             {SOLUTIONS.map((solution) => (
               <Link
                 key={solution.slug}
                 href={solution.href}
-                className="group flex flex-col justify-between rounded-2xl border border-(--sognos-card-border) bg-white p-8 transition-shadow duration-200 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-lg border border-(--sognos-line) bg-white p-8 transition-colors duration-200 hover:border-sognos-navy/30"
               >
                 <div>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                     Solution
                   </div>
-                  <h2 className="mb-3 font-heading text-xl font-normal text-sognos-text-heading">
+                  <h2 className="mb-3 font-heading text-xl font-normal text-sognos-heading">
                     {solution.name}
                   </h2>
-                  <p className="text-sm leading-relaxed text-sognos-text-body">
+                  <p className="text-sm leading-relaxed text-sognos-body">
                     {solution.description}
                   </p>
                 </div>
-                <div className="mt-8 flex items-center gap-1.5 text-sm font-medium text-brand transition-all duration-200 group-hover:gap-3">
+                <div className="mt-8 flex items-center gap-1.5 text-sm font-medium text-sognos-blue-accent transition-all duration-200 group-hover:gap-3">
                   Learn more
                   <ArrowRight size={14} />
                 </div>
@@ -78,12 +77,6 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      <CTASection
-        headline="Not sure which solution fits your operation?"
-        subtext="Our team works with service providers across sectors. Book a call and we'll help you identify the right starting point."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
-      />
     </>
   );
 }

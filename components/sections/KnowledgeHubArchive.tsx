@@ -66,13 +66,13 @@ function ArticleCard({ article }: { article: Article }) {
         </span>
       </div>
       <div className="flex flex-1 flex-col px-1 pt-3 pb-1">
-        <h3 className="font-heading text-base font-medium leading-snug tracking-tight text-prussian-blue-800 line-clamp-3">
+        <h3 className="font-heading text-base font-medium leading-snug tracking-tight text-sognos-body line-clamp-3">
           {article.title}
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-text-body line-clamp-2">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-body line-clamp-2">
           {article.excerpt}
         </p>
-        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-[#052048] transition-colors duration-200 group-hover:text-[#052048]/70">
+        <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-sognos-body transition-colors duration-200 group-hover:text-sognos-body/70">
           Read More
           <svg
             width="14"
@@ -127,7 +127,7 @@ export default function KnowledgeHubArchive({
       <div className="mx-auto max-w-7xl px-6">
         {/* Header row */}
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
             {activeCategory ?? "All Articles"}
           </h2>
 
@@ -137,7 +137,7 @@ export default function KnowledgeHubArchive({
               <select
                 value={activeIndustry ?? ""}
                 onChange={(e) => setActiveIndustry(e.target.value || null)}
-                className="appearance-none cursor-pointer rounded-full border border-(--sognos-card-border) bg-white py-2.5 pl-4 pr-9 text-xs font-semibold uppercase tracking-widest text-sognos-text-body focus:border-prussian-blue-950 focus:outline-none"
+                className="appearance-none cursor-pointer rounded-full border border-(--sognos-line) bg-white py-2.5 pl-4 pr-9 text-xs font-semibold uppercase tracking-widest text-sognos-body focus:border-sognos-navy-dark focus:outline-none"
               >
                 <option value="">Select by Industry</option>
                 {INDUSTRIES.map((ind) => (
@@ -148,7 +148,7 @@ export default function KnowledgeHubArchive({
               </select>
               <ChevronDown
                 size={13}
-                className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-sognos-text-muted"
+                className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-sognos-muted"
               />
             </div>
 
@@ -158,7 +158,7 @@ export default function KnowledgeHubArchive({
                   setActiveCategory(null);
                   setActiveIndustry(null);
                 }}
-                className="text-xs font-medium text-sognos-text-muted underline hover:text-sognos-text-body"
+                className="text-xs font-medium text-sognos-muted underline hover:text-sognos-body"
               >
                 Clear
               </button>
@@ -176,8 +176,8 @@ export default function KnowledgeHubArchive({
                 className={[
                   "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 text-left",
                   activeCategory === null
-                    ? "border-prussian-blue-950 bg-prussian-blue-950 text-white"
-                    : "border-(--sognos-card-border) bg-white text-sognos-text-body hover:border-prussian-blue-950/40",
+                    ? "border-sognos-navy-dark bg-sognos-navy-dark text-white"
+                    : "border-(--sognos-line) bg-white text-sognos-body hover:border-sognos-navy-dark/40",
                 ].join(" ")}
               >
                 All
@@ -191,8 +191,8 @@ export default function KnowledgeHubArchive({
                   className={[
                     "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 text-left",
                     activeCategory === cat
-                      ? "border-prussian-blue-950 bg-prussian-blue-950 text-white"
-                      : "border-(--sognos-card-border) bg-white text-sognos-text-body hover:border-prussian-blue-950/40",
+                      ? "border-sognos-navy-dark bg-sognos-navy-dark text-white"
+                      : "border-(--sognos-line) bg-white text-sognos-body hover:border-sognos-navy-dark/40",
                   ].join(" ")}
                 >
                   {cat}
@@ -210,11 +210,11 @@ export default function KnowledgeHubArchive({
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border border-(--sognos-card-border) bg-white px-8 py-16 text-center">
-                <p className="font-heading text-xl text-sognos-text-heading">
+              <div className="rounded-2xl border border-(--sognos-line) bg-white px-8 py-16 text-center">
+                <p className="font-heading text-xl text-sognos-heading">
                   No articles match those filters
                 </p>
-                <p className="mt-2 text-sm text-sognos-text-muted">
+                <p className="mt-2 text-sm text-sognos-muted">
                   Try removing a filter to see more results.
                 </p>
               </div>

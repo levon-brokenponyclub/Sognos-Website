@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { headers } from "next/headers";
@@ -26,11 +27,9 @@ const bureauSans = localFont({
   display: "swap",
 });
 
-const bureauSerif = localFont({
-  src: "../public/fonts/bureau-serif-book.woff2",
-  weight: "400",
-  style: "normal",
-  variable: "--font-bureau-serif",
+const interHeading = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter-heading",
   display: "swap",
 });
 
@@ -83,7 +82,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bureauSans.variable} ${bureauSerif.variable} h-full antialiased`}
+      className={`${bureauSans.variable} ${interHeading.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         {children}

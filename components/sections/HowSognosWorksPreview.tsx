@@ -68,37 +68,37 @@ export default function HowSognosWorksPreview() {
   };
 
   const heading = (
-    <h3 className="font-heading text-3xl lg:text-[28px] font-normal leading-tight tracking-tight text-sognos-text-heading">
+    <h3 className="font-heading text-3xl lg:text-[28px] font-normal leading-tight tracking-tight text-sognos-heading">
       Stop managing complexity.
       <br />
-      <span className="text-sognos-text-heading/60">
+      <span className="text-sognos-heading/60">
         Start delivering outcomes.
       </span>
     </h3>
   );
 
   return (
-    <section className="w-full overflow-clip bg-background pt-12 md:pt-[120px] pb-12 md:pb-[120px] border-b border-sognos-text-heading/10">
+    <section className="w-full overflow-clip bg-background pt-12 md:pt-[120px] pb-12 md:pb-[120px] border-b border-sognos-heading/10">
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex max-lg:flex-col gap-x-[57px] gap-y-8">
           {/* Left column — heading + accordion */}
           <div className="flex shrink-0 flex-col gap-y-4 justify-between lg:max-w-[401px] lg:pt-1">
             <div className="max-lg:hidden">{heading}</div>
 
-            <div className="border-b border-sognos-text-heading/10">
+            <div className="border-b border-sognos-heading/10">
               {TABS.map((tab, i) => (
                 <button
                   key={tab.id}
                   type="button"
                   onClick={() => handleTab(i)}
-                  className="relative block w-full cursor-pointer overflow-hidden border-t border-sognos-text-heading/10 pb-5 text-left"
+                  className="relative block w-full cursor-pointer overflow-hidden border-t border-sognos-heading/10 pb-5 text-left"
                 >
                   {/* Top progress indicator */}
                   <span className="absolute inset-x-0 top-0 block h-px overflow-hidden">
                     {active === i && (
                       <motion.span
                         key={`progress-${i}-${active}`}
-                        className="block h-full bg-sognos-text-heading"
+                        className="block h-full bg-sognos-heading"
                         initial={{ width: "0%" }}
                         animate={paused ? false : { width: "100%" }}
                         transition={{
@@ -112,13 +112,13 @@ export default function HowSognosWorksPreview() {
                   {/* Header row: label + number */}
                   <div className="flex w-full items-center justify-between gap-x-4 pt-5">
                     <h4
-                      className={`text-xl font-medium leading-snug tracking-tight text-sognos-text-heading transition-opacity duration-200 ${
+                      className={`text-xl font-medium leading-snug tracking-tight text-sognos-heading transition-opacity duration-200 ${
                         active === i ? "opacity-100" : "opacity-50"
                       }`}
                     >
                       {tab.label}
                     </h4>
-                    <span className="font-heading text-sm tracking-wide text-sognos-text-heading/65">
+                    <span className="font-heading text-sm tracking-wide text-sognos-heading/65">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -133,7 +133,7 @@ export default function HowSognosWorksPreview() {
                         transition={EXPAND}
                         className="overflow-hidden"
                       >
-                        <p className="max-w-[353px] py-3 text-base leading-relaxed text-sognos-text-body">
+                        <p className="max-w-[353px] py-3 text-base leading-relaxed text-sognos-body">
                           {tab.description}
                         </p>
                       </motion.div>
@@ -148,7 +148,7 @@ export default function HowSognosWorksPreview() {
           <div className="w-full max-w-[791px] max-lg:order-first">
             <div className="mb-6 lg:hidden">{heading}</div>
 
-            <div className="relative aspect-[791/580] w-full max-w-[791px] overflow-hidden rounded-2xl border border-sognos-card-border bg-white shadow-lg">
+            <div className="relative aspect-[791/580] w-full max-w-[791px] overflow-hidden rounded-2xl border border-sognos-line bg-white shadow-lg">
               {TABS.map((tab, i) => {
                 const Component = tab.Component;
                 return (

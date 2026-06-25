@@ -42,7 +42,7 @@ export default async function KnowledgeHubPage({
         <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center">
           <div className="">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Knowledge Hub
             </div>
           </div>

@@ -147,14 +147,14 @@ function SolutionVisual({ solution }: { solution: Solution }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -16, scale: 0.98 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute left-0 top-[8%] w-[78%] overflow-hidden rounded-lg border border-white/10 bg-prussian-blue-800/80 p-5 backdrop-blur-sm"
+        className="absolute left-0 top-[8%] w-[78%] overflow-hidden rounded-lg border border-white/10 bg-sognos-navy/80 p-5 backdrop-blur-sm"
       >
         <div className="flex items-center gap-x-3">
           <span
             className="flex size-9 flex-none items-center justify-center rounded-lg"
             style={{ backgroundColor: accent }}
           >
-            <Icon size={20} weight="duotone" className="text-prussian-blue-900" />
+            <Icon size={20} weight="duotone" className="text-sognos-heading" />
           </span>
           <span className="text-sm font-medium text-white">{label}</span>
         </div>
@@ -194,14 +194,14 @@ function SolutionVisual({ solution }: { solution: Solution }) {
           className="overflow-hidden rounded-lg border border-white/10 p-4"
           style={{ backgroundColor: accent }}
         >
-          <Icon size={26} weight="duotone" className="text-prussian-blue-900" />
-          <div className="mt-3 font-heading text-2xl font-medium leading-none tracking-tight text-prussian-blue-900">
+          <Icon size={26} weight="duotone" className="text-sognos-heading" />
+          <div className="mt-3 font-heading text-2xl font-medium leading-none tracking-tight text-sognos-heading">
             {badge}
           </div>
           <div className="mt-2 flex gap-x-1.5">
-            <span className="h-1.5 w-8 rounded-full bg-prussian-blue-900/70" />
-            <span className="h-1.5 w-4 rounded-full bg-prussian-blue-900/30" />
-            <span className="h-1.5 w-2 rounded-full bg-prussian-blue-900/30" />
+            <span className="h-1.5 w-8 rounded-full bg-sognos-navy-dark/70" />
+            <span className="h-1.5 w-4 rounded-full bg-sognos-navy-dark/30" />
+            <span className="h-1.5 w-2 rounded-full bg-sognos-navy-dark/30" />
           </div>
         </motion.div>
       </motion.div>
@@ -230,7 +230,7 @@ export default function SolutionsSection() {
   };
 
   return (
-    <section className="w-full overflow-clip bg-prussian-blue-900 py-16 text-white md:py-[120px]">
+    <section className="w-full overflow-clip bg-sognos-navy-dark py-16 text-white md:py-[120px]">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
         <div className="flex flex-col gap-y-3">

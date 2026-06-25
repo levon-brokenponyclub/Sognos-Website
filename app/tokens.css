@@ -1,15 +1,13 @@
 /* ========================
-   SOGNOS DESIGN TOKENS — Phase 7 Redesign
-   Source of truth: Sites/style/pages/clean/Home.html
-   Brand: #239bff (Dashfluence-derived)
-   Near-blacks: #052048 / #041a3a (deep navy)
+   SOGNOS DESIGN TOKENS
 ======================== */
 
 :root {
   /* ════════════════════════════════════════════
        PRIMITIVE PALETTE FAMILIES
-       Names preserved for backwards-compatible class usage;
-       values re-pointed to new brand system.
+       Kept as raw CSS vars — consumed by gradient tokens
+       and occasional inline CSS. NOT exposed as Tailwind
+       utilities (those forwards were deleted in Phase 4).
     ════════════════════════════════════════════ */
 
   /* ---- Prussian Blue → Navy scale (legacy name, new values) ---- */
@@ -21,9 +19,9 @@
   --color-prussian-blue-500: #2d3a5c;
   --color-prussian-blue-600: #1a2747;
   --color-prussian-blue-700: #0c1d39;
-  --color-prussian-blue-800: #052048;
-  --color-prussian-blue-900: #041a3a;
-  --color-prussian-blue-950: #02132c;
+  --color-prussian-blue-800: var(--sognos-navy);      /* navy bridge */
+  --color-prussian-blue-900: var(--sognos-navy-dark); /* navy-dark bridge */
+  --color-prussian-blue-950: var(--sognos-navy-dark); /* navy-dark bridge */
 
   /* ---- Cornflower Ocean → Brand Blue scale (legacy name, new values) ---- */
   --color-cornflower-ocean-50: #e3f0ff;
@@ -38,7 +36,7 @@
   --color-cornflower-ocean-900: #052048;
   --color-cornflower-ocean-950: #041a3a;
 
-  /* ---- True Cobalt (kept — secondary accent) ---- */
+  /* ---- True Cobalt (kept — used by gradient-highlight) ---- */
   --color-true-cobalt-50: #ebecf9;
   --color-true-cobalt-100: #d7d9f4;
   --color-true-cobalt-200: #b0b4e8;
@@ -51,7 +49,7 @@
   --color-true-cobalt-900: #0b0d28;
   --color-true-cobalt-950: #08091c;
 
-  /* ---- Edition identity palettes (kept as-is — sector colours, not brand) ---- */
+  /* ---- Edition identity palettes (kept — sector colours) ---- */
 
   /* Seagrass — Disability & Mental Health (green) */
   --color-seagrass-50: #e5fffb;
@@ -122,74 +120,17 @@
   --color-neutral-900: #0c0a08;
 
   /* ════════════════════════════════════════════
-       SURFACE
+       SEMANTIC TOKENS — live only
     ════════════════════════════════════════════ */
 
-  --sognos-surface-100: var(--color-neutral-100);
-  --color-surface-100: var(--sognos-surface-100);
-
-  /* ════════════════════════════════════════════
-       SEMANTIC TOKENS — Sognos naming preserved
-    ════════════════════════════════════════════ */
-
-  /* Brand */
-  --sognos-brand: var(--color-cornflower-ocean-500); /* #239bff */
-  --sognos-brand-dark: var(--color-prussian-blue-900); /* #041a3a */
-  --sognos-brand-light: var(--color-cornflower-ocean-300); /* #6fb2ff */
-  --sognos-brand-subtle: var(--color-cornflower-ocean-100); /* #c7e1ff */
+  /* Brand foreground (used by --color-primary-foreground) */
   --sognos-brand-foreground: #ffffff;
 
-  /* Accent & Highlight */
-  --sognos-accent: var(--color-cornflower-ocean-500); /* #239bff */
-  --sognos-accent-subtle: rgb(35 155 255 / 0.1);
-  --sognos-accent-blue: var(--color-prussian-blue-800); /* #052048 */
-  --sognos-highlight: var(--color-cornflower-ocean-400); /* #4aa6ff */
-  --sognos-highlight-subtle: rgb(74 166 255 / 0.12);
-
-  /* Brand glow / animation accents */
-  --sognos-brand-subtle-300: var(--color-cornflower-ocean-200); /* #9bcaff */
-  --sognos-brand-subtle-700: var(--color-cornflower-ocean-600); /* #1c7ecc */
-
-  /* Subtle tints (edition palette callouts) */
-  --sognos-subtle-coral: var(--color-grapefruit-pink-300);
-  --sognos-subtle-purple: var(--color-bright-lavender-300);
-
-  /* Neutrals */
-  --sognos-neutral-50: #ffffff;
-  --sognos-neutral-100: var(--color-neutral-50); /* #f5f8f6 */
-  --sognos-neutral-200: var(--color-neutral-100); /* #eff2f0 */
-  --sognos-neutral-300: var(--color-neutral-200); /* #e3e5e4 */
-  --sognos-neutral-400: var(--color-neutral-400);
-  --sognos-neutral-500: var(--color-neutral-500);
-  --sognos-neutral-600: var(--color-neutral-600);
-  --sognos-neutral-700: var(--color-neutral-700);
-  --sognos-neutral-800: var(--color-neutral-800);
-  --sognos-neutral-900: var(--color-neutral-900);
-
-  /* Text & Links */
-  --sognos-text-heading: var(--color-prussian-blue-900); /* #041a3a */
-  --sognos-text-body: var(--color-prussian-blue-800); /* #052048 */
-  --sognos-text-muted: var(--color-neutral-500);
-  --sognos-text-soft: var(--color-neutral-400);
-  --sognos-text-inverse: #ffffff;
-  --sognos-text-link: var(--color-cornflower-ocean-500); /* #239bff */
-
   /* Surfaces & Backgrounds */
-  --sognos-bg-page: var(--color-neutral-50); /* #f5f8f6 warm grey-green */
-  --sognos-bg-surface: #ffffff;
-  --sognos-bg-elevated: var(--color-neutral-100); /* #eff2f0 */
-  --sognos-bg-sunken: var(--color-neutral-200); /* #e3e5e4 */
-  --sognos-bg-dark: var(--color-prussian-blue-800); /* #052048 */
+  --sognos-bg-sunken: var(--color-neutral-200); /* #e3e5e4 — still live in components */
 
-  /* Borders & Components */
-  --sognos-border: var(--color-neutral-200);
-  --sognos-border-strong: var(--color-cornflower-ocean-500);
-  --sognos-border-subtle: var(--color-neutral-100);
-  --sognos-border-focus: var(--color-cornflower-ocean-500);
-  --sognos-card-border: var(--color-neutral-100);
-  --sognos-card-border-soft: var(--color-neutral-200);
-  --sognos-card-bg: #ffffff;
-  --sognos-subcard-bg: var(--color-neutral-50);
+  /* Borders */
+  --sognos-border: var(--color-neutral-200); /* used by --color-border / --color-input */
 
   /* Status */
   --sognos-success: #10b981;
@@ -201,13 +142,11 @@
   --sognos-info: var(--color-cornflower-ocean-500);
   --sognos-info-light: var(--color-cornflower-ocean-50);
 
-  /* Editions — SognosCare sector identity colours (unchanged) */
+  /* Editions — OLD sector tokens (partial — lime + pink purged; green/orange/coral/purple still referenced in live components) */
   --sognos-edition-green: #36b19a;
   --sognos-edition-orange: #fea65d;
-  --sognos-edition-lime: #c6da4c;
   --sognos-edition-coral: #ff8184;
   --sognos-edition-purple: #c49aff;
-  --sognos-edition-pink: #ff6db4;
 
   /* Gradients */
   --sognos-gradient-brand: linear-gradient(
@@ -243,14 +182,13 @@
     var(--color-cornflower-ocean-100) 100%
   );
 
-  /* Shadows — subtle elevation (Paraform-aligned) */
+  /* Shadows */
   --sognos-shadow-sm: 0 1px 3px rgb(5 32 72 / 0.08);
   --sognos-shadow-md: 0 8px 24px rgb(5 32 72 / 0.08);
   --sognos-shadow-lg: 0 20px 48px rgb(5 32 72 / 0.10);
   --sognos-shadow-xl: 0 24px 60px rgb(5 32 72 / 0.12);
-  --sognos-shadow-brand: 0 0 24px rgb(35 155 255 / 0.18);
 
-  /* Radius — Tailwind-aligned scale */
+  /* Radius */
   --sognos-radius-sm: 0.25rem;
   --sognos-radius-md: 0.375rem;
   --sognos-radius-lg: 0.5rem;
@@ -276,12 +214,34 @@
   --sognos-text-eyebrow: 0.8rem;
   --sognos-text-sm: 0.85rem;
 
-  /* Paraform compatibility tokens (consumed by ported layouts) */
-  --pf-ink: var(--color-prussian-blue-800); /* #052048 */
-  --pf-ink-80: rgba(5, 32, 72, 0.8);
-  --pf-ink-70: rgba(5, 32, 72, 0.7);
-  --pf-ink-50: rgba(5, 32, 72, 0.5);
-  --pf-ink-15: rgba(5, 32, 72, 0.15);
-  --pf-ink-08: rgba(5, 32, 72, 0.08);
-  --pf-ink-05: rgba(5, 32, 72, 0.05);
+  /* ── Sognos colour system (lean) ── */
+  /* Core brand */
+  --sognos-navy-dark:   #0f1936;
+  --sognos-navy:        #152248;
+  --sognos-blue-accent: #1d96fc;
+  /* Content / text */
+  --sognos-heading: #0f1936;
+  --sognos-body:    #152248;
+  --sognos-muted:   #64748b;
+  /* Lines */
+  --sognos-line:    #e2e8f0;
+  /* Product: SognosCare */
+  --sognos-care-dark:     #03112f;
+  --sognos-care-base:     #152248;
+  --sognos-care-gradient: linear-gradient(to bottom right, #5aa0ff, #3b6fe0, #1f2a78);
+  /* Product: SognosRoster */
+  --sognos-roster-dark:     #0b3a66;
+  --sognos-roster-base:     #59bbf7;
+  --sognos-roster-gradient: linear-gradient(to bottom right, #6fc6fb, #2f97d6, #0e4f86);
+  /* Product: Sognos Genogram */
+  --sognos-genogram-dark:     #250438;
+  --sognos-genogram-base:     #91278c;
+  --sognos-genogram-gradient: linear-gradient(to bottom right, #7b3fa8, #4a1670, #1a0224);
+  /* Editions (SognosCare sector identity) */
+  --sognos-edition-aged-care:                 #caa4ff;
+  --sognos-edition-allied-health:             #ffad6e;
+  --sognos-edition-support-at-home:           #ff8e90;
+  --sognos-edition-hospital-in-the-home:      #cbdd61;
+  --sognos-edition-child-and-family-services: #ff7dbc;
+  --sognos-edition-disability:                #00a98f;
 }

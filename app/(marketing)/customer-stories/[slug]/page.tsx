@@ -57,7 +57,7 @@ const portableComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mb-4">{children}</p>,
     h2: ({ children }) => (
-      <h2 className="mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800">
+      <h2 className="mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-body">
         {children}
       </h2>
     ),
@@ -131,7 +131,7 @@ export default async function CustomerStoryPage({
             <div className="lg:w-1/2 lg:max-w-[32.5rem]">
               <Link
                 href="/customer-stories"
-                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
+                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-sognos-body/60 transition-colors hover:text-sognos-body"
               >
                 <ArrowLeft
                   size={14}
@@ -140,26 +140,26 @@ export default async function CustomerStoryPage({
                 Back to Customer Stories
               </Link>
 
-              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
+              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-sognos-body lg:text-4xl xl:text-4xl">
                 {story.title}
               </h1>
 
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 lg:mt-14">
                 <div className="mb-5 flex items-center gap-3">
-                  <span className="text-sm text-prussian-blue-800/60">
+                  <span className="text-sm text-sognos-body/60">
                     {formatDate(story.date)}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-prussian-blue-800/60">
+                  <span className="text-sm font-medium text-sognos-body/60">
                     Share
                   </span>
                   <a
                     href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on LinkedIn"
                   >
                     <svg
@@ -178,7 +178,7 @@ export default async function CustomerStoryPage({
                     href={`https://twitter.com/intent/tweet?url=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on X"
                   >
                     <svg
@@ -197,7 +197,7 @@ export default async function CustomerStoryPage({
                     href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on Facebook"
                   >
                     <svg
@@ -215,7 +215,7 @@ export default async function CustomerStoryPage({
                 </div>
               </div>
 
-              <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
+              <div className="mt-5 border-t border-dashed border-sognos-navy/20" />
             </div>
 
             <div className="overflow-hidden rounded-lg h-64 lg:h-100 lg:max-h-100 w-full lg:w-1/2 lg:shrink-0 relative flex flex-col">
@@ -249,7 +249,7 @@ export default async function CustomerStoryPage({
 
       {/* ── Pull quote ── */}
       {story.quote && (
-        <section className="bg-brand py-12 lg:py-16">
+        <section className="bg-sognos-blue-accent py-12 lg:py-16">
           <div className="mx-auto max-w-4xl px-6">
             <blockquote>
               <p className="font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight text-white">
@@ -270,7 +270,7 @@ export default async function CustomerStoryPage({
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[360px_1fr] lg:gap-12">
           <aside className="lg:sticky lg:top-25 lg:self-start w-full lg:max-w-90 lg:w-90">
             <div>
-              <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800">
+              <h3 className="font-heading text-xl lg:text-xl font-medium text-sognos-body">
                 {story.company}
               </h3>
               <p className="mt-3 text-md leading-relaxed text-sognos-body">
@@ -286,7 +286,7 @@ export default async function CustomerStoryPage({
                       key={field.label}
                       className="flex items-baseline justify-between gap-4"
                     >
-                      <span className="shrink-0 text-sm text-prussian-blue-800">
+                      <span className="shrink-0 text-sm text-sognos-body">
                         {field.label}
                       </span>
                       <span className="text-right text-sm text-sognos-body">
@@ -303,7 +303,7 @@ export default async function CustomerStoryPage({
                   <a
                     href={story.downloadUrl}
                     download
-                    className="flex w-full items-center justify-center gap-2 rounded bg-prussian-blue-800 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-prussian-blue-700"
+                    className="flex w-full items-center justify-center gap-2 rounded bg-sognos-navy px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-prussian-blue-700"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -321,7 +321,7 @@ export default async function CustomerStoryPage({
             </div>
           </aside>
 
-          <div className="flex-1 max-w-none text-base leading-relaxed text-sognos-text-body">
+          <div className="flex-1 max-w-none text-base leading-relaxed text-sognos-body">
             <PortableText value={story.body} components={portableComponents} />
           </div>
         </div>
@@ -345,7 +345,7 @@ export default async function CustomerStoryPage({
                     <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                       Previous
                     </p>
-                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                    <p className="text-sm font-medium text-sognos-body line-clamp-1 group-hover:text-sognos-blue-accent transition-colors duration-200">
                       {prev.company}
                     </p>
                   </div>
@@ -362,7 +362,7 @@ export default async function CustomerStoryPage({
                     <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                       Next
                     </p>
-                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                    <p className="text-sm font-medium text-sognos-body line-clamp-1 group-hover:text-sognos-blue-accent transition-colors duration-200">
                       {next.company}
                     </p>
                   </div>

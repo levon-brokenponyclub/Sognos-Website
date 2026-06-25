@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getFooterContent } from "@/lib/sanity/queries";
+import FooterColumns from "@/components/layout/FooterColumns";
 
 export default async function Footer() {
   const content = await getFooterContent();
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-prussian-blue-900 text-white">
+    <footer className="bg-sognos-navy-dark text-white">
       {/* Main section — links left, brand right (mobile: brand top, links below) */}
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex flex-col gap-x-[57px] gap-y-12 py-12 md:flex-row md:py-[96px]">
@@ -44,31 +45,12 @@ export default async function Footer() {
 
           {/* Link columns — RIGHT on desktop, BELOW brand on mobile */}
           {content.columns.length > 0 && (
-            <div className="flex flex-1 flex-col gap-10 md:flex-row md:justify-end">
-              {content.columns.map((column) => (
-                <div key={column.title} className="flex flex-col gap-y-4">
-                  <div className="text-sm font-medium text-white">
-                    {column.title}
-                  </div>
-                  <div className="flex flex-col gap-y-2">
-                    {column.links.map((link) => (
-                      <Link
-                        key={`${column.title}-${link.href}`}
-                        href={link.href}
-                        className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <FooterColumns columns={content.columns} />
           )}
         </div>
       </div>
 
-      {/* Bottom rows — order preserved from current footer: acknowledgement first, copyright second */}
+      {/* Bottom rows — acknowledgement above copyright/legal */}
       <div className="border-t border-white/10">
         {content.acknowledgement && (
           <div className="mx-auto max-w-7xl px-4 py-4">
@@ -77,6 +59,8 @@ export default async function Footer() {
             </p>
           </div>
         )}
+      </div>
+      <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p className="text-xs text-white/40">
             © {year} {content.brandLogoAlt}. {content.copyrightSuffix}

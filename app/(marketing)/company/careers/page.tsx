@@ -43,7 +43,7 @@ export default function CareersPage() {
       <section className="bg-gradient-hero w-full">
         <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
             Careers
           </div>
           <h1 className="mx-auto max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
@@ -58,14 +58,14 @@ export default function CareersPage() {
       </section>
 
       {/* Our People - Our Planet: 3×2 grid, title in row-1 col-1 */}
-      <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
+      <section className="w-full border-b border-sognos-line bg-slate-50">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 md:grid-cols-3">
             {/* Row 1, Col 1 - section title */}
-            <div className="border-t border-dashed border-sognos-border-subtle md:border-r p-8 flex items-start">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+            <div className="border-t border-dashed border-sognos-line md:border-r p-8 flex items-start">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
                 Our People -{" "}
-                <span className="text-sognos-text-muted">Our Planet</span>
+                <span className="text-sognos-muted">Our Planet</span>
               </h2>
             </div>
 
@@ -73,14 +73,14 @@ export default function CareersPage() {
             {BENEFITS.slice(0, 2).map((b, i) => (
               <div
                 key={b.title}
-                className={`border-t border-dashed border-sognos-border-subtle p-8 ${
+                className={`border-t border-dashed border-sognos-line p-8 ${
                   i === 0 ? "md:border-r" : ""
                 }`}
               >
-                <p className="font-heading text-base font-semibold text-prussian-blue-800">
+                <p className="font-heading text-base font-semibold text-sognos-body">
                   {b.title}
                 </p>
-                <p className="mt-2 text-sm text-sognos-text-body leading-relaxed">
+                <p className="mt-2 text-sm text-sognos-body leading-relaxed">
                   {b.body}
                 </p>
               </div>
@@ -90,14 +90,14 @@ export default function CareersPage() {
             {BENEFITS.slice(2).map((b, i) => (
               <div
                 key={b.title}
-                className={`border-t border-dashed border-sognos-border-subtle p-8 ${
+                className={`border-t border-dashed border-sognos-line p-8 ${
                   i < 2 ? "md:border-r" : ""
                 }`}
               >
-                <p className="font-heading text-base font-semibold text-prussian-blue-800">
+                <p className="font-heading text-base font-semibold text-sognos-body">
                   {b.title}
                 </p>
-                <p className="mt-2 text-sm text-sognos-text-body leading-relaxed">
+                <p className="mt-2 text-sm text-sognos-body leading-relaxed">
                   {b.body}
                 </p>
               </div>
@@ -115,7 +115,7 @@ export default function CareersPage() {
       {/* Equal opportunity */}
       <section className="w-full">
         <div className="max-w-7xl w-full mx-auto px-6 py-16">
-          <p className="text-sm text-sognos-text-muted max-w-2xl leading-relaxed">
+          <p className="text-sm text-sognos-muted max-w-2xl leading-relaxed">
             At Sognos we strive to create an environment of equal opportunity
             regardless of race, gender, sexual orientation, gender identity or
             expression, lifestyle, age, religion, or physical ability.

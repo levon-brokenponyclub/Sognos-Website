@@ -28,13 +28,13 @@ export default function AnimatedButton({
 }: AnimatedButtonProps) {
   const containerClass =
     variant === "white"
-      ? "bg-white text-brand"
+      ? "bg-white text-sognos-blue-accent"
       : variant === "transparent"
-      ? "bg-transparent text-(--sognos-brand) border border-[rgba(18,36,84,0.2)]"
-      : "bg-brand text-white";
+      ? "bg-transparent text-sognos-blue-accent border border-[rgba(18,36,84,0.2)]"
+      : "bg-sognos-blue-accent text-white";
 
   const bubbleClass =
-    variant === "brand" ? "bg-white text-brand" : "bg-(--sognos-brand) text-white";
+    variant === "brand" ? "bg-white text-sognos-blue-accent" : "bg-sognos-blue-accent text-white";
 
   return (
     <Link

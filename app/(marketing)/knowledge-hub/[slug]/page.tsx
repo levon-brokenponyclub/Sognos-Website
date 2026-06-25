@@ -25,9 +25,9 @@ const BADGE_STYLES: Record<string, string> = {
 // ─── Shared styles ──────────────────────────────────────────────────────────
 
 const H2 =
-  "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-prussian-blue-800";
+  "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-body";
 const PROSE =
-  "max-w-none text-base leading-relaxed text-sognos-text-body [&_p]:mb-4 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
+  "max-w-none text-base leading-relaxed text-sognos-body [&_p]:mb-4 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
 
 // ─── Static params ────────────────────────────────────────────────────────────
 
@@ -75,7 +75,7 @@ const portableComponents: PortableTextComponents = {
     normal: ({ children }) => <p className="mb-4">{children}</p>,
     h2: ({ children }) => <h2 className={H2}>{children}</h2>,
     blockquote: ({ children }) => (
-      <blockquote className="my-6 border-l-4 border-prussian-blue-800/20 pl-4 italic text-prussian-blue-800/80">
+      <blockquote className="my-6 border-l-4 border-sognos-navy/20 pl-4 italic text-sognos-body/80">
         {children}
       </blockquote>
     ),
@@ -104,7 +104,7 @@ const portableComponents: PortableTextComponents = {
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-brand hover:underline"
+        className="text-sognos-blue-accent hover:underline"
       >
         {children}
       </a>
@@ -168,7 +168,7 @@ export default async function KnowledgeHubPost({
             <div className="lg:w-1/2 lg:max-w-[32.5rem]">
               <Link
                 href="/knowledge-hub"
-                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
+                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-sognos-body/60 transition-colors hover:text-sognos-body"
               >
                 <ArrowLeft
                   size={14}
@@ -183,41 +183,41 @@ export default async function KnowledgeHubPost({
                 >
                   {post.category}
                 </span>
-                <span className="text-sm text-prussian-blue-800/60">
+                <span className="text-sm text-sognos-body/60">
                   {formatDate(post.date)}
                 </span>
               </div>
 
-              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
+              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-sognos-body lg:text-4xl xl:text-4xl">
                 {post.title}
               </h1>
 
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 lg:mt-14">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-prussian-blue-800/10">
-                    <span className="text-xs font-semibold text-prussian-blue-800">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sognos-navy/10">
+                    <span className="text-xs font-semibold text-sognos-body">
                       {author.charAt(0)}
                     </span>
                   </div>
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-xs text-prussian-blue-800/60">
+                    <span className="text-xs text-sognos-body/60">
                       Written by
                     </span>
-                    <span className="text-sm font-medium leading-none text-prussian-blue-800">
+                    <span className="text-sm font-medium leading-none text-sognos-body">
                       {author}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-prussian-blue-800/60">
+                  <span className="text-sm font-medium text-sognos-body/60">
                     Share
                   </span>
                   <a
                     href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on LinkedIn"
                   >
                     <svg
@@ -236,7 +236,7 @@ export default async function KnowledgeHubPost({
                     href={`https://twitter.com/intent/tweet?url=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on X"
                   >
                     <svg
@@ -255,7 +255,7 @@ export default async function KnowledgeHubPost({
                     href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-sognos-navy/5 p-2 transition-colors hover:bg-sognos-navy/20"
                     aria-label="Share on Facebook"
                   >
                     <svg
@@ -273,7 +273,7 @@ export default async function KnowledgeHubPost({
                 </div>
               </div>
 
-              <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
+              <div className="mt-5 border-t border-dashed border-sognos-navy/20" />
             </div>
 
             {/* Right - image */}
@@ -318,7 +318,7 @@ export default async function KnowledgeHubPost({
                     <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                       Previous
                     </p>
-                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                    <p className="text-sm font-medium text-sognos-body line-clamp-1 group-hover:text-sognos-blue-accent transition-colors duration-200">
                       {prev.title}
                     </p>
                   </div>
@@ -335,7 +335,7 @@ export default async function KnowledgeHubPost({
                     <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">
                       Next
                     </p>
-                    <p className="text-sm font-medium text-prussian-blue-800 line-clamp-1 group-hover:text-brand transition-colors duration-200">
+                    <p className="text-sm font-medium text-sognos-body line-clamp-1 group-hover:text-sognos-blue-accent transition-colors duration-200">
                       {next.title}
                     </p>
                   </div>

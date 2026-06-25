@@ -30,11 +30,11 @@ export default function IconOrbit() {
     <div className="relative flex h-[400px] w-full items-center justify-center overflow-hidden">
       {/* Center node */}
       <div className="z-10 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg">
-        <span className="font-heading text-xl font-semibold text-brand tracking-tight">S</span>
+        <span className="font-heading text-xl font-semibold text-sognos-blue-accent tracking-tight">S</span>
       </div>
 
       {/* Orbit ring */}
-      <div className="absolute rounded-full border border-sognos-border-subtle" style={{ width: 320, height: 320 }} aria-hidden="true" />
+      <div className="absolute rounded-full border border-sognos-line" style={{ width: 320, height: 320 }} aria-hidden="true" />
 
       {/* Outer orbit - 4 logos, equally spaced at 90° */}
       <OrbitingCircles iconSize={40} radius={160} duration={30} speed={1}>

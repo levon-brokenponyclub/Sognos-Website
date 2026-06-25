@@ -2,400 +2,375 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
-import { motion, AnimatePresence, type Transition } from "framer-motion";
-import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
+import { usePathname } from "next/navigation";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  animate,
+  useReducedMotion,
+} from "framer-motion";
+import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 
-// ─── Constants ─────────────────────────────────────────────────────────────────
+// ── Transparent-over-hero: paths whose first section is a dark hero ────────────
+// Navbar derives transparentOverHero from pathname (shared layout can't pass per-page props).
+// `transparentOverHero` prop overrides this when explicitly provided.
+const DARK_HERO_PATHS = new Set([
+  "/",
+  "/products/sognoscare",
+  "/products/sognosroster",
+  "/products/sognosgenogram",
+]);
 
-type Direction = "ltr" | "rtl";
+// ── Light / dark theme seam ────────────────────────────────────────────────────
+// `dark` values are used for the transparent-at-top state on dark-hero pages.
+// `light` values are used when the bar is solid (scrolled, or non-dark-hero pages).
 
-const SHELL_EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-const EXIT_EASE = [0.7, 0, 0.84, 0] as [number, number, number, number];
-const STAGGER_STEP = 0.038;
-const ITEM_X = 6;
-const CONTENT_X = 84;
+type NavVariant = "light" | "dark";
 
-// ─── Animation helpers ─────────────────────────────────────────────────────────
-
-const contentVariants = {
-  enter: (dir: Direction) => ({
-    opacity: 0,
-    x: dir === "rtl" ? CONTENT_X : -CONTENT_X,
-  }),
-  center: { opacity: 1, x: 0 },
-  exit: (dir: Direction) => ({
-    opacity: 0,
-    x: dir === "rtl" ? -CONTENT_X : CONTENT_X,
-  }),
-};
-
-const mobilePanelVariants = {
-  enter: { opacity: 0, x: 26 },
-  center: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.28, ease: SHELL_EASE },
-  },
-  exit: {
-    opacity: 0,
-    x: -18,
-    transition: { duration: 0.2, ease: EXIT_EASE },
-  },
-};
-
-function flatIndex(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-): number {
-  const before = columns
-    .slice(0, colIdx)
-    .reduce((sum, col) => sum + 1 + col.items.length, 0);
-  return before + rowIdx + 1;
+interface NavTheme {
+  text: string; // nav link base colour
+  hoverPill: string; // sliding highlight bg
+  navGroup: string; // persistent bg behind centered nav group (includes rounded-full p-1)
+  logoFilter: string; // CSS filter for logo img
+  primaryBtn: string; // Book a Demo button
+  secondaryText: string; // Contact Sales link
+  dropdownCard: string; // dropdown card bg + border + shadow (always light for readability)
+  mobilePanel: string; // mobile drawer (always solid for readability)
+  mobileDivider: string;
+  hamburger: string;
 }
 
-function itemDelay(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-  direction: Direction,
-): number {
-  const total = columns.reduce((sum, col) => sum + 1 + col.items.length, 0);
-  let flat = flatIndex(colIdx, rowIdx, columns);
-  if (direction === "rtl") flat = total - 1 - flat;
-  return Math.max(0, flat) * STAGGER_STEP;
-}
-
-function itemInitial(direction: Direction) {
-  return { opacity: 0, x: direction === "rtl" ? ITEM_X : -ITEM_X, y: 4 };
-}
-
-function itemTransition(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-  direction: Direction,
-): Transition {
-  return {
-    duration: 0.18,
-    ease: "easeOut",
-    delay: itemDelay(colIdx, rowIdx, columns, direction),
-  };
-}
-
-// ─── Icon meta (keyed by product name) ─────────────────────────────────────────
-
-type ProductMeta = { bg: string; path: string; color: string };
-
-const PRODUCT_META: Record<string, ProductMeta> = {
-  SognosCare: {
-    bg: "bg-rose-50",
-    color: "text-rose-500",
-    path: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+const THEMES: Record<NavVariant, NavTheme> = {
+  light: {
+    text: "text-sognos-heading/75 hover:text-sognos-heading",
+    hoverPill: "bg-sognos-navy-dark",
+    navGroup: "bg-gray-100 rounded-full p-1",
+    logoFilter: "none",
+    primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-navy-dark/90",
+    secondaryText: "text-sognos-heading/65 hover:text-sognos-heading",
+    dropdownCard:
+      "bg-white border border-gray-200 shadow-[0_0_24px_rgba(34,42,53,0.06),0_1px_1px_rgba(0,0,0,0.05),0_0_0_1px_rgba(34,42,53,0.04),0_3px_6px_rgba(34,42,53,0.04),0_8px_24px_rgba(34,42,53,0.04)]",
+    mobilePanel:
+      "bg-white border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+    mobileDivider: "border-gray-100",
+    hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
-  SognosRoster: {
-    bg: "bg-blue-50",
-    color: "text-blue-600",
-    path: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-  },
-  "Sognos Genogram": {
-    bg: "bg-violet-50",
-    color: "text-violet-500",
-    path: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
-  },
-  "AI Agents": {
-    bg: "bg-violet-50",
-    color: "text-violet-500",
-    path: "M13 10V3L4 14h7v7l9-11h-7z",
-  },
-  Quickstart: {
-    bg: "bg-amber-50",
-    color: "text-amber-500",
-    path: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+  dark: {
+    // Used when bar is transparent over a dark hero (at scrollState "top").
+    // Dropdown + mobile panel stay light regardless (always readable).
+    text: "text-white/80 hover:text-white",
+    hoverPill: "bg-white/20",
+    navGroup: "bg-white/10 rounded-full p-1",
+    logoFilter: "brightness(0) invert(1)",
+    primaryBtn: "bg-white text-sognos-navy-dark hover:bg-white/90",
+    secondaryText: "text-white/65 hover:text-white",
+    dropdownCard:
+      "bg-white border border-gray-200 shadow-[0_0_24px_rgba(34,42,53,0.06),0_1px_1px_rgba(0,0,0,0.05),0_0_0_1px_rgba(34,42,53,0.04),0_3px_6px_rgba(34,42,53,0.04),0_8px_24px_rgba(34,42,53,0.04)]",
+    mobilePanel:
+      "bg-white border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+    mobileDivider: "border-gray-100",
+    hamburger: "text-white/80 hover:text-white",
   },
 };
 
-// ─── Icon components ───────────────────────────────────────────────────────────
+const DROPDOWN_SPRING = {
+  type: "spring" as const,
+  bounce: 0.15,
+  duration: 0.4,
+};
+const EDGE = 8;
 
-function ChevronDown({ open }: { open: boolean }) {
-  return (
-    <motion.span
-      className="inline-flex text-current"
-      animate={{ rotate: open ? 180 : 0 }}
-      transition={{ duration: 0.2, ease: SHELL_EASE }}
-      aria-hidden
-    >
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </motion.span>
-  );
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+function getLinkCols(group: NavGroup) {
+  return (group.megaMenu ?? []).filter((col) => col.items.length > 0);
 }
 
-function ChevronRight({
-  className = "w-3.5 h-3.5 text-gray-300",
-}: {
-  className?: string;
-}) {
-  return (
-    <svg
-      className={`shrink-0 ${className}`}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M9 5l7 7-7 7"
-      />
-    </svg>
-  );
-}
+// ── Desktop dropdown content ───────────────────────────────────────────────────
 
-function ChevronLeft() {
-  return (
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M15 19l-7-7 7-7"
-      />
-    </svg>
-  );
-}
-
-// ─── Column renderers ──────────────────────────────────────────────────────────
-
-function FeatureItems({
-  items,
+function DropdownContent({
+  group,
   onClose,
-  colIdx,
-  columns,
-  direction,
-  onHover,
 }: {
-  items: NavItem[];
+  group: NavGroup;
   onClose: () => void;
-  colIdx: number;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (productName: string | null) => void;
 }) {
+  const linkCols = getLinkCols(group);
   return (
-    <ul className="space-y-0.5 mt-1">
-      {items.map((item, rowIdx) => {
-        const meta = PRODUCT_META[item.name];
-        return (
-          <motion.li
-            key={item.name}
-            initial={itemInitial(direction)}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={itemTransition(colIdx, rowIdx, columns, direction)}
-          >
-            <Link
-              href={item.href}
-              onClick={onClose}
-              onMouseEnter={() => onHover?.(item.name)}
-              className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-            >
-              {meta && (
-                <div
-                  className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
-                >
-                  <svg
-                    className={`w-4 h-4 ${meta.color}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d={meta.path}
-                    />
-                  </svg>
-                </div>
-              )}
-              <div>
-                <div className="text-sm font-semibold text-gray-900 group-hover:text-brand transition-colors duration-200">
-                  {item.name}
-                </div>
-                {item.description && (
-                  <div className="text-xs text-gray-500 mt-0.5">
-                    {item.description}
-                  </div>
-                )}
-              </div>
-            </Link>
-          </motion.li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function SimpleItems({
-  items,
-  onClose,
-  colIdx,
-  columns,
-  direction,
-  onHover,
-}: {
-  items: NavItem[];
-  onClose: () => void;
-  colIdx: number;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (itemName: string | null) => void;
-}) {
-  return (
-    <ul className="space-y-0.5 mt-1">
-      {items.map((item, rowIdx) => (
-        <motion.li
-          key={item.name}
-          initial={itemInitial(direction)}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={itemTransition(colIdx, rowIdx, columns, direction)}
-        >
-          <Link
-            href={item.href}
-            onClick={onClose}
-            onMouseEnter={() => onHover?.(item.name)}
-            className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-          >
-            <ChevronRight />
-            {item.name}
-          </Link>
-        </motion.li>
-      ))}
-    </ul>
-  );
-}
-
-function MegaCol({
-  col,
-  colIdx,
-  onClose,
-  columns,
-  direction,
-  onHover,
-  onSubmenuHover,
-}: {
-  col: MegaColumn;
-  colIdx: number;
-  onClose: () => void;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (productName: string | null) => void;
-  onSubmenuHover?: (itemName: string | null) => void;
-}) {
-  const isEmpty = col.items.length === 0;
-  const isEmptyCol3 = colIdx === 2 && isEmpty;
-
-  return (
-    <div
-      className={`mega-col py-6 space-y-1 ${isEmptyCol3 ? "bg-slate-100" : "bg-white"}`}
-    >
-      {!isEmpty && (
-        <>
-          <motion.h4
-            initial={itemInitial(direction)}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={itemTransition(colIdx, -1, columns, direction)}
-            className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2"
-          >
-            {col.heading}
-          </motion.h4>
-          {col.variant === "feature" ? (
-            <FeatureItems
-              items={col.items}
-              onClose={onClose}
-              colIdx={colIdx}
-              columns={columns}
-              direction={direction}
-              onHover={onHover}
-            />
-          ) : (
-            <SimpleItems
-              items={col.items}
-              onClose={onClose}
-              colIdx={colIdx}
-              columns={columns}
-              direction={direction}
-              onHover={onSubmenuHover}
-            />
+    <div className="flex gap-8">
+      {linkCols.map((col, i) => (
+        <div key={i} className="w-max">
+          {col.heading && (
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">
+              {col.heading}
+            </h4>
           )}
-        </>
-      )}
+          <ul>
+            {col.items.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  className="block py-2 text-lg text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <div className="w-48 min-h-[280px] rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
     </div>
   );
 }
 
-// ─── Mobile helpers ────────────────────────────────────────────────────────────
+// ── Mobile accordion item ──────────────────────────────────────────────────────
 
-function getMobilePanelId(label: string) {
-  return label.toLowerCase().replace(/\s+/g, "-");
+function AccordionItem({
+  group,
+  isOpen,
+  onToggle,
+  onLinkClick,
+}: {
+  group: NavGroup;
+  isOpen: boolean;
+  onToggle: () => void;
+  onLinkClick: () => void;
+}) {
+  const linkCols = getLinkCols(group);
+  return (
+    <div className="border-b border-gray-100 last:border-0">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between py-5 text-left"
+      >
+        <span className="flex items-center gap-2.5">
+          <AnimatePresence>
+            {isOpen && (
+              <motion.span
+                key="dot"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="inline-block h-2 w-2 shrink-0 rounded-full bg-orange-400"
+              />
+            )}
+          </AnimatePresence>
+          <span className="text-2xl font-medium text-gray-900">
+            {group.label}
+          </span>
+        </span>
+        <motion.svg
+          animate={{ rotate: isOpen ? 90 : 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="ml-4 h-5 w-5 shrink-0 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 5l7 7-7 7"
+          />
+        </motion.svg>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-6 pb-6">
+              {linkCols.map((col, i) => (
+                <div key={i}>
+                  {col.heading && (
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                      {col.heading}
+                    </p>
+                  )}
+                  <ul className="space-y-0.5">
+                    {col.items.map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={onLinkClick}
+                          className="block py-1.5 text-base text-gray-700 hover:text-sognos-blue-accent transition-colors duration-150"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <div className="h-28 rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ── Navbar ─────────────────────────────────────────────────────────────────────
 
-export default function Navbar() {
-  const router = useRouter();
+export default function Navbar({
+  variant = "light",
+  transparentOverHero,
+}: {
+  variant?: NavVariant;
+  transparentOverHero?: boolean;
+}) {
+  const pathname = usePathname();
+  const prefersReducedMotion = useReducedMotion();
+
+  const [hovered, setHovered] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobilePanel, setMobilePanel] = useState("root");
-  const [mobileHistory, setMobileHistory] = useState<string[]>([]);
-  const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
-  const [scrolled, setScrolled] = useState(false);
-  const [headerVisible, setHeaderVisible] = useState(true);
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [hoveredSubmenuItem, setHoveredSubmenuItem] = useState<string | null>(null);
-  const [hideHeaderForSubnav, setHideHeaderForSubnav] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [scrollState, setScrollState] = useState<"top" | "hidden" | "peek">(
+    "top",
+  );
+
   const headerRef = useRef<HTMLElement>(null);
-  const activeIndexRef = useRef<number>(-1);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const measurerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const panelWidths = useRef<Record<string, number>>({});
+  const prevOpenMenuRef = useRef<string | null>(null);
+
+  const intentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollYRef = useRef(0);
-
-  const logoSrc = "/logos/sognos-logo.svg";
-
-  // Click-outside closes desktop menu
+  const openMenuRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!openMenu) return;
-    const handler = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setOpenMenu(null);
-        activeIndexRef.current = -1;
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    openMenuRef.current = openMenu;
   }, [openMenu]);
 
-  // Body scroll lock when mobile open
+  const panelX = useMotionValue(0);
+  const [panelWidth, setPanelWidth] = useState(0);
+
+  const activeGroup = nav.find(
+    (g) => g.label === openMenu && (g.megaMenu || g.items),
+  );
+
+  // ── Transparent-over-hero derived state ───────────────────────────────────────
+  // Prop overrides pathname-based detection when explicitly provided.
+  // Bar stays transparent at scrollState "top" regardless of whether a dropdown is open
+  // (backdrop blur provides visual separation; no colour-switch on open).
+  const useTransparent =
+    transparentOverHero !== undefined
+      ? transparentOverHero
+      : DARK_HERO_PATHS.has(pathname);
+
+  const isTransparent = useTransparent && scrollState === "top";
+
+  // Effective theme: dark content values when transparent, light when solid
+  const t = isTransparent ? THEMES.dark : THEMES.light;
+
+  // ── Measure all panel widths ──────────────────────────────────────────────────
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      nav.forEach((group) => {
+        const el = measurerRefs.current.get(group.label);
+        if (el)
+          panelWidths.current[group.label] = el.getBoundingClientRect().width;
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // ── Animate panel position + size ─────────────────────────────────────────────
+
+  useLayoutEffect(() => {
+    if (!openMenu) {
+      prevOpenMenuRef.current = null;
+      return;
+    }
+    const containerEl = containerRef.current;
+    const triggerEl = triggerRefs.current.get(openMenu);
+    if (!containerEl || !triggerEl) return;
+
+    const containerRect = containerEl.getBoundingClientRect();
+    const triggerRect = triggerEl.getBoundingClientRect();
+    const targetWidth = panelWidths.current[openMenu] ?? 400;
+
+    const center =
+      triggerRect.left - containerRect.left + triggerRect.width / 2;
+    const targetX = Math.max(
+      EDGE,
+      Math.min(
+        center - targetWidth / 2,
+        containerRect.width - targetWidth - EDGE,
+      ),
+    );
+
+    setPanelWidth(targetWidth);
+    if (prefersReducedMotion || prevOpenMenuRef.current === null) {
+      panelX.set(targetX);
+    } else {
+      animate(panelX, targetX, DROPDOWN_SPRING);
+    }
+
+    prevOpenMenuRef.current = openMenu;
+  }, [openMenu, prefersReducedMotion]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Three-state scroll ────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    let ticking = false;
+    lastScrollYRef.current = window.scrollY;
+    const HIDE_AFTER = 80;
+    const DELTA_MIN = 6;
+
+    const update = () => {
+      const y = window.scrollY;
+      const delta = y - lastScrollYRef.current;
+      if (y < 8) {
+        setScrollState("top");
+        lastScrollYRef.current = y;
+      } else if (Math.abs(delta) > DELTA_MIN) {
+        if (delta > 0 && y > HIDE_AFTER) setScrollState("hidden");
+        else if (delta < 0) setScrollState("peek");
+        lastScrollYRef.current = y;
+      }
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Body scroll lock ──────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
@@ -405,316 +380,370 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // Scroll-driven dark/light colour detection
+  // ── Click-outside closes desktop dropdown ─────────────────────────────────────
+
   useEffect(() => {
-    let ticking = false;
-    const update = () => {
-      const el = headerRef.current;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        // Let product sub-nav stick below the header until it "takes over".
-        document.documentElement.style.setProperty(
-          "--sognos-header-offset",
-          hideHeaderForSubnav ? "0px" : `${rect.height}px`,
-        );
-        const probeY = rect.top + rect.height / 2;
-        let mode: "dark" | "light" = "light";
-        document.querySelectorAll("[data-header-dark]").forEach((section) => {
-          const r = section.getBoundingClientRect();
-          if (probeY >= r.top && probeY <= r.bottom) mode = "dark";
-        });
-        setColorMode(mode);
-      }
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 8);
-      const delta = scrollY - lastScrollYRef.current;
-      if (delta < -2) setHeaderVisible(true);
-      else if (delta > 2) setHeaderVisible(false);
-      lastScrollYRef.current = scrollY;
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
+    if (!openMenu) return;
+    const handler = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+        setHovered(null);
       }
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-    };
-  }, [hideHeaderForSubnav]);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [openMenu]);
 
-  // Product sub-nav can request that the header hides when it docks to the top.
-  useEffect(() => {
-    const onDocked = (e: Event) => {
-      const ce = e as CustomEvent<{ docked: boolean }>;
-      const next = Boolean(ce.detail?.docked);
+  // ── Scroll closes desktop dropdown ───────────────────────────────────────────
 
-      if (hideTimerRef.current) {
-        clearTimeout(hideTimerRef.current);
-        hideTimerRef.current = null;
-      }
-
-      // When docked, allow the header to fade as it's pushed out.
-      setHideHeaderForSubnav(next);
-
-      if (next) {
-        // Match the header's CSS transition duration so sub-nav can animate in after.
-        hideTimerRef.current = setTimeout(() => {
-          window.dispatchEvent(
-            new CustomEvent("sognos:headerHidden", { detail: { hidden: true } }),
-          );
-        }, 310);
-      } else {
-        window.dispatchEvent(
-          new CustomEvent("sognos:headerHidden", { detail: { hidden: false } }),
-        );
-      }
-    };
-    window.addEventListener("sognos:productSubnavDocked", onDocked);
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      window.removeEventListener("sognos:productSubnavDocked", onDocked);
-    };
-  }, []);
-
-  const toggleMenu = (label: string, index: number) => {
-    if (openMenu === label) {
-      setOpenMenu(null);
-      activeIndexRef.current = -1;
-      setHoveredProduct(null);
-      setHoveredSubmenuItem(null);
-    } else {
-      if (activeIndexRef.current !== -1 && index !== activeIndexRef.current) {
-        setDirection(index > activeIndexRef.current ? "rtl" : "ltr");
-      }
-      activeIndexRef.current = index;
-      setOpenMenu(label);
-    }
-  };
-
-  const closeAll = () => {
-    setOpenMenu(null);
-    activeIndexRef.current = -1;
-    setHoveredProduct(null);
-    setHoveredSubmenuItem(null);
-  };
-
-  // Close any open desktop dropdown on scroll.
   useEffect(() => {
     if (!openMenu) return;
     const onScroll = () => {
+      if (intentTimerRef.current) {
+        clearTimeout(intentTimerRef.current);
+        intentTimerRef.current = null;
+      }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
       setOpenMenu(null);
-      activeIndexRef.current = -1;
-      setHoveredProduct(null);
-      setHoveredSubmenuItem(null);
+      setHovered(null);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [openMenu]);
 
-  // Mobile helpers
-  const drillTo = (panelId: string) => {
-    setMobileHistory((h) => [...h, mobilePanel]);
-    setMobilePanel(panelId);
+  // ── Hover intent timers ───────────────────────────────────────────────────────
+
+  const closeAll = () => {
+    if (intentTimerRef.current) {
+      clearTimeout(intentTimerRef.current);
+      intentTimerRef.current = null;
+    }
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setOpenMenu(null);
+    setHovered(null);
   };
 
-  const drillBack = () => {
-    setMobileHistory((h) => {
-      const next = [...h];
-      const prev = next.pop() ?? "root";
-      setMobilePanel(prev);
-      return next;
-    });
+  const openOnHover = (label: string) => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    if (openMenuRef.current === label) return;
+    if (openMenuRef.current !== null) {
+      if (intentTimerRef.current) {
+        clearTimeout(intentTimerRef.current);
+        intentTimerRef.current = null;
+      }
+      setOpenMenu(label);
+      return;
+    }
+    if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
+    intentTimerRef.current = setTimeout(() => {
+      setOpenMenu(label);
+      intentTimerRef.current = null;
+    }, 100);
   };
 
-  const openMobile = () => {
-    closeAll();
-    setMobilePanel("root");
-    setMobileHistory([]);
-    setMobileOpen(true);
+  const closeOnHover = () => {
+    if (intentTimerRef.current) {
+      clearTimeout(intentTimerRef.current);
+      intentTimerRef.current = null;
+    }
+    closeTimerRef.current = setTimeout(() => {
+      setOpenMenu(null);
+      closeTimerRef.current = null;
+    }, 150);
   };
 
-  const closeMobile = () => {
-    setMobileOpen(false);
-    setMobilePanel("root");
-    setMobileHistory([]);
+  const cancelCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
   };
+
+  // ── Book demo ─────────────────────────────────────────────────────────────────
 
   const { openModal } = useBookDemo();
 
   const onBookDemoClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     closeAll();
-    closeMobile();
+    setMobileOpen(false);
+    setOpenAccordion(null);
     openModal();
   };
 
-  const mobileTitle =
-    mobilePanel === "root"
-      ? "Menu"
-      : (nav.find((g) => getMobilePanelId(g.label) === mobilePanel)?.label ??
-        mobilePanel);
+  // ── Derived ───────────────────────────────────────────────────────────────────
 
-  const activeGroup = nav.find((g) => g.label === openMenu && g.megaMenu);
-  const activeSimpleGroup = nav.find(
-    (g) => g.label === openMenu && !g.megaMenu && g.items,
-  );
+  const headerHidden = scrollState === "hidden" && !openMenu && !mobileOpen;
+  const activePillLabel = hovered ?? openMenu;
 
-  const effectiveColorMode = mobileOpen || openMenu ? "light" : colorMode;
-
-  const linkClass =
-    effectiveColorMode === "dark"
-      ? "text-white/80 hover:text-white"
-      : "text-[rgb(18_35_72/0.75)] hover:text-brand";
-
-  const ctaClass =
-    effectiveColorMode === "dark"
-      ? "bg-white text-brand hover:opacity-90"
-      : "bg-brand text-white hover:bg-brand-dark";
+  // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <header
-      ref={headerRef}
-      data-site-header
-      className={`fixed top-0 left-0 w-full z-99 bg-transparent transition-transform duration-300 ease-out ${
-        mobileOpen ? "pointer-events-auto" : "pointer-events-none will-change-transform"
-      }`}
-      style={{
-        transform: mobileOpen || headerVisible
-          ? "none"
-          : `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
-      }}
-    >
-      {/* ── Nav bar ── */}
+    <>
+      {/* ── Backdrop blur — desktop (menu-open) ──────────────────────────────── */}
       <div
+        aria-hidden="true"
         className={[
-          `pointer-events-auto w-full ${scrolled || effectiveColorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
-          scrolled ? "py-2" : mobileOpen ? "pt-2 pb-2" : "pt-4 pb-2",
-          "transition-[background-color,border-color,padding,transform,opacity] duration-300 will-change-transform",
-          // Keep opacity stable; the push interaction should handle the handoff visually.
-          "opacity-100",
-          effectiveColorMode === "light"
-            ? "bg-white border-b border-sognos-border"
-            : scrolled
-              ? "bg-transparent"
-              : "bg-transparent border-b border-transparent",
+          "hidden lg:block fixed inset-x-0 top-0 z-40 min-h-screen w-full pointer-events-none",
+          "backdrop-blur-[30px] transition-opacity duration-300 ease-in-out",
+          openMenu ? "opacity-100" : "opacity-0",
+        ].join(" ")}
+        style={{
+          WebkitMaskImage: "linear-gradient(black, black, transparent)",
+          maskImage: "linear-gradient(black, black, transparent)",
+        }}
+      />
+
+      {/* ── Backdrop blur — mobile ────────────────────────────────────────────── */}
+      <div
+        aria-hidden="true"
+        className={[
+          "lg:hidden fixed inset-x-0 top-0 z-40 min-h-screen w-full pointer-events-none",
+          "backdrop-blur-[30px] transition-opacity duration-300 ease-in-out",
+          mobileOpen ? "opacity-100" : "opacity-0",
+        ].join(" ")}
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(black 0%, black 72%, transparent 100%)",
+          maskImage: "linear-gradient(black 0%, black 72%, transparent 100%)",
+        }}
+      />
+
+      {/* ── Header — full-width, flush, square ───────────────────────────────── */}
+      <header
+        ref={headerRef}
+        className={[
+          "fixed inset-x-0 top-0 z-50",
+          "transition-[transform,opacity,background-color,box-shadow] duration-300 ease-in-out",
+          headerHidden
+            ? "-translate-y-full opacity-0"
+            : "translate-y-0 opacity-100",
+          isTransparent
+            ? "bg-transparent"
+            : "bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]",
         ].join(" ")}
       >
-        <div className="max-w-7xl mx-auto px-3 lg:px-6 py-2">
+        {/* ── Inner positioning context — max-w-7xl; containerRef stays same width ── */}
+        {/* CRITICAL: containerRef must remain max-w-7xl so triggerRect - containerRect */}
+        {/* math for dropdown x positioning is unchanged from the capsule layout.       */}
+        <div ref={containerRef} className="relative mx-auto max-w-7xl px-6">
+          {/* ── Hidden measurer ─────────────────────────────────────────────── */}
           <div
-            className={`flex items-center justify-between gap-x-8 transition-[height] duration-300 ${
-              scrolled ? "h-12 lg:h-13" : "h-14 lg:h-17"
-            }`}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: -9999,
+              top: 0,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
           >
-            {/* Left group: logo + desktop nav */}
-            <div className="flex items-center gap-x-8 lg:gap-x-16">
-              <Link
-                href="/"
-                className="flex items-center shrink-0"
-                onClick={closeAll}
-              >
-                <Image
-                  src={logoSrc}
-                  alt="Sognos"
-                  width={160}
-                  height={40}
-                  className={`w-auto transition-[height,filter] duration-300 ${
-                    scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
-                  }`}
-                  style={
-                    effectiveColorMode === "dark"
-                      ? { color: "transparent", filter: "brightness(0) invert(1)" }
-                      : undefined
-                  }
-                />
-              </Link>
+            {nav
+              .filter((g) => !!(g.megaMenu || g.items))
+              .map((group) => (
+                <div
+                  key={group.label}
+                  ref={(el) => {
+                    if (el) measurerRefs.current.set(group.label, el);
+                    else measurerRefs.current.delete(group.label);
+                  }}
+                  className="p-8"
+                  style={{ width: "max-content" }}
+                >
+                  <DropdownContent group={group} onClose={() => {}} />
+                </div>
+              ))}
+          </div>
 
-              {/* Desktop nav */}
-              <nav className="hidden lg:flex items-center gap-x-8">
-                {nav.map((group, groupIndex) => (
+          {/* ── Content row — 80px tall, 3-col grid ─────────────────────────── */}
+          <div className="h-20 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr]">
+            {/* col 1: logo */}
+            <Link
+              href="/"
+              onClick={closeAll}
+              className="justify-self-start shrink-0"
+            >
+              <Image
+                src="/logos/sognos-logo.svg"
+                alt="Sognos"
+                width={160}
+                height={40}
+                className="h-7 w-auto transition-[filter] duration-300"
+                style={{ filter: t.logoFilter }}
+              />
+            </Link>
+
+            {/* col 2: desktop nav — Aceternity hover-pill */}
+            <nav
+              className={[
+                "hidden lg:flex items-center justify-self-center gap-0.5",
+                t.navGroup,
+              ].join(" ")}
+              onMouseLeave={() => {
+                setHovered(null);
+                closeOnHover();
+              }}
+            >
+              {nav.map((group) => {
+                const hasDropdown = !!(group.megaMenu || group.items);
+                const isActive = activePillLabel === group.label;
+                const isOpen = openMenu === group.label;
+
+                return (
                   <div key={group.label} className="relative">
-                    {group.megaMenu || group.items ? (
+                    {hasDropdown ? (
                       <button
                         type="button"
-                        aria-expanded={openMenu === group.label}
-                        onClick={() => toggleMenu(group.label, groupIndex)}
-                        className={`flex items-center gap-1.5 text-sm font-medium cursor-pointer transition-colors duration-300 ${linkClass}`}
+                        aria-expanded={isOpen}
+                        ref={(el) => {
+                          if (el) triggerRefs.current.set(group.label, el);
+                          else triggerRefs.current.delete(group.label);
+                        }}
+                        onMouseEnter={() => {
+                          setHovered(group.label);
+                          openOnHover(group.label);
+                        }}
+                        onClick={() =>
+                          isOpen ? closeAll() : setOpenMenu(group.label)
+                        }
+                        className={[
+                          "relative px-4 py-3 text-base font-medium cursor-pointer rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          isActive ? "text-white" : t.text,
+                        ].join(" ")}
                       >
-                        {group.label}
-                        <ChevronDown open={openMenu === group.label} />
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-hover-pill"
+                            className={[
+                              "absolute inset-0 rounded-full",
+                              t.hoverPill,
+                            ].join(" ")}
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.4,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10 flex items-center gap-1.5">
+                          {group.label}
+                          <motion.svg
+                            animate={{ rotate: isOpen ? 180 : 0 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="h-3.5 w-3.5 shrink-0 opacity-60"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </motion.svg>
+                        </span>
                       </button>
                     ) : (
                       <Link
-                        href={group.href}
-                        className={`text-sm font-medium transition-colors duration-300 ${linkClass}`}
+                        href={group.href ?? "#"}
                         onClick={closeAll}
+                        onMouseEnter={() => setHovered(group.label)}
+                        className={[
+                          "relative block px-4 py-3 text-base font-medium rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          isActive ? "text-white" : t.text,
+                        ].join(" ")}
                       >
-                        {group.label}
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-hover-pill"
+                            className={[
+                              "absolute inset-0 rounded-full",
+                              t.hoverPill,
+                            ].join(" ")}
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.4,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10">{group.label}</span>
                       </Link>
                     )}
                   </div>
-                ))}
-              </nav>
-            </div>
+                );
+              })}
+            </nav>
 
-            {/* Right group: desktop CTAs */}
-            <div className="hidden lg:flex items-center gap-x-6">
-              <Link
-                href={navCTA.secondary.href}
-                className={`text-sm font-medium transition-colors duration-300 ${linkClass}`}
-                onClick={closeAll}
-              >
-                {navCTA.secondary.name}
-              </Link>
+            {/* col 3: desktop CTAs + mobile hamburger */}
+            <div className="flex items-center gap-x-2 justify-self-end">
+              {/* Desktop CTAs */}
+              <div className="hidden lg:flex items-center gap-x-1">
+                <Link
+                  href={navCTA.secondary.href}
+                  onClick={closeAll}
+                  className={[
+                    "inline-flex items-center h-14 px-4 text-sm font-medium rounded-full transition-colors duration-150",
+                    t.secondaryText,
+                  ].join(" ")}
+                >
+                  {navCTA.secondary.name}
+                </Link>
+                <Link
+                  href="#book-demo"
+                  onClick={onBookDemoClick}
+                  className={[
+                    "inline-flex items-center justify-center h-14 rounded-full px-5 text-sm font-medium transition-colors duration-150",
+                    t.primaryBtn,
+                  ].join(" ")}
+                >
+                  {navCTA.primary.name}
+                </Link>
+              </div>
+
+              {/* Book a Demo — tablet portrait + phone landscape (sm → lg) */}
               <Link
                 href="#book-demo"
                 onClick={onBookDemoClick}
-                className={`group inline-flex items-center justify-center gap-x-2 whitespace-nowrap relative rounded-full overflow-hidden px-4 py-[0.78125rem] text-sm font-medium ring-1 ring-inset backdrop-blur-xs transition-colors duration-200 ${
-                  effectiveColorMode === "dark"
-                    ? "ring-white/20 text-white bg-transparent hover:bg-white/5"
-                    : "ring-sognos-text-heading/15 text-sognos-text-heading bg-sognos-text-heading/[0.03] hover:bg-sognos-text-heading/[0.06]"
-                }`}
+                className={[
+                  "hidden sm:inline-flex lg:hidden items-center justify-center h-14 rounded-full px-4 text-sm font-medium transition-colors duration-150",
+                  t.primaryBtn,
+                ].join(" ")}
               >
-                <span className="relative inline-block">
-                  <span className="block transition-transform duration-300 group-hover:-translate-y-[200%]">
-                    {navCTA.primary.name}
-                  </span>
-                  <span className="absolute inset-0 block translate-y-[200%] transition-transform duration-300 group-hover:translate-y-0">
-                    {navCTA.primary.name}
-                  </span>
-                </span>
-              </Link>
-            </div>
-
-            {/* Mobile CTAs (preserved as-is) */}
-            <div className="lg:hidden flex justify-center items-center gap-3">
-              {/* Mobile CTA */}
-              <Link
-                href="#book-demo"
-                className={`inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
-                onClick={onBookDemoClick}
-              >
-                Book a Demo
+                {navCTA.primary.name}
               </Link>
 
               {/* Mobile hamburger */}
               <button
-                className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
-                  effectiveColorMode === "dark"
-                    ? "text-white/80 hover:text-white"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-                onClick={mobileOpen ? closeMobile : openMobile}
-                aria-label="Toggle menu"
+                type="button"
+                onClick={() => {
+                  closeAll();
+                  if (mobileOpen) {
+                    setMobileOpen(false);
+                    setOpenAccordion(null);
+                  } else {
+                    setMobileOpen(true);
+                  }
+                }}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                className={[
+                  "lg:hidden p-2 -mr-1 rounded-full transition-colors duration-150",
+                  t.hamburger,
+                ].join(" ")}
               >
                 {mobileOpen ? (
                   <svg
-                    className="w-7 h-7"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -728,7 +757,7 @@ export default function Navbar() {
                   </svg>
                 ) : (
                   <svg
-                    className="w-7 h-7"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -744,304 +773,111 @@ export default function Navbar() {
               </button>
             </div>
           </div>
-        </div>
-      </div>
+          {/* END content row */}
 
-      {/* ── Desktop mega panel ── */}
-      <AnimatePresence>
-        {activeGroup && (
-          <motion.div
-            key="mega-panel"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: SHELL_EASE }}
-            className="mega-panel pointer-events-auto absolute inset-x-0 top-full bg-white border-t border-b border-gray-200 shadow-sm"
-          >
-            <div className="mx-auto max-w-7xl px-6">
-              <AnimatePresence
-                initial={false}
-                custom={direction}
-                mode="popLayout"
+          {/* ── Single desktop dropdown panel ─────────────────────────────── */}
+          {/* Always uses light dropdownCard for readability regardless of bar state */}
+          <AnimatePresence>
+            {openMenu !== null && activeGroup && (
+              <motion.div
+                key="desktop-dropdown"
+                onMouseEnter={cancelCloseTimer}
+                onMouseLeave={closeOnHover}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 4 }}
+                transition={{ duration: 0.15 }}
+                className="absolute top-full mt-2 left-0 z-50 hidden lg:block"
+                style={{ x: panelX, width: panelWidth || undefined }}
               >
-                <motion.div
-                  key={openMenu}
-                  custom={direction}
-                  variants={contentVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { duration: 0.26, ease: SHELL_EASE },
-                    opacity: { duration: 0.16, ease: "easeOut" },
-                  }}
-                  className="mega-panel-open grid grid-cols-3 gap-0"
+                <div
+                  className={[
+                    "rounded-2xl p-8 overflow-hidden",
+                    t.dropdownCard,
+                  ].join(" ")}
                 >
-                  {(() => {
-                    const displayColumns = [...activeGroup.megaMenu!] as [MegaColumn, MegaColumn, MegaColumn];
-
-                    if (activeGroup.label === "Products") {
-                      const productSub = hoveredProduct ? activeGroup.submenu?.[hoveredProduct] : undefined;
-
-                      // Col 2: product section links when a product is hovered
-                      if (productSub?.col2) {
-                        displayColumns[1] = {
-                          heading: productSub.col2.heading,
-                          variant: "simple" as const,
-                          items: productSub.col2.items,
-                        };
-                      }
-
-                      // Col 3: editions when "Editions" item is hovered in col 2 for SognosCare
-                      const showEditions = hoveredProduct === "SognosCare" && hoveredSubmenuItem === "Editions";
-                      if (showEditions && productSub?.col3) {
-                        displayColumns[2] = {
-                          heading: productSub.col3.heading,
-                          variant: "simple" as const,
-                          items: productSub.col3.items,
-                        };
-                      } else {
-                        displayColumns[2] = { heading: "", items: [] };
-                      }
-                    }
-
-                    return displayColumns.map((col, colIdx) => (
-                      <MegaCol
-                        key={`${activeGroup.label}-col-${colIdx}`}
-                        col={col}
-                        colIdx={colIdx}
-                        onClose={closeAll}
-                        columns={displayColumns}
-                        direction={direction}
-                        onHover={activeGroup.label === "Products" && colIdx === 0 ? setHoveredProduct : undefined}
-                        onSubmenuHover={activeGroup.label === "Products" && colIdx === 1 ? setHoveredSubmenuItem : undefined}
-                      />
-                    ));
-                  })()}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Desktop simple dropdown (Company) ── */}
-      <AnimatePresence>
-        {activeSimpleGroup && (
-          <motion.div
-            key={`simple-${activeSimpleGroup.label}`}
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.18, ease: SHELL_EASE }}
-            className="mega-panel pointer-events-auto absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
-            style={{ left: "auto" }}
-          >
-            <div className="px-3 py-3">
-              {activeSimpleGroup.items!.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeAll}
-                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-                >
-                  <ChevronRight />
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Mobile drilldown overlay ── */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="mobile-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            className="lg:hidden fixed top-17 inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
-          >
-            {/* Sticky drilldown header */}
-            <div className="sticky top-0 bg-white z-10 flex items-center h-12 px-4 border-b border-gray-100 shrink-0">
-              {mobileHistory.length > 0 && (
-                <button
-                  onClick={drillBack}
-                  className="p-1.5 -ml-1.5 rounded-md hover:bg-gray-100 transition-colors duration-200 shrink-0 mr-2"
-                  aria-label="Back"
-                >
-                  <ChevronLeft />
-                </button>
-              )}
-              <span className="text-sm font-semibold text-gray-900">
-                {mobileTitle}
-              </span>
-            </div>
-
-            {/* Panel content */}
-            <div className="flex-1 overflow-y-auto">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={mobilePanel}
-                  variants={mobilePanelVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                >
-                  {/* ROOT panel */}
-                  {mobilePanel === "root" && (
-                    <div className="px-3 py-3 space-y-0.5">
-                      {nav.map((group) => {
-                        const hasSub = !!(group.megaMenu || group.items);
-                        const panelId = getMobilePanelId(group.label);
-                        return hasSub ? (
-                          <button
-                            key={group.label}
-                            type="button"
-                            onClick={() => drillTo(panelId)}
-                            className="w-full flex items-center justify-between px-3 py-3 text-sm font-medium text-gray-900 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-left"
-                          >
-                            {group.label}
-                            <ChevronRight className="w-4 h-4 text-gray-400" />
-                          </button>
-                        ) : (
-                          <Link
-                            key={group.label}
-                            href={group.href}
-                            onClick={closeMobile}
-                            className="block px-3 py-3 text-sm font-medium text-gray-900 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                          >
-                            {group.label}
-                          </Link>
-                        );
-                      })}
-                      <div className="px-1 pt-4 pb-2">
-                        <Link
-                          href="#book-demo"
-                          onClick={onBookDemoClick}
-                          className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
-                        >
-                          {navCTA.primary.name}
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Sub-panels — uses `items` flat list when available, mega columns as fallback */}
-                  {nav
-                    .filter((g) => g.megaMenu || g.items)
-                    .map((group) => {
-                      const panelId = getMobilePanelId(group.label);
-                      if (mobilePanel !== panelId) return null;
-
-                      // Flat list — preferred when group.items is defined
-                      if (group.items) {
-                        return (
-                          <div key={panelId} className="px-3 py-3 space-y-0.5">
-                            {group.items.map((item) => {
-                              const meta = PRODUCT_META[item.name];
-                              return (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  onClick={closeMobile}
-                                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-                                >
-                                  {meta && (
-                                    <div
-                                      className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
-                                    >
-                                      <svg
-                                        className={`w-4 h-4 ${meta.color}`}
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d={meta.path}
-                                        />
-                                      </svg>
-                                    </div>
-                                  )}
-                                  <div>
-                                    <div className="text-sm font-medium text-gray-900">
-                                      {item.name}
-                                    </div>
-                                    {item.description && (
-                                      <div className="text-xs text-gray-500 mt-0.5">
-                                        {item.description}
-                                      </div>
-                                    )}
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        );
-                      }
-
-                      // Mega columns fallback (e.g. Why Sognos, Knowledge Hub)
-                      return (
-                        <div key={panelId}>
-                          {group
-                            .megaMenu!.filter((col) => col.items.length > 0)
-                            .map((col, i) => (
-                              <div
-                                key={i}
-                                className={`px-3 py-5 ${i > 0 ? "border-t border-gray-100" : ""}`}
-                              >
-                                <p className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                                  {col.heading}
-                                </p>
-                                <div className="space-y-0.5">
-                                  {col.items.map((item) => (
-                                    <Link
-                                      key={item.name}
-                                      href={item.href}
-                                      onClick={closeMobile}
-                                      className="block px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-                                    >
-                                      {item.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                        </div>
-                      );
-                    })}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Bottom CTA bar (visible on all sub-panels) */}
-            {mobilePanel !== "root" && (
-              <div className="shrink-0 border-t border-gray-100 bg-white px-4 py-4">
-                <Link
-                  href={navCTA.secondary.href}
-                  onClick={closeMobile}
-                  className="block text-center text-sm font-medium text-gray-700 hover:text-gray-900 mb-3"
-                >
-                  {navCTA.secondary.name}
-                </Link>
-                <Link
-                  href="#book-demo"
-                  onClick={onBookDemoClick}
-                  className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
-                >
-                  {navCTA.primary.name}
-                </Link>
-              </div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={openMenu}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: prefersReducedMotion ? 1 : 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: prefersReducedMotion ? 0 : 0.12 }}
+                    >
+                      <DropdownContent group={activeGroup} onClose={closeAll} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+          </AnimatePresence>
+
+          {/* ── Mobile panel — always solid (light theme) for readability ──── */}
+          <AnimatePresence>
+            {mobileOpen && (
+              <motion.div
+                key="mobile-panel"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className={[
+                  "lg:hidden absolute left-0 right-0 md:left-auto md:w-[380px] top-full mt-2",
+                  "overflow-hidden rounded-2xl",
+                  THEMES.light.mobilePanel,
+                ].join(" ")}
+              >
+                <div className="px-6">
+                  {nav.map((group) => (
+                    <AccordionItem
+                      key={group.label}
+                      group={group}
+                      isOpen={openAccordion === group.label}
+                      onToggle={() =>
+                        setOpenAccordion((v) =>
+                          v === group.label ? null : group.label,
+                        )
+                      }
+                      onLinkClick={() => {
+                        setMobileOpen(false);
+                        setOpenAccordion(null);
+                      }}
+                    />
+                  ))}
+                </div>
+                <div
+                  className={[
+                    "space-y-3 border-t px-6 pb-6 pt-5",
+                    THEMES.light.mobileDivider,
+                  ].join(" ")}
+                >
+                  <Link
+                    href="#book-demo"
+                    onClick={onBookDemoClick}
+                    className={[
+                      "block w-full rounded-full px-5 py-3 text-center text-sm font-semibold transition-colors duration-200",
+                      THEMES.light.primaryBtn,
+                    ].join(" ")}
+                  >
+                    {navCTA.primary.name}
+                  </Link>
+                  <Link
+                    href={navCTA.secondary.href}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setOpenAccordion(null);
+                    }}
+                    className="block text-center text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-900"
+                  >
+                    {navCTA.secondary.name}
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        {/* END positioning context */}
+      </header>
+    </>
   );
 }

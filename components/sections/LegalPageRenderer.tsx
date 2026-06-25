@@ -3,20 +3,20 @@ import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { getLegalPageBySlug } from "@/lib/sanity/queries";
 
 const H1_PREAMBLE =
-  "mb-6 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight";
+  "mb-6 font-heading text-2xl font-medium text-sognos-body tracking-tight";
 const H2 =
-  "mt-12 mb-4 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight";
+  "mt-12 mb-4 font-heading text-2xl font-medium text-sognos-body tracking-tight";
 const H3 =
-  "mt-8 mb-3 font-heading text-xl font-medium text-prussian-blue-800 tracking-tight";
+  "mt-8 mb-3 font-heading text-xl font-medium text-sognos-body tracking-tight";
 const UL =
-  "mb-6 list-disc pl-6 space-y-2 text-base leading-relaxed text-sognos-text-body";
+  "mb-6 list-disc pl-6 space-y-2 text-base leading-relaxed text-sognos-body";
 const OL =
-  "mb-6 list-decimal pl-6 space-y-2 text-base leading-relaxed text-sognos-text-body";
+  "mb-6 list-decimal pl-6 space-y-2 text-base leading-relaxed text-sognos-body";
 
 const portableComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-4 text-base leading-relaxed text-sognos-text-body">
+      <p className="mb-4 text-base leading-relaxed text-sognos-body">
         {children}
       </p>
     ),
@@ -42,7 +42,7 @@ const portableComponents: PortableTextComponents = {
         rel={
           value?.href?.startsWith("http") ? "noopener noreferrer" : undefined
         }
-        className="text-brand hover:underline"
+        className="text-sognos-blue-accent hover:underline"
       >
         {children}
       </a>
@@ -59,12 +59,12 @@ export async function LegalPageRenderer({ slug }: { slug: string }) {
       {/* Hero */}
       <section
         data-header-dark
-        className="bg-gradient-hero w-full border-b border-sognos-border-subtle"
+        className="bg-gradient-hero w-full border-b border-sognos-line"
       >
         <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
           {page.badgeLabel && (
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full" />
               {page.badgeLabel}
             </div>
           )}

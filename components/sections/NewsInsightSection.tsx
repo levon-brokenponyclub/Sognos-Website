@@ -47,7 +47,7 @@ function SeeMoreLink({ className }: { className?: string }) {
   return (
     <Link
       href="/knowledge-hub"
-      className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-text-heading ${className ?? ""}`}
+      className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-heading ${className ?? ""}`}
     >
       <span>See more on the blog</span>
       <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
@@ -79,10 +79,10 @@ function CalloutCard({ article }: { article: NewsInsightArticle }) {
         )}
 
         {(article.category || date) && (
-          <div className="mb-3 flex items-center justify-between gap-x-3 text-xs text-sognos-text-muted">
+          <div className="mb-3 flex items-center justify-between gap-x-3 text-xs text-sognos-muted">
             {article.category ? (
               <span className="flex items-center gap-x-2">
-                <span className="size-1.5 rounded-full bg-sognos-text-muted" />
+                <span className="size-1.5 rounded-full bg-sognos-muted" />
                 <span>{article.category}</span>
               </span>
             ) : (
@@ -92,7 +92,7 @@ function CalloutCard({ article }: { article: NewsInsightArticle }) {
           </div>
         )}
 
-        <h3 className="font-heading text-lg font-medium leading-snug tracking-tight text-sognos-text-heading text-balance transition-colors duration-300 group-hover/card:text-black lg:text-xl">
+        <h3 className="font-heading text-lg font-medium leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-300 group-hover/card:text-black lg:text-xl">
           {article.title}
         </h3>
       </div>
@@ -112,10 +112,10 @@ function CalloutCard({ article }: { article: NewsInsightArticle }) {
 
       {/* Footer row — Read More text (left), arrow in notch (right) */}
       <div className="absolute inset-x-0 bottom-3 flex items-center justify-between px-4 md:bottom-4">
-        <span className="text-sm font-medium text-sognos-text-heading transition-colors duration-300 group-hover/card:text-black">
+        <span className="text-sm font-medium text-sognos-heading transition-colors duration-300 group-hover/card:text-black">
           Read more
         </span>
-        <span className="inline-flex text-sognos-text-heading transition-all duration-300 group-hover/card:translate-x-0.5 group-hover/card:text-black">
+        <span className="inline-flex text-sognos-heading transition-all duration-300 group-hover/card:translate-x-0.5 group-hover/card:text-black">
           <ArrowIcon className="w-4" />
         </span>
       </div>
@@ -136,7 +136,7 @@ export default function NewsInsightSection({
     <section className="w-full overflow-clip bg-background pt-10 pb-12 md:pt-24 md:pb-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-10">
         <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-[54px]">
-          <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-text-heading text-balance md:text-4xl">
+          <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
             The latest news
           </h2>
           <SeeMoreLink className="max-sm:hidden" />

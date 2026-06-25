@@ -2,7 +2,7 @@ export default function HubNode() {
   return (
     <div className="relative h-16 w-16 overflow-hidden rounded-md bg-gray-200 p-px shadow-xl">
       <div className="absolute inset-0 scale-[1.4] animate-spin rounded-full [background-image:conic-gradient(at_center,transparent,var(--color-blue-500)_20%,transparent_30%)] [animation-duration:2s]" />
-      <div className="absolute inset-0 scale-[1.4] animate-spin rounded-full [background-image:conic-gradient(at_center,transparent,var(--color-brand)_20%,transparent_30%)] [animation-delay:1s] [animation-duration:2s]" />
+      <div className="absolute inset-0 scale-[1.4] animate-spin rounded-full [background-image:conic-gradient(at_center,transparent,var(--color-sognos-blue-accent)_20%,transparent_30%)] [animation-delay:1s] [animation-duration:2s]" />
       <div className="relative z-20 flex h-full w-full items-center justify-center rounded-[5px] bg-white">
         <svg width="20" height="24" viewBox="0 0 20 24" fill="none" className="text-black">
           <path

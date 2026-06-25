@@ -21,9 +21,9 @@ const PRODUCTS_LIST = [
 ];
 
 const INPUT =
-  "w-full rounded-lg border border-sognos-border-subtle bg-slate-50 px-4 py-3 text-sm text-prussian-blue-800 placeholder:text-sognos-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+  "w-full rounded-lg border border-sognos-line bg-slate-50 px-4 py-3 text-sm text-sognos-body placeholder:text-sognos-muted focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20";
 
-const LABEL = "mb-1.5 block text-sm font-medium text-prussian-blue-800";
+const LABEL = "mb-1.5 block text-sm font-medium text-sognos-body";
 
 export default function ContactForm() {
   const [pending, setPending] = useState(false);
@@ -58,10 +58,10 @@ export default function ContactForm() {
   if (success) {
     return (
       <div className="rounded-xl bg-green-50 border border-green-200 px-6 py-8 text-center">
-        <p className="text-lg font-medium text-prussian-blue-800">
+        <p className="text-lg font-medium text-sognos-body">
           Message sent!
         </p>
-        <p className="mt-2 text-sm text-sognos-text-body">
+        <p className="mt-2 text-sm text-sognos-body">
           Thanks for reaching out. We&apos;ll be in touch within one business
           day.
         </p>
@@ -184,7 +184,7 @@ export default function ContactForm() {
       <div>
         <label htmlFor="message" className={LABEL}>
           Message{" "}
-          <span className="font-normal text-sognos-text-muted">(optional)</span>
+          <span className="font-normal text-sognos-muted">(optional)</span>
         </label>
         <textarea
           id="message"
@@ -200,16 +200,16 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-prussian-blue-800 px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="w-full rounded-full bg-sognos-navy px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {pending ? "Sending…" : "Send message"}
       </button>
 
-      <p className="text-xs leading-relaxed text-sognos-text-muted">
+      <p className="text-xs leading-relaxed text-sognos-muted">
         By submitting this form you agree to our{" "}
         <Link
           href="/company/privacy-policy"
-          className="underline hover:text-prussian-blue-800 transition-colors"
+          className="underline hover:text-sognos-body transition-colors"
         >
           Privacy Policy
         </Link>

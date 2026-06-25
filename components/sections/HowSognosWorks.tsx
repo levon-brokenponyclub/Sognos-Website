@@ -28,23 +28,23 @@ export default function HowSognosWorks() {
   return (
     <section className="w-full bg-background py-16 md:py-[120px]">
       <div className="mx-auto max-w-7xl px-4">
-        <h2 className="text-center font-heading text-3xl font-normal tracking-tight text-sognos-text-heading md:text-4xl">
+        <h2 className="text-center font-heading text-3xl font-normal tracking-tight text-sognos-heading md:text-4xl">
           Demand. Workforce. Outcomes.
         </h2>
 
         <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-3 lg:mt-16 lg:gap-4">
           {BLOCKS.map(({ Icon, title, copy, href }) => (
             <div key={title} className="flex flex-col">
-              <Icon size={40} weight="thin" className="text-sognos-text-heading" />
-              <h3 className="mt-5 font-heading text-2xl font-normal tracking-tight text-sognos-text-heading">
+              <Icon size={40} weight="thin" className="text-sognos-heading" />
+              <h3 className="mt-5 font-heading text-2xl font-normal tracking-tight text-sognos-heading">
                 {title}
               </h3>
-              <p className="mt-3 max-w-sm text-base leading-relaxed text-sognos-text-body">
+              <p className="mt-3 max-w-sm text-base leading-relaxed text-sognos-body">
                 {copy}
               </p>
               <Link
                 href={href}
-                className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-medium text-sognos-text-heading transition-opacity hover:opacity-70"
+                className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-medium text-sognos-heading transition-opacity hover:opacity-70"
               >
                 Learn more
                 <svg className="size-3" viewBox="0 0 12 13" fill="none" aria-hidden="true">

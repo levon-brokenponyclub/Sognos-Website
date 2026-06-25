@@ -142,16 +142,16 @@ type RawSognoscarePage = {
 };
 
 const STORY_THEME_CLASSES = {
-  panelClass: "bg-prussian-blue-800/10",
-  quoteClass: "text-prussian-blue-800",
-  authorClass: "text-prussian-blue-800",
-  roleClass: "text-prussian-blue-800/75",
-  quoteIconColor: "text-prussian-blue-800/40",
-  contentBorderClass: "border-prussian-blue-800/20",
-  buttonBorderClass: "border-prussian-blue-800",
-  buttonTextClass: "text-prussian-blue-800",
-  buttonHoverClass: "hover:bg-prussian-blue-800/8",
-  buttonIconBgClass: "bg-prussian-blue-800",
+  panelClass: "bg-sognos-navy/10",
+  quoteClass: "text-sognos-body",
+  authorClass: "text-sognos-body",
+  roleClass: "text-sognos-body/75",
+  quoteIconColor: "text-sognos-body/40",
+  contentBorderClass: "border-sognos-navy/20",
+  buttonBorderClass: "border-sognos-navy",
+  buttonTextClass: "text-sognos-body",
+  buttonHoverClass: "hover:bg-sognos-navy/8",
+  buttonIconBgClass: "bg-sognos-navy",
 } as const;
 
 function parseQuoteAuthor(raw?: string): { author: string; role: string } {

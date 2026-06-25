@@ -31,11 +31,11 @@ export default function SognoscareRosterAdvantages() {
               return (
                 <div
                   key="header-card"
-                  className="lg:row-span-2 rounded-lg lg:p-2 h-full bg-white text-prussian-blue-800"
+                  className="lg:row-span-2 rounded-lg lg:p-2 h-full bg-white text-sognos-body"
                 >
                   <div className="h-full shrink-0 bg-gray-100/70 rounded-lg p-6 flex flex-col justify-between">
                     <div>
-                      <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
+                      <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight">
                         Key Advantages
                       </h2>
                     </div>
@@ -52,15 +52,15 @@ export default function SognoscareRosterAdvantages() {
                 key={text}
                 className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${
                   isWhite
-                    ? "bg-white text-prussian-blue-800"
+                    ? "bg-white text-sognos-body"
                     : isAccent
                       ? "text-white"
-                      : "bg-prussian-blue-800 text-white"
+                      : "bg-sognos-navy text-white"
                 }`}
-                style={isAccent ? { backgroundColor: "#59bbf7" } : undefined}
+                style={isAccent ? { backgroundColor: "var(--sognos-roster-base)" } : undefined}
               >
                 <p
-                  className={`font-heading text-base lg:text-lg font-medium leading-snug ${isWhite ? "text-prussian-blue-800" : "text-white"}`}
+                  className={`font-heading text-base lg:text-lg font-medium leading-snug ${isWhite ? "text-sognos-body" : "text-white"}`}
                 >
                   {text}
                 </p>

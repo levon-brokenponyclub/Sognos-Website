@@ -1,141 +1,49 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
+import Lottie from "lottie-react";
+import { useReducedMotion } from "framer-motion";
+import ProductFeaturesScroll, {
+  type ScrollFeature,
+} from "@/components/sections/ProductFeaturesScroll";
+import saasDataSourcesAnimation from "@/lib/lotties/saas-data-sources.json";
 
-type FeatureItem = {
-  id: string;
-  name: string;
-  tagline: string;
-  description: string;
-  capabilities: readonly string[];
-  iconPath?: string;
-};
+// ─── Feature visuals ──────────────────────────────────────────────────────────
 
-type SectionHeader = {
-  eyebrow?: string;
-  heading: string;
-  intro?: string;
-};
-
-interface SognoscareFeaturesProps {
-  header?: SectionHeader;
-  features?: readonly FeatureItem[];
+function FeatureLottie({
+  animationData,
+  className = "",
+}: {
+  animationData: object;
+  className?: string;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  return (
+    <div className={`flex h-full w-full items-center justify-center ${className}`}>
+      <div className="aspect-[1024/450] w-full max-w-[560px] overflow-hidden">
+        <Lottie
+          animationData={animationData}
+          loop={!prefersReducedMotion}
+          autoplay={!prefersReducedMotion}
+          className="h-full w-full"
+          rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
+        />
+      </div>
+    </div>
+  );
 }
-
-const DEFAULT_HEADER: SectionHeader = {
-  eyebrow: "Features",
-  heading: "Everything a care operation needs",
-};
-
-const DEFAULT_FEATURES = [
-  {
-    id: "case-management",
-    name: "Case Management",
-    tagline: "Full lifecycle, one place",
-    description:
-      "Manage every stage of a participant's journey - from initial referral and intake through assessment, goal setting, service delivery, review, and case closure. Every touchpoint recorded, every team member aligned.",
-    capabilities: [
-      "Intake forms and referral management",
-      "Goal tracking linked to funding streams",
-      "Progress notes with structured templates",
-      "Multi-disciplinary team access",
-    ],
-    iconPath:
-      "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
-  },
-  {
-    id: "service-delivery",
-    name: "Service Delivery Tracking",
-    tagline: "Real-time visibility",
-    description:
-      "Know exactly what services were scheduled, what was delivered, and what was missed - in real time. Field workers record visits on mobile, coordinators see variance instantly, and nothing falls through the gaps.",
-    capabilities: [
-      "Scheduled vs actual service comparison",
-      "Mobile-first visit recording",
-      "Participant-level service budget tracking",
-      "Service variance reports",
-    ],
-    iconPath:
-      "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
-  },
-  {
-    id: "compliance",
-    name: "Compliance & Audit Trail",
-    tagline: "Audit-ready by default",
-    description:
-      "Every action timestamped. Every document versioned. Every funding rule enforced at the point of care, not retrospectively. SognosCare treats compliance as infrastructure - not a reporting exercise.",
-    capabilities: [
-      "Immutable audit log across all case activity",
-      "Support at Home rule enforcement",
-      "Incident management reporting workflows",
-      "Compliance gap detection",
-    ],
-    iconPath:
-      "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-  },
-  {
-    id: "reporting",
-    name: "Reporting & Analytics",
-    tagline: "Generated, not assembled",
-    description:
-      "Funding-body reports, operational dashboards, and participant outcome summaries generated automatically from live data. No more month-end spreadsheet marathons.",
-    capabilities: [
-      "Pre-built report templates",
-      "Operational dashboards for managers",
-      "Participant outcome reporting",
-      "Scheduled automated report delivery",
-    ],
-    iconPath:
-      "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-  },
-  {
-    id: "copilot",
-    name: "Microsoft Copilot AI",
-    tagline: "AI where staff already work",
-    description:
-      "AI-assisted documentation, anomaly detection, and operational insights - surfaced inside Dynamics 365, not in a separate tool. Staff don't change their workflow to access AI.",
-    capabilities: [
-      "Copilot-assisted progress note drafting",
-      "Anomaly detection on service delivery",
-      "Predictive alerts for at-risk participants",
-      "Natural language queries",
-    ],
-    iconPath: "M13 10V3L4 14h7v7l9-11h-7z",
-  },
-  {
-    id: "automation",
-    name: "Power Platform Automation",
-    tagline: "Workflows your way",
-    description:
-      "Configurable low-code automation for approvals, escalations, and notifications - built to match your organisation's specific processes without requiring a developer.",
-    capabilities: [
-      "Approval workflows for care plan changes",
-      "Automated notifications to staff",
-      "Integration with Microsoft Teams",
-      "Custom form logic",
-    ],
-    iconPath:
-      "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
-  },
-] as const;
-
-// ─── Visual mock for active feature ──────────────────────────────────────────
 
 function FeatureVisual({ id }: { id: string }) {
   const visuals: Record<string, React.ReactNode> = {
     "case-management": (
-      <div className="space-y-4">
+      <div className="space-y-3">
         {["Referral", "Assessment", "Active", "Review", "Closed"].map(
           (stage, i) => (
             <div
               key={stage}
-              className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-4"
+              className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3.5"
             >
               <div
-                className={`h-2.5 w-2.5 rounded-full ${
+                className={`h-2.5 w-2.5 rounded-full shrink-0 ${
                   i < 3
                     ? "bg-[#10B981]"
                     : i === 3
@@ -143,7 +51,7 @@ function FeatureVisual({ id }: { id: string }) {
                       : "bg-gray-200"
                 }`}
               />
-              <span className="text-sm font-semibold text-prussian-blue-800">
+              <span className="text-sm font-semibold text-sognos-body">
                 {stage}
               </span>
               {i < 3 && (
@@ -162,8 +70,8 @@ function FeatureVisual({ id }: { id: string }) {
       </div>
     ),
     "service-delivery": (
-      <div className="space-y-3">
-        <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500 uppercase tracking-widest pb-2 border-b border-gray-200">
+      <div className="space-y-2">
+        <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-400 uppercase tracking-widest pb-2 border-b border-gray-100">
           <span className="text-left">Service</span>
           <span>Scheduled</span>
           <span>Delivered</span>
@@ -176,9 +84,9 @@ function FeatureVisual({ id }: { id: string }) {
         ].map((row) => (
           <div
             key={row.name}
-            className="grid grid-cols-3 items-center gap-2 rounded-lg border border-gray-100 bg-white px-4 py-4 text-sm"
+            className="grid grid-cols-3 items-center gap-2 rounded-lg border border-gray-100 bg-white px-4 py-3.5 text-sm"
           >
-            <span className="font-semibold text-prussian-blue-800 col-span-1 border-r border-gray-100 pr-2">
+            <span className="font-semibold text-sognos-body col-span-1 border-r border-gray-100 pr-2">
               {row.name}
             </span>
             <span className="text-center font-bold text-gray-700">
@@ -205,9 +113,9 @@ function FeatureVisual({ id }: { id: string }) {
         ].map((item) => (
           <div
             key={item.label}
-            className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-4"
+            className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3.5"
           >
-            <span className="text-sm font-semibold text-prussian-blue-800">
+            <span className="text-sm font-semibold text-sognos-body">
               {item.label}
             </span>
             <span
@@ -225,21 +133,18 @@ function FeatureVisual({ id }: { id: string }) {
     ),
     reporting: (
       <div className="space-y-4">
-        <div className="flex items-end gap-2 h-36 bg-white p-4 rounded-xl border border-gray-100">
+        <div className="flex items-end gap-2 h-36 bg-white p-4 rounded-lg border border-gray-100">
           {[60, 80, 55, 90, 75, 95, 70].map((h, i) => (
-            <div
-              key={i}
-              className="flex-1 flex flex-col justify-end gap-1 h-full"
-            >
+            <div key={i} className="flex-1 flex flex-col justify-end h-full">
               <div
-                className="rounded-sm bg-[#1D96FC] hover:bg-prussian-blue-800 transition-colors cursor-pointer"
+                className="rounded-sm bg-sognos-blue-accent/80"
                 style={{ height: `${h}%` }}
               />
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-4">
-          <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest">
+        <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3.5">
+          <span className="text-sm font-semibold text-gray-500">
             Monthly NDIS report
           </span>
           <span className="text-xs font-bold text-[#10B981] bg-[#10B981]/10 px-3 py-1 rounded-full uppercase tracking-wider">
@@ -249,34 +154,25 @@ function FeatureVisual({ id }: { id: string }) {
       </div>
     ),
     copilot: (
-      <div className="space-y-3">
-        <div className="rounded-xl border border-[#1D96FC]/20 bg-gradient-to-br from-[#F0F9FF] to-white p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <svg
-              className="w-5 h-5 text-[#1D96FC]"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              Copilot draft
-            </div>
+      <div className="rounded-lg border border-gray-100 bg-white p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-sognos-navy/20 px-3 py-1 text-xs font-medium text-sognos-body">
+            <span className="w-1.5 h-1.5 bg-sognos-blue-accent rounded-full" />
+            Copilot draft
           </div>
-          <p className="text-[15px] font-medium leading-relaxed text-prussian-blue-800">
-            Participant attended support session on time. Goals reviewed -
-            community access goal progressing well. Discussed transport support
-            for upcoming medical appointment.
-          </p>
-          <div className="mt-5 flex gap-3">
-            <button className="rounded-md bg-[#1D96FC] px-4 py-2 text-xs font-bold text-white hover:bg-prussian-blue-800 transition-colors">
-              Accept draft
-            </button>
-            <button className="rounded-md border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-600 hover:text-prussian-blue-800 transition-colors">
-              Edit
-            </button>
-          </div>
+        </div>
+        <p className="text-sm font-medium leading-relaxed text-sognos-body">
+          Participant attended support session on time. Goals reviewed —
+          community access goal progressing well. Discussed transport support
+          for upcoming medical appointment.
+        </p>
+        <div className="mt-4 flex gap-2">
+          <button className="rounded-md bg-sognos-blue-accent px-4 py-1.5 text-xs font-bold text-white">
+            Accept draft
+          </button>
+          <button className="rounded-md border border-gray-200 px-4 py-1.5 text-xs font-bold text-gray-500">
+            Edit
+          </button>
         </div>
       </div>
     ),
@@ -286,63 +182,148 @@ function FeatureVisual({ id }: { id: string }) {
           {
             label: "Care plan change",
             trigger: "Approval required",
-            status: "bg-amber-400",
+            dot: "bg-amber-400",
           },
           {
             label: "Budget threshold",
             trigger: "Manager notified",
-            status: "bg-blue-400",
+            dot: "bg-blue-400",
           },
           {
             label: "Incident logged",
             trigger: "Escalation triggered",
-            status: "bg-rose-400",
+            dot: "bg-rose-400",
           },
           {
             label: "Visit missed",
             trigger: "Coordinator alerted",
-            status: "bg-indigo-400",
+            dot: "bg-indigo-400",
           },
         ].map((item) => (
           <div
             key={item.label}
-            className="flex items-center gap-4 rounded-lg border border-gray-100 bg-white px-4 py-4"
+            className="flex items-center gap-4 rounded-lg border border-gray-100 bg-white px-4 py-3.5"
           >
-            <div className={`h-3 w-3 rounded-full shrink-0 ${item.status}`} />
+            <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${item.dot}`} />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-prussian-blue-800 truncate">
+              <p className="text-sm font-bold text-sognos-body truncate">
                 {item.label}
               </p>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-0.5">
                 {item.trigger}
               </p>
             </div>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              className="text-gray-300"
-            >
-              <path
-                d="M5 2l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
           </div>
         ))}
       </div>
     ),
   };
-  return (
-    <div className="w-full h-full flex flex-col justify-center">
-      {visuals[id] ?? null}
-    </div>
-  );
+
+  return visuals[id] ?? null;
 }
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+type FeatureItem = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  capabilities: readonly string[];
+};
+
+type SectionHeader = { eyebrow?: string; heading: string };
+
+interface SognoscareFeaturesProps {
+  header?: SectionHeader;
+  features?: readonly FeatureItem[];
+}
+
+const DEFAULT_HEADER: SectionHeader = {
+  eyebrow: "Features",
+  heading: "Everything a care operation needs",
+};
+
+const DEFAULT_FEATURES = [
+  {
+    id: "case-management",
+    name: "Case Management",
+    tagline: "Full lifecycle, one place",
+    description:
+      "Manage every stage of a participant's journey — from initial referral and intake through assessment, goal setting, service delivery, review, and case closure. Every touchpoint recorded, every team member aligned.",
+    capabilities: [
+      "Intake forms and referral management",
+      "Goal tracking linked to funding streams",
+      "Progress notes with structured templates",
+      "Multi-disciplinary team access",
+    ],
+  },
+  {
+    id: "service-delivery",
+    name: "Service Delivery Tracking",
+    tagline: "Real-time visibility",
+    description:
+      "Know exactly what services were scheduled, what was delivered, and what was missed — in real time. Field workers record visits on mobile, coordinators see variance instantly, and nothing falls through the gaps.",
+    capabilities: [
+      "Scheduled vs actual service comparison",
+      "Mobile-first visit recording",
+      "Participant-level service budget tracking",
+      "Service variance reports",
+    ],
+  },
+  {
+    id: "compliance",
+    name: "Compliance & Audit Trail",
+    tagline: "Audit-ready by default",
+    description:
+      "Every action timestamped. Every document versioned. Every funding rule enforced at the point of care, not retrospectively. SognosCare treats compliance as infrastructure — not a reporting exercise.",
+    capabilities: [
+      "Immutable audit log across all case activity",
+      "Support at Home rule enforcement",
+      "Incident management reporting workflows",
+      "Compliance gap detection",
+    ],
+  },
+  {
+    id: "reporting",
+    name: "Reporting & Analytics",
+    tagline: "Generated, not assembled",
+    description:
+      "Funding-body reports, operational dashboards, and participant outcome summaries generated automatically from live data. No more month-end spreadsheet marathons.",
+    capabilities: [
+      "Pre-built report templates",
+      "Operational dashboards for managers",
+      "Participant outcome reporting",
+      "Scheduled automated report delivery",
+    ],
+  },
+  {
+    id: "copilot",
+    name: "Microsoft Copilot AI",
+    tagline: "AI where staff already work",
+    description:
+      "AI-assisted documentation, anomaly detection, and operational insights — surfaced inside Dynamics 365, not in a separate tool. Staff don't change their workflow to access AI.",
+    capabilities: [
+      "Copilot-assisted progress note drafting",
+      "Anomaly detection on service delivery",
+      "Predictive alerts for at-risk participants",
+      "Natural language queries",
+    ],
+  },
+  {
+    id: "automation",
+    name: "Power Platform Automation",
+    tagline: "Workflows your way",
+    description:
+      "Configurable low-code automation for approvals, escalations, and notifications — built to match your organisation's specific processes without requiring a developer.",
+    capabilities: [
+      "Approval workflows for care plan changes",
+      "Automated notifications to staff",
+      "Integration with Microsoft Teams",
+      "Custom form logic",
+    ],
+  },
+] as const;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -350,179 +331,27 @@ export default function SognoscareFeatures({
   header = DEFAULT_HEADER,
   features = DEFAULT_FEATURES,
 }: SognoscareFeaturesProps = {}) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = features[activeIndex] ?? features[0];
+  const scrollFeatures: ScrollFeature[] = features.map((f) => ({
+    id: f.id,
+    name: f.name,
+    tagline: f.tagline,
+    description: f.description,
+    capabilities: [...f.capabilities],
+    visual:
+      f.id === "case-management" ? (
+        <FeatureLottie animationData={saasDataSourcesAnimation} />
+      ) : (
+        <FeatureVisual id={f.id} />
+      ),
+  }));
 
   return (
-    <section
-      id="features"
-      className="w-full bg-[#1D96FC] bg-gradient-hero border-b border-sognos-border-subtle overflow-hidden"
-    >
-      <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        {/* Header */}
-        <div className="flex flex-col items-center gap-4 pb-6">
-          {header.eyebrow && (
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              {header.eyebrow}
-            </div>
-          )}
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight text-center">
-            {header.heading}
-          </h2>
-          {/* <p className="text-lg text-white/80 max-w-2xl">
-            SognosCare brings the full operational stack into one platform -
-            case management, compliance, reporting, and AI assistance.
-          </p> */}
-        </div>
-
-        {/* Mobile - stacked cards */}
-        <div className="lg:hidden mt-10 flex flex-col gap-6">
-          {features.map((feat) => (
-            <div
-              key={feat.id}
-              className="bg-white rounded-lg p-2 flex flex-col gap-3"
-            >
-              <div className="bg-gray-200 rounded-lg p-6 min-h-[220px] flex items-center justify-center">
-                <FeatureVisual id={feat.id} />
-              </div>
-              <div className="p-5 flex flex-col gap-4">
-                {/* <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1D96FC]">
-                  {feat.tagline}
-                </p> */}
-                <h2 className="ont-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
-                  {feat.name}
-                </h2>
-                <p className="text-sm leading-relaxed text-gray-600">
-                  {feat.description}
-                </p>
-                <ul className="space-y-3 mt-2 border-t border-gray-100 pt-5">
-                  {feat.capabilities.map((cap) => (
-                    <li key={cap} className="flex items-start gap-3">
-                      <svg
-                        className="mt-0.5 h-4 w-4 shrink-0 text-[#10B981]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span className="text-sm font-medium text-gray-700">
-                        {cap}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Desktop - vertical tabs | animated panel */}
-        <div className="hidden lg:flex gap-4 h-[520px] mt-10">
-          {/* Left column - vertical tab list */}
-          <div className="w-[360px] shrink-0 flex flex-col justify-center">
-            {features.map((feat, i) => (
-              <button
-                key={feat.id}
-                onClick={() => setActiveIndex(i)}
-                className={`w-full text-left py-3 px-5 font-heading text-xl font-medium tracking-tight transition-colors cursor-pointer ${
-                  i === activeIndex
-                    ? "text-white border-l-3 border-l-[#1D96FC]"
-                    : "text-white/70 border-l-3 border-l-[#052048] hover:text-white"
-                }`}
-              >
-                {feat.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Right - animated panel */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex gap-4 flex-1 min-w-0 bg-white rounded-lg p-2"
-            >
-              {/* Left column - grey info panel */}
-              <div className="shrink-0 w-[45%] bg-gray-200/70 rounded-lg p-7 flex flex-col justify-between">
-                <div className="flex flex-col">
-                  {/* <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-prussian-blue-800/50 mb-3">
-                    {active.tagline}
-                  </p> */}
-                  <h2 className="mt-1 mb-2 font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight">
-                    {active.name}
-                  </h2>
-                  <p className="mt-1 max-w-sm font-heading font-normal leading-relaxed text-sognos-body lg:text-lg">
-                    {active.description}
-                  </p>
-                  <ul className="mt-6 space-y-2.5">
-                    {active.capabilities.map((cap) => (
-                      <li
-                        key={cap}
-                        className="flex items-start gap-2.5 font-heading font-normal leading-relaxed text-sognos-body text-base"
-                      >
-                        <svg
-                          className="mt-1 h-4 w-4 shrink-0 text-prussian-blue-800"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        {cap}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <a
-                  href="/contact"
-                  className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
-                >
-                  Book a Demo
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M3 7h8M7 3l4 4-4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </a>
-              </div>
-
-              {/* Right column - visual mock */}
-              <div className="flex-1 relative rounded-lg overflow-hidden bg-white flex items-center justify-center p-8">
-                <div className="w-full max-w-sm">
-                  <FeatureVisual id={active.id} />
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
+    <ProductFeaturesScroll
+      header={header}
+      features={scrollFeatures}
+      accentBorderClass="border-sognos-blue-accent"
+      accentTextClass="text-sognos-blue-accent"
+      enableVisuals
+    />
   );
 }

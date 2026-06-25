@@ -15,10 +15,10 @@ const data: EditionData = {
   description:
     "Manage client services, budgets, and care workers while staying ahead of the new Support at Home program.",
   gradient: "/images/sognoscare/gradient-3.png",
-  accentHex: "#ff8184",
-  accentTextClass: "text-(--sognos-edition-coral)",
-  accentBgClass: "bg-(--sognos-edition-coral)",
-  accentBorderClass: "border-(--sognos-edition-coral)",
+  accentHex: "#ff8e90",
+  accentTextClass: "text-sognos-edition-support-at-home",
+  accentBgClass: "bg-sognos-edition-support-at-home",
+  accentBorderClass: "border-sognos-edition-support-at-home",
   problems: [
     {
       label: "Manual care worker scheduling",

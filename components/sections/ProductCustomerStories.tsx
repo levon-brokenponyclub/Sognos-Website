@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import AnimatedButton from "@/components/ui/AnimatedButton";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export type CaseStudy = {
   company: string;
@@ -17,19 +17,15 @@ export type CaseStudy = {
   author: string;
   role: string;
   href: string;
-  panelClass: string;
-  quoteClass: string;
-  authorClass: string;
-  roleClass: string;
-  quoteIconColor: string;
-  contentBorderClass: string;
-  buttonBorderClass: string;
-  buttonTextClass: string;
-  buttonHoverClass: string;
-  buttonIconBgClass: string;
 };
 
 const AUTOPLAY_MS = 10000;
+
+const TESTIMONIAL_PALETTE = [
+  "bg-sognos-care-dark",     // #03112f
+  "bg-sognos-roster-dark",   // #0b3a66
+  "bg-sognos-genogram-dark", // #250438
+] as const;
 
 export const ALL_STORIES: CaseStudy[] = [
   {
@@ -43,16 +39,6 @@ export const ALL_STORIES: CaseStudy[] = [
     author: "Susan McCarthy",
     role: "Chief Operating Officer, Flourish Australia",
     href: "/customer-stories/flourish-australia",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/20",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Auckland Airport",
@@ -65,16 +51,6 @@ export const ALL_STORIES: CaseStudy[] = [
     author: "Anthony Hart",
     role: "Operations Delivery Lead, Auckland Airport",
     href: "/customer-stories/auckland-airport",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Penrith City Council",
@@ -87,16 +63,6 @@ export const ALL_STORIES: CaseStudy[] = [
     author: "Claire Donovan",
     role: "Service Delivery Manager, Penrith City Council",
     href: "/customer-stories/penrith-city-council",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
   {
     company: "Gentari Solar Australia",
@@ -109,32 +75,39 @@ export const ALL_STORIES: CaseStudy[] = [
     author: "Operations Team",
     role: "Gentari Solar Australia",
     href: "/customer-stories/gentari",
-    panelClass: "bg-prussian-blue-800/10",
-    quoteClass: "text-prussian-blue-800",
-    authorClass: "text-prussian-blue-800",
-    roleClass: "text-prussian-blue-800/75",
-    quoteIconColor: "text-prussian-blue-800/40",
-    contentBorderClass: "border-prussian-blue-800/20",
-    buttonBorderClass: "border-prussian-blue-800",
-    buttonTextClass: "text-prussian-blue-800",
-    buttonHoverClass: "hover:bg-prussian-blue-800/8",
-    buttonIconBgClass: "bg-prussian-blue-800",
   },
 ];
 
-function QuoteIcon({ className }: { className: string }) {
+function ChevronLeft({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 39 32"
+      className={className}
+      viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`w-8 h-7 shrink-0 ${className}`}
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path
-        d="m16.3 4-4.333-4C4.189 5.557.078 12.89.078 20.668v.445C.078 27.779 3.745 32 8.856 32c4.222 0 7.778-3.334 7.778-7.89 0-4.444-3.111-7.332-7.334-7.332a7.15 7.15 0 0 0-2.666.555C7.41 12.223 11.3 7.78 16.3 4.001Zm21.667 0-4.333-4c-7.778 5.556-11.89 12.89-11.89 20.667v.445c0 6.667 3.668 10.889 8.779 10.889 4.222 0 7.777-3.334 7.777-7.89 0-4.444-3.11-7.332-7.333-7.332a7.15 7.15 0 0 0-2.667.555c.778-5.111 4.667-9.555 9.667-13.333Z"
-        fill="currentColor"
-      />
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRight({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 18l6-6-6-6" />
     </svg>
   );
 }
@@ -146,208 +119,233 @@ interface ProductCustomerStoriesProps {
 export default function ProductCustomerStories({
   stories = ALL_STORIES,
 }: ProductCustomerStoriesProps) {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const total = stories.length;
-  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const showChrome = total > 1;
 
-  useEffect(() => {
-    if (paused) return;
-    const t = setTimeout(() => setIndex((i) => (i + 1) % total), AUTOPLAY_MS);
-    return () => clearTimeout(t);
-  }, [index, paused, total]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
 
-  useEffect(() => {
-    const container = tabsContainerRef.current;
-    const el = tabRefs.current[index];
-    if (!container || !el) return;
-    container.scrollTo({ left: el.offsetLeft, behavior: "smooth" });
-  }, [index]);
-
-  const go = (next: number) => {
-    if (next < 0 || next >= total) return;
-    setIndex(next);
-    setPaused(true);
-    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
-    pauseTimerRef.current = setTimeout(() => setPaused(false), AUTOPLAY_MS);
-  };
-
-  const study = stories[index];
-  const buttonClassName = cn(
-    study.buttonBorderClass,
-    study.buttonTextClass,
-    study.buttonHoverClass,
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: AUTOPLAY_MS, stopOnInteraction: true }),
   );
 
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: false,
+      align: "center",
+      containScroll: "trimSnaps",
+    },
+    showChrome ? [autoplayPlugin.current] : [],
+  );
+
+  const updateState = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+    setCanPrev(emblaApi.canScrollPrev());
+    setCanNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    updateState();
+    emblaApi.on("select", updateState);
+    emblaApi.on("reInit", updateState);
+    return () => {
+      emblaApi.off("select", updateState);
+      emblaApi.off("reInit", updateState);
+    };
+  }, [emblaApi, updateState]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
+
   return (
-    <section id="stories" className="w-full bg-gradient-hero overflow-hidden" data-header-dark>
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        <div className="mb-8 flex flex-col items-start gap-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
-            Customer Stories
+    <section id="stories" className="w-full bg-white overflow-hidden">
+      {/* Heading — constrained to max-w-7xl */}
+      <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-8">
+        <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-navy-dark tracking-tight">
+          Customer Stories
+        </h2>
+      </div>
+
+      {/* Embla viewport — full section width (breaks out of max-w-7xl) */}
+      {showChrome ? (
+        <div ref={emblaRef} className="relative overflow-hidden">
+          <div
+            className="flex"
+            style={{
+              paddingLeft: "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
+            }}
+          >
+            {stories.map((study, i) => (
+              <div
+                key={i}
+                className={`shrink-0 min-w-0 w-[calc(100vw-3rem)] lg:w-[calc(100vw-12rem)] max-w-[1332px]${i < stories.length - 1 ? " mr-6 sm:mr-8" : ""}`}
+              >
+                <StoryCard study={study} bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]} />
+              </div>
+            ))}
+            {/* Trailing spacer — browsers exclude container paddingRight from scrollWidth,
+                so Embla's maxScroll ignores it and the last slide ends flush to the screen.
+                Using mr-* on slides (not gap) means no automatic spacing before this spacer,
+                so scrollWidth = last_slide.right + spacer_width = right gutter exactly. */}
+            <div
+              aria-hidden="true"
+              className="shrink-0"
+              style={{
+                width:
+                  "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
+              }}
+            />
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white lg:text-left tracking-tight">
-            Customer Stories
-          </h2>
+        </div>
+      ) : (
+        <div className="max-w-7xl w-full mx-auto px-6">
+          <StoryCard study={stories[0]} bg={TESTIMONIAL_PALETTE[0]} />
+        </div>
+      )}
+
+      {/* Chrome — constrained to max-w-7xl */}
+      {showChrome && (
+        <div className="max-w-7xl w-full mx-auto px-6 pb-16 lg:pb-24">
+          <div className="pt-8 flex items-center justify-between">
+            <div className="hidden flex-1 lg:block" />
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {stories.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`rounded-full transition-all duration-200 ${
+                    i === selectedIndex
+                      ? "w-4 h-2 bg-sognos-navy-dark"
+                      : "w-2 h-2 bg-sognos-navy-dark/25 hover:bg-sognos-navy-dark/50"
+                  }`}
+                />
+              ))}
+            </div>
+            {/* Arrows — dark navy fill slides up on hover; white icon on fill, navy at rest */}
+            <div className="hidden lg:flex flex-1 justify-end gap-3">
+              <button
+                onClick={scrollPrev}
+                disabled={!canPrev}
+                aria-label="Previous story"
+                className="group/btn relative isolate flex size-12 items-center justify-center overflow-hidden rounded-full border border-sognos-line text-sognos-navy-dark disabled:cursor-not-allowed disabled:opacity-30 disabled:pointer-events-none"
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 translate-y-full rounded-full bg-sognos-navy-dark transition-transform duration-300 group-hover/btn:translate-y-0"
+                />
+                <ChevronLeft className="relative z-10 size-4 transition-colors duration-300 group-hover/btn:text-white" />
+              </button>
+              <button
+                onClick={scrollNext}
+                disabled={!canNext}
+                aria-label="Next story"
+                className="group/btn relative isolate flex size-12 items-center justify-center overflow-hidden rounded-full border border-sognos-line text-sognos-navy-dark disabled:cursor-not-allowed disabled:opacity-30 disabled:pointer-events-none"
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 translate-y-full rounded-full bg-sognos-navy-dark transition-transform duration-300 group-hover/btn:translate-y-0"
+                />
+                <ChevronRight className="relative z-10 size-4 transition-colors duration-300 group-hover/btn:text-white" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Single-story bottom padding */}
+      {!showChrome && <div className="pb-16 lg:pb-24" />}
+    </section>
+  );
+}
+
+function StoryCard({ study, bg }: { study: CaseStudy; bg: string }) {
+  return (
+    <div className={`${bg} rounded-lg overflow-hidden`}>
+      <div className="grid grid-cols-1 md:grid-cols-11 min-h-[420px] md:min-h-[480px]">
+        {/* Left — text column */}
+        <div className="md:col-span-7 flex flex-col gap-5 p-6 lg:p-10">
+          <h3 className="font-heading text-2xl md:text-3xl font-medium tracking-tight text-white">
+            {study.company}
+          </h3>
+          <div className="flex-1 flex flex-col justify-center">
+            <blockquote>
+              <p className="font-heading text-lg lg:text-[22px] font-normal leading-snug tracking-tight text-white">
+                {study.quote}
+              </p>
+            </blockquote>
+            <div className="mt-6">
+              <p className="text-sm font-bold text-white">{study.author}</p>
+              <p className="text-sm mt-0.5 text-white/70">{study.role}</p>
+            </div>
+            <Link
+              href={study.href}
+              className="mt-4 inline-block w-fit text-sm font-medium text-white underline underline-offset-4 hover:opacity-60 transition-opacity"
+            >
+              Read Customer Story
+            </Link>
+          </div>
+          {/* Logo — inverted to white on dark card */}
+          <div className="pt-4">
+            {study.logo && (
+              <Image
+                src={study.logo}
+                alt={study.company}
+                width={140}
+                height={40}
+                className="h-7 w-auto max-w-[160px] object-contain brightness-0 invert"
+              />
+            )}
+          </div>
         </div>
 
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]"
-          >
-            {/* Left - image/video panel */}
-            <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto">
-              {study.panelVideo ? (
-                <video
-                  src={study.panelVideo}
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              ) : (
-                <Image
-                  src={study.panelImage}
-                  alt={study.company}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 35vw"
-                />
-              )}
-              {study.logo && (
-                <div className="relative z-10 flex-1 flex items-center justify-center">
-                  <Image
-                    src={study.logo}
-                    alt={study.company}
-                    width={160}
-                    height={56}
-                    className="w-auto max-w-[220px] object-contain brightness-0 invert"
-                  />
-                </div>
-              )}
-              <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                    Company Size
-                  </p>
-                  <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">
-                    {study.companySize}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                    Industry
-                  </p>
-                  <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">
-                    {study.industry}
-                  </p>
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+        {/* Right — portrait image + stats */}
+        <div className="md:col-span-3 md:col-start-9 flex flex-col p-4 lg:p-6">
+          <div className="relative flex-1 min-h-[200px] md:min-h-0 rounded-lg overflow-hidden mb-4">
+            {study.panelVideo ? (
+              <video
+                src={study.panelVideo}
+                autoPlay
+                muted
+                playsInline
+                loop
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <Image
+                src={study.panelImage}
+                alt={study.company}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 90vw, 200px"
+              />
+            )}
+          </div>
+          <div className="flex flex-col">
+            <div className="pb-3 border-b border-white/15">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
+                Company Size
+              </p>
+              <p className="font-heading text-xl font-medium tracking-tight text-white leading-none">
+                {study.companySize}
+              </p>
             </div>
-
-            {/* Right - quote panel */}
-            <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
-              <div className="flex-1 flex flex-col justify-center">
-                <QuoteIcon className={study.quoteIconColor} />
-                <blockquote className="mt-4">
-                  <p
-                    className={`font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight ${study.quoteClass}`}
-                  >
-                    {study.quote}
-                  </p>
-                </blockquote>
-                <div className="mt-6">
-                  <p className={`text-sm font-semibold ${study.authorClass}`}>
-                    {study.author}
-                  </p>
-                  <p className={`text-sm mt-0.5 ${study.roleClass}`}>
-                    {study.role}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
-                <AnimatedButton
-                  href={study.href}
-                  variant="transparent"
-                  className={buttonClassName}
-                  bubbleClassName={study.buttonIconBgClass}
-                >
-                  Read Customer Story
-                </AnimatedButton>
-              </div>
+            <div className="pt-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
+                Industry
+              </p>
+              <p className="font-heading text-lg font-medium tracking-tight text-white leading-snug">
+                {study.industry}
+              </p>
             </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Tab row */}
-        <div
-          ref={tabsContainerRef}
-          className={cn(
-            "flex overflow-x-auto snap-x snap-mandatory gap-4 mt-4 -mx-6 px-6 scrollbar-none",
-            "lg:grid lg:overflow-hidden lg:snap-none lg:gap-10 lg:mt-0 lg:mx-0 lg:px-0",
-            total === 4
-              ? "lg:grid-cols-4"
-              : total === 3
-                ? "lg:grid-cols-3"
-                : "lg:grid-cols-2",
-          )}
-        >
-          {stories.map((s, i) => (
-            <button
-              key={i}
-              ref={(el) => {
-                tabRefs.current[i] = el;
-              }}
-              onClick={() => go(i)}
-              className="relative flex items-center justify-center py-5 px-3 lg:py-8 lg:px-6 cursor-pointer shrink-0 basis-[calc(50%-0.5rem)] snap-start lg:shrink lg:basis-auto"
-            >
-              {s.logo ? (
-                <Image
-                  src={s.logo}
-                  alt={s.company}
-                  width={140}
-                  height={48}
-                  className="h-7 lg:h-9 w-auto max-w-[140px] object-contain transition-all duration-300"
-                  style={{
-                    filter: i === index ? "brightness(0) invert(1)" : "brightness(0) invert(1) opacity(0.35)",
-                  }}
-                />
-              ) : (
-                <span
-                  className={`text-sm font-semibold tracking-tight transition-all duration-300 ${i === index ? "text-white opacity-100" : "text-white opacity-35"}`}
-                >
-                  {s.company}
-                </span>
-              )}
-              <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-white/30">
-                {i === index && (
-                  <motion.div
-                    key={`progress-${i}-${index}`}
-                    className="h-full bg-white"
-                    initial={{ width: "0%" }}
-                    animate={paused ? false : { width: "100%" }}
-                    transition={{
-                      duration: AUTOPLAY_MS / 1000,
-                      ease: "linear",
-                    }}
-                  />
-                )}
-              </div>
-            </button>
-          ))}
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

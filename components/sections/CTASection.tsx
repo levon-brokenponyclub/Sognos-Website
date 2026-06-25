@@ -61,8 +61,8 @@ type CTASectionProps = {
 // ─── Form styles (matches contact page) ────────────────────────────────────
 
 const INPUT =
-  "w-full rounded-lg border border-sognos-border-subtle bg-slate-50 px-4 py-3 text-sm text-prussian-blue-800 placeholder:text-sognos-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
-const LABEL = "mb-1.5 block text-sm font-medium text-prussian-blue-800";
+  "w-full rounded-lg border border-sognos-line bg-slate-50 px-4 py-3 text-sm text-sognos-body placeholder:text-sognos-muted focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20";
+const LABEL = "mb-1.5 block text-sm font-medium text-sognos-body";
 
 // ─── Section ────────────────────────────────────────────────────────────────
 
@@ -167,7 +167,7 @@ export default function CTASection({
         <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm flex flex-col w-full">
           <div className="w-full flex flex-col">
             <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
-              <h3 className="mb-2 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
+              <h3 className="mb-2 font-heading text-2xl font-medium text-sognos-body tracking-tight">
                 {cta.bookDemoHeading}
               </h3>
               <p className="text-gray-600 leading-relaxed text-base mb-1 balanced">
@@ -193,7 +193,7 @@ export default function CTASection({
                         type="button"
                         onClick={prevMonth}
                         disabled={isPastMonth || isCurrentMonth}
-                        className={`p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50 ${
+                        className={`p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/50 ${
                           isPastMonth || isCurrentMonth
                             ? "text-gray-300 cursor-not-allowed"
                             : "text-gray-600 hover:bg-gray-100"
@@ -219,7 +219,7 @@ export default function CTASection({
                       <button
                         type="button"
                         onClick={nextMonth}
-                        className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50"
+                        className="p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/50"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -277,12 +277,12 @@ export default function CTASection({
                                 setSelectedYear(calYear);
                                 setStep(2);
                               }}
-                              className={`h-8 w-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#1D96FC] ${
+                              className={`h-8 w-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent ${
                                 isDayPast
                                   ? "text-gray-300 cursor-not-allowed"
                                   : isSelected
-                                    ? "bg-[#1D96FC] text-white shadow-md ring-2 ring-[#1D96FC] ring-offset-1"
-                                    : "text-gray-700 hover:bg-[#1D96FC]/10 hover:text-[#1D96FC]"
+                                    ? "bg-sognos-blue-accent text-white shadow-md ring-2 ring-sognos-blue-accent ring-offset-1"
+                                    : "text-gray-700 hover:bg-sognos-blue-accent/10 hover:text-sognos-blue-accent"
                               }`}
                             >
                               {day}
@@ -332,10 +332,10 @@ export default function CTASection({
                               setSelectedTime(t);
                               setStep(3);
                             }}
-                            className={`py-2.5 px-3 border rounded-md text-sm font-medium transition-colors text-center focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/50 ${
+                            className={`py-2.5 px-3 border rounded-md text-sm font-medium transition-colors text-center focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/50 ${
                               past
                                 ? "border-gray-200 text-gray-300 cursor-not-allowed"
-                                : "border-[#1D96FC]/30 text-[#1D96FC] hover:bg-[#1D96FC] hover:text-white"
+                                : "border-sognos-blue-accent/30 text-sognos-blue-accent hover:bg-sognos-blue-accent hover:text-white"
                             }`}
                           >
                             {t}
@@ -369,7 +369,7 @@ export default function CTASection({
                         </svg>
                       </button>
                       <div>
-                        <p className="text-[10px] sm:text-xs font-semibold text-[#1D96FC] uppercase tracking-wider">
+                        <p className="text-[10px] sm:text-xs font-semibold text-sognos-blue-accent uppercase tracking-wider">
                           Demo length: 45 min
                         </p>
                         <h4 className="text-xs sm:text-sm font-semibold text-gray-900">
@@ -466,7 +466,7 @@ export default function CTASection({
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="w-full rounded-full bg-prussian-blue-800 px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                          className="w-full rounded-full bg-sognos-navy px-6 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                         >
                           {submitting ? "Sending…" : "Confirm Demo"}
                         </button>
@@ -509,7 +509,7 @@ export default function CTASection({
                         setStep(1);
                         setSelectedTime(null);
                       }}
-                      className="mt-8 text-sm font-medium text-[#1D96FC] hover:underline focus:outline-none"
+                      className="mt-8 text-sm font-medium text-sognos-blue-accent hover:underline focus:outline-none"
                     >
                       Book another demo
                     </button>
@@ -585,7 +585,7 @@ export default function CTASection({
   if (bare) return inner;
 
   return (
-    <section id="book-demo" className="w-full bg-[#1D96FC] scroll-mt-[140px]">
+    <section id="book-demo" className="w-full bg-sognos-blue-accent scroll-mt-[140px]">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {inner}
       </div>

@@ -29,7 +29,7 @@ export default function BookDemoModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-100 bg-brand/60 backdrop-blur-xs"
+            className="fixed inset-0 z-100 bg-sognos-blue-accent/60 backdrop-blur-xs"
             onClick={closeModal}
           />
 

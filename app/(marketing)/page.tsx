@@ -1,14 +1,14 @@
 import Hero from "@/components/sections/Hero";
+import HomeProductCards from "@/components/sections/HomeProductCards";
 import LogoStrip from "@/components/sections/LogoStrip";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import HowSognosWorks from "@/components/sections/HowSognosWorks";
-import SognosCareCard from "@/components/sections/SognosCareCard";
 import IndustrySection from "@/components/sections/IndustrySection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
-import SognosRosterCard from "@/components/sections/SognosRosterCard";
 import NewsInsightSection, {
   type NewsInsightArticle,
 } from "@/components/sections/NewsInsightSection";
-import CTABand from "@/components/sections/CTABand";
+import CustomerStories from "@/components/sections/CustomerStories";
 import { getKnowledgePostArchive } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -29,15 +29,16 @@ export default async function HomePage() {
   return (
     <>
       {/* Home framework — section order mapped from Cohere Home.html */}
-      <Hero /> {/* Hero · "Own your AI" */}
-      <LogoStrip /> {/* "Trusted by industry leaders and developers worldwide" */}
+      <Hero /> {/* Hero · navy, text block only */}
+      <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) — peeks above fold */}
+      <ScrollReveal y={40} duration={0.7}>
+        <LogoStrip /> {/* "Trusted by industry leaders and developers worldwide" */}
+      </ScrollReveal>
       <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
-      <SognosCareCard /> {/* "Your sovereign AI workplace" */}
-      <SognosRosterCard /> {/* "Developer resources" */}
       <IndustrySection /> {/* "Powering progress across industries" */}
       <SolutionsSection /> {/* "Our models. Your business." */}
       <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
-      <CTABand /> {/* "Ready to put AI to work?" — Book a Demo band */}
+      <CustomerStories /> {/* Embla gutter-inset slider, product-dark palette */}
     </>
   );
 }

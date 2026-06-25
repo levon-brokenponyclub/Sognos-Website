@@ -43,11 +43,11 @@ export default function IndustrySection() {
   };
 
   return (
-    <section className="w-full bg-background border-b border-sognos-border-subtle">
+    <section className="w-full bg-background border-b border-sognos-line">
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Header — heading left, arrows right (Cohere) */}
         <div className="flex w-full items-end justify-between gap-6 pb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-text-heading max-w-[550px]">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading max-w-[550px]">
             Powering progress across industries
           </h2>
           <div className="flex shrink-0 gap-3">
@@ -86,14 +86,14 @@ export default function IndustrySection() {
                 sizes="(min-width: 1024px) 420px, (min-width: 768px) 399px, 289px"
               />
               {/* Legibility gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-prussian-blue-900/85 via-prussian-blue-900/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-sognos-navy-dark/85 via-sognos-navy-dark/10 to-transparent" />
 
               {/* Title + arrow pinned bottom */}
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-6">
                 <h3 className="font-heading text-xl lg:text-2xl font-medium tracking-tight text-white text-balance max-w-[80%]">
                   {ind.name}
                 </h3>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#052048] transition-transform duration-300 group-hover/card:translate-x-0.5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sognos-body transition-transform duration-300 group-hover/card:translate-x-0.5">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path
                       d="M3 7h8M7 3l4 4-4 4"
@@ -128,7 +128,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-border-subtle text-sognos-text-heading transition-colors hover:bg-gray-200/70 disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-colors hover:bg-gray-200/70 disabled:cursor-not-allowed disabled:opacity-30"
     >
       <svg
         width="16"

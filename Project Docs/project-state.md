@@ -1,10 +1,10 @@
 # Sognos Website — Project State
 
-> Last updated: 2026-06-01
+> Last updated: 2026-06-11
 
 ## Build Phase
 
-Phases 1–5b complete. Sanity CMS integration complete — site is now CMS-driven across products, posts, global content, legals, footer, and site settings. 27 routes statically generated.
+Phases 1–5b complete. Phase 6 (Cohere scaffold — homepage done, solutions/product/industry pages pending) and Phase 7 (UI polish — Navbar, scroll, SubNav, hero animation, Editions, Footer) both in progress. Sanity CMS integration complete — site is now CMS-driven across products, posts, global content, legals, footer, and site settings. 27 routes statically generated.
 
 ## Live Routes
 
@@ -33,19 +33,21 @@ Phases 1–5b complete. Sanity CMS integration complete — site is now CMS-driv
 | `/dhf-conversation` | ✅ | |
 | `/studio/[...tool]` | ✅ | Embedded Sanity Studio at `/studio` |
 
-## Homepage Sections (Live)
+## Homepage Sections (Live — Cohere scaffold, 2026-06-09)
 
 ```tsx
-<Hero />
-<LogoStrip />          {/* infinite CSS marquee, uniform color filter, 9 named client logos */}
-<HowSognosWorksPreview />
-<ProductSection />     {/* 3 products: SognosCare, SognosRoster, Sognos Genogram */}
-<SolutionsSection />   {/* dark bg, Framer Motion drag slider */}
-<HowItWorks />
-<IndustrySection />    {/* Industrial Services video always autoplays */}
-<ProofSection />       {/* bento grid: video bg, image bg, dark/light/brand stat tiles */}
-<CTASection />
+<Hero />            {/* "Own your AI" — centered, fadeInUp, white-pill + underline */}
+<LogoStrip />       {/* "Trusted by…" — infinite CSS marquee */}
+<HowSognosWorks />  {/* "Safe. Flexible. Independent." 3 blocks */}
+<SognosCareCard />  {/* "Your sovereign AI workplace" full-bleed product card */}
+<SognosRosterCard />{/* "Developer resources" full-bleed product card */}
+<IndustrySection /> {/* "Powering progress…" arrow snap-scroll square cards */}
+<SolutionsSection />{/* "Our models. Your business." */}
+<NewsInsightSection />{/* "The latest news" — 3 callout cards w/ morphing SVG notch */}
+<CTABand />         {/* "Ready to put AI to work?" text + dual logo marquees */}
 ```
+
+Note: `CTASection.tsx` is the SHARED booking-calendar/modal — never gut it; homepage CTA is the separate `CTABand`.
 
 ## CMS — Sanity
 
@@ -139,10 +141,12 @@ Covers: conversation funnels, `/about-us/*` restructure, `/contact-us`, Knowledg
 
 ## Next Tasks (Ordered)
 
-1. Phase 6 — design system application pass
-2. Phase 7 — UI polish and motion
-3. Replace COMPLIANCE_VIDEO placeholder
-4. Verify redirects post-deploy (manual hit + Google Search Console URL Inspection)
-5. Mobile LCP — try `experimental.optimizeCss` / `inlineCss` in `next.config.ts` to defer the 27 KiB CSS chunk
-6. SognosCare AVIF re-encode (install `sharp` or use a proper AVIF encoder)
-7. Bundle-analyzer pass to identify vendor source of remaining ES6+ polyfills
+1. **ProductSubNav dock-from-bottom** — reappears fixed under navbar when scrolled past in-section position (Phase 7)
+2. **Solutions pages Cohere port** — `solutions/[slug]/page.tsx` section-by-section refactor (Phase 6); ask for per-section mapping before starting
+3. **Roster + Genogram Problems dark sections** — same `#PROBLEM_BG` + inverted text pattern as SognosCare; Roster `#3990c5`, Genogram `#250438` (Phase 7)
+4. **Customers hub** — `/customers` + `/customers/[slug]` case study pages
+5. Replace COMPLIANCE_VIDEO placeholder (Shutterstock URL in ProofSection)
+6. Verify redirects post-deploy (manual hit + Google Search Console URL Inspection)
+7. Mobile LCP — try `experimental.optimizeCss` / `inlineCss` in `next.config.ts` to defer the 27 KiB CSS chunk
+8. SognosCare AVIF re-encode (install `sharp` or use a proper AVIF encoder)
+9. Bundle-analyzer pass to identify vendor source of remaining ES6+ polyfills

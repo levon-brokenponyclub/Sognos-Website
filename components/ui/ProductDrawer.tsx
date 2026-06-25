@@ -125,7 +125,7 @@ export default function ProductDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-99 bg-brand/60 backdrop-blur-xs"
+            className="fixed inset-0 z-99 bg-sognos-blue-accent/60 backdrop-blur-xs"
             onClick={() => setState("peek")}
           />
         )}
@@ -145,7 +145,7 @@ export default function ProductDrawer({
             <div />
             <button
               onClick={() => setState("peek")}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-prussian-blue-800/50 hover:text-prussian-blue-800 transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-sognos-body/50 hover:text-sognos-body transition-colors cursor-pointer"
               aria-label="Close"
             >
               <X size={14} />
@@ -191,12 +191,12 @@ export default function ProductDrawer({
               {(peekTitle || peekDescription) && (
                 <div className="hidden lg:flex flex-col gap-2 max-w-xl">
                   {peekTitle && (
-                    <h2 className="font-heading text-[22px] font-medium tracking-normal text-prussian-blue-800">
+                    <h2 className="font-heading text-[22px] font-medium tracking-normal text-sognos-body">
                       {peekTitle}
                     </h2>
                   )}
                   {peekDescription && (
-                    <p className="text-base text-prussian-blue-800/75 lg:truncate">
+                    <p className="text-base text-sognos-body/75 lg:truncate">
                       {peekDescription}
                     </p>
                   )}
@@ -215,7 +215,7 @@ export default function ProductDrawer({
                 </AnimatedButton>
                 <button
                   onClick={() => setState("expanded")}
-                  className="inline-flex items-center justify-center rounded-md px-6 py-3 text-sm font-medium text-prussian-blue-800 border-0 border-transparent transition-colors hover:bg-prussian-blue-800/5 whitespace-nowrap"
+                  className="inline-flex items-center justify-center rounded-md px-6 py-3 text-sm font-medium text-sognos-body border-0 border-transparent transition-colors hover:bg-sognos-navy/5 whitespace-nowrap"
                 >
                   {secondaryLabel}
                 </button>
@@ -226,17 +226,17 @@ export default function ProductDrawer({
 
         {/* Expanded content */}
         {hasContent && (
-          <div className="flex-1 overflow-y-auto overscroll-contain border-0 border-sognos-border-subtle">
+          <div className="flex-1 overflow-y-auto overscroll-contain border-0 border-sognos-line">
             {(drawerTitle || drawerDescription) && (
               <div className="px-6 lg:px-16 pb-3">
-                <div className="py-4 text-center max-w-4xl mx-auto w-full mb-6 border-b border-sognos-border-subtle">
+                <div className="py-4 text-center max-w-4xl mx-auto w-full mb-6 border-b border-sognos-line">
                   {drawerTitle && (
-                    <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-4">
+                    <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-4">
                       {drawerTitle}
                     </h2>
                   )}
                   {drawerDescription && (
-                    <p className="mt-2 text-lg text-sognos-text-body">
+                    <p className="mt-2 text-lg text-sognos-body">
                       {drawerDescription}
                     </p>
                   )}
@@ -249,8 +249,8 @@ export default function ProductDrawer({
             {otherProducts.length > 0 && (
               <div className="px-6 lg:px-16 pb-10">
                 {children && (
-                  <div className="border-t border-sognos-border-subtle pt-6 mb-4">
-                    <h3 className="font-heading text-xl font-medium text-prussian-blue-800">
+                  <div className="border-t border-sognos-line pt-6 mb-4">
+                    <h3 className="font-heading text-xl font-medium text-sognos-body">
                       Other Products
                     </h3>
                   </div>
@@ -302,7 +302,7 @@ export default function ProductDrawer({
                       }
                       disabled={carouselIdx === 0}
                       aria-label="Previous product"
-                      className="w-10 h-10 rounded-full bg-brand flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
+                      className="w-10 h-10 rounded-full bg-sognos-blue-accent flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
                     >
                       <svg
                         className="w-4 h-4"
@@ -326,7 +326,7 @@ export default function ProductDrawer({
                       }
                       disabled={carouselIdx === otherProducts.length - 1}
                       aria-label="Next product"
-                      className="w-10 h-10 rounded-full bg-brand flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
+                      className="w-10 h-10 rounded-full bg-sognos-blue-accent flex items-center justify-center text-white disabled:opacity-30 transition-opacity"
                     >
                       <svg
                         className="w-4 h-4"

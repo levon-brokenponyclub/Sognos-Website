@@ -5,9 +5,9 @@ export default function GenogramIntegration() {
   return (
     <section id="integration" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-lg bg-prussian-blue-800 px-10 py-14 lg:px-14 lg:py-16">
+        <div className="overflow-hidden rounded-lg bg-sognos-navy px-10 py-14 lg:px-14 lg:py-16">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
             Better together
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
@@ -22,8 +22,8 @@ export default function GenogramIntegration() {
           {/* Flow */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-0">
             {/* Genogram node */}
-            <div className="flex flex-col gap-2 rounded-xl border border-[#92278d]/30 bg-[#92278d]/10 px-6 py-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#92278d]">
+            <div className="flex flex-col gap-2 rounded-xl border border-sognos-genogram-base/30 bg-sognos-genogram-base/10 px-6 py-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-sognos-genogram-base">
                 Sognos Genogram
               </p>
               <p className="text-sm text-white/60">

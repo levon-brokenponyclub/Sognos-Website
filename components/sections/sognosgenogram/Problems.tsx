@@ -18,10 +18,10 @@ export default function GenogramProblems() {
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-center gap-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight">
             Case records have facts. They're missing people.
           </h2>
-          <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
+          <p className="max-w-2xl text-base leading-relaxed text-sognos-body">
             Standard case management captures what happened. Sognos Genogram
             captures who is involved - and what those relationships mean for
             service delivery.
@@ -32,15 +32,15 @@ export default function GenogramProblems() {
           {PAIN_POINTS.map((point, i) => (
             <div
               key={i}
-              className="rounded-xl border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-8"
+              className="rounded-xl border border-(--sognos-line) bg-(--sognos-bg-sunken) p-8"
             >
-              <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
+              <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-sognos-navy-dark text-xs font-semibold text-white">
                 {i + 1}
               </div>
-              <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+              <h2 className="mb-3 font-heading text-lg font-normal text-sognos-heading">
                 {point.title}
               </h2>
-              <p className="text-sm leading-relaxed text-sognos-text-body">
+              <p className="text-sm leading-relaxed text-sognos-body">
                 {point.body}
               </p>
             </div>

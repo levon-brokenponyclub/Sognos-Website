@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { DEFAULT_CTA_CONTENT } from "@/lib/content/ctaSection";
-import { useBookDemo } from "@/lib/BookDemoContext";
 
 // Cohere Home slot: "Ready to put AI to work?" — CTA band.
 // Left: title + copy + Book-a-Demo button. Right: two logo marquees (→ and ←).
@@ -37,8 +36,6 @@ function LogoMarquee({ reverse }: { reverse?: boolean }) {
 }
 
 export default function CTABand() {
-  const { openModal } = useBookDemo();
-
   return (
     <section className="relative w-full overflow-hidden py-16 lg:py-24">
       <Image
@@ -49,7 +46,7 @@ export default function CTABand() {
         className="object-cover"
       />
       <div className="relative mx-auto w-full max-w-7xl px-6">
-        <div className="grid grid-cols-1 items-center gap-10 overflow-hidden rounded-lg bg-prussian-blue-900 px-8 py-12 lg:grid-cols-2 lg:gap-12 lg:px-14 lg:py-16">
+        <div className="grid grid-cols-1 items-center gap-10 overflow-hidden rounded-lg bg-sognos-navy-dark px-8 py-12 lg:grid-cols-2 lg:gap-12 lg:px-14 lg:py-16">
           {/* Left — title, copy, button */}
           <div className="flex flex-col items-start">
             <h2 className="font-heading text-3xl font-normal tracking-tight text-white text-balance md:text-4xl">
@@ -59,10 +56,11 @@ export default function CTABand() {
               Schedule a 45-minute call to see how Sognos can unify your
               operations and boost efficiency.
             </p>
+            {/* TODO: wire to the dedicated Book-a-Demo page when built */}
             <button
               type="button"
-              onClick={() => openModal()}
-              className="mt-8 inline-flex w-fit items-center gap-2.5 rounded-full bg-white px-6 py-3 text-sm font-medium text-prussian-blue-900 transition-opacity hover:opacity-90"
+              disabled
+              className="mt-8 inline-flex w-fit items-center gap-2.5 rounded-full bg-white px-6 py-3 text-sm font-medium text-sognos-heading transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Book a Demo
               <svg className="size-3" viewBox="0 0 12 13" fill="none" aria-hidden="true">

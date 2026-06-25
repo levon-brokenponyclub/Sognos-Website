@@ -29,7 +29,7 @@ export default function LifeAtSognos() {
   const active = TABS[activeIndex];
 
   return (
-    <section className="w-full bg-[#1D96FC] border-b border-sognos-border-subtle overflow-hidden">
+    <section className="w-full bg-sognos-blue-accent border-b border-sognos-line overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pb-6">
@@ -53,14 +53,14 @@ export default function LifeAtSognos() {
                 className="text-left border-t border-gray-300 py-5 cursor-pointer"
               >
                 <span
-                  className={`block font-heading text-lg font-semibold leading-snug tracking-tight transition-opacity duration-200 text-prussian-blue-800 ${
+                  className={`block font-heading text-lg font-semibold leading-snug tracking-tight transition-opacity duration-200 text-sognos-body ${
                     i === activeIndex ? "opacity-100" : "opacity-30"
                   }`}
                 >
                   {tab.name}
                 </span>
                 <span
-                  className={`block text-xs mt-0.5 transition-opacity duration-200 text-prussian-blue-800 ${
+                  className={`block text-xs mt-0.5 transition-opacity duration-200 text-sognos-body ${
                     i === activeIndex ? "opacity-60" : "opacity-20"
                   }`}
                 >
@@ -90,7 +90,7 @@ export default function LifeAtSognos() {
           </div>
 
           {/* Col 3 - quote */}
-          <div className="shrink-0 w-[34%] bg-prussian-blue-800 rounded-lg p-8 flex flex-col justify-between">
+          <div className="shrink-0 w-[34%] bg-sognos-navy rounded-lg p-8 flex flex-col justify-between">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}

@@ -39,7 +39,7 @@ export default async function LogoStrip() {
               return (
                 <div
                   key={i}
-                  className="flex h-[88px] w-[180px] shrink-0 items-center justify-center rounded-xl bg-prussian-blue-800/5 p-5"
+                  className="flex h-[88px] w-[180px] shrink-0 items-center justify-center rounded-xl bg-sognos-navy/5 p-5"
                 >
                   <Image
                     src={src}

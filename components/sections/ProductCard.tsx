@@ -47,7 +47,7 @@ export const PRODUCT_CARDS: ProductCardData[] = [
       "From scheduling to routing, SognosRoster puts the right worker on every shift - factoring skills, location, availability and compliance automatically.",
     ctaText: "Explore SognosRoster",
     ctaLink: "/products/sognosroster",
-    hoverBg: "#1d96fc",
+    hoverBg: "var(--sognos-blue-accent)",
   },
   {
     logo: "/logos/sognos-genogram-logo-color.svg",
@@ -155,12 +155,12 @@ export function ProductCard({
           }}
         >
           <h3
-            className={`font-body text-2xl font-medium leading-tight tracking-normal whitespace-pre-line lg:text-2xl transition-colors duration-500 ${active ? "text-white" : "text-prussian-blue-800"}`}
+            className={`font-body text-2xl font-medium leading-tight tracking-normal whitespace-pre-line lg:text-2xl transition-colors duration-500 ${active ? "text-white" : "text-sognos-body"}`}
           >
             {byline}
           </h3>
           <p
-            className={`mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 ${active ? "text-white/90" : "text-sognos-text-body"}`}
+            className={`mt-4 max-w-sm font-heading font-normal leading-relaxed lg:text-lg transition-colors duration-500 ${active ? "text-white/90" : "text-sognos-body"}`}
           >
             {description}
           </p>

@@ -165,7 +165,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Disability & Mental Health",
     logo: "/logos/sognoscare-edition-dmh.svg",
     href: "/products/sognoscare/editions/disability-mental-health",
-    accentColor: "#36b19a",
+    accentColor: "var(--sognos-edition-disability)",
     tagline: "NDIS, psychosocial support, and participant outcome tracking",
     description:
       "Plan around participant goals, manage incidents, and streamline progress notes - with NDIS funding rules and Quality & Safeguards requirements enforced at every step.",
@@ -174,7 +174,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Allied Health",
     logo: "/logos/sognoscare-edition-ahc.svg",
     href: "/products/sognoscare/editions/allied-health",
-    accentColor: "#fea65d",
+    accentColor: "var(--sognos-edition-allied-health)",
     tagline:
       "Mobile therapy , referral management, and multi-disciplinary records",
     description:
@@ -184,7 +184,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Hospital in the Home",
     logo: "/logos/SognosCare-HITH-Logo.svg",
     href: "/products/sognoscare/editions/hospital-in-the-home",
-    accentColor: "#c6da4c",
+    accentColor: "var(--sognos-edition-hospital-in-the-home)",
     tagline: "Hospital-level care, delivered at home",
     description:
       "Manage home-based treatment, mobile clinical teams, patient visits, and care documentation while maintaining visibility across Hospital in the Home delivery.",
@@ -193,7 +193,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Support at Home",
     logo: "/logos/sognoscare-edition-sah.svg",
     href: "/products/sognoscare/editions/support-at-home",
-    accentColor: "#ff8184",
+    accentColor: "var(--sognos-edition-support-at-home)",
     tagline: "Support at Home reform, and client independence",
     description:
       "Manage client services, budgets, and care workers while staying ahead of the Support at Home program - with funding model changes tracked and compliance pre-configured.",
@@ -202,7 +202,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Residential Aged Care",
     logo: "/logos/sognoscare-edition-rac.svg",
     href: "/products/sognoscare/editions/residential-aged-care",
-    accentColor: "#c49aff",
+    accentColor: "var(--sognos-edition-aged-care)",
     tagline: "Care planning, clinical documentation, and compliance",
     description:
       "From care planning to staff coordination and resident reporting - built for residential providers demonstrating quality against Aged Care Quality Standards.",
@@ -211,7 +211,7 @@ export const SOGNOSCARE_EDITIONS = [
     label: "Child & Family Services",
     logo: "/logos/SognosCare-C&FS-Logo.svg",
     href: "/products/sognoscare/editions/child-and-family-services",
-    accentColor: "#ff6db4",
+    accentColor: "var(--sognos-edition-child-and-family-services)",
     tagline: "Connected care for vulnerable children and families",
     description:
       "Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.",

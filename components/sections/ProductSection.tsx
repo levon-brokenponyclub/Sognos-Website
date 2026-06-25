@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
-import EditionCards from "./sognoscare/EditionCards";
 import { PRODUCT_CARDS, type ProductCardData } from "./ProductCard";
 
 const EYEBROWS: Record<string, string> = {
@@ -54,10 +51,10 @@ function ReadMoreLink({
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-x-3 text-sm font-medium text-sognos-text-heading"
+      className="group inline-flex items-center gap-x-3 text-sm font-medium text-sognos-heading"
     >
       <span>{label}</span>
-      <span className="relative flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-sognos-text-heading text-white">
+      <span className="relative flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-sognos-heading text-white">
         <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-[150%]">
           <ArrowGlyph className="w-[9px]" />
         </span>
@@ -69,83 +66,13 @@ function ReadMoreLink({
   );
 }
 
-function EditionsDrawer({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
-  return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-99 bg-prussian-blue-900/60 backdrop-blur-xs"
-            onClick={onClose}
-          />
-          <motion.div
-            key="drawer"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed bottom-0 left-0 right-0 z-100 mx-auto flex max-h-[80vh] max-w-7xl flex-col rounded-t-2xl bg-background shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex shrink-0 items-center justify-between px-6 pt-4 pb-3">
-              <div />
-              <button
-                onClick={onClose}
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-sognos-text-heading/50 transition-colors hover:text-sognos-text-heading"
-                aria-label="Close"
-              >
-                <X size={14} />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto">
-              <div className="mx-auto px-6 pb-10 lg:px-16">
-                <div className="mx-auto mb-6 max-w-4xl border-b border-sognos-text-heading/10 py-4 text-center">
-                  <h2 className="mb-6 font-heading text-3xl font-normal tracking-tight text-sognos-text-heading md:text-4xl">
-                    Choose the Right SognosCare Edition for Your Service
-                  </h2>
-                  <p className="mt-2 text-lg text-sognos-text-body">
-                    SognosCare offers four tailored editions — each
-                    pre-configured for its funding model, compliance framework,
-                    and operational workflows.
-                  </p>
-                </div>
-                <EditionCards
-                  editions={SOGNOSCARE_EDITIONS}
-                  showSliderButtons
-                  containerClassName="w-full"
-                />
-              </div>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-}
 
-function TabPanel({
-  data,
-  onOpenDrawer,
-}: {
-  data: ProductCardData;
-  onOpenDrawer?: () => void;
-}) {
+function TabPanel({ data }: { data: ProductCardData }) {
   const eyebrow = EYEBROWS[data.logoAlt] ?? "Product";
   return (
-    <div className="flex w-full gap-x-5 gap-y-2.5 max-md:flex-col max-md:rounded-2xl max-md:bg-prussian-blue-800/[0.04] max-md:p-2.5 max-md:pt-8">
+    <div className="flex w-full gap-x-5 gap-y-2.5 max-md:flex-col max-md:rounded-2xl max-md:bg-sognos-navy/[0.04] max-md:p-2.5 max-md:pt-8">
       {/* Col 1: text + customer-context image (Paraform inner two-col) */}
-      <div className="flex flex-1 justify-between gap-y-10 rounded-2xl bg-prussian-blue-800/[0.04] max-sm:flex-col md:gap-y-8 md:px-2 md:py-2.5">
+      <div className="flex flex-1 justify-between gap-y-10 rounded-2xl bg-sognos-navy/[0.04] max-sm:flex-col md:gap-y-8 md:px-2 md:py-2.5">
         <div className="flex flex-1 flex-col justify-between gap-y-6 md:gap-y-8 md:px-6 md:pt-6 md:pb-2">
           <div className="space-y-3 max-md:px-3 md:space-y-4 lg:max-w-[260px]">
             <Image
@@ -155,27 +82,17 @@ function TabPanel({
               height={32}
               className="h-7 w-auto object-contain"
             />
-            <p className="text-sm text-sognos-text-muted">{eyebrow}</p>
-            <h2 className="whitespace-pre-line font-heading text-2xl font-normal leading-tight tracking-tight text-sognos-text-heading text-balance lg:text-3xl">
+            <p className="text-sm text-sognos-muted">{eyebrow}</p>
+            <h2 className="whitespace-pre-line font-heading text-2xl font-normal leading-tight tracking-tight text-sognos-heading text-balance lg:text-3xl">
               {data.byline}
             </h2>
             <div className="max-md:hidden">
               <ReadMoreLink href={data.ctaLink} />
             </div>
           </div>
-          <p className="text-lg leading-relaxed text-sognos-text-body max-md:px-3 max-md:text-balance lg:max-w-[280px]">
+          <p className="text-lg leading-relaxed text-sognos-body max-md:px-3 max-md:text-balance lg:max-w-[280px]">
             {data.description}
           </p>
-          {data.editions && onOpenDrawer && (
-            <button
-              type="button"
-              onClick={onOpenDrawer}
-              className="inline-flex items-center gap-x-2 self-start text-sm font-medium text-brand transition-colors hover:text-brand-dark max-md:mx-3"
-            >
-              View all editions
-              <ArrowGlyph className="w-[9px]" />
-            </button>
-          )}
           <div className="md:hidden max-md:px-3 max-md:pt-2.5">
             <ReadMoreLink href={data.ctaLink} />
           </div>
@@ -192,7 +109,7 @@ function TabPanel({
       </div>
 
       {/* Col 2: customer stat card (dark) */}
-      <div className="relative isolate flex w-full shrink-0 flex-col justify-between gap-y-10 overflow-hidden rounded-2xl bg-prussian-blue-900 px-6 py-8 text-white md:gap-y-12 md:p-8 lg:max-w-[400px]">
+      <div className="relative isolate flex w-full shrink-0 flex-col justify-between gap-y-10 overflow-hidden rounded-2xl bg-sognos-navy-dark px-6 py-8 text-white md:gap-y-12 md:p-8 lg:max-w-[400px]">
         <div className="flex flex-col items-start gap-y-6">
           <Image
             src={CUSTOMER_STAT.logo}
@@ -223,21 +140,19 @@ function TabPanel({
 
 export default function ProductSection() {
   const [active, setActive] = useState(0);
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const total = PRODUCT_CARDS.length;
   const current = PRODUCT_CARDS[active];
 
   return (
-    <>
-      <section className="w-full overflow-clip bg-background pt-12 pb-10 md:pt-[120px] md:pb-20">
+    <section className="w-full overflow-clip bg-background pt-12 pb-10 md:pt-[120px] md:pb-20">
         <div className="mx-auto max-w-7xl space-y-10 px-4 md:space-y-12">
           {/* Section header */}
           <div className="flex w-full flex-col gap-y-5 max-lg:items-center max-lg:text-center">
-            <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-text-heading text-balance md:text-4xl">
+            <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
               The platform powering modern service delivery
             </h2>
-            <p className="max-w-[612px] text-lg leading-relaxed text-sognos-text-body text-balance">
+            <p className="max-w-[612px] text-lg leading-relaxed text-sognos-body text-balance">
               SognosCare, SognosRoster, and Sognos Genogram work together as one
               platform — purpose-built for service organisations running on
               Microsoft Dynamics 365 and Copilot-powered workflows.
@@ -254,7 +169,7 @@ export default function ProductSection() {
                     value={active}
                     onChange={(e) => setActive(Number(e.target.value))}
                     aria-label="Select product"
-                    className="h-10 w-full cursor-pointer appearance-none rounded-full bg-sognos-text-heading/10 pl-4 pr-10 text-sm text-sognos-text-body focus:outline-hidden"
+                    className="h-10 w-full cursor-pointer appearance-none rounded-full bg-sognos-heading/10 pl-4 pr-10 text-sm text-sognos-body focus:outline-hidden"
                   >
                     {PRODUCT_CARDS.map((p, i) => (
                       <option key={p.ctaLink} value={i}>
@@ -262,7 +177,7 @@ export default function ProductSection() {
                       </option>
                     ))}
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 pl-2 text-sognos-text-heading">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 pl-2 text-sognos-heading">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
@@ -298,7 +213,7 @@ export default function ProductSection() {
                         {isActive && (
                           <motion.span
                             layoutId="product-tab-pill"
-                            className="absolute inset-0 -z-10 rounded-full bg-sognos-text-heading"
+                            className="absolute inset-0 -z-10 rounded-full bg-sognos-heading"
                             transition={{
                               type: "spring",
                               damping: 30,
@@ -308,7 +223,7 @@ export default function ProductSection() {
                         )}
                         <span
                           className={`relative px-3 text-sm font-medium transition-colors duration-200 delay-150 ${
-                            isActive ? "text-white" : "text-sognos-text-heading"
+                            isActive ? "text-white" : "text-sognos-heading"
                           }`}
                         >
                           {p.logoAlt}
@@ -321,14 +236,14 @@ export default function ProductSection() {
 
               {/* Progress + counter */}
               <div className="hidden items-center gap-x-4 md:flex">
-                <div className="h-1 w-16 overflow-hidden rounded-full bg-sognos-text-heading/10">
+                <div className="h-1 w-16 overflow-hidden rounded-full bg-sognos-heading/10">
                   <motion.div
-                    className="h-full rounded-full bg-sognos-text-heading"
+                    className="h-full rounded-full bg-sognos-heading"
                     animate={{ width: `${((active + 1) / total) * 100}%` }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
                   />
                 </div>
-                <p className="text-sm text-sognos-text-body/80">
+                <p className="text-sm text-sognos-body/80">
                   {active + 1} / {total}
                 </p>
               </div>
@@ -343,19 +258,11 @@ export default function ProductSection() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
               >
-                <TabPanel
-                  data={current}
-                  onOpenDrawer={
-                    current.editions ? () => setDrawerOpen(true) : undefined
-                  }
-                />
+                <TabPanel data={current} />
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
-      </section>
-
-      <EditionsDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-    </>
+    </section>
   );
 }
