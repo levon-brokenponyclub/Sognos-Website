@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "sanity schema deploy",
+    "postbuild": "if [ -n \"$NEXT_PUBLIC_SANITY_PROJECT_ID\" ]; then sanity schema deploy; else echo 'Skipping sanity schema deploy: NEXT_PUBLIC_SANITY_PROJECT_ID not set'; fi",
     "start": "next start",
     "lint": "eslint",
     "migrate:customer-stories": "tsx scripts/migrate-customer-stories.ts",
