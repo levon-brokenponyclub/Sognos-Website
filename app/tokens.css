@@ -19,7 +19,7 @@
   --color-prussian-blue-500: #2d3a5c;
   --color-prussian-blue-600: #1a2747;
   --color-prussian-blue-700: #0c1d39;
-  --color-prussian-blue-800: var(--sognos-navy);      /* navy bridge */
+  --color-prussian-blue-800: var(--sognos-navy); /* navy bridge */
   --color-prussian-blue-900: var(--sognos-navy-dark); /* navy-dark bridge */
   --color-prussian-blue-950: var(--sognos-navy-dark); /* navy-dark bridge */
 
@@ -127,10 +127,14 @@
   --sognos-brand-foreground: #ffffff;
 
   /* Surfaces & Backgrounds */
-  --sognos-bg-sunken: var(--color-neutral-200); /* #e3e5e4 — still live in components */
+  --sognos-bg-sunken: var(
+    --color-neutral-200
+  ); /* #e3e5e4 — still live in components */
 
   /* Borders */
-  --sognos-border: var(--color-neutral-200); /* used by --color-border / --color-input */
+  --sognos-border: var(
+    --color-neutral-200
+  ); /* used by --color-border / --color-input */
 
   /* Status */
   --sognos-success: #10b981;
@@ -185,7 +189,7 @@
   /* Shadows */
   --sognos-shadow-sm: 0 1px 3px rgb(5 32 72 / 0.08);
   --sognos-shadow-md: 0 8px 24px rgb(5 32 72 / 0.08);
-  --sognos-shadow-lg: 0 20px 48px rgb(5 32 72 / 0.10);
+  --sognos-shadow-lg: 0 20px 48px rgb(5 32 72 / 0.1);
   --sognos-shadow-xl: 0 24px 60px rgb(5 32 72 / 0.12);
 
   /* Radius */
@@ -216,32 +220,54 @@
 
   /* ── Sognos colour system (lean) ── */
   /* Core brand */
-  --sognos-navy-dark:   #0f1936;
-  --sognos-navy:        #152248;
+  --sognos-navy-dark: #0f1936;
+  --sognos-navy: #152248;
   --sognos-blue-accent: #1d96fc;
   /* Content / text */
   --sognos-heading: #0f1936;
-  --sognos-body:    #152248;
-  --sognos-muted:   #64748b;
+  --sognos-body: #152248;
+  --sognos-muted: #64748b;
   /* Lines */
-  --sognos-line:    #e2e8f0;
+  --sognos-line: #e2e8f0;
   /* Product: SognosCare */
-  --sognos-care-dark:     #03112f;
-  --sognos-care-base:     #152248;
-  --sognos-care-gradient: linear-gradient(to bottom right, #5aa0ff, #3b6fe0, #1f2a78);
+  --sognos-care-dark: #03112f;
+  --sognos-care-base: #152248;
+  --sognos-care-gradient: linear-gradient(
+    to bottom right,
+    #5aa0ff,
+    #3b6fe0,
+    #1f2a78
+  );
   /* Product: SognosRoster */
-  --sognos-roster-dark:     #0b3a66;
-  --sognos-roster-base:     #59bbf7;
-  --sognos-roster-gradient: linear-gradient(to bottom right, #6fc6fb, #2f97d6, #0e4f86);
+  --sognos-roster-dark: #0b3a66;
+  --sognos-roster-base: #59bbf7;
+  --sognos-roster-gradient: linear-gradient(
+    to bottom right,
+    #6fc6fb,
+    #2f97d6,
+    #0e4f86
+  );
   /* Product: Sognos Genogram */
-  --sognos-genogram-dark:     #250438;
-  --sognos-genogram-base:     #91278c;
-  --sognos-genogram-gradient: linear-gradient(to bottom right, #7b3fa8, #4a1670, #1a0224);
+  --sognos-genogram-dark: #250438;
+  --sognos-genogram-base: #91278c;
+  --sognos-genogram-gradient: linear-gradient(
+    to bottom right,
+    #7b3fa8,
+    #4a1670,
+    #1a0224
+  );
   /* Editions (SognosCare sector identity) */
-  --sognos-edition-aged-care:                 #caa4ff;
-  --sognos-edition-allied-health:             #ffad6e;
-  --sognos-edition-support-at-home:           #ff8e90;
-  --sognos-edition-hospital-in-the-home:      #cbdd61;
+  --sognos-edition-aged-care: #caa4ff;
+  --sognos-edition-allied-health: #ffad6e;
+  --sognos-edition-support-at-home: #ff8e90;
+  --sognos-edition-hospital-in-the-home: #cbdd61;
   --sognos-edition-child-and-family-services: #ff7dbc;
-  --sognos-edition-disability:                #00a98f;
+  --sognos-edition-disability: #00a98f;
+  /* Edition dark variants — for section backgrounds requiring white-text contrast */
+  --sognos-edition-aged-care-dark: #af82f0;
+  --sognos-edition-allied-health-dark: #6b2d00;
+  --sognos-edition-support-at-home-dark: #660e10;
+  --sognos-edition-hospital-in-the-home-dark: #2a3605;
+  --sognos-edition-child-and-family-services-dark: #5c0a33;
+  --sognos-edition-disability-dark: #039b84;
 }

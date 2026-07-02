@@ -19,6 +19,7 @@ const data: EditionData = {
   accentTextClass: "text-sognos-edition-disability",
   accentBgClass: "bg-sognos-edition-disability",
   accentBorderClass: "border-sognos-edition-disability",
+  advantagesBg: "var(--sognos-edition-disability-dark)",
   problems: [
     {
       label: "Endless admin and disconnected systems",

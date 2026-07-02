@@ -21,30 +21,27 @@ import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 
 // ── Transparent-over-hero: paths whose first section is a dark hero ────────────
-// Navbar derives transparentOverHero from pathname (shared layout can't pass per-page props).
-// `transparentOverHero` prop overrides this when explicitly provided.
 const DARK_HERO_PATHS = new Set([
   "/",
   "/products/sognoscare",
   "/products/sognosroster",
   "/products/sognosgenogram",
+  "/company/about",
 ]);
 
 // ── Light / dark theme seam ────────────────────────────────────────────────────
-// `dark` values are used for the transparent-at-top state on dark-hero pages.
-// `light` values are used when the bar is solid (scrolled, or non-dark-hero pages).
 
 type NavVariant = "light" | "dark";
 
 interface NavTheme {
-  text: string; // nav link base colour
-  hoverPill: string; // sliding highlight bg
-  navGroup: string; // persistent bg behind centered nav group (includes rounded-full p-1)
-  logoFilter: string; // CSS filter for logo img
-  primaryBtn: string; // Book a Demo button
-  secondaryText: string; // Contact Sales link
-  dropdownCard: string; // dropdown card bg + border + shadow (always light for readability)
-  mobilePanel: string; // mobile drawer (always solid for readability)
+  text: string;
+  hoverPill: string;
+  navGroup: string;
+  logoFilter: string;
+  primaryBtn: string;
+  secondaryText: string;
+  dropdownCard: string;
+  mobilePanel: string;
   mobileDivider: string;
   hamburger: string;
 }
@@ -65,8 +62,6 @@ const THEMES: Record<NavVariant, NavTheme> = {
     hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
   dark: {
-    // Used when bar is transparent over a dark hero (at scrollState "top").
-    // Dropdown + mobile panel stay light regardless (always readable).
     text: "text-white/80 hover:text-white",
     hoverPill: "bg-white/20",
     navGroup: "bg-white/10 rounded-full p-1",
@@ -88,6 +83,7 @@ const DROPDOWN_SPRING = {
   duration: 0.4,
 };
 const EDGE = 8;
+const SLIDE = { duration: 0.25, ease: [0.4, 0, 0.2, 1] as const };
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -134,98 +130,134 @@ function DropdownContent({
   );
 }
 
-// ── Mobile accordion item ──────────────────────────────────────────────────────
+// ── Mobile sub-panel content ───────────────────────────────────────────────────
 
-function AccordionItem({
+function MobileSubContent({
   group,
-  isOpen,
-  onToggle,
   onLinkClick,
 }: {
   group: NavGroup;
-  isOpen: boolean;
-  onToggle: () => void;
   onLinkClick: () => void;
 }) {
   const linkCols = getLinkCols(group);
-  return (
-    <div className="border-b border-gray-100 last:border-0">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center justify-between py-5 text-left"
-      >
-        <span className="flex items-center gap-2.5">
-          <AnimatePresence>
-            {isOpen && (
-              <motion.span
-                key="dot"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="inline-block h-2 w-2 shrink-0 rounded-full bg-orange-400"
-              />
-            )}
-          </AnimatePresence>
-          <span className="text-2xl font-medium text-gray-900">
-            {group.label}
-          </span>
-        </span>
-        <motion.svg
-          animate={{ rotate: isOpen ? 90 : 0 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="ml-4 h-5 w-5 shrink-0 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 5l7 7-7 7"
-          />
-        </motion.svg>
-      </button>
+  const featuredItems = linkCols[0]?.items.slice(0, 2) ?? [];
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="space-y-6 pb-6">
-              {linkCols.map((col, i) => (
-                <div key={i}>
-                  {col.heading && (
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
-                      {col.heading}
-                    </p>
-                  )}
-                  <ul className="space-y-0.5">
-                    {col.items.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={onLinkClick}
-                          className="block py-1.5 text-base text-gray-700 hover:text-sognos-blue-accent transition-colors duration-150"
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              <div className="h-28 rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+  return (
+    <>
+      {linkCols.map((col, i) => (
+        <div key={i}>
+          {col.heading && (
+            <div className="bg-gray-50 px-6 py-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                {col.heading}
+              </p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+          {col.items.map((item) => (
+            <div key={item.href} className="border-b border-gray-100">
+              <Link
+                href={item.href}
+                onClick={onLinkClick}
+                className="block px-6 py-4 text-xl font-medium text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+              >
+                {item.name}
+              </Link>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {featuredItems.length > 0 && (
+        <div className="mx-4 my-4 rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF] p-5">
+          <div className="grid grid-cols-2 gap-4">
+            {featuredItems.map((item) => (
+              <Link key={item.href} href={item.href} onClick={onLinkClick}>
+                <div className="mb-2 h-14 w-14 rounded-lg bg-sognos-navy-dark/90" />
+                <p className="text-sm font-medium leading-snug text-gray-900">
+                  {item.name}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ── Inline SVG helpers ────────────────────────────────────────────────────────
+
+function IconClose() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  );
+}
+
+function IconArrowLeft() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function IconArrowRight() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+// ── Mobile footer (shared between Level 1 and Level 2) ───────────────────────
+
+function MobileFooter({
+  onBookDemo,
+  onContactSales,
+}: {
+  onBookDemo: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
+  onContactSales: () => void;
+}) {
+  return (
+    <div className="shrink-0 border-t border-gray-100 flex gap-2 p-3">
+      <Link
+        href="#book-demo"
+        onClick={onBookDemo}
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-sm font-semibold bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-navy-dark/90"
+      >
+        {navCTA.primary.name}
+      </Link>
+      <Link
+        href={navCTA.secondary.href}
+        onClick={onContactSales}
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-sm font-semibold bg-gray-100 text-gray-900 transition-colors duration-150 hover:bg-gray-200"
+      >
+        {navCTA.secondary.name}
+      </Link>
     </div>
   );
 }
@@ -245,10 +277,13 @@ export default function Navbar({
   const [hovered, setHovered] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrollState, setScrollState] = useState<"top" | "hidden" | "peek">(
     "top",
   );
+
+  // Tracks slide direction so entering panel animates from the right side
+  const mobilePanelDirectionRef = useRef<"forward" | "back">("forward");
 
   const headerRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -266,24 +301,23 @@ export default function Navbar({
   }, [openMenu]);
 
   const panelX = useMotionValue(0);
-  const [panelWidth, setPanelWidth] = useState(0);
+  const panelWidthMV = useMotionValue(0);
+  const lastActiveGroupRef = useRef<NavGroup | null>(null);
 
   const activeGroup = nav.find(
     (g) => g.label === openMenu && (g.megaMenu || g.items),
   );
+  const activeSubGroup = nav.find((g) => g.label === mobilePanel);
+  if (activeGroup) lastActiveGroupRef.current = activeGroup;
+  const displayGroup = lastActiveGroupRef.current;
 
   // ── Transparent-over-hero derived state ───────────────────────────────────────
-  // Prop overrides pathname-based detection when explicitly provided.
-  // Bar stays transparent at scrollState "top" regardless of whether a dropdown is open
-  // (backdrop blur provides visual separation; no colour-switch on open).
   const useTransparent =
     transparentOverHero !== undefined
       ? transparentOverHero
       : DARK_HERO_PATHS.has(pathname);
 
   const isTransparent = useTransparent && scrollState === "top";
-
-  // Effective theme: dark content values when transparent, light when solid
   const t = isTransparent ? THEMES.dark : THEMES.light;
 
   // ── Measure all panel widths ──────────────────────────────────────────────────
@@ -314,7 +348,8 @@ export default function Navbar({
 
     const containerRect = containerEl.getBoundingClientRect();
     const triggerRect = triggerEl.getBoundingClientRect();
-    const targetWidth = panelWidths.current[openMenu] ?? 400;
+    const rawWidth = panelWidths.current[openMenu] ?? 400;
+    const targetWidth = Math.min(rawWidth, containerRect.width - 2 * EDGE);
 
     const center =
       triggerRect.left - containerRect.left + triggerRect.width / 2;
@@ -326,11 +361,12 @@ export default function Navbar({
       ),
     );
 
-    setPanelWidth(targetWidth);
     if (prefersReducedMotion || prevOpenMenuRef.current === null) {
       panelX.set(targetX);
+      panelWidthMV.set(targetWidth);
     } else {
       animate(panelX, targetX, DROPDOWN_SPRING);
+      animate(panelWidthMV, targetWidth, DROPDOWN_SPRING);
     }
 
     prevOpenMenuRef.current = openMenu;
@@ -447,7 +483,7 @@ export default function Navbar({
     intentTimerRef.current = setTimeout(() => {
       setOpenMenu(label);
       intentTimerRef.current = null;
-    }, 100);
+    }, 60);
   };
 
   const closeOnHover = () => {
@@ -458,7 +494,7 @@ export default function Navbar({
     closeTimerRef.current = setTimeout(() => {
       setOpenMenu(null);
       closeTimerRef.current = null;
-    }, 150);
+    }, 100);
   };
 
   const cancelCloseTimer = () => {
@@ -476,8 +512,25 @@ export default function Navbar({
     e.preventDefault();
     closeAll();
     setMobileOpen(false);
-    setOpenAccordion(null);
+    setMobilePanel("root");
     openModal();
+  };
+
+  // ── Mobile panel navigation ───────────────────────────────────────────────────
+
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setMobilePanel("root");
+  };
+
+  const goToSubPanel = (label: string) => {
+    mobilePanelDirectionRef.current = "forward";
+    setMobilePanel(label);
+  };
+
+  const goToRoot = () => {
+    mobilePanelDirectionRef.current = "back";
+    setMobilePanel("root");
   };
 
   // ── Derived ───────────────────────────────────────────────────────────────────
@@ -489,7 +542,7 @@ export default function Navbar({
 
   return (
     <>
-      {/* ── Backdrop blur — desktop (menu-open) ──────────────────────────────── */}
+      {/* ── Backdrop blur — desktop only (menu-open) ──────────────────────────── */}
       <div
         aria-hidden="true"
         className={[
@@ -500,21 +553,6 @@ export default function Navbar({
         style={{
           WebkitMaskImage: "linear-gradient(black, black, transparent)",
           maskImage: "linear-gradient(black, black, transparent)",
-        }}
-      />
-
-      {/* ── Backdrop blur — mobile ────────────────────────────────────────────── */}
-      <div
-        aria-hidden="true"
-        className={[
-          "lg:hidden fixed inset-x-0 top-0 z-40 min-h-screen w-full pointer-events-none",
-          "backdrop-blur-[30px] transition-opacity duration-300 ease-in-out",
-          mobileOpen ? "opacity-100" : "opacity-0",
-        ].join(" ")}
-        style={{
-          WebkitMaskImage:
-            "linear-gradient(black 0%, black 72%, transparent 100%)",
-          maskImage: "linear-gradient(black 0%, black 72%, transparent 100%)",
         }}
       />
 
@@ -532,9 +570,7 @@ export default function Navbar({
             : "bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]",
         ].join(" ")}
       >
-        {/* ── Inner positioning context — max-w-7xl; containerRef stays same width ── */}
-        {/* CRITICAL: containerRef must remain max-w-7xl so triggerRect - containerRect */}
-        {/* math for dropdown x positioning is unchanged from the capsule layout.       */}
+        {/* ── Inner positioning context — max-w-7xl ── */}
         <div ref={containerRef} className="relative mx-auto max-w-7xl px-6">
           {/* ── Hidden measurer ─────────────────────────────────────────────── */}
           <div
@@ -730,7 +766,7 @@ export default function Navbar({
                   closeAll();
                   if (mobileOpen) {
                     setMobileOpen(false);
-                    setOpenAccordion(null);
+                    setMobilePanel("root");
                   } else {
                     setMobileOpen(true);
                   }
@@ -776,108 +812,196 @@ export default function Navbar({
           {/* END content row */}
 
           {/* ── Single desktop dropdown panel ─────────────────────────────── */}
-          {/* Always uses light dropdownCard for readability regardless of bar state */}
-          <AnimatePresence>
-            {openMenu !== null && activeGroup && (
-              <motion.div
-                key="desktop-dropdown"
-                onMouseEnter={cancelCloseTimer}
-                onMouseLeave={closeOnHover}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 4 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-full mt-2 left-0 z-50 hidden lg:block"
-                style={{ x: panelX, width: panelWidth || undefined }}
-              >
-                <div
-                  className={[
-                    "rounded-2xl p-8 overflow-hidden",
-                    t.dropdownCard,
-                  ].join(" ")}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={openMenu}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: prefersReducedMotion ? 1 : 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: prefersReducedMotion ? 0 : 0.12 }}
-                    >
-                      <DropdownContent group={activeGroup} onClose={closeAll} />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* ── Mobile panel — always solid (light theme) for readability ──── */}
-          <AnimatePresence>
-            {mobileOpen && (
-              <motion.div
-                key="mobile-panel"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className={[
-                  "lg:hidden absolute left-0 right-0 md:left-auto md:w-[380px] top-full mt-2",
-                  "overflow-hidden rounded-2xl",
-                  THEMES.light.mobilePanel,
-                ].join(" ")}
-              >
-                <div className="px-6">
-                  {nav.map((group) => (
-                    <AccordionItem
-                      key={group.label}
-                      group={group}
-                      isOpen={openAccordion === group.label}
-                      onToggle={() =>
-                        setOpenAccordion((v) =>
-                          v === group.label ? null : group.label,
-                        )
-                      }
-                      onLinkClick={() => {
-                        setMobileOpen(false);
-                        setOpenAccordion(null);
-                      }}
-                    />
-                  ))}
-                </div>
-                <div
-                  className={[
-                    "space-y-3 border-t px-6 pb-6 pt-5",
-                    THEMES.light.mobileDivider,
-                  ].join(" ")}
-                >
-                  <Link
-                    href="#book-demo"
-                    onClick={onBookDemoClick}
-                    className={[
-                      "block w-full rounded-full px-5 py-3 text-center text-sm font-semibold transition-colors duration-200",
-                      THEMES.light.primaryBtn,
-                    ].join(" ")}
+          <motion.div
+            onMouseEnter={cancelCloseTimer}
+            onMouseLeave={closeOnHover}
+            initial={false}
+            animate={
+              openMenu !== null
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 4 }
+            }
+            transition={
+              openMenu !== null
+                ? { duration: 0.15, ease: "easeOut" }
+                : { duration: 0.1, ease: "easeIn" }
+            }
+            className="absolute top-full mt-2 left-0 z-50 hidden lg:block"
+            style={{
+              x: panelX,
+              width: panelWidthMV,
+              pointerEvents: openMenu !== null ? "auto" : "none",
+            }}
+          >
+            <div
+              className={[
+                "rounded-2xl p-8 overflow-hidden",
+                t.dropdownCard,
+              ].join(" ")}
+            >
+              <AnimatePresence mode="wait">
+                {displayGroup && (
+                  <motion.div
+                    key={openMenu ?? displayGroup.label}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.12 }}
                   >
-                    {navCTA.primary.name}
-                  </Link>
-                  <Link
-                    href={navCTA.secondary.href}
-                    onClick={() => {
-                      setMobileOpen(false);
-                      setOpenAccordion(null);
-                    }}
-                    className="block text-center text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-gray-900"
-                  >
-                    {navCTA.secondary.name}
-                  </Link>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                    <DropdownContent group={displayGroup} onClose={closeAll} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
         </div>
         {/* END positioning context */}
       </header>
+
+      {/* ── Mobile full-screen overlay (two-level slide) ─────────────────────── */}
+      <AnimatePresence onExitComplete={() => setMobilePanel("root")}>
+        {mobileOpen && (
+          <motion.div
+            key="mobile-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden fixed inset-0 z-[51] bg-white flex flex-col overflow-hidden"
+          >
+            <AnimatePresence mode="wait">
+              {mobilePanel === "root" ? (
+                /* ── Level 1: Root panel ─────────────────────────────────── */
+                <motion.div
+                  key="root"
+                  initial={{
+                    x:
+                      mobilePanelDirectionRef.current === "back"
+                        ? "-100%"
+                        : 0,
+                  }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={SLIDE}
+                  className="absolute inset-0 flex flex-col bg-white"
+                >
+                  {/* Header */}
+                  <div className="shrink-0 flex h-20 items-center justify-between border-b border-gray-100 px-6">
+                    <Link href="/" onClick={closeMobile} className="shrink-0">
+                      <Image
+                        src="/logos/sognos-logo.svg"
+                        alt="Sognos"
+                        width={160}
+                        height={40}
+                        className="h-7 w-auto"
+                        style={{ filter: "none" }}
+                      />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={closeMobile}
+                      aria-label="Close menu"
+                      className="p-2 text-gray-900"
+                    >
+                      <IconClose />
+                    </button>
+                  </div>
+
+                  {/* Nav list */}
+                  <div className="flex-1 overflow-y-auto">
+                    {nav.map((group) => {
+                      const hasDropdown = !!(group.megaMenu || group.items);
+                      return (
+                        <div
+                          key={group.label}
+                          className="border-b border-gray-100"
+                        >
+                          {hasDropdown ? (
+                            <button
+                              type="button"
+                              onClick={() => goToSubPanel(group.label)}
+                              className="flex w-full items-center justify-between px-6 py-5"
+                            >
+                              <span className="text-xl font-medium text-gray-900">
+                                {group.label}
+                              </span>
+                              <span className="text-gray-900">
+                                <IconArrowRight />
+                              </span>
+                            </button>
+                          ) : (
+                            <Link
+                              href={group.href ?? "#"}
+                              onClick={closeMobile}
+                              className="flex w-full items-center justify-between px-6 py-5"
+                            >
+                              <span className="text-xl font-medium text-gray-900">
+                                {group.label}
+                              </span>
+                            </Link>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Footer */}
+                  <MobileFooter
+                    onBookDemo={onBookDemoClick}
+                    onContactSales={closeMobile}
+                  />
+                </motion.div>
+              ) : (
+                /* ── Level 2: Sub-panel ──────────────────────────────────── */
+                <motion.div
+                  key={mobilePanel}
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={SLIDE}
+                  className="absolute inset-0 flex flex-col bg-white"
+                >
+                  {/* Header */}
+                  <div className="shrink-0 flex h-20 items-center justify-between border-b border-gray-100 px-6">
+                    <button
+                      type="button"
+                      onClick={goToRoot}
+                      className="flex items-center gap-2 text-sm font-medium text-gray-900"
+                    >
+                      <IconArrowLeft />
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closeMobile}
+                      aria-label="Close menu"
+                      className="p-2 text-gray-900"
+                    >
+                      <IconClose />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 overflow-y-auto">
+                    {activeSubGroup && (
+                      <MobileSubContent
+                        group={activeSubGroup}
+                        onLinkClick={closeMobile}
+                      />
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <MobileFooter
+                    onBookDemo={onBookDemoClick}
+                    onContactSales={closeMobile}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

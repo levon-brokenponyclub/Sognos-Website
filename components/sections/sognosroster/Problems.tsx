@@ -79,30 +79,30 @@ export default function SognoscareRosterProblems() {
   const activeContent = activeTab === "without" ? WITHOUT_SOGNOS : WITH_SOGNOS;
 
   return (
-    <section id="problems" className="overflow-clip bg-white py-20 md:py-28">
+    <section id="problems" className="overflow-clip bg-sognos-roster-dark pb-20 md:pb-28">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-blue-accent">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
             {activeContent.eyebrow}
           </p>
 
-          <h2 className="mt-4 font-heading text-4xl font-medium tracking-tight text-sognos-heading text-balance md:text-5xl">
+          <h2 className="mt-4 font-heading text-4xl font-medium tracking-tight text-white text-balance md:text-5xl">
             {activeContent.statement}
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-sognos-muted text-pretty">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
             {activeContent.detail}
           </p>
 
-          <div className="mt-10 inline-flex rounded-full border border-sognos-line bg-white p-1 shadow-sm">
+          <div className="mt-10 inline-flex rounded-full border border-white/20 bg-white/10 p-1">
             <button
               type="button"
               onClick={() => setActiveTab("without")}
               className={[
                 "rounded-full px-5 py-2 text-sm font-medium transition",
                 activeTab === "without"
-                  ? "bg-sognos-heading text-white"
-                  : "text-sognos-muted hover:text-sognos-heading",
+                  ? "bg-white text-sognos-heading"
+                  : "text-white/50 hover:text-white",
               ].join(" ")}
             >
               {WITHOUT_SOGNOS.label}
@@ -115,7 +115,7 @@ export default function SognoscareRosterProblems() {
                 "rounded-full px-5 py-2 text-sm font-medium transition",
                 activeTab === "with"
                   ? "bg-sognos-blue-accent text-white"
-                  : "text-sognos-muted hover:text-sognos-heading",
+                  : "text-white/50 hover:text-white",
               ].join(" ")}
             >
               {WITH_SOGNOS.label}
@@ -123,27 +123,27 @@ export default function SognoscareRosterProblems() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 border-t border-sognos-line md:grid-cols-3 md:divide-x md:divide-sognos-line">
+        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 border-t border-white/10 md:grid-cols-3 md:divide-x md:divide-white/10">
           {activeContent.points.map((point) => (
             <div
               key={`${activeTab}-${point.number}`}
               className="relative flex flex-col px-6 py-8 pb-12"
             >
-              <span className="font-mono text-xs text-sognos-muted">
+              <span className="font-mono text-xs text-white/40">
                 {point.number}
               </span>
 
-              <h3 className="mt-4 font-heading text-xl font-medium text-sognos-heading">
+              <h3 className="mt-4 font-heading text-xl font-medium text-white">
                 {point.title}
               </h3>
 
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-sognos-muted">
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-white/60">
                 {point.description}
               </p>
 
               <div
                 aria-hidden="true"
-                className="absolute bottom-0 left-6 right-6 h-[2px] bg-sognos-blue-accent"
+                className="absolute bottom-0 left-6 right-6 h-[2px] bg-sognos-roster-base"
               />
             </div>
           ))}

@@ -1,4 +1,5 @@
 import GenogramHero from "@/components/sections/sognosgenogram/Hero";
+import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
 import GenogramProblems from "@/components/sections/sognosgenogram/Problems";
 import GenogramFeatures from "@/components/sections/sognosgenogram/Features";
 import GenogramStories from "@/components/sections/sognosgenogram/Stories";
@@ -22,7 +23,12 @@ export default function SognosGenogramPage() {
   return (
     <>
       <GenogramHero />
-      <ProductSubNav productName="Sognos Genogram" sections={SECTIONS} />
+      <ScrollReveal>
+        <ProductTrustStrip />
+      </ScrollReveal>
+      <div className="bg-sognos-genogram-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
+        <ProductSubNav productName="Sognos Genogram" sections={SECTIONS} />
+      </div>
       <ScrollReveal>
         <GenogramProblems />
       </ScrollReveal>

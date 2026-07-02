@@ -17,8 +17,9 @@ const data: EditionData = {
   gradient: "/images/sognoscare/gradient-1.png",
   accentHex: "#c6da4c",
   accentTextClass: "text-[#c6da4c]",
-  accentBgClass: "bg-[#c6da4c]",
+  accentBgClass: "bg-sognos-edition-hospital-in-the-home",
   accentBorderClass: "border-[#c6da4c]",
+  advantagesBg: "var(--sognos-edition-hospital-in-the-home-dark)",
   problems: [
     {
       label: "Manual clinical scheduling",

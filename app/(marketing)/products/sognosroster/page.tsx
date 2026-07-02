@@ -1,4 +1,5 @@
 import SognoscareRosterHero from "@/components/sections/sognosroster/Hero";
+import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
 import SognoscareRosterProblems from "@/components/sections/sognosroster/Problems";
 import SognoscareRosterFeatures from "@/components/sections/sognosroster/Features";
 import SognoscareRosterAdvantages from "@/components/sections/sognosroster/Advantages";
@@ -24,7 +25,12 @@ export default function SognoscareRosterPage() {
   return (
     <>
       <SognoscareRosterHero />
-      <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
+      <ScrollReveal>
+        <ProductTrustStrip />
+      </ScrollReveal>
+      <div className="bg-sognos-roster-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
+        <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
+      </div>
       <ScrollReveal>
         <SognoscareRosterProblems />
       </ScrollReveal>

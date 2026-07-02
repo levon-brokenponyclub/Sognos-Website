@@ -195,6 +195,12 @@
   --color-sognos-edition-hospital-in-the-home:      var(--sognos-edition-hospital-in-the-home);
   --color-sognos-edition-child-and-family-services: var(--sognos-edition-child-and-family-services);
   --color-sognos-edition-disability:                var(--sognos-edition-disability);
+  --color-sognos-edition-aged-care-dark:                 var(--sognos-edition-aged-care-dark);
+  --color-sognos-edition-allied-health-dark:             var(--sognos-edition-allied-health-dark);
+  --color-sognos-edition-support-at-home-dark:           var(--sognos-edition-support-at-home-dark);
+  --color-sognos-edition-hospital-in-the-home-dark:      var(--sognos-edition-hospital-in-the-home-dark);
+  --color-sognos-edition-child-and-family-services-dark: var(--sognos-edition-child-and-family-services-dark);
+  --color-sognos-edition-disability-dark:                var(--sognos-edition-disability-dark);
 }
 
 /* ========================

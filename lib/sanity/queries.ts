@@ -424,7 +424,9 @@ const KNOWLEDGE_POST_ARCHIVE_QUERY = `*[_type == "knowledgePost"] | order(date d
   heroImage,
   industry,
   useCase,
-  date
+  date,
+  readTime,
+  author
 }`;
 
 const KNOWLEDGE_POST_BY_SLUG_QUERY = `*[_type == "knowledgePost" && slug.current == $slug][0]{
@@ -455,6 +457,8 @@ export type KnowledgePostArchive = {
   industry?: string | null;
   useCase?: string | null;
   date: string;
+  readTime?: string | null;
+  author?: string | null;
 };
 
 export async function getAllKnowledgePostSlugs(): Promise<{ slug: string }[]> {

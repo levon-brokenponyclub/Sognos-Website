@@ -1,5 +1,107 @@
 # Changelog
 
+## 2026-07-02 — Navbar: AngelList-style desktop dropdown spring glide
+
+- **Persistent panel — no re-mount on item switch:** removed outer `AnimatePresence` wrapper. Single `motion.div` stays in DOM; `opacity`/`y` driven by `openMenu !== null`. `pointerEvents: "none"` when closed.
+- **`panelWidth` useState → `panelWidthMV` motion value:** both `panelX` and `panelWidthMV` spring-animate simultaneously via `animate(panelX, targetX, DROPDOWN_SPRING)` + `animate(panelWidthMV, targetWidth, DROPDOWN_SPRING)`. Width clamped: `Math.min(rawWidth, containerRect.width - 2 * EDGE)`.
+- **Content pure-opacity crossfade:** inner `AnimatePresence mode="wait"` keyed on `openMenu ?? displayGroup.label` — no y-movement on content switch.
+- **`lastActiveGroupRef`:** preserves last active group so content stays visible during close animation.
+- **Hover timers tightened:** open delay 100ms → 60ms, close delay 150ms → 100ms.
+- **Verified:** Products dropdown ✓ · switch to Solutions lateral glide ✓ · no console errors ✓
+- **Files:** `components/layout/Navbar.tsx`
+
+## 2026-07-02 — Navbar: AngelList two-level full-screen mobile menu
+
+- **Replaced accordion** (`AccordionItem` component + `openAccordion` state) with a two-level full-screen slide pattern modelled on AngelList mobile nav.
+- **Level 1 (Root):** full-viewport fixed overlay (`z-[51]`, `fixed inset-0 bg-white`). Header row: logo left, × right. Nav list: each group as full-width row `px-6 py-5`, `text-xl font-medium`, `border-b border-gray-100`, `→` arrow on groups with dropdowns, no arrow on plain links. Footer pinned: `bg-sognos-navy-dark` "Book a Demo" + `bg-gray-100` "Contact Sales" side-by-side, equal width, `rounded-lg`.
+- **Level 2 (Sub-panel):** slides in from right (`x: 100% → 0`), Level 1 exits left (`x: 0 → -100%`). Header: `← Back` text-button left, × right. Content: `bg-gray-50` section heading bands, link rows with `border-b border-gray-100`, gradient card (first 2 items as thumbnails + labels). `AnimatePresence mode="wait"` with `SLIDE = { duration: 0.25, ease: [0.4, 0, 0.2, 1] }`.
+- **Direction tracking:** `mobilePanelDirectionRef` (`forward` | `back`) drives Level 1 enter `initial` so back-navigation slides from left.
+- **Mobile backdrop blur removed** — full-screen white overlay makes it unnecessary. Desktop backdrop blur untouched.
+- **Desktop nav untouched:** all hover-intent, `panelX` spring, `AnimatePresence mode="wait"` dropdown, scroll states, `layoutId="nav-hover-pill"` — zero changes.
+- **Verified:** Level 1 renders ✓ · Level 2 slides in on tap ✓ · Back returns to root ✓ · desktop zero console errors ✓
+- **Files:** `components/layout/Navbar.tsx`
+
+## 2026-07-02 — Edition pages: Advantages dark token variants + inline style bypass
+
+- **6 dark edition tokens added** to `tokens.css` (`:root` raw CSS vars, not `@theme inline`): `--sognos-edition-aged-care-dark` `#2d1a5c`, `--sognos-edition-allied-health-dark` `#6b2d00`, `--sognos-edition-support-at-home-dark` `#660e10`, `--sognos-edition-hospital-in-the-home-dark` `#2a3605`, `--sognos-edition-child-and-family-services-dark` `#5c0a33`, `--sognos-edition-disability-dark` `#003d34`. Corresponding `--color-*` aliases added to `@theme inline` in `globals.css`.
+- **Tailwind utility bypass**: new `bg-sognos-edition-*-dark` utility classes failed to generate in both dev and prod (content scanner did not pick up new `@theme inline` entries for brand-new token names). Switched to `style={{ backgroundColor: "var(--sognos-edition-*-dark)" }}` — bypasses Tailwind entirely, reads directly from CSS vars on `:root`.
+- **`EditionData` type**: added `advantagesBg?: string` field (replaces dropped `advantagesBgClass` approach). Template uses `style={{ backgroundColor: data.advantagesBg ?? "var(--sognos-care-dark)" }}` as fallback.
+- **6 edition pages updated**: `advantagesBgClass: "bg-sognos-edition-*-dark"` → `advantagesBg: "var(--sognos-edition-*-dark)"` in all data objects.
+- **Verified**: `#advantages` on `residential-aged-care` renders `background-color: rgb(45, 26, 92)` = `#2d1a5c` ✓
+- **Files**: `app/tokens.css`, `app/globals.css`, `components/sections/sognoscare/EditionPageTemplate.tsx`, all 6 edition `page.tsx` files
+
+## 2026-07-02 — Edition pages: Key Advantages section bg → per-edition colour token
+
+- **Mechanism**: `EditionPageTemplate.tsx` internal `Advantages` function — section className changed from `"w-full bg-sognos-care-dark text-white"` to `` `w-full ${data.accentBgClass} text-white` ``. Reuses the existing `accentBgClass` field already on `EditionData`, which holds the per-edition `bg-sognos-edition-*` utility class. No new prop, no new field.
+- **Main SognosCare product page unaffected**: uses standalone `components/sections/sognoscare/Advantages.tsx` — not `EditionPageTemplate`. Remains `bg-sognos-care-dark`.
+- **Per-edition mapping applied**:
+  - `residential-aged-care` → `bg-sognos-edition-aged-care` (`#caa4ff`)
+  - `allied-health` → `bg-sognos-edition-allied-health` (`#ffad6e`)
+  - `support-at-home` → `bg-sognos-edition-support-at-home` (`#ff8e90`)
+  - `hospital-in-the-home` → `bg-sognos-edition-hospital-in-the-home` (`#cbdd61`)
+  - `disability-mental-health` → `bg-sognos-edition-disability` (`#00a98f`)
+  - `child-and-family-services` → `bg-sognos-edition-child-and-family-services` (`#ff7dbc`)
+- **hospital-in-the-home canonicalised**: `accentBgClass` was `bg-[#c6da4c]` (raw hex). Updated to `bg-sognos-edition-hospital-in-the-home`. `accentHex`/`accentTextClass`/`accentBorderClass` left as raw hex — out of scope.
+- **⚠️ Contrast flag (not fixed — out of scope)**: Pale/mid tokens (`#caa4ff` aged-care, `#ffad6e` allied-health, `#ff8e90` support-at-home, `#cbdd61` hospital-in-the-home, `#ff7dbc` child-and-family`) render white text + `bg-white/10` rows on light backgrounds. Contrast ratios on these pale tokens will not meet WCAG AA for body text. Decision deferred to Levon.
+- **Files**: `components/sections/sognoscare/EditionPageTemplate.tsx`, `app/(marketing)/products/sognoscare/editions/hospital-in-the-home/page.tsx`
+
+## 2026-07-02 — About page: Our Values full-bleed stacking cards
+
+- **Full-bleed cards**: removed inner `mx-auto max-w-7xl px-6 pb-3 lg:px-10` wrapper. Sticky div IS the card bg — full viewport width, no side gutters. Inner content wrapped in `mx-auto max-w-7xl px-6 pt-6 pb-10 lg:px-10 lg:pt-8 lg:pb-16` for gutter-aligned text.
+- **Stacking reveal**: card 1 sticks at `top: 80px` (navbar height). Card 2 sticks at `top: 136px` (80 + 56px reveal). 56px sliver of card 1 stays visible above card 2 when stacked — reveals "● OUR MISSION / 01" eyebrow strip. Card inner `pt-6` (24px) ensures eyebrow text clears the pin offset.
+- **Top-only rounding**: `rounded-lg` → `rounded-t-lg`. Bottom corners square — card 2 bottom meets Beliefs section with no bump.
+- **Scroll buffer removed**: `h-[40vh]` white buffer deleted. Vision card (`bg-sognos-navy`) flows directly into Beliefs (`bg-sognos-navy`) — seamless same-colour junction, no gap.
+- **No horizontal overflow**: sticky div uses default `w-full` — no `w-screen` or negative-margin technique. `document.body.scrollWidth === window.innerWidth` confirmed.
+- **Files**: `components/sections/AboutValues.tsx`
+
+## 2026-07-02 — About page: body paragraphs, AboutStats count-up, AboutValues stacking cards, simplified AboutBeliefs
+
+- **Body paragraphs**: 4 paragraphs added to About section (`space-y-5 max-w-3xl text-sognos-muted`) between h2 and stats.
+- **AboutStats (new)**: `components/sections/AboutStats.tsx` — `"use client"`, 3 stats (2016 Founded / 10+ Years / 3 Countries served). `CountUpStat`: `IntersectionObserver` threshold 0.4, fires once; `requestAnimationFrame` ease-out cubic (1100ms); year starts from `Math.floor(value * 0.97)`, small numbers from 0; `useReducedMotion()` guard shows final value immediately. Dividers: `border-r border-(--sognos-line)` on all but last stat, `pl-10 md:pl-12` on all but first. Removed 4th "Built on Microsoft" stat.
+- **AboutValues (new)**: `components/sections/AboutValues.tsx` — Server Component. Two stacking sticky cards: Mission (`bg-sognos-blue-accent`, z-10, `top: 80`) and Vision (`bg-sognos-navy`, z-20, `top: 80`). `min-h-[520px] lg:min-h-[56vh]`. Content: eyebrow top-left, "01"/"02" top-right, large statement bottom. Inset `mx-auto max-w-7xl px-6 pb-3 lg:px-10` wrapper on each card. Section title "Our Values" above cards in `bg-white` section. `h-[40vh]` scroll buffer after last card.
+- **AboutBeliefs simplified**: rewrote from 5-tab client component to static Server Component. Single `rounded-lg border-white/10 bg-white/5 p-10 lg:p-14` card inside `bg-sognos-navy py-20` section. Two-col grid: left = "Our Beliefs" h2 + intro; right = 3 values (`space-y-8 lg:border-l lg:border-white/15 lg:pl-16`). No tabs, no slider, no dots, no `"use client"`.
+- **About page**: added `<AboutValues />` between About section and `<AboutBeliefs />`.
+- **Files**: `components/sections/AboutStats.tsx` (new), `components/sections/AboutValues.tsx` (new), `components/sections/AboutBeliefs.tsx` (rewritten), `app/(marketing)/company/about/page.tsx`
+
+## 2026-07-02 — About page: AngelList engineering/careers layout (hero + mission + beliefs)
+
+- **Hero replaced**: removed `bg-gray-200/50` bento grid (shine-pill eyebrow, centered layout, stat tiles, images). New dark two-up: `bg-sognos-navy`, left h1 "Building smarter automation…" (`text-5xl lg:text-6xl`), right intro paragraph + white "Book a Demo" `rounded-full` link to `/contact`.
+- **Navbar transparency**: `/company/about` added to `DARK_HERO_PATHS` — navbar transparent white at scroll-top over the new dark hero. Verified: `header bg = rgba(0,0,0,0)` at page top.
+- **Mission section (new)**: replaced `bg-sognos-blue-accent` section. New `bg-white py-20 lg:py-28` two-col layout: `lg:grid-cols-[200px_1fr]` — left eyebrow `● About Sognos`, right large heading "Healthcare First. Field Service Always. AI at the Centre." + 4-stat row (2016/Founded, 10+/Years, 3/Countries served, Built on Microsoft/Dynamics 365 Native). Stats separated by `border-l border-(--sognos-line)`. 4th "Built on Microsoft" stat: `text-xl lg:text-2xl` (smaller than numeric stats — text phrase, not a number).
+- **Beliefs section (new)**: `components/sections/AboutBeliefs.tsx` — client component. `bg-sognos-navy`. Heading "Our Beliefs" + intro. Pill row: replicated ProductSubNav visual (track `bg-white/10 p-1.5 rounded-full`, active `motion.span layoutId="beliefs-pill" bg-white`, inactive `text-white/70`). 5 tabs: Our Mission, Our Vision, Respect for the individual, Value to our customers, Excellence in all that we do. Card: `rounded-lg border-white/10 bg-white/5` + two-col split (title left, `lg:border-l lg:border-white/15`, body right). Crossfade mechanic: `AnimatePresence mode="wait"` keyed on `active` index (`y: 8→0, opacity: 0→1, duration: 0.18s`). Dot indicators: 5 dots, active `w-4 h-1.5 bg-white`, inactive `w-1.5 h-1.5 bg-white/30`.
+- **Removed from page**: old `VALUES` data (reintegrated into `AboutBeliefs.tsx` BELIEFS array), `bg-sognos-blue-accent` section, all bento markup. Kept unchanged: `PARTNERS` data, Partners section, `<TeamSection />`, `<SocialResponsibilitySection />`, commented-out Careers section.
+- **Files**: `components/layout/Navbar.tsx`, `components/sections/AboutBeliefs.tsx` (new), `app/(marketing)/company/about/page.tsx`
+
+## 2026-07-02 — Knowledge Hub: date/readTime/author + uniform pills + card borders + grid spacing
+
+- **Category pills unified**: removed per-category colour map (`BADGE_STYLES`). All pills now `bg-gray-100 text-gray-600 rounded-lg` — no border, no colour variants. Applies to grid cards and featured article.
+- **Date + read time added**: `ArticleMeta` helper formats `publishedAt` ("YYYY-MM-DD" → "JUN 30, 2026") + uppercases `readTime` string; renders `"JUN 30, 2026 — 3 MIN READ"` below title on both grid cards and featured. Gracefully omitted if either field is null.
+- **Author added to featured**: initial-letter avatar circle (`bg-gray-200`) + author name. Omitted if `author` null. Sanity schema: `author` is a plain string (no role/image); initial is `charAt(0).toUpperCase()`.
+- **Grid card bottom border**: each card now `pb-6 border-b border-gray-200`.
+- **Grid spacing**: `gap-3 lg:gap-4` → `gap-x-6 gap-y-10 lg:gap-x-8 lg:gap-y-12`. "● All articles" label `mb-6` → `mb-8`.
+- **Sanity query + type updated**: `KNOWLEDGE_POST_ARCHIVE_QUERY` now fetches `readTime` and `author`. `KnowledgePostArchive` type gains `readTime?: string | null` and `author?: string | null`.
+- **Article type extended**: `publishedAt?`, `readTime?`, `author?` added as optional nullable strings. Fully backwards-compatible — all existing page mappings unaffected.
+- **Files**: `lib/sanity/queries.ts`, `app/(marketing)/knowledge-hub/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — Knowledge Hub archive refactored to AngelList /blog layout
+
+- **`app/(marketing)/knowledge-hub/page.tsx` — hero replaced**: removed `data-header-dark`, dark gradient hero, eyebrow pill, centred layout. New light hero: `bg-white pt-32 pb-12 lg:pt-40 lg:pb-16`, left-aligned `h1`, `max-w-2xl` intro paragraph. Navbar now solid over Knowledge Hub (correct — not in `DARK_HERO_PATHS`).
+- **`KnowledgeHubArchive.tsx` — complete rewrite**: Removed sticky sidebar, industry dropdown, 3-col grid, card excerpts/Read More, `rounded-2xl` empty state. New AngelList pattern: (1) horizontal pill row — All + 5 category pills + Clear; (2) featured two-up `lg:grid-cols-2` — always article[0], unfiltered; (3) `<hr>` divider; (4) `● All articles` 4-up grid `lg:grid-cols-4` with `gap-3 lg:gap-4`; (5) navy Case Study band `bg-sognos-navy` — hardcoded Flourish Australia placeholder. `ArticleCard`: `aspect-[16/10] rounded-lg` image, BADGE_STYLES colour-coded category pill, title only. Empty state `rounded-lg`. Schema flag: `Article` type lacks `date`/`readTime`/`author` fields — deferred to future Sanity schema update.
+- **Files**: `app/(marketing)/knowledge-hub/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — ProductSubNav layout unified; TrustStrip dividers; Hero scroll transforms restored
+
+- **ProductSubNav layout unified across all three product pages**: Care was the reference (SubNav embedded inside Problems section with `flex justify-center` + `pt-20 md:pt-28` above, `mb-16` below). Roster/Genogram had bare wrapper divs with no padding. Fix: wrapper divs on Roster + Genogram page.tsx updated to `flex justify-center px-6 pt-20 pb-16 md:pt-28`; Roster Problems `py-20 md:py-28` → `pb-20 md:pb-28`; Genogram Problems `py-24` → `pb-24` (top padding stripped — wrapper now owns it).
+- **ProductTrustStrip dividers**: vertical `border-l border-gray-200` hairline between logos on desktop (`md:`). `divide-x` skipped (Tailwind v4 child-selector not generating); per-item `index > 0` conditional class used instead. Mobile: `gap-x-12` wrap unchanged, no dividers. Desktop: `md:flex-1 md:px-10` per-logo wrapper + `md:gap-x-0` on row.
+- **Hero scroll transforms restored — all three product heroes**: Roster + Genogram heroes converted from Server Components to Client Components. All three now match: `useScroll({ target: heroRef, offset: ["start start","end start"] })`, `y: [0,1]→[0,60]`, `opacity: [0,0.7]→[1,0]`. `useReducedMotion()` guard on all three — no transform when OS prefers reduced motion. Roster/Genogram placeholder cards: `rounded-t-2xl` → `rounded-lg`.
+- **Files**: `components/sections/ProductTrustStrip.tsx`, `components/sections/sognoscare/Hero.tsx`, `components/sections/sognosroster/Hero.tsx`, `components/sections/sognosgenogram/Hero.tsx`, `components/sections/sognosroster/Problems.tsx`, `components/sections/sognosgenogram/Problems.tsx`, `app/(marketing)/products/sognosroster/page.tsx`, `app/(marketing)/products/sognosgenogram/page.tsx`
+
+## 2026-07-02 — ProductTrustStrip wired to Roster + Genogram; Roster Advantages rewrite
+
+- **`ProductTrustStrip` wired to Roster + Genogram pages**: added `<ProductTrustStrip />` after Hero (wrapped in `<ScrollReveal>`) in `sognosroster/page.tsx` and `sognosgenogram/page.tsx`. Strip stays `bg-white` / `grayscale` logos on all three product pages — consistent across Care/Roster/Genogram.
+- **`sognosroster/Advantages.tsx` rewritten**: replaced old bento-grid layout with the Care Advantages pattern — `bg-sognos-roster-base` bg, AngelList sticky-rail checklist, Framer Motion stagger (`containerVariants`/`itemVariants`), white `CheckIcon`, `odd:bg-white/10` striped rows. New Roster-specific copy (6 items).
+- **Files**: `components/sections/ProductTrustStrip.tsx`, `components/sections/sognosroster/Advantages.tsx`, `app/(marketing)/products/sognosroster/page.tsx`, `app/(marketing)/products/sognosgenogram/page.tsx`
+
 ## 2026-06-15 — Navbar: nav items py-3 + all CTA elements h-14 (56px)
 
 - **Nav items `py-2 → py-3`**: both the dropdown `<button>` trigger and the non-dropdown nav `<Link>` get `px-4 py-3 rounded-full`. Taller hit target, more breathing room in the pill group.

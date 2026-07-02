@@ -19,6 +19,7 @@ const data: EditionData = {
   accentTextClass: "text-sognos-edition-child-and-family-services",
   accentBgClass: "bg-sognos-edition-child-and-family-services",
   accentBorderClass: "border-sognos-edition-child-and-family-services",
+  advantagesBg: "var(--sognos-edition-child-and-family-services-dark)",
   problems: [
     {
       label: "Disconnected family and case records",

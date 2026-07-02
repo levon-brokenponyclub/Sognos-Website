@@ -53,6 +53,7 @@ export type EditionData = {
   accentTextClass: string;
   accentBgClass: string;
   accentBorderClass: string;
+  advantagesBg?: string;
   problems: Problem[];
   features: Feature[];
   advantages: string[];
@@ -104,14 +105,16 @@ function Hero({ data }: { data: EditionData }) {
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden pb-20 md:pb-28 bg-gray-100"
+      className="relative overflow-hidden pb-20 md:pb-28 bg-gray-50 h-full"
       onMouseMove={handleMouseMove}
     >
       {/* AngelList-style glow: 1px anchor translated to cursor, 600px orb centred on it */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-0 size-px"
-        style={{ transform: `translateX(${cursorPos.x}px) translateY(${cursorPos.y}px)` }}
+        style={{
+          transform: `translateX(${cursorPos.x}px) translateY(${cursorPos.y}px)`,
+        }}
       >
         <div
           className="absolute left-0 top-0 size-[305px] -translate-x-1/2 -translate-y-1/2 rounded-full md:size-[600px]"
@@ -121,10 +124,15 @@ function Hero({ data }: { data: EditionData }) {
         />
       </div>
 
-      <motion.div style={{ y, opacity }} className="relative will-change-transform">
+      <motion.div
+        style={{ y, opacity }}
+        className="relative will-change-transform"
+      >
         <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center lg:px-10">
           {/* Eyebrow */}
-          <p className={`text-xs font-semibold uppercase tracking-[0.08em] ${data.accentTextClass}`}>
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.08em] ${data.accentTextClass}`}
+          >
             SognosCare — {data.name}
           </p>
 
@@ -189,7 +197,9 @@ function WhatItSolves({ data }: { data: EditionData }) {
                 "lg:[&:nth-child(3n+1)]:pl-0 lg:[&:nth-child(3n)]:pr-0",
               ].join(" ")}
             >
-              <span className={`font-heading text-5xl font-medium leading-none ${data.accentTextClass}`}>
+              <span
+                className={`font-heading text-5xl font-medium leading-none ${data.accentTextClass}`}
+              >
                 {i + 1}
               </span>
               <h3 className="mt-5 font-heading text-base md:text-lg font-medium text-sognos-heading">
@@ -272,7 +282,13 @@ function CheckIcon() {
 
 function Advantages({ data }: { data: EditionData }) {
   return (
-    <section id="advantages" className="w-full bg-sognos-care-dark text-white">
+    <section
+      id="advantages"
+      className="w-full text-white"
+      style={{
+        backgroundColor: data.advantagesBg ?? "var(--sognos-care-dark)",
+      }}
+    >
       <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Left — label col */}
@@ -288,7 +304,7 @@ function Advantages({ data }: { data: EditionData }) {
               <h2 className="font-heading text-3xl font-medium tracking-tight text-white md:text-4xl">
                 Key Advantages
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-white/60">
+              <p className="mt-4 text-base leading-relaxed text-white">
                 Built for the regulatory reality of {data.name.toLowerCase()}{" "}
                 care — not adapted from a generic CRM.
               </p>
@@ -310,7 +326,7 @@ function Advantages({ data }: { data: EditionData }) {
                   }`}
                 >
                   <CheckIcon />
-                  <span className="text-base leading-relaxed text-white/80">
+                  <span className="text-base leading-relaxed text-white">
                     {advantage}
                   </span>
                 </motion.li>
@@ -372,7 +388,6 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
       <div id="calendar">
         <CTASection defaultProduct="sognoscare" />
       </div>
-
     </main>
   );
 }

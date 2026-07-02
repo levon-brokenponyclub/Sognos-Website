@@ -76,10 +76,7 @@ export default function SognoscareAdvantages({
   const items = advantages.length > 0 ? advantages : DEFAULT_ADVANTAGES;
 
   return (
-    <section
-      id="advantages"
-      className="w-full bg-sognos-care-dark text-white"
-    >
+    <section id="advantages" className="w-full bg-sognos-care-dark text-white">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Left — label col */}
@@ -96,7 +93,7 @@ export default function SognoscareAdvantages({
                 {header.heading}
               </h2>
               {header.intro && (
-                <p className="mt-4 text-base leading-relaxed text-white/60">
+                <p className="mt-4 text-base leading-relaxed text-white">
                   {header.intro}
                 </p>
               )}
@@ -118,7 +115,7 @@ export default function SognoscareAdvantages({
                   }`}
                 >
                   <CheckIcon />
-                  <span className="text-base leading-relaxed text-white/80">
+                  <span className="text-base leading-relaxed text-white">
                     {advantage}
                   </span>
                 </motion.li>

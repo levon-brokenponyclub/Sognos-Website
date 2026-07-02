@@ -63,7 +63,7 @@ export default function SognoscareProblems({
   subNav,
 }: SognoscareProblemsProps = {}) {
   return (
-    <section id="problems" className="overflow-clip bg-white py-20 md:py-28">
+    <section id="problems" className="overflow-clip bg-sognos-care-dark py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4">
 
         {/* subNav slot — centred, above problem block */}
@@ -73,13 +73,13 @@ export default function SognoscareProblems({
 
         {/* Problem block */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-blue-accent">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
             {problemLabel}
           </p>
-          <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-sognos-heading text-balance">
+          <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-white text-balance">
             {problemStatement}
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-sognos-muted text-pretty">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
             {problemDetail}
           </p>
         </div>
@@ -89,41 +89,32 @@ export default function SognoscareProblems({
 
           {/* Solution block */}
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-blue-accent">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
               {solutionLabel}
             </p>
-            <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-sognos-heading text-balance">
+            <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-white text-balance">
               {solutionStatement}
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-sognos-muted text-pretty">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
               {solutionDetail}
             </p>
           </div>
 
-          {/* Capability columns — 5 slim columns with vertical dividers + bottom accent bars */}
-          {/*
-            Desktop (lg): 5 cols in one row; divide-x creates vertical borders between columns.
-            Mobile (default): 2 cols stacked in rows; top border on container separates from solution block.
-            md: 3 cols. Vertical dividers only on lg+ where all 5 fit in one row.
-          */}
-          <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 border-t border-sognos-line lg:divide-x lg:divide-sognos-line">
+          <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 border-t border-white/10 lg:divide-x lg:divide-white/10">
             {capabilities.map((cap) => (
               <div
                 key={cap.number}
                 className="relative flex flex-col px-5 py-6 pb-10"
               >
-                <span className="font-mono text-xs text-sognos-muted">
+                <span className="font-mono text-xs text-white/40">
                   {cap.number}
                 </span>
-                <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-sognos-heading">
+                <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-white">
                   {cap.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-muted">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">
                   {cap.description}
                 </p>
-                {/* Static accent bar — full column width, anchored at bottom edge.
-                    Left/right inset to align with column padding.
-                    Becomes scaleX reveal target in the follow-up motion pass. */}
                 <div
                   aria-hidden="true"
                   className="absolute bottom-0 left-5 right-5 h-[2px] bg-sognos-blue-accent"

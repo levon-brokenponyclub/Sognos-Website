@@ -19,6 +19,7 @@ const data: EditionData = {
   accentTextClass: "text-sognos-edition-allied-health",
   accentBgClass: "bg-sognos-edition-allied-health",
   accentBorderClass: "border-sognos-edition-allied-health",
+  advantagesBg: "var(--sognos-edition-allied-health-dark)",
   problems: [
     {
       label: "Fragmented referral management",

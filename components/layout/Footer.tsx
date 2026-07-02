@@ -8,7 +8,7 @@ export default async function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-sognos-navy-dark text-white">
+    <footer className="bg-sognos-navy text-white">
       {/* Main section — links left, brand right (mobile: brand top, links below) */}
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex flex-col gap-x-[57px] gap-y-12 py-12 md:flex-row md:py-[96px]">

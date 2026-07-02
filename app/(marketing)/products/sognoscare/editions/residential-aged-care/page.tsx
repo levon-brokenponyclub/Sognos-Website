@@ -19,6 +19,7 @@ const data: EditionData = {
   accentTextClass: "text-sognos-edition-aged-care",
   accentBgClass: "bg-sognos-edition-aged-care",
   accentBorderClass: "border-sognos-edition-aged-care",
+  advantagesBg: "var(--sognos-edition-aged-care-dark)",
   problems: [
     {
       label: "Complex resident care planning",

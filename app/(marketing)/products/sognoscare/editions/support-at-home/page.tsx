@@ -19,6 +19,7 @@ const data: EditionData = {
   accentTextClass: "text-sognos-edition-support-at-home",
   accentBgClass: "bg-sognos-edition-support-at-home",
   accentBorderClass: "border-sognos-edition-support-at-home",
+  advantagesBg: "var(--sognos-edition-support-at-home-dark)",
   problems: [
     {
       label: "Manual care worker scheduling",

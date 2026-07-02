@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 
 interface SognoscareHeroProps {
   // logoSrc kept optional for caller compatibility; no longer rendered.
@@ -27,8 +27,9 @@ export default function SognoscareHero({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 110]);
-  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0.7]);
+  const prefersReducedMotion = useReducedMotion();
+  const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, 60]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], prefersReducedMotion ? [1, 1] : [1, 0]);
 
   return (
     <section
