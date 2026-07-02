@@ -26,22 +26,22 @@ export default function ProductTrustStrip({
 }: ProductTrustStripProps = {}) {
   return (
     <section aria-label="Trusted organisations" className={`w-full bg-white`}>
-      <div className="mx-auto max-w-5xl px-6 pt-16 pb-20 text-center md:pt-20 md:pb-28 lg:px-10">
-        <p className="mb-3 font-heading text-lg tracking-tight font-medium text-black/70">
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20 lg:px-10">
+        <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-black/70">
           {title}
         </p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
+        <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
           {logos.map((logo, index) => (
             <div
               key={logo.alt}
-              className={`flex items-center justify-center md:flex-1 md:px-10${index > 0 ? " md:border-l md:border-gray-200" : ""}`}
+              className={`flex items-center justify-center md:flex-1 md:px-8 py-5${index > 0 ? " md:border-l md:border-gray-300" : ""}`}
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 width={150}
                 height={40}
-                className="h-7 w-auto object-contain grayscale opacity-70 md:h-8"
+                className="h-10 w-auto object-contain grayscale md:h-10"
               />
             </div>
           ))}

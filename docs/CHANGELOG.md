@@ -1,13 +1,37 @@
 # Changelog
 
-## 2026-07-02 — Navbar: AngelList-style desktop dropdown spring glide
+## 2026-07-02 — Knowledge Hub article page: AngelList blog-article layout
 
-- **Persistent panel — no re-mount on item switch:** removed outer `AnimatePresence` wrapper. Single `motion.div` stays in DOM; `opacity`/`y` driven by `openMenu !== null`. `pointerEvents: "none"` when closed.
-- **`panelWidth` useState → `panelWidthMV` motion value:** both `panelX` and `panelWidthMV` spring-animate simultaneously via `animate(panelX, targetX, DROPDOWN_SPRING)` + `animate(panelWidthMV, targetWidth, DROPDOWN_SPRING)`. Width clamped: `Math.min(rawWidth, containerRect.width - 2 * EDGE)`.
-- **Content pure-opacity crossfade:** inner `AnimatePresence mode="wait"` keyed on `openMenu ?? displayGroup.label` — no y-movement on content switch.
-- **`lastActiveGroupRef`:** preserves last active group so content stays visible during close animation.
-- **Hover timers tightened:** open delay 100ms → 60ms, close delay 150ms → 100ms.
-- **Verified:** Products dropdown ✓ · switch to Solutions lateral glide ✓ · no console errors ✓
+- **Layout overhaul:** two-column shell (`lg:grid-cols-[200px_1fr]`) replacing the old two-up hero. Left rail is `lg:sticky lg:top-[104px]` with back-link, category badge, "Written by" avatar + name, and share icons (LinkedIn/X/Facebook, moved from the old inline row). Main column is centered prose at `max-w-[46rem]`: title, excerpt as subtitle, `DATE — READ TIME` meta row, hero image, then the body.
+- **Body prose restyled:** narrower measure, `blockquote` upgraded from a plain italic border-left quote to a large `text-xl lg:text-2xl` accent-coloured pull-quote (`border-l-2 border-sognos-blue-accent`). Portable Text source/serializer registration unchanged — only rendered output restyled.
+- **NEXT/prev removed → "Latest articles" 3-up:** the old previous/next link buttons are gone. Replaced with a `bg-gray-200/70` band showing the latest 3 posts (excluding the current slug) via `getKnowledgePostArchive()`, rendered with the **same `ArticleCard`** used in the archive's "All articles" grid — exported from `components/sections/KnowledgeHubArchive.tsx` instead of duplicated.
+- **Fields used vs missing:** `author` is a plain string (no role/avatar object) — rail shows initial-letter avatar + name only, no role line. No dedicated Sanity "quote" block type exists — pull-quote styling is applied to the existing `blockquote` serializer. `excerpt` doubles as the subtitle.
+- **Verified:** `npm run build` green. DOM/accessibility-tree confirmed sticky rail, prose column, and 3 correct "Latest articles" cards (excluding current post) render; screenshot tool was flaky mid-session (blank captures on scroll) but content was confirmed present, styled, and legible via computed-style inspection.
+- **Incidental fix:** `ArticleCard`'s image wrapper in `KnowledgeHubArchive.tsx` used `rounded` instead of `rounded-lg` (pre-existing, violates the rounded-lg-only rule) — corrected.
+- **Files:** `app/(marketing)/knowledge-hub/[slug]/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — ProductCustomerStories: card body ported to AngelList layout
+
+- **Grid:** `md:grid-cols-11` (7 / gap / 3) → `md:grid-cols-12` (8 / 4). Text:image ratio ~2:1. No gap column — image column sits flush against text column.
+- **Left col:** removed h3 company title. Order now: `blockquote → "Read Customer Story" link → (mt-auto spacer) → author + role bottom-LEFT | logo bottom-RIGHT`. Bottom row is `flex items-end justify-between gap-6`. Quote sized up `text-lg lg:text-[22px]` → `text-xl md:text-2xl`. Author/role `text-sm text-white/70` → `text-base text-white` (bolder pairing that reads at AngelList weight). Logo `h-7` → `h-14`, `brightness-0 invert flex-shrink-0`.
+- **Right col:** now full-bleed image. Removed `p-4 lg:p-6` outer padding, removed inner `rounded-lg overflow-hidden mb-4` wrapper. `Image fill object-cover` sits inside `relative md:col-span-4 min-h-[280px] md:min-h-0 bg-white/5` — image clips to the card's outer `rounded-lg overflow-hidden` on right/top/bottom edges.
+- **Stats block removed:** Company Size / Industry stack + `border-white/15` hairline removed entirely from card render. `CaseStudy` type retains `companySize`/`industry` fields — data preserved, just not displayed.
+- **Card min-height reduced:** `min-h-[420px] md:min-h-[480px]` → `min-h-[360px] md:min-h-[440px]` for a more compact card without cropping the quote-dominant layout.
+- **No-image degradation:** right col `bg-white/5` reveals a subtle accent panel if both `panelVideo` and `panelImage` are absent (all current stories have `panelImage`, so this is defensive only).
+- **Untouched:** Embla mechanics (gutter-inset padding-left + trailing spacer + `mr-` between slides), both-side peek, arrows/dots/autoplay, `showChrome` single-story guard, `TESTIMONIAL_PALETTE` rotation (Care / Roster / Genogram dark), white text.
+- **Verified:** `npm run build` green + `npx tsc --noEmit` clean. Panel images render slowly in dev (Next.js `/_next/image` optimization queue) but request status is `pending` not error — source files exist on disk; production build resolves.
+- **Files:** `components/sections/ProductCustomerStories.tsx`
+
+## 2026-07-02 — Navbar: AngelList exact-spec desktop dropdown rewrite
+
+- **Architecture overhaul:** removed `panelX`/`panelWidthMV` motion values, `triggerRefs`, `panelWidths`, `prevOpenMenuRef`, `containerRef`, `DROPDOWN_SPRING`, `EDGE`, and JS x-positioning `useLayoutEffect`. Removed `useMotionValue`/`animate` from framer-motion imports.
+- **CSS-transition sizing:** `dropdownWidth`/`dropdownHeight` state set from hidden measurer divs in `useLayoutEffect` (synchronous before paint). Card uses `transition: width 0.3s / height 0.3s cubic-bezier(0.4,0,0.2,1)` — no JS animation for dimensions.
+- **Full-width centering:** dropdown `AnimatePresence` moved outside `max-w-7xl` container, placed directly in `<header>` as `absolute inset-x-0 top-full mt-4 flex justify-center pointer-events-none` — card centers on viewport width, matching AngelList.
+- **Fixed-key outer panel:** `AnimatePresence` keyed `"dropdown-panel"` — never re-mounts between items. Open: `rotateX(-10deg) scale(0.9) opacity:0 → identity` (0.2s `[0.16,1,0.3,1]`). Close: inverse `scale(0.95)`.
+- **Directional content slide:** `AnimatePresence mode="popLayout"` inside card, keyed on `openMenu`. `slideDirectionRef` + `prevOpenIndexRef` set in `recordDirection()` before every `setOpenMenu` call. Forward: enter from `x:200`, exit to `x:-200`. Backward: reversed. 0.25s `[0.4,0,0.2,1]`.
+- **Measurer padding:** `p-8 → p-6` (matches AngelList's 24px content padding).
+- **THEMES cleanup:** removed unused `dropdownCard`, `mobilePanel`, `mobileDivider` keys.
+- **Verified:** Products open/close ✓ · switch to Solutions width+height transition ✓ · directional slide ✓ · no console errors ✓
 - **Files:** `components/layout/Navbar.tsx`
 
 ## 2026-07-02 — Navbar: AngelList two-level full-screen mobile menu

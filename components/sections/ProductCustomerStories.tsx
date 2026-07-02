@@ -22,8 +22,8 @@ export type CaseStudy = {
 const AUTOPLAY_MS = 10000;
 
 const TESTIMONIAL_PALETTE = [
-  "bg-sognos-care-dark",     // #03112f
-  "bg-sognos-roster-dark",   // #0b3a66
+  "bg-sognos-care-dark", // #03112f
+  "bg-sognos-roster-dark", // #0b3a66
   "bg-sognos-genogram-dark", // #250438
 ] as const;
 
@@ -159,7 +159,10 @@ export default function ProductCustomerStories({
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
+  const scrollTo = useCallback(
+    (i: number) => emblaApi?.scrollTo(i),
+    [emblaApi],
+  );
 
   return (
     <section id="stories" className="w-full bg-white overflow-hidden">
@@ -184,7 +187,10 @@ export default function ProductCustomerStories({
                 key={i}
                 className={`shrink-0 min-w-0 w-[calc(100vw-3rem)] lg:w-[calc(100vw-12rem)] max-w-[1332px]${i < stories.length - 1 ? " mr-6 sm:mr-8" : ""}`}
               >
-                <StoryCard study={study} bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]} />
+                <StoryCard
+                  study={study}
+                  bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]}
+                />
               </div>
             ))}
             {/* Trailing spacer — browsers exclude container paddingRight from scrollWidth,
@@ -195,8 +201,7 @@ export default function ProductCustomerStories({
               aria-hidden="true"
               className="shrink-0"
               style={{
-                width:
-                  "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
+                width: "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
               }}
             />
           </div>
@@ -267,83 +272,59 @@ export default function ProductCustomerStories({
 function StoryCard({ study, bg }: { study: CaseStudy; bg: string }) {
   return (
     <div className={`${bg} rounded-lg overflow-hidden`}>
-      <div className="grid grid-cols-1 md:grid-cols-11 min-h-[420px] md:min-h-[480px]">
-        {/* Left — text column */}
-        <div className="md:col-span-7 flex flex-col gap-5 p-6 lg:p-10">
-          <h3 className="font-heading text-2xl md:text-3xl font-medium tracking-tight text-white">
-            {study.company}
-          </h3>
-          <div className="flex-1 flex flex-col justify-center">
-            <blockquote>
-              <p className="font-heading text-lg lg:text-[22px] font-normal leading-snug tracking-tight text-white">
-                {study.quote}
-              </p>
-            </blockquote>
-            <div className="mt-6">
-              <p className="text-sm font-bold text-white">{study.author}</p>
-              <p className="text-sm mt-0.5 text-white/70">{study.role}</p>
+      <div className="grid grid-cols-1 md:grid-cols-12 min-h-[360px] md:min-h-[400px]">
+        {/* Left — quote top, author/role + link bottom-LEFT, logo bottom-RIGHT */}
+        <div className="md:col-span-8 flex flex-col p-6 lg:p-10">
+          <blockquote className="relative mb-6 lg:mb-8 before:hidden after:hidden">
+            <p className="font-heading text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
+              {study.quote}
+            </p>
+          </blockquote>
+          <Link
+            href={study.href}
+            className="mt-3 inline-block w-fit text-sm font-medium text-white underline underline-offset-4 hover:opacity-60 transition-opacity"
+          >
+            Read Customer Story
+          </Link>
+          {/* Bottom row: author/role + link on LEFT, logo on RIGHT */}
+          <div className="mt-auto pt-6 flex items-end justify-between gap-6">
+            <div>
+              <p className="text-base font-bold text-white">{study.author}</p>
+              <p className="text-base mt-0.5 text-white">{study.role}</p>
             </div>
-            <Link
-              href={study.href}
-              className="mt-4 inline-block w-fit text-sm font-medium text-white underline underline-offset-4 hover:opacity-60 transition-opacity"
-            >
-              Read Customer Story
-            </Link>
-          </div>
-          {/* Logo — inverted to white on dark card */}
-          <div className="pt-4">
             {study.logo && (
               <Image
                 src={study.logo}
                 alt={study.company}
                 width={140}
                 height={40}
-                className="h-7 w-auto max-w-[160px] object-contain brightness-0 invert"
+                className="h-13 w-auto max-w-[160px] object-contain brightness-0 invert flex-shrink-0"
               />
             )}
           </div>
         </div>
 
-        {/* Right — portrait image + stats */}
-        <div className="md:col-span-3 md:col-start-9 flex flex-col p-4 lg:p-6">
-          <div className="relative flex-1 min-h-[200px] md:min-h-0 rounded-lg overflow-hidden mb-4">
-            {study.panelVideo ? (
-              <video
-                src={study.panelVideo}
-                autoPlay
-                muted
-                playsInline
-                loop
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : (
-              <Image
-                src={study.panelImage}
-                alt={study.company}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 90vw, 200px"
-              />
-            )}
-          </div>
-          <div className="flex flex-col">
-            <div className="pb-3 border-b border-white/15">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                Company Size
-              </p>
-              <p className="font-heading text-xl font-medium tracking-tight text-white leading-none">
-                {study.companySize}
-              </p>
-            </div>
-            <div className="pt-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                Industry
-              </p>
-              <p className="font-heading text-lg font-medium tracking-tight text-white leading-snug">
-                {study.industry}
-              </p>
-            </div>
-          </div>
+        {/* Right — full-bleed image, flush to card edges */}
+        <div className="relative md:col-span-4 min-h-[280px] md:min-h-0 bg-white/5">
+          {study.panelVideo ? (
+            <video
+              src={study.panelVideo}
+              autoPlay
+              muted
+              playsInline
+              loop
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : study.panelImage ? (
+            <Image
+              src={study.panelImage}
+              alt={study.company}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 40vw"
+            />
+          ) : null}
         </div>
       </div>
     </div>

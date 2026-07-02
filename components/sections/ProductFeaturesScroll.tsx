@@ -144,7 +144,7 @@ export default function ProductFeaturesScroll({
                     if (el) refs.current.set(feat.id, el);
                     else refs.current.delete(feat.id);
                   }}
-                  className={`scroll-m-28 grid lg:grid-cols-2 items-stretch gap-8 lg:gap-12 lg:min-h-[450px] rounded-lg md:rounded-xl p-5 py-8 md:p-8 lg:p-10 ${
+                  className={`scroll-m-28 grid md:grid-cols-[minmax(0,360px)_1fr] items-stretch gap-8 md:gap-10 lg:gap-12 md:min-h-[380px] lg:min-h-[450px] rounded-lg p-5 py-8 md:p-8 lg:p-10 ${
                     noBg ? "" : i % 2 === 0 ? "bg-gray-100" : "bg-gray-50"
                   }`}
                 >
@@ -154,7 +154,9 @@ export default function ProductFeaturesScroll({
                       <h3 className="font-heading text-2xl md:text-3xl font-medium text-sognos-body tracking-tight leading-snug">
                         {feat.name}
                       </h3>
-                      <div className={`border-l-2 ${accentBorderClass} pl-4 text-base leading-relaxed text-gray-600`}>
+                      <div
+                        className={`border-l-2 ${accentBorderClass} pl-4 text-base leading-relaxed text-gray-600`}
+                      >
                         {feat.description}
                       </div>
                     </div>

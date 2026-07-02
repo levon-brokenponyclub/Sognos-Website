@@ -2,8 +2,58 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+
+const PANEL_HLS_SRC =
+  "https://stream.mux.com/jQkiowhjcNANEVOdEj02JRdSnvM5TaFudLXF9BmyAVms.m3u8?max_resolution=1080p";
+
+function PanelBackgroundVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Safari + iOS play HLS natively — just point the video at the URL.
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = PANEL_HLS_SRC;
+      return;
+    }
+
+    // Everywhere else: lazy-load hls.js so it doesn't ship in the initial bundle.
+    let hls: import("hls.js").default | null = null;
+    let cancelled = false;
+    import("hls.js").then(({ default: Hls }) => {
+      if (cancelled || !Hls.isSupported()) return;
+      hls = new Hls({ enableWorker: true });
+      hls.loadSource(PANEL_HLS_SRC);
+      hls.attachMedia(video);
+    });
+
+    return () => {
+      cancelled = true;
+      hls?.destroy();
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+  );
+}
 
 interface SognoscareHeroProps {
   // logoSrc kept optional for caller compatibility; no longer rendered.
@@ -28,8 +78,16 @@ export default function SognoscareHero({
     offset: ["start start", "end start"],
   });
   const prefersReducedMotion = useReducedMotion();
-  const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, 60]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], prefersReducedMotion ? [1, 1] : [1, 0]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 60],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.7],
+    prefersReducedMotion ? [1, 1] : [1, 0],
+  );
 
   return (
     <section
@@ -50,17 +108,17 @@ export default function SognoscareHero({
           </p>
 
           {/* Headline */}
-          <h1 className="mx-auto mt-6 max-w-[1100px] font-heading text-balance text-white text-5xl sm:text-6xl lg:text-7xl font-medium tracking-[-0.02em]">
+          <h1 className="mx-auto mt-6 max-w-5xl font-heading text-pretty text-white text-5xl sm:text-6xl lg:text-6xl font-normal tracking-[-0.02em]">
             {headline}
           </h1>
 
           {/* Subtext */}
-          <p
+          {/* <p
             className="mx-auto mt-6 max-w-[640px] text-lg leading-relaxed"
             style={{ color: "rgba(255,255,255,0.7)" }}
           >
             {subtext}
-          </p>
+          </p> */}
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -85,7 +143,8 @@ export default function SognoscareHero({
             Swap the gradient div for a real <Image> when the asset is ready. */}
         <div className="mx-auto mt-16 max-w-6xl px-6 lg:px-10">
           <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-2xl bg-sognos-care-gradient">
-            <div className="absolute inset-0 flex items-center justify-center">
+            <PanelBackgroundVideo />
+            <div className="relative flex h-full w-full items-center justify-center">
               <Image
                 src="/logos/sognos-care-logo.svg"
                 alt="SognosCare"

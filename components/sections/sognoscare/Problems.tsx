@@ -63,66 +63,76 @@ export default function SognoscareProblems({
   subNav,
 }: SognoscareProblemsProps = {}) {
   return (
-    <section id="problems" className="overflow-clip bg-sognos-care-dark py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-4">
-
-        {/* subNav slot — centred, above problem block */}
-        {subNav && (
-          <div className="mb-16 flex justify-center">{subNav}</div>
-        )}
-
-        {/* Problem block */}
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
-            {problemLabel}
-          </p>
-          <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-white text-balance">
-            {problemStatement}
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
-            {problemDetail}
-          </p>
-        </div>
-
-        {/* Generous whitespace — the Lumos "breath" between problem and solution */}
-        <div className="mt-28 md:mt-40">
-
-          {/* Solution block */}
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
-              {solutionLabel}
+    <section id="problems" className="overflow-clip">
+      {/* Dark half — Problem block + subNav */}
+      <div className="bg-sognos-care-dark pt-20 md:pt-28 pb-20 md:pb-28">
+        <div className="mx-auto max-w-7xl px-4">
+          {/* Problem block */}
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
+              {problemLabel}
             </p>
-            <h2 className="mt-4 font-heading text-4xl md:text-5xl font-medium tracking-tight text-white text-balance">
-              {solutionStatement}
+            <h2 className="mt-4 font-heading text-3xl md:text-3xl font-normal tracking-tight leading-10 text-white/70 text-balance">
+              <span className="text-white">{problemStatement}</span>{" "}
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
-              {solutionDetail}
+            <p className="mt-6 max-w-5xl text-lg leading-relaxed text-white/60 text-pretty">
+              {problemDetail}
             </p>
           </div>
 
-          <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 border-t border-white/10 lg:divide-x lg:divide-white/10">
-            {capabilities.map((cap) => (
-              <div
-                key={cap.number}
-                className="relative flex flex-col px-5 py-6 pb-10"
-              >
-                <span className="font-mono text-xs text-white/40">
-                  {cap.number}
-                </span>
-                <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-white">
-                  {cap.title}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">
-                  {cap.description}
-                </p>
-                <div
-                  aria-hidden="true"
-                  className="absolute bottom-0 left-5 right-5 h-[2px] bg-sognos-blue-accent"
-                />
-              </div>
-            ))}
-          </div>
+          {/* subNav — centred, sits at bottom of dark half */}
+          {subNav && (
+            <div className="mt-24 flex justify-center md:mt-32">{subNav}</div>
+          )}
+        </div>
+      </div>
 
+      {/* Light half — Solution block on white */}
+      <div className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+            {/* Left — rail (Advantages pattern, light theme) */}
+            <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
+                {solutionLabel}
+              </p>
+            </div>
+
+            {/* Right — statement + detail + 5 blocks */}
+            <div className="lg:col-[3/-1]">
+              <div className="max-w-[720px]">
+                <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-body text-balance">
+                  {solutionStatement}
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-gray-600 text-pretty">
+                  {solutionDetail}
+                </p>
+              </div>
+
+              <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 border-t border-sognos-line lg:divide-x lg:divide-sognos-line">
+                {capabilities.map((cap) => (
+                  <div
+                    key={cap.number}
+                    className="relative flex flex-col px-5 py-6 pb-10"
+                  >
+                    <span className="font-mono text-xs text-sognos-muted">
+                      {cap.number}
+                    </span>
+                    <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-sognos-body">
+                      {cap.title}
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600">
+                      {cap.description}
+                    </p>
+                    <div
+                      aria-hidden="true"
+                      className="absolute bottom-0 left-5 right-5 h-[2px] bg-sognos-blue-accent"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -29,31 +29,54 @@ const CATEGORIES = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] as const;
+const MONTHS = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+] as const;
 
 function formatDate(dateStr: string): string {
   const [year, month, day] = dateStr.split("-").map(Number);
   return `${MONTHS[(month ?? 1) - 1]} ${day}, ${year}`;
 }
 
-function ArticleMeta({ publishedAt, readTime }: { publishedAt?: string | null; readTime?: string | null }) {
-  const parts: string[] = [];
-  if (publishedAt) parts.push(formatDate(publishedAt));
-  if (readTime) parts.push(readTime.toUpperCase());
-  if (!parts.length) return null;
+function ArticleMeta({
+  publishedAt,
+  readTime,
+}: {
+  publishedAt?: string | null;
+  readTime?: string | null;
+}) {
+  if (!publishedAt && !readTime) return null;
   return (
-    <p className="mt-3 text-xs font-medium tracking-wide text-gray-400 uppercase">
-      {parts.join(" — ")}
+    <p className="mt-10 text-xs font-base tracking-wide text-sognos-heading uppercase">
+      {publishedAt && (
+        <span className="text-sognos-muted">{formatDate(publishedAt)}</span>
+      )}
+      {publishedAt && readTime && " — "}
+      {readTime && readTime.toUpperCase()}
     </p>
   );
 }
 
 // ─── Grid card ────────────────────────────────────────────────────────────────
 
-function ArticleCard({ article }: { article: Article }) {
+export function ArticleCard({ article }: { article: Article }) {
   return (
-    <Link href={article.href} className="group flex flex-col pb-6 border-b border-gray-200">
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+    <Link
+      href={article.href}
+      className="group flex flex-col pb-4 border-b border-gray-200"
+    >
+      <div className="relative max-h-52 aspect-[16/10] w-full overflow-hidden rounded">
         {article.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -66,13 +89,16 @@ function ArticleCard({ article }: { article: Article }) {
         )}
       </div>
       <div className="mt-4 flex flex-col flex-1">
-        <span className="inline-flex w-fit items-center rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
+        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
           {article.category}
         </span>
-        <h3 className="mt-3 font-heading text-base font-medium leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-navy-dark/70">
+        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
           {article.title}
         </h3>
-        <ArticleMeta publishedAt={article.publishedAt} readTime={article.readTime} />
+        <ArticleMeta
+          publishedAt={article.publishedAt}
+          readTime={article.readTime}
+        />
       </div>
     </Link>
   );
@@ -88,15 +114,18 @@ export default function KnowledgeHubArchive({
   initialCategory?: string | null;
 }) {
   const safeInitialCategory =
-    initialCategory && (CATEGORIES as readonly string[]).includes(initialCategory)
+    initialCategory &&
+    (CATEGORIES as readonly string[]).includes(initialCategory)
       ? initialCategory
       : null;
-  const [activeCategory, setActiveCategory] = useState<string | null>(safeInitialCategory);
+  const [activeCategory, setActiveCategory] = useState<string | null>(
+    safeInitialCategory,
+  );
 
   const featured = articles[0] ?? null;
-  const grid = articles.slice(1).filter((a) =>
-    activeCategory ? a.category === activeCategory : true,
-  );
+  const grid = articles
+    .slice(1)
+    .filter((a) => (activeCategory ? a.category === activeCategory : true));
 
   return (
     <>
@@ -118,7 +147,9 @@ export default function KnowledgeHubArchive({
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                onClick={() =>
+                  setActiveCategory(activeCategory === cat ? null : cat)
+                }
                 className={[
                   "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150",
                   activeCategory === cat
@@ -173,7 +204,10 @@ export default function KnowledgeHubArchive({
                 <p className="mt-4 line-clamp-3 text-base leading-relaxed text-sognos-muted">
                   {featured.excerpt}
                 </p>
-                <ArticleMeta publishedAt={featured.publishedAt} readTime={featured.readTime} />
+                <ArticleMeta
+                  publishedAt={featured.publishedAt}
+                  readTime={featured.readTime}
+                />
                 {featured.author && (
                   <div className="mt-5 flex items-center gap-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-500">
@@ -195,7 +229,8 @@ export default function KnowledgeHubArchive({
       <section className="bg-white py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <p className="mb-8 text-sm font-semibold text-sognos-heading">
-            <span className="mr-1.5 text-sognos-blue-accent">●</span>All articles
+            <span className="mr-1.5 text-sognos-blue-accent">●</span>All
+            articles
           </p>
           {grid.length > 0 ? (
             <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
@@ -223,10 +258,12 @@ export default function KnowledgeHubArchive({
             {/* Left */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
-                <span className="mr-1.5 text-sognos-blue-accent">●</span>Case Study
+                <span className="mr-1.5 text-sognos-blue-accent">●</span>Case
+                Study
               </p>
               <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl">
-                Sognos helps Flourish Australia modernise service delivery with a single Dynamics 365 platform
+                Sognos helps Flourish Australia modernise service delivery with
+                a single Dynamics 365 platform
               </h2>
               <div className="mt-6 flex items-center gap-3">
                 <span className="text-sm text-white/50">January 2025</span>

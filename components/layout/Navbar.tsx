@@ -10,13 +10,7 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  animate,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 
@@ -35,54 +29,39 @@ type NavVariant = "light" | "dark";
 
 interface NavTheme {
   text: string;
+  activeText: string;
   hoverPill: string;
   navGroup: string;
   logoFilter: string;
   primaryBtn: string;
   secondaryText: string;
-  dropdownCard: string;
-  mobilePanel: string;
-  mobileDivider: string;
   hamburger: string;
 }
 
 const THEMES: Record<NavVariant, NavTheme> = {
   light: {
-    text: "text-sognos-heading/75 hover:text-sognos-heading",
+    text: "text-sognos-heading hover:text-sognos-heading",
+    activeText: "text-white",
     hoverPill: "bg-sognos-navy-dark",
-    navGroup: "bg-gray-100 rounded-full p-1",
+    navGroup: "bg-gray-100 rounded-full p-2",
     logoFilter: "none",
     primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-navy-dark/90",
-    secondaryText: "text-sognos-heading/65 hover:text-sognos-heading",
-    dropdownCard:
-      "bg-white border border-gray-200 shadow-[0_0_24px_rgba(34,42,53,0.06),0_1px_1px_rgba(0,0,0,0.05),0_0_0_1px_rgba(34,42,53,0.04),0_3px_6px_rgba(34,42,53,0.04),0_8px_24px_rgba(34,42,53,0.04)]",
-    mobilePanel:
-      "bg-white border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
-    mobileDivider: "border-gray-100",
+    secondaryText: "text-sognos-heading hover:text-sognos-heading",
     hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
   dark: {
-    text: "text-white/80 hover:text-white",
-    hoverPill: "bg-white/20",
-    navGroup: "bg-white/10 rounded-full p-1",
+    text: "text-white hover:text-sognos-heading",
+    activeText: "text-sognos-heading",
+    hoverPill: "bg-white",
+    navGroup: "bg-white/10 rounded-full p-2",
     logoFilter: "brightness(0) invert(1)",
     primaryBtn: "bg-white text-sognos-navy-dark hover:bg-white/90",
-    secondaryText: "text-white/65 hover:text-white",
-    dropdownCard:
-      "bg-white border border-gray-200 shadow-[0_0_24px_rgba(34,42,53,0.06),0_1px_1px_rgba(0,0,0,0.05),0_0_0_1px_rgba(34,42,53,0.04),0_3px_6px_rgba(34,42,53,0.04),0_8px_24px_rgba(34,42,53,0.04)]",
-    mobilePanel:
-      "bg-white border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
-    mobileDivider: "border-gray-100",
+    secondaryText: "text-white hover:text-white",
     hamburger: "text-white/80 hover:text-white",
   },
 };
 
-const DROPDOWN_SPRING = {
-  type: "spring" as const,
-  bounce: 0.15,
-  duration: 0.4,
-};
-const EDGE = 8;
+// Mobile panel slide
 const SLIDE = { duration: 0.25, ease: [0.4, 0, 0.2, 1] as const };
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -102,11 +81,11 @@ function DropdownContent({
 }) {
   const linkCols = getLinkCols(group);
   return (
-    <div className="flex gap-8">
+    <div className="flex gap-12">
       {linkCols.map((col, i) => (
-        <div key={i} className="w-max">
+        <div key={i} className="w-52 shrink-0">
           {col.heading && (
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gray-400">
+            <h4 className="mb-4 text-xs font-normal uppercase tracking-widest text-sognos-muted">
               {col.heading}
             </h4>
           )}
@@ -116,7 +95,7 @@ function DropdownContent({
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className="block py-2 text-lg text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                  className="block py-2 text-base text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
                 >
                   {item.name}
                 </Link>
@@ -125,7 +104,7 @@ function DropdownContent({
           </ul>
         </div>
       ))}
-      <div className="w-48 min-h-[280px] rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+      <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
     </div>
   );
 }
@@ -168,7 +147,7 @@ function MobileSubContent({
       ))}
 
       {featuredItems.length > 0 && (
-        <div className="mx-4 my-4 rounded-2xl bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF] p-5">
+        <div className="mx-4 my-4 rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF] p-5">
           <div className="grid grid-cols-2 gap-4">
             {featuredItems.map((item) => (
               <Link key={item.href} href={item.href} onClick={onLinkClick}>
@@ -247,7 +226,7 @@ function MobileFooter({
       <Link
         href="#book-demo"
         onClick={onBookDemo}
-        className="flex flex-1 items-center justify-center h-14 rounded-lg text-sm font-semibold bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-navy-dark/90"
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-base font-normal bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-navy-dark/90"
       >
         {navCTA.primary.name}
       </Link>
@@ -278,38 +257,34 @@ export default function Navbar({
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
-  const [scrollState, setScrollState] = useState<"top" | "hidden" | "peek">(
-    "top",
-  );
+  const [scrolled, setScrolled] = useState(false);
+  // Measured dimensions of the active dropdown content — drives CSS transition on card
+  const [dropdownWidth, setDropdownWidth] = useState(0);
+  const [dropdownHeight, setDropdownHeight] = useState(0);
 
-  // Tracks slide direction so entering panel animates from the right side
+  // Mobile slide direction
   const mobilePanelDirectionRef = useRef<"forward" | "back">("forward");
+  // Desktop content directional slide
+  const slideDirectionRef = useRef<"forward" | "back">("forward");
+  // Tracks current open item's nav index so direction can be computed on switch
+  const prevOpenIndexRef = useRef<number>(-1);
 
   const headerRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  // Hidden off-screen divs that render each DropdownContent at natural size
   const measurerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-  const panelWidths = useRef<Record<string, number>>({});
-  const prevOpenMenuRef = useRef<string | null>(null);
 
   const intentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastScrollYRef = useRef(0);
+  // Ref mirror of openMenu for use inside timer callbacks without stale closure
   const openMenuRef = useRef<string | null>(null);
   useEffect(() => {
     openMenuRef.current = openMenu;
   }, [openMenu]);
 
-  const panelX = useMotionValue(0);
-  const panelWidthMV = useMotionValue(0);
-  const lastActiveGroupRef = useRef<NavGroup | null>(null);
-
   const activeGroup = nav.find(
     (g) => g.label === openMenu && (g.megaMenu || g.items),
   );
   const activeSubGroup = nav.find((g) => g.label === mobilePanel);
-  if (activeGroup) lastActiveGroupRef.current = activeGroup;
-  const displayGroup = lastActiveGroupRef.current;
 
   // ── Transparent-over-hero derived state ───────────────────────────────────────
   const useTransparent =
@@ -317,80 +292,30 @@ export default function Navbar({
       ? transparentOverHero
       : DARK_HERO_PATHS.has(pathname);
 
-  const isTransparent = useTransparent && scrollState === "top";
-  const t = isTransparent ? THEMES.dark : THEMES.light;
+  // Content theme is fixed per page — never flips on scroll.
+  const t = useTransparent ? THEMES.dark : THEMES.light;
+  // Only the bar background changes on scroll (dark-hero pages).
+  const barTransparent = useTransparent && !scrolled;
 
-  // ── Measure all panel widths ──────────────────────────────────────────────────
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      nav.forEach((group) => {
-        const el = measurerRefs.current.get(group.label);
-        if (el)
-          panelWidths.current[group.label] = el.getBoundingClientRect().width;
-      });
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  // ── Animate panel position + size ─────────────────────────────────────────────
+  // ── Measure dropdown dimensions ───────────────────────────────────────────────
+  // Runs synchronously before paint so card dimensions are correct from first frame
 
   useLayoutEffect(() => {
-    if (!openMenu) {
-      prevOpenMenuRef.current = null;
-      return;
-    }
-    const containerEl = containerRef.current;
-    const triggerEl = triggerRefs.current.get(openMenu);
-    if (!containerEl || !triggerEl) return;
+    if (!openMenu) return;
+    const el = measurerRefs.current.get(openMenu);
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    setDropdownWidth(width);
+    setDropdownHeight(height);
+  }, [openMenu]);
 
-    const containerRect = containerEl.getBoundingClientRect();
-    const triggerRect = triggerEl.getBoundingClientRect();
-    const rawWidth = panelWidths.current[openMenu] ?? 400;
-    const targetWidth = Math.min(rawWidth, containerRect.width - 2 * EDGE);
-
-    const center =
-      triggerRect.left - containerRect.left + triggerRect.width / 2;
-    const targetX = Math.max(
-      EDGE,
-      Math.min(
-        center - targetWidth / 2,
-        containerRect.width - targetWidth - EDGE,
-      ),
-    );
-
-    if (prefersReducedMotion || prevOpenMenuRef.current === null) {
-      panelX.set(targetX);
-      panelWidthMV.set(targetWidth);
-    } else {
-      animate(panelX, targetX, DROPDOWN_SPRING);
-      animate(panelWidthMV, targetWidth, DROPDOWN_SPRING);
-    }
-
-    prevOpenMenuRef.current = openMenu;
-  }, [openMenu, prefersReducedMotion]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // ── Three-state scroll ────────────────────────────────────────────────────────
+  // ── Scroll state — always visible; only tracks past-top for bar bg swap ──────
 
   useEffect(() => {
     let ticking = false;
-    lastScrollYRef.current = window.scrollY;
-    const HIDE_AFTER = 80;
-    const DELTA_MIN = 6;
 
     const update = () => {
-      const y = window.scrollY;
-      const delta = y - lastScrollYRef.current;
-      if (y < 8) {
-        setScrollState("top");
-        lastScrollYRef.current = y;
-      } else if (Math.abs(delta) > DELTA_MIN) {
-        if (delta > 0 && y > HIDE_AFTER) setScrollState("hidden");
-        else if (delta < 0) setScrollState("peek");
-        lastScrollYRef.current = y;
-      }
+      setScrolled(window.scrollY > 8);
       ticking = false;
     };
 
@@ -401,6 +326,7 @@ export default function Navbar({
       }
     };
 
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -461,8 +387,19 @@ export default function Navbar({
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
     }
+    prevOpenIndexRef.current = -1;
     setOpenMenu(null);
     setHovered(null);
+  };
+
+  // Set slide direction and update prevOpenIndexRef before calling setOpenMenu
+  const recordDirection = (label: string) => {
+    const newIndex = nav.findIndex((g) => g.label === label);
+    slideDirectionRef.current =
+      prevOpenIndexRef.current === -1 || newIndex > prevOpenIndexRef.current
+        ? "forward"
+        : "back";
+    prevOpenIndexRef.current = newIndex;
   };
 
   const openOnHover = (label: string) => {
@@ -471,16 +408,19 @@ export default function Navbar({
       closeTimerRef.current = null;
     }
     if (openMenuRef.current === label) return;
+    // Already open on another item — switch immediately, no intent delay
     if (openMenuRef.current !== null) {
       if (intentTimerRef.current) {
         clearTimeout(intentTimerRef.current);
         intentTimerRef.current = null;
       }
+      recordDirection(label);
       setOpenMenu(label);
       return;
     }
     if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
     intentTimerRef.current = setTimeout(() => {
+      recordDirection(label);
       setOpenMenu(label);
       intentTimerRef.current = null;
     }, 60);
@@ -535,7 +475,6 @@ export default function Navbar({
 
   // ── Derived ───────────────────────────────────────────────────────────────────
 
-  const headerHidden = scrollState === "hidden" && !openMenu && !mobileOpen;
   const activePillLabel = hovered ?? openMenu;
 
   // ── Render ────────────────────────────────────────────────────────────────────
@@ -556,23 +495,22 @@ export default function Navbar({
         }}
       />
 
-      {/* ── Header — full-width, flush, square ───────────────────────────────── */}
+      {/* ── Header — always visible; bar bg only differs on dark-hero pages ──── */}
       <header
         ref={headerRef}
         className={[
           "fixed inset-x-0 top-0 z-50",
-          "transition-[transform,opacity,background-color,box-shadow] duration-300 ease-in-out",
-          headerHidden
-            ? "-translate-y-full opacity-0"
-            : "translate-y-0 opacity-100",
-          isTransparent
-            ? "bg-transparent"
-            : "bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]",
+          "transition-colors duration-300 ease-in-out",
+          useTransparent
+            ? barTransparent
+              ? "bg-transparent"
+              : "bg-sognos-navy-dark"
+            : "bg-white border-b border-black/5",
         ].join(" ")}
       >
         {/* ── Inner positioning context — max-w-7xl ── */}
-        <div ref={containerRef} className="relative mx-auto max-w-7xl px-6">
-          {/* ── Hidden measurer ─────────────────────────────────────────────── */}
+        <div className="relative mx-auto max-w-7xl px-6">
+          {/* ── Hidden measurers — always in DOM, off-screen ────────────────── */}
           <div
             aria-hidden="true"
             style={{
@@ -592,7 +530,7 @@ export default function Navbar({
                     if (el) measurerRefs.current.set(group.label, el);
                     else measurerRefs.current.delete(group.label);
                   }}
-                  className="p-8"
+                  className="p-6"
                   style={{ width: "max-content" }}
                 >
                   <DropdownContent group={group} onClose={() => {}} />
@@ -621,7 +559,7 @@ export default function Navbar({
             {/* col 2: desktop nav — Aceternity hover-pill */}
             <nav
               className={[
-                "hidden lg:flex items-center justify-self-center gap-0.5",
+                "hidden lg:flex items-center justify-self-center gap-0.5 h-14",
                 t.navGroup,
               ].join(" ")}
               onMouseLeave={() => {
@@ -640,20 +578,21 @@ export default function Navbar({
                       <button
                         type="button"
                         aria-expanded={isOpen}
-                        ref={(el) => {
-                          if (el) triggerRefs.current.set(group.label, el);
-                          else triggerRefs.current.delete(group.label);
-                        }}
                         onMouseEnter={() => {
                           setHovered(group.label);
                           openOnHover(group.label);
                         }}
-                        onClick={() =>
-                          isOpen ? closeAll() : setOpenMenu(group.label)
-                        }
+                        onClick={() => {
+                          if (isOpen) {
+                            closeAll();
+                          } else {
+                            recordDirection(group.label);
+                            setOpenMenu(group.label);
+                          }
+                        }}
                         className={[
-                          "relative px-4 py-3 text-base font-medium cursor-pointer rounded-full tracking-[-0.002em] transition-colors duration-200",
-                          isActive ? "text-white" : t.text,
+                          "relative px-4 py-2.5 text-base font-normal cursor-pointer rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          isActive ? t.activeText : t.text,
                         ].join(" ")}
                       >
                         {isActive && (
@@ -696,7 +635,7 @@ export default function Navbar({
                         onMouseEnter={() => setHovered(group.label)}
                         className={[
                           "relative block px-4 py-3 text-base font-medium rounded-full tracking-[-0.002em] transition-colors duration-200",
-                          isActive ? "text-white" : t.text,
+                          isActive ? t.activeText : t.text,
                         ].join(" ")}
                       >
                         {isActive && (
@@ -729,7 +668,7 @@ export default function Navbar({
                   href={navCTA.secondary.href}
                   onClick={closeAll}
                   className={[
-                    "inline-flex items-center h-14 px-4 text-sm font-medium rounded-full transition-colors duration-150",
+                    "inline-flex items-center h-10 px-4 text-base font-normal rounded-full transition-colors duration-150",
                     t.secondaryText,
                   ].join(" ")}
                 >
@@ -739,7 +678,7 @@ export default function Navbar({
                   href="#book-demo"
                   onClick={onBookDemoClick}
                   className={[
-                    "inline-flex items-center justify-center h-14 rounded-full px-5 text-sm font-medium transition-colors duration-150",
+                    "inline-flex items-center justify-center h-12 rounded-full px-5 text-base font-normal tracking-[-0.002em] transition-colors duration-150",
                     t.primaryBtn,
                   ].join(" ")}
                 >
@@ -809,53 +748,98 @@ export default function Navbar({
               </button>
             </div>
           </div>
-          {/* END content row */}
-
-          {/* ── Single desktop dropdown panel ─────────────────────────────── */}
-          <motion.div
-            onMouseEnter={cancelCloseTimer}
-            onMouseLeave={closeOnHover}
-            initial={false}
-            animate={
-              openMenu !== null
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 4 }
-            }
-            transition={
-              openMenu !== null
-                ? { duration: 0.15, ease: "easeOut" }
-                : { duration: 0.1, ease: "easeIn" }
-            }
-            className="absolute top-full mt-2 left-0 z-50 hidden lg:block"
-            style={{
-              x: panelX,
-              width: panelWidthMV,
-              pointerEvents: openMenu !== null ? "auto" : "none",
-            }}
-          >
-            <div
-              className={[
-                "rounded-2xl p-8 overflow-hidden",
-                t.dropdownCard,
-              ].join(" ")}
-            >
-              <AnimatePresence mode="wait">
-                {displayGroup && (
-                  <motion.div
-                    key={openMenu ?? displayGroup.label}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.12 }}
-                  >
-                    <DropdownContent group={displayGroup} onClose={closeAll} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
         </div>
-        {/* END positioning context */}
+        {/* END inner container */}
+
+        {/* ── Desktop dropdown panel ────────────────────────────────────────────
+            Mounted outside max-w-7xl so inset-x-0 is relative to the full header
+            (viewport width). Fixed key keeps the motion.div alive across item
+            switches — only AnimatePresence mounts/unmounts on open ↔ closed.   */}
+        <AnimatePresence>
+          {openMenu !== null && (
+            <motion.div
+              key="dropdown-panel"
+              initial={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.9, rotateX: -10 }
+              }
+              animate={
+                prefersReducedMotion
+                  ? { opacity: 1 }
+                  : { opacity: 1, scale: 1, rotateX: 0 }
+              }
+              exit={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.95, rotateX: -10 }
+              }
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0.15 }
+                  : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+              }
+              style={{ transformOrigin: "top center", perspective: 800 }}
+              className="absolute inset-x-0 top-full z-50 hidden lg:flex justify-center pointer-events-none mt-4"
+            >
+              {/* Card — re-enables pointer events; CSS transitions width + height */}
+              <div
+                onMouseEnter={cancelCloseTimer}
+                onMouseLeave={closeOnHover}
+                className="pointer-events-auto relative overflow-hidden rounded-lg bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+                style={{
+                  width: dropdownWidth || undefined,
+                  height: dropdownHeight || undefined,
+                  transition: prefersReducedMotion
+                    ? "none"
+                    : "width 0.3s cubic-bezier(0.4,0,0.2,1), height 0.3s cubic-bezier(0.4,0,0.2,1)",
+                }}
+              >
+                {/* Content directional slide — popLayout so exit+enter overlap */}
+                <AnimatePresence mode="popLayout">
+                  {activeGroup && (
+                    <motion.div
+                      key={openMenu}
+                      initial={
+                        prefersReducedMotion
+                          ? { opacity: 0 }
+                          : {
+                              opacity: 0,
+                              x:
+                                slideDirectionRef.current === "forward"
+                                  ? 200
+                                  : -200,
+                            }
+                      }
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={
+                        prefersReducedMotion
+                          ? { opacity: 0 }
+                          : {
+                              opacity: 0,
+                              x:
+                                slideDirectionRef.current === "forward"
+                                  ? -200
+                                  : 200,
+                            }
+                      }
+                      transition={
+                        prefersReducedMotion ? { duration: 0 } : SLIDE
+                      }
+                    >
+                      <div className="p-6">
+                        <DropdownContent
+                          group={activeGroup}
+                          onClose={closeAll}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* ── Mobile full-screen overlay (two-level slide) ─────────────────────── */}
@@ -875,10 +859,7 @@ export default function Navbar({
                 <motion.div
                   key="root"
                   initial={{
-                    x:
-                      mobilePanelDirectionRef.current === "back"
-                        ? "-100%"
-                        : 0,
+                    x: mobilePanelDirectionRef.current === "back" ? "-100%" : 0,
                   }}
                   animate={{ x: 0 }}
                   exit={{ x: "-100%" }}

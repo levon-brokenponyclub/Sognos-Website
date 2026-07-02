@@ -1,39 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
+import { useState } from "react";
+import Image from "next/image";
 
 type Capability = {
-  title: string
-  body: string
-}
+  title: string;
+  body: string;
+};
 
 type Props = {
-  solutionName: string
-  capabilities: Capability[]
-}
+  solutionName: string;
+  capabilities: Capability[];
+};
 
-const SECTION_BG = "#1F1147"
+const SECTION_BG = "#1d96fc";
 
 // Cycled per capability index (images[i % 3]).
 const CAPABILITY_IMAGES = [
   "/solutions/solutionTab-Image.avif",
   "/solutions/solutionTab-Image-2.avif",
   "/solutions/solutionTab-Image-3.avif",
-]
+];
 
 // Pulled from Cohere's live healthcare-and-life-sciences accordion (computed styles).
-const T_DURATION = "150ms"
-const T_EASING = "cubic-bezier(0.4, 0, 0.2, 1)"
+const T_DURATION = "150ms";
+const T_EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 export default function SolutionUseCases({
   solutionName,
   capabilities,
 }: Props) {
-  const [active, setActive] = useState(0)
-  if (capabilities.length === 0) return null
+  const [active, setActive] = useState(0);
+  if (capabilities.length === 0) return null;
 
-  const activeImageIndex = active % CAPABILITY_IMAGES.length
+  const activeImageIndex = active % CAPABILITY_IMAGES.length;
 
   return (
     <section className="py-24 lg:py-32" style={{ backgroundColor: SECTION_BG }}>
@@ -78,12 +78,12 @@ export default function SolutionUseCases({
           <div>
             <div className="flex flex-col">
               {capabilities.map((cap, i) => {
-                const isActive = active === i
+                const isActive = active === i;
                 return (
                   <div
                     key={i}
                     className={`border-t border-white/100 border-l-2 ${
-                      isActive ? "border-l-sognos-blue-accent" : "border-l-transparent"
+                      isActive
                     }`}
                   >
                     <button
@@ -115,12 +115,12 @@ export default function SolutionUseCases({
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

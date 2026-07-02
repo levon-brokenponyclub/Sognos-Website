@@ -1218,3 +1218,28 @@ p.section-header-description {
 .group:hover .edition-feature-title {
   color: white;
 }
+
+/* Customer story blockquote — decorative opening + closing quote marks */
+.testimonial-quote::before,
+.testimonial-quote::after {
+  display: block;
+  font-family: var(--font-inter-tight), var(--font-heading), sans-serif;
+  font-size: 3.75rem;
+  line-height: 1;
+  color: rgb(255 255 255 / 0.25);
+}
+.testimonial-quote::before {
+  content: "\201C";
+  margin-bottom: 0.5rem;
+}
+.testimonial-quote::after {
+  content: "\201D";
+  text-align: right;
+  margin-top: 0.5rem;
+}
+@media (min-width: 1024px) {
+  .testimonial-quote::before,
+  .testimonial-quote::after {
+    font-size: 4.5rem;
+  }
+}

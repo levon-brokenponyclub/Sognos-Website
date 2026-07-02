@@ -1,198 +1,7 @@
-"use client";
-
+import FeaturePlaceholderImage from "@/components/sections/FeaturePlaceholderImage";
 import ProductFeaturesScroll, {
   type ScrollFeature,
 } from "@/components/sections/ProductFeaturesScroll";
-
-// ─── Feature visuals ──────────────────────────────────────────────────────────
-
-function FeatureVisual({ id }: { id: string }) {
-  const visuals: Record<string, React.ReactNode> = {
-    scheduling: (
-      <div className="space-y-2">
-        {[
-          { worker: "Sarah K.", service: "Support visit", time: "08:00", status: "Confirmed" },
-          { worker: "Marcus T.", service: "Allied health", time: "09:30", status: "Confirmed" },
-          { worker: "Priya M.", service: "Transport", time: "10:15", status: "Confirmed" },
-          { worker: "James O.", service: "Community access", time: "13:00", status: "Pending" },
-          { worker: "Emma R.", service: "Support visit", time: "14:30", status: "Confirmed" },
-        ].map((row) => (
-          <div
-            key={row.worker}
-            className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3"
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-sognos-roster-base">
-              {row.worker.charAt(0)}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-semibold text-sognos-body">
-                {row.worker}
-              </p>
-              <p className="truncate text-[11px] text-gray-400">{row.service}</p>
-            </div>
-            <span className="shrink-0 text-xs text-gray-400">{row.time}</span>
-            <span
-              className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                row.status === "Confirmed"
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "bg-amber-50 text-amber-600"
-              }`}
-            >
-              {row.status}
-            </span>
-          </div>
-        ))}
-      </div>
-    ),
-    "skills-matching": (
-      <div className="space-y-2">
-        {[
-          { label: "First Aid Certificate", status: "Valid", expiry: "Jun 2026" },
-          { label: "NDIS Worker Screening", status: "Valid", expiry: "Mar 2027" },
-          { label: "Manual Handling", status: "Valid", expiry: "Dec 2025" },
-          { label: "Medication Administration", status: "Expiring", expiry: "May 2025" },
-        ].map((item) => (
-          <div
-            key={item.label}
-            className="flex items-center justify-between rounded-lg border border-gray-100 bg-white px-4 py-3"
-          >
-            <span className="text-xs font-medium text-sognos-body">
-              {item.label}
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] text-gray-400">{item.expiry}</span>
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                  item.status === "Valid"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "bg-amber-50 text-amber-700"
-                }`}
-              >
-                {item.status}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-    "route-optimisation": (
-      <div className="rounded-lg border border-gray-100 bg-white p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-            Today's routes
-          </p>
-          <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
-            Optimised
-          </span>
-        </div>
-        {[
-          { worker: "Sarah K.", stops: 4, travel: "38 min", saved: "22 min" },
-          { worker: "Marcus T.", stops: 3, travel: "25 min", saved: "14 min" },
-          { worker: "James O.", stops: 5, travel: "52 min", saved: "31 min" },
-        ].map((row) => (
-          <div
-            key={row.worker}
-            className="flex items-center gap-3 border-t border-gray-100 py-2.5 first:border-0"
-          >
-            <span className="w-20 text-xs font-medium text-sognos-body truncate">
-              {row.worker}
-            </span>
-            <span className="text-xs text-gray-400">{row.stops} stops</span>
-            <span className="ml-auto text-xs text-gray-400">{row.travel}</span>
-            <span className="text-xs font-semibold text-emerald-600">
-              −{row.saved}
-            </span>
-          </div>
-        ))}
-      </div>
-    ),
-    "real-time-adjustments": (
-      <div className="space-y-2">
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-xs font-semibold text-amber-800">
-            Disruption detected
-          </p>
-          <p className="mt-0.5 text-[11px] text-amber-700">
-            Sarah K. — sick leave. 3 services affected.
-          </p>
-        </div>
-        {[
-          { worker: "Emma R.", match: "98%", travel: "+12 min" },
-          { worker: "Priya M.", match: "91%", travel: "+18 min" },
-          { worker: "James O.", match: "84%", travel: "+25 min" },
-        ].map((row) => (
-          <div
-            key={row.worker}
-            className="flex items-center gap-3 rounded-lg border border-gray-100 bg-white px-4 py-3"
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-sognos-roster-base">
-              {row.worker.charAt(0)}
-            </div>
-            <span className="flex-1 text-xs font-medium text-sognos-body">
-              {row.worker}
-            </span>
-            <span className="text-xs font-semibold text-emerald-600">
-              {row.match}
-            </span>
-            <span className="text-[11px] text-gray-400">{row.travel}</span>
-            <button className="rounded-md bg-sognos-roster-base px-2.5 py-1 text-[10px] font-semibold text-white">
-              Assign
-            </button>
-          </div>
-        ))}
-      </div>
-    ),
-    "mobile-app": (
-      <div className="mx-auto w-52 overflow-hidden rounded-lg border border-gray-100 bg-white">
-        <div className="bg-sognos-roster-base px-4 py-3">
-          <p className="text-xs font-semibold text-white">Today — 4 visits</p>
-          <p className="text-[10px] text-white/60">Sarah K.</p>
-        </div>
-        <div className="divide-y divide-gray-100">
-          {[
-            { time: "08:00", name: "R. Thompson", type: "Support" },
-            { time: "10:30", name: "M. Chen", type: "Transport" },
-            { time: "13:00", name: "P. Davis", type: "Community" },
-            { time: "15:30", name: "A. Wilson", type: "Support" },
-          ].map((v) => (
-            <div key={v.time} className="flex items-center gap-3 px-3 py-2.5">
-              <span className="shrink-0 text-[10px] font-medium text-gray-400">
-                {v.time}
-              </span>
-              <div className="min-w-0">
-                <p className="truncate text-[11px] font-semibold text-sognos-body">
-                  {v.name}
-                </p>
-                <p className="text-[10px] text-gray-400">{v.type}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    ),
-    copilot: (
-      <div className="rounded-lg border border-gray-100 bg-white p-4">
-        <p className="mb-2 text-xs font-semibold text-gray-400">
-          Copilot insight — Thursday roster
-        </p>
-        <p className="text-sm leading-relaxed text-sognos-body">
-          3 workers are scheduled within 500m of each other between 10am–12pm.
-          Reassigning one visit could save 45 minutes of total drive time.
-        </p>
-        <div className="mt-3 flex gap-2">
-          <button className="rounded-md bg-sognos-roster-base px-3 py-1 text-xs font-semibold text-white">
-            Apply suggestion
-          </button>
-          <button className="rounded-md border border-gray-100 px-3 py-1 text-xs font-semibold text-gray-400">
-            Dismiss
-          </button>
-        </div>
-      </div>
-    ),
-  };
-
-  return visuals[id] ?? null;
-}
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -280,13 +89,13 @@ const FEATURES = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SognoscareRosterFeatures() {
-  const scrollFeatures: ScrollFeature[] = FEATURES.map((f) => ({
+  const scrollFeatures: ScrollFeature[] = FEATURES.map((f, i) => ({
     id: f.id,
     name: f.name,
     tagline: f.tagline,
     description: f.description,
     capabilities: [...f.capabilities],
-    visual: <FeatureVisual id={f.id} />,
+    visual: <FeaturePlaceholderImage index={i} />,
   }));
 
   return (
@@ -298,6 +107,7 @@ export default function SognoscareRosterFeatures() {
       features={scrollFeatures}
       accentBorderClass="border-sognos-roster-base"
       accentTextClass="text-sognos-roster-base"
+      enableVisuals
     />
   );
 }
