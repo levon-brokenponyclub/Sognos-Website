@@ -306,7 +306,7 @@ export default function NfpRealCarePage() {
               <div className="mt-6 flex items-start gap-5">
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28 shrink-0 rounded-lg overflow-hidden">
                   <Image
-                    src={`${IMAGE_DIR}/bill-gye-headshot.jpg`}
+                    src={`${IMAGE_DIR}/Bill-Gye-headshot-img.jpg`}
                     alt="Bill Gye OAM"
                     fill
                     className="object-cover"
