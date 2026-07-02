@@ -32,7 +32,7 @@ const HERO_IMAGE = "/solutions/SolutionsHero.avif";
 const PROBLEM_ICON = "/solutions/Inon.avif";
 
 // Shared dark purple band behind "What it solves" + Capabilities.
-const SECTION_BG = "#1F1147";
+const SECTION_BG = "#152248";
 
 export default async function SolutionPage({
   params,
@@ -94,7 +94,7 @@ export default async function SolutionPage({
 
       {/* What it solves — borderless columns on dark purple band */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-sognos-blue-accent">
+        <section className="py-24 lg:py-32 bg-sognos-navy">
           <div className="mx-auto max-w-7xl px-6">
             <div className="mb-14 flex flex-col items-center text-center">
               <p

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import AnimatedButton from "@/components/ui/AnimatedButton";
 import { useBookDemo } from "@/lib/BookDemoContext";
 
 type HeroProps = {
@@ -46,7 +45,7 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-[clamp(2.75rem,6vw,4.5rem)] leading-[1.02] -tracking-[1.2px] text-balance"
+          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-6xl leading-[1.02] -tracking-[1.2px] text-balance"
         >
           {headline}
         </motion.h1>
@@ -66,21 +65,20 @@ export default function Hero({
           animate="show"
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          <AnimatedButton
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              openModal();
-            }}
-            variant="white"
+          {/* Book a Demo — matches SognosCare hero pill */}
+          <button
+            type="button"
+            onClick={() => openModal()}
+            className="rounded-full bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-all duration-300 hover:bg-sognos-blue-accent hover:text-white"
           >
             {primaryCTA.name}
-          </AnimatedButton>
+          </button>
           <Link
             href={secondaryCTA.href}
-            className="inline-flex w-fit items-center justify-center border-b border-white/30 pb-1.5 text-base font-medium text-white/70 transition-colors hover:border-white hover:text-white"
+            className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-80"
           >
             {secondaryCTA.name}
+            <span aria-hidden="true">&#8599;</span>
           </Link>
         </motion.div>
       </div>

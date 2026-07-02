@@ -55,7 +55,7 @@ const THEMES: Record<NavVariant, NavTheme> = {
     text: "text-white hover:text-sognos-heading",
     activeText: "text-sognos-heading",
     hoverPill: "bg-white",
-    navGroup: "bg-white/10 rounded-full p-2",
+    navGroup: "bg-sognos-navy rounded-full p-2",
     logoFilter: "brightness(0) invert(1)",
     primaryBtn: "bg-white text-sognos-navy-dark hover:bg-white/90",
     secondaryText: "text-white hover:text-white",

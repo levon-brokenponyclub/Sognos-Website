@@ -68,12 +68,10 @@ export default function HowSognosWorksPreview() {
   };
 
   const heading = (
-    <h3 className="font-heading text-3xl lg:text-[28px] font-normal leading-tight tracking-tight text-sognos-heading">
+    <h3 className="font-heading text-3xl lg:text-4xl font-normal leading-tight tracking-tight text-sognos-heading">
       Stop managing complexity.
       <br />
-      <span className="text-sognos-heading/60">
-        Start delivering outcomes.
-      </span>
+      <span className="text-sognos-heading/60">Start delivering outcomes.</span>
     </h3>
   );
 

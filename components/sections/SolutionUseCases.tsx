@@ -13,7 +13,7 @@ type Props = {
   capabilities: Capability[];
 };
 
-const SECTION_BG = "#1d96fc";
+const SECTION_BG = "#152248";
 
 // Cycled per capability index (images[i % 3]).
 const CAPABILITY_IMAGES = [

@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-03 — Home card polish, Sanity brandColor wire-up, arrow-icon normalization
+
+- **Sanity `brandColor` → frontend.** Read `brandColor.hex` in `SOGNOSCARE_PAGE_QUERY.featuredStories[]` and `STORY_BY_SLUG_QUERY`; surface it through `mapStory`/`CaseStudy` and the customer-story detail page. Both the slider card bg (`ProductCustomerStories`) and the detail quote card (`customer-stories/[slug]`) now use `story.brandColor ?? BRAND_BG[story.company]` — Sanity wins, hardcoded map is fallback for unset docs.
+- **HomeProductCards — full pass.** Product data restructured (`overview` → `lead` + `rest`; taglines-as-titles); SognosCare bg swapped to an Unsplash URL; `next.config.ts` allowlists `plus.unsplash.com` + `images.unsplash.com` in `images.remotePatterns`. Image card `aspect-[3/4]` → `aspect-[4/5]` + `max-h-[430px]`; product logo repositioned top-left → centered; dark overlay `bg-sognos-navy-dark/45` now uses a **named group `group/cards`** on the container so non-hovered cards dim to `/70` while the hovered card brightens to `/25` (via `group-hover:!bg-…` for cascade priority). Description paragraph: `<span text-white>{lead}</span>{rest}` inside `text-white/70` for a bright lead-in over a muted trailing sentence.
+- **Hero CTA restyle.** `AnimatedButton variant="white"` → plain white pill matching SognosCare hero (`rounded-full bg-white px-7 py-3.5 text-sognos-navy-dark`), later refined by the user to hover-swap to `bg-sognos-blue-accent text-white`. Secondary CTA: underlined text link → text link with `↗` glyph. `openModal()` wrapped `() => openModal()` to satisfy `MouseEventHandler` (openModal takes an optional `ProductKey`).
+- **Section gutter follow-up.** Every remaining `max-w-7xl px-6 lg:px-10` container was collapsed to bare `px-6` last session; this session's edits kept that convention across new/touched components.
+- **Arrow icon normalization.** Every remaining `<ArrowIcon>` call site swapped to the inline SVG template used by `EditionCards.ArrowButton` (viewBox `0 0 14 14`, path `M3 7h8M7 3l4 4-4 4`, `stroke="currentColor"`). Local `ArrowIcon` helpers removed from `HomeProductCards.tsx`, `NewsInsightSection.tsx`, and `EditionCards.tsx` (each file had its own copy). Per-site sizing (`w-3`, `w-4`, `h-5 w-5`) and colours preserved via className.
+- **HowSognosWorks icon → image.** All three blocks' Phosphor `<Icon size={40} weight="thin">` replaced with `<Image src="/solutions/Inon.avif" width={40} height={40} className="h-10 w-10 object-contain" />`. `Icon` field removed from BLOCKS; `@phosphor-icons/react` import dropped. **Flag:** all three blocks currently share the same image; the three original icons provided visual differentiation — worth revisiting when Sognos has three distinct icon assets.
+- **Small design fixes.**
+  - `Navbar.tsx` dark-theme `navGroup` bg: `bg-white/10` → `bg-sognos-navy` — restores solid navy pill on dark-hero pages.
+  - `SolutionUseCases.tsx` `SECTION_BG`: `#1d96fc` (blue accent) → `#152248` (`sognos-navy`).
+  - `solutions/[slug]/page.tsx` `SECTION_BG`: `#1F1147` (dark purple) → `#152248` (`sognos-navy`), plus the "What it solves" band `bg-sognos-blue-accent` → `bg-sognos-navy` — unifies the section tone across both solution surfaces.
+  - `HowSognosWorksPreview.tsx` heading: `lg:text-[28px]` → `lg:text-4xl`, and the "Start delivering outcomes." span kept on one line.
+- **Verified:** `npx tsc --noEmit` clean throughout. Sanity Studio brandColor field remains behind the same auth (Preview scope only for `NEXT_PUBLIC_SANITY_*`).
+- **Files:** `next.config.ts`; `lib/sanity/queries.ts`; `components/layout/Navbar.tsx`; `components/sections/Hero.tsx`, `HomeProductCards.tsx`, `HowSognosWorks.tsx`, `HowSognosWorksPreview.tsx`, `NewsInsightSection.tsx`, `ProductCustomerStories.tsx`, `SolutionUseCases.tsx`, `sognoscare/EditionCards.tsx`; `app/(marketing)/customer-stories/[slug]/page.tsx`, `solutions/[slug]/page.tsx`.
+
 ## 2026-07-02 — Customer story detail: hero rework, sticky info rail, scroll parallax + site-wide gutter
 
 Builds on the earlier same-day AngelList case-study refactor (below).

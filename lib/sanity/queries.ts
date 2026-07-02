@@ -90,7 +90,8 @@ const SOGNOSCARE_PAGE_QUERY = `*[_type == "sognoscarePage"][0]{
     quoteAuthor,
     sidebar,
     heroImage,
-    companyLogo
+    companyLogo,
+    "brandColor": brandColor.hex
   },
   cta
 }`;
@@ -121,6 +122,7 @@ type RawStoryRef = {
   sidebar?: RawSidebarRow[];
   heroImage?: RawSanityImage;
   companyLogo?: RawSanityImage;
+  brandColor?: string;
 };
 type RawCta = Partial<SognoscarePageContent["cta"]>;
 type RawSognoscarePage = {
@@ -184,6 +186,7 @@ function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
     author,
     role,
     href: `/customer-stories/${raw.slug}`,
+    brandColor: raw.brandColor,
     ...STORY_THEME_CLASSES,
   };
 }
@@ -387,6 +390,7 @@ const STORY_BY_SLUG_QUERY = `*[_type == "customerStory" && slug.current == $slug
   quoteAuthor,
   sidebar,
   "downloadUrl": downloadFile.asset->url,
+  "brandColor": brandColor.hex,
   body
 }`;
 

@@ -18,6 +18,7 @@ export type CaseStudy = {
   author: string;
   role: string;
   href: string;
+  brandColor?: string;
 };
 
 const AUTOPLAY_MS = 10000;
@@ -191,7 +192,7 @@ export default function ProductCustomerStories({
                 <StoryCard
                   study={study}
                   bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]}
-                  bgColor={BRAND_BG[study.company]}
+                  bgColor={study.brandColor ?? BRAND_BG[study.company]}
                 />
               </div>
             ))}
@@ -213,7 +214,7 @@ export default function ProductCustomerStories({
           <StoryCard
             study={stories[0]}
             bg={TESTIMONIAL_PALETTE[0]}
-            bgColor={BRAND_BG[stories[0].company]}
+            bgColor={stories[0].brandColor ?? BRAND_BG[stories[0].company]}
           />
         </div>
       )}

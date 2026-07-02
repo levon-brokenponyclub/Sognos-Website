@@ -239,7 +239,7 @@ export default async function CustomerStoryPage({
   const stateValue = sidebarValue(story.sidebar, "State");
   const sizeValue = sidebarValue(story.sidebar, "Size");
   const productValue = sidebarValue(story.sidebar, "Product");
-  const brandBg = BRAND_BG[story.company];
+  const brandBg = story.brandColor ?? BRAND_BG[story.company];
   const category = "Case Study";
 
   const stats = [
@@ -355,7 +355,7 @@ export default async function CustomerStoryPage({
                     {story.company}
                   </p>
                 )}
-                <h1 className="mt-6 max-w-4xl font-heading text-3xl font-medium leading-tight tracking-tight text-white lg:text-5xl">
+                <h1 className="mt-8 max-w-4xl font-heading text-3xl font-medium leading-tight tracking-tight text-white lg:text-5xl">
                   {story.title}
                 </h1>
                 {/* <p className="mt-6 text-xs font-medium tracking-wide text-white/40 uppercase">

@@ -20,26 +20,6 @@ interface EditionCardsProps {
   dark?: boolean; // kept for EditionPageTemplate compat — not applied to new arrow style
 }
 
-function ArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 12 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M0.75 6.46875H11.25M11.25 6.46875L6 11.7188M11.25 6.46875L6 1.21875"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function ArrowButton({
   dir,
   disabled,
@@ -152,7 +132,20 @@ function EditionCard({
               style={{ backgroundColor: edition.accentColor }}
             />
             <div className="relative">
-              <ArrowIcon className="h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-sognos-heading" />
+              <svg
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+                className="h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-sognos-heading"
+              >
+                <path
+                  d="M3 7h8M7 3l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
           </div>
         </div>

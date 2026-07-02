@@ -8,26 +8,6 @@ export type NewsInsightArticle = {
   date?: string;
 };
 
-function ArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 12 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M0.75 6.46875H11.25M11.25 6.46875L6 11.7188M11.25 6.46875L6 1.21875"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function formatDate(iso?: string): string | null {
   if (!iso) return null;
   const d = new Date(iso);
@@ -51,7 +31,20 @@ function SeeMoreLink({ className }: { className?: string }) {
     >
       <span>See more on the blog</span>
       <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
-        <ArrowIcon className="w-3" />
+        <svg
+          viewBox="0 0 14 14"
+          fill="none"
+          aria-hidden="true"
+          className="w-3"
+        >
+          <path
+            d="M3 7h8M7 3l4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </span>
     </Link>
   );
@@ -116,7 +109,20 @@ function CalloutCard({ article }: { article: NewsInsightArticle }) {
           Read more
         </span>
         <span className="inline-flex text-sognos-heading transition-all duration-300 group-hover/card:translate-x-0.5 group-hover/card:text-black">
-          <ArrowIcon className="w-4" />
+          <svg
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+            className="w-4"
+          >
+            <path
+              d="M3 7h8M7 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </span>
       </div>
     </Link>

@@ -57,7 +57,9 @@ Running list of features to build, revisit, or decide on. Add as you go. No prio
 ## Customer Stories
 
 - [x] **Per-client brand card/quote colours** — client brand hex drives the ProductCustomerStories slider card bg and the customer-story detail quote card bg. Currently hardcoded in `lib/customerStoryBrand.ts` (`BRAND_BG`, keyed by company name): Flourish `#0096a9`, Auckland Airport `#151c6b`, Penrith City Council `#f26522`, Gentari Solar Australia `#60269e`. Product-dark tone / `TESTIMONIAL_PALETTE` as fallback.
-- [ ] **Move brand colour into Sanity** — replace the hardcoded `BRAND_BG` map with a colour field on the `customerStory` schema (colour-picker input, e.g. `@sanity/color-input`, or a plain hex string) so each customer's brand colour is authored in the CMS. Surface it through `getCustomerStoryArchive()` / `getCustomerStoryBySlug()` and the `CaseStudy`/story mappers, then feed it to both the ProductCustomerStories card bg and the detail-page quote card bg (currently `lib/customerStoryBrand.ts` + `ProductCustomerStories.tsx` + `customer-stories/[slug]/page.tsx`). Keep the current map as fallback until every doc has a colour set. Consider a paired text-colour/contrast toggle since some brand colours (teal, orange) fail AA under white text.
+- [x] **Move brand colour into Sanity** — 2026-07-03. `customerStory.brandColor` (`@sanity/color-input`, `disableAlpha: true`) added to the schema (Studio wired 2026-07-02). `brandColor.hex` surfaced via `STORY_BY_SLUG_QUERY` and `SOGNOSCARE_PAGE_QUERY.featuredStories[]`; `mapStory`/`CaseStudy` pass it through; consumed by `ProductCustomerStories` slider card and `customer-stories/[slug]` quote card as `story.brandColor ?? BRAND_BG[story.company]`. Hardcoded `lib/customerStoryBrand.ts` map retained as fallback.
+- [ ] **Contrast/text-colour toggle on customer brand cards** — teal (`#0096a9`) and orange (`#f26522`) fail AA against white body text. Consider a paired text-colour field on the schema, or a computed lightness check.
+- [ ] **Retire the `lib/customerStoryBrand.ts` fallback map** — once every `customerStory` doc has a `brandColor` set in Sanity.
 
 ---
 
