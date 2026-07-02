@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -10,26 +9,9 @@ import CookieBanner from "@/components/ui/CookieBanner";
 import { getSiteSettings } from "@/lib/sanity/queries";
 import "./globals.css";
 
-const bureauSans = localFont({
-  src: [
-    {
-      path: "../public/fonts/bureau-sans-book.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/bureau-sans-medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-  ],
-  variable: "--font-bureau-sans",
-  display: "swap",
-});
-
-const interHeading = Inter({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter-heading",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -82,7 +64,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bureauSans.variable} ${interHeading.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         {children}

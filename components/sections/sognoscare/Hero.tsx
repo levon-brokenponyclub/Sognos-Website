@@ -108,7 +108,7 @@ export default function SognoscareHero({
           </p>
 
           {/* Headline */}
-          <h1 className="mx-auto mt-6 max-w-5xl font-heading text-pretty text-white text-5xl sm:text-6xl lg:text-6xl font-normal tracking-[-0.02em]">
+          <h1 className="mx-auto mt-6 max-w-5xl font-angellist text-pretty text-white text-5xl sm:text-6xl lg:text-6xl font-normal tracking-[-0.02em]">
             {headline}
           </h1>
 

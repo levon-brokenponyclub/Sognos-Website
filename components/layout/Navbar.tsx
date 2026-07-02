@@ -22,6 +22,8 @@ const DARK_HERO_PATHS = new Set([
   "/products/sognosgenogram",
   "/company/about",
 ]);
+// Dynamic-route prefixes whose pages always render a dark hero.
+const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
 
 // ── Light / dark theme seam ────────────────────────────────────────────────────
 
@@ -290,7 +292,8 @@ export default function Navbar({
   const useTransparent =
     transparentOverHero !== undefined
       ? transparentOverHero
-      : DARK_HERO_PATHS.has(pathname);
+      : DARK_HERO_PATHS.has(pathname) ||
+        DARK_HERO_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   // Content theme is fixed per page — never flips on scroll.
   const t = useTransparent ? THEMES.dark : THEMES.light;

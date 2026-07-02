@@ -265,9 +265,9 @@
   --sognos-edition-disability: #00a98f;
   /* Edition dark variants — for section backgrounds requiring white-text contrast */
   --sognos-edition-aged-care-dark: #af82f0;
-  --sognos-edition-allied-health-dark: #6b2d00;
-  --sognos-edition-support-at-home-dark: #660e10;
-  --sognos-edition-hospital-in-the-home-dark: #2a3605;
-  --sognos-edition-child-and-family-services-dark: #5c0a33;
+  --sognos-edition-allied-health-dark: #f38c3d;
+  --sognos-edition-support-at-home-dark: #ef6a6c;
+  --sognos-edition-hospital-in-the-home-dark: #9aad2c;
+  --sognos-edition-child-and-family-services-dark: #e95ca0;
   --sognos-edition-disability-dark: #039b84;
 }

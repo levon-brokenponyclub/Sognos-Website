@@ -5,6 +5,17 @@
 
 @custom-variant dark (.dark &);
 
+/* ========================
+   FONT FACES
+======================== */
+@font-face {
+  font-family: angellist;
+  src: url("/app/AngelList.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400 700;
+  font-style: normal;
+}
+
 /* Hide scrollbar */
 @utility scrollbar-hide {
   -ms-overflow-style: none;
@@ -16,9 +27,9 @@
 
 @theme inline {
   /* Fonts */
-  --font-sans: var(--font-bureau-sans, sans-serif);
-  --font-heading: var(--font-inter-heading), ui-sans-serif, system-ui, sans-serif;
-
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-angellist: angellist, ui-sans-serif, system-ui, sans-serif;
 
   /* Colors */
   --color-background: #ffffff;
@@ -67,18 +78,30 @@
   --font-weight-regular: var(--sognos-font-weight-regular);
 
   /* Typography — type scale (single source of truth) */
-  --text-xs: 0.75rem;    --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;   --text-sm--line-height: 1.25rem;
-  --text-base: 1rem;     --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;   --text-lg--line-height: 1.6;
-  --text-xl: 1.25rem;    --text-xl--line-height: 1.6;
-  --text-2xl: 1.5rem;    --text-2xl--line-height: 1.3;
-  --text-3xl: 1.875rem;  --text-3xl--line-height: 1.2;
-  --text-4xl: 2.25rem;   --text-4xl--line-height: 1.15;
-  --text-5xl: 3rem;      --text-5xl--line-height: 1.1;
-  --text-6xl: 3.75rem;   --text-6xl--line-height: 1.05;
-  --text-7xl: 4.5rem;    --text-7xl--line-height: 1.05;
-  --text-8xl: 5.5rem;    --text-8xl--line-height: 1.03;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.6;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1.15;
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 1.05;
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: 1.05;
+  --text-8xl: 5.5rem;
+  --text-8xl--line-height: 1.03;
 
   /* Shadows */
   --shadow-sm: var(--sognos-shadow-sm);
@@ -138,7 +161,6 @@
   --color-bright-lavender-900: var(--color-bright-lavender-900);
   --color-bright-lavender-950: var(--color-bright-lavender-950);
 
-
   /* ========================
      WORKHORSE TOKENS — temporary design system for new homepage
      Swap values to Sognos brand after layout is locked.
@@ -168,39 +190,51 @@
   --shadow-wh-card-lg: 0 4px 24px rgb(39 39 39 / 0.1);
 
   /* ── NEW Sognos lean colour system — Tailwind utilities ── */
-  --color-sognos-navy-dark:   var(--sognos-navy-dark);
-  --color-sognos-navy:        var(--sognos-navy);
+  --color-sognos-navy-dark: var(--sognos-navy-dark);
+  --color-sognos-navy: var(--sognos-navy);
   --color-sognos-blue-accent: var(--sognos-blue-accent);
 
   --color-sognos-heading: var(--sognos-heading);
-  --color-sognos-body:    var(--sognos-body);
-  --color-sognos-muted:   var(--sognos-muted);
+  --color-sognos-body: var(--sognos-body);
+  --color-sognos-muted: var(--sognos-muted);
 
-  --color-sognos-line:    var(--sognos-line);
+  --color-sognos-line: var(--sognos-line);
 
-  --color-sognos-care-base:     var(--sognos-care-base);
-  --color-sognos-care-dark:     var(--sognos-care-dark);
-  --color-sognos-roster-base:   var(--sognos-roster-base);
-  --color-sognos-roster-dark:   var(--sognos-roster-dark);
+  --color-sognos-care-base: var(--sognos-care-base);
+  --color-sognos-care-dark: var(--sognos-care-dark);
+  --color-sognos-roster-base: var(--sognos-roster-base);
+  --color-sognos-roster-dark: var(--sognos-roster-dark);
   --color-sognos-genogram-base: var(--sognos-genogram-base);
   --color-sognos-genogram-dark: var(--sognos-genogram-dark);
 
-  --background-image-sognos-care-gradient:     var(--sognos-care-gradient);
-  --background-image-sognos-roster-gradient:   var(--sognos-roster-gradient);
+  --background-image-sognos-care-gradient: var(--sognos-care-gradient);
+  --background-image-sognos-roster-gradient: var(--sognos-roster-gradient);
   --background-image-sognos-genogram-gradient: var(--sognos-genogram-gradient);
 
-  --color-sognos-edition-aged-care:                 var(--sognos-edition-aged-care);
-  --color-sognos-edition-allied-health:             var(--sognos-edition-allied-health);
-  --color-sognos-edition-support-at-home:           var(--sognos-edition-support-at-home);
-  --color-sognos-edition-hospital-in-the-home:      var(--sognos-edition-hospital-in-the-home);
-  --color-sognos-edition-child-and-family-services: var(--sognos-edition-child-and-family-services);
-  --color-sognos-edition-disability:                var(--sognos-edition-disability);
-  --color-sognos-edition-aged-care-dark:                 var(--sognos-edition-aged-care-dark);
-  --color-sognos-edition-allied-health-dark:             var(--sognos-edition-allied-health-dark);
-  --color-sognos-edition-support-at-home-dark:           var(--sognos-edition-support-at-home-dark);
-  --color-sognos-edition-hospital-in-the-home-dark:      var(--sognos-edition-hospital-in-the-home-dark);
-  --color-sognos-edition-child-and-family-services-dark: var(--sognos-edition-child-and-family-services-dark);
-  --color-sognos-edition-disability-dark:                var(--sognos-edition-disability-dark);
+  --color-sognos-edition-aged-care: var(--sognos-edition-aged-care);
+  --color-sognos-edition-allied-health: var(--sognos-edition-allied-health);
+  --color-sognos-edition-support-at-home: var(--sognos-edition-support-at-home);
+  --color-sognos-edition-hospital-in-the-home: var(
+    --sognos-edition-hospital-in-the-home
+  );
+  --color-sognos-edition-child-and-family-services: var(
+    --sognos-edition-child-and-family-services
+  );
+  --color-sognos-edition-disability: var(--sognos-edition-disability);
+  --color-sognos-edition-aged-care-dark: var(--sognos-edition-aged-care-dark);
+  --color-sognos-edition-allied-health-dark: var(
+    --sognos-edition-allied-health-dark
+  );
+  --color-sognos-edition-support-at-home-dark: var(
+    --sognos-edition-support-at-home-dark
+  );
+  --color-sognos-edition-hospital-in-the-home-dark: var(
+    --sognos-edition-hospital-in-the-home-dark
+  );
+  --color-sognos-edition-child-and-family-services-dark: var(
+    --sognos-edition-child-and-family-services-dark
+  );
+  --color-sognos-edition-disability-dark: var(--sognos-edition-disability-dark);
 }
 
 /* ========================

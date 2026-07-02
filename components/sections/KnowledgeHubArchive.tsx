@@ -127,47 +127,59 @@ export default function KnowledgeHubArchive({
     .slice(1)
     .filter((a) => (activeCategory ? a.category === activeCategory : true));
 
+  const categoryCounts = CATEGORIES.reduce<Record<string, number>>(
+    (acc, cat) => {
+      acc[cat] = articles.filter((a) => a.category === cat).length;
+      return acc;
+    },
+    {},
+  );
+
   return (
     <>
       {/* Category pills */}
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 pb-10 lg:px-10">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="mx-auto max-w-7xl pb-10 lg:px-10">
+          {/* Mobile: horizontal scroll snap slider. md+: wrap. */}
+          <div className="scrollbar-hide -mx-6 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
             <button
               onClick={() => setActiveCategory(null)}
               className={[
-                "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150",
+                "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
                 activeCategory === null
-                  ? "border-sognos-navy-dark bg-sognos-navy-dark text-white"
-                  : "border-(--sognos-line) bg-white text-sognos-body hover:border-sognos-navy-dark/40",
+                  ? "bg-sognos-navy text-white"
+                  : "bg-gray-100 text-sognos-body hover:bg-gray-200",
               ].join(" ")}
             >
-              All
+              All Articles
             </button>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() =>
-                  setActiveCategory(activeCategory === cat ? null : cat)
-                }
-                className={[
-                  "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150",
-                  activeCategory === cat
-                    ? "border-sognos-navy-dark bg-sognos-navy-dark text-white"
-                    : "border-(--sognos-line) bg-white text-sognos-body hover:border-sognos-navy-dark/40",
-                ].join(" ")}
-              >
-                {cat}
-              </button>
-            ))}
-            {activeCategory && (
-              <button
-                onClick={() => setActiveCategory(null)}
-                className="ml-2 text-xs font-medium text-sognos-muted underline hover:text-sognos-body"
-              >
-                Clear
-              </button>
-            )}
+            {CATEGORIES.map((cat) => {
+              const count = categoryCounts[cat] ?? 0;
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(isActive ? null : cat)}
+                  className={[
+                    "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
+                    isActive
+                      ? "bg-sognos-navy text-white"
+                      : "bg-gray-100 text-sognos-body hover:bg-gray-200",
+                  ].join(" ")}
+                >
+                  {cat}
+                  {count > 0 && (
+                    <span
+                      className={`ml-1.5 text-xs ${
+                        isActive ? "text-white/70" : "text-sognos-blue-accent"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -178,7 +190,7 @@ export default function KnowledgeHubArchive({
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <Link
               href={featured.href}
-              className="group grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
+              className="group grid items-center gap-8 lg:grid-cols-[2fr_1fr] lg:gap-12"
             >
               {/* Image */}
               <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
@@ -195,7 +207,7 @@ export default function KnowledgeHubArchive({
               </div>
               {/* Meta */}
               <div>
-                <span className="inline-flex items-center rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
+                <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
                   {featured.category}
                 </span>
                 <h2 className="mt-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors group-hover:text-sognos-navy-dark/70 md:text-3xl lg:text-4xl">

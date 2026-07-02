@@ -363,6 +363,16 @@ const STORY_NAV_QUERY = `*[_type == "customerStory"] | order(order asc){
   company
 }`;
 
+const STORY_ARCHIVE_QUERY = `*[_type == "customerStory"] | order(date desc){
+  "slug": slug.current,
+  company,
+  title,
+  description,
+  heroImage,
+  date,
+  readTime
+}`;
+
 const STORY_BY_SLUG_QUERY = `*[_type == "customerStory" && slug.current == $slug][0]{
   company,
   title,
@@ -396,6 +406,28 @@ export async function getCustomerStoryNav(): Promise<
   return (
     (await sanityFetch<{ slug: string; company: string }[]>(
       STORY_NAV_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
+}
+
+export type CustomerStoryArchive = {
+  slug: string;
+  company: string;
+  title: string;
+  description: string;
+  heroImage?: SanityImageSource;
+  date: string;
+  readTime?: string | null;
+};
+
+export async function getCustomerStoryArchive(): Promise<
+  CustomerStoryArchive[]
+> {
+  return (
+    (await sanityFetch<CustomerStoryArchive[]>(
+      STORY_ARCHIVE_QUERY,
       {},
       { next: { revalidate: 60 } },
     )) ?? []

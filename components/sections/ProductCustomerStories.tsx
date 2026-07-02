@@ -276,7 +276,7 @@ function StoryCard({ study, bg }: { study: CaseStudy; bg: string }) {
         {/* Left — quote top, author/role + link bottom-LEFT, logo bottom-RIGHT */}
         <div className="md:col-span-8 flex flex-col p-6 lg:p-10">
           <blockquote className="relative mb-6 lg:mb-8 before:hidden after:hidden">
-            <p className="font-heading text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
+            <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
               {study.quote}
             </p>
           </blockquote>
