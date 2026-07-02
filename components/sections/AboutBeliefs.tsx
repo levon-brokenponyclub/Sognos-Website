@@ -16,7 +16,7 @@ const VALUES = [
 export default function AboutBeliefs() {
   return (
     <section className="bg-sognos-navy py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="rounded-lg border border-white/10 bg-white/5 p-10 lg:p-14">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Left — title + intro */}

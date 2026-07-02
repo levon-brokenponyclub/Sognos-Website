@@ -23,7 +23,7 @@ export default function AboutValues() {
   return (
     <section className="bg-white">
       {/* Section title — scrolls away before cards pin */}
-      <div className="mx-auto max-w-7xl px-6 pt-20 pb-10 lg:px-10 lg:pt-28 lg:pb-12">
+      <div className="mx-auto max-w-7xl px-6 pt-20 pb-10 lg:pt-28 lg:pb-12">
         <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
           Our Values
         </h2>
@@ -36,7 +36,7 @@ export default function AboutValues() {
           style={{ top: card.top, zIndex: card.zIndex }}
           className={`sticky rounded-t-lg ${card.bg}`}
         >
-          <div className="mx-auto flex min-h-[520px] max-w-7xl flex-col justify-between px-6 pt-6 pb-10 lg:min-h-[56vh] lg:px-10 lg:pt-8 lg:pb-16">
+          <div className="mx-auto flex min-h-[520px] max-w-7xl flex-col justify-between px-6 pt-6 pb-10 lg:min-h-[56vh] lg:pt-8 lg:pb-16">
             {/* Top row: eyebrow left, number right */}
             <div className="flex items-start justify-between">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/70">

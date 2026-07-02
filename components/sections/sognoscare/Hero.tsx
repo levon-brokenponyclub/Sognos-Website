@@ -81,7 +81,7 @@ export default function SognoscareHero({
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReducedMotion ? [0, 0] : [0, 60],
+    prefersReducedMotion ? [0, 0] : [0, 160],
   );
   const opacity = useTransform(
     scrollYProgress,
@@ -98,7 +98,7 @@ export default function SognoscareHero({
       {/* Single animated wrapper — all hero content fades/translates as one unit
           over the static dark section background. AngelList pattern. */}
       <motion.div style={{ y, opacity }} className="will-change-transform">
-        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center lg:px-10">
+        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
           {/* Eyebrow */}
           <p
             className="text-xs font-semibold uppercase tracking-[0.08em]"
@@ -141,7 +141,7 @@ export default function SognoscareHero({
 
         {/* Placeholder visual — plain child inside the animated wrapper.
             Swap the gradient div for a real <Image> when the asset is ready. */}
-        <div className="mx-auto mt-16 max-w-6xl px-6 lg:px-10">
+        <div className="mx-auto mt-16 max-w-6xl px-6">
           <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-2xl bg-sognos-care-gradient">
             <PanelBackgroundVideo />
             <div className="relative flex h-full w-full items-center justify-center">

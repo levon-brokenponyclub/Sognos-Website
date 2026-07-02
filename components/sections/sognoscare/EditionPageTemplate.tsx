@@ -128,7 +128,7 @@ function Hero({ data }: { data: EditionData }) {
         style={{ y, opacity }}
         className="relative will-change-transform"
       >
-        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center lg:px-10">
+        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
           {/* Eyebrow */}
           <p
             className={`text-xs font-semibold uppercase tracking-[0.08em] ${data.accentTextClass}`}

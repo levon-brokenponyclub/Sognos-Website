@@ -117,7 +117,7 @@ function ProductCard({
 export default function HomeProductCards() {
   return (
     <section className="bg-sognos-navy-dark pb-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="flex items-start snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible lg:gap-4">
           {PRODUCTS.map((product) => (
             <ProductCard key={product.href} product={product} />

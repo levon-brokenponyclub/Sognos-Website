@@ -26,7 +26,7 @@ export default function GenogramHero() {
       className="relative overflow-hidden bg-sognos-genogram-dark"
     >
       <motion.div style={{ y, opacity }} className="will-change-transform">
-        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center lg:px-10">
+        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
           <p
             className="text-xs font-semibold uppercase tracking-[0.08em]"
             style={{ color: "rgba(255,255,255,0.6)" }}
@@ -62,7 +62,7 @@ export default function GenogramHero() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 max-w-6xl px-6 lg:px-10">
+        <div className="mx-auto mt-16 max-w-6xl px-6">
           <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-lg bg-sognos-genogram-gradient">
             <div className="absolute inset-0 flex items-center justify-center">
               <Image

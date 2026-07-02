@@ -40,7 +40,7 @@ export default function Hero({
 
   return (
     <section className="relative overflow-hidden bg-sognos-navy-dark pt-40 pb-20">
-      <div className="mx-auto max-w-7xl px-6 text-center lg:px-10">
+      <div className="mx-auto max-w-7xl px-6 text-center">
         <motion.h1
           custom={0}
           variants={fadeUp}

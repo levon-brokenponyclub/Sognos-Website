@@ -26,7 +26,7 @@ export default function ProductTrustStrip({
 }: ProductTrustStripProps = {}) {
   return (
     <section aria-label="Trusted organisations" className={`w-full bg-white`}>
-      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20 lg:px-10">
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
         <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-black/70">
           {title}
         </p>

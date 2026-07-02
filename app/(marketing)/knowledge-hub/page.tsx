@@ -39,7 +39,7 @@ export default async function KnowledgeHubPage({
     <>
       {/* Hero — light, left-aligned, matches Solutions hero */}
       <section className="bg-white pt-32 pb-12 lg:pt-40 lg:pb-16">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <h1 className="font-heading text-5xl font-medium tracking-[-0.02em] text-sognos-heading md:text-6xl lg:text-7xl">
             Knowledge Hub
           </h1>

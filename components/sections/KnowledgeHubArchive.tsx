@@ -139,7 +139,7 @@ export default function KnowledgeHubArchive({
     <>
       {/* Category pills */}
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl pb-10 lg:px-10">
+        <div className="mx-auto max-w-7xl pb-10 lg:px-6">
           {/* Mobile: horizontal scroll snap slider. md+: wrap. */}
           <div className="scrollbar-hide -mx-6 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
             <button
@@ -187,7 +187,7 @@ export default function KnowledgeHubArchive({
       {/* Featured article — two-up: image left, meta right */}
       {featured && (
         <section className="bg-white pb-12 lg:pb-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto max-w-7xl px-6">
             <Link
               href={featured.href}
               className="group grid items-center gap-8 lg:grid-cols-[2fr_1fr] lg:gap-12"
@@ -239,7 +239,7 @@ export default function KnowledgeHubArchive({
 
       {/* All articles — 4-up grid */}
       <section className="bg-white py-12 lg:py-16">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <p className="mb-8 text-sm font-semibold text-sognos-heading">
             <span className="mr-1.5 text-sognos-blue-accent">●</span>All
             articles
@@ -265,7 +265,7 @@ export default function KnowledgeHubArchive({
 
       {/* Case Study — full-bleed dark band */}
       <section className="bg-sognos-navy py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Left */}
             <div>

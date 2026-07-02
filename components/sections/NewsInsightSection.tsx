@@ -134,7 +134,7 @@ export default function NewsInsightSection({
 
   return (
     <section className="w-full overflow-clip bg-background pt-10 pb-12 md:pt-24 md:pb-20">
-      <div className="mx-auto max-w-7xl px-4 lg:px-10">
+      <div className="mx-auto max-w-7xl px-4 lg:px-6">
         <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-[54px]">
           <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
             The latest news

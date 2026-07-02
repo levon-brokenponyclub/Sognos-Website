@@ -52,7 +52,7 @@ export default async function SolutionPage({
     <>
       {/* Hero */}
       <section className="relative bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
               <Link

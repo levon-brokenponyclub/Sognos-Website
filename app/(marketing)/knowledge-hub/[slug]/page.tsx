@@ -244,7 +244,7 @@ export default async function KnowledgeHubPost({
 
   return (
     <main className="bg-white">
-      <div className="mx-auto max-w-7xl px-6 pt-32 pb-16 lg:px-10 lg:pt-40 lg:pb-24">
+      <div className="mx-auto max-w-7xl px-6 pt-32 pb-16 lg:pt-40 lg:pb-24">
         <div className="lg:grid lg:grid-cols-[200px_1fr] lg:gap-16 xl:grid-cols-[220px_1fr] xl:gap-20">
           {/* ── Sticky left rail ── */}
           <aside className="mb-12 lg:sticky lg:top-[104px] lg:mb-0 lg:self-start">
@@ -336,7 +336,7 @@ export default async function KnowledgeHubPost({
       {/* ── Latest articles ── */}
       {latest.length > 0 && (
         <section className="border-t border-gray-200 bg-white">
-          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-16">
+          <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
             <p className="mb-8 text-sm font-semibold text-sognos-heading">
               <span className="mr-1.5 text-sognos-blue-accent">●</span>Latest
               articles

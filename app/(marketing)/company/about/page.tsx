@@ -60,7 +60,7 @@ export default function AboutPage() {
     <main className="w-full bg-white">
       {/* ── Hero — dark navy, two-up (AngelList /engineering) ─────────────────── */}
       <section className="bg-sognos-navy pt-40 pb-20 lg:pt-48 lg:pb-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
             {/* Left — large heading */}
             <h1 className="font-heading text-5xl font-medium tracking-tight text-white lg:text-6xl">
@@ -89,7 +89,7 @@ export default function AboutPage() {
 
       {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
       <section className="bg-white py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[200px_1fr] lg:gap-16">
             {/* Eyebrow */}
             <div className="pt-1.5">
