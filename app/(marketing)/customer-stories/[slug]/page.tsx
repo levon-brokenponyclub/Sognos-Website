@@ -9,9 +9,13 @@ import {
   getCustomerStoryBySlug,
 } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
-import { ArticleCard, type Article } from "@/components/sections/KnowledgeHubArchive";
+import {
+  ArticleCard,
+  type Article,
+} from "@/components/sections/KnowledgeHubArchive";
 import StoryMetaRail from "@/components/sections/customer-stories/StoryMetaRail";
 import HeroScrollFade from "@/components/sections/customer-stories/HeroScrollFade";
+import { BRAND_BG } from "@/lib/customerStoryBrand";
 
 export const revalidate = 60;
 
@@ -64,7 +68,9 @@ function formatDate(dateStr: string): string {
 function parseQuoteAuthor(raw?: string): { author: string; role: string } {
   if (!raw) return { author: "", role: "" };
   const m = raw.match(/^(.*?),\s*(.*)$/);
-  return m ? { author: m[1].trim(), role: m[2].trim() } : { author: raw.trim(), role: "" };
+  return m
+    ? { author: m[1].trim(), role: m[2].trim() }
+    : { author: raw.trim(), role: "" };
 }
 
 function sidebarValue(
@@ -98,7 +104,12 @@ function HeroShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
         aria-label="Share on LinkedIn"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 25 24"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M7.44 5C7.44 5.81 6.95 6.55 6.19 6.85 5.44 7.16 4.57 6.98 4.01 6.39 3.44 5.81 3.28 4.94 3.61 4.19 3.94 3.45 4.69 2.98 5.5 3c1.08.03 1.94.92 1.94 2ZM7.5 8.48H3.5V21h4V8.48Zm6.32 0H9.84V21h3.82v-6.57c0-3.66 4.77-3.96 4.77 0V21H22.5v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"
             fill="currentColor"
@@ -112,7 +123,12 @@ function HeroShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
         aria-label="Share on X"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 21 20"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M15.67 1.875H18.43L12.4 8.758l7.09 9.367h-5.55L9.6 12.444l-4.97 5.681H1.87l6.44-7.363L1.51 1.875H7.2l3.93 5.192 4.54-5.192Zm-.97 15.6h1.53L6.37 3.438H4.73l10.97 14.037Z"
             fill="currentColor"
@@ -126,7 +142,12 @@ function HeroShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
         aria-label="Share on Facebook"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M14 13.5h2.5l1-4H14V7.5c0-1.03 0-2 2-2H17.5V2.14C17.17 2.1 15.94 2 14.64 2 11.93 2 10 3.66 10 6.7V9.5H7v4h3V22h4v-8.5Z"
             fill="currentColor"
@@ -218,6 +239,7 @@ export default async function CustomerStoryPage({
   const stateValue = sidebarValue(story.sidebar, "State");
   const sizeValue = sidebarValue(story.sidebar, "Size");
   const productValue = sidebarValue(story.sidebar, "Product");
+  const brandBg = BRAND_BG[story.company];
   const category = "Case Study";
 
   const stats = [
@@ -336,10 +358,10 @@ export default async function CustomerStoryPage({
                 <h1 className="mt-6 max-w-4xl font-heading text-3xl font-medium leading-tight tracking-tight text-white lg:text-5xl">
                   {story.title}
                 </h1>
-                <p className="mt-6 text-xs font-medium tracking-wide text-white/40 uppercase">
+                {/* <p className="mt-6 text-xs font-medium tracking-wide text-white/40 uppercase">
                   {formatDate(story.date)}
                   {story.readTime ? ` — ${story.readTime}` : ""}
-                </p>
+                </p> */}
               </div>
 
               {stats.length > 0 && (
@@ -380,7 +402,8 @@ export default async function CustomerStoryPage({
               {/* Quote card (matches ProductCustomerStories card body, no image column) */}
               {story.quote && (
                 <div
-                  className={`${quoteCardBg(productValue)} mb-12 rounded-lg p-6 lg:mb-16 lg:p-10`}
+                  className={`mb-12 rounded-lg p-6 lg:mb-16 lg:p-10 ${brandBg ? "" : quoteCardBg(productValue)}`}
+                  style={brandBg ? { backgroundColor: brandBg } : undefined}
                 >
                   <blockquote>
                     <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
@@ -395,7 +418,9 @@ export default async function CustomerStoryPage({
                         </p>
                       )}
                       {quoteRole && (
-                        <p className="mt-0.5 text-base text-white">{quoteRole}</p>
+                        <p className="mt-0.5 text-base text-white">
+                          {quoteRole}
+                        </p>
                       )}
                     </div>
                     {companyLogoUrl && (
@@ -413,7 +438,10 @@ export default async function CustomerStoryPage({
 
               {/* Body prose */}
               <div className={`${PROSE} max-w-[46rem]`}>
-                <PortableText value={story.body} components={portableComponents} />
+                <PortableText
+                  value={story.body}
+                  components={portableComponents}
+                />
               </div>
             </div>
           </div>
@@ -425,7 +453,8 @@ export default async function CustomerStoryPage({
         <section className="border-t border-gray-200 bg-gray-200/70">
           <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
             <p className="mb-8 text-sm font-semibold text-sognos-heading">
-              <span className="mr-1.5 text-sognos-blue-accent">●</span>Customer Stories
+              <span className="mr-1.5 text-sognos-blue-accent">●</span>Customer
+              Stories
             </p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
               {latest.map((article) => (

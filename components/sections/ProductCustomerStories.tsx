@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import Link from "next/link";
+import { BRAND_BG } from "@/lib/customerStoryBrand";
 
 export type CaseStudy = {
   company: string;
@@ -190,6 +191,7 @@ export default function ProductCustomerStories({
                 <StoryCard
                   study={study}
                   bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]}
+                  bgColor={BRAND_BG[study.company]}
                 />
               </div>
             ))}
@@ -208,7 +210,11 @@ export default function ProductCustomerStories({
         </div>
       ) : (
         <div className="max-w-7xl w-full mx-auto px-6">
-          <StoryCard study={stories[0]} bg={TESTIMONIAL_PALETTE[0]} />
+          <StoryCard
+            study={stories[0]}
+            bg={TESTIMONIAL_PALETTE[0]}
+            bgColor={BRAND_BG[stories[0].company]}
+          />
         </div>
       )}
 
@@ -269,9 +275,20 @@ export default function ProductCustomerStories({
   );
 }
 
-function StoryCard({ study, bg }: { study: CaseStudy; bg: string }) {
+function StoryCard({
+  study,
+  bg,
+  bgColor,
+}: {
+  study: CaseStudy;
+  bg: string;
+  bgColor?: string;
+}) {
   return (
-    <div className={`${bg} rounded-lg overflow-hidden`}>
+    <div
+      className={`rounded-lg overflow-hidden ${bgColor ? "" : bg}`}
+      style={bgColor ? { backgroundColor: bgColor } : undefined}
+    >
       <div className="grid grid-cols-1 md:grid-cols-12 min-h-[360px] md:min-h-[400px]">
         {/* Left — quote top, author/role + link bottom-LEFT, logo bottom-RIGHT */}
         <div className="md:col-span-8 flex flex-col p-6 lg:p-10">
