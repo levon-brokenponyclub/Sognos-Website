@@ -66,6 +66,14 @@ export const customerStory = defineType({
       type: "image",
     }),
     defineField({
+      name: "brandColor",
+      title: "Brand colour",
+      description:
+        "Client brand colour used as the background for the customer-story card and pull-quote. Leave empty to fall back to the default product tone.",
+      type: "color",
+      options: { disableAlpha: true },
+    }),
+    defineField({
       name: "quote",
       title: "Pull quote",
       type: "text",
