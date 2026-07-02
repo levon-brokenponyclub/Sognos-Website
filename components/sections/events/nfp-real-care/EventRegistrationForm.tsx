@@ -218,9 +218,11 @@ export default function EventRegistrationForm({
         {submitting ? "Submitting…" : "Confirm registration"}
       </button>
 
-      <p className="text-xs text-gray-500">
-        Places are limited to 35 attendees. You&rsquo;ll receive a confirmation
-        email shortly after registering.
+      <p className="text-xs text-gray-500 text-center">
+        This is a complimentary breakfast event for NFP leaders in health,
+        social and community care.
+        <br />
+        Places are limited to 35 attendees.
       </p>
     </form>
   );

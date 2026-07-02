@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Smartphone,
   Workflow,
+  Navigation,
 } from "lucide-react";
 import { EventRegistrationProvider } from "@/lib/EventRegistrationContext";
 import EventRegistrationModal from "@/components/sections/events/nfp-real-care/EventRegistrationModal";
@@ -63,7 +64,7 @@ const agenda = [
   },
   {
     time: "9.10 am",
-    item: "Keynote presentation by Bill Gye OAM: Designing Services Around Real Lives, Not System Boundaries",
+    item: "Keynote presentation by Bill Gye, Director of Education and Training, WEA Sydney: Designing Services Around Real Lives, Not System Boundaries",
   },
   { time: "9.40 am", item: "Facilitated discussion / Q&A" },
   {
@@ -91,9 +92,9 @@ export default function NfpRealCarePage() {
         {/* HERO */}
         <section className="bg-gradient-hero pt-28 pb-16 lg:pt-40 lg:pb-20">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
               <div>
-                <h1 className="font-heading text-4xl lg:text-6xl font-normal leading-heading tracking-heading text-white">
+                <h1 className="font-heading text-4xl lg:text-5xl font-normal leading-heading tracking-heading text-white">
                   Designing Services Around Real Lives, Not System Boundaries
                 </h1>
                 <p className="mt-5 font-heading text-lg lg:text-xl text-[#8E9EBB] tracking-heading">
@@ -108,43 +109,43 @@ export default function NfpRealCarePage() {
                   sustainable and human-centred care.
                 </p>
 
-                <div className="mt-8 grid grid-cols-2 gap-3 lg:gap-4 max-w-md">
-                  <div className="flex flex-col gap-2 rounded-lg bg-white/8 border border-white/10 p-4">
+                <div className="mt-8 grid grid-cols-2 gap-3 lg:gap-4 max-w-lg">
+                  <div className="flex flex-col gap-2 rounded-lg bg-white border border-white/10 p-2">
                     <Image
                       src={`${IMAGE_DIR}/microsoft-elevate-logo.png`}
                       alt="Microsoft Elevate"
-                      width={120}
+                      width={180}
                       height={40}
-                      className="h-9 w-auto object-contain"
+                      className="h-22 w-auto object-contain"
                     />
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[#8E9EBB]">
-                      Microsoft Elevate
+                    <p className="text-xs font-semibold uppercase tracking-widest text-[#8E9EBB] text-center">
+                      Hosted by Microsoft Elevate
                     </p>
                   </div>
-                  <div className="flex flex-col gap-2 rounded-lg bg-white/8 border border-white/10 p-4">
-                    <div className="h-9 flex items-center">
+                  <div className="flex flex-col gap-2 rounded-lg bg-white border border-white/10 p-2">
+                    <div className="h-22 flex items-center justify-center">
                       <Image
                         src={`${IMAGE_DIR}/softwareone-logo.png`}
                         alt="SoftwareOne"
                         width={120}
                         height={40}
-                        className="h-7 w-auto object-contain brightness-0 invert"
+                        className="h-22 w-auto object-contain"
                       />
                     </div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[#8E9EBB]">
-                      Supported by SoftwareOne
+                    <p className="text-xs font-semibold uppercase tracking-widest text-[#8E9EBB] text-center">
+                      Supported by Software One
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="relative aspect-[4/5] w-full max-w-sm justify-self-center lg:justify-self-end rounded-lg overflow-hidden">
+              <div className="relative aspect-[3/2] w-full lg:justify-self-end rounded-lg overflow-hidden">
                 <Image
-                  src={`${IMAGE_DIR}/bill-gye-headshot.jpg`}
-                  alt="Bill Gye OAM, guest speaker"
+                  src={`${IMAGE_DIR}/MSFT-header-img.png`}
+                  alt="Guests at a Microsoft event in North Sydney"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 80vw, 400px"
+                  sizes="(max-width: 1024px) 100vw, 640px"
                   priority
                 />
               </div>
@@ -342,7 +343,9 @@ export default function NfpRealCarePage() {
                 </p>
                 <p>
                   Bill writes on Substack, including the series{" "}
-                  <em>Surviving and Thriving in the Age of Intelligent Machines</em>
+                  <em>
+                    Surviving and Thriving in the Age of Intelligent Machines
+                  </em>
                   , and has co-authored several peer-reviewed papers. He has
                   closely followed the development and societal impact of
                   artificial intelligence for more than three decades, with a
@@ -485,9 +488,9 @@ export default function NfpRealCarePage() {
                   <p>
                     Microsoft is located in the heart of North Sydney and is
                     easy to access by public transport. The closest station is
-                    <strong> Victoria Cross Metro Station</strong>, approximately
-                    a 7-minute walk to 1 Denison Street. North Sydney Station is
-                    also nearby and within walking distance.
+                    <strong> Victoria Cross Metro Station</strong>,
+                    approximately a 7-minute walk to 1 Denison Street. North
+                    Sydney Station is also nearby and within walking distance.
                   </p>
                   <p>
                     Several bus routes also service the North Sydney CBD, with
@@ -505,21 +508,26 @@ export default function NfpRealCarePage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-center">
-                <div className="relative w-full max-w-xs aspect-square rounded-lg bg-white flex items-center justify-center">
-                  <Building2
-                    size={120}
-                    strokeWidth={1.25}
-                    className="text-[#1D96FC]"
-                    aria-hidden
-                  />
-                  <MapPin
-                    size={48}
-                    strokeWidth={2}
-                    className="absolute top-6 right-8 text-[#1D96FC] fill-[#1D96FC]/15"
-                    aria-hidden
+              <div className="flex flex-col gap-3">
+                <div className="relative w-full aspect-square lg:aspect-[4/3] rounded-lg overflow-hidden bg-white">
+                  <iframe
+                    title="Map: Microsoft, Level 27, 1 Denison Street, North Sydney"
+                    src="https://www.google.com/maps?q=Microsoft%2C%20Level%2027%2C%201%20Denison%20Street%2C%20North%20Sydney%20NSW%202060&output=embed"
+                    className="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
                   />
                 </div>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=Microsoft%2C+Level+27%2C+1+Denison+Street%2C+North+Sydney+NSW+2060"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-white hover:bg-gray-50 text-prussian-blue-800 font-semibold py-3 px-4 text-sm transition-colors"
+                >
+                  <Navigation size={16} aria-hidden />
+                  <span>Get directions</span>
+                </a>
               </div>
             </div>
           </div>
@@ -538,7 +546,9 @@ export default function NfpRealCarePage() {
                     Ready to join the conversation?
                   </h2>
                   <p className="mt-1.5 text-sm text-[#8E9EBB]">
-                    Places limited to 35 attendees
+                    This is a complimentary breakfast event for NFP leaders in
+                    health, social and community care. Places are limited to 35
+                    attendees.
                   </p>
                 </div>
               </div>
