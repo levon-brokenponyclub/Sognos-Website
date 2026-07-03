@@ -32,7 +32,7 @@ export default function GenogramHero() {
             <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
               <Image
                 src="/logos/SognosGenogram-logo.svg"
-                alt="Sognos Genogram"
+                alt="SognosGenogram"
                 width={220}
                 height={48}
                 priority
@@ -42,9 +42,9 @@ export default function GenogramHero() {
                 Family context. Built into every record.
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
-                Manage cases, track service delivery, meet compliance
-                obligations, and report with confidence - in one platform built
-                end-to-end for care.
+                Map family structures, understand kinship networks, track
+                relationship changes, and make better informed care decisions —
+                in one connected view built for frontline practice.
               </p>
             </div>
           </div>

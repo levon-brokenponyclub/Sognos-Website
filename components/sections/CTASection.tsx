@@ -449,7 +449,7 @@ export default function CTASection({
                           <option value="sognoscare">SognosCare</option>
                           <option value="sognosroster">SognosRoster</option>
                           <option value="sognosgenogram">
-                            Sognos Genogram
+                            SognosGenogram
                           </option>
                           <option value="not-sure">Not sure yet</option>
                         </select>

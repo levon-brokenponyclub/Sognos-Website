@@ -22,7 +22,7 @@ export const PRODUCTS = {
       "Allocate the right people, at the right time, to the right services - automatically.",
   },
   genogram: {
-    name: "Sognos Genogram",
+    name: "SognosGenogram",
     slug: "sognosgenogram",
     href: "/products/sognosgenogram",
     tagline: "Relationship & family context platform",

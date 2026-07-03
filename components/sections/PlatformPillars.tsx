@@ -44,10 +44,10 @@ const PRODUCTS = [
   },
   {
     id: "genogram",
-    name: "Sognos Genogram",
+    name: "SognosGenogram",
     tagline: "Understand the full picture",
     description:
-      "Sognos Genogram embeds support networks, family structures, and care histories directly into every case record.",
+      "SognosGenogram embeds support networks, family structures, and care histories directly into every case record.",
     features: [
       "Family and relationship mapping",
       "Support network visualisation",

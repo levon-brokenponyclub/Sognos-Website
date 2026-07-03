@@ -22,7 +22,7 @@ export default function GenogramProblems() {
             Case records have facts. They're missing people.
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
-            Standard case management captures what happened. Sognos Genogram
+            Standard case management captures what happened. SognosGenogram
             captures who is involved - and what those relationships mean for
             service delivery.
           </p>

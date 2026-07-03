@@ -268,7 +268,7 @@ export default function AboutPage() {
                   "Operational Excellence",
                   "Microsoft Native",
                   "Real World Design",
-                  "Build for complexity",
+                  "Built for complexity",
                 ].map((tag) => (
                   <span
                     key={tag}

@@ -215,11 +215,11 @@ function ComplianceTile({ trigger }: { trigger: boolean }) {
         </div>
         <ComplianceRing trigger={trigger} />
       </div>
-      <div className="rounded-xl bg-emerald-50 px-3.5 py-2.5">
+      {/* <div className="rounded-xl bg-emerald-50 px-3.5 py-2.5">
         <span className="text-[11px] font-semibold text-emerald-700">
           12 consecutive months CQC clean
         </span>
-      </div>
+      </div> */}
     </div>
   );
 }

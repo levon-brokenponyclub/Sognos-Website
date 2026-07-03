@@ -39,7 +39,7 @@ Phases 1–5b complete. Sanity CMS integration complete — site is now CMS-driv
 <Hero />
 <LogoStrip />          {/* infinite CSS marquee, uniform color filter, 9 named client logos */}
 <HowSognosWorksPreview />
-<ProductSection />     {/* 3 products: SognosCare, SognosRoster, Sognos Genogram */}
+<ProductSection />     {/* 3 products: SognosCare, SognosRoster, SognosGenogram */}
 <SolutionsSection />   {/* dark bg, Framer Motion drag slider */}
 <HowItWorks />
 <IndustrySection />    {/* Industrial Services video always autoplays */}

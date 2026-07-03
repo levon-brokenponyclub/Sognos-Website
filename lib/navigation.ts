@@ -133,7 +133,7 @@ export const nav: NavGroup[] = [
         description: "Workforce scheduling & optimisation",
       },
       {
-        name: "Sognos Genogram",
+        name: "SognosGenogram",
         href: "/products/sognosgenogram",
         description: "Relationship & family context mapping",
       },
@@ -154,7 +154,7 @@ export const nav: NavGroup[] = [
             description: "Workforce scheduling & optimisation",
           },
           {
-            name: "Sognos Genogram",
+            name: "SognosGenogram",
             href: "/products/sognosgenogram",
             description: "Relationship & family context mapping",
           },
@@ -171,8 +171,8 @@ export const nav: NavGroup[] = [
       SognosRoster: {
         col2: { heading: "SognosRoster", items: SOGNOSROSTER_SECTIONS },
       },
-      "Sognos Genogram": {
-        col2: { heading: "Sognos Genogram", items: SOGNOSGENOGRAM_SECTIONS },
+      "SognosGenogram": {
+        col2: { heading: "SognosGenogram", items: SOGNOSGENOGRAM_SECTIONS },
       },
     },
   },

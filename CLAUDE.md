@@ -13,15 +13,15 @@ Sognos is an **Field Service Innovations with Microsoft Dynamics** built on Micr
 |---------|------|
 | **SognosCare** | Care operations & compliance — case management, service delivery tracking, compliance & reporting |
 | **SognosRoster** | Workforce scheduling & optimisation — staff allocation, scheduling & routing, real-time optimisation |
-| **Sognos Genogram** | Relationship & family context mapping — embeds support networks, histories, and family structures into case records |
+| **SognosGenogram** | Relationship & family context mapping — embeds support networks, histories, and family structures into case records |
 
-**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Sognos Genogram enriches case records with relational context. All three are standalone — they can be implemented independently or together.
+**Relationship:** SognosCare manages services. SognosRoster coordinates the workforce that delivers them. SognosGenogram enriches case records with relational context. All three are standalone — they can be implemented independently or together.
 
 ### Architecture Layers
 
 | Layer | Purpose | Examples |
 |-------|---------|---------|
-| **Products** | Primary positioning | SognosCare, SognosRoster, Sognos Genogram |
+| **Products** | Primary positioning | SognosCare, SognosRoster, SognosGenogram |
 | **Solutions** | Supporting engagements | Frontline, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start |
 | **Industries** | Sector entry points | Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities |
 | **Platform** | Embedded proof only — never top-level | Dynamics 365, Copilot AI, Power Platform |
@@ -40,7 +40,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 | **Phase 3** | Alignment & source-of-truth cleanup | ✅ Complete |
 | **Phase 4** | Product pages — `/products/sognoscare` + `/products/sognosroster` | ✅ Complete |
 | **Phase 5** | Solutions & industry pages | ✅ Complete |
-| **Phase 5b** | Sognos Genogram — product page, routing, nav wiring | ✅ Complete |
+| **Phase 5b** | SognosGenogram — product page, routing, nav wiring | ✅ Complete |
 | **Phase 6** | Design system application | 🔲 Pending |
 | **Phase 7** | UI polish & motion | 🔲 Pending |
 | **Phase 8** | Conversion & integrations | 🔲 Pending |
@@ -190,7 +190,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 ## 6. Navigation (Live)
 
 ```
-Products       → SognosCare, SognosRoster, Sognos Genogram
+Products       → SognosCare, SognosRoster, SognosGenogram
 Solutions      → Frontline, CRM, Customer Insights, Customer Experience, Customer Service, Power Platform, Quick Start
 Industries     → Health & Social Care, Facilities Management, Local Government, Industrial Services, Energy & Utilities
 Customers

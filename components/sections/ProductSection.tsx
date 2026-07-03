@@ -144,7 +144,7 @@ export default function ProductSection() {
               ref={shineRef}
               className={`text-shine-settle${shineInView ? " in-view" : ""}`}
             >
-              smarter,faster
+              smarter, faster
             </span>{" "}
             across diverse industries
           </h2>

@@ -16,7 +16,7 @@ const REASONS = [
 const PRODUCTS_LIST = [
   { label: "SognosCare", value: "sognoscare" },
   { label: "SognosRoster", value: "sognosroster" },
-  { label: "Sognos Genogram", value: "sognosgenogram" },
+  { label: "SognosGenogram", value: "sognosgenogram" },
   { label: "Not sure yet", value: "unsure" },
 ];
 

@@ -7,9 +7,9 @@ import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 
 export const metadata = {
-  title: "Sognos Genogram - Relationship & Family Context Platform | Sognos",
+  title: "SognosGenogram - Relationship & Family Context Platform | Sognos",
   description:
-    "Map family structures, support networks, and relationship histories directly into case records. Sognos Genogram gives every worker the relational context they need.",
+    "Map family structures, support networks, and relationship histories directly into case records. SognosGenogram gives every worker the relational context they need.",
 };
 
 const SECTIONS = [
@@ -26,13 +26,13 @@ export default function SognosGenogramPage() {
       <ProductDrawer
         secondaryLabel="Other Products"
         currentProduct="sognosgenogram"
-        peekTitle="What Sognos Genogram Solves"
-        peekDescription="Standard case management captures what happened. Sognos Genogram captures who is involved and what that means for service delivery."
+        peekTitle="What SognosGenogram Solves"
+        peekDescription="Standard case management captures what happened. SognosGenogram captures who is involved and what that means for service delivery."
         drawerTitle="Other Products"
         drawerDescription="Explore the full Sognos platform."
       />
       <ProductSubNav
-        productName="Sognos Genogram"
+        productName="SognosGenogram"
         logoSrc="/logos/sognos-genogram-logo-color.svg"
         sections={SECTIONS}
       />
@@ -41,7 +41,7 @@ export default function SognosGenogramPage() {
       <GenogramStories />
       <CTASection
         headline="Ready to bring relationship context into your case records?"
-        subtext="Book a call and we'll show you how Sognos Genogram fits into your existing care operations."
+        subtext="Book a call and we'll show you how SognosGenogram fits into your existing care operations."
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
         defaultProduct="sognosgenogram"

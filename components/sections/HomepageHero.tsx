@@ -30,7 +30,7 @@ export default function HomepageHero() {
               New
             </span>
             <span className="text-wh-text">
-              Sognos Genogram is here - see context like never before
+              SognosGenogram is here - see context like never before
             </span>
           </div>
         </div>

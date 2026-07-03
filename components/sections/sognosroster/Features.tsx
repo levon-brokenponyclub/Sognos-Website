@@ -161,10 +161,10 @@ function FeatureVisual({ id }: { id: string }) {
             status: "Valid",
             expiry: "Mar 2027",
           },
-          { label: "Manual Handling", status: "Valid", expiry: "Dec 2025" },
+          { label: "Manual Handling", status: "Expired", expiry: "Dec 2025" },
           {
             label: "Medication Administration",
-            status: "Expiring",
+            status: "Expired",
             expiry: "May 2025",
           },
         ].map((item) => (
@@ -178,7 +178,7 @@ function FeatureVisual({ id }: { id: string }) {
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-gray-400">{item.expiry}</span>
               <span
-                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${item.status === "Valid" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}
+                className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${item.status === "Valid" ? "bg-emerald-50 text-emerald-700" : item.status === "Expired" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"}`}
               >
                 {item.status}
               </span>
