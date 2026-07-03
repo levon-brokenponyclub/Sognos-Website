@@ -59,6 +59,34 @@ SKIP_REFRESH = {
     "participant-care-webinar",
 }
 
+# Legacy WordPress posts that are intentionally NOT migrated to the new site.
+# These slugs exist in the WXR export but must never be imported — content is
+# outdated, off-brand, or superseded. Do not add them to MIGRATED_SLUGS.
+LEGACY_IGNORE = {
+    "how-to-leverage-dynamics-365-for-scalable-field-service-management",
+    "whats-next-for-field-service-management-5-trends-shaping-2025",
+    "the-future-of-field-service-management-solutions",
+    "the-ultimate-guide-to-choosing-the-best-customer-relationship-management-software-for-your-organisation",
+    "master-field-operations-how-field-management-software-will-rule-in-2025",
+    "investing-in-field-service-management-software",
+    "relief-from-billing-delays-the-reassuring-solution-of-fsm",
+    "predictive-maintenance-with-fsm",
+    "remote-monitoring-and-diagnostics-with-fsm",
+    "roi-with-field-service-management-solutions",
+    "the-crucial-advantages-of-efficient-field-services-management-for-energy-and-utilities",
+    "the-role-of-fsm-in-industries-with-field-remote-workers",
+    "workforce-optimisation-with-fsm",
+    "managing-field-operations-with-fsm-software",
+    "optimising-field-service-management",
+    "revolutionising-allied-healthcare",
+    "the-total-economic-impact-of-dynamics-365-field-service",
+    "the-benefits-of-ai-in-field-service-management",
+    "overview-of-microsoft-dynamics-365-field-service",
+    "how-to-increase-productivity-with-field-service-management-software",
+    "comprehensive-field-mobility-solution",
+    "sognos-brings-renewed-energy-to-australian-electrical-body",
+}
+
 INLINE_TAGS = {"a", "b", "strong", "i", "em", "span", "u", "small", "sup", "sub"}
 
 

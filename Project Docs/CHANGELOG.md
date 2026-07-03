@@ -51,8 +51,9 @@ Rolling log of updates to the Sognos React site. Newest entries at top.
 
 Reversible: re-running `npm run migrate:knowledge-posts` restores the previous curated bodies (the image asset uploads remain in Sanity's asset library either way).
 
+**Legacy posts — permanently excluded.** 22 posts in the WXR that predate the current positioning are intentionally not on the site and **must never be imported**. Slugs listed in `LEGACY_IGNORE` in `scripts/extract-post-bodies.py` — do not add them to `MIGRATED_SLUGS`. Reasons: outdated content, off-brand, or superseded by rewrites.
+
 **Still outstanding.**
-- 22 posts from the WXR are not on the site at all.
 - 6 posts have shortened slugs; inbound links to the original WP URLs will 404 unless redirects are added.
 - `participant-care-webinar` skipped — raw XML thinner than current curated version.
 
