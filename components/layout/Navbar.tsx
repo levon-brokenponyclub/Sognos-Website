@@ -20,6 +20,7 @@ const DARK_HERO_PATHS = new Set([
   "/products/sognoscare",
   "/products/sognosroster",
   "/products/sognosgenogram",
+  "/company/about",
 ]);
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
@@ -46,7 +47,7 @@ const THEMES: Record<NavVariant, NavTheme> = {
     hoverPill: "bg-sognos-navy-dark",
     navGroup: "bg-gray-100 rounded-full p-2",
     logoFilter: "none",
-    primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-navy-dark/90",
+    primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-blue-accent hover:text-white",
     secondaryText: "text-sognos-heading hover:text-sognos-heading",
     hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
@@ -56,7 +57,7 @@ const THEMES: Record<NavVariant, NavTheme> = {
     hoverPill: "bg-white",
     navGroup: "bg-sognos-navy rounded-full p-2",
     logoFilter: "brightness(0) invert(1)",
-    primaryBtn: "bg-white text-sognos-navy-dark hover:bg-white/90",
+    primaryBtn: "bg-white text-sognos-navy-dark hover:bg-sognos-blue-accent hover:text-white",
     secondaryText: "text-white hover:text-white",
     hamburger: "text-white/80 hover:text-white",
   },
@@ -227,7 +228,7 @@ function MobileFooter({
       <Link
         href="#book-demo"
         onClick={onBookDemo}
-        className="flex flex-1 items-center justify-center h-14 rounded-lg text-base font-normal bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-navy-dark/90"
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-base font-normal bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-blue-accent hover:text-white"
       >
         {navCTA.primary.name}
       </Link>

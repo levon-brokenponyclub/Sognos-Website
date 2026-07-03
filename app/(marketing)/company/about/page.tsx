@@ -67,13 +67,13 @@ export default function AboutPage() {
               <p className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-[#6B7280]">
                 About Sognos
               </p>
-              <h1 className="mt-5 font-heading font-medium text-[#1A1A1A] text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Smarter automation for modern teams
               </h1>
               <div className="mt-9">
                 <Link
                   href="/company/careers"
-                  className="inline-flex items-center justify-center rounded-full bg-[#1A1A1A] px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-black"
+                  className="inline-flex items-center justify-center rounded-full bg-sognos-navy px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
                 >
                   Explore Careers
                 </Link>
@@ -81,7 +81,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        {/* Full-viewport image, contracts to max-w-7xl on scroll (AngelList /careers) */}
+        {/* Full-viewport image, translateY parallax on scroll (AngelList /careers) */}
         <div className="mt-16 lg:mt-20">
           <AboutHeroImage />
         </div>

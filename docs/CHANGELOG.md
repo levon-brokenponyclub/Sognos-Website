@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-03 — About hero parallax + resize, Navbar Book-a-Demo hover, hero h1 unification
+
+Third session of the day. All work Preview-only (redesign branch).
+
+- **`AboutHeroImage` — combined AngelList parallax + desktop width-shrink.** Single scroll driver: `progress = useTransform(scrollY, [0, 600], [0, 1], { clamp: true })` — feeds all three motion values so they animate in lockstep. Outer `motion.div`: `maxWidth: calc(100vw - ((100vw - 80rem) * progress))` (100vw → 80rem) + `borderRadius: 0 → 12px`. Inner `motion.div`: `y: -70 → 0` (matches the AngelList `translateY(-70.9442px) → transform: none` values from devtools). Container padding-based aspect kept: `pt-[100vw] sm:pt-[35vw] xl:pt-[590px]`. Image element unchanged (`min-h-[calc(100%+60px)] w-full object-cover`, `width={2016} height={768}`, `priority`, `sizes="100vw"`). Mobile shrink is invisible for free — at `100vw < 80rem`, the max-width cap doesn't restrict. Dropped the `clipPath` polygon (redundant with `overflow-hidden` and would fight `border-radius`). Earlier same-session iterations that used `useScroll({ target, offset: ["start start", "end start"] })` were reverted — that offset only fires while the image top is above the viewport top, which on mobile is a band users can't reach before scrolling past the whole section.
+- **Navbar `Book a Demo` hover — blue-accent, both themes.** `THEMES.light.primaryBtn` and `THEMES.dark.primaryBtn` both hover to `bg-sognos-blue-accent hover:text-white`. Rest state unchanged (light: navy-dark bg, dark: white bg). Same hover applied to the mobile-menu footer "Book a Demo" pill (`MobileFooter`) for consistency. Matches the pattern the linter/design pass applied to the About page's `Explore Careers` CTA (`hover:bg-sognos-blue-accent`).
+- **Hero h1 unification (linter pass).** About + `solutions/[slug]` h1 both moved from `font-medium text-[#1A1A1A] tracking-[-0.02em]` → `font-normal text-sognos-header tracking-tight text-balance`. Consistent typographic voice across content hero pages. Also on the About page: `Explore Careers` CTA bg swapped from `bg-[#1A1A1A]` to `bg-sognos-navy` (token). Applied to `app/(marketing)/company/about/page.tsx` + `app/(marketing)/solutions/[slug]/page.tsx`. `/company/about` re-added to `DARK_HERO_PATHS` in `Navbar.tsx` (linter pass) — About uses the transparent-over-hero mode again; nothing else's theme changed.
+- **Verified:** `npx tsc --noEmit` clean throughout.
+- **Files:** `components/sections/AboutHeroImage.tsx`, `components/layout/Navbar.tsx`, `app/(marketing)/company/about/page.tsx`, `app/(marketing)/solutions/[slug]/page.tsx`.
+
 ## 2026-07-03 — Homepage section swaps (Solutions, News, LogoStrip) + About hero rework
 
 Second session of the day. All work Preview-only (redesign branch); production untouched.
