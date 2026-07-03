@@ -1,17 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getFooterContent } from "@/lib/sanity/queries";
+import FooterColumns from "@/components/layout/FooterColumns";
 
 export default async function Footer() {
   const content = await getFooterContent();
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-gradient-hero text-white">
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-3 lg:col-span-2 flex flex-col">
+    <footer className="bg-sognos-navy text-white">
+      {/* Main section — links left, brand right (mobile: brand top, links below) */}
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="flex flex-col gap-x-[57px] gap-y-12 py-12 md:flex-row md:py-[96px]">
+          {/* Brand block — LEFT on desktop, TOP on mobile */}
+          <div className="flex shrink-0 flex-col gap-y-6 md:w-[300px]">
             <Link href="/" className="inline-block">
               <Image
                 src={content.brandLogo}
@@ -21,11 +23,13 @@ export default async function Footer() {
                 className="brightness-0 invert"
               />
             </Link>
-            <p className="mt-2 text-sm text-white/80 max-w-sm">
-              {content.tagline}
-            </p>
+            {content.tagline && (
+              <p className="font-heading text-2xl leading-tight text-white/80 text-balance">
+                {content.tagline}
+              </p>
+            )}
             {content.platformLogos.length > 0 && (
-              <div className="mt-auto flex items-center gap-4 pt-6">
+              <div className="flex items-center gap-4 pt-2">
                 {content.platformLogos.map((logo) => (
                   <Image
                     key={`${logo.alt}-${logo.src}`}
@@ -39,53 +43,41 @@ export default async function Footer() {
             )}
           </div>
 
-          {/* Columns */}
-          {content.columns.map((column) => (
-            <div key={column.title}>
-              <h3 className="text-sm font-semibold text-white">
-                {column.title}
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {column.links.map((link) => (
-                  <li key={`${column.title}-${link.href}`}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white hover:text-white"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Link columns — RIGHT on desktop, BELOW brand on mobile */}
+          {content.columns.length > 0 && (
+            <FooterColumns columns={content.columns} />
+          )}
         </div>
+      </div>
 
-        {/* Acknowledgement of Country */}
+      {/* Bottom rows — acknowledgement above copyright/legal */}
+      <div className="border-t border-white/10">
         {content.acknowledgement && (
-          <div className="mt-12 border-t border-white/15 pt-8">
-            <p className="text-xs leading-relaxed text-white/60 max-w-4xl">
+          <div className="mx-auto max-w-7xl px-4 py-4">
+            <p className="max-w-[720px] text-xs leading-relaxed text-white/30">
               {content.acknowledgement}
             </p>
           </div>
         )}
-
-        {/* Bottom bar */}
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-8 sm:flex-row sm:items-center">
-          <p className="text-sm text-white">
-            &copy; {year} {content.brandLogoAlt}. {content.copyrightSuffix}
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <p className="text-xs text-white/40">
+            © {year} {content.brandLogoAlt}. {content.copyrightSuffix}
           </p>
-          <div className="flex gap-6">
-            {content.legalLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-white hover:text-white"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          {content.legalLinks.length > 0 && (
+            <div className="flex items-center gap-x-6">
+              {content.legalLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs text-white/40 transition-colors duration-200 hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>

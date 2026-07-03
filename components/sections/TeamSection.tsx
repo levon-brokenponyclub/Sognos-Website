@@ -55,10 +55,10 @@ export default function TeamSection() {
 
   return (
     <>
-      <section className="w-full bg-prussian-blue-800">
+      <section className="w-full bg-sognos-navy">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
             Leadership
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white lg:text-left tracking-tight mb-6">
@@ -83,17 +83,17 @@ export default function TeamSection() {
                 </div>
                 {/* Meta */}
                 <div className="px-3 pb-4 flex flex-col items-start w-full">
-                  <h2 className="font-heading text-[22px] font-medium text-prussian-blue-800 tracking-tight transition-colors group-hover:text-[#1D96FC]">
+                  <h2 className="font-heading text-[22px] font-medium text-sognos-body tracking-tight transition-colors group-hover:text-sognos-blue-accent">
                     {member.name}
                   </h2>
-                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body mt-1.5">
+                  <p className="font-heading text-base font-normal leading-relaxed text-sognos-body mt-1.5">
                     {member.role}
                   </p>
 
                   {/* Visual trigger */}
-                  <div className="mt-6 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity">
+                  <div className="mt-6 inline-flex items-center gap-2.5 text-md font-semibold text-sognos-body hover:opacity-70 transition-opacity">
                     <span>Read profile</span>
-                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sognos-navy text-white shrink-0">
                       <svg
                         width="12"
                         height="12"
@@ -129,7 +129,7 @@ export default function TeamSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-50 bg-[#052048]/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-sognos-navy/60 backdrop-blur-sm"
               onClick={() => setActive(null)}
             />
 
@@ -149,7 +149,7 @@ export default function TeamSection() {
                 <div />
                 <button
                   onClick={() => setActive(null)}
-                  className="w-9 h-9 rounded-full border border-sognos-border-subtle flex items-center justify-center text-prussian-blue-800/50 hover:text-prussian-blue-800 hover:border-prussian-blue-800/30 transition-colors cursor-pointer"
+                  className="w-9 h-9 rounded-full border border-sognos-line flex items-center justify-center text-sognos-body/50 hover:text-sognos-body hover:border-sognos-navy/30 transition-colors cursor-pointer"
                   aria-label="Close"
                 >
                   <svg
@@ -173,7 +173,7 @@ export default function TeamSection() {
               <div className="overflow-y-auto flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] max-w-5xl mx-auto px-6 pb-10 gap-0">
                   {/* Col 1 - photo + identity + social */}
-                  <div className="flex flex-col items-start py-6 md:pr-8 md:border-r border-sognos-border-subtle">
+                  <div className="flex flex-col items-start py-6 md:pr-8 md:border-r border-sognos-line">
                     <div className="relative w-48 aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 mb-6">
                       <Image
                         src={active.image}
@@ -183,15 +183,15 @@ export default function TeamSection() {
                         sizes="260px"
                       />
                     </div>
-                    <p className="font-heading text-lg font-semibold text-prussian-blue-800 leading-snug">
+                    <p className="font-heading text-lg font-semibold text-sognos-body leading-snug">
                       {active.name}
                     </p>
-                    <p className="text-sm text-[#052048] mt-1">{active.role}</p>
+                    <p className="text-sm text-sognos-body mt-1">{active.role}</p>
                     <a
                       href={active.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-5 inline-flex items-center gap-2 text-prussian-blue-800/50 hover:text-prussian-blue-800 transition-colors text-sm"
+                      className="mt-5 inline-flex items-center gap-2 text-sognos-body/50 hover:text-sognos-body transition-colors text-sm"
                       aria-label={`${active.name} on LinkedIn`}
                     >
                       <LinkedInIcon />
@@ -200,16 +200,16 @@ export default function TeamSection() {
                   </div>
 
                   {/* Col 2 - bio */}
-                  <div className="py-6 md:pl-8 border-t md:border-t-0 border-sognos-border-subtle">
-                    <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                      <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  <div className="py-6 md:pl-8 border-t md:border-t-0 border-sognos-line">
+                    <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                      <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                       Overview
                     </div>
                     <div className="space-y-4">
                       {active.bio.split("\n\n").map((para, i) => (
                         <p
                           key={i}
-                          className="text-sognos-text-body leading-relaxed text-base"
+                          className="text-sognos-body leading-relaxed text-base"
                         >
                           {para}
                         </p>

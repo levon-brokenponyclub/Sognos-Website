@@ -4,35 +4,39 @@
 
 :root {
   /* ════════════════════════════════════════════
-       PALETTE FAMILIES
+       PRIMITIVE PALETTE FAMILIES
+       Kept as raw CSS vars — consumed by gradient tokens
+       and occasional inline CSS. NOT exposed as Tailwind
+       utilities (those forwards were deleted in Phase 4).
     ════════════════════════════════════════════ */
 
-  /* ---- Palette: Prussian Blue (Brand) ---- */
-  --color-prussian-blue-50: #eaeefb;
-  --color-prussian-blue-100: #d5def6;
-  --color-prussian-blue-200: #abbded;
-  --color-prussian-blue-300: #819be4;
-  --color-prussian-blue-400: #577adb;
-  --color-prussian-blue-500: #2d59d2;
-  --color-prussian-blue-600: #2447a8;
-  --color-prussian-blue-700: #1b357e;
-  --color-prussian-blue-800: #052048;
-  --color-prussian-blue-900: #09122a;
-  --color-prussian-blue-950: #060c1d;
+  /* ---- Prussian Blue → Navy scale (legacy name, new values) ---- */
+  --color-prussian-blue-50: #e6e9ef;
+  --color-prussian-blue-100: #c5cbd8;
+  --color-prussian-blue-200: #9aa3b8;
+  --color-prussian-blue-300: #6f7c98;
+  --color-prussian-blue-400: #4c5878;
+  --color-prussian-blue-500: #2d3a5c;
+  --color-prussian-blue-600: #1a2747;
+  --color-prussian-blue-700: #0c1d39;
+  --color-prussian-blue-800: var(--sognos-navy); /* navy bridge */
+  --color-prussian-blue-900: var(--sognos-navy-dark); /* navy-dark bridge */
+  --color-prussian-blue-950: var(--sognos-navy-dark); /* navy-dark bridge */
 
-  /* ---- Palette: Cornflower Ocean (Accent / CTA) ---- */
-  --color-cornflower-ocean-50: #e6f6fe;
-  --color-cornflower-ocean-100: #cdedfe;
-  --color-cornflower-ocean-200: #9bdbfd;
-  --color-cornflower-ocean-300: #59bbf7;
-  --color-cornflower-ocean-400: #37b6fb;
-  --color-cornflower-ocean-500: #05a4fa;
-  --color-cornflower-ocean-600: #0483c8;
-  --color-cornflower-ocean-700: #036396;
-  --color-cornflower-ocean-800: #024264;
-  --color-cornflower-ocean-900: #012132;
-  --color-cornflower-ocean-950: #011723;
+  /* ---- Cornflower Ocean → Brand Blue scale (legacy name, new values) ---- */
+  --color-cornflower-ocean-50: #e3f0ff;
+  --color-cornflower-ocean-100: #c7e1ff;
+  --color-cornflower-ocean-200: #9bcaff;
+  --color-cornflower-ocean-300: #6fb2ff;
+  --color-cornflower-ocean-400: #4aa6ff;
+  --color-cornflower-ocean-500: #239bff;
+  --color-cornflower-ocean-600: #1c7ecc;
+  --color-cornflower-ocean-700: #155f99;
+  --color-cornflower-ocean-800: #0d3f66;
+  --color-cornflower-ocean-900: #052048;
+  --color-cornflower-ocean-950: #041a3a;
 
+  /* ---- True Cobalt (kept — used by gradient-highlight) ---- */
   --color-true-cobalt-50: #ebecf9;
   --color-true-cobalt-100: #d7d9f4;
   --color-true-cobalt-200: #b0b4e8;
@@ -45,7 +49,9 @@
   --color-true-cobalt-900: #0b0d28;
   --color-true-cobalt-950: #08091c;
 
-  /* ---- Palette: Seagrass (Edition: Green / Care — Disability & Mental Health) ---- */
+  /* ---- Edition identity palettes (kept — sector colours) ---- */
+
+  /* Seagrass — Disability & Mental Health (green) */
   --color-seagrass-50: #e5fffb;
   --color-seagrass-100: #ccfff7;
   --color-seagrass-200: #99fff0;
@@ -58,7 +64,7 @@
   --color-seagrass-900: #00332b;
   --color-seagrass-950: #00241e;
 
-  /* ---- Palette: Grapefruit Pink (Edition: Coral / Care — Support at Home) ---- */
+  /* Grapefruit Pink — Support at Home (coral) */
   --color-grapefruit-pink-50: #ffe5e6;
   --color-grapefruit-pink-100: #ffccce;
   --color-grapefruit-pink-200: #ff999c;
@@ -71,7 +77,7 @@
   --color-grapefruit-pink-900: #330002;
   --color-grapefruit-pink-950: #240001;
 
-  /* ---- Palette: Sandy Brown (Edition: Orange / Care — Allied Health) ---- */
+  /* Sandy Brown — Allied Health (orange) */
   --color-sandy-brown-50: #fff1e5;
   --color-sandy-brown-100: #ffe4cc;
   --color-sandy-brown-200: #ffc999;
@@ -84,7 +90,7 @@
   --color-sandy-brown-900: #331800;
   --color-sandy-brown-950: #241100;
 
-  /* ---- Palette: Bright Lavender (Edition: Purple / Care — Aged Care) ---- */
+  /* Bright Lavender — Aged Care (purple) */
   --color-bright-lavender-50: #f0e5ff;
   --color-bright-lavender-100: #e1ccff;
   --color-bright-lavender-200: #c399ff;
@@ -98,73 +104,37 @@
   --color-bright-lavender-950: #0f0024;
 
   /* ════════════════════════════════════════════
-       SURFACE
+       NEUTRALS — Paraform warm grey-green palette
     ════════════════════════════════════════════ */
 
-  --sognos-surface-100: #f1f5f9;
-  --color-surface-100: var(--sognos-surface-100);
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f5f8f6;
+  --color-neutral-100: #eff2f0;
+  --color-neutral-200: #e3e5e4;
+  --color-neutral-300: #c8ccc9;
+  --color-neutral-400: #9ba29e;
+  --color-neutral-500: #6f7672;
+  --color-neutral-600: #4e524f;
+  --color-neutral-700: #2e312f;
+  --color-neutral-800: #16181a;
+  --color-neutral-900: #0c0a08;
 
   /* ════════════════════════════════════════════
-       SEMANTIC TOKENS
+       SEMANTIC TOKENS — live only
     ════════════════════════════════════════════ */
 
-  /* Brand */
-  --sognos-brand: var(--color-prussian-blue-800); /* #122454 */
-  --sognos-brand-dark: var(--color-prussian-blue-900); /* #09122a */
-  --sognos-brand-light: var(--color-prussian-blue-500); /* #2d59d2 */
-  --sognos-brand-subtle: var(--color-prussian-blue-600); /* #2447a8 */
+  /* Brand foreground (used by --color-primary-foreground) */
   --sognos-brand-foreground: #ffffff;
 
-  /* Accent & Highlight */
-  --sognos-accent: var(--color-cornflower-ocean-500); /* #05a4fa */
-  --sognos-accent-subtle: rgb(5 164 250 / 0.1);
-  --sognos-accent-blue: var(--color-prussian-blue-950); /* #060c1d */
-  --sognos-highlight: var(--color-true-cobalt-400); /* #6168d1 */
-  --sognos-highlight-subtle: rgb(4 136 251 / 0.12);
+  /* Surfaces & Backgrounds */
+  --sognos-bg-sunken: var(
+    --color-neutral-200
+  ); /* #e3e5e4 — still live in components */
 
-  /* Brand glow / animation colours */
-  --sognos-brand-subtle-300: var(--color-seagrass-300); /* #66ffe8 */
-  --sognos-brand-subtle-700: var(--color-seagrass-600); /* #00ccad */
-
-  /* Subtle tints (used in legacy components) */
-  --sognos-subtle-coral: var(--color-grapefruit-pink-300); /* #ff666b */
-  --sognos-subtle-purple: var(--color-bright-lavender-300); /* #a666ff */
-
-  /* Neutrals */
-  --sognos-neutral-50: #ffffff;
-  --sognos-neutral-100: #fafafa;
-  --sognos-neutral-200: #f2f3f5;
-  --sognos-neutral-300: #d8dbe1;
-  --sognos-neutral-400: #a2a2a2;
-  --sognos-neutral-500: #6c6c6c;
-  --sognos-neutral-600: #525253;
-  --sognos-neutral-700: #3a3a3b;
-  --sognos-neutral-800: #232324;
-  --sognos-neutral-900: #0c0c0d;
-
-  /* Text & Links */
-  --sognos-text-heading: var(--color-prussian-blue-950); /* #060c1d */
-  --sognos-text-body: #475569;
-  --sognos-text-muted: #96a3b0;
-  --sognos-text-soft: #64748d;
-  --sognos-text-inverse: #ffffff;
-  --sognos-text-link: var(--color-prussian-blue-800); /* #122454 */
-
-  /* Surfaces & Backgrounds — Slate base */
-  --sognos-bg-page: #ffffff; /* white */
-  --sognos-bg-surface: #f8fafc; /* slate-50 */
-  --sognos-bg-elevated: #e2e8f0; /* slate-200 */
-  --sognos-bg-sunken: #f1f5f9; /* slate-100 */
-
-  /* Borders & Components */
-  --sognos-border: #e5e7eb; /* gray-200 */
-  --sognos-border-strong: var(--color-cornflower-ocean-500); /* #05a4fa */
-  --sognos-border-subtle: #f3f4f6; /* gray-100 */
-  --sognos-border-focus: var(--color-prussian-blue-800); /* #122454 */
-  --sognos-card-border: #f3f4f6; /* gray-100 */
-  --sognos-card-border-soft: #e5e7eb; /* gray-200 */
-  --sognos-card-bg: #ffffff;
-  --sognos-subcard-bg: #f8fafc; /* slate-50 */
+  /* Borders */
+  --sognos-border: var(
+    --color-neutral-200
+  ); /* used by --color-border / --color-input */
 
   /* Status */
   --sognos-success: #10b981;
@@ -173,37 +143,38 @@
   --sognos-warning-light: #fef3c7;
   --sognos-error: #ef4444;
   --sognos-error-light: #fee2e2;
-  --sognos-info: #3b82f6;
-  --sognos-info-light: #dbeafe;
+  --sognos-info: var(--color-cornflower-ocean-500);
+  --sognos-info-light: var(--color-cornflower-ocean-50);
 
-  /* ---- Editions — SognosCare sector identity colours ---- */
-  --sognos-edition-green: #36b19a; /* Disability & Mental Health */
-  --sognos-edition-orange: #fea65d; /* Allied Health */
-  --sognos-edition-lime: #c6da4c; /* Hospital in the Home */
-  --sognos-edition-coral: #ff8184; /* Support at Home */
-  --sognos-edition-purple: #c49aff; /* Residential Aged Care */
-  --sognos-edition-pink: #ff6db4; /* Child & Family Services */
+  /* Editions — OLD sector tokens (partial — lime + pink purged; green/orange/coral/purple still referenced in live components) */
+  --sognos-edition-green: #36b19a;
+  --sognos-edition-orange: #fea65d;
+  --sognos-edition-coral: #ff8184;
+  --sognos-edition-purple: #c49aff;
 
   /* Gradients */
-  --sognos-gradient-brand: radial-gradient(
-    circle at 20% 20%,
-    var(--color-prussian-blue-700) 0%,
-    var(--color-prussian-blue-800) 40%,
-    var(--color-prussian-blue-800) 100%
+  --sognos-gradient-brand: linear-gradient(
+    145deg,
+    var(--color-cornflower-ocean-600) 0%,
+    var(--color-cornflower-ocean-500) 50%,
+    var(--color-cornflower-ocean-400) 100%
   );
   --sognos-gradient-accent: linear-gradient(
     145deg,
-    var(--color-cornflower-ocean-600) 0%,
-    var(--color-cornflower-ocean-300) 40%,
-    var(--color-cornflower-ocean-500) 100%
+    var(--color-cornflower-ocean-700) 0%,
+    var(--color-cornflower-ocean-400) 100%
   );
   --sognos-gradient-hero: radial-gradient(
     circle at 20% 20%,
     var(--color-prussian-blue-800) 0%,
-    var(--color-prussian-blue-900) 40%,
+    var(--color-prussian-blue-900) 60%,
     var(--color-prussian-blue-950) 100%
   );
-  --sognos-gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --sognos-gradient-surface: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    var(--color-neutral-50) 100%
+  );
   --sognos-gradient-card: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.65) 0%,
@@ -211,35 +182,92 @@
   );
   --sognos-gradient-highlight: linear-gradient(
     145deg,
-    var(--color-true-cobalt-400) 0%,
-    var(--color-cornflower-ocean-300) 100%
+    var(--color-cornflower-ocean-300) 0%,
+    var(--color-cornflower-ocean-100) 100%
   );
 
   /* Shadows */
-  --sognos-shadow-sm: 0 1px 3px rgb(18 23 33 / 0.08);
-  --sognos-shadow-md: 0 8px 24px rgb(18 23 33 / 0.08);
-  --sognos-shadow-lg: 0 20px 48px rgb(18 23 33 / 0.1);
-  --sognos-shadow-xl: 0 24px 60px rgb(18 23 33 / 0.12);
-  --sognos-shadow-brand: 0 0 24px rgb(18 36 84 / 0.18);
+  --sognos-shadow-sm: 0 1px 3px rgb(5 32 72 / 0.08);
+  --sognos-shadow-md: 0 8px 24px rgb(5 32 72 / 0.08);
+  --sognos-shadow-lg: 0 20px 48px rgb(5 32 72 / 0.1);
+  --sognos-shadow-xl: 0 24px 60px rgb(5 32 72 / 0.12);
 
   /* Radius */
-  --sognos-radius-sm: 6px;
-  --sognos-radius-md: 8px;
-  --sognos-radius-lg: 10px;
-  --sognos-radius-xl: 16px;
-  --sognos-radius-2xl: 20px;
+  --sognos-radius-sm: 0.25rem;
+  --sognos-radius-md: 0.375rem;
+  --sognos-radius-lg: 0.5rem;
+  --sognos-radius-xl: 0.75rem;
+  --sognos-radius-2xl: 1rem;
+  --sognos-radius-3xl: 28px;
   --sognos-radius-full: 9999px;
 
   /* Layout */
-  --sognos-container-width: 1400px;
+  --sognos-container-width: 1380px;
   --sognos-section-padding: 88px;
   --sognos-card-padding: 24px;
+  --sognos-nav-height: 64px;
 
   /* Typography */
   --sognos-heading-line-height: 1.05;
   --sognos-heading-tracking: -0.02em;
   --sognos-font-weight-regular: 400;
+  --sognos-font-weight-medium: 500;
+  --sognos-font-weight-semibold: 600;
+  --sognos-font-weight-bold: 700;
 
   --sognos-text-eyebrow: 0.8rem;
   --sognos-text-sm: 0.85rem;
+
+  /* ── Sognos colour system (lean) ── */
+  /* Core brand */
+  --sognos-navy-dark: #0f1936;
+  --sognos-navy: #152248;
+  --sognos-blue-accent: #1d96fc;
+  /* Content / text */
+  --sognos-heading: #0f1936;
+  --sognos-body: #152248;
+  --sognos-muted: #68706f;
+  /* Lines */
+  --sognos-line: #e2e8f0;
+  /* Product: SognosCare */
+  --sognos-care-dark: #03112f;
+  --sognos-care-base: #152248;
+  --sognos-care-gradient: linear-gradient(
+    to bottom right,
+    #5aa0ff,
+    #3b6fe0,
+    #1f2a78
+  );
+  /* Product: SognosRoster */
+  --sognos-roster-dark: #0b3a66;
+  --sognos-roster-base: #59bbf7;
+  --sognos-roster-gradient: linear-gradient(
+    to bottom right,
+    #6fc6fb,
+    #2f97d6,
+    #0e4f86
+  );
+  /* Product: Sognos Genogram */
+  --sognos-genogram-dark: #250438;
+  --sognos-genogram-base: #91278c;
+  --sognos-genogram-gradient: linear-gradient(
+    to bottom right,
+    #7b3fa8,
+    #4a1670,
+    #1a0224
+  );
+  /* Editions (SognosCare sector identity) */
+  --sognos-edition-aged-care: #caa4ff;
+  --sognos-edition-allied-health: #ffad6e;
+  --sognos-edition-support-at-home: #ff8e90;
+  --sognos-edition-hospital-in-the-home: #cbdd61;
+  --sognos-edition-child-and-family-services: #ff7dbc;
+  --sognos-edition-disability: #00a98f;
+  /* Edition dark variants — for section backgrounds requiring white-text contrast */
+  --sognos-edition-aged-care-dark: #af82f0;
+  --sognos-edition-allied-health-dark: #f38c3d;
+  --sognos-edition-support-at-home-dark: #ef6a6c;
+  --sognos-edition-hospital-in-the-home-dark: #9aad2c;
+  --sognos-edition-child-and-family-services-dark: #e95ca0;
+  --sognos-edition-disability-dark: #039b84;
 }

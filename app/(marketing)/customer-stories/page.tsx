@@ -152,12 +152,12 @@ function StoryCard({ story }: { story: StoryCard }) {
 
       {/* Meta */}
       <div className="mt-2 shrink-0 bg-gray-200/70 rounded-lg p-7">
-        <h3 className="font-heading text-xl lg:text-xl font-medium text-prussian-blue-800 line-clamp-2 leading-normal group-hover:text-prussian-blue-800/70 transition-colors duration-200">
+        <h3 className="font-heading text-xl lg:text-xl font-medium text-sognos-body line-clamp-2 leading-normal group-hover:text-sognos-body/70 transition-colors duration-200">
           {story.title}
         </h3>
-        <div className="mt-2 flex items-center gap-3 text-sm text-prussian-blue-800/80">
+        <div className="mt-2 flex items-center gap-3 text-sm text-sognos-body/80">
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-prussian-blue-800/80" />
+            <span className="h-1.5 w-1.5 rounded-full bg-sognos-navy/80" />
             {formatDate(story.date)}
           </span>
           <span className="flex items-center gap-1.5">
@@ -182,7 +182,7 @@ export default function CustomersPage() {
       >
         <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full" />
+            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full" />
             Customer Stories
           </div>
           <div className="max-w-3xl text-center">

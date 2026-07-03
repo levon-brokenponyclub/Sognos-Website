@@ -1,12 +1,12 @@
 import SognoscareHero from "@/components/sections/sognoscare/Hero";
-import ProductDrawer from "@/components/ui/ProductDrawer";
+import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
 import SognoscareProblems from "@/components/sections/sognoscare/Problems";
 import SognoscareFeatures from "@/components/sections/sognoscare/Features";
 import SognoscareEditions from "@/components/sections/sognoscare/Editions";
 import SognoscareAdvantages from "@/components/sections/sognoscare/Advantages";
 import SognoscareStories from "@/components/sections/sognoscare/Stories";
-import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { getSognoscarePageContent } from "@/lib/sanity/queries";
 
 export async function generateMetadata() {
@@ -27,43 +27,28 @@ export default async function SognosCarePage() {
         headline={content.hero.headline}
         subtext={content.hero.subtext}
       />
-      <ProductDrawer
-        secondaryLabel="Other Products"
-        currentProduct="sognoscare"
-        peekTitle={content.productDrawer.peekTitle}
-        peekDescription={content.productDrawer.peekDescription}
-        drawerTitle={content.productDrawer.drawerTitle}
-        drawerDescription={content.productDrawer.drawerDescription}
-      />
-      <ProductSubNav
-        productName="SognosCare"
-        logoSrc="/logos/sognos-care-logo-color.svg"
-        sections={content.subNav}
-      />
+      <ScrollReveal>
+        <ProductTrustStrip className="bg-sognos-care-dark" />
+      </ScrollReveal>
       <SognoscareProblems
-        header={content.problemsHeader}
-        problems={content.problems}
+        subNav={<ProductSubNav productName="SognosCare" sections={content.subNav} />}
       />
       <SognoscareFeatures
         header={content.featuresHeader}
         features={content.features}
       />
-      <SognoscareEditions
-        header={content.editionsHeader}
-        editions={content.editions}
-      />
-      <SognoscareAdvantages
-        header={content.advantagesHeader}
-        advantages={content.advantages}
-      />
-      <SognoscareStories stories={content.featuredStories} />
-      <CTASection
-        headline={content.cta.headline}
-        subtext={content.cta.subtext}
-        primaryCTA={content.cta.primaryCTA}
-        secondaryCTA={content.cta.secondaryCTA}
-        defaultProduct="sognoscare"
-      />
+      <ScrollReveal>
+        <SognoscareEditions editions={content.editions} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SognoscareAdvantages
+          header={content.advantagesHeader}
+          advantages={content.advantages}
+        />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SognoscareStories stories={content.featuredStories} />
+      </ScrollReveal>
     </>
   );
 }

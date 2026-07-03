@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
-import CTASection from "@/components/sections/CTASection";
 import { PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
@@ -33,8 +32,8 @@ const PRODUCT_DETAIL = [
   {
     key: "roster",
     logo: "/logos/sognos-roster-logo.svg",
-    accentDot: "bg-(--sognos-accent)",
-    accentText: "text-(--sognos-accent)",
+    accentDot: "bg-sognos-blue-accent",
+    accentText: "text-sognos-blue-accent",
     capabilities: [
       "Demand-driven scheduling",
       "Skills & compliance matching",
@@ -50,8 +49,8 @@ const PRODUCT_DETAIL = [
   {
     key: "genogram",
     logo: "/logos/SognosGenogram-logo.svg",
-    accentDot: "bg-[#92278d]",
-    accentText: "text-[#92278d]",
+    accentDot: "bg-sognos-genogram-base",
+    accentText: "text-sognos-genogram-base",
     capabilities: [
       "Interactive genogram builder",
       "Support network mapping",
@@ -79,9 +78,9 @@ function ProductCard({
   tagline,
 }: Omit<(typeof PRODUCT_DETAIL)[number], "key">) {
   return (
-    <div className="flex flex-col rounded-2xl border border-(--sognos-card-border) bg-white overflow-hidden">
+    <div className="flex flex-col rounded-2xl border border-(--sognos-line) bg-white overflow-hidden">
       {/* Top strip */}
-      <div className="bg-prussian-blue-950 px-8 pt-8 pb-10">
+      <div className="bg-sognos-navy-dark px-8 pt-8 pb-10">
         <Image
           src={logo}
           alt={name}
@@ -94,10 +93,10 @@ function ProductCard({
       {/* Body */}
       <div className="flex flex-1 flex-col gap-8 px-8 py-8">
         <div>
-          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-sognos-text-muted">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
             {name}
           </p>
-          <h2 className="font-heading text-2xl font-normal text-sognos-text-heading">
+          <h2 className="font-heading text-2xl font-normal text-sognos-heading">
             {tagline}
           </h2>
         </div>
@@ -120,16 +119,16 @@ function ProductCard({
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-sm text-sognos-text-body">{cap}</span>
+              <span className="text-sm text-sognos-body">{cap}</span>
             </li>
           ))}
         </ul>
 
         {/* Badge */}
         {badge && (
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-(--sognos-card-border) bg-(--sognos-bg-sunken) px-3 py-1.5">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-(--sognos-line) bg-(--sognos-bg-sunken) px-3 py-1.5">
             <span className={`h-1.5 w-1.5 rounded-full ${accentDot}`} />
-            <span className="text-xs font-medium text-sognos-text-body">
+            <span className="text-xs font-medium text-sognos-body">
               {badge}
             </span>
           </div>
@@ -152,12 +151,12 @@ function BetterTogether() {
   return (
     <section className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="overflow-hidden rounded-lg bg-prussian-blue-800">
+        <div className="overflow-hidden rounded-lg bg-sognos-navy">
           <div className="grid lg:grid-cols-[1fr_1px_1fr]">
             {/* Left */}
             <div className="px-10 py-14 lg:px-14 lg:py-16">
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                 Better together
               </div>
               <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
@@ -217,7 +216,7 @@ function BetterTogether() {
                             ? "bg-white/40"
                             : isCare
                               ? "bg-(--sognos-edition-green)"
-                              : "bg-(--sognos-accent)"
+                              : "bg-sognos-blue-accent"
                         }`}
                       />
                       <span className="flex-1 text-xs text-white/70">
@@ -229,7 +228,7 @@ function BetterTogether() {
                             ? "text-white/40"
                             : isCare
                               ? "text-(--sognos-edition-green)/80"
-                              : "text-(--sognos-accent)/80"
+                              : "text-sognos-blue-accent/80"
                         }`}
                       >
                         {step.product}
@@ -247,7 +246,7 @@ function BetterTogether() {
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-(--sognos-accent)" />
+                    <span className="h-2 w-2 rounded-full bg-sognos-blue-accent" />
                     <span className="text-[10px] text-white/40">
                       SognosRoster
                     </span>
@@ -270,7 +269,7 @@ export default function ProductsPage() {
       {/* Hero */}
       <section
         data-header-dark
-        className="relative bg-prussian-blue-950 pb-24 pt-36 overflow-hidden"
+        className="relative bg-sognos-navy-dark pb-24 pt-36 overflow-hidden"
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-20"
@@ -282,7 +281,7 @@ export default function ProductsPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 pl-4 pr-5 py-1 text-sm text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Products
             </div>
           </div>
@@ -307,26 +306,26 @@ export default function ProductsPage() {
           </div>
 
           {/* Platform callout */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-(--sognos-card-border) bg-white px-6 py-5">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-(--sognos-line) bg-white px-6 py-5">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-sognos-text-muted">
+              <span className="text-sm text-sognos-muted">
                 All products run on
               </span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sm font-semibold text-sognos-heading">
                 Microsoft Dynamics 365
               </span>
-              <span className="text-sognos-text-muted">·</span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sognos-muted">·</span>
+              <span className="text-sm font-semibold text-sognos-heading">
                 Copilot AI
               </span>
-              <span className="text-sognos-text-muted">·</span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sognos-muted">·</span>
+              <span className="text-sm font-semibold text-sognos-heading">
                 Power Platform
               </span>
             </div>
             <Link
               href="/contact"
-              className="text-sm font-medium text-brand transition-colors duration-200 hover:text-brand-dark"
+              className="text-sm font-medium text-sognos-blue-accent transition-colors duration-200 hover:text-sognos-navy-dark"
             >
               Talk to us about implementation →
             </Link>
@@ -336,12 +335,6 @@ export default function ProductsPage() {
 
       <BetterTogether />
 
-      <CTASection
-        headline="Not sure which product fits your operation?"
-        subtext="Our team works with care and service providers across sectors. Book a call and we'll help you identify the right starting point."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
-      />
     </>
   );
 }

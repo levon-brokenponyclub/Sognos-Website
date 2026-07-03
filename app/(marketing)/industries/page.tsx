@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import CTASection from "@/components/sections/CTASection";
 import { INDUSTRIES, PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
@@ -11,7 +10,7 @@ export const metadata = {
 
 const PRODUCT_COLOUR: Record<string, string> = {
   SognosCare: "bg-(--sognos-edition-green)",
-  SognosRoster: "bg-(--sognos-accent)",
+  SognosRoster: "bg-sognos-blue-accent",
 };
 
 export default function IndustriesPage() {
@@ -26,7 +25,7 @@ export default function IndustriesPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Industries
             </div>
           </div>
@@ -44,11 +43,11 @@ export default function IndustriesPage() {
       <section className="bg-(--sognos-bg-sunken) py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Sectors we serve
             </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
               Five industries. One platform.
             </h2>
           </div>
@@ -58,17 +57,17 @@ export default function IndustriesPage() {
               <Link
                 key={industry.slug}
                 href={industry.href}
-                className="group flex flex-col justify-between rounded-2xl border border-(--sognos-card-border) bg-white p-8 transition-shadow duration-200 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-2xl border border-(--sognos-line) bg-white p-8 transition-shadow duration-200 hover:shadow-md"
               >
                 <div>
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                     Industry
                   </div>
-                  <h2 className="mb-3 font-heading text-xl font-normal text-sognos-text-heading">
+                  <h2 className="mb-3 font-heading text-xl font-normal text-sognos-heading">
                     {industry.name}
                   </h2>
-                  <p className="text-sm leading-relaxed text-sognos-text-body">
+                  <p className="text-sm leading-relaxed text-sognos-body">
                     {industry.description}
                   </p>
                 </div>
@@ -78,17 +77,17 @@ export default function IndustriesPage() {
                   {industry.products.map((product) => (
                     <span
                       key={product}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-(--sognos-card-border) bg-(--sognos-bg-sunken) px-3 py-1"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-(--sognos-line) bg-(--sognos-bg-sunken) px-3 py-1"
                     >
                       <span
-                        className={`h-1.5 w-1.5 rounded-full ${PRODUCT_COLOUR[product] ?? "bg-prussian-blue-800"}`}
+                        className={`h-1.5 w-1.5 rounded-full ${PRODUCT_COLOUR[product] ?? "bg-sognos-navy"}`}
                       />
-                      <span className="text-xs font-medium text-sognos-text-body">
+                      <span className="text-xs font-medium text-sognos-body">
                         {product}
                       </span>
                     </span>
                   ))}
-                  <span className="ml-auto flex items-center gap-1.5 text-sm font-medium text-brand opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <span className="ml-auto flex items-center gap-1.5 text-sm font-medium text-sognos-blue-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Learn more
                     <ArrowRight size={14} />
                   </span>
@@ -102,33 +101,33 @@ export default function IndustriesPage() {
       {/* Platform strip */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-center justify-between gap-6 rounded-xl border border-(--sognos-card-border) px-8 py-6">
+          <div className="flex flex-wrap items-center justify-between gap-6 rounded-xl border border-(--sognos-line) px-8 py-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm text-sognos-text-muted">
+              <span className="text-sm text-sognos-muted">
                 All industries run on
               </span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sm font-semibold text-sognos-heading">
                 Microsoft Dynamics 365
               </span>
-              <span className="text-sognos-text-muted">·</span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sognos-muted">·</span>
+              <span className="text-sm font-semibold text-sognos-heading">
                 Copilot AI
               </span>
-              <span className="text-sognos-text-muted">·</span>
-              <span className="text-sm font-semibold text-sognos-text-heading">
+              <span className="text-sognos-muted">·</span>
+              <span className="text-sm font-semibold text-sognos-heading">
                 Power Platform
               </span>
             </div>
             <div className="flex items-center gap-6">
               <Link
                 href={PRODUCTS.care.href}
-                className="text-sm font-medium text-brand transition-colors duration-200 hover:text-brand-dark"
+                className="text-sm font-medium text-sognos-blue-accent transition-colors duration-200 hover:text-sognos-navy-dark"
               >
                 SognosCare →
               </Link>
               <Link
                 href={PRODUCTS.roster.href}
-                className="text-sm font-medium text-brand transition-colors duration-200 hover:text-brand-dark"
+                className="text-sm font-medium text-sognos-blue-accent transition-colors duration-200 hover:text-sognos-navy-dark"
               >
                 SognosRoster →
               </Link>
@@ -137,12 +136,6 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      <CTASection
-        headline="Which industry are you in?"
-        subtext="Our team has experience across all five sectors. Book a call and we'll show you how Sognos fits your specific operational context."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
-      />
     </>
   );
 }

@@ -47,11 +47,11 @@ export default function SocialResponsibilityPage() {
   return (
     <main className="w-full bg-white">
       {/* Hero */}
-      <section className="bg-gradient-hero w-full border-b border-sognos-border-subtle">
+      <section className="bg-gradient-hero w-full border-b border-sognos-line">
         <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
           <div className="">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Social Responsibility
             </div>
           </div>
@@ -68,9 +68,9 @@ export default function SocialResponsibilityPage() {
       </section>
 
       {/* Mission statement */}
-      <section className="w-full border-b border-sognos-border-subtle">
+      <section className="w-full border-b border-sognos-line">
         <div className="max-w-7xl w-full mx-auto px-6 py-20">
-          <p className="font-heading text-2xl md:text-3xl font-medium text-prussian-blue-800 tracking-tight max-w-5xl">
+          <p className="font-heading text-2xl md:text-3xl font-medium text-sognos-body tracking-tight max-w-5xl">
             &ldquo;It is our goal to benefit the communities in which we live
             and do business. We are committed to creating a healthier
             world.&rdquo;
@@ -79,21 +79,21 @@ export default function SocialResponsibilityPage() {
       </section>
 
       {/* Pillars grid */}
-      <section className="w-full border-b border-sognos-border-subtle bg-slate-50">
+      <section className="w-full border-b border-sognos-line bg-slate-50">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.number}
-                className="border-t border-r border-sognos-border-subtle p-8 last:border-r-0 [&:nth-child(3n)]:border-r-0"
+                className="border-t border-r border-sognos-line p-8 last:border-r-0 [&:nth-child(3n)]:border-r-0"
               >
-                <span className="text-xs font-mono text-sognos-text-muted">
+                <span className="text-xs font-mono text-sognos-muted">
                   {pillar.number}
                 </span>
-                <h2 className="mt-3 font-heading text-lg font-semibold text-prussian-blue-800 tracking-tight">
+                <h2 className="mt-3 font-heading text-lg font-semibold text-sognos-body tracking-tight">
                   {pillar.title}
                 </h2>
-                <p className="mt-3 text-sm text-sognos-text-body leading-relaxed">
+                <p className="mt-3 text-sm text-sognos-body leading-relaxed">
                   {pillar.body}
                 </p>
               </div>
@@ -106,10 +106,10 @@ export default function SocialResponsibilityPage() {
       <section className="w-full">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div className="max-w-xl">
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
               Want to know more?
             </h2>
-            <p className="mt-3 text-sognos-text-body leading-relaxed">
+            <p className="mt-3 text-sognos-body leading-relaxed">
               At Sognos we believe that by embracing environmental and social
               responsibility, we can create a better world for future
               generations. Get in touch to learn more about our initiatives.
@@ -117,7 +117,7 @@ export default function SocialResponsibilityPage() {
           </div>
           <a
             href="/contact"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-prussian-blue-800 text-white text-sm font-semibold hover:bg-prussian-blue-700 transition-colors"
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sognos-navy text-white text-sm font-semibold hover:bg-prussian-blue-700 transition-colors"
           >
             Contact us
           </a>

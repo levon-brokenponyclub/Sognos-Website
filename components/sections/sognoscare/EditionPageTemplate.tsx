@@ -1,56 +1,15 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import AnimatedButton from "@/components/ui/AnimatedButton";
-import FlowCanvas from "@/components/ui/FlowCanvas";
 import EditionCards from "@/components/sections/sognoscare/EditionCards";
-import ProductDrawer from "@/components/ui/ProductDrawer";
 import CTASection from "@/components/sections/CTASection";
+import ProductCustomerStories from "@/components/sections/ProductCustomerStories";
+import ProductFeaturesScroll, {
+  type ScrollFeature,
+} from "@/components/sections/ProductFeaturesScroll";
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
-import ProductSubNav from "@/components/ui/ProductSubNav";
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function hexToRgb(hex: string): [number, number, number] {
-  const v = hex.replace("#", "");
-  return [
-    parseInt(v.slice(0, 2), 16),
-    parseInt(v.slice(2, 4), 16),
-    parseInt(v.slice(4, 6), 16),
-  ];
-}
-
-function flowColorsFromHex(hex: string): [string, string, string] {
-  const [r, g, b] = hexToRgb(hex);
-  const light = (c: number) => Math.round(Math.min(255, c + (255 - c) * 0.55));
-  const dark = (c: number) => Math.round(Math.max(0, c * 0.4));
-  return [
-    `rgba(${light(r)}, ${light(g)}, ${light(b)}, 0.45)`,
-    `rgba(${r}, ${g}, ${b}, 0.5)`,
-    `rgba(${dark(r)}, ${dark(g)}, ${dark(b)}, 0.55)`,
-  ];
-}
-
-// Edition name → white logo path (for dark hero background)
-const EDITION_LOGOS: Record<string, string> = {
-  "Allied Health": "/logos/sognoscare-edition-ahc-white.svg",
-  "Disability & Mental Health": "/logos/sognoscare-edition-dmh-white.svg",
-  "Residential Aged Care": "/logos/sognoscare-edition-rac-white.svg",
-  "Support at Home": "/logos/sognoscare-edition-sah-white.svg",
-  "Hospital in the Home": "/logos/SognosCare-HITH-Logo-White.svg",
-  "Child & Family Services": "/logos/SognosCare-C&FS-Logo-White.svg",
-};
-
-// Dark logos for the sticky sub-nav bar.
-const EDITION_LOGOS_DARK: Record<string, string> = {
-  "Allied Health": "/logos/sognoscare-edition-ahc.svg",
-  "Disability & Mental Health": "/logos/sognoscare-edition-dmh.svg",
-  "Residential Aged Care": "/logos/sognoscare-edition-rac.svg",
-  "Support at Home": "/logos/sognoscare-edition-sah.svg",
-  "Hospital in the Home": "/logos/SognosCare-HITH-Logo.svg",
-  "Child & Family Services": "/logos/SognosCare-C&FS-Logo.svg",
-};
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -74,7 +33,6 @@ export type CaseStudy = {
   title: string;
   description: string;
   href: string;
-  // Optional rich-card fields (CustomerStories layout)
   company?: string;
   companySize?: string;
   industry?: string;
@@ -95,6 +53,7 @@ export type EditionData = {
   accentTextClass: string;
   accentBgClass: string;
   accentBorderClass: string;
+  advantagesBg?: string;
   problems: Problem[];
   features: Feature[];
   advantages: string[];
@@ -103,352 +62,7 @@ export type EditionData = {
   caseStudy: CaseStudy;
 };
 
-// ─── Section: Hero ────────────────────────────────────────────────────────────
-
-function Hero({ data }: { data: EditionData }) {
-  const flowColors = flowColorsFromHex(data.accentHex);
-  const logoSrc = EDITION_LOGOS[data.name] ?? "/logos/sognos-care-logo.svg";
-
-  return (
-    <section
-      data-header-dark
-      className="relative flex flex-col bg-white overflow-hidden text-white h-[100svh] lg:h-[100vh] p-2"
-    >
-      <div className="bg-gradient-brand h-full overflow-hidden text-white rounded-2xl relative">
-        <FlowCanvas colors={flowColors} />
-
-        {/* Accent radial glow */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            background: `radial-gradient(ellipse 70% 55% at 30% 0%, ${data.accentHex} 0%, transparent 70%)`,
-          }}
-        />
-
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col px-4 sm:px-8 lg:px-6">
-          <div className="flex flex-1 items-center justify-center">
-            <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
-              {logoSrc && (
-                <Image
-                  src={logoSrc}
-                  alt={`SognosCare for ${data.name}`}
-                  width={150}
-                  height={64}
-                  priority
-                  className="mb-14 h-16 w-auto lg:h-19"
-                />
-              )}
-              <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-                {data.tagline}
-              </h1>
-              {/* <p
-                className="mt-4 text-base font-medium lg:text-lg"
-                style={{ color: data.accentHex }}
-              >
-                {data.tagline}
-              </p> */}
-              <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
-                {data.description}
-              </p>
-            </div>
-          </div>
-
-          {/* The problem - bottom-aligned card inside the hero */}
-          <div className="hidden relative z-10 pb-4 lg:pb-0">
-            <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
-              <div className="flex flex-col gap-2 max-w-xl">
-                <h2 className="text-left font-heading text-2xl md:text-[22px] font-medium tracking-normal text-prussian-blue-800">
-                  Built for {data.name}
-                </h2>
-                <p className="text-left text-base text-prussian-blue-800/75 text-balance">
-                  {data.tagline}
-                </p>
-              </div>
-
-              <div className="flex flex-row gap-2">
-                <AnimatedButton href="/contact">Book a Demo</AnimatedButton>
-                <Link
-                  href="/products/sognoscare"
-                  className="inline-flex items-start justify-center rounded-md px-8 py-3 font-medium text-prussian-blue-800 border border-white/0 transition-colors hover:bg-white/10 hover:border-white/20"
-                >
-                  Explore Editions
-                </Link>
-              </div>
-
-              {/* Concave curve transitions */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute bottom-0 -left-[20px] h-[20px] w-[20px] bg-white"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(circle at 0% 0%, transparent 19px, black 20px)",
-                  maskImage:
-                    "radial-gradient(circle at 0% 0%, transparent 19px, black 20px)",
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute bottom-0 -right-[20px] h-[20px] w-[20px] bg-white"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(circle at 100% 0%, transparent 19px, black 20px)",
-                  maskImage:
-                    "radial-gradient(circle at 100% 0%, transparent 19px, black 20px)",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section: What it solves ──────────────────────────────────────────────────
-
-function WhatItSolves({ data }: { data: EditionData }) {
-  return (
-    <section id="problems" className="w-full bg-white">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <div className="text-center mb-14">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            What it solves
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
-            What SognosCare Fixes
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-          {data.problems.map((problem, i) => (
-            <div
-              key={problem.label}
-              className={`p-8 border-t border-sognos-border-subtle ${
-                i % 3 !== 2 ? "lg:border-r" : ""
-              } ${i % 2 !== 1 ? "border-r sm:border-r lg:border-r-0" : ""} lg:[&:nth-child(3n)]:border-r-0 sm:[&:nth-child(2n)]:border-r-0`}
-            >
-              {/* Problem icon - numbered */}
-              <span
-                className="inline-block text-xs font-mono font-bold mb-3"
-                style={{ color: data.accentHex }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="font-heading text-base font-semibold text-prussian-blue-800">
-                {problem.label}
-              </p>
-              <p className="mt-1.5 text-sm text-sognos-text-body leading-relaxed">
-                {problem.description}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-14 text-center">
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: data.accentHex }}
-          >
-            Book a Demo
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section: Features ────────────────────────────────────────────────────────
-
-function Features({ data }: { data: EditionData }) {
-  return (
-    <section
-      id="features"
-      className="w-full"
-      style={{ backgroundColor: `${data.accentHex}1a` }}
-    >
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          {/* Left column - sticky, vertically centered in viewport */}
-          <div className="lg:col-span-5 lg:sticky lg:top-1/2 lg:-trangray-y-1/2">
-            <div
-              className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6"
-              style={{ borderColor: `${data.accentHex}4d` }}
-            >
-              <span
-                aria-hidden
-                className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-                style={
-                  {
-                    padding: "1px",
-                    background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    maskComposite: "exclude",
-                    ["--shine-duration" as string]: "7s",
-                  } as React.CSSProperties
-                }
-              />
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-              Features
-            </div>
-            <h2
-              className="font-heading text-3xl md:text-4xl font-medium tracking-tight mb-6"
-              style={{ color: data.accentHex }}
-            >
-              Core Features
-            </h2>
-            <p className="text-lg text-sognos-text-body leading-relaxed max-w-md">
-              Purpose-built for {data.name.toLowerCase()} providers - every
-              capability is engineered to remove friction from frontline service
-              delivery.
-            </p>
-          </div>
-
-          {/* Right column - numbered feature list with accent fill on hover */}
-          <ul className="lg:col-span-7">
-            {data.features.map((feature, i) => (
-              <li
-                key={feature.title}
-                style={
-                  {
-                    "--accent": data.accentHex,
-                    borderBottomColor: data.accentHex,
-                  } as React.CSSProperties
-                }
-                className="group relative overflow-hidden border-b after:content-[''] after:absolute after:inset-x-0 after:-bottom-full after:h-full after:bg-[var(--accent)] after:transition-[bottom] after:duration-500 after:ease-out hover:after:bottom-0"
-              >
-                <div className="relative z-10 grid grid-cols-[auto_1fr] gap-6 lg:gap-10 py-8 lg:py-10 px-2 lg:px-4">
-                  <span className="font-heading text-sm font-medium text-gray-400 group-hover:text-white/70 transition-colors duration-500 pt-1">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h2 className="edition-feature-title font-heading text-3xl md:text-4xl font-medium tracking-tight mb-6">
-                      {feature.title}
-                    </h2>
-                    <p className="mt-3 text-base text-sognos-text-body group-hover:text-white/85 transition-colors duration-500 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section: Advantages ──────────────────────────────────────────────────────
-
-// Deterministic 8-cell pattern matching the reference image:
-// row 1: white, accent, dark, dark
-// row 2: dark, dark, accent, white
-// Repeats every 8 cells.
-type CellVariant = "white" | "dark" | "accent";
-const ADVANTAGE_PATTERN: CellVariant[] = [
-  "white",
-  "accent",
-  "dark",
-  "dark",
-  "dark",
-  "dark",
-  "accent",
-  "white",
-];
-
-function Advantages({ data }: { data: EditionData }) {
-  return (
-    <section id="advantages" className="w-full bg-gray-200/70">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-        {/* Heading */}
-        <div className="mb-12 lg:mb-16 flex flex-col items-start gap-4">
-          <div
-            className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium"
-            style={{ borderColor: `${data.accentHex}4d` }}
-          >
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={
-                {
-                  padding: "1px",
-                  background: `conic-gradient(from var(--shine-angle), transparent 0deg, rgba(${parseInt(data.accentHex.slice(1, 3), 16)},${parseInt(data.accentHex.slice(3, 5), 16)},${parseInt(data.accentHex.slice(5, 7), 16)},0.75) 60deg, transparent 120deg, transparent 360deg)`,
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  ["--shine-duration" as string]: "7s",
-                } as React.CSSProperties
-              }
-            />
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Advantages
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight">
-            Key Advantages
-          </h2>
-        </div>
-
-        {/* Block grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-          {data.advantages.map((adv, i) => {
-            const variant = ADVANTAGE_PATTERN[i % ADVANTAGE_PATTERN.length];
-            const isWhite = variant === "white";
-            const isDark = variant === "dark";
-            const isAccent = variant === "accent";
-
-            return (
-              <div
-                key={adv}
-                className={`rounded-lg p-6 lg:p-8 min-h-[180px] lg:min-h-[260px] flex ${
-                  isWhite
-                    ? "bg-white text-prussian-blue-800"
-                    : isDark
-                      ? "bg-prussian-blue-800 text-white"
-                      : "text-white"
-                }`}
-                style={
-                  isAccent ? { backgroundColor: data.accentHex } : undefined
-                }
-              >
-                <p
-                  className={`font-heading text-base lg:text-lg font-medium leading-snug ${
-                    isWhite ? "text-prussian-blue-800" : "text-white"
-                  }`}
-                >
-                  {adv}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section: Proof Stories ───────────────────────────────────────────────────
-
-function QuoteIcon({ className }: { className: string }) {
-  return (
-    <svg
-      viewBox="0 0 39 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`w-8 h-7 shrink-0 ${className}`}
-      aria-hidden="true"
-    >
-      <path
-        d="m16.3 4-4.333-4C4.189 5.557.078 12.89.078 20.668v.445C.078 27.779 3.745 32 8.856 32c4.222 0 7.778-3.334 7.778-7.89 0-4.444-3.111-7.332-7.334-7.332a7.15 7.15 0 0 0-2.666.555C7.41 12.223 11.3 7.78 16.3 4.001Zm21.667 0-4.333-4c-7.778 5.556-11.89 12.89-11.89 20.667v.445c0 6.667 3.668 10.889 8.779 10.889 4.222 0 7.777-3.334 7.777-7.89 0-4.444-3.11-7.332-7.333-7.332a7.15 7.15 0 0 0-2.667.555c.778-5.111 4.667-9.555 9.667-13.333Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
+// ─── Proof story data ─────────────────────────────────────────────────────────
 
 const FLOURISH_STORY = {
   company: "Flourish Australia",
@@ -463,136 +77,261 @@ const FLOURISH_STORY = {
   href: "/customer-stories/flourish-australia",
 };
 
-function ProofStories({ data }: { data: EditionData }) {
-  const cs = FLOURISH_STORY;
+// ─── Section: Hero ────────────────────────────────────────────────────────────
+
+function Hero({ data }: { data: EditionData }) {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 110]);
+  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0.7]);
+
+  // Initialise glow at left-centre on mount — matches AngelList default position
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const { width, height } = heroRef.current.getBoundingClientRect();
+    setCursorPos({ x: width * 0.28, y: height * 0.5 });
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
   return (
     <section
-      id="stories"
-      className="w-full bg-[#1D96FC] overflow-hidden"
+      ref={heroRef}
+      className="relative overflow-hidden pb-20 md:pb-28 bg-gray-50 h-full"
+      onMouseMove={handleMouseMove}
     >
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        {/* Section header */}
-        <div className="mb-8 flex flex-col items-center lg:items-start gap-4">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
-            <span
-              aria-hidden
-              className="animate-shine pointer-events-none absolute inset-0 rounded-full"
-              style={
-                {
-                  padding: "1px",
-                  background:
-                    "conic-gradient(from var(--shine-angle), transparent 0deg, rgba(255,255,255,0.75) 60deg, transparent 120deg, transparent 360deg)",
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  maskComposite: "exclude",
-                  ["--shine-duration" as string]: "7s",
-                } as React.CSSProperties
-              }
-            />
-            <span className="w-2 h-2 rounded-full bg-white" />
-            Customer Stories
+      {/* AngelList-style glow: 1px anchor translated to cursor, 600px orb centred on it */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 size-px"
+        style={{
+          transform: `translateX(${cursorPos.x}px) translateY(${cursorPos.y}px)`,
+        }}
+      >
+        <div
+          className="absolute left-0 top-0 size-[305px] -translate-x-1/2 -translate-y-1/2 rounded-full md:size-[600px]"
+          style={{
+            backgroundImage: `radial-gradient(50% 50% at 50% 50%, ${data.accentHex}99 0%, ${data.accentHex}00 100%)`,
+          }}
+        />
+      </div>
+
+      <motion.div
+        style={{ y, opacity }}
+        className="relative will-change-transform"
+      >
+        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
+          {/* Eyebrow */}
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.08em] ${data.accentTextClass}`}
+          >
+            SognosCare — {data.name}
+          </p>
+
+          {/* Headline */}
+          <h1 className="mx-auto mt-6 max-w-[1100px] font-heading text-balance text-sognos-heading text-5xl sm:text-6xl lg:text-7xl font-medium tracking-[-0.02em]">
+            {data.tagline}
+          </h1>
+
+          {/* Subtext */}
+          <p className="mx-auto mt-6 max-w-[640px] text-lg leading-relaxed text-sognos-muted">
+            {data.description}
+          </p>
+
+          {/* CTAs */}
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <button
+              type="button"
+              className={`rounded-full px-7 py-3.5 text-base font-medium text-white transition-opacity hover:opacity-90 ${data.accentBgClass}`}
+            >
+              Book a Demo
+            </button>
+            <Link
+              href="/products/sognoscare"
+              className="inline-flex items-center gap-1.5 text-base font-medium text-sognos-heading transition-opacity hover:opacity-70"
+            >
+              Explore Editions
+              <span aria-hidden="true">&#8599;</span>
+            </Link>
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
-            Customer Stories
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+// ─── Section: What it solves (Problems.tsx pattern) ───────────────────────────
+
+function WhatItSolves({ data }: { data: EditionData }) {
+  return (
+    <section id="problems" className="overflow-clip bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        {/* Single intro */}
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight text-sognos-heading text-balance">
+            {data.tagline}
           </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-sognos-muted text-pretty">
+            {data.description}
+          </p>
         </div>
 
-        {/* Card */}
-        <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-1 min-w-0 bg-white rounded-lg p-2 h-auto lg:h-[500px]">
-          {/* Left - image with logo + stats */}
-          <div className="w-full lg:w-[40%] lg:shrink-0 relative rounded-lg overflow-hidden flex flex-col h-[260px] lg:h-auto bg-prussian-blue-800/10">
-            <Image
-              src={cs.panelImage}
-              alt={cs.company}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 50vw, 35vw"
-            />
-
-            {/* White logo - centered */}
-            <div className="relative z-10 flex-1 flex items-center justify-center">
-              <Image
-                src={cs.logo}
-                alt={cs.company}
-                width={160}
-                height={56}
-                className="w-auto max-w-[220px] object-contain brightness-0 invert"
-              />
+        {/* 3-col × 2-row capability grid — AngelList numbered style, edge-flush */}
+        <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-sognos-line">
+          {data.problems.map((p, i) => (
+            <div
+              key={i}
+              className={[
+                "flex flex-col py-8 px-6",
+                "border-b border-sognos-line lg:border-b-0",
+                "lg:[&:nth-child(n+4)]:border-t",
+                "lg:border-r lg:[&:nth-child(3n)]:border-r-0",
+                "lg:[&:nth-child(3n+1)]:pl-0 lg:[&:nth-child(3n)]:pr-0",
+              ].join(" ")}
+            >
+              <span
+                className={`font-heading text-5xl font-medium leading-none ${data.accentTextClass}`}
+              >
+                {i + 1}
+              </span>
+              <h3 className="mt-5 font-heading text-base md:text-lg font-medium text-sognos-heading">
+                {p.label}
+              </h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-muted">
+                {p.description}
+              </p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-            {/* Stats - bottom */}
-            <div className="relative z-10 mt-auto p-6 flex gap-8 justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                  Company Size
-                </p>
-                <p className="font-heading text-2xl font-medium leading-none tracking-tight text-white">
-                  {cs.companySize}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60 mb-1">
-                  Industry
-                </p>
-                <p className="font-heading text-lg font-medium leading-snug tracking-tight text-white">
-                  {cs.industry}
-                </p>
-              </div>
-            </div>
+// ─── Section: Features (ProductFeaturesScroll pattern) ───────────────────────
 
-            {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+function Features({ data }: { data: EditionData }) {
+  const scrollFeatures: ScrollFeature[] = data.features.map((f, i) => ({
+    id: `feature-${i}`,
+    name: f.title,
+    description: f.description,
+  }));
+
+  return (
+    <ProductFeaturesScroll
+      header={{ heading: "Core Features" }}
+      features={scrollFeatures}
+      accentBorderClass={data.accentBorderClass}
+      accentTextClass={data.accentTextClass}
+      noBg
+      swapColumns
+    />
+  );
+}
+
+// ─── Section: Advantages (Advantages.tsx pattern) ─────────────────────────────
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
+
+function CheckIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0 text-sognos-blue-accent"
+      aria-hidden="true"
+    >
+      <path d="M18 4 7 16l-5-5" />
+    </svg>
+  );
+}
+
+function Advantages({ data }: { data: EditionData }) {
+  return (
+    <section
+      id="advantages"
+      className="w-full text-white"
+      style={{
+        backgroundColor: data.advantagesBg ?? "var(--sognos-care-dark)",
+      }}
+    >
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          {/* Left — label col */}
+          <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/50">
+              Advantages
+            </p>
           </div>
 
-          {/* Right - quote panel */}
-          <div className="flex-1 bg-white rounded-lg p-5 lg:p-7 flex flex-col">
-            <div className="flex-1 flex flex-col justify-center">
-              <QuoteIcon className="text-prussian-blue-800/20" />
-              <blockquote className="mt-4">
-                <p className="font-heading text-lg lg:text-[26px] font-normal leading-snug tracking-tight text-prussian-blue-800">
-                  {cs.quote}
-                </p>
-              </blockquote>
-              <div className="mt-6">
-                <p className="text-sm font-semibold text-prussian-blue-800">
-                  {cs.author}
-                </p>
-                <p className="text-sm mt-0.5 text-prussian-blue-800/75">
-                  {cs.role}
-                </p>
-              </div>
+          {/* Right — heading + checklist */}
+          <div className="lg:col-[3/-1]">
+            <div className="mb-10">
+              <h2 className="font-heading text-3xl font-medium tracking-tight text-white md:text-4xl">
+                Key Advantages
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-white">
+                Built for the regulatory reality of {data.name.toLowerCase()}{" "}
+                care — not adapted from a generic CRM.
+              </p>
             </div>
 
-            {/* CTA */}
-            <div className="mt-6 lg:mt-8 flex justify-center lg:justify-end">
-              <Link
-                href={cs.href}
-                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-prussian-blue-800 text-prussian-blue-800 text-sm font-semibold hover:bg-prussian-blue-800/8 transition-colors"
-              >
-                Read Customer Story
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-prussian-blue-800 text-white shrink-0">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 7h8M7 3l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </Link>
-            </div>
+            <motion.ul
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-15% 0px -15% 0px" }}
+              className="divide-y divide-white/10 rounded-lg overflow-hidden"
+            >
+              {data.advantages.map((advantage, i) => (
+                <motion.li
+                  key={i}
+                  variants={itemVariants}
+                  className={`flex items-start gap-4 px-6 py-5 ${
+                    i % 2 === 0 ? "bg-white/10" : ""
+                  }`}
+                >
+                  <CheckIcon />
+                  <span className="text-base leading-relaxed text-white">
+                    {advantage}
+                  </span>
+                </motion.li>
+              ))}
+            </motion.ul>
           </div>
         </div>
       </div>
@@ -600,30 +339,36 @@ function ProofStories({ data }: { data: EditionData }) {
   );
 }
 
-// ─── Related Editions ─────────────────────────────────────────────────────────
+// ─── Section: Customer Stories (ProductCustomerStories pattern) ───────────────
+
+function ProofStories() {
+  return <ProductCustomerStories stories={[FLOURISH_STORY]} />;
+}
+
+// ─── Section: Related Editions (Editions.tsx pattern) ────────────────────────
 
 function RelatedEditions({ data }: { data: EditionData }) {
-  // Filter out the current edition from SOGNOSCARE_EDITIONS
   const relatedEditions = SOGNOSCARE_EDITIONS.filter(
     (edition) => edition.label !== data.name,
   );
 
   return (
-    <section id="editions" data-header-dark className="w-full bg-gradient-hero">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-        {/* Section header */}
-        <div className="mb-12 lg:mb-3 flex flex-col items-start gap-4">
-          <div className="relative inline-flex w-fit items-center gap-2 rounded-full border pl-4 pr-5 py-1 text-sm border-white/30 text-white font-medium">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Explore other editions
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
+    <section id="editions" className="bg-gray-200/70 py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-2">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading">
             Other SognosCare Editions
           </h2>
+          <p className="mt-2 text-lg text-sognos-muted">
+            SognosCare is purpose-built for each care sector — choose the
+            edition that fits your funding model and compliance requirements.
+          </p>
         </div>
-
-        {/* Editions grid - 3 visible, no overflow */}
-        <EditionCards editions={relatedEditions} showSliderButtons dark />
+        <EditionCards
+          editions={relatedEditions}
+          showSliderButtons
+          containerClassName="w-full"
+        />
       </div>
     </section>
   );
@@ -635,44 +380,14 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
   return (
     <main className="w-full bg-white">
       <Hero data={data} />
-      <ProductSubNav
-        productName={`SognosCare - ${data.name}`}
-        logoSrc={
-          EDITION_LOGOS_DARK[data.name] ?? "/logos/sognos-care-logo-color.svg"
-        }
-        sections={[
-          { label: "What it solves", id: "problems" },
-          { label: "Features", id: "features" },
-          { label: "Key Advantages", id: "advantages" },
-          { label: "Customer Stories", id: "stories" },
-          { label: "Other Editions", id: "editions" },
-          { label: "Schedule a Call", id: "calendar" },
-        ]}
-      />
       <WhatItSolves data={data} />
       <Features data={data} />
       <Advantages data={data} />
-      <ProofStories data={data} />
+      <ProofStories />
       <RelatedEditions data={data} />
       <div id="calendar">
         <CTASection defaultProduct="sognoscare" />
       </div>
-
-      {/* Mobile hero drawer - fixed, rendered at page level to escape hero overflow-hidden */}
-      <ProductDrawer
-        secondaryLabel="Explore Editions"
-        currentProduct="sognoscare"
-        peekTitle={`Built for ${data.name}`}
-        peekDescription={data.tagline}
-        drawerTitle="SognosCare Editions"
-        drawerDescription="Choose the right edition for your service type and funding model."
-      >
-        <EditionCards
-          editions={SOGNOSCARE_EDITIONS}
-          showSliderButtons
-          containerClassName="w-full"
-        />
-      </ProductDrawer>
     </main>
   );
 }

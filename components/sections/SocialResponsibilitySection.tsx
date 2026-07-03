@@ -26,13 +26,13 @@ export default function SocialResponsibilitySection() {
   const [activeSR, setActiveSR] = useState(0);
 
   return (
-    <section className="w-full bg-prussian-blue-800 overflow-hidden">
+    <section className="w-full bg-sognos-navy overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           {/* Left Content - Sticky */}
           <div className="lg:col-span-4 lg:sticky lg:top-32">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Social Responsibility
             </div>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
@@ -47,10 +47,10 @@ export default function SocialResponsibilitySection() {
 
             <Link
               href="/company/social-responsibility"
-              className="inline-flex items-center gap-3 text-sm font-bold text-[#1D96FC] hover:opacity-70 transition-opacity group"
+              className="inline-flex items-center gap-3 text-sm font-bold text-sognos-blue-accent hover:opacity-70 transition-opacity group"
             >
               Read our full commitment
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#1D96FC] text-white">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sognos-blue-accent text-white">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path
                     d="M3 7h8M7 3l4 4-4 4"
@@ -74,7 +74,7 @@ export default function SocialResponsibilitySection() {
                   onClick={() => setActiveSR(idx)}
                   className={`text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between h-full group ${
                     activeSR === idx
-                      ? "border-[#1D96FC] bg-[#F1F9FF] shadow-sm"
+                      ? "border-sognos-blue-accent bg-[#F1F9FF] shadow-sm"
                       : "border-gray-100 bg-white hover:border-gray-200"
                   }`}
                 >
@@ -82,7 +82,7 @@ export default function SocialResponsibilitySection() {
                     <span
                       className={`flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-bold transition-colors ${
                         activeSR === idx
-                          ? "bg-[#1D96FC] text-white"
+                          ? "bg-sognos-blue-accent text-white"
                           : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
                       }`}
                     >
@@ -91,7 +91,7 @@ export default function SocialResponsibilitySection() {
                     <span
                       className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
                         activeSR === idx
-                          ? "text-[#1D96FC]"
+                          ? "text-sognos-blue-accent"
                           : "text-gray-400 group-hover:text-gray-500"
                       }`}
                     >
@@ -101,7 +101,7 @@ export default function SocialResponsibilitySection() {
                   <span
                     className={`font-semibold text-sm transition-colors ${
                       activeSR === idx
-                        ? "text-prussian-blue-800"
+                        ? "text-sognos-body"
                         : "text-gray-500 group-hover:text-gray-700"
                     }`}
                   >
@@ -117,19 +117,19 @@ export default function SocialResponsibilitySection() {
                 {/* Left Column - Info Panel */}
                 <div className="shrink-0 lg:w-[40%] bg-gray-200/60 rounded-lg p-7 flex flex-col justify-between">
                   <div className="flex flex-col">
-                    <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-prussian-blue-800 tracking-tight">
+                    <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-sognos-body tracking-tight">
                       {SR_PILLARS[activeSR].title}
                     </h2>
-                    <p className="font-heading text-base font-normal leading-relaxed text-sognos-text-body lg:text-lg">
+                    <p className="font-heading text-base font-normal leading-relaxed text-sognos-body lg:text-lg">
                       {SR_PILLARS[activeSR].body}
                     </p>
                   </div>
                   <Link
                     href="/company/social-responsibility"
-                    className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                    className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-sognos-body hover:opacity-70 transition-opacity"
                   >
                     Read more
-                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#052048] text-white shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sognos-navy text-white shrink-0">
                       <svg
                         width="12"
                         height="12"

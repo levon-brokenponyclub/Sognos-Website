@@ -1,11 +1,11 @@
 import SognoscareRosterHero from "@/components/sections/sognosroster/Hero";
-import ProductDrawer from "@/components/ui/ProductDrawer";
+import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
 import SognoscareRosterProblems from "@/components/sections/sognosroster/Problems";
 import SognoscareRosterFeatures from "@/components/sections/sognosroster/Features";
 import SognoscareRosterAdvantages from "@/components/sections/sognosroster/Advantages";
 import SognoscareRosterStories from "@/components/sections/sognosroster/Stories";
-import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export const metadata = {
   title: "SognosRoster - Workforce Scheduling & Optimisation | Sognos",
@@ -25,30 +25,24 @@ export default function SognoscareRosterPage() {
   return (
     <>
       <SognoscareRosterHero />
-      <ProductDrawer
-        secondaryLabel="Other Products"
-        currentProduct="sognosroster"
-        peekTitle="What SognosRoster Solves"
-        peekDescription="Manual rostering can't keep up with shifting demand, complex skill matching, and last-minute changes."
-        drawerTitle="Other Products"
-        drawerDescription="Explore the full Sognos platform."
-      />
-      <ProductSubNav
-        productName="SognosRoster"
-        logoSrc="/logos/sognos-roster-logo-color.svg"
-        sections={SECTIONS}
-      />
-      <SognoscareRosterProblems />
-      <SognoscareRosterFeatures />
-      <SognoscareRosterAdvantages />
-      <SognoscareRosterStories />
-      <CTASection
-        headline="Ready to automate your workforce scheduling?"
-        subtext="Book a personalised demo and see how SognosRoster handles your specific scheduling volume, skills requirements, and real-time operational demands."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
-        defaultProduct="sognosroster"
-      />
+      <ScrollReveal>
+        <ProductTrustStrip />
+      </ScrollReveal>
+      <div className="bg-sognos-roster-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
+        <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
+      </div>
+      <ScrollReveal>
+        <SognoscareRosterProblems />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SognoscareRosterFeatures />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SognoscareRosterAdvantages />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SognoscareRosterStories />
+      </ScrollReveal>
     </>
   );
 }

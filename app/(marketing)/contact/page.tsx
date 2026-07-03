@@ -13,7 +13,7 @@ export default async function ContactPage() {
       <section className="bg-gradient-hero w-full">
         <div className="max-w-7xl w-full mx-auto text-center px-6 py-28 pb-18 pt-40">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
             Contact
           </div>
           <h1 className="mx-auto mb-6 max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
@@ -27,12 +27,12 @@ export default async function ContactPage() {
       </section>
 
       {/* Form + sidebar */}
-      <section className="w-full bg-slate-50 border-b border-sognos-border-subtle">
+      <section className="w-full bg-slate-50 border-b border-sognos-line">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
             {/* Form */}
-            <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8 lg:p-10">
-              <h2 className="mb-8 font-heading text-2xl font-medium text-prussian-blue-800 tracking-tight">
+            <div className="rounded-2xl border border-sognos-line bg-white p-8 lg:p-10">
+              <h2 className="mb-8 font-heading text-2xl font-medium text-sognos-body tracking-tight">
                 Send us a message
               </h2>
               <ContactForm />
@@ -42,18 +42,18 @@ export default async function ContactPage() {
             <div className="flex flex-col gap-6">
               {/* Response time */}
               {(settings.responseTimeHeading || settings.responseTimeBody) && (
-                <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                <div className="rounded-2xl border border-sognos-line bg-white p-8">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                     Response time
                   </div>
                   {settings.responseTimeHeading && (
-                    <p className="font-heading text-2xl font-medium text-prussian-blue-800">
+                    <p className="font-heading text-2xl font-medium text-sognos-body">
                       {settings.responseTimeHeading}
                     </p>
                   )}
                   {settings.responseTimeBody && (
-                    <p className="mt-2 text-sm leading-relaxed text-sognos-text-body">
+                    <p className="mt-2 text-sm leading-relaxed text-sognos-body">
                       {settings.responseTimeBody}
                     </p>
                   )}
@@ -62,31 +62,31 @@ export default async function ContactPage() {
 
               {/* Office locations */}
               {offices.length > 0 && (
-                <div className="rounded-2xl border border-sognos-border-subtle bg-white overflow-hidden">
+                <div className="rounded-2xl border border-sognos-line bg-white overflow-hidden">
                   {offices.map((office, i) => (
                     <div
                       key={office.region}
-                      className={`p-8 ${i > 0 ? "border-t border-sognos-border-subtle" : ""}`}
+                      className={`p-8 ${i > 0 ? "border-t border-sognos-line" : ""}`}
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-text-muted">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-muted">
                           {office.region}
                         </p>
                         {office.label && (
                           <>
-                            <span className="text-xs text-sognos-text-muted/50">
+                            <span className="text-xs text-sognos-muted/50">
                               -
                             </span>
-                            <p className="text-xs text-sognos-text-muted">
+                            <p className="text-xs text-sognos-muted">
                               {office.label}
                             </p>
                           </>
                         )}
                       </div>
-                      <p className="text-sm font-semibold text-prussian-blue-800 mb-2">
+                      <p className="text-sm font-semibold text-sognos-body mb-2">
                         {office.entity}
                       </p>
-                      <address className="not-italic text-sm text-sognos-text-body leading-relaxed mb-3">
+                      <address className="not-italic text-sm text-sognos-body leading-relaxed mb-3">
                         {office.address.map((line) => (
                           <span key={line} className="block">
                             {line}
@@ -97,7 +97,7 @@ export default async function ContactPage() {
                         {office.phone && (
                           <a
                             href={`tel:${office.phone.replace(/\s/g, "")}`}
-                            className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                            className="flex items-center gap-2 text-sm text-sognos-body hover:opacity-70 transition-opacity"
                           >
                             <svg
                               width="13"
@@ -120,7 +120,7 @@ export default async function ContactPage() {
                         {office.email && (
                           <a
                             href={`mailto:${office.email}`}
-                            className="flex items-center gap-2 text-sm text-prussian-blue-800 hover:opacity-70 transition-opacity"
+                            className="flex items-center gap-2 text-sm text-sognos-body hover:opacity-70 transition-opacity"
                           >
                             <svg
                               width="13"
@@ -156,16 +156,16 @@ export default async function ContactPage() {
 
               {/* ABN + LinkedIn */}
               {(settings.abn || settings.linkedinUrl) && (
-                <div className="rounded-2xl border border-sognos-border-subtle bg-white p-8">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                    <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                <div className="rounded-2xl border border-sognos-line bg-white p-8">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                     Company info
                   </div>
                   {settings.abn && (
                     <dl className="space-y-2 text-sm">
                       <div className="flex gap-2">
-                        <dt className="text-sognos-text-muted shrink-0">ABN</dt>
-                        <dd className="text-prussian-blue-800 font-medium">
+                        <dt className="text-sognos-muted shrink-0">ABN</dt>
+                        <dd className="text-sognos-body font-medium">
                           {settings.abn}
                         </dd>
                       </div>
@@ -176,7 +176,7 @@ export default async function ContactPage() {
                       href={settings.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 hover:text-prussian-blue-800 transition-colors"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-sognos-body/60 hover:text-sognos-body transition-colors"
                     >
                       <svg
                         width="16"

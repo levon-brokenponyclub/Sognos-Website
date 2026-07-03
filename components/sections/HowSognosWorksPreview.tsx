@@ -32,10 +32,8 @@ const TABS = [
 
 const AUTOPLAY_MS = 5000;
 
-// Crisp spring for description expand/collapse
 const EXPAND = { duration: 0.2, ease: [0.4, 0, 0.2, 1] as const };
-// Image slide - fast deceleration
-const SLIDE = { duration: 0.6, ease: [0.32, 0.72, 0, 1] as const };
+const FADE = { duration: 0.4, ease: [0.32, 0.72, 0, 1] as const };
 
 export default function HowSognosWorksPreview() {
   const [active, setActive] = useState(0);
@@ -51,7 +49,7 @@ export default function HowSognosWorksPreview() {
         setActive((a) => (a + 1) % TABS.length);
         setTimeout(() => {
           transitioning.current = false;
-        }, 700);
+        }, 500);
       }
     }, AUTOPLAY_MS);
     return () => clearTimeout(t);
@@ -69,95 +67,105 @@ export default function HowSognosWorksPreview() {
     }, AUTOPLAY_MS);
   };
 
+  const heading = (
+    <h3 className="font-heading text-3xl lg:text-4xl font-normal leading-tight tracking-tight text-sognos-heading">
+      Stop managing complexity.
+      <br />
+      <span className="text-sognos-heading/60">Start delivering outcomes.</span>
+    </h3>
+  );
+
   return (
-    <section className="w-full border-sognos-border-subtle bg-gray-100">
-      <div className="max-w-7xl w-full mx-auto px-4 py-24">
-        <div className="grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-[40%_1fr] lg:grid-rows-[auto_1fr] lg:items-stretch [grid-template-areas:'heading''image''tabs'] lg:[grid-template-areas:'heading_image''tabs_image']">
-          {/* Heading */}
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 text-center lg:text-left tracking-tight mb-6">
-            Stop managing complexity. <br />
-            <span className="text-soft text-[#052048]/60">
-              Start delivering outcomes.
-            </span>
-          </h2>
+    <section className="w-full overflow-clip bg-background pt-12 md:pt-[120px] pb-12 md:pb-[120px] border-b border-sognos-heading/10">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="flex max-lg:flex-col gap-x-[57px] gap-y-8">
+          {/* Left column — heading + accordion */}
+          <div className="flex shrink-0 flex-col gap-y-4 justify-between lg:max-w-[401px] lg:pt-1">
+            <div className="max-lg:hidden">{heading}</div>
 
-          {/* Tab list */}
-          <div className="[grid-area:tabs] lg:self-end">
-            {TABS.map((tab, i) => (
-              <button
-                key={tab.id}
-                onClick={() => handleTab(i)}
-                className="relative w-full text-left border-t border-gray-300 cursor-pointer overflow-hidden"
-              >
-                {/* Progress bar - top border */}
-                <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-transparent">
-                  {active === i && (
-                    <motion.div
-                      key={`progress-${i}-${active}`}
-                      className="h-full bg-cornflower-ocean-400"
-                      initial={{ width: "0%" }}
-                      animate={paused ? false : { width: "100%" }}
-                      transition={{
-                        duration: AUTOPLAY_MS / 1000,
-                        ease: "linear",
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Label + number */}
-                <div className="flex items-center justify-between gap-4 py-5">
-                  <span
-                    className={`text-xl font-semibold leading-snug tracking-tight transition-opacity duration-200 text-prussian-blue-800 ${
-                      active === i ? "opacity-100" : "opacity-40"
-                    }`}
-                  >
-                    {tab.label}
+            <div className="border-b border-sognos-heading/10">
+              {TABS.map((tab, i) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => handleTab(i)}
+                  className="relative block w-full cursor-pointer overflow-hidden border-t border-sognos-heading/10 pb-5 text-left"
+                >
+                  {/* Top progress indicator */}
+                  <span className="absolute inset-x-0 top-0 block h-px overflow-hidden">
+                    {active === i && (
+                      <motion.span
+                        key={`progress-${i}-${active}`}
+                        className="block h-full bg-sognos-heading"
+                        initial={{ width: "0%" }}
+                        animate={paused ? false : { width: "100%" }}
+                        transition={{
+                          duration: AUTOPLAY_MS / 1000,
+                          ease: "linear",
+                        }}
+                      />
+                    )}
                   </span>
-                  <span className="shrink-0 text-sm font-mono text-prussian-blue-800/35">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
 
-                {/* Description - height + opacity expand, no layout jump */}
-                <AnimatePresence initial={false}>
-                  {active === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={EXPAND}
-                      className="overflow-hidden"
+                  {/* Header row: label + number */}
+                  <div className="flex w-full items-center justify-between gap-x-4 pt-5">
+                    <h4
+                      className={`text-xl font-medium leading-snug tracking-tight text-sognos-heading transition-opacity duration-200 ${
+                        active === i ? "opacity-100" : "opacity-50"
+                      }`}
                     >
-                      <p className="pb-5 text-sognos-text-body leading-relaxed">
-                        {tab.description}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
-            ))}
+                      {tab.label}
+                    </h4>
+                    <span className="font-heading text-sm tracking-wide text-sognos-heading/65">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  {/* Expanding description */}
+                  <AnimatePresence initial={false}>
+                    {active === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={EXPAND}
+                        className="overflow-hidden"
+                      >
+                        <p className="max-w-[353px] py-3 text-base leading-relaxed text-sognos-body">
+                          {tab.description}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Visual - components stacked, active slides up from below */}
-          <div className="[grid-area:image] rounded-lg border border-gray-400/30 overflow-hidden relative min-h-[280px] lg:min-h-[500px] bg-white">
-            {TABS.map((tab, i) => {
-              const Component = tab.Component;
-              return (
-                <motion.div
-                  key={tab.id}
-                  className="absolute inset-0 flex items-center justify-center p-6 lg:p-10"
-                  style={{ zIndex: active === i ? 10 : 0 }}
-                  initial={{ y: i === 0 ? "0%" : "100%" }}
-                  animate={{ y: active === i ? "0%" : "100%" }}
-                  transition={
-                    active === i ? SLIDE : { duration: 0, delay: 0 }
-                  }
-                >
-                  <Component trigger={active === i} />
-                </motion.div>
-              );
-            })}
+          {/* Right column — visual well crossfade */}
+          <div className="w-full max-w-[791px] max-lg:order-first">
+            <div className="mb-6 lg:hidden">{heading}</div>
+
+            <div className="relative aspect-[791/580] w-full max-w-[791px] overflow-hidden rounded-2xl border border-sognos-line bg-white shadow-lg">
+              {TABS.map((tab, i) => {
+                const Component = tab.Component;
+                return (
+                  <motion.div
+                    key={tab.id}
+                    className="absolute inset-0 flex items-center justify-center p-6 lg:p-10"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: active === i ? 1 : 0 }}
+                    transition={FADE}
+                    style={{
+                      pointerEvents: active === i ? "auto" : "none",
+                      zIndex: active === i ? 10 : 0,
+                    }}
+                  >
+                    <Component trigger={active === i} />
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

@@ -15,10 +15,11 @@ const data: EditionData = {
   description:
     "Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access designed for practitioners who work across multiple sites.",
   gradient: "/images/sognoscare/gradient-2.png",
-  accentHex: "#fea65d",
-  accentTextClass: "text-(--sognos-edition-orange)",
-  accentBgClass: "bg-(--sognos-edition-orange)",
-  accentBorderClass: "border-(--sognos-edition-orange)",
+  accentHex: "#ffad6e",
+  accentTextClass: "text-sognos-edition-allied-health",
+  accentBgClass: "bg-sognos-edition-allied-health",
+  accentBorderClass: "border-sognos-edition-allied-health",
+  advantagesBg: "var(--sognos-edition-allied-health-dark)",
   problems: [
     {
       label: "Fragmented referral management",

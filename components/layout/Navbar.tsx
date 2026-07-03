@@ -2,400 +2,339 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
-import { motion, AnimatePresence, type Transition } from "framer-motion";
-import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
+import { usePathname } from "next/navigation";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 
-// ─── Constants ─────────────────────────────────────────────────────────────────
+// ── Transparent-over-hero: paths whose first section is a dark hero ────────────
+const DARK_HERO_PATHS = new Set([
+  "/",
+  "/products/sognoscare",
+  "/products/sognosroster",
+  "/products/sognosgenogram",
+]);
+// Dynamic-route prefixes whose pages always render a dark hero.
+const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
 
-type Direction = "ltr" | "rtl";
+// ── Light / dark theme seam ────────────────────────────────────────────────────
 
-const SHELL_EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-const EXIT_EASE = [0.7, 0, 0.84, 0] as [number, number, number, number];
-const STAGGER_STEP = 0.038;
-const ITEM_X = 6;
-const CONTENT_X = 84;
+type NavVariant = "light" | "dark";
 
-// ─── Animation helpers ─────────────────────────────────────────────────────────
-
-const contentVariants = {
-  enter: (dir: Direction) => ({
-    opacity: 0,
-    x: dir === "rtl" ? CONTENT_X : -CONTENT_X,
-  }),
-  center: { opacity: 1, x: 0 },
-  exit: (dir: Direction) => ({
-    opacity: 0,
-    x: dir === "rtl" ? -CONTENT_X : CONTENT_X,
-  }),
-};
-
-const mobilePanelVariants = {
-  enter: { opacity: 0, x: 26 },
-  center: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.28, ease: SHELL_EASE },
-  },
-  exit: {
-    opacity: 0,
-    x: -18,
-    transition: { duration: 0.2, ease: EXIT_EASE },
-  },
-};
-
-function flatIndex(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-): number {
-  const before = columns
-    .slice(0, colIdx)
-    .reduce((sum, col) => sum + 1 + col.items.length, 0);
-  return before + rowIdx + 1;
+interface NavTheme {
+  text: string;
+  activeText: string;
+  hoverPill: string;
+  navGroup: string;
+  logoFilter: string;
+  primaryBtn: string;
+  secondaryText: string;
+  hamburger: string;
 }
 
-function itemDelay(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-  direction: Direction,
-): number {
-  const total = columns.reduce((sum, col) => sum + 1 + col.items.length, 0);
-  let flat = flatIndex(colIdx, rowIdx, columns);
-  if (direction === "rtl") flat = total - 1 - flat;
-  return Math.max(0, flat) * STAGGER_STEP;
-}
-
-function itemInitial(direction: Direction) {
-  return { opacity: 0, x: direction === "rtl" ? ITEM_X : -ITEM_X, y: 4 };
-}
-
-function itemTransition(
-  colIdx: number,
-  rowIdx: number,
-  columns: MegaColumn[],
-  direction: Direction,
-): Transition {
-  return {
-    duration: 0.18,
-    ease: "easeOut",
-    delay: itemDelay(colIdx, rowIdx, columns, direction),
-  };
-}
-
-// ─── Icon meta (keyed by product name) ─────────────────────────────────────────
-
-type ProductMeta = { bg: string; path: string; color: string };
-
-const PRODUCT_META: Record<string, ProductMeta> = {
-  SognosCare: {
-    bg: "bg-rose-50",
-    color: "text-rose-500",
-    path: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+const THEMES: Record<NavVariant, NavTheme> = {
+  light: {
+    text: "text-sognos-heading hover:text-sognos-heading",
+    activeText: "text-white",
+    hoverPill: "bg-sognos-navy-dark",
+    navGroup: "bg-gray-100 rounded-full p-2",
+    logoFilter: "none",
+    primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-blue-accent hover:text-white",
+    secondaryText: "text-sognos-heading hover:text-sognos-heading",
+    hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
-  SognosRoster: {
-    bg: "bg-blue-50",
-    color: "text-blue-600",
-    path: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-  },
-  "Sognos Genogram": {
-    bg: "bg-violet-50",
-    color: "text-violet-500",
-    path: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
-  },
-  "AI Agents": {
-    bg: "bg-violet-50",
-    color: "text-violet-500",
-    path: "M13 10V3L4 14h7v7l9-11h-7z",
-  },
-  Quickstart: {
-    bg: "bg-amber-50",
-    color: "text-amber-500",
-    path: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+  dark: {
+    text: "text-white hover:text-sognos-heading",
+    activeText: "text-sognos-heading",
+    hoverPill: "bg-white",
+    navGroup: "bg-sognos-navy rounded-full p-2",
+    logoFilter: "brightness(0) invert(1)",
+    primaryBtn: "bg-white text-sognos-navy-dark hover:bg-sognos-blue-accent hover:text-white",
+    secondaryText: "text-white hover:text-white",
+    hamburger: "text-white/80 hover:text-white",
   },
 };
 
-// ─── Icon components ───────────────────────────────────────────────────────────
+// Mobile panel slide
+const SLIDE = { duration: 0.25, ease: [0.4, 0, 0.2, 1] as const };
 
-function ChevronDown({ open }: { open: boolean }) {
-  return (
-    <motion.span
-      className="inline-flex text-current"
-      animate={{ rotate: open ? 180 : 0 }}
-      transition={{ duration: 0.2, ease: SHELL_EASE }}
-      aria-hidden
-    >
-      <svg
-        className="w-3.5 h-3.5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </motion.span>
-  );
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+function getLinkCols(group: NavGroup) {
+  return (group.megaMenu ?? []).filter((col) => col.items.length > 0);
 }
 
-function ChevronRight({
-  className = "w-3.5 h-3.5 text-gray-300",
-}: {
-  className?: string;
-}) {
-  return (
-    <svg
-      className={`shrink-0 ${className}`}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M9 5l7 7-7 7"
-      />
-    </svg>
-  );
-}
+// ── Desktop dropdown content ───────────────────────────────────────────────────
 
-function ChevronLeft() {
-  return (
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M15 19l-7-7 7-7"
-      />
-    </svg>
-  );
-}
-
-// ─── Column renderers ──────────────────────────────────────────────────────────
-
-function FeatureItems({
-  items,
+function DropdownContent({
+  group,
   onClose,
-  colIdx,
-  columns,
-  direction,
-  onHover,
 }: {
-  items: NavItem[];
+  group: NavGroup;
   onClose: () => void;
-  colIdx: number;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (productName: string | null) => void;
 }) {
+  const linkCols = getLinkCols(group);
   return (
-    <ul className="space-y-0.5 mt-1">
-      {items.map((item, rowIdx) => {
-        const meta = PRODUCT_META[item.name];
-        return (
-          <motion.li
-            key={item.name}
-            initial={itemInitial(direction)}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={itemTransition(colIdx, rowIdx, columns, direction)}
-          >
-            <Link
-              href={item.href}
-              onClick={onClose}
-              onMouseEnter={() => onHover?.(item.name)}
-              className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-            >
-              {meta && (
-                <div
-                  className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
-                >
-                  <svg
-                    className={`w-4 h-4 ${meta.color}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d={meta.path}
-                    />
-                  </svg>
-                </div>
-              )}
-              <div>
-                <div className="text-sm font-semibold text-gray-900 group-hover:text-brand transition-colors duration-200">
-                  {item.name}
-                </div>
-                {item.description && (
-                  <div className="text-xs text-gray-500 mt-0.5">
-                    {item.description}
-                  </div>
-                )}
-              </div>
-            </Link>
-          </motion.li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function SimpleItems({
-  items,
-  onClose,
-  colIdx,
-  columns,
-  direction,
-  onHover,
-}: {
-  items: NavItem[];
-  onClose: () => void;
-  colIdx: number;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (itemName: string | null) => void;
-}) {
-  return (
-    <ul className="space-y-0.5 mt-1">
-      {items.map((item, rowIdx) => (
-        <motion.li
-          key={item.name}
-          initial={itemInitial(direction)}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={itemTransition(colIdx, rowIdx, columns, direction)}
-        >
-          <Link
-            href={item.href}
-            onClick={onClose}
-            onMouseEnter={() => onHover?.(item.name)}
-            className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-          >
-            <ChevronRight />
-            {item.name}
-          </Link>
-        </motion.li>
-      ))}
-    </ul>
-  );
-}
-
-function MegaCol({
-  col,
-  colIdx,
-  onClose,
-  columns,
-  direction,
-  onHover,
-  onSubmenuHover,
-}: {
-  col: MegaColumn;
-  colIdx: number;
-  onClose: () => void;
-  columns: MegaColumn[];
-  direction: Direction;
-  onHover?: (productName: string | null) => void;
-  onSubmenuHover?: (itemName: string | null) => void;
-}) {
-  const isEmpty = col.items.length === 0;
-  const isEmptyCol3 = colIdx === 2 && isEmpty;
-
-  return (
-    <div
-      className={`mega-col py-6 space-y-1 ${isEmptyCol3 ? "bg-slate-100" : "bg-white"}`}
-    >
-      {!isEmpty && (
-        <>
-          <motion.h4
-            initial={itemInitial(direction)}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={itemTransition(colIdx, -1, columns, direction)}
-            className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2"
-          >
-            {col.heading}
-          </motion.h4>
-          {col.variant === "feature" ? (
-            <FeatureItems
-              items={col.items}
-              onClose={onClose}
-              colIdx={colIdx}
-              columns={columns}
-              direction={direction}
-              onHover={onHover}
-            />
-          ) : (
-            <SimpleItems
-              items={col.items}
-              onClose={onClose}
-              colIdx={colIdx}
-              columns={columns}
-              direction={direction}
-              onHover={onSubmenuHover}
-            />
+    <div className="flex gap-12">
+      {linkCols.map((col, i) => (
+        <div key={i} className="w-52 shrink-0">
+          {col.heading && (
+            <h4 className="mb-4 text-xs font-normal uppercase tracking-widest text-sognos-muted">
+              {col.heading}
+            </h4>
           )}
-        </>
-      )}
+          <ul>
+            {col.items.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  className="block py-2 text-base text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
     </div>
   );
 }
 
-// ─── Mobile helpers ────────────────────────────────────────────────────────────
+// ── Mobile sub-panel content ───────────────────────────────────────────────────
 
-function getMobilePanelId(label: string) {
-  return label.toLowerCase().replace(/\s+/g, "-");
+function MobileSubContent({
+  group,
+  onLinkClick,
+}: {
+  group: NavGroup;
+  onLinkClick: () => void;
+}) {
+  const linkCols = getLinkCols(group);
+  const featuredItems = linkCols[0]?.items.slice(0, 2) ?? [];
+
+  return (
+    <>
+      {linkCols.map((col, i) => (
+        <div key={i}>
+          {col.heading && (
+            <div className="bg-gray-50 px-6 py-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                {col.heading}
+              </p>
+            </div>
+          )}
+          {col.items.map((item) => (
+            <div key={item.href} className="border-b border-gray-100">
+              <Link
+                href={item.href}
+                onClick={onLinkClick}
+                className="block px-6 py-4 text-xl font-medium text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+              >
+                {item.name}
+              </Link>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {featuredItems.length > 0 && (
+        <div className="mx-4 my-4 rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF] p-5">
+          <div className="grid grid-cols-2 gap-4">
+            {featuredItems.map((item) => (
+              <Link key={item.href} href={item.href} onClick={onLinkClick}>
+                <div className="mb-2 h-14 w-14 rounded-lg bg-sognos-navy-dark/90" />
+                <p className="text-sm font-medium leading-snug text-gray-900">
+                  {item.name}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ── Inline SVG helpers ────────────────────────────────────────────────────────
 
-export default function Navbar() {
-  const router = useRouter();
+function IconClose() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  );
+}
+
+function IconArrowLeft() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function IconArrowRight() {
+  return (
+    <svg
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+// ── Mobile footer (shared between Level 1 and Level 2) ───────────────────────
+
+function MobileFooter({
+  onBookDemo,
+  onContactSales,
+}: {
+  onBookDemo: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
+  onContactSales: () => void;
+}) {
+  return (
+    <div className="shrink-0 border-t border-gray-100 flex gap-2 p-3">
+      <Link
+        href="#book-demo"
+        onClick={onBookDemo}
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-base font-normal bg-sognos-navy-dark text-white transition-colors duration-150 hover:bg-sognos-blue-accent hover:text-white"
+      >
+        {navCTA.primary.name}
+      </Link>
+      <Link
+        href={navCTA.secondary.href}
+        onClick={onContactSales}
+        className="flex flex-1 items-center justify-center h-14 rounded-lg text-sm font-semibold bg-gray-100 text-gray-900 transition-colors duration-150 hover:bg-gray-200"
+      >
+        {navCTA.secondary.name}
+      </Link>
+    </div>
+  );
+}
+
+// ── Navbar ─────────────────────────────────────────────────────────────────────
+
+export default function Navbar({
+  variant = "light",
+  transparentOverHero,
+}: {
+  variant?: NavVariant;
+  transparentOverHero?: boolean;
+}) {
+  const pathname = usePathname();
+  const prefersReducedMotion = useReducedMotion();
+
+  const [hovered, setHovered] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [direction, setDirection] = useState<Direction>("ltr");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobilePanel, setMobilePanel] = useState("root");
-  const [mobileHistory, setMobileHistory] = useState<string[]>([]);
-  const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
+  const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrolled, setScrolled] = useState(false);
-  const [headerVisible, setHeaderVisible] = useState(true);
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [hoveredSubmenuItem, setHoveredSubmenuItem] = useState<string | null>(null);
-  const [hideHeaderForSubnav, setHideHeaderForSubnav] = useState(false);
+  // Measured dimensions of the active dropdown content — drives CSS transition on card
+  const [dropdownWidth, setDropdownWidth] = useState(0);
+  const [dropdownHeight, setDropdownHeight] = useState(0);
+
+  // Mobile slide direction
+  const mobilePanelDirectionRef = useRef<"forward" | "back">("forward");
+  // Desktop content directional slide
+  const slideDirectionRef = useRef<"forward" | "back">("forward");
+  // Tracks current open item's nav index so direction can be computed on switch
+  const prevOpenIndexRef = useRef<number>(-1);
+
   const headerRef = useRef<HTMLElement>(null);
-  const activeIndexRef = useRef<number>(-1);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastScrollYRef = useRef(0);
+  // Hidden off-screen divs that render each DropdownContent at natural size
+  const measurerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const logoSrc = "/logos/sognos-logo.svg";
-
-  // Click-outside closes desktop menu
+  const intentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Ref mirror of openMenu for use inside timer callbacks without stale closure
+  const openMenuRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!openMenu) return;
-    const handler = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setOpenMenu(null);
-        activeIndexRef.current = -1;
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    openMenuRef.current = openMenu;
   }, [openMenu]);
 
-  // Body scroll lock when mobile open
+  const activeGroup = nav.find(
+    (g) => g.label === openMenu && (g.megaMenu || g.items),
+  );
+  const activeSubGroup = nav.find((g) => g.label === mobilePanel);
+
+  // ── Transparent-over-hero derived state ───────────────────────────────────────
+  const useTransparent =
+    transparentOverHero !== undefined
+      ? transparentOverHero
+      : DARK_HERO_PATHS.has(pathname) ||
+        DARK_HERO_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+  // Content theme is fixed per page — never flips on scroll.
+  const t = useTransparent ? THEMES.dark : THEMES.light;
+  // Only the bar background changes on scroll (dark-hero pages).
+  const barTransparent = useTransparent && !scrolled;
+
+  // ── Measure dropdown dimensions ───────────────────────────────────────────────
+  // Runs synchronously before paint so card dimensions are correct from first frame
+
+  useLayoutEffect(() => {
+    if (!openMenu) return;
+    const el = measurerRefs.current.get(openMenu);
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    setDropdownWidth(width);
+    setDropdownHeight(height);
+  }, [openMenu]);
+
+  // ── Scroll state — always visible; only tracks past-top for bar bg swap ──────
+
+  useEffect(() => {
+    let ticking = false;
+
+    const update = () => {
+      setScrolled(window.scrollY > 8);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Body scroll lock ──────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
@@ -405,309 +344,383 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // Scroll-driven dark/light colour detection
+  // ── Click-outside closes desktop dropdown ─────────────────────────────────────
+
   useEffect(() => {
-    let ticking = false;
-    const update = () => {
-      const el = headerRef.current;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        // Let product sub-nav stick below the header until it "takes over".
-        document.documentElement.style.setProperty(
-          "--sognos-header-offset",
-          hideHeaderForSubnav ? "0px" : `${rect.height}px`,
-        );
-        const probeY = rect.top + rect.height / 2;
-        let mode: "dark" | "light" = "light";
-        document.querySelectorAll("[data-header-dark]").forEach((section) => {
-          const r = section.getBoundingClientRect();
-          if (probeY >= r.top && probeY <= r.bottom) mode = "dark";
-        });
-        setColorMode(mode);
-      }
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 8);
-      const delta = scrollY - lastScrollYRef.current;
-      if (delta < -2) setHeaderVisible(true);
-      else if (delta > 2) setHeaderVisible(false);
-      lastScrollYRef.current = scrollY;
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
+    if (!openMenu) return;
+    const handler = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+        setHovered(null);
       }
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-    };
-  }, [hideHeaderForSubnav]);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [openMenu]);
 
-  // Product sub-nav can request that the header hides when it docks to the top.
-  useEffect(() => {
-    const onDocked = (e: Event) => {
-      const ce = e as CustomEvent<{ docked: boolean }>;
-      const next = Boolean(ce.detail?.docked);
+  // ── Scroll closes desktop dropdown ───────────────────────────────────────────
 
-      if (hideTimerRef.current) {
-        clearTimeout(hideTimerRef.current);
-        hideTimerRef.current = null;
-      }
-
-      // When docked, allow the header to fade as it's pushed out.
-      setHideHeaderForSubnav(next);
-
-      if (next) {
-        // Match the header's CSS transition duration so sub-nav can animate in after.
-        hideTimerRef.current = setTimeout(() => {
-          window.dispatchEvent(
-            new CustomEvent("sognos:headerHidden", { detail: { hidden: true } }),
-          );
-        }, 310);
-      } else {
-        window.dispatchEvent(
-          new CustomEvent("sognos:headerHidden", { detail: { hidden: false } }),
-        );
-      }
-    };
-    window.addEventListener("sognos:productSubnavDocked", onDocked);
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      window.removeEventListener("sognos:productSubnavDocked", onDocked);
-    };
-  }, []);
-
-  const toggleMenu = (label: string, index: number) => {
-    if (openMenu === label) {
-      setOpenMenu(null);
-      activeIndexRef.current = -1;
-      setHoveredProduct(null);
-      setHoveredSubmenuItem(null);
-    } else {
-      if (activeIndexRef.current !== -1 && index !== activeIndexRef.current) {
-        setDirection(index > activeIndexRef.current ? "rtl" : "ltr");
-      }
-      activeIndexRef.current = index;
-      setOpenMenu(label);
-    }
-  };
-
-  const closeAll = () => {
-    setOpenMenu(null);
-    activeIndexRef.current = -1;
-    setHoveredProduct(null);
-    setHoveredSubmenuItem(null);
-  };
-
-  // Close any open desktop dropdown on scroll.
   useEffect(() => {
     if (!openMenu) return;
     const onScroll = () => {
+      if (intentTimerRef.current) {
+        clearTimeout(intentTimerRef.current);
+        intentTimerRef.current = null;
+      }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
       setOpenMenu(null);
-      activeIndexRef.current = -1;
-      setHoveredProduct(null);
-      setHoveredSubmenuItem(null);
+      setHovered(null);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [openMenu]);
 
-  // Mobile helpers
-  const drillTo = (panelId: string) => {
-    setMobileHistory((h) => [...h, mobilePanel]);
-    setMobilePanel(panelId);
+  // ── Hover intent timers ───────────────────────────────────────────────────────
+
+  const closeAll = () => {
+    if (intentTimerRef.current) {
+      clearTimeout(intentTimerRef.current);
+      intentTimerRef.current = null;
+    }
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    prevOpenIndexRef.current = -1;
+    setOpenMenu(null);
+    setHovered(null);
   };
 
-  const drillBack = () => {
-    setMobileHistory((h) => {
-      const next = [...h];
-      const prev = next.pop() ?? "root";
-      setMobilePanel(prev);
-      return next;
-    });
+  // Set slide direction and update prevOpenIndexRef before calling setOpenMenu
+  const recordDirection = (label: string) => {
+    const newIndex = nav.findIndex((g) => g.label === label);
+    slideDirectionRef.current =
+      prevOpenIndexRef.current === -1 || newIndex > prevOpenIndexRef.current
+        ? "forward"
+        : "back";
+    prevOpenIndexRef.current = newIndex;
   };
 
-  const openMobile = () => {
-    closeAll();
-    setMobilePanel("root");
-    setMobileHistory([]);
-    setMobileOpen(true);
+  const openOnHover = (label: string) => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    if (openMenuRef.current === label) return;
+    // Already open on another item — switch immediately, no intent delay
+    if (openMenuRef.current !== null) {
+      if (intentTimerRef.current) {
+        clearTimeout(intentTimerRef.current);
+        intentTimerRef.current = null;
+      }
+      recordDirection(label);
+      setOpenMenu(label);
+      return;
+    }
+    if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
+    intentTimerRef.current = setTimeout(() => {
+      recordDirection(label);
+      setOpenMenu(label);
+      intentTimerRef.current = null;
+    }, 60);
   };
 
-  const closeMobile = () => {
-    setMobileOpen(false);
-    setMobilePanel("root");
-    setMobileHistory([]);
+  const closeOnHover = () => {
+    if (intentTimerRef.current) {
+      clearTimeout(intentTimerRef.current);
+      intentTimerRef.current = null;
+    }
+    closeTimerRef.current = setTimeout(() => {
+      setOpenMenu(null);
+      closeTimerRef.current = null;
+    }, 100);
   };
+
+  const cancelCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  // ── Book demo ─────────────────────────────────────────────────────────────────
 
   const { openModal } = useBookDemo();
 
   const onBookDemoClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     closeAll();
-    closeMobile();
+    setMobileOpen(false);
+    setMobilePanel("root");
     openModal();
   };
 
-  const mobileTitle =
-    mobilePanel === "root"
-      ? "Menu"
-      : (nav.find((g) => getMobilePanelId(g.label) === mobilePanel)?.label ??
-        mobilePanel);
+  // ── Mobile panel navigation ───────────────────────────────────────────────────
 
-  const activeGroup = nav.find((g) => g.label === openMenu && g.megaMenu);
-  const activeSimpleGroup = nav.find(
-    (g) => g.label === openMenu && !g.megaMenu && g.items,
-  );
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setMobilePanel("root");
+  };
 
-  const effectiveColorMode = mobileOpen || openMenu ? "light" : colorMode;
+  const goToSubPanel = (label: string) => {
+    mobilePanelDirectionRef.current = "forward";
+    setMobilePanel(label);
+  };
 
-  const linkClass =
-    effectiveColorMode === "dark"
-      ? "text-white hover:text-white"
-      : "text-[rgb(18_35_72/0.75)] hover:text-brand";
+  const goToRoot = () => {
+    mobilePanelDirectionRef.current = "back";
+    setMobilePanel("root");
+  };
 
-  const ctaClass =
-    effectiveColorMode === "dark"
-      ? "bg-white text-brand hover:opacity-90"
-      : "bg-brand text-white hover:bg-brand-dark";
+  // ── Derived ───────────────────────────────────────────────────────────────────
+
+  const activePillLabel = hovered ?? openMenu;
+
+  // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <header
-      ref={headerRef}
-      data-site-header
-      className={`fixed top-0 left-0 w-full z-99 bg-transparent transition-transform duration-300 ease-out ${
-        mobileOpen ? "pointer-events-auto" : "pointer-events-none will-change-transform"
-      }`}
-      style={{
-        transform: mobileOpen || headerVisible
-          ? "none"
-          : `translate3d(0, calc(-1 * var(--sognos-header-push, 0px)), 0)`,
-      }}
-    >
-      {/* ── Nav bar ── */}
+    <>
+      {/* ── Backdrop blur — desktop only (menu-open) ──────────────────────────── */}
       <div
+        aria-hidden="true"
         className={[
-          `pointer-events-auto w-full ${scrolled || effectiveColorMode === "light" ? "px-2" : "px-5"} lg:px-6 lg:py-2`,
-          scrolled ? "py-2" : mobileOpen ? "pt-2 pb-2" : "pt-4 pb-2",
-          "transition-[background-color,border-color,padding,transform,opacity] duration-300 will-change-transform",
-          // Keep opacity stable; the push interaction should handle the handoff visually.
-          "opacity-100",
-          effectiveColorMode === "light"
-            ? "bg-white border-b border-sognos-border"
-            : scrolled
+          "hidden lg:block fixed inset-x-0 top-0 z-40 min-h-screen w-full pointer-events-none",
+          "backdrop-blur-[30px] transition-opacity duration-300 ease-in-out",
+          openMenu ? "opacity-100" : "opacity-0",
+        ].join(" ")}
+        style={{
+          WebkitMaskImage: "linear-gradient(black, black, transparent)",
+          maskImage: "linear-gradient(black, black, transparent)",
+        }}
+      />
+
+      {/* ── Header — always visible; bar bg only differs on dark-hero pages ──── */}
+      <header
+        ref={headerRef}
+        className={[
+          "fixed inset-x-0 top-0 z-50",
+          "transition-colors duration-300 ease-in-out",
+          useTransparent
+            ? barTransparent
               ? "bg-transparent"
-              : "bg-transparent border-b border-transparent",
+              : "bg-sognos-navy-dark"
+            : "bg-white border-b border-black/5",
         ].join(" ")}
       >
-        <div className="max-w-7xl mx-auto px-3 lg:px-6 py-2">
+        {/* ── Inner positioning context — max-w-7xl ── */}
+        <div className="relative mx-auto max-w-7xl px-6">
+          {/* ── Hidden measurers — always in DOM, off-screen ────────────────── */}
           <div
-            className={`flex items-center justify-between transition-[height] duration-300 ${
-              scrolled ? "h-12 lg:h-13" : "h-14 lg:h-17"
-            }`}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: -9999,
+              top: 0,
+              opacity: 0,
+              pointerEvents: "none",
+            }}
           >
-            {/* Logo */}
+            {nav
+              .filter((g) => !!(g.megaMenu || g.items))
+              .map((group) => (
+                <div
+                  key={group.label}
+                  ref={(el) => {
+                    if (el) measurerRefs.current.set(group.label, el);
+                    else measurerRefs.current.delete(group.label);
+                  }}
+                  className="p-6"
+                  style={{ width: "max-content" }}
+                >
+                  <DropdownContent group={group} onClose={() => {}} />
+                </div>
+              ))}
+          </div>
+
+          {/* ── Content row — 80px tall, 3-col grid ─────────────────────────── */}
+          <div className="h-20 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr]">
+            {/* col 1: logo */}
             <Link
               href="/"
-              className="flex items-center shrink-0"
               onClick={closeAll}
+              className="justify-self-start shrink-0"
             >
               <Image
-                src={logoSrc}
+                src="/logos/sognos-logo.svg"
                 alt="Sognos"
                 width={160}
                 height={40}
-                className={`w-auto transition-[height,filter] duration-300 ${
-                  scrolled ? "h-7 lg:h-8" : "h-8 lg:h-9"
-                }`}
-                style={
-                  effectiveColorMode === "dark"
-                    ? { color: "transparent", filter: "brightness(0) invert(1)" }
-                    : undefined
-                }
+                className="h-7 w-auto transition-[filter] duration-300"
+                style={{ filter: t.logoFilter }}
               />
             </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-0.5">
-              {nav.map((group, groupIndex) => (
-                <div
-                  key={group.label}
-                  className="relative"
-                >
-                  {group.megaMenu || group.items ? (
-                    <button
-                      type="button"
-                      aria-expanded={openMenu === group.label}
-                      onClick={() => toggleMenu(group.label, groupIndex)}
-                      className={`flex items-center gap-1 font-semibold px-4 py-2 rounded-md text transition-colors duration-300 ${
-                        openMenu === group.label
-                          ? "opacity-100"
-                          : "opacity-80 hover:opacity-100"
-                      } ${linkClass}`}
-                    >
-                      {group.label}
-                      <ChevronDown open={openMenu === group.label} />
-                    </button>
-                  ) : (
-                    <Link
-                      href={group.href}
-                      className={`font-medium px-4 py-2 rounded-md text-sm opacity-80 hover:opacity-100 transition-colors duration-300 ${linkClass}`}
-                      onClick={closeAll}
-                    >
-                      {group.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
+            {/* col 2: desktop nav — Aceternity hover-pill */}
+            <nav
+              className={[
+                "hidden lg:flex items-center justify-self-center gap-0.5 h-14",
+                t.navGroup,
+              ].join(" ")}
+              onMouseLeave={() => {
+                setHovered(null);
+                closeOnHover();
+              }}
+            >
+              {nav.map((group) => {
+                const hasDropdown = !!(group.megaMenu || group.items);
+                const isActive = activePillLabel === group.label;
+                const isOpen = openMenu === group.label;
+
+                return (
+                  <div key={group.label} className="relative">
+                    {hasDropdown ? (
+                      <button
+                        type="button"
+                        aria-expanded={isOpen}
+                        onMouseEnter={() => {
+                          setHovered(group.label);
+                          openOnHover(group.label);
+                        }}
+                        onClick={() => {
+                          if (isOpen) {
+                            closeAll();
+                          } else {
+                            recordDirection(group.label);
+                            setOpenMenu(group.label);
+                          }
+                        }}
+                        className={[
+                          "relative px-4 py-2.5 text-base font-normal cursor-pointer rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          isActive ? t.activeText : t.text,
+                        ].join(" ")}
+                      >
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-hover-pill"
+                            className={[
+                              "absolute inset-0 rounded-full",
+                              t.hoverPill,
+                            ].join(" ")}
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.4,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10 flex items-center gap-1.5">
+                          {group.label}
+                          <motion.svg
+                            animate={{ rotate: isOpen ? 180 : 0 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="h-3.5 w-3.5 shrink-0 opacity-60"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </motion.svg>
+                        </span>
+                      </button>
+                    ) : (
+                      <Link
+                        href={group.href ?? "#"}
+                        onClick={closeAll}
+                        onMouseEnter={() => setHovered(group.label)}
+                        className={[
+                          "relative block px-4 py-3 text-base font-medium rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          isActive ? t.activeText : t.text,
+                        ].join(" ")}
+                      >
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-hover-pill"
+                            className={[
+                              "absolute inset-0 rounded-full",
+                              t.hoverPill,
+                            ].join(" ")}
+                            transition={{
+                              type: "spring",
+                              bounce: 0.2,
+                              duration: 0.4,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10">{group.label}</span>
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
             </nav>
 
-            {/* CTAs */}
-            <div className="hidden lg:flex items-center gap-3">
-              <Link
-                href={navCTA.secondary.href}
-                className={`text-sm font-medium transition-colors duration-300 opacity-80 hover:opacity-100 ${linkClass}`}
-                onClick={closeAll}
-              >
-                {navCTA.secondary.name}
-              </Link>
+            {/* col 3: desktop CTAs + mobile hamburger */}
+            <div className="flex items-center gap-x-2 justify-self-end">
+              {/* Desktop CTAs */}
+              <div className="hidden lg:flex items-center gap-x-1">
+                <Link
+                  href={navCTA.secondary.href}
+                  onClick={closeAll}
+                  className={[
+                    "inline-flex items-center h-10 px-4 text-base font-normal rounded-full transition-colors duration-150",
+                    t.secondaryText,
+                  ].join(" ")}
+                >
+                  {navCTA.secondary.name}
+                </Link>
+                <Link
+                  href="#book-demo"
+                  onClick={onBookDemoClick}
+                  className={[
+                    "inline-flex items-center justify-center h-12 rounded-full px-5 text-base font-normal tracking-[-0.002em] transition-colors duration-150",
+                    t.primaryBtn,
+                  ].join(" ")}
+                >
+                  {navCTA.primary.name}
+                </Link>
+              </div>
+
+              {/* Book a Demo — tablet portrait + phone landscape (sm → lg) */}
               <Link
                 href="#book-demo"
-                className={`inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
                 onClick={onBookDemoClick}
+                className={[
+                  "hidden sm:inline-flex lg:hidden items-center justify-center h-14 rounded-full px-4 text-sm font-medium transition-colors duration-150",
+                  t.primaryBtn,
+                ].join(" ")}
               >
                 {navCTA.primary.name}
-              </Link>
-            </div>
-
-            <div className="lg:hidden flex justify-center items-center gap-3">
-              {/* Mobile CTA */}
-              <Link
-                href="#book-demo"
-                className={`inline-flex items-center px-5 py-1 h-10 text-sm font-semibold rounded-full transition-all duration-300 ${ctaClass}`}
-                onClick={onBookDemoClick}
-              >
-                Book a Demo
               </Link>
 
               {/* Mobile hamburger */}
               <button
-                className={`lg:hidden p-2 rounded-md transition-colors duration-200 ${
-                  effectiveColorMode === "dark"
-                    ? "text-white/80 hover:text-white"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-                onClick={mobileOpen ? closeMobile : openMobile}
-                aria-label="Toggle menu"
+                type="button"
+                onClick={() => {
+                  closeAll();
+                  if (mobileOpen) {
+                    setMobileOpen(false);
+                    setMobilePanel("root");
+                  } else {
+                    setMobileOpen(true);
+                  }
+                }}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                className={[
+                  "lg:hidden p-2 -mr-1 rounded-full transition-colors duration-150",
+                  t.hamburger,
+                ].join(" ")}
               >
                 {mobileOpen ? (
                   <svg
-                    className="w-7 h-7"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -721,7 +734,7 @@ export default function Navbar() {
                   </svg>
                 ) : (
                   <svg
-                    className="w-7 h-7"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -738,303 +751,240 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </div>
+        {/* END inner container */}
 
-      {/* ── Desktop mega panel ── */}
-      <AnimatePresence>
-        {activeGroup && (
-          <motion.div
-            key="mega-panel"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: SHELL_EASE }}
-            className="mega-panel pointer-events-auto absolute inset-x-0 top-full bg-white border-t border-b border-gray-200 shadow-sm"
-          >
-            <div className="mx-auto max-w-7xl px-6">
-              <AnimatePresence
-                initial={false}
-                custom={direction}
-                mode="popLayout"
+        {/* ── Desktop dropdown panel ────────────────────────────────────────────
+            Mounted outside max-w-7xl so inset-x-0 is relative to the full header
+            (viewport width). Fixed key keeps the motion.div alive across item
+            switches — only AnimatePresence mounts/unmounts on open ↔ closed.   */}
+        <AnimatePresence>
+          {openMenu !== null && (
+            <motion.div
+              key="dropdown-panel"
+              initial={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.9, rotateX: -10 }
+              }
+              animate={
+                prefersReducedMotion
+                  ? { opacity: 1 }
+                  : { opacity: 1, scale: 1, rotateX: 0 }
+              }
+              exit={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.95, rotateX: -10 }
+              }
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0.15 }
+                  : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+              }
+              style={{ transformOrigin: "top center", perspective: 800 }}
+              className="absolute inset-x-0 top-full z-50 hidden lg:flex justify-center pointer-events-none mt-4"
+            >
+              {/* Card — re-enables pointer events; CSS transitions width + height */}
+              <div
+                onMouseEnter={cancelCloseTimer}
+                onMouseLeave={closeOnHover}
+                className="pointer-events-auto relative overflow-hidden rounded-lg bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+                style={{
+                  width: dropdownWidth || undefined,
+                  height: dropdownHeight || undefined,
+                  transition: prefersReducedMotion
+                    ? "none"
+                    : "width 0.3s cubic-bezier(0.4,0,0.2,1), height 0.3s cubic-bezier(0.4,0,0.2,1)",
+                }}
               >
-                <motion.div
-                  key={openMenu}
-                  custom={direction}
-                  variants={contentVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { duration: 0.26, ease: SHELL_EASE },
-                    opacity: { duration: 0.16, ease: "easeOut" },
-                  }}
-                  className="mega-panel-open grid grid-cols-3 gap-0"
-                >
-                  {(() => {
-                    const displayColumns = [...activeGroup.megaMenu!] as [MegaColumn, MegaColumn, MegaColumn];
-
-                    if (activeGroup.label === "Products") {
-                      const productSub = hoveredProduct ? activeGroup.submenu?.[hoveredProduct] : undefined;
-
-                      // Col 2: product section links when a product is hovered
-                      if (productSub?.col2) {
-                        displayColumns[1] = {
-                          heading: productSub.col2.heading,
-                          variant: "simple" as const,
-                          items: productSub.col2.items,
-                        };
+                {/* Content directional slide — popLayout so exit+enter overlap */}
+                <AnimatePresence mode="popLayout">
+                  {activeGroup && (
+                    <motion.div
+                      key={openMenu}
+                      initial={
+                        prefersReducedMotion
+                          ? { opacity: 0 }
+                          : {
+                              opacity: 0,
+                              x:
+                                slideDirectionRef.current === "forward"
+                                  ? 200
+                                  : -200,
+                            }
                       }
-
-                      // Col 3: editions when "Editions" item is hovered in col 2 for SognosCare
-                      const showEditions = hoveredProduct === "SognosCare" && hoveredSubmenuItem === "Editions";
-                      if (showEditions && productSub?.col3) {
-                        displayColumns[2] = {
-                          heading: productSub.col3.heading,
-                          variant: "simple" as const,
-                          items: productSub.col3.items,
-                        };
-                      } else {
-                        displayColumns[2] = { heading: "", items: [] };
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={
+                        prefersReducedMotion
+                          ? { opacity: 0 }
+                          : {
+                              opacity: 0,
+                              x:
+                                slideDirectionRef.current === "forward"
+                                  ? -200
+                                  : 200,
+                            }
                       }
-                    }
+                      transition={
+                        prefersReducedMotion ? { duration: 0 } : SLIDE
+                      }
+                    >
+                      <div className="p-6">
+                        <DropdownContent
+                          group={activeGroup}
+                          onClose={closeAll}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
-                    return displayColumns.map((col, colIdx) => (
-                      <MegaCol
-                        key={`${activeGroup.label}-col-${colIdx}`}
-                        col={col}
-                        colIdx={colIdx}
-                        onClose={closeAll}
-                        columns={displayColumns}
-                        direction={direction}
-                        onHover={activeGroup.label === "Products" && colIdx === 0 ? setHoveredProduct : undefined}
-                        onSubmenuHover={activeGroup.label === "Products" && colIdx === 1 ? setHoveredSubmenuItem : undefined}
-                      />
-                    ));
-                  })()}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Desktop simple dropdown (Company) ── */}
-      <AnimatePresence>
-        {activeSimpleGroup && (
-          <motion.div
-            key={`simple-${activeSimpleGroup.label}`}
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.18, ease: SHELL_EASE }}
-            className="mega-panel pointer-events-auto absolute top-full bg-white border-t border-b border-gray-200 shadow-sm rounded-b-lg min-w-50"
-            style={{ left: "auto" }}
-          >
-            <div className="px-3 py-3">
-              {activeSimpleGroup.items!.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeAll}
-                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-                >
-                  <ChevronRight />
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Mobile drilldown overlay ── */}
-      <AnimatePresence>
+      {/* ── Mobile full-screen overlay (two-level slide) ─────────────────────── */}
+      <AnimatePresence onExitComplete={() => setMobilePanel("root")}>
         {mobileOpen && (
           <motion.div
             key="mobile-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            className="lg:hidden fixed top-17 inset-x-0 bottom-0 bg-white z-50 flex flex-col overflow-hidden pointer-events-auto"
+            transition={{ duration: 0.2 }}
+            className="lg:hidden fixed inset-0 z-[51] bg-white flex flex-col overflow-hidden"
           >
-            {/* Sticky drilldown header */}
-            <div className="sticky top-0 bg-white z-10 flex items-center h-12 px-4 border-b border-gray-100 shrink-0">
-              {mobileHistory.length > 0 && (
-                <button
-                  onClick={drillBack}
-                  className="p-1.5 -ml-1.5 rounded-md hover:bg-gray-100 transition-colors duration-200 shrink-0 mr-2"
-                  aria-label="Back"
-                >
-                  <ChevronLeft />
-                </button>
-              )}
-              <span className="text-sm font-semibold text-gray-900">
-                {mobileTitle}
-              </span>
-            </div>
-
-            {/* Panel content */}
-            <div className="flex-1 overflow-y-auto">
-              <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence mode="wait">
+              {mobilePanel === "root" ? (
+                /* ── Level 1: Root panel ─────────────────────────────────── */
                 <motion.div
-                  key={mobilePanel}
-                  variants={mobilePanelVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
+                  key="root"
+                  initial={{
+                    x: mobilePanelDirectionRef.current === "back" ? "-100%" : 0,
+                  }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={SLIDE}
+                  className="absolute inset-0 flex flex-col bg-white"
                 >
-                  {/* ROOT panel */}
-                  {mobilePanel === "root" && (
-                    <div className="px-3 py-3 space-y-0.5">
-                      {nav.map((group) => {
-                        const hasSub = !!(group.megaMenu || group.items);
-                        const panelId = getMobilePanelId(group.label);
-                        return hasSub ? (
-                          <button
-                            key={group.label}
-                            type="button"
-                            onClick={() => drillTo(panelId)}
-                            className="w-full flex items-center justify-between px-3 py-3 text-sm font-medium text-gray-900 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-left"
-                          >
-                            {group.label}
-                            <ChevronRight className="w-4 h-4 text-gray-400" />
-                          </button>
-                        ) : (
-                          <Link
-                            key={group.label}
-                            href={group.href}
-                            onClick={closeMobile}
-                            className="block px-3 py-3 text-sm font-medium text-gray-900 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                          >
-                            {group.label}
-                          </Link>
-                        );
-                      })}
-                      <div className="px-1 pt-4 pb-2">
-                        <Link
-                          href="#book-demo"
-                          onClick={onBookDemoClick}
-                          className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
-                        >
-                          {navCTA.primary.name}
-                        </Link>
-                      </div>
-                    </div>
-                  )}
+                  {/* Header */}
+                  <div className="shrink-0 flex h-20 items-center justify-between border-b border-gray-100 px-6">
+                    <Link href="/" onClick={closeMobile} className="shrink-0">
+                      <Image
+                        src="/logos/sognos-logo.svg"
+                        alt="Sognos"
+                        width={160}
+                        height={40}
+                        className="h-7 w-auto"
+                        style={{ filter: "none" }}
+                      />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={closeMobile}
+                      aria-label="Close menu"
+                      className="p-2 text-gray-900"
+                    >
+                      <IconClose />
+                    </button>
+                  </div>
 
-                  {/* Sub-panels — uses `items` flat list when available, mega columns as fallback */}
-                  {nav
-                    .filter((g) => g.megaMenu || g.items)
-                    .map((group) => {
-                      const panelId = getMobilePanelId(group.label);
-                      if (mobilePanel !== panelId) return null;
-
-                      // Flat list — preferred when group.items is defined
-                      if (group.items) {
-                        return (
-                          <div key={panelId} className="px-3 py-3 space-y-0.5">
-                            {group.items.map((item) => {
-                              const meta = PRODUCT_META[item.name];
-                              return (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  onClick={closeMobile}
-                                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-                                >
-                                  {meta && (
-                                    <div
-                                      className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
-                                    >
-                                      <svg
-                                        className={`w-4 h-4 ${meta.color}`}
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d={meta.path}
-                                        />
-                                      </svg>
-                                    </div>
-                                  )}
-                                  <div>
-                                    <div className="text-sm font-medium text-gray-900">
-                                      {item.name}
-                                    </div>
-                                    {item.description && (
-                                      <div className="text-xs text-gray-500 mt-0.5">
-                                        {item.description}
-                                      </div>
-                                    )}
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        );
-                      }
-
-                      // Mega columns fallback (e.g. Why Sognos, Knowledge Hub)
+                  {/* Nav list */}
+                  <div className="flex-1 overflow-y-auto">
+                    {nav.map((group) => {
+                      const hasDropdown = !!(group.megaMenu || group.items);
                       return (
-                        <div key={panelId}>
-                          {group
-                            .megaMenu!.filter((col) => col.items.length > 0)
-                            .map((col, i) => (
-                              <div
-                                key={i}
-                                className={`px-3 py-5 ${i > 0 ? "border-t border-gray-100" : ""}`}
-                              >
-                                <p className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                                  {col.heading}
-                                </p>
-                                <div className="space-y-0.5">
-                                  {col.items.map((item) => (
-                                    <Link
-                                      key={item.name}
-                                      href={item.href}
-                                      onClick={closeMobile}
-                                      className="block px-3 py-2 rounded-lg text-sm text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors duration-200"
-                                    >
-                                      {item.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
+                        <div
+                          key={group.label}
+                          className="border-b border-gray-100"
+                        >
+                          {hasDropdown ? (
+                            <button
+                              type="button"
+                              onClick={() => goToSubPanel(group.label)}
+                              className="flex w-full items-center justify-between px-6 py-5"
+                            >
+                              <span className="text-xl font-medium text-gray-900">
+                                {group.label}
+                              </span>
+                              <span className="text-gray-900">
+                                <IconArrowRight />
+                              </span>
+                            </button>
+                          ) : (
+                            <Link
+                              href={group.href ?? "#"}
+                              onClick={closeMobile}
+                              className="flex w-full items-center justify-between px-6 py-5"
+                            >
+                              <span className="text-xl font-medium text-gray-900">
+                                {group.label}
+                              </span>
+                            </Link>
+                          )}
                         </div>
                       );
                     })}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                  </div>
 
-            {/* Bottom CTA bar (visible on all sub-panels) */}
-            {mobilePanel !== "root" && (
-              <div className="shrink-0 border-t border-gray-100 bg-white px-4 py-4">
-                <Link
-                  href={navCTA.secondary.href}
-                  onClick={closeMobile}
-                  className="block text-center text-sm font-medium text-gray-700 hover:text-gray-900 mb-3"
+                  {/* Footer */}
+                  <MobileFooter
+                    onBookDemo={onBookDemoClick}
+                    onContactSales={closeMobile}
+                  />
+                </motion.div>
+              ) : (
+                /* ── Level 2: Sub-panel ──────────────────────────────────── */
+                <motion.div
+                  key={mobilePanel}
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={SLIDE}
+                  className="absolute inset-0 flex flex-col bg-white"
                 >
-                  {navCTA.secondary.name}
-                </Link>
-                <Link
-                  href="#book-demo"
-                  onClick={onBookDemoClick}
-                  className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg transition-colors duration-200"
-                >
-                  {navCTA.primary.name}
-                </Link>
-              </div>
-            )}
+                  {/* Header */}
+                  <div className="shrink-0 flex h-20 items-center justify-between border-b border-gray-100 px-6">
+                    <button
+                      type="button"
+                      onClick={goToRoot}
+                      className="flex items-center gap-2 text-sm font-medium text-gray-900"
+                    >
+                      <IconArrowLeft />
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closeMobile}
+                      aria-label="Close menu"
+                      className="p-2 text-gray-900"
+                    >
+                      <IconClose />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 overflow-y-auto">
+                    {activeSubGroup && (
+                      <MobileSubContent
+                        group={activeSubGroup}
+                        onLinkClick={closeMobile}
+                      />
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <MobileFooter
+                    onBookDemo={onBookDemoClick}
+                    onContactSales={closeMobile}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

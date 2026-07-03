@@ -4,17 +4,18 @@
 
 ## Current Status
 
-Phases 1–5b complete. 27 routes live and statically generated.
+Phases 1–5b complete. 27 routes live and statically generated. Phase 6 (Cohere scaffold) in progress — homepage done, solutions/product/industry pages pending. Phase 7 (UI polish) in progress — major items completed this sprint.
 
 Also complete outside the original phase plan:
 - `/contact` page — built and live
 - `/knowledge-hub` — renamed from `/resources`, includes KnowledgeHubArchive with sticky filters + 6 real articles
-- Homepage polish: LogoStrip → infinite CSS marquee, ProofSection bento grid with video/image bg tiles, IndustrySection always-on video, SolutionsSection dark bg, CustomerStories trimmed to 3 active
+- Homepage Cohere scaffold — full section-by-section port, new components: `HowSognosWorks`, `SognosCareCard`, `SognosRosterCard`, `CTABand`; reworked: `Hero`, `IndustrySection`, `NewsInsightSection`
+- Sanity CMS integration — CMS-driven across products, posts, global content, legals, footer, site settings
 
 Immediate focus:
-- Phase 6 — design system application pass (in progress, started 2026-05-01)
-- `/customer-stories` hub + `/customer-stories/[slug]` — live (8 case study slugs)
-- Legacy URL redirects from `sognos.com.au` — wired in `next.config.ts` (23 × 301)
+- Phase 7 — ProductSubNav dock-from-bottom
+- Phase 6 — Solutions pages Cohere port (`solutions/[slug]/page.tsx`)
+- Phase 7 — Roster + Genogram Problems dark sections
 
 ## Phase Plan
 
@@ -100,28 +101,37 @@ Delivered:
 - Genogram card in product hub `/products/page.tsx`
 - Logo: `/public/logos/SognosGenogram-logo.svg`
 
-### Phase 6: Design System Application — In Progress (started 2026-05-01)
+### Phase 6: Cohere Scaffold Clone — In Progress (started 2026-06-09)
 
-Apply the agreed design system:
-- Inter Tight for headings
-- Inter for body
-- heading weight 400 by default
-- card tokens for standard cards
-- no gradients on standard cards or subcards
-- radius tokens:
-  - `sm` 4px
-  - `md` 8px
-  - `lg` 12px
-  - `xl` 16px
-  - `2xl` 20px
-  - `full` 9999px
+Cloning each page section-by-section from Cohere as a design scaffold, keeping Sognos copy/assets.
 
-### Phase 7: UI Polish and Motion
+Completed:
+- **Homepage** — full section-by-section port. New: `HowSognosWorks`, `SognosCareCard`, `SognosRosterCard`, `CTABand`. Reworked: `Hero`, `IndustrySection`, `NewsInsightSection` (morphing SVG notch). Container token → 1380px.
 
-Add:
-- premium visual refinement
-- system diagrams and product visuals
-- measured motion and transitions
+Pending:
+- **Solutions pages** — `app/(marketing)/solutions/[slug]/page.tsx` (7 routes). Pre-scaffold code still uses `rounded-xl`/`shadow-md`/`bg-white py-24`. Need per-section Cohere mapping before starting.
+- **Product pages** — after solutions
+- **Industry pages** — after product pages
+- **Blog / Customer Stories** — pending
+
+### Phase 7: UI Polish and Motion — In Progress (started 2026-06-10)
+
+Completed:
+- **Navbar full rewrite** — Cohere mega-menu, `AnimatePresence mode="popLayout"` cross-fade, hover intent (100ms open / 150ms close), `grid grid-cols-[1fr_auto_1fr]`, mobile accordion + orange dot
+- **Three-state scroll behavior** — `top` / `hidden` / `peek`, `HIDE_AFTER=80`, `DELTA_MIN=6`, rAF-throttled
+- **Nav transitions overhaul** — `duration-300` unified; logo `transition-[filter]`; `pt-3` hover bridge; `mode="popLayout"` + `position: "absolute"` exit kills blank-frame cross-fade
+- **Mobile/tablet nav improvements** — hamburger right-aligned; `h-[76px] lg:h-[68px]`; tablet compact panel `md:w-[380px]`; "Book a Demo" `hidden sm:inline-flex lg:hidden`; backdrop-blur overlay with 72% CSS mask
+- **ProductSubNav → pills-only** — IntersectionObserver scroll-spy, `layoutId="subnav-pill"` Framer Motion, removed dock/sticky/logo/button machinery
+- **SognosCare Problems dark bg** — `#03112f` bg, inverted text, `subNav` slot
+- **SognosCare brand colour** — `#11102B` → `#03112f` across all affected files
+- **SognosCare Hero — cinematic scroll animation** — `useScroll`/`useTransform`: scale 0.9→1, y 0→−160px, opacity 1→0.2; all-four-corner rounding; `pb-24 md:pb-32`
+- **SognosCare Editions — CalloutCard style** — morphing notch SVG, per-edition accent gradient bay, white logo, "Read more" arrow footer; IndustrySection-style slider; EditionsDrawer removed from `ProductSection`
+- **SognosCare Editions section** — `#03112f` bg, white heading + `text-white/70` intro, eyebrow pill removed
+- **Footer mobile accordions** — `FooterColumns.tsx` as `"use client"`, Framer Motion height/opacity, acknowledgement separated into own row
+
+Pending:
+- **ProductSubNav dock-from-bottom** — reappears fixed under navbar when scrolled past in-section position
+- **Roster + Genogram Problems dark sections** — `#3990c5` / `#250438` bg + inverted text
 
 ### Phase 8: Conversion and Integration
 

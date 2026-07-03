@@ -1,3 +1,5 @@
+> **ARCHIVED — superseded / not adopted.** The slate-palette direction was not adopted; the current rule is `bg-gray-200/70` for section greys (see DESIGN_MIGRATION_STATE.md §2). Kept for history.
+
 # Phase 6: Design System Consistency — Slate Palette Implementation
 
 ## Overview

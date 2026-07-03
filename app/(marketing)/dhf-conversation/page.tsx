@@ -69,22 +69,22 @@ export default function DhfConversationPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left - context */}
           <div>
-            <p className="text-lg text-prussian-blue-800 leading-relaxed mb-8">
+            <p className="text-lg text-sognos-body leading-relaxed mb-8">
               Sognos Solutions is your health, social, and community care
               partner, addressing challenges that others struggle to solve.
             </p>
-            <p className="text-base text-sognos-text-body leading-relaxed mb-10">
+            <p className="text-base text-sognos-body leading-relaxed mb-10">
               If you're exploring ways to improve service delivery, support
               mobile teams or connect systems across health and social care,
               we'd be happy to talk.
             </p>
-            <p className="text-base text-sognos-text-body leading-relaxed mb-10">
+            <p className="text-base text-sognos-body leading-relaxed mb-10">
               Our team works with organisations across Australia and New Zealand
               to solve complex operational challenges in health and social care.
             </p>
 
             <div className="border-t border-gray-200 pt-8">
-              <p className="text-sm font-semibold uppercase tracking-widest text-prussian-blue-800/50 mb-5">
+              <p className="text-sm font-semibold uppercase tracking-widest text-sognos-body/50 mb-5">
                 Organisations reach out when they need to
               </p>
               <ul className="space-y-4">
@@ -95,8 +95,8 @@ export default function DhfConversationPage() {
                   "Support more complex care and field service delivery",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1.5 w-2 h-2 rounded-full bg-[#1D96FC] shrink-0" />
-                    <span className="text-base text-sognos-text-body leading-relaxed">
+                    <span className="mt-1.5 w-2 h-2 rounded-full bg-sognos-blue-accent shrink-0" />
+                    <span className="text-base text-sognos-body leading-relaxed">
                       {item}
                     </span>
                   </li>
@@ -124,10 +124,10 @@ export default function DhfConversationPage() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
-                <h2 className="font-heading text-2xl font-medium text-prussian-blue-800">
+                <h2 className="font-heading text-2xl font-medium text-sognos-body">
                   Thanks - we'll be in touch.
                 </h2>
-                <p className="text-base text-sognos-text-body max-w-sm">
+                <p className="text-base text-sognos-body max-w-sm">
                   One of our team will reach out shortly to arrange a time to
                   talk.
                 </p>
@@ -139,7 +139,7 @@ export default function DhfConversationPage() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="firstName"
-                      className="text-sm font-medium text-prussian-blue-800"
+                      className="text-sm font-medium text-sognos-body"
                     >
                       First name <span className="text-red-500">*</span>
                     </label>
@@ -150,13 +150,13 @@ export default function DhfConversationPage() {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="Jane"
-                      className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors"
+                      className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="lastName"
-                      className="text-sm font-medium text-prussian-blue-800"
+                      className="text-sm font-medium text-sognos-body"
                     >
                       Last name <span className="text-red-500">*</span>
                     </label>
@@ -167,7 +167,7 @@ export default function DhfConversationPage() {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Smith"
-                      className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors"
+                      className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors"
                     />
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default function DhfConversationPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="company"
-                    className="text-sm font-medium text-prussian-blue-800"
+                    className="text-sm font-medium text-sognos-body"
                   >
                     Company name
                   </label>
@@ -186,7 +186,7 @@ export default function DhfConversationPage() {
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Acme Health"
-                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors"
+                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors"
                   />
                 </div>
 
@@ -194,7 +194,7 @@ export default function DhfConversationPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="email"
-                    className="text-sm font-medium text-prussian-blue-800"
+                    className="text-sm font-medium text-sognos-body"
                   >
                     Email <span className="text-red-500">*</span>
                   </label>
@@ -205,7 +205,7 @@ export default function DhfConversationPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="jane@example.com"
-                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors"
+                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors"
                   />
                 </div>
 
@@ -213,7 +213,7 @@ export default function DhfConversationPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="phone"
-                    className="text-sm font-medium text-prussian-blue-800"
+                    className="text-sm font-medium text-sognos-body"
                   >
                     Contact phone number
                   </label>
@@ -223,13 +223,13 @@ export default function DhfConversationPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="071 123 4567"
-                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors"
+                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors"
                   />
                 </div>
 
                 {/* Product interest */}
                 <div className="flex flex-col gap-3">
-                  <p className="text-sm font-medium text-prussian-blue-800">
+                  <p className="text-sm font-medium text-sognos-body">
                     Let us know what you are interested in hearing more about
                   </p>
                   <div className="grid grid-cols-2 gap-2">
@@ -242,14 +242,14 @@ export default function DhfConversationPage() {
                           onClick={() => toggleInterest(id)}
                           className={`flex items-center gap-2.5 rounded-lg border px-4 py-3 text-sm font-medium text-left transition-colors ${
                             checked
-                              ? "border-[#1D96FC] bg-[#1D96FC]/8 text-prussian-blue-800"
-                              : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-prussian-blue-800"
+                              ? "border-sognos-blue-accent bg-sognos-blue-accent/8 text-sognos-body"
+                              : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-sognos-body"
                           }`}
                         >
                           <span
                             className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-colors ${
                               checked
-                                ? "bg-[#1D96FC] border-[#1D96FC]"
+                                ? "bg-sognos-blue-accent border-sognos-blue-accent"
                                 : "border-gray-300"
                             }`}
                           >
@@ -282,7 +282,7 @@ export default function DhfConversationPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="improvement"
-                    className="text-sm font-medium text-prussian-blue-800"
+                    className="text-sm font-medium text-sognos-body"
                   >
                     What are you looking to improve?
                   </label>
@@ -292,7 +292,7 @@ export default function DhfConversationPage() {
                     value={improvement}
                     onChange={(e) => setImprovement(e.target.value)}
                     placeholder="Tell us about your current challenges or goals…"
-                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-prussian-blue-800 placeholder:text-gray-400 focus:border-[#1D96FC] focus:outline-none focus:ring-2 focus:ring-[#1D96FC]/20 transition-colors resize-none"
+                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-sognos-body placeholder:text-gray-400 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20 transition-colors resize-none"
                   />
                 </div>
 
@@ -303,7 +303,7 @@ export default function DhfConversationPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-prussian-blue-800 hover:bg-prussian-blue-800/90 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg text-sm transition-colors"
+                  className="w-full bg-sognos-navy hover:bg-sognos-navy/90 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg text-sm transition-colors"
                 >
                   {submitting ? "Sending…" : "Start a conversation"}
                 </button>

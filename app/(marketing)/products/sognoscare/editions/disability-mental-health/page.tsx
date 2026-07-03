@@ -15,10 +15,11 @@ const data: EditionData = {
   description:
     "Smart systems to support participant goals, reduce admin, and stay NDIS-compliant - all built on Microsoft using the latest AI technology.",
   gradient: "/images/sognoscare/gradient-1.png",
-  accentHex: "#36b19a",
-  accentTextClass: "text-(--sognos-edition-green)",
-  accentBgClass: "bg-(--sognos-edition-green)",
-  accentBorderClass: "border-(--sognos-edition-green)",
+  accentHex: "#00a98f",
+  accentTextClass: "text-sognos-edition-disability",
+  accentBgClass: "bg-sognos-edition-disability",
+  accentBorderClass: "border-sognos-edition-disability",
+  advantagesBg: "var(--sognos-edition-disability-dark)",
   problems: [
     {
       label: "Endless admin and disconnected systems",

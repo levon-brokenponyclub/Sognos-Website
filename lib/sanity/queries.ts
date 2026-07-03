@@ -1,4 +1,4 @@
-import { client } from "./client";
+import { sanityFetch } from "./client";
 import { urlFor } from "./image";
 import type { SanityImageSource } from "@sanity/image-url";
 import {
@@ -33,7 +33,7 @@ export type LogoStripLogo = {
 export async function getLogoStripContent(): Promise<
   { logos?: LogoStripLogo[] } | null
 > {
-  return client.fetch(LOGO_STRIP_QUERY, {}, { next: { revalidate: 60 } });
+  return sanityFetch(LOGO_STRIP_QUERY, {}, { next: { revalidate: 60 } });
 }
 
 // ─── SognosCare ───────────────────────────────────────────────────────────────
@@ -90,7 +90,8 @@ const SOGNOSCARE_PAGE_QUERY = `*[_type == "sognoscarePage"][0]{
     quoteAuthor,
     sidebar,
     heroImage,
-    companyLogo
+    companyLogo,
+    "brandColor": brandColor.hex
   },
   cta
 }`;
@@ -121,6 +122,7 @@ type RawStoryRef = {
   sidebar?: RawSidebarRow[];
   heroImage?: RawSanityImage;
   companyLogo?: RawSanityImage;
+  brandColor?: string;
 };
 type RawCta = Partial<SognoscarePageContent["cta"]>;
 type RawSognoscarePage = {
@@ -142,16 +144,16 @@ type RawSognoscarePage = {
 };
 
 const STORY_THEME_CLASSES = {
-  panelClass: "bg-prussian-blue-800/10",
-  quoteClass: "text-prussian-blue-800",
-  authorClass: "text-prussian-blue-800",
-  roleClass: "text-prussian-blue-800/75",
-  quoteIconColor: "text-prussian-blue-800/40",
-  contentBorderClass: "border-prussian-blue-800/20",
-  buttonBorderClass: "border-prussian-blue-800",
-  buttonTextClass: "text-prussian-blue-800",
-  buttonHoverClass: "hover:bg-prussian-blue-800/8",
-  buttonIconBgClass: "bg-prussian-blue-800",
+  panelClass: "bg-sognos-navy/10",
+  quoteClass: "text-sognos-body",
+  authorClass: "text-sognos-body",
+  roleClass: "text-sognos-body/75",
+  quoteIconColor: "text-sognos-body/40",
+  contentBorderClass: "border-sognos-navy/20",
+  buttonBorderClass: "border-sognos-navy",
+  buttonTextClass: "text-sognos-body",
+  buttonHoverClass: "hover:bg-sognos-navy/8",
+  buttonIconBgClass: "bg-sognos-navy",
 } as const;
 
 function parseQuoteAuthor(raw?: string): { author: string; role: string } {
@@ -184,6 +186,7 @@ function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
     author,
     role,
     href: `/customer-stories/${raw.slug}`,
+    brandColor: raw.brandColor,
     ...STORY_THEME_CLASSES,
   };
 }
@@ -214,13 +217,11 @@ function mergeHeader(
 }
 
 export async function getSognoscarePageContent(): Promise<SognoscarePageRendered> {
-  const result = await client
-    .fetch<RawSognoscarePage | null>(
-      SOGNOSCARE_PAGE_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    )
-    .catch(() => null);
+  const result = await sanityFetch<RawSognoscarePage>(
+    SOGNOSCARE_PAGE_QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
 
   const d = DEFAULT_SOGNOSCARE_PAGE_CONTENT;
 
@@ -351,7 +352,7 @@ const SOGNOSROSTER_PAGE_QUERY = `*[_type == "sognosrosterPage"][0]{
 }`;
 
 export async function getSognosrosterPageContent() {
-  return client.fetch(SOGNOSROSTER_PAGE_QUERY, {}, { next: { revalidate: 60 } });
+  return sanityFetch(SOGNOSROSTER_PAGE_QUERY, {}, { next: { revalidate: 60 } });
 }
 
 // ─── Customer Stories ─────────────────────────────────────────────────────────
@@ -363,6 +364,16 @@ const ALL_STORY_SLUGS_QUERY = `*[_type == "customerStory" && defined(slug.curren
 const STORY_NAV_QUERY = `*[_type == "customerStory"] | order(order asc){
   "slug": slug.current,
   company
+}`;
+
+const STORY_ARCHIVE_QUERY = `*[_type == "customerStory"] | order(date desc){
+  "slug": slug.current,
+  company,
+  title,
+  description,
+  heroImage,
+  date,
+  readTime
 }`;
 
 const STORY_BY_SLUG_QUERY = `*[_type == "customerStory" && slug.current == $slug][0]{
@@ -379,21 +390,56 @@ const STORY_BY_SLUG_QUERY = `*[_type == "customerStory" && slug.current == $slug
   quoteAuthor,
   sidebar,
   "downloadUrl": downloadFile.asset->url,
+  "brandColor": brandColor.hex,
   body
 }`;
 
 export async function getAllCustomerStorySlugs(): Promise<{ slug: string }[]> {
-  return client.fetch(ALL_STORY_SLUGS_QUERY, {}, { next: { revalidate: 60 } });
+  return (
+    (await sanityFetch<{ slug: string }[]>(
+      ALL_STORY_SLUGS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
 }
 
 export async function getCustomerStoryNav(): Promise<
   { slug: string; company: string }[]
 > {
-  return client.fetch(STORY_NAV_QUERY, {}, { next: { revalidate: 60 } });
+  return (
+    (await sanityFetch<{ slug: string; company: string }[]>(
+      STORY_NAV_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
+}
+
+export type CustomerStoryArchive = {
+  slug: string;
+  company: string;
+  title: string;
+  description: string;
+  heroImage?: SanityImageSource;
+  date: string;
+  readTime?: string | null;
+};
+
+export async function getCustomerStoryArchive(): Promise<
+  CustomerStoryArchive[]
+> {
+  return (
+    (await sanityFetch<CustomerStoryArchive[]>(
+      STORY_ARCHIVE_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
 }
 
 export async function getCustomerStoryBySlug(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     STORY_BY_SLUG_QUERY,
     { slug },
     { next: { revalidate: 60 } },
@@ -414,7 +460,9 @@ const KNOWLEDGE_POST_ARCHIVE_QUERY = `*[_type == "knowledgePost"] | order(date d
   heroImage,
   industry,
   useCase,
-  date
+  date,
+  readTime,
+  author
 }`;
 
 const KNOWLEDGE_POST_BY_SLUG_QUERY = `*[_type == "knowledgePost" && slug.current == $slug][0]{
@@ -445,26 +493,32 @@ export type KnowledgePostArchive = {
   industry?: string | null;
   useCase?: string | null;
   date: string;
+  readTime?: string | null;
+  author?: string | null;
 };
 
 export async function getAllKnowledgePostSlugs(): Promise<{ slug: string }[]> {
-  return client.fetch(
-    ALL_KNOWLEDGE_POST_SLUGS_QUERY,
-    {},
-    { next: { revalidate: 60 } },
+  return (
+    (await sanityFetch<{ slug: string }[]>(
+      ALL_KNOWLEDGE_POST_SLUGS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
   );
 }
 
 export async function getKnowledgePostArchive(): Promise<KnowledgePostArchive[]> {
-  return client.fetch(
-    KNOWLEDGE_POST_ARCHIVE_QUERY,
-    {},
-    { next: { revalidate: 60 } },
+  return (
+    (await sanityFetch<KnowledgePostArchive[]>(
+      KNOWLEDGE_POST_ARCHIVE_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
   );
 }
 
 export async function getKnowledgePostBySlug(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     KNOWLEDGE_POST_BY_SLUG_QUERY,
     { slug },
     { next: { revalidate: 60 } },
@@ -474,10 +528,12 @@ export async function getKnowledgePostBySlug(slug: string) {
 export async function getKnowledgePostNav(): Promise<
   { slug: string; title: string }[]
 > {
-  return client.fetch(
-    KNOWLEDGE_POST_NAV_QUERY,
-    {},
-    { next: { revalidate: 60 } },
+  return (
+    (await sanityFetch<{ slug: string; title: string }[]>(
+      KNOWLEDGE_POST_NAV_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
   );
 }
 
@@ -530,13 +586,11 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const result = await client
-    .fetch<Partial<SiteSettings> | null>(
-      SITE_SETTINGS_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    )
-    .catch(() => null);
+  const result = await sanityFetch<Partial<SiteSettings>>(
+    SITE_SETTINGS_QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
   return { ...FALLBACK_SITE_SETTINGS, ...(result ?? {}) };
 }
 
@@ -574,13 +628,11 @@ type RawCtaSection = {
 };
 
 export async function getCtaSectionContent(): Promise<CtaSectionContent> {
-  const result = await client
-    .fetch<RawCtaSection | null>(
-      CTA_SECTION_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    )
-    .catch(() => null);
+  const result = await sanityFetch<RawCtaSection>(
+    CTA_SECTION_QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
 
   if (!result) return DEFAULT_CTA_CONTENT;
 
@@ -647,13 +699,11 @@ type RawFooter = {
 };
 
 export async function getFooterContent(): Promise<FooterContent> {
-  const result = await client
-    .fetch<RawFooter | null>(
-      FOOTER_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    )
-    .catch(() => null);
+  const result = await sanityFetch<RawFooter>(
+    FOOTER_QUERY,
+    {},
+    { next: { revalidate: 60 } },
+  );
 
   if (!result) return DEFAULT_FOOTER_CONTENT;
 
@@ -717,15 +767,17 @@ const LEGAL_PAGE_BY_SLUG_QUERY = `*[_type == "legalPage" && slug.current == $slu
 }`;
 
 export async function getAllLegalPageSlugs(): Promise<{ slug: string }[]> {
-  return client.fetch(
-    ALL_LEGAL_PAGE_SLUGS_QUERY,
-    {},
-    { next: { revalidate: 60 } },
+  return (
+    (await sanityFetch<{ slug: string }[]>(
+      ALL_LEGAL_PAGE_SLUGS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
   );
 }
 
 export async function getLegalPageBySlug(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     LEGAL_PAGE_BY_SLUG_QUERY,
     { slug },
     { next: { revalidate: 60 } },

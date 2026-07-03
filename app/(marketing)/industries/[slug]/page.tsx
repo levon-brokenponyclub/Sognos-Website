@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import CTASection from "@/components/sections/CTASection";
 import { INDUSTRIES, PRODUCTS } from "@/lib/constants";
 import { getIndustryContent, getIndustryMeta } from "@/lib/industries-content";
 
@@ -33,9 +32,9 @@ const PRODUCT_META = {
   SognosRoster: {
     href: PRODUCTS.roster.href,
     tagline: PRODUCTS.roster.tagline,
-    accentClass: "bg-(--sognos-accent)",
-    borderClass: "border-(--sognos-accent)/30",
-    bgClass: "bg-(--sognos-accent)/8",
+    accentClass: "bg-sognos-blue-accent",
+    borderClass: "border-sognos-blue-accent/30",
+    bgClass: "bg-sognos-blue-accent/8",
   },
 } as const;
 
@@ -85,15 +84,15 @@ export default async function IndustryPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
             <div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                 The challenge
               </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
                 What makes {meta.name} hard to run
               </h2>
             </div>
-            <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
+            <p className="max-w-md text-base leading-relaxed text-sognos-body lg:justify-self-end">
               {meta.description}
             </p>
           </div>
@@ -102,15 +101,15 @@ export default async function IndustryPage({
             {content.challenges.map((challenge, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-8"
+                className="rounded-xl border border-(--sognos-line) bg-(--sognos-bg-sunken) p-8"
               >
-                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
+                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-sognos-navy-dark text-xs font-semibold text-white">
                   {i + 1}
                 </div>
-                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-heading">
                   {challenge.title}
                 </h2>
-                <p className="text-sm leading-relaxed text-sognos-text-body">
+                <p className="text-sm leading-relaxed text-sognos-body">
                   {challenge.body}
                 </p>
               </div>
@@ -128,16 +127,16 @@ export default async function IndustryPage({
             }`}
           >
             <div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                 How Sognos helps
               </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-brand tracking-tight">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-blue-accent tracking-tight">
                 Purpose-built for {meta.name}
               </h2>
             </div>
             {content.howSognosHelpsIntro && (
-              <p className="max-w-md text-base leading-relaxed text-sognos-text-body lg:justify-self-end">
+              <p className="max-w-md text-base leading-relaxed text-sognos-body lg:justify-self-end">
                 {content.howSognosHelpsIntro}
               </p>
             )}
@@ -147,12 +146,12 @@ export default async function IndustryPage({
             {content.howSognosHelps.map((item, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-(--sognos-card-border) bg-white p-8"
+                className="rounded-xl border border-(--sognos-line) bg-white p-8"
               >
-                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-heading">
                   {item.title}
                 </h2>
-                <p className="text-sm leading-relaxed text-sognos-text-body">
+                <p className="text-sm leading-relaxed text-sognos-body">
                   {item.body}
                 </p>
               </div>
@@ -165,11 +164,11 @@ export default async function IndustryPage({
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-10">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-              <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
               Products
             </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
               What Sognos deploys in {meta.name}
             </h2>
           </div>
@@ -180,14 +179,14 @@ export default async function IndustryPage({
                 return (
                   <div
                     key="Microsoft Dynamics 365"
-                    className="flex items-center gap-4 rounded-2xl border border-prussian-blue-800/10 bg-prussian-blue-800/[0.03] px-6 py-5"
+                    className="flex items-center gap-4 rounded-2xl border border-sognos-navy/10 bg-sognos-navy/[0.03] px-6 py-5"
                   >
-                    <span className="h-2.5 w-2.5 rounded-full bg-prussian-blue-800/70" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-sognos-navy/70" />
                     <div>
-                      <p className="text-sm font-semibold text-sognos-text-heading">
+                      <p className="text-sm font-semibold text-sognos-heading">
                         Microsoft Dynamics 365
                       </p>
-                      <p className="mt-0.5 text-xs text-sognos-text-muted">
+                      <p className="mt-0.5 text-xs text-sognos-muted">
                         Core platform for utility operations.
                       </p>
                     </div>
@@ -207,14 +206,14 @@ export default async function IndustryPage({
                     className={`h-2.5 w-2.5 rounded-full ${p.accentClass}`}
                   />
                   <div>
-                    <p className="text-sm font-semibold text-sognos-text-heading">
+                    <p className="text-sm font-semibold text-sognos-heading">
                       {product}
                     </p>
-                    <p className="mt-0.5 text-xs text-sognos-text-muted">
+                    <p className="mt-0.5 text-xs text-sognos-muted">
                       {p.tagline}
                     </p>
                   </div>
-                  <span className="ml-4 text-xs font-medium text-brand opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <span className="ml-4 text-xs font-medium text-sognos-blue-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Explore →
                   </span>
                 </Link>
@@ -224,12 +223,6 @@ export default async function IndustryPage({
         </div>
       </section>
 
-      <CTASection
-        headline={`Ready to see Sognos for ${meta.name}?`}
-        subtext="Our team has hands-on experience in your sector. Book a call and we'll show you exactly how the platform fits your operation."
-        primaryCTA={{ label: "Book a Demo", href: "/contact" }}
-        secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
-      />
     </>
   );
 }

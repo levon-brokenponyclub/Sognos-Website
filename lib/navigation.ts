@@ -114,7 +114,9 @@ export const nav: NavGroup[] = [
           // { name: "Careers", href: "/company/careers" },
         ],
       },
+      // TEMP (menu-styling phase): Column 2 removed; restore after styling is complete.
       { heading: "", items: [] },
+      // TEMP (menu-styling phase): Column 3 removed; restore after styling is complete.
       { heading: "", items: [] },
     ],
   },
@@ -208,7 +210,9 @@ export const nav: NavGroup[] = [
           // { name: "Customer Stories", href: "/customer-stories" },
         ],
       },
+      // TEMP (menu-styling phase): Column 2 removed; restore after styling is complete.
       { heading: "", items: [] },
+      // TEMP (menu-styling phase): Column 3 removed; restore after styling is complete.
       { heading: "", items: [] },
     ],
   },

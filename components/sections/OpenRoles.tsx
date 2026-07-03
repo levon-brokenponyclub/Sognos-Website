@@ -56,14 +56,14 @@ export default function OpenRoles() {
   );
 
   return (
-    <section className="w-full border-b border-sognos-border-subtle">
+    <section className="w-full border-b border-sognos-line">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                 Open roles
               </div>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
             Current opportunities
           </h2>
           {/* Filters */}
@@ -72,7 +72,7 @@ export default function OpenRoles() {
               <select
                 value={dept}
                 onChange={(e) => setDept(e.target.value)}
-                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-border-subtle bg-white text-sm text-prussian-blue-800 font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-prussian-blue-800/20"
+                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-line bg-white text-sm text-sognos-body font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-sognos-navy/20"
               >
                 {DEPARTMENTS.map((d) => (
                   <option key={d} value={d}>
@@ -81,7 +81,7 @@ export default function OpenRoles() {
                 ))}
               </select>
               <svg
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-prussian-blue-800/50"
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sognos-body/50"
                 viewBox="0 0 16 16"
                 fill="none"
                 aria-hidden="true"
@@ -93,7 +93,7 @@ export default function OpenRoles() {
               <select
                 value={loc}
                 onChange={(e) => setLoc(e.target.value)}
-                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-border-subtle bg-white text-sm text-prussian-blue-800 font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-prussian-blue-800/20"
+                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-line bg-white text-sm text-sognos-body font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-sognos-navy/20"
               >
                 {LOCATIONS.map((l) => (
                   <option key={l} value={l}>
@@ -102,7 +102,7 @@ export default function OpenRoles() {
                 ))}
               </select>
               <svg
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-prussian-blue-800/50"
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sognos-body/50"
                 viewBox="0 0 16 16"
                 fill="none"
                 aria-hidden="true"
@@ -117,24 +117,24 @@ export default function OpenRoles() {
         {filtered.length > 0 ? (
           <ul>
             {filtered.map((role) => (
-              <li key={role.title} className="border-t border-sognos-border-subtle">
+              <li key={role.title} className="border-t border-sognos-line">
                 <a
                   href="mailto:careers@sognos.com.au"
                   className="flex items-center justify-between gap-6 py-6 group"
                 >
                   <div>
-                    <p className="font-heading text-xl font-medium text-prussian-blue-800 tracking-tight group-hover:text-[#052048] transition-colors">
+                    <p className="font-heading text-xl font-medium text-sognos-body tracking-tight group-hover:text-sognos-body transition-colors">
                       {role.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                      <span className="text-sm text-sognos-text-muted">{role.type}</span>
-                      <span className="text-sognos-text-muted/40 text-xs">•</span>
-                      <span className="text-sm text-sognos-text-muted">{role.location}</span>
-                      <span className="text-sognos-text-muted/40 text-xs">•</span>
-                      <span className="text-sm text-sognos-text-muted">{role.department}</span>
+                      <span className="text-sm text-sognos-muted">{role.type}</span>
+                      <span className="text-sognos-muted/40 text-xs">•</span>
+                      <span className="text-sm text-sognos-muted">{role.location}</span>
+                      <span className="text-sognos-muted/40 text-xs">•</span>
+                      <span className="text-sm text-sognos-muted">{role.department}</span>
                     </div>
                   </div>
-                  <div className="shrink-0 w-10 h-10 rounded-full border border-sognos-border-subtle flex items-center justify-center text-prussian-blue-800 group-hover:bg-prussian-blue-800 group-hover:text-white group-hover:border-prussian-blue-800 transition-colors">
+                  <div className="shrink-0 w-10 h-10 rounded-full border border-sognos-line flex items-center justify-center text-sognos-body group-hover:bg-sognos-navy group-hover:text-white group-hover:border-sognos-navy transition-colors">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                       <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -142,21 +142,21 @@ export default function OpenRoles() {
                 </a>
               </li>
             ))}
-            <li className="border-t border-sognos-border-subtle" />
+            <li className="border-t border-sognos-line" />
           </ul>
         ) : (
-          <div className="border-t border-sognos-border-subtle pt-12 pb-4">
-            <p className="text-sognos-text-muted text-sm">
+          <div className="border-t border-sognos-line pt-12 pb-4">
+            <p className="text-sognos-muted text-sm">
               No roles match the selected filters.
             </p>
           </div>
         )}
 
-        <p className="mt-10 text-sm text-sognos-text-muted">
+        <p className="mt-10 text-sm text-sognos-muted">
           Don't see a fit?{" "}
           <a
             href="mailto:careers@sognos.com.au"
-            className="text-prussian-blue-800 font-medium underline underline-offset-2 hover:opacity-70 transition-opacity"
+            className="text-sognos-body font-medium underline underline-offset-2 hover:opacity-70 transition-opacity"
           >
             Send us your CV anyway
           </a>{" "}

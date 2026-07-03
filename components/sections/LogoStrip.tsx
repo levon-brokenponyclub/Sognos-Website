@@ -10,7 +10,9 @@ type Logo = {
   image?: SanityImageSource;
 };
 
-// Duplicate for seamless infinite loop (-50% = one full set)
+const TITLE = "Trusted by industry leaders and professionals worldwide";
+const MAX_LOGOS = 5;
+
 function resolveLogoSrc(logo: Logo) {
   return logo.image
     ? urlFor(logo.image).width(220).auto("format").url()
@@ -19,40 +21,39 @@ function resolveLogoSrc(logo: Logo) {
 
 export default async function LogoStrip() {
   const content = await getLogoStripContent();
-  const logos = content?.logos?.length
-    ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
-    : DEFAULT_LOGOS;
-  const track = [...logos, ...logos];
+  const logos: Logo[] = (
+    content?.logos?.length
+      ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
+      : DEFAULT_LOGOS
+  ).slice(0, MAX_LOGOS);
 
   return (
     <section
       aria-label="Trusted organisations"
-      className="w-full overflow-hidden bg-white py-10 border-b border-dashed border-sognos-border-subtle"
+      className="w-full bg-sognos-navy-dark"
     >
-      {/*  <h4 className="font-heading text-lg text-center my-1 font-semibold text-[#052048]">
-        Trusted by Leading Companies
-      </h4> */}
-      <div className="trust-marquee-wrap">
-        <div className="trust-marquee-track" aria-hidden="true">
-          {track.map((logo, i) => {
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
+        <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-white/70">
+          {TITLE}
+        </p>
+        <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
+          {logos.map((logo, index) => {
             const src = resolveLogoSrc(logo);
             if (!src) return null;
-
             return (
-            <div
-              key={i}
-              className="flex items-center justify-center px-1 lg:px-2 min-w-[150px] lg:min-w-[260px]"
-            >
-              <Image
-                src={src}
-                alt={logo.alt}
-                width={220}
-                height={72}
-                className="max-h-10 lg:max-h-14 w-auto max-w-[110px] lg:max-w-[190px] object-contain"
-                style={{ filter: "brightness(0) opacity(0.8)" }}
-                sizes="(min-width: 1024px) 190px, 110px"
-              />
-            </div>
+              <div
+                key={logo.alt + index}
+                className={`flex items-center justify-center md:flex-1 md:px-8 py-5${index > 0 ? " md:border-l md:border-white/15" : ""}`}
+              >
+                <Image
+                  src={src}
+                  alt={logo.alt}
+                  width={150}
+                  height={40}
+                  className="h-10 w-auto object-contain md:h-10"
+                  style={{ filter: "brightness(0) invert(1)", opacity: 0.75 }}
+                />
+              </div>
             );
           })}
         </div>

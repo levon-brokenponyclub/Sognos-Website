@@ -15,32 +15,32 @@ const PAIN_POINTS = [
 
 export default function GenogramProblems() {
   return (
-    <section id="problems" className="bg-white py-24">
+    <section id="problems" className="bg-sognos-genogram-dark pb-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-center gap-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
             Case records have facts. They're missing people.
           </h2>
-          <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
+          <p className="max-w-2xl text-base leading-relaxed text-white/60">
             Standard case management captures what happened. Sognos Genogram
-            captures who is involved - and what those relationships mean for
+            captures who is involved — and what those relationships mean for
             service delivery.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-3 lg:gap-4 md:grid-cols-3">
           {PAIN_POINTS.map((point, i) => (
             <div
               key={i}
-              className="rounded-xl border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-8"
+              className="rounded-lg border border-white/10 bg-white/5 p-8"
             >
-              <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-prussian-blue-950 text-xs font-semibold text-white">
+              <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-sognos-genogram-base/30 text-xs font-semibold text-sognos-genogram-base">
                 {i + 1}
               </div>
-              <h2 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+              <h3 className="mb-3 font-heading text-lg font-medium text-white">
                 {point.title}
-              </h2>
-              <p className="text-sm leading-relaxed text-sognos-text-body">
+              </h3>
+              <p className="text-sm leading-relaxed text-white/60">
                 {point.body}
               </p>
             </div>

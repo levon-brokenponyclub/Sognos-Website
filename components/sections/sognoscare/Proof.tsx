@@ -115,7 +115,7 @@ function TestimonialTile({
     <div
       className={`flex h-full min-h-[220px] flex-col justify-between rounded-[2rem] p-8 lg:p-10 shadow-sm transform transition hover:-trangray-y-1 hover:shadow-xl duration-500 ${
         dark
-          ? "bg-prussian-blue-800 text-white"
+          ? "bg-sognos-navy text-white"
           : "bg-white border border-gray-100"
       }`}
     >
@@ -125,7 +125,7 @@ function TestimonialTile({
         viewBox="0 0 28 22"
         fill="none"
         aria-hidden
-        className={`mb-6 ${dark ? "text-white/20" : "text-prussian-blue-800/15"}`}
+        className={`mb-6 ${dark ? "text-white/20" : "text-sognos-body/15"}`}
       >
         <path
           d="M0 22V13.6C0 5.87 4.1 1.4 12.3 0l1.4 2.4C9.8 3.47 7.77 5.6 7.1 9H12V22H0zm16 0V13.6C16 5.87 20.1 1.4 28.3 0l1.4 2.4C25.8 3.47 23.77 5.6 23.1 9H28V22H16z"
@@ -135,7 +135,7 @@ function TestimonialTile({
       <blockquote className="flex-1">
         <p
           className={`text-lg lg:text-xl font-medium leading-relaxed font-heading ${
-            dark ? "text-white" : "text-prussian-blue-800"
+            dark ? "text-white" : "text-sognos-body"
           }`}
         >
           {testimonial.quote}
@@ -144,7 +144,7 @@ function TestimonialTile({
       <footer className="mt-8 border-t border-gray-200/20 pt-6">
         <p
           className={`text-sm font-bold uppercase tracking-wide ${
-            dark ? "text-white" : "text-prussian-blue-800"
+            dark ? "text-white" : "text-sognos-body"
           }`}
         >
           {testimonial.role}
@@ -169,11 +169,11 @@ export default function SognoscareProof() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
-                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
+                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
                 Results
               </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-prussian-blue-800 tracking-tight mb-6">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
               Numbers care providers <br className="hidden lg:block"/> can point to
             </h2>
           </div>

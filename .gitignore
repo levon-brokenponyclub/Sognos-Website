@@ -26,8 +26,10 @@
 # claude
 .claude/
 
-# docs
-docs/
+# docs — scaffold reference dirs (not markdown)
+docs/Cohere/
+docs/design-explorations/
+docs/Sites/
 
 # misc
 .DS_Store
@@ -58,3 +60,6 @@ certificates/data/
 # Sanity build artifacts
 dist/
 schema.json
+
+# Scaffold reference dumps (not shipping)
+public/images/new/

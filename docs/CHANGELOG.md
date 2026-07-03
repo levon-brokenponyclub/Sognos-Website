@@ -1,0 +1,554 @@
+# Changelog
+
+## 2026-07-03 — About hero parallax + resize, Navbar Book-a-Demo hover, hero h1 unification
+
+Third session of the day. All work Preview-only (redesign branch).
+
+- **`AboutHeroImage` — combined AngelList parallax + desktop width-shrink.** Single scroll driver: `progress = useTransform(scrollY, [0, 600], [0, 1], { clamp: true })` — feeds all three motion values so they animate in lockstep. Outer `motion.div`: `maxWidth: calc(100vw - ((100vw - 80rem) * progress))` (100vw → 80rem) + `borderRadius: 0 → 12px`. Inner `motion.div`: `y: -70 → 0` (matches the AngelList `translateY(-70.9442px) → transform: none` values from devtools). Container padding-based aspect kept: `pt-[100vw] sm:pt-[35vw] xl:pt-[590px]`. Image element unchanged (`min-h-[calc(100%+60px)] w-full object-cover`, `width={2016} height={768}`, `priority`, `sizes="100vw"`). Mobile shrink is invisible for free — at `100vw < 80rem`, the max-width cap doesn't restrict. Dropped the `clipPath` polygon (redundant with `overflow-hidden` and would fight `border-radius`). Earlier same-session iterations that used `useScroll({ target, offset: ["start start", "end start"] })` were reverted — that offset only fires while the image top is above the viewport top, which on mobile is a band users can't reach before scrolling past the whole section.
+- **Navbar `Book a Demo` hover — blue-accent, both themes.** `THEMES.light.primaryBtn` and `THEMES.dark.primaryBtn` both hover to `bg-sognos-blue-accent hover:text-white`. Rest state unchanged (light: navy-dark bg, dark: white bg). Same hover applied to the mobile-menu footer "Book a Demo" pill (`MobileFooter`) for consistency. Matches the pattern the linter/design pass applied to the About page's `Explore Careers` CTA (`hover:bg-sognos-blue-accent`).
+- **Hero h1 unification (linter pass).** About + `solutions/[slug]` h1 both moved from `font-medium text-[#1A1A1A] tracking-[-0.02em]` → `font-normal text-sognos-header tracking-tight text-balance`. Consistent typographic voice across content hero pages. Also on the About page: `Explore Careers` CTA bg swapped from `bg-[#1A1A1A]` to `bg-sognos-navy` (token). Applied to `app/(marketing)/company/about/page.tsx` + `app/(marketing)/solutions/[slug]/page.tsx`. `/company/about` re-added to `DARK_HERO_PATHS` in `Navbar.tsx` (linter pass) — About uses the transparent-over-hero mode again; nothing else's theme changed.
+- **Verified:** `npx tsc --noEmit` clean throughout.
+- **Files:** `components/sections/AboutHeroImage.tsx`, `components/layout/Navbar.tsx`, `app/(marketing)/company/about/page.tsx`, `app/(marketing)/solutions/[slug]/page.tsx`.
+
+## 2026-07-03 — Homepage section swaps (Solutions, News, LogoStrip) + About hero rework
+
+Second session of the day. All work Preview-only (redesign branch); production untouched.
+
+- **`SolutionsSection` — full refactor.** Replaced the dark navy tab-switcher/carousel pattern with the `ProductFeaturesScroll` shape: sticky left scroll-spy rail with "Solutions" eyebrow + 7-item vertical menu (`motion.span layoutId="solutions-rail-bullet"` spring bullet, `text-sognos-blue-accent` active state), and a right column of stacked cards. Grid template is **`md:grid-cols-[1fr_minmax(0,360px)]`** — image LEFT (wider `1fr`, matches features image width), text RIGHT (`360px` cap). Text column is `flex flex-col gap-4` with title → copy → `Explore {label}` link — no left border on copy, no `justify-between`. Card bg dropped entirely (was alternating gray, then user requested no bg). Section went `bg-sognos-navy-dark text-white` → `bg-white border-b border-gray-100`. Each of the 7 solutions gets one of `/product/feature-01…06.webp` cycled; Quick Start reuses `feature-01`. Deleted all Phosphor icons and the animated `SolutionVisual` component along with `accent`/`rows`/`badge` data fields.
+- **`NewsInsightSection` — full refactor.** Backed up to `NewsInsightSection.backup.tsx` verbatim. Cohere-style `CalloutCard` (tinted panel, `aspect-[2/1]` image, morphing SVG notch footer) → **`ArticleCard`** from `KnowledgeHubArchive.tsx` — the exact same card used on the knowledge-hub post page's "Latest articles" grid (`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-8`). `NewsInsightArticle` type extended with optional `slug` + `readTime`; `app/(marketing)/page.tsx` mapping updated to pass both. Kept the "The latest news" heading + "See more on the blog" `SeeMoreLink` header row. Local `formatDate` + morphing-notch SVG deleted.
+- **`LogoStrip` — full refactor.** Backed up to `LogoStrip.backup.tsx` verbatim. Marquee (`.trust-marquee-wrap` / `.trust-marquee-track`) → static **`ProductTrustStrip`** layout: title `"Trusted by industry leaders and professionals worldwide"` (`text-white/70` on dark), single-row flex with vertical dividers (`md:border-l md:border-white/15`). Section bg **`bg-sognos-navy-dark`**; logos forced white via inline `filter: brightness(0) invert(1); opacity: 0.75` (grayscale wasn't enough for dark bg). Sanity fetch retained; sliced to `MAX_LOGOS = 5` to match the ProductTrustStrip row density (default fallback has 12, would crush at `md:flex-nowrap`). Homepage comment updated ("developers" → "professionals") to match new title. Old CSS classes on `.trust-marquee-*` are now orphaned in `globals.css` — left for a quick revert path.
+- **About hero — matches `solutions/[slug]` hero.** Two-column dark navy hero (heading + intro + Book a Demo) → single-column white hero. Wrapped content in `grid lg:grid-cols-12 lg:col-span-7` (same shell as solutions) so h1 wraps naturally to 2 lines. Added eyebrow **`About Sognos`** (`text-xs font-semibold uppercase tracking-[0.08em] text-[#6B7280]`, rendered as `<p>` not `<Link>`). H1 rewritten from _"Building smarter automation for modern teams"_ → **_"Smarter automation for modern teams"_** (5 words, reliable 2-line wrap at `text-7xl`) with `text-balance`. Added dark CTA `Explore Careers` → `/company/careers` (same class recipe as `SolutionHeroDemoButton`, rendered as `<Link>` since it navigates). Intro paragraph + Book a Demo removed. Padding matched to solutions: `pt-32 pb-20 lg:pt-40 lg:pb-24`.
+- **New: `AboutHeroImage.tsx`** — client component; AngelList `/careers`-style scroll effect. `useScroll` on window `scrollY`; `[0, 500]` → progress `[0, 1]` (clamped). `useMotionTemplate` on `max-width: calc(100vw - ((100vw - 80rem) * progress))` — 100vw at rest, 80rem (max-w-7xl) at full scroll; `borderRadius: 0 → 12px` in sync. Rendered outside the hero's `max-w-7xl` container so the 100vw state actually reaches the viewport edges. Image at `/public/images/about/hero-img.webp` (new asset), `aspect-[21/9]`, `priority` (LCP on this page).
+- **Navbar — light theme on `/company/about`.** Removed `"/company/about"` from `DARK_HERO_PATHS` (Navbar.tsx). With the hero now white, the derived `useTransparent` flag flips to `false`, which resolves `THEMES.light` — dark logo, dark nav labels, dark "Book a Demo" pill button, solid white bar from first paint. Every other page's theme unchanged.
+- **Verified:** `npx tsc --noEmit` clean throughout.
+- **Files:** `components/sections/SolutionsSection.tsx`, `NewsInsightSection.tsx` (+ `.backup.tsx` new), `LogoStrip.tsx` (+ `.backup.tsx` new), `AboutHeroImage.tsx` (new); `components/layout/Navbar.tsx`; `app/(marketing)/page.tsx`, `app/(marketing)/company/about/page.tsx`; `public/images/about/hero-img.webp` (new asset).
+
+## 2026-07-03 — Home card polish, Sanity brandColor wire-up, arrow-icon normalization
+
+- **Sanity `brandColor` → frontend.** Read `brandColor.hex` in `SOGNOSCARE_PAGE_QUERY.featuredStories[]` and `STORY_BY_SLUG_QUERY`; surface it through `mapStory`/`CaseStudy` and the customer-story detail page. Both the slider card bg (`ProductCustomerStories`) and the detail quote card (`customer-stories/[slug]`) now use `story.brandColor ?? BRAND_BG[story.company]` — Sanity wins, hardcoded map is fallback for unset docs.
+- **HomeProductCards — full pass.** Product data restructured (`overview` → `lead` + `rest`; taglines-as-titles); SognosCare bg swapped to an Unsplash URL; `next.config.ts` allowlists `plus.unsplash.com` + `images.unsplash.com` in `images.remotePatterns`. Image card `aspect-[3/4]` → `aspect-[4/5]` + `max-h-[430px]`; product logo repositioned top-left → centered; dark overlay `bg-sognos-navy-dark/45` now uses a **named group `group/cards`** on the container so non-hovered cards dim to `/70` while the hovered card brightens to `/25` (via `group-hover:!bg-…` for cascade priority). Description paragraph: `<span text-white>{lead}</span>{rest}` inside `text-white/70` for a bright lead-in over a muted trailing sentence.
+- **Hero CTA restyle.** `AnimatedButton variant="white"` → plain white pill matching SognosCare hero (`rounded-full bg-white px-7 py-3.5 text-sognos-navy-dark`), later refined by the user to hover-swap to `bg-sognos-blue-accent text-white`. Secondary CTA: underlined text link → text link with `↗` glyph. `openModal()` wrapped `() => openModal()` to satisfy `MouseEventHandler` (openModal takes an optional `ProductKey`).
+- **Section gutter follow-up.** Every remaining `max-w-7xl px-6 lg:px-10` container was collapsed to bare `px-6` last session; this session's edits kept that convention across new/touched components.
+- **Arrow icon normalization.** Every remaining `<ArrowIcon>` call site swapped to the inline SVG template used by `EditionCards.ArrowButton` (viewBox `0 0 14 14`, path `M3 7h8M7 3l4 4-4 4`, `stroke="currentColor"`). Local `ArrowIcon` helpers removed from `HomeProductCards.tsx`, `NewsInsightSection.tsx`, and `EditionCards.tsx` (each file had its own copy). Per-site sizing (`w-3`, `w-4`, `h-5 w-5`) and colours preserved via className.
+- **HowSognosWorks icon → image.** All three blocks' Phosphor `<Icon size={40} weight="thin">` replaced with `<Image src="/solutions/Inon.avif" width={40} height={40} className="h-10 w-10 object-contain" />`. `Icon` field removed from BLOCKS; `@phosphor-icons/react` import dropped. **Flag:** all three blocks currently share the same image; the three original icons provided visual differentiation — worth revisiting when Sognos has three distinct icon assets.
+- **Small design fixes.**
+  - `Navbar.tsx` dark-theme `navGroup` bg: `bg-white/10` → `bg-sognos-navy` — restores solid navy pill on dark-hero pages.
+  - `SolutionUseCases.tsx` `SECTION_BG`: `#1d96fc` (blue accent) → `#152248` (`sognos-navy`).
+  - `solutions/[slug]/page.tsx` `SECTION_BG`: `#1F1147` (dark purple) → `#152248` (`sognos-navy`), plus the "What it solves" band `bg-sognos-blue-accent` → `bg-sognos-navy` — unifies the section tone across both solution surfaces.
+  - `HowSognosWorksPreview.tsx` heading: `lg:text-[28px]` → `lg:text-4xl`, and the "Start delivering outcomes." span kept on one line.
+- **Verified:** `npx tsc --noEmit` clean throughout. Sanity Studio brandColor field remains behind the same auth (Preview scope only for `NEXT_PUBLIC_SANITY_*`).
+- **Files:** `next.config.ts`; `lib/sanity/queries.ts`; `components/layout/Navbar.tsx`; `components/sections/Hero.tsx`, `HomeProductCards.tsx`, `HowSognosWorks.tsx`, `HowSognosWorksPreview.tsx`, `NewsInsightSection.tsx`, `ProductCustomerStories.tsx`, `SolutionUseCases.tsx`, `sognoscare/EditionCards.tsx`; `app/(marketing)/customer-stories/[slug]/page.tsx`, `solutions/[slug]/page.tsx`.
+
+## 2026-07-02 — Customer story detail: hero rework, sticky info rail, scroll parallax + site-wide gutter
+
+Builds on the earlier same-day AngelList case-study refactor (below).
+
+- **Hero image removed; stat row anchored bottom.** Hero main column is now `flex flex-col lg:min-h-[440px]`: logo → title → date at top, **Industry / State / Size** stat row pushed to the bottom via `lg:mt-auto` (AngelList rhythm). Hero left rail keeps back-link + Category + Product + Download (conditional) + Share (dark-styled).
+- **Sticky content rail is now a full info panel** — `components/sections/customer-stories/StoryMetaRail.tsx` (new client component). Contains: Customer Name → intro (the `description` pulled out of the hero) → stacked **Industry / State / Size / Product** (uppercase label above value) → **Download Customer Story** (only renders when `downloadUrl` is set in Sanity) → **Share**. Kept narrow (rail column stays `[200px_1fr]`/`[220px_1fr]`, not widened). Fades/slides in on entry via `whileInView` (`opacity`/`y`, `once:true`, reduced-motion guard) and is `lg:sticky lg:top-[104px]` so it stays visible through the whole body.
+- **Quote card moved into the content column** — out of the full-width section into the `1fr` column, aligned with the body (not spanning the rail). Product-mapped dark tone (`sognos-care-dark` / `sognos-roster-dark` / `sognos-genogram-dark`, navy-dark fallback), author/role/logo row, matches the `ProductCustomerStories` card body minus the image column.
+- **Hero scroll parallax + fade** — `components/sections/customer-stories/HeroScrollFade.tsx` (new client wrapper). Same transforms as SognosCare hero: `useScroll` offset `["start start","end start"]`, `y: [0,1]→[0,160]`, `opacity: [0,0.7]→[1,0]`, `useReducedMotion` guard. Hero content wrapped in the animated `motion.div`; navy bg static; `relative overflow-hidden` clips the downward translate. Page stays a Server Component — only the two wrappers are `"use client"`.
+- **Industry taxonomy normalized in Sanity (published).** All 8 `customerStory` docs' `Industry` sidebar values remapped to the canonical 5-category taxonomy (Health & Social Care / Facilities Management / Local Government / Industrial Services / Energy & Utilities). Judgment calls: Auckland Airport → Facilities Management, NECA → Industrial Services. Live-data change via Sanity MCP, not code.
+- **Section gutter `lg:px-10` → `px-6` site-wide.** All `max-w-7xl`/`max-w-6xl` section containers had `lg:px-10` swapped to match the navbar's `px-6`, so section edges align with the logo (left) and Book a Demo (right). Collapsed the resulting redundant `px-6 … lg:px-6` back to a bare `px-6`. 16 files: about, customer-stories `[slug]`, knowledge-hub (+`[slug]`), solutions `[slug]`, AboutBeliefs, AboutValues, Hero, HomeProductCards, KnowledgeHubArchive, NewsInsightSection, ProductTrustStrip, EditionPageTemplate, and the Care/Roster/Genogram Heros. Left intentionally: `px-4 lg:px-6` (NewsInsightSection), `pb-10 lg:px-6` (KnowledgeHubArchive lg-only), `px-4 sm:px-8 lg:px-6` (ComingSoonHero).
+- **New query** `getCustomerStoryArchive()` (`STORY_ARCHIVE_QUERY`, `order(date desc)`) added earlier for the "Customer Stories" 3-up; still used here.
+- **Verified:** `npm run build` green, `tsc` clean. Scroll transforms DOM-confirmed animating; sticky rail confirmed pinned at `top:104px`; no horizontal scroll (desktop/mobile).
+- **Files:** `app/(marketing)/customer-stories/[slug]/page.tsx`, `components/sections/customer-stories/StoryMetaRail.tsx` (new), `components/sections/customer-stories/HeroScrollFade.tsx` (new), + 15 files for the gutter swap.
+
+## 2026-07-02 — Customer story detail page: AngelList case-study layout (dark navy hero)
+
+- **Dark hero + sticky rail:** `app/(marketing)/customer-stories/[slug]/page.tsx` rebuilt on a `bg-sognos-navy` hero with `lg:grid-cols-[200px_1fr]` shell — sticky left rail (`lg:sticky lg:top-[104px]`) with back-link, a static "Case Study" category pill (no Sanity category field exists for customer stories), the existing `story.sidebar` label/value pairs (Industry/State/Size/Product), the "Download Customer Story" button restyled for dark (`bg-white text-sognos-navy-dark`), and dark-variant share icons (`bg-white/10` vs the light `bg-sognos-navy/5` used elsewhere). Main column: company label → big white title → description as subtitle → date/read-time meta → hero image (with company logo overlay, unchanged) — the two-up text/image header is gone.
+- **Navbar dark-hero support for dynamic routes:** `DARK_HERO_PATHS` only did exact-string matching, which can't cover `/customer-stories/<slug>`. Added `DARK_HERO_PATH_PREFIXES = ["/customer-stories/"]` and an `Array.some(pathname.startsWith(...))` check alongside the existing `Set.has()` lookup in `components/layout/Navbar.tsx`.
+- **Quote card:** the plain full-bleed blue quote band is now a `rounded-lg bg-sognos-blue-accent` card sitting in the white flow below the hero (kept the blue-accent tone — no other product-dark tone requested). `quoteAuthor` (a single Sanity string like "Name, Role") is split into author/role lines via a local `parseQuoteAuthor` helper (mirrors the private one in `lib/sanity/queries.ts`, not exported — duplicated locally rather than widening that module's API for one caller).
+- **Body prose restyled** to match the Knowledge Hub article page's treatment: narrower measure, `blockquote` upgraded to an accent-coloured pull-quote. Portable Text source/serializer registration unchanged.
+- **NEXT/prev removed → "Customer Stories" 3-up:** replaced with a `bg-gray-200/70` band showing the latest 3 other stories (`gap-3 lg:gap-4`), reusing the Knowledge Hub `ArticleCard` (already exported from the earlier KH article refactor). Added `getCustomerStoryArchive()` + `STORY_ARCHIVE_QUERY` (ordered `date desc`) to `lib/sanity/queries.ts` — the existing `getCustomerStoryNav()` only returns `slug`/`company`, not enough for a card.
+- **Fields used vs missing:** no stat-row data, no quote-author avatar field, no per-story category field (hardcoded "Case Study"). `productLogo` is fetched by the existing Sanity query but still unused/unrendered (pre-existing, not introduced here).
+- **Verified:** `npm run build` green, no TypeScript errors. DOM-confirmed: dark hero + sticky rail render, navbar `bg-transparent` over the hero (dark-hero prefix match works), quote card renders with parsed author/role, "Customer Stories" 3-up shows exactly 3 cards excluding the current slug with correct `gap-3 lg:gap-4`/`bg-gray-200/70`, no horizontal scroll at desktop (1440px) or mobile (375px).
+- **Files:** `app/(marketing)/customer-stories/[slug]/page.tsx`, `components/layout/Navbar.tsx`, `lib/sanity/queries.ts`
+
+## 2026-07-02 — Font system: Bureau Sans removed, Inter unified across sans + heading; AngelList variable font registered
+
+- **Bureau Sans purged.** `next/font/local` block loading `bureau-sans-book.woff2` + `bureau-sans-medium.woff2` deleted from `app/layout.tsx`. Both woff2 files removed from `public/fonts/`. `--font-bureau-sans` CSS variable no longer emitted.
+- **Inter is now single-instance.** Old setup had TWO Google Fonts references: `interHeading` (variable `--font-inter-heading`) for headings + Bureau Sans local files for body. New: one `Inter` from `next/font/google` (variable `--font-inter`) drives BOTH body and headings. One font download instead of two.
+- **`globals.css` @theme:** `--font-sans: var(--font-bureau-sans, sans-serif)` → `var(--font-inter), ui-sans-serif, system-ui, sans-serif`. `--font-heading: var(--font-inter-heading), …` → `var(--font-inter), …`. Both now resolve to the same Inter instance.
+- **New: AngelList variable font.** Added `@font-face { font-family: angellist; src: url("/app/AngelList.woff2"); font-display: swap; font-weight: 400 700; font-style: normal; }` and `--font-angellist` @theme token → `font-angellist` Tailwind utility. Used on the SognosCare Hero h1.
+- **Verified:** grep confirms zero remaining references to `bureau-sans`, `bureauSans`, `interHeading`, or `--font-inter-heading` across `*.tsx | *.ts | *.css | *.js | *.json`. `npx tsc --noEmit` clean. `npm run build` green.
+- **Files:** `app/layout.tsx`, `app/globals.css`, `public/fonts/bureau-sans-book.woff2` (deleted), `public/fonts/bureau-sans-medium.woff2` (deleted), `public/app/AngelList.woff2` (added).
+
+## 2026-07-02 — Knowledge Hub article page: AngelList blog-article layout
+
+- **Layout overhaul:** two-column shell (`lg:grid-cols-[200px_1fr]`) replacing the old two-up hero. Left rail is `lg:sticky lg:top-[104px]` with back-link, category badge, "Written by" avatar + name, and share icons (LinkedIn/X/Facebook, moved from the old inline row). Main column is centered prose at `max-w-[46rem]`: title, excerpt as subtitle, `DATE — READ TIME` meta row, hero image, then the body.
+- **Body prose restyled:** narrower measure, `blockquote` upgraded from a plain italic border-left quote to a large `text-xl lg:text-2xl` accent-coloured pull-quote (`border-l-2 border-sognos-blue-accent`). Portable Text source/serializer registration unchanged — only rendered output restyled.
+- **NEXT/prev removed → "Latest articles" 3-up:** the old previous/next link buttons are gone. Replaced with a `bg-gray-200/70` band showing the latest 3 posts (excluding the current slug) via `getKnowledgePostArchive()`, rendered with the **same `ArticleCard`** used in the archive's "All articles" grid — exported from `components/sections/KnowledgeHubArchive.tsx` instead of duplicated.
+- **Fields used vs missing:** `author` is a plain string (no role/avatar object) — rail shows initial-letter avatar + name only, no role line. No dedicated Sanity "quote" block type exists — pull-quote styling is applied to the existing `blockquote` serializer. `excerpt` doubles as the subtitle.
+- **Verified:** `npm run build` green. DOM/accessibility-tree confirmed sticky rail, prose column, and 3 correct "Latest articles" cards (excluding current post) render; screenshot tool was flaky mid-session (blank captures on scroll) but content was confirmed present, styled, and legible via computed-style inspection.
+- **Incidental fix:** `ArticleCard`'s image wrapper in `KnowledgeHubArchive.tsx` used `rounded` instead of `rounded-lg` (pre-existing, violates the rounded-lg-only rule) — corrected.
+- **Files:** `app/(marketing)/knowledge-hub/[slug]/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — ProductCustomerStories: card body ported to AngelList layout
+
+- **Grid:** `md:grid-cols-11` (7 / gap / 3) → `md:grid-cols-12` (8 / 4). Text:image ratio ~2:1. No gap column — image column sits flush against text column.
+- **Left col:** removed h3 company title. Order now: `blockquote → "Read Customer Story" link → (mt-auto spacer) → author + role bottom-LEFT | logo bottom-RIGHT`. Bottom row is `flex items-end justify-between gap-6`. Quote sized up `text-lg lg:text-[22px]` → `text-xl md:text-2xl`. Author/role `text-sm text-white/70` → `text-base text-white` (bolder pairing that reads at AngelList weight). Logo `h-7` → `h-14`, `brightness-0 invert flex-shrink-0`.
+- **Right col:** now full-bleed image. Removed `p-4 lg:p-6` outer padding, removed inner `rounded-lg overflow-hidden mb-4` wrapper. `Image fill object-cover` sits inside `relative md:col-span-4 min-h-[280px] md:min-h-0 bg-white/5` — image clips to the card's outer `rounded-lg overflow-hidden` on right/top/bottom edges.
+- **Stats block removed:** Company Size / Industry stack + `border-white/15` hairline removed entirely from card render. `CaseStudy` type retains `companySize`/`industry` fields — data preserved, just not displayed.
+- **Card min-height reduced:** `min-h-[420px] md:min-h-[480px]` → `min-h-[360px] md:min-h-[440px]` for a more compact card without cropping the quote-dominant layout.
+- **No-image degradation:** right col `bg-white/5` reveals a subtle accent panel if both `panelVideo` and `panelImage` are absent (all current stories have `panelImage`, so this is defensive only).
+- **Untouched:** Embla mechanics (gutter-inset padding-left + trailing spacer + `mr-` between slides), both-side peek, arrows/dots/autoplay, `showChrome` single-story guard, `TESTIMONIAL_PALETTE` rotation (Care / Roster / Genogram dark), white text.
+- **Verified:** `npm run build` green + `npx tsc --noEmit` clean. Panel images render slowly in dev (Next.js `/_next/image` optimization queue) but request status is `pending` not error — source files exist on disk; production build resolves.
+- **Files:** `components/sections/ProductCustomerStories.tsx`
+
+## 2026-07-02 — Navbar: AngelList exact-spec desktop dropdown rewrite
+
+- **Architecture overhaul:** removed `panelX`/`panelWidthMV` motion values, `triggerRefs`, `panelWidths`, `prevOpenMenuRef`, `containerRef`, `DROPDOWN_SPRING`, `EDGE`, and JS x-positioning `useLayoutEffect`. Removed `useMotionValue`/`animate` from framer-motion imports.
+- **CSS-transition sizing:** `dropdownWidth`/`dropdownHeight` state set from hidden measurer divs in `useLayoutEffect` (synchronous before paint). Card uses `transition: width 0.3s / height 0.3s cubic-bezier(0.4,0,0.2,1)` — no JS animation for dimensions.
+- **Full-width centering:** dropdown `AnimatePresence` moved outside `max-w-7xl` container, placed directly in `<header>` as `absolute inset-x-0 top-full mt-4 flex justify-center pointer-events-none` — card centers on viewport width, matching AngelList.
+- **Fixed-key outer panel:** `AnimatePresence` keyed `"dropdown-panel"` — never re-mounts between items. Open: `rotateX(-10deg) scale(0.9) opacity:0 → identity` (0.2s `[0.16,1,0.3,1]`). Close: inverse `scale(0.95)`.
+- **Directional content slide:** `AnimatePresence mode="popLayout"` inside card, keyed on `openMenu`. `slideDirectionRef` + `prevOpenIndexRef` set in `recordDirection()` before every `setOpenMenu` call. Forward: enter from `x:200`, exit to `x:-200`. Backward: reversed. 0.25s `[0.4,0,0.2,1]`.
+- **Measurer padding:** `p-8 → p-6` (matches AngelList's 24px content padding).
+- **THEMES cleanup:** removed unused `dropdownCard`, `mobilePanel`, `mobileDivider` keys.
+- **Verified:** Products open/close ✓ · switch to Solutions width+height transition ✓ · directional slide ✓ · no console errors ✓
+- **Files:** `components/layout/Navbar.tsx`
+
+## 2026-07-02 — Navbar: AngelList two-level full-screen mobile menu
+
+- **Replaced accordion** (`AccordionItem` component + `openAccordion` state) with a two-level full-screen slide pattern modelled on AngelList mobile nav.
+- **Level 1 (Root):** full-viewport fixed overlay (`z-[51]`, `fixed inset-0 bg-white`). Header row: logo left, × right. Nav list: each group as full-width row `px-6 py-5`, `text-xl font-medium`, `border-b border-gray-100`, `→` arrow on groups with dropdowns, no arrow on plain links. Footer pinned: `bg-sognos-navy-dark` "Book a Demo" + `bg-gray-100` "Contact Sales" side-by-side, equal width, `rounded-lg`.
+- **Level 2 (Sub-panel):** slides in from right (`x: 100% → 0`), Level 1 exits left (`x: 0 → -100%`). Header: `← Back` text-button left, × right. Content: `bg-gray-50` section heading bands, link rows with `border-b border-gray-100`, gradient card (first 2 items as thumbnails + labels). `AnimatePresence mode="wait"` with `SLIDE = { duration: 0.25, ease: [0.4, 0, 0.2, 1] }`.
+- **Direction tracking:** `mobilePanelDirectionRef` (`forward` | `back`) drives Level 1 enter `initial` so back-navigation slides from left.
+- **Mobile backdrop blur removed** — full-screen white overlay makes it unnecessary. Desktop backdrop blur untouched.
+- **Desktop nav untouched:** all hover-intent, `panelX` spring, `AnimatePresence mode="wait"` dropdown, scroll states, `layoutId="nav-hover-pill"` — zero changes.
+- **Verified:** Level 1 renders ✓ · Level 2 slides in on tap ✓ · Back returns to root ✓ · desktop zero console errors ✓
+- **Files:** `components/layout/Navbar.tsx`
+
+## 2026-07-02 — Edition pages: Advantages dark token variants + inline style bypass
+
+- **6 dark edition tokens added** to `tokens.css` (`:root` raw CSS vars, not `@theme inline`): `--sognos-edition-aged-care-dark` `#2d1a5c`, `--sognos-edition-allied-health-dark` `#6b2d00`, `--sognos-edition-support-at-home-dark` `#660e10`, `--sognos-edition-hospital-in-the-home-dark` `#2a3605`, `--sognos-edition-child-and-family-services-dark` `#5c0a33`, `--sognos-edition-disability-dark` `#003d34`. Corresponding `--color-*` aliases added to `@theme inline` in `globals.css`.
+- **Tailwind utility bypass**: new `bg-sognos-edition-*-dark` utility classes failed to generate in both dev and prod (content scanner did not pick up new `@theme inline` entries for brand-new token names). Switched to `style={{ backgroundColor: "var(--sognos-edition-*-dark)" }}` — bypasses Tailwind entirely, reads directly from CSS vars on `:root`.
+- **`EditionData` type**: added `advantagesBg?: string` field (replaces dropped `advantagesBgClass` approach). Template uses `style={{ backgroundColor: data.advantagesBg ?? "var(--sognos-care-dark)" }}` as fallback.
+- **6 edition pages updated**: `advantagesBgClass: "bg-sognos-edition-*-dark"` → `advantagesBg: "var(--sognos-edition-*-dark)"` in all data objects.
+- **Verified**: `#advantages` on `residential-aged-care` renders `background-color: rgb(45, 26, 92)` = `#2d1a5c` ✓
+- **Files**: `app/tokens.css`, `app/globals.css`, `components/sections/sognoscare/EditionPageTemplate.tsx`, all 6 edition `page.tsx` files
+
+## 2026-07-02 — Edition pages: Key Advantages section bg → per-edition colour token
+
+- **Mechanism**: `EditionPageTemplate.tsx` internal `Advantages` function — section className changed from `"w-full bg-sognos-care-dark text-white"` to `` `w-full ${data.accentBgClass} text-white` ``. Reuses the existing `accentBgClass` field already on `EditionData`, which holds the per-edition `bg-sognos-edition-*` utility class. No new prop, no new field.
+- **Main SognosCare product page unaffected**: uses standalone `components/sections/sognoscare/Advantages.tsx` — not `EditionPageTemplate`. Remains `bg-sognos-care-dark`.
+- **Per-edition mapping applied**:
+  - `residential-aged-care` → `bg-sognos-edition-aged-care` (`#caa4ff`)
+  - `allied-health` → `bg-sognos-edition-allied-health` (`#ffad6e`)
+  - `support-at-home` → `bg-sognos-edition-support-at-home` (`#ff8e90`)
+  - `hospital-in-the-home` → `bg-sognos-edition-hospital-in-the-home` (`#cbdd61`)
+  - `disability-mental-health` → `bg-sognos-edition-disability` (`#00a98f`)
+  - `child-and-family-services` → `bg-sognos-edition-child-and-family-services` (`#ff7dbc`)
+- **hospital-in-the-home canonicalised**: `accentBgClass` was `bg-[#c6da4c]` (raw hex). Updated to `bg-sognos-edition-hospital-in-the-home`. `accentHex`/`accentTextClass`/`accentBorderClass` left as raw hex — out of scope.
+- **⚠️ Contrast flag (not fixed — out of scope)**: Pale/mid tokens (`#caa4ff` aged-care, `#ffad6e` allied-health, `#ff8e90` support-at-home, `#cbdd61` hospital-in-the-home, `#ff7dbc` child-and-family`) render white text + `bg-white/10` rows on light backgrounds. Contrast ratios on these pale tokens will not meet WCAG AA for body text. Decision deferred to Levon.
+- **Files**: `components/sections/sognoscare/EditionPageTemplate.tsx`, `app/(marketing)/products/sognoscare/editions/hospital-in-the-home/page.tsx`
+
+## 2026-07-02 — About page: Our Values full-bleed stacking cards
+
+- **Full-bleed cards**: removed inner `mx-auto max-w-7xl px-6 pb-3 lg:px-10` wrapper. Sticky div IS the card bg — full viewport width, no side gutters. Inner content wrapped in `mx-auto max-w-7xl px-6 pt-6 pb-10 lg:px-10 lg:pt-8 lg:pb-16` for gutter-aligned text.
+- **Stacking reveal**: card 1 sticks at `top: 80px` (navbar height). Card 2 sticks at `top: 136px` (80 + 56px reveal). 56px sliver of card 1 stays visible above card 2 when stacked — reveals "● OUR MISSION / 01" eyebrow strip. Card inner `pt-6` (24px) ensures eyebrow text clears the pin offset.
+- **Top-only rounding**: `rounded-lg` → `rounded-t-lg`. Bottom corners square — card 2 bottom meets Beliefs section with no bump.
+- **Scroll buffer removed**: `h-[40vh]` white buffer deleted. Vision card (`bg-sognos-navy`) flows directly into Beliefs (`bg-sognos-navy`) — seamless same-colour junction, no gap.
+- **No horizontal overflow**: sticky div uses default `w-full` — no `w-screen` or negative-margin technique. `document.body.scrollWidth === window.innerWidth` confirmed.
+- **Files**: `components/sections/AboutValues.tsx`
+
+## 2026-07-02 — About page: body paragraphs, AboutStats count-up, AboutValues stacking cards, simplified AboutBeliefs
+
+- **Body paragraphs**: 4 paragraphs added to About section (`space-y-5 max-w-3xl text-sognos-muted`) between h2 and stats.
+- **AboutStats (new)**: `components/sections/AboutStats.tsx` — `"use client"`, 3 stats (2016 Founded / 10+ Years / 3 Countries served). `CountUpStat`: `IntersectionObserver` threshold 0.4, fires once; `requestAnimationFrame` ease-out cubic (1100ms); year starts from `Math.floor(value * 0.97)`, small numbers from 0; `useReducedMotion()` guard shows final value immediately. Dividers: `border-r border-(--sognos-line)` on all but last stat, `pl-10 md:pl-12` on all but first. Removed 4th "Built on Microsoft" stat.
+- **AboutValues (new)**: `components/sections/AboutValues.tsx` — Server Component. Two stacking sticky cards: Mission (`bg-sognos-blue-accent`, z-10, `top: 80`) and Vision (`bg-sognos-navy`, z-20, `top: 80`). `min-h-[520px] lg:min-h-[56vh]`. Content: eyebrow top-left, "01"/"02" top-right, large statement bottom. Inset `mx-auto max-w-7xl px-6 pb-3 lg:px-10` wrapper on each card. Section title "Our Values" above cards in `bg-white` section. `h-[40vh]` scroll buffer after last card.
+- **AboutBeliefs simplified**: rewrote from 5-tab client component to static Server Component. Single `rounded-lg border-white/10 bg-white/5 p-10 lg:p-14` card inside `bg-sognos-navy py-20` section. Two-col grid: left = "Our Beliefs" h2 + intro; right = 3 values (`space-y-8 lg:border-l lg:border-white/15 lg:pl-16`). No tabs, no slider, no dots, no `"use client"`.
+- **About page**: added `<AboutValues />` between About section and `<AboutBeliefs />`.
+- **Files**: `components/sections/AboutStats.tsx` (new), `components/sections/AboutValues.tsx` (new), `components/sections/AboutBeliefs.tsx` (rewritten), `app/(marketing)/company/about/page.tsx`
+
+## 2026-07-02 — About page: AngelList engineering/careers layout (hero + mission + beliefs)
+
+- **Hero replaced**: removed `bg-gray-200/50` bento grid (shine-pill eyebrow, centered layout, stat tiles, images). New dark two-up: `bg-sognos-navy`, left h1 "Building smarter automation…" (`text-5xl lg:text-6xl`), right intro paragraph + white "Book a Demo" `rounded-full` link to `/contact`.
+- **Navbar transparency**: `/company/about` added to `DARK_HERO_PATHS` — navbar transparent white at scroll-top over the new dark hero. Verified: `header bg = rgba(0,0,0,0)` at page top.
+- **Mission section (new)**: replaced `bg-sognos-blue-accent` section. New `bg-white py-20 lg:py-28` two-col layout: `lg:grid-cols-[200px_1fr]` — left eyebrow `● About Sognos`, right large heading "Healthcare First. Field Service Always. AI at the Centre." + 4-stat row (2016/Founded, 10+/Years, 3/Countries served, Built on Microsoft/Dynamics 365 Native). Stats separated by `border-l border-(--sognos-line)`. 4th "Built on Microsoft" stat: `text-xl lg:text-2xl` (smaller than numeric stats — text phrase, not a number).
+- **Beliefs section (new)**: `components/sections/AboutBeliefs.tsx` — client component. `bg-sognos-navy`. Heading "Our Beliefs" + intro. Pill row: replicated ProductSubNav visual (track `bg-white/10 p-1.5 rounded-full`, active `motion.span layoutId="beliefs-pill" bg-white`, inactive `text-white/70`). 5 tabs: Our Mission, Our Vision, Respect for the individual, Value to our customers, Excellence in all that we do. Card: `rounded-lg border-white/10 bg-white/5` + two-col split (title left, `lg:border-l lg:border-white/15`, body right). Crossfade mechanic: `AnimatePresence mode="wait"` keyed on `active` index (`y: 8→0, opacity: 0→1, duration: 0.18s`). Dot indicators: 5 dots, active `w-4 h-1.5 bg-white`, inactive `w-1.5 h-1.5 bg-white/30`.
+- **Removed from page**: old `VALUES` data (reintegrated into `AboutBeliefs.tsx` BELIEFS array), `bg-sognos-blue-accent` section, all bento markup. Kept unchanged: `PARTNERS` data, Partners section, `<TeamSection />`, `<SocialResponsibilitySection />`, commented-out Careers section.
+- **Files**: `components/layout/Navbar.tsx`, `components/sections/AboutBeliefs.tsx` (new), `app/(marketing)/company/about/page.tsx`
+
+## 2026-07-02 — Knowledge Hub: date/readTime/author + uniform pills + card borders + grid spacing
+
+- **Category pills unified**: removed per-category colour map (`BADGE_STYLES`). All pills now `bg-gray-100 text-gray-600 rounded-lg` — no border, no colour variants. Applies to grid cards and featured article.
+- **Date + read time added**: `ArticleMeta` helper formats `publishedAt` ("YYYY-MM-DD" → "JUN 30, 2026") + uppercases `readTime` string; renders `"JUN 30, 2026 — 3 MIN READ"` below title on both grid cards and featured. Gracefully omitted if either field is null.
+- **Author added to featured**: initial-letter avatar circle (`bg-gray-200`) + author name. Omitted if `author` null. Sanity schema: `author` is a plain string (no role/image); initial is `charAt(0).toUpperCase()`.
+- **Grid card bottom border**: each card now `pb-6 border-b border-gray-200`.
+- **Grid spacing**: `gap-3 lg:gap-4` → `gap-x-6 gap-y-10 lg:gap-x-8 lg:gap-y-12`. "● All articles" label `mb-6` → `mb-8`.
+- **Sanity query + type updated**: `KNOWLEDGE_POST_ARCHIVE_QUERY` now fetches `readTime` and `author`. `KnowledgePostArchive` type gains `readTime?: string | null` and `author?: string | null`.
+- **Article type extended**: `publishedAt?`, `readTime?`, `author?` added as optional nullable strings. Fully backwards-compatible — all existing page mappings unaffected.
+- **Files**: `lib/sanity/queries.ts`, `app/(marketing)/knowledge-hub/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — Knowledge Hub archive refactored to AngelList /blog layout
+
+- **`app/(marketing)/knowledge-hub/page.tsx` — hero replaced**: removed `data-header-dark`, dark gradient hero, eyebrow pill, centred layout. New light hero: `bg-white pt-32 pb-12 lg:pt-40 lg:pb-16`, left-aligned `h1`, `max-w-2xl` intro paragraph. Navbar now solid over Knowledge Hub (correct — not in `DARK_HERO_PATHS`).
+- **`KnowledgeHubArchive.tsx` — complete rewrite**: Removed sticky sidebar, industry dropdown, 3-col grid, card excerpts/Read More, `rounded-2xl` empty state. New AngelList pattern: (1) horizontal pill row — All + 5 category pills + Clear; (2) featured two-up `lg:grid-cols-2` — always article[0], unfiltered; (3) `<hr>` divider; (4) `● All articles` 4-up grid `lg:grid-cols-4` with `gap-3 lg:gap-4`; (5) navy Case Study band `bg-sognos-navy` — hardcoded Flourish Australia placeholder. `ArticleCard`: `aspect-[16/10] rounded-lg` image, BADGE_STYLES colour-coded category pill, title only. Empty state `rounded-lg`. Schema flag: `Article` type lacks `date`/`readTime`/`author` fields — deferred to future Sanity schema update.
+- **Files**: `app/(marketing)/knowledge-hub/page.tsx`, `components/sections/KnowledgeHubArchive.tsx`
+
+## 2026-07-02 — ProductSubNav layout unified; TrustStrip dividers; Hero scroll transforms restored
+
+- **ProductSubNav layout unified across all three product pages**: Care was the reference (SubNav embedded inside Problems section with `flex justify-center` + `pt-20 md:pt-28` above, `mb-16` below). Roster/Genogram had bare wrapper divs with no padding. Fix: wrapper divs on Roster + Genogram page.tsx updated to `flex justify-center px-6 pt-20 pb-16 md:pt-28`; Roster Problems `py-20 md:py-28` → `pb-20 md:pb-28`; Genogram Problems `py-24` → `pb-24` (top padding stripped — wrapper now owns it).
+- **ProductTrustStrip dividers**: vertical `border-l border-gray-200` hairline between logos on desktop (`md:`). `divide-x` skipped (Tailwind v4 child-selector not generating); per-item `index > 0` conditional class used instead. Mobile: `gap-x-12` wrap unchanged, no dividers. Desktop: `md:flex-1 md:px-10` per-logo wrapper + `md:gap-x-0` on row.
+- **Hero scroll transforms restored — all three product heroes**: Roster + Genogram heroes converted from Server Components to Client Components. All three now match: `useScroll({ target: heroRef, offset: ["start start","end start"] })`, `y: [0,1]→[0,60]`, `opacity: [0,0.7]→[1,0]`. `useReducedMotion()` guard on all three — no transform when OS prefers reduced motion. Roster/Genogram placeholder cards: `rounded-t-2xl` → `rounded-lg`.
+- **Files**: `components/sections/ProductTrustStrip.tsx`, `components/sections/sognoscare/Hero.tsx`, `components/sections/sognosroster/Hero.tsx`, `components/sections/sognosgenogram/Hero.tsx`, `components/sections/sognosroster/Problems.tsx`, `components/sections/sognosgenogram/Problems.tsx`, `app/(marketing)/products/sognosroster/page.tsx`, `app/(marketing)/products/sognosgenogram/page.tsx`
+
+## 2026-07-02 — ProductTrustStrip wired to Roster + Genogram; Roster Advantages rewrite
+
+- **`ProductTrustStrip` wired to Roster + Genogram pages**: added `<ProductTrustStrip />` after Hero (wrapped in `<ScrollReveal>`) in `sognosroster/page.tsx` and `sognosgenogram/page.tsx`. Strip stays `bg-white` / `grayscale` logos on all three product pages — consistent across Care/Roster/Genogram.
+- **`sognosroster/Advantages.tsx` rewritten**: replaced old bento-grid layout with the Care Advantages pattern — `bg-sognos-roster-base` bg, AngelList sticky-rail checklist, Framer Motion stagger (`containerVariants`/`itemVariants`), white `CheckIcon`, `odd:bg-white/10` striped rows. New Roster-specific copy (6 items).
+- **Files**: `components/sections/ProductTrustStrip.tsx`, `components/sections/sognosroster/Advantages.tsx`, `app/(marketing)/products/sognosroster/page.tsx`, `app/(marketing)/products/sognosgenogram/page.tsx`
+
+## 2026-06-15 — Navbar: nav items py-3 + all CTA elements h-14 (56px)
+
+- **Nav items `py-2 → py-3`**: both the dropdown `<button>` trigger and the non-dropdown nav `<Link>` get `px-4 py-3 rounded-full`. Taller hit target, more breathing room in the pill group.
+- **Book a Demo (desktop): `h-14` + drop `py-*`**: `inline-flex items-center justify-center h-14 rounded-full px-5` — fixed 56px, no padding-dependent height. Applies to the `hidden lg:flex` desktop CTA.
+- **Contact Sales (desktop): `inline-flex items-center h-14`**: was `px-4 py-2`; now `inline-flex items-center h-14 px-4`. Vertically centred at 56px, matches Book a Demo.
+- **Book a Demo (sm/tablet): `h-14` + drop `py-*`**: `hidden sm:inline-flex lg:hidden items-center justify-center h-14 rounded-full px-4`.
+- **Linter note**: `THEMES.dark.navGroup` auto-corrected `px-1` → `p-1`, adding 4px uniform padding on the transparent-state nav group — correct behaviour.
+- **DOM verified**: `navGroupHeight: 56`, `primaryBtnHeight: 56`, `secondaryLinkHeight: 56` — all 56px in both transparent (homepage) and solid (`/company/about`) states. Mobile panel Book a Demo left as `py-3` (intentional).
+- Files: `components/layout/Navbar.tsx`
+
+## 2026-06-15 — Navbar: full-width 80px bar + transparency-over-hero
+
+- **Structure**: `<header>` loses `px-4 pt-4` (floating capsule margin). Now `fixed inset-x-0 top-0 z-50`, flush full-width, square. Inner `<div ref={containerRef} class="relative mx-auto max-w-7xl px-6">` unchanged width — dropdown x/width math resolves against the same `max-w-7xl` container as before.
+- **Height**: `h-20` (80px). Was `h-16` (64px) on the old pill bar.
+- **Bar background**: `bg-transparent` at `scrollState === "top"` with dark-hero pages; `bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]` when scrolled. All-around `pillShadow` replaced with bottom-edge hairline.
+- **Transparency-over-hero**: `DARK_HERO_PATHS = { "/", "/products/sognoscare", "/products/sognosroster", "/products/sognosgenogram" }`. Derived via `usePathname()` inside Navbar — no layout restructuring needed. Prop `transparentOverHero?: boolean` accepted for explicit override. Non-dark-hero pages always solid white.
+- **`isTransparent`**: `useTransparent && scrollState === "top"`. Dropdown-open state does NOT switch the bar (stays in its current state — transparent if at top, white if scrolled).
+- **Effective theme**: `t = isTransparent ? THEMES.dark : THEMES.light`. `THEMES.dark` values used for transparent-top: white logo (`brightness(0) invert(1)`), `text-white/80` nav text, `bg-white/10` nav-group + hover pill, `bg-white text-sognos-navy-dark` primary CTA, `text-white/65` secondary, `text-white/80` hamburger.
+- **Mobile**: Hamburger `text-white/80 hover:text-white` over dark hero at top; `text-sognos-heading/60` when solid. Mobile panel always uses `THEMES.light.mobilePanel` (solid white — always readable).
+- **Dropdown**: Always uses `THEMES.light.dropdownCard` (white card) regardless of bar transparency — readable on any bar state.
+- **`THEMES` cleanup**: removed `pill`/`pillShadow` fields (bar bg now on `<header>`); filled `THEMES.dark.navGroup` from `""` → `"bg-white/10 rounded-full px-1"`.
+- **`transition-[transform,opacity,background-color,box-shadow] duration-300`** on `<header>` for smooth bg + shadow transition.
+- DOM verified: homepage top — `bg: rgba(0,0,0,0)`, `logoFilter: brightness(0) invert(1)`, `navGroup: bg-white/10`, `height: 80px`, hamburger `text-white/80`. `/company/about` top — `bg: rgb(255,255,255)`, `logoFilter: none`, `navGroup: bg-gray-100`. `/products/sognoscare` top — same as homepage (transparent, white). Build green.
+- Files: `components/layout/Navbar.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: arrow fill-slide-up hover effect
+
+- **Arrow buttons upgraded**: plain `hover:bg-gray-200/70` colour-swap replaced with the fill-slide-up mechanic from edition cards. Structure: `group/btn relative isolate overflow-hidden rounded-full` outer; `absolute inset-0 translate-y-full rounded-full bg-sognos-navy-dark transition-transform duration-300 group-hover/btn:translate-y-0` inner fill span; icon `relative z-10 transition-colors group-hover/btn:text-white`.
+- **Contrast**: context is white section → navy fill (#0f1936) + white icon on hover. Inverse of editions (which use light pastel fills + dark icon). Rest state unchanged: navy icon, bordered circle.
+- **Disabled guard**: `disabled:pointer-events-none` added so hover fill cannot fire on the disabled (start/end) arrow. `disabled:opacity-30` retained.
+- **Hover scope**: named group `group/btn` scoped per-button — no conflict with card-level `group` in `StoryCard`.
+- **Applies to**: `ProductCustomerStories` (product pages) + homepage `CustomerStories` wrapper (which delegates to it).
+- DOM verified: fill `translate: 0px 100%` at rest; fill bg `rgb(15, 25, 54)` (#0f1936); disabled prev `pointer-events: none`. Build green.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — EditionCards: token rewire + partial purge + 140px logo + arrow contrast fix
+
+- **`SOGNOSCARE_EDITIONS` accentColor → CSS var refs** (before→after per edition):
+  - Disability & Mental Health: `#36b19a` → `var(--sognos-edition-disability)`
+  - Allied Health: `#fea65d` → `var(--sognos-edition-allied-health)`
+  - Hospital in the Home: `#c6da4c` → `var(--sognos-edition-hospital-in-the-home)`
+  - Support at Home: `#ff8184` → `var(--sognos-edition-support-at-home)`
+  - Residential Aged Care: `#c49aff` → `var(--sognos-edition-aged-care)`
+  - Child & Family Services: `#ff6db4` → `var(--sognos-edition-child-and-family-services)`
+  Token is now the single source of truth; prop interface unchanged.
+- **Old edition token partial purge**: `--sognos-edition-lime` (#c6da4c) and `--sognos-edition-pink` (#ff6db4) removed from `tokens.css` — zero live references confirmed. Four remaining old tokens kept: `green/orange/coral/purple` still referenced in live files (see DESIGN_MIGRATION_STATE for full blocklist).
+- **Logo bump**: `h-8 w-8` (32px) → `w-[140px]` container + `Image width={140} height={40}`. Verified rendered width = 140px.
+- **Arrow contrast fix**: `group-hover:text-white` → `group-hover:text-sognos-heading`. All 6 new accent values are light pastels; white arrow was near-invisible (worst: `#cbdd61` at ~1.3:1 WCAG). Dark navy arrow reads well on every fill.
+- DOM verified: 6 cards, glow resolves `rgb(0, 169, 143)` (#00a98f = disability token) on card 0. Build green.
+- Files: `lib/constants.ts`, `components/sections/sognoscare/EditionCards.tsx`, `app/tokens.css`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — CustomerStories: rebuild as thin wrapper + page restore + type cleanup
+
+- **`CustomerStories.tsx` rewritten**: 9-line thin wrapper that renders `<ProductCustomerStories stories={ALL_STORIES} />`. Replaced the old CSS scroll-snap carousel (overlaid-quote on image, IntersectionObserver active-slide, pill indicator, stats below card). Zero slider logic duplication — single source of truth in `ProductCustomerStories`.
+- **Homepage `page.tsx` restored**: `<CustomerStories />` added back after `<NewsInsightSection>` — it had been dropped during the Cohere scaffold migration.
+- **`CaseStudy` type cleaned up**: removed 10 legacy `*Class` fields (`panelClass`, `quoteClass`, `authorClass`, `roleClass`, `quoteIconColor`, `contentBorderClass`, `buttonBorderClass`, `buttonTextClass`, `buttonHoverClass`, `buttonIconBgClass`) that existed solely for the old `CustomerStories` layout. All 4 entries in `ALL_STORIES` updated accordingly.
+- **DOM verified**: `#stories` section present on homepage, `bg-white`, heading "Customer Stories", `TESTIMONIAL_PALETTE` rotation confirmed (`bg-sognos-care-dark` / `bg-sognos-roster-dark` / `bg-sognos-genogram-dark`), gutter formula active (`max(1.5rem, -41.625rem + 50vw)`). Build green.
+- Files: `components/sections/CustomerStories.tsx`, `components/sections/ProductCustomerStories.tsx`, `app/(marketing)/page.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: product-dark palette + border adjustments
+
+- **Palette → product-dark tokens**: `TESTIMONIAL_PALETTE` is now 3 entries — `bg-sognos-care-dark` (#03112f) / `bg-sognos-roster-dark` (#0b3a66) / `bg-sognos-genogram-dark` (#250438) — rotated by `i % 3`. Replaces the prior 4-tone navy array.
+- **Stat hairlines restored**: `border-b border-white/15` between Company Size and Industry rows (`pb-3` / `pt-3` pairing). AngelList stat-stack look.
+- **Logo border removed**: `border-t border-white/15` on the logo wrapper removed — logo sits flush in the card.
+- **Column divider removed**: `border-t border-white/15 md:border-t-0 md:border-l md:border-white/15` removed from right panel — no rule between text and image columns.
+- **Net rules on card**: only the single stat hairline between the two stat rows.
+- DOM verified: bg colours correct (`#03112f`/`#0b3a66`/`#250438`/`#03112f`), `logoBorder=0px`, `columnBorder=0px`, `statHairline=1px`. Build green.
+- Tone audit: all 3 product-dark tones are dark enough for white text. No flags.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: per-card colour rotation + remove stat hairlines
+
+- **`TESTIMONIAL_PALETTE`**: 4-entry array `["bg-[#0f1936]", "bg-[#1b3462]", "bg-[#0b3a66]", "bg-[#2e0a44]"]` (deep navy / mid navy-blue / slate-teal / plum). Applied by `i % 4` to each slide. Homepage `CustomerStories` will reuse this pattern.
+- **Dark cards on white section**: `bg-white border border-sognos-line` removed from `StoryCard`. Card now takes `bg` prop (rotated palette class). All text → white: title, quote, author, link. Role → `text-white/70`. Stat labels → `text-white/60`.
+- **Logo**: `brightness-0 invert` applied — renders white on all dark tones.
+- **Internal dividers**: logo row `border-t border-sognos-line` → `border-t border-white/15`; right panel `border-l border-sognos-line` → `border-l border-white/15`.
+- **Stat hairlines removed**: `pb-3 border-b border-sognos-line` between Company Size / Industry replaced with `flex flex-col gap-4` wrapper and plain `<div>` rows — no rules.
+- **`StoryCard` signature**: now accepts `bg: string` prop in addition to `study`.
+- **Single-story path**: also passes `TESTIMONIAL_PALETTE[0]` to `StoryCard`.
+- **Type fields retained**: `CaseStudy` shape unchanged (homepage `CustomerStories` still consumes `*Class` fields); `*Class` props simply not consumed in this layout.
+- DOM verified: all 4 bg colours correct, `hasWhiteText: true`, `logoFilter: brightness(0) invert(1)`, `statBorder: 0px`. Build green.
+- Tone audit: all 4 are deep/saturated dark tones; white text contrast is comfortable on all. No flags.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: last slide right-gutter inset
+
+- **Root cause**: browsers exclude trailing `paddingRight` from flex container `scrollWidth`. Embla computed `maxScroll = scrollWidth - viewportWidth = 4472 - 1280 = 3192`, which placed the last slide's right edge flush to the viewport. A zero-width spacer also failed (browsers skip zero-width items in scrollWidth calculation).
+- **Fix**: removed `gap-6 sm:gap-8` from the flex container; replaced with `mr-6 sm:mr-8` on each slide EXCEPT the last. This eliminates automatic spacing before the trailing spacer div. The spacer (`width = max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))`) now contributes exactly its own width to scrollWidth (no preceding gap), giving `scrollWidth = 4496`, `maxScroll = 3216`. At scroll=3216: last slide right = 1256px, right gap = 24px = gutter. ✓
+- **Verified at 1280px**: `scrollWidth=4496`, `maxScroll=3216`, `lastSlide.right=1256`, `rightGap=24`, `slide0Left=24`. All three states screenshot-confirmed. Build green.
+- Files: `components/sections/ProductCustomerStories.tsx`
+
+## 2026-06-15 — ProductCustomerStories: gutter-inset first/last slides
+
+- **Container gutter padding**: Embla flex container gets `paddingLeft/Right: max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))` inline style — mirrors the `max-w-7xl px-6` formula for all viewport widths.
+- **Slide max-width**: updated `lg:max-w-[1380px]` → `max-w-[1332px]` (= 1380 - 2×24 = container minus gutters).
+- **Result**: first slide left edge = 24px at 1280px viewport, aligned to "Customer Stories" heading. Last slide right edge mirrors symmetrically. Middle slides retain both-side peek.
+- **Verification**: `slide0Left=24`, `translateX=0`, no body horizontal scroll. Screenshot confirmed: Flourish Australia card starts at heading gutter, Auckland Airport peeks right.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: full-viewport-width peek slider
+
+- **Full-bleed breakout**: Embla viewport moved to section level (outside `max-w-7xl`) — `relative overflow-hidden` div spans full section width. Heading + chrome remain in `max-w-7xl` wrappers.
+- **Slide width**: `w-[calc(100vw-3rem)] lg:w-[calc(100vw-12rem)] lg:max-w-[1380px]`. On 1280px desktop → 1088px slide → **64px visible neighbour peek per side** for centered middle slides.
+- **`align: "center"`** (was `"start"`) — active card centers in viewport; neighbours peek equally left and right.
+- **`containScroll: "trimSnaps"`** clamps ends: slide 1 flush left (right-only peek), middle slides both-side peek, last slide flush right (left-only peek).
+- **`loop: false`** — autoplay stops at last slide (no reset to first).
+- **`StoryCard`** extracted as local component to avoid repeating card JSX for single-story path.
+- DOM verified: first slide prevDisabled ✓, last slide nextDisabled ✓, no body horizontal scroll ✓, 64px peek at 1280px ✓. Build green.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: full-width slider + white/navy restyle
+
+- **Embla config**: `loop: false`, `align: "start"`, `containScroll: "trimSnaps"` (was `loop: true`, `align: "center"`).
+- **Slide width**: `w-full shrink-0` — one full-width card per view (was `sm:w-[95%] xl:w-[91%]` peek). Gap `gap-6 sm:gap-8` reveals next card's edge at right.
+- **Autoplay at end**: stops on last slide, does not reset (no loop). `stopOnInteraction: true` retained.
+- **Arrow bounds**: prev disabled on first slide, next disabled on last — via `canScrollPrev()` / `canScrollNext()` tracked on `select` + `reInit` events. Disabled state: 30% opacity, `cursor-not-allowed`.
+- **Section**: `bg-gradient-hero` → `bg-white`. `data-header-dark` removed — navbar renders light treatment.
+- **Heading**: eyebrow pill removed. `h2` retains "Customer Stories" copy, colour → `text-sognos-navy-dark`.
+- **Card**: `bg-gray-200/70` → `bg-white border border-sognos-line` (hairline for definition on white section).
+- **Text**: all card text → `text-sognos-navy-dark` (heading, quote, author, stats values).
+- **Logo**: `brightness-0` removed — natural colour logo on white background.
+- **Dots**: `bg-white` / `bg-white/35` → `bg-sognos-navy-dark` / `bg-sognos-navy-dark/25`. Arrow borders: `border-white/30` → `border-sognos-line`. Arrow hover: `hover:bg-white/10` → `hover:bg-gray-200/70`.
+- DOM verified: first slide → prevDisabled true, nextDisabled false, selectedDot 0. Last slide → nextDisabled true, prevDisabled false, selectedDot 3.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: Embla slider rewrite
+
+- **Replaced** crossfade + logo-tab row + progress bar mechanic with Embla carousel (`embla-carousel-react` + `embla-carousel-autoplay`).
+- **Carousel config**: `loop: true`, `align: "center"`, autoplay 10s `stopOnInteraction: true`. Slide width: `w-full sm:w-[95%] xl:w-[91%]` — next card peeks at edge.
+- **Chrome**: dot indicators (centered, active dot pill-expands `w-4 h-2`, inactive `w-2 h-2 opacity-35`) + prev/next chevron arrow buttons `size-12 rounded-full border border-white/30` (desktop only, `hidden lg:flex`).
+- **Single-story guard**: `showChrome = total > 1`. With 1 story, Embla ref/plugins not attached, chrome hidden. Verified on SognosCare (1 Sanity story → no chrome).
+- **Card edits**: `bg-white` → `bg-gray-200/70`. `AnimatedButton` removed → plain `Link` with `underline underline-offset-4 hover:opacity-60`. `QuoteIcon` removed. "Read Customer Story" link positioned below author/role (above logo row).
+- **Logo row**: moved fully to bottom with `border-t border-sognos-line`. No CTA button alongside it.
+- Removed imports: `AnimatePresence`, `motion`, `AnimatedButton`, `cn`. Added: `useEmblaCarousel`, `Autoplay`, `Link`, `useCallback`.
+- DOM verified: 4 cards + 4 dots on SognosRoster (4 ALL_STORIES). 1 card + 0 dots on SognosCare (1 Sanity story).
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — ProductCustomerStories: AngelList two-panel card layout
+
+- **Card body restructured** from left-image-panel / right-quote-panel to AngelList two-column: text left (`md:col-span-7`) + portrait image + stats right (`md:col-span-3 md:col-start-9`) in an `md:grid-cols-11` grid. 1-column gap built in via `col-start-9`.
+- **Left column** (top→bottom): company name h3 (`font-heading text-2xl md:text-3xl font-medium tracking-tight`) → QuoteIcon → blockquote → author/role → bottom row: logo left (`brightness-0`) + AnimatedButton CTA right, separated by `border-t border-sognos-line`.
+- **Right column**: portrait image (`relative flex-1 rounded-lg overflow-hidden mb-4`) + stats below (`Company Size` / `Industry`, border-divided rows).
+- **Card bg**: `bg-white rounded-lg overflow-hidden` (unchanged). Section stays `bg-gradient-hero`. Per-product colour flagged as follow-up.
+- **Logo**: moved to bottom-left of text column with `brightness-0` (dark logo on white). Previously centered on dark image panel.
+- **Image shape**: portrait `rounded-lg` filling available height (not `rounded-full`). Flagged AngelList `rounded-full` as too aggressive for customer photos.
+- **Stats**: two rows (Company Size + Industry). Third metric flagged — needs Sanity schema field + backfill before it can be rendered.
+- **No-image degradation**: right column renders stats only if `panelImage`/`panelVideo` absent (flex-1 div collapses; stats remain). Not explicitly tested since all stories have images.
+- **Autoplay / tab row / crossfade**: unchanged. `buttonClassName` / `*Class` props: still consumed (consistent values across all stories).
+- **Note**: SognosCare page passes CMS stories (1 live in Sanity dev). `ALL_STORIES` fallback has 4 stories. Homepage `CustomerStories.tsx` is next to match same layout.
+- DOM verified: h3, quote, stat labels, logo in left col, `col-start-9` right col all confirmed.
+- Files: `components/sections/ProductCustomerStories.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — Homepage: remove SognosCareCard + SognosRosterCard
+
+- Removed `<SognosCareCard />` and `<SognosRosterCard />` render calls + imports from `app/(marketing)/page.tsx`.
+- Deleted component files: `components/sections/SognosCareCard.tsx`, `components/sections/SognosRosterCard.tsx`.
+- Both were homepage-only (grep confirmed). Standard framework imports only (`next/link`, `next/image`) — no shared helpers.
+- Orphaned images (`SognosCareImg.png`, `SognosRosterImg.png` in `public/images/home/`) left in place — `public/` assets don't affect build. Bg images (`SognosCare-bg.avif`, `SognosRoster-bg.png`) still used by `HomeProductCards` — untouched.
+- Homepage section order now: `Hero → HomeProductCards → LogoStrip → HowSognosWorks → IndustrySection → SolutionsSection → NewsInsightSection`.
+- DOM verified: no `SognosCareCard`/`SognosRosterCard` sections in render tree. Build green.
+- Files: `app/(marketing)/page.tsx`, `docs/DESIGN_MIGRATION_STATE.md`, `docs/CHANGELOG.md`
+
+## 2026-06-15 — SognoscareAdvantages: sticky left label
+
+- Added `lg:sticky lg:top-[100px] lg:self-start` to the left `lg:col-span-2` label column.
+- `self-start` required — grid stretches items to full row height by default, making sticky a no-op without it.
+- `top-[100px]` matches the offset used across all sticky rails in the project (Editions, ProductFeaturesScroll etc.).
+- Desktop only (`lg:` prefix); mobile layout unchanged (label sits above checklist in stacked column flow).
+- DOM verified: `position: sticky`, `labelY: 100px` while `sectionTop: -14px sectionBottom: 689px` (section scrolling past).
+- Files: `components/sections/sognoscare/Advantages.tsx`, `docs/CHANGELOG.md`
+
+## 2026-06-15 — SognosCare Editions: revert to single-column layout
+
+- Removed two-column Features-style layout (left sticky "Editions" rail + right column).
+- Section is now a single full-width column: heading + intro above the `EditionCards` slider.
+- Deleted: `flex gap-10 lg:flex-row` wrapper, left rail div (`lg:w-44 xl:w-52 lg:sticky lg:top-[100px]`), right `flex-1 min-w-0` wrapper.
+- Heading (`text-3xl md:text-4xl font-medium tracking-tight`), intro (`mt-2 max-w-2xl text-lg text-sognos-muted`), `mb-12` spacing before slider — all unchanged, now at root level.
+- Section bg `bg-gray-200/70 py-24`, `max-w-7xl px-6`, `EditionCards` `showSliderButtons` all preserved.
+- Files: `components/sections/sognoscare/Editions.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — HomeProductCards: fix mobile card width (aspect-ratio intrinsic sizing)
+
+- **Root cause:** `min-w-[82vw]` (and prior `min-w-[82%]`) was not the issue — the card's actual width was driven past `min-width` by the `aspect-[3/4]` div. When an element has `aspect-ratio` set and no explicit dimensions, the browser uses it in intrinsic size calculation, which the flex algorithm then honours as the item's "hypothetical main size". This made the card ~570px on a 390px viewport.
+- **Fix:** Replaced `min-w-[82vw]` with explicit `w-[82vw]` on mobile + `md:w-auto` on desktop reset. An explicit `width` pins the card dimension; the aspect div then sizes correctly off the card width (319.8px → image height 426px ✓).
+- **Verified:** cardW: 319.8px, imgDivH: 426px (3/4 ratio), cardH: 579px — all in proportion. Desktop grid unchanged.
+- Files: `components/sections/HomeProductCards.tsx`
+
+## 2026-06-15 — HomeProductCards: mobile swipe slider
+
+- Container changed from `grid grid-cols-1` → `flex snap-x snap-mandatory overflow-x-auto scroll-px-6 scrollbar-hide gap-3` on mobile, reverting to `md:grid md:grid-cols-3 md:overflow-visible lg:gap-4` on desktop.
+- Each card gains `min-w-[82%] shrink-0 snap-start` (mobile: 82% width, one card + next peeks) + `md:min-w-0 md:shrink` reset (desktop: grid cell, no width constraint).
+- Uses existing `scrollbar-hide` utility from `globals.css` (`@utility scrollbar-hide`).
+- Desktop: 3-column grid unchanged. Mobile: horizontal snap slider with peek. Both verified by screenshot.
+- Build clean. FLAG noted: dot indicators deferred to styling pass.
+- Files: `components/sections/HomeProductCards.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — HomeProductCards: AngelList column layout + hover = button only
+
+- Restructured each product column to: top hairline (`border-t border-white/15`) → `pt-4` → title (h3 above image) → `aspect-[3/4] rounded-lg` image card → description (always visible, `mt-5 text-lg text-white/70`) → `pb-6` → bottom hairline (`border-b border-white/15`).
+- Title moved OUT of image card, sits above it. Description moved OUT of image card, always visible below it — hover-reveal removed entirely.
+- Radial accent glow removed completely.
+- Arrow button restyled: `border border-white/30` transparent base (was `bg-white/10`); accent fill still slides up on `group-hover`. Arrow stays white. This is the sole hover effect.
+- Logo stays absolute top-left inside image card. Bg image + dark overlay unchanged.
+- DOM-confirmed: `border-t`/`border-b` present, glow removed, description always visible, arrow button present, 3 cards.
+- Build clean. Screenshot: titles peeking below hero at load; top hairlines visible.
+- Files: `components/sections/HomeProductCards.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — Homepage: navy hero + HomeProductCards (3-product AngelList card section)
+
+- `Hero.tsx` reworked: `bg-white` → `bg-sognos-navy-dark`; two-card panel + `useRef`/`useScroll`/`useTransform` removed; `pt-40 pb-20` text-only block; heading/subtext → `text-white`/`text-white/70`; primary CTA → `variant="white"`; secondary link → white/30 border + `text-white/70`. Stagger fadeUp entrance retained on individual `motion.h1`/`motion.p`/`motion.div` elements.
+- `HomeProductCards.tsx` created: new section, `bg-sognos-navy-dark pb-24`, seamless navy zone with hero (cards peek above fold). `grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4`. AngelList fund-admin card pattern: `min-h-[400px] rounded-lg`, bg image (opacity-20 with dark overlay), top-left accent radial glow (opacity-0 → group-hover), white-inverted logo (`brightness-0 invert`), hover-revealed description, circular arrow button (accent fill-up on hover). Per-product accents: Care `#1d96fc`, Roster `#59bbf7`, Genogram `#91278c`. FLAGs: Genogram bg = Care bg placeholder; description hover-only on mobile.
+- `page.tsx` updated: `HomeProductCards` inserted between `Hero` and `LogoStrip`.
+- **Flags noted:** `SognosCareCard` + `SognosRosterCard` full-bleed sections later on page are now redundant with this card section — left in place, flagged for separate decision.
+- DOM-confirmed: 3 cards (`/products/sognoscare`, `/products/sognosroster`, `/products/sognosgenogram`), glow + arrow button present, `md:grid-cols-3` grid. Screenshot confirms navy hero + cards peeking.
+- Build clean (exit code 0).
+- Files: `components/sections/Hero.tsx`, `components/sections/HomeProductCards.tsx`, `app/(marketing)/page.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — SognosCare Editions: heading + intro moved into right column
+
+- Left rail trimmed to "Editions" label only (removed "Six editions. One platform." subline).
+- Right column gains heading ("Choose the Right SognosCare Edition for Your Service") + intro paragraph (`max-w-2xl text-lg text-sognos-muted`, `mb-12`) above the `EditionCards` slider.
+- Copy hardcoded — no prop reintroduced.
+- DOM-confirmed: rail has no `h2`, right `h2` + intro present, 6 cards, build clean.
+- Files: `components/sections/sognoscare/Editions.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-15 — SognosCare Editions: two-column section restructure (Features-style rail)
+
+- `Editions.tsx` rewritten to two-column layout: left sticky rail (`lg:w-44 xl:w-52 lg:sticky lg:top-[100px]`) with "Editions" eyebrow pill + "Six editions. One platform." heading; right `flex-1 min-w-0` column holds the `EditionCards` slider. Mobile collapses to `flex-col` (rail stacks above cards).
+- Removed old single-column heading block ("Choose the Right SognosCare Edition…" + intro) — editions carry their own title + description on each card.
+- Removed `header` prop and `SectionHeader` type from the component interface; removed `header={content.editionsHeader}` from `sognoscare/page.tsx` call site.
+- `bg-gray-200/70` section bg, slider buttons, and all slider mechanics unchanged.
+- DOM-confirmed: `hasTwoCol: true`, rail "Six editions. One platform.", 6 cards, slider buttons present.
+- Build clean (exit code 0).
+- Files: `components/sections/sognoscare/Editions.tsx`, `app/(marketing)/products/sognoscare/page.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-13 — SognosCare EditionCards: AngelList fund-admin card pattern (scaffold)
+
+- `EditionCard` fully rewritten: `aspect-[3/4]` tall card, top-left radial glow per edition `accentColor` (opacity-0 → group-hover:opacity-100, 700ms), hover-revealed description (translate-y-2/opacity-0 → group-hover, 300ms), bottom row with edition title + circular arrow button (accent fill slides up via translateY+scale from `accentColor`). Slider wrapper, `ArrowButton`, `ArrowIcon` unchanged.
+- `dark` prop retained for `EditionPageTemplate` compat but not applied to new card style.
+- `Editions.tsx`: removed dark `SECTION_BG` const; section bg → `bg-gray-200/70 py-24`; heading + intro text → `text-sognos-heading` / `text-sognos-muted`. Slider header rail preserved.
+- DOM-confirmed: 6 white cards on `/products/sognoscare`, section bg correct; `RelatedEditions` on edition page renders 5 cards with transparent bg (correct).
+- FLAGs in code for styling pass: swap logo placeholder to per-edition icon; make description always-visible on mobile. Edition token migration pending (separate task).
+- Build clean.
+- Files: `components/sections/sognoscare/EditionCards.tsx`, `components/sections/sognoscare/Editions.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-13 — Navbar: light-theme bar styling (AngelList — 80px, gray nav group, navy hover pill)
+
+- Height bumped from `h-14` (72px total) → `h-16` (64px capsule + 16px `pt-4` = **80px total**).
+- Scroll shadow now **conditional**: `scrollState !== "top" ? theme.pillShadow : ""` + `transition-shadow duration-300`. No shadow at page top; soft lift shadow on scroll-up (peek) and scroll-down (hidden) states.
+- Added `navGroup` key to `NavTheme` interface. `THEMES.light.navGroup: "bg-gray-100 rounded-full px-1"` — persistent light-gray pill container behind the centered desktop nav group. `THEMES.dark.navGroup: ""` (structural addition, no visual change to dark).
+- `THEMES.light.hoverPill` changed from `"bg-gray-100"` → `"bg-sognos-navy-dark"`.
+- Active nav item text: `isActive ? "text-white" : theme.text` — text flips to white over the navy pill.
+- Nav items: `text-sm` → `text-base`, `tracking-[-0.002em]` added, `duration-150` → `duration-200`.
+- Dropdown panel, mobile menu, `THEMES.dark` visual values unchanged.
+- Build clean.
+- Files: `components/layout/Navbar.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-13 — SognosCare hero: move scroll transform from panel → whole-hero wrapper (AngelList pattern)
+
+- Removed the `motion.div` that was only wrapping the blue panel — this caused the panel to detach and slide off the dark background on scroll, exposing white body bg below.
+- Introduced a single `motion.div style={{ y, opacity }}` that wraps ALL hero content: eyebrow, headline, subtext, CTAs, and panel. Everything fades/translates as one block.
+- `<section>` retains `bg-sognos-care-dark` as a static background that never transforms — the body's white bg is never exposed.
+- Panel downgraded from `motion.div` to a plain `<div>` inside the animated wrapper.
+- Transform values/ranges unchanged (`y: [0, -60]`, `opacity: [0.5,1]→[1,0.7]`).
+- Roster and Genogram heroes unchanged (no scroll transforms applied, confirmed).
+- Build clean.
+- Files: `components/sections/sognoscare/Hero.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+## 2026-06-12 — Navbar: single-panel dropdown morph (fm v12 width fix)
+
+- Replaced per-item `layoutId="nav-dropdown"` (caused flash + squash) with a single content-fit panel living outside `nav.map`.
+- Hidden measurer elements (off-screen, `position:absolute; left:-9999px`) measure each dropdown group's natural width at mount; stored in `panelWidths` ref.
+- `panelX` (`useMotionValue`) spring-animates the x transform between items via imperative `animate()`. On first open: `panelX.set()` (snap, no slide from edge).
+- `panelWidth` (`useState`) replaces the previous `panelW = useMotionValue(0)`. Root cause of the zero-width bug: framer-motion v12 routes `animate(motionValue, target, spring)` for non-transform CSS properties (like `width`) through `AsyncMotionValueAnimation` — an async resolver path — so the DOM style never updated synchronously. React state set inside `useLayoutEffect` flushes before browser paint, giving instant correct width with zero flicker.
+- Content crossfades via `AnimatePresence mode="wait"` keyed on `openMenu`; panel box holds its measured width while content swaps.
+- No CSS `transform` on the panel element; panel is positioned `absolute left-0 top-full` and moved entirely via the `x` motion value.
+- `rounded-2xl` on dropdown card noted as design-system violation (`rounded-lg` hard rule) — left intentionally for styling phase.
+- Build clean.
+- Files: `components/layout/Navbar.tsx`, `docs/DESIGN_MIGRATION_STATE.md`
+
+> Append-only. Newest entries at the top. One entry per task: date · what · files · why.
+
+## 2026-06-12 — SognosCare Problems: Lumos-style layout rewrite
+
+- `Problems.tsx` fully rewritten: replaced sticky scroll-spy rail + Problem/Solution card pairs with Lumos layout — problem statement → `mt-28 md:mt-40` breath → solution reveal → 5 slim capability columns.
+- Section bg changed from dark `bg-sognos-care-dark` to light `bg-white`.
+- Capability columns: `grid-cols-2 md:grid-cols-3 lg:grid-cols-5`; `border-t border-sognos-line` cap line; `lg:divide-x lg:divide-sognos-line` vertical dividers; `absolute bottom-0` static `bg-sognos-blue-accent` accent bar per column (scaleX reveal target for follow-up motion pass).
+- `subNav` slot preserved: centred above problem block (`mb-16 flex justify-center`).
+- All props remain optional with sensible defaults — call site updated only to drop the now-removed `header` and `problems` Sanity props; `subNav={<ProductSubNav …>}` unchanged.
+- Scroll-spy rail + Problem/Solution card pairs archived verbatim to `docs/archive/sognoscare-Problems.scrollspy-rail.tsx` for reuse on Roster/Genogram.
+- Static pass (no entrance motion); Lumos choreography planned in follow-up prompt.
+- Build clean (`✓ Compiled successfully in 28.9s`).
+- Files: `components/sections/sognoscare/Problems.tsx`, `app/(marketing)/products/sognoscare/page.tsx`, `docs/archive/sognoscare-Problems.scrollspy-rail.tsx`
+
+## 2026-06-12 — Navbar: AngelList morph dropdown + chevrons + content-fit width
+
+- `layoutId="nav-dropdown"` added to per-item dropdown panel — Framer springs panel position + size from item to item on switch (AngelList morph, no close/reopen).
+- Dropdown moved from `absolute left-0 right-0` (full-width) to `absolute top-full left-1/2 -translate-x-1/2 w-max` — panel anchors under active item and sizes to content.
+- `openOnHover` updated: instant switch (`setOpenMenu` directly) when `openMenuRef.current !== null`; 100ms intent delay kept for initial open.
+- `DropdownContent` changed from `grid grid-cols-N` to `flex gap-8` with `w-max` link columns + `w-48 min-h-[280px]` gradient; enables natural content-fit panel widths.
+- Chevrons added to all dropdown buttons (`motion.svg`, `rotate: 0→180` when open, `duration: 0.2`).
+- `navigation.ts`: TEMP marker comments on col2/col3 of "Why Sognos" + "Knowledge Hub" (both were already empty; comments make intent explicit, reversible).
+- Transition: `layout: spring/bounce:0.15/0.4s`, `opacity+y: 0.15s`.
+- `openMenuRef` mirror ref added for stale-closure safety in `openOnHover`.
+- Build clean. DOM-confirmed: morph panel under Products/Why Sognos, content-fit `w-max`, instant switch, chevrons rendered.
+- Files: `components/layout/Navbar.tsx`, `lib/navigation.ts`
+
+## 2026-06-12 — Navbar: Aceternity pill + hover-pill framework
+
+Full rewrite of `components/layout/Navbar.tsx`:
+- Floating pill bar (`rounded-full`, `h-14`, `px-4 pt-4`, `max-w-7xl` centered, `border border-black/5`, dark shadow)
+- `layoutId="nav-hover-pill"` spring-animated sliding highlight — tracks `hovered` state, falls back to `openMenu` item when cursor moves to dropdown
+- Dark-shadow dropdown card (`rounded-2xl`, `AnimatePresence` opacity/scale/y) — uses existing `DropdownContent` unchanged
+- `variant: "light" | "dark"` prop seam via `THEMES` object — dark slot filled with placeholder values for future use
+- Retired: transparent-over-hero text-switching, `showWhiteBar` colour logic, `data-header-dark`
+- Kept: three-state scroll (`top`/`hidden`/`peek`), hover-intent timers (100ms/150ms), mobile accordion, `useBookDemo`, body-scroll-lock, backdrop-blur, click-outside/scroll-to-close
+- Build + TypeScript clean. DOM-confirmed: pill classes, 5 nav buttons, both CTAs rendered.
+- Files: `components/layout/Navbar.tsx`
+
+## 2026-06-12 — SognosCare: hero gap + Problems section rewrite
+
+- `sognoscare/Hero.tsx`: `pb-8 md:pb-12` → `pb-4 md:pb-0` (achieves 5rem total visual gap to `ProductTrustStrip` which carries fixed `pt-16/pt-20`).
+- `sognoscare/Problems.tsx`: full rewrite — crossfade/autoplay removed; replaced with sticky scroll-spy rail (desktop-only `hidden lg:block`) + flowing problem/solution card pairs; `problem-rail-bullet` spring `layoutId`; `subNav` slot at `mt-20`; `label?` optional, falls back to `problem` text (Sanity data has no `label`). Dark `bg-sognos-care-dark` and `border-sognos-blue-accent` accent retained.
+- Files: `components/sections/sognoscare/Hero.tsx`, `components/sections/sognoscare/Problems.tsx`
+
+## 2026-06-12 — Home hero: product-hero layout (two-card panel)
+
+- Hero replaced with product-hero layout in light skin: `pt-40` centered text block + `mt-16` `lg:grid-cols-3` two-card panel (left `col-span-2`, right `col-span-1`) with `useScroll` parallax/fade. Cards are placeholder slots.
+- `HeroOutcomes.tsx` removed (was untracked; deleted).
+- Pre-existing typo fixed: `headlinae` → `headline` in `sognoscare/Hero.tsx` DEFAULTS (was blocking build).
+- Files: `components/sections/Hero.tsx`, `components/sections/sognoscare/Hero.tsx` (typo), `app/(marketing)/page.tsx`
+
+## 2026-06-12 — Home hero reframe + HeroOutcomes bridge section
+
+- Hero reframed to light bg (`bg-white`); `data-header-dark` removed; bg image removed; gradient headline span removed; dark text tokens applied; `AnimatedButton variant="brand"`; secondary CTA darkened to `text-sognos-navy-dark`.
+- `HeroOutcomes.tsx` created: `lg:grid-cols-3` 2/3+1/3 bridge section; three-part field-first tagline with stagger; 3 navy stat cells (TODO values, CTASection pattern); commented placeholder visual slot.
+- `page.tsx`: `HeroOutcomes` inserted between `Hero` and `LogoStrip`.
+- Files: `components/sections/Hero.tsx`, `components/sections/HeroOutcomes.tsx`, `app/(marketing)/page.tsx`
+
+## 2026-06-12 — ProductSubNav dock-from-bottom
+
+- `ProductSubNav.tsx` rewritten: `IntersectionObserver` on in-section sentinel; fixed bar at `top-[76px] lg:top-[68px] z-40` with `AnimatePresence` slide-in; `dockBg` prop for per-product theming; separate `layoutId` prefixes for inline vs docked pills; dual `navRef` for mobile scroll-into-view on both states.
+- Files: `components/ui/ProductSubNav.tsx`
+
+## 2026-06-12 — Docs consolidation
+
+- Established `docs/` structure; moved feature backlog → `docs/FEATURE_LOG.md`.
+- Archived historical audits + PHASE6 plan under `docs/archive/` with superseded banners.
+- Rewrote `README.md` from boilerplate; added source-of-truth/session-loop rules to `CLAUDE.md`.
+- Removed `docs/` from `.gitignore` so the directory is tracked.
+- Removed `PHASE7_REDESIGN.md` (abandoned `redesign` direction).
+- Created `docs/CHANGELOG.md` (this file).
+- Updated `docs/DESIGN_MIGRATION_STATE.md`: §8 backlog pointer, §2 hard-rules canonical-source note, §10 file map rows for new docs.

@@ -1,118 +1,162 @@
+"use client";
+
 import Image from "next/image";
-import AnimatedButton from "@/components/ui/AnimatedButton";
 import Link from "next/link";
-import FlowCanvas from "@/components/ui/FlowCanvas";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+
+const PANEL_HLS_SRC =
+  "https://stream.mux.com/jQkiowhjcNANEVOdEj02JRdSnvM5TaFudLXF9BmyAVms.m3u8?max_resolution=1080p";
+
+function PanelBackgroundVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Safari + iOS play HLS natively — just point the video at the URL.
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = PANEL_HLS_SRC;
+      return;
+    }
+
+    // Everywhere else: lazy-load hls.js so it doesn't ship in the initial bundle.
+    let hls: import("hls.js").default | null = null;
+    let cancelled = false;
+    import("hls.js").then(({ default: Hls }) => {
+      if (cancelled || !Hls.isSupported()) return;
+      hls = new Hls({ enableWorker: true });
+      hls.loadSource(PANEL_HLS_SRC);
+      hls.attachMedia(video);
+    });
+
+    return () => {
+      cancelled = true;
+      hls?.destroy();
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+  );
+}
 
 interface SognoscareHeroProps {
+  // logoSrc kept optional for caller compatibility; no longer rendered.
   logoSrc?: string;
   headline?: string;
   subtext?: string;
 }
 
 const DEFAULTS = {
-  logoSrc: "/logos/sognos-care-logo.svg",
   headline: "One platform. From intake to outcome.",
   subtext:
     "Manage cases, track service delivery, meet compliance obligations, and report with confidence - in one platform built end-to-end for care.",
 };
 
 export default function SognoscareHero({
-  logoSrc = DEFAULTS.logoSrc,
   headline = DEFAULTS.headline,
   subtext = DEFAULTS.subtext,
 }: SognoscareHeroProps = {}) {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const prefersReducedMotion = useReducedMotion();
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 160],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.7],
+    prefersReducedMotion ? [1, 1] : [1, 0],
+  );
+
   return (
     <section
+      ref={heroRef}
       data-header-dark
-      className="relative flex flex-col bg-white overflow-hidden text-white h-[100svh] lg:h-[100vh] p-2"
+      className="relative overflow-hidden pb-4 md:pb-0 bg-sognos-care-dark"
     >
-      <div className="bg-gradient-hero h-full overflow-hidden text-white rounded-2xl relative">
-        <FlowCanvas
-          colors={[
-            "rgba(180, 232, 237, 0.45)",
-            "rgba(78, 204, 214, 0.5)",
-            "rgba(35, 110, 116, 0.55)",
-          ]}
-        />
+      {/* Single animated wrapper — all hero content fades/translates as one unit
+          over the static dark section background. AngelList pattern. */}
+      <motion.div style={{ y, opacity }} className="will-change-transform">
+        <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
+          {/* Eyebrow */}
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.08em]"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
+            SognosCare
+          </p>
 
-        {/* Teal radial glow */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 55% at 30% 0%, #4ECCD6 0%, transparent 70%)",
-          }}
-        />
+          {/* Headline */}
+          <h1 className="mx-auto mt-6 max-w-5xl font-angellist text-pretty text-white text-5xl sm:text-6xl lg:text-6xl font-normal tracking-[-0.02em]">
+            {headline}
+          </h1>
 
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col px-4 sm:px-8 lg:px-6">
-          <div className="flex flex-1 items-center justify-center">
-            <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
+          {/* Subtext */}
+          {/* <p
+            className="mx-auto mt-6 max-w-[640px] text-lg leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.7)" }}
+          >
+            {subtext}
+          </p> */}
+
+          {/* CTAs */}
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            {/* Book a Demo — UNWIRED for now (no onClick) */}
+            <button
+              type="button"
+              className="rounded-full bg-white px-7 py-3.5 text-base font-medium text-sognos-care-dark transition-opacity hover:opacity-90"
+            >
+              Book a Demo
+            </button>
+            <Link
+              href="#"
+              className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-80"
+            >
+              Learn More
+              <span aria-hidden="true">&#8599;</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Placeholder visual — plain child inside the animated wrapper.
+            Swap the gradient div for a real <Image> when the asset is ready. */}
+        <div className="mx-auto mt-16 max-w-6xl px-6">
+          <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-2xl bg-sognos-care-gradient">
+            <PanelBackgroundVideo />
+            <div className="relative flex h-full w-full items-center justify-center">
               <Image
-                src={logoSrc}
+                src="/logos/sognos-care-logo.svg"
                 alt="SognosCare"
                 width={220}
                 height={48}
                 priority
-                className="mb-14 h-12 w-auto lg:h-13"
-              />
-              <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-                {headline}
-              </h1>
-              <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
-                {subtext}
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom bar - hidden, replaced by ProductDrawer */}
-          <div className="hidden relative z-10 pb-4 lg:pb-0">
-            <div className="relative bg-white max-w-6xl flex justify-between items-center gap-14 mx-auto rounded-t-md px-8 py-7 pb-5">
-              <div className="flex flex-col gap-2 max-w-xl">
-                <h2 className="text-left font-heading text-2xl md:text-[22px] font-medium tracking-normal text-prussian-blue-800">
-                  What SognosCare Solves
-                </h2>
-                <p className="text-left text-base text-prussian-blue-800/75 text-balance">
-                  Standard case management captures what happened. Sognos
-                  Genogram captures who is involved, and what that means for
-                  service delivery.
-                </p>
-              </div>
-
-              <div className="flex flex-row gap-2">
-                <AnimatedButton href="/contact">Book a Demo</AnimatedButton>
-                <Link
-                  href="#editions"
-                  className="inline-flex items-start justify-center rounded-md px-8 py-3 font-medium text-prussian-blue-800 border border-white/0 transition-colors hover:bg-white/10 hover:border-white/20"
-                >
-                  Explore editions
-                </Link>
-              </div>
-
-              {/* Concave curve transitions */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute bottom-0 -left-[20px] h-[20px] w-[20px] bg-white"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(circle at 0% 0%, transparent 19px, black 20px)",
-                  maskImage:
-                    "radial-gradient(circle at 0% 0%, transparent 19px, black 20px)",
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute bottom-0 -right-[20px] h-[20px] w-[20px] bg-white"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(circle at 100% 0%, transparent 19px, black 20px)",
-                  maskImage:
-                    "radial-gradient(circle at 100% 0%, transparent 19px, black 20px)",
-                }}
+                className="h-12 w-auto sm:h-14 lg:h-16"
               />
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
