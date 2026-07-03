@@ -289,3 +289,4 @@ Pending:
 - Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
 - Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
 - Do not add features, abstractions, or complexity beyond what the task requires — keep it minimal
+- Knowledge Hub: 22 legacy WordPress posts in the WXR export are permanently excluded — list lives in `LEGACY_IGNORE` in `scripts/extract-post-bodies.py`; never propose re-importing them
