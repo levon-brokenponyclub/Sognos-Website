@@ -290,3 +290,4 @@ Pending:
 - Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
 - Do not add features, abstractions, or complexity beyond what the task requires — keep it minimal
 - Knowledge Hub: 22 legacy WordPress posts in the WXR export are permanently excluded — list lives in `LEGACY_IGNORE` in `scripts/extract-post-bodies.py`; never propose re-importing them
+- Browser automation: always use **Dia** (`/Applications/Dia.app`), never Chrome. Claude is connected to Dia via the claude-in-chrome MCP. Do not spawn Chrome headless — use Dia for `open -a Dia <url>` and for any browser interaction
