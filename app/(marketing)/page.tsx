@@ -17,10 +17,12 @@ export const revalidate = 60;
 export default async function HomePage() {
   const posts = await getKnowledgePostArchive();
   const newsArticles: NewsInsightArticle[] = posts.map((p) => ({
+    slug: p.slug,
     category: p.category,
     title: p.title,
     href: `/knowledge-hub/${p.slug}`,
     date: p.date,
+    readTime: p.readTime ?? undefined,
     image: p.heroImage
       ? urlFor(p.heroImage).width(720).auto("format").url()
       : "",
@@ -32,7 +34,7 @@ export default async function HomePage() {
       <Hero /> {/* Hero · navy, text block only */}
       <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) — peeks above fold */}
       <ScrollReveal y={40} duration={0.7}>
-        <LogoStrip /> {/* "Trusted by industry leaders and developers worldwide" */}
+        <LogoStrip /> {/* "Trusted by industry leaders and professionals worldwide" */}
       </ScrollReveal>
       <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
       <IndustrySection /> {/* "Powering progress across industries" */}

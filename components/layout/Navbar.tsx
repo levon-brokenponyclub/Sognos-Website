@@ -20,7 +20,6 @@ const DARK_HERO_PATHS = new Set([
   "/products/sognoscare",
   "/products/sognosroster",
   "/products/sognosgenogram",
-  "/company/about",
 ]);
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];

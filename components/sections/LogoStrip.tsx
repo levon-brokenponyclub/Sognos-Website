@@ -10,6 +10,9 @@ type Logo = {
   image?: SanityImageSource;
 };
 
+const TITLE = "Trusted by industry leaders and professionals worldwide";
+const MAX_LOGOS = 5;
+
 function resolveLogoSrc(logo: Logo) {
   return logo.image
     ? urlFor(logo.image).width(220).auto("format").url()
@@ -18,42 +21,41 @@ function resolveLogoSrc(logo: Logo) {
 
 export default async function LogoStrip() {
   const content = await getLogoStripContent();
-  const logos = content?.logos?.length
-    ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
-    : DEFAULT_LOGOS;
-  // Duplicated for seamless -50% marquee loop
-  const track = [...logos, ...logos];
+  const logos: Logo[] = (
+    content?.logos?.length
+      ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
+      : DEFAULT_LOGOS
+  ).slice(0, MAX_LOGOS);
 
   return (
     <section
       aria-label="Trusted organisations"
-      className="w-full bg-background py-8 md:py-10"
+      className="w-full bg-sognos-navy-dark"
     >
-      <div className="mx-auto max-w-[1250px] px-4">
-        <div className="trust-marquee-wrap overflow-hidden">
-          <div className="trust-marquee-track gap-3" aria-hidden="true">
-            {track.map((logo, i) => {
-              const src = resolveLogoSrc(logo);
-              if (!src) return null;
-
-              return (
-                <div
-                  key={i}
-                  className="flex h-[88px] w-[180px] shrink-0 items-center justify-center rounded-xl bg-sognos-navy/5 p-5"
-                >
-                  <Image
-                    src={src}
-                    alt={logo.alt}
-                    width={220}
-                    height={72}
-                    sizes="180px"
-                    className="h-auto w-auto max-h-10 max-w-[140px] object-contain"
-                    style={{ filter: "brightness(0)", opacity: 0.55 }}
-                  />
-                </div>
-              );
-            })}
-          </div>
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
+        <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-white/70">
+          {TITLE}
+        </p>
+        <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
+          {logos.map((logo, index) => {
+            const src = resolveLogoSrc(logo);
+            if (!src) return null;
+            return (
+              <div
+                key={logo.alt + index}
+                className={`flex items-center justify-center md:flex-1 md:px-8 py-5${index > 0 ? " md:border-l md:border-white/15" : ""}`}
+              >
+                <Image
+                  src={src}
+                  alt={logo.alt}
+                  width={150}
+                  height={40}
+                  className="h-10 w-auto object-contain md:h-10"
+                  style={{ filter: "brightness(0) invert(1)", opacity: 0.75 }}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

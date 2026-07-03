@@ -6,6 +6,7 @@ import SocialResponsibilitySection from "@/components/sections/SocialResponsibil
 import AboutBeliefs from "@/components/sections/AboutBeliefs";
 import AboutValues from "@/components/sections/AboutValues";
 import AboutStats from "@/components/sections/AboutStats";
+import AboutHeroImage from "@/components/sections/AboutHeroImage";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -58,32 +59,31 @@ const PARTNERS = [
 export default function AboutPage() {
   return (
     <main className="w-full bg-white">
-      {/* ── Hero — dark navy, two-up (AngelList /engineering) ─────────────────── */}
-      <section className="bg-sognos-navy pt-40 pb-20 lg:pt-48 lg:pb-28">
+      {/* ── Hero — white, eyebrow + heading + CTA (matches solutions/[slug]) ─── */}
+      <section className="bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-            {/* Left — large heading */}
-            <h1 className="font-heading text-5xl font-medium tracking-tight text-white lg:text-6xl">
-              Building smarter automation for modern teams
-            </h1>
-            {/* Right — intro + CTA */}
-            <div>
-              <p className="text-lg leading-relaxed text-white/70">
-                Built to serve the organisations that serve others. Since 2016,
-                Sognos has helped service organisations work smarter — replacing
-                disconnected tools with a single intelligent platform built
-                natively on Microsoft Dynamics 365.
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <p className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-[#6B7280]">
+                About Sognos
               </p>
-              <div className="mt-8">
+              <h1 className="mt-5 font-heading font-medium text-[#1A1A1A] text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] text-balance">
+                Smarter automation for modern teams
+              </h1>
+              <div className="mt-9">
                 <Link
-                  href="/contact"
-                  className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-sognos-navy-dark transition-colors hover:bg-white/90"
+                  href="/company/careers"
+                  className="inline-flex items-center justify-center rounded-full bg-[#1A1A1A] px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-black"
                 >
-                  Book a Demo
+                  Explore Careers
                 </Link>
               </div>
             </div>
           </div>
+        </div>
+        {/* Full-viewport image, contracts to max-w-7xl on scroll (AngelList /careers) */}
+        <div className="mt-16 lg:mt-20">
+          <AboutHeroImage />
         </div>
       </section>
 
