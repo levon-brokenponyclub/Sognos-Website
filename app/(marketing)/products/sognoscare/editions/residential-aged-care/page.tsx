@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import EditionPageTemplate, {
   type EditionData,
-} from "@/components/sections/sognoscare/EditionPageTemplate";
+} from "@/components/layout/sections/sognoscare/EditionPageTemplate";
 
 export const metadata: Metadata = {
   title: "SognosCare for Residential Aged Care | Sognos",

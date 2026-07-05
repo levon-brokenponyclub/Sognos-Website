@@ -51,7 +51,7 @@ export default async function LogoStrip() {
                   width={150}
                   height={40}
                   className="h-10 w-auto object-contain md:h-10"
-                  style={{ filter: "brightness(0) invert(1)", opacity: 0.75 }}
+                  style={{ filter: "brightness(0) invert(1)", opacity: 1 }}
                 />
               </div>
             );

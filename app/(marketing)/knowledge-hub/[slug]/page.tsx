@@ -12,7 +12,7 @@ import { urlFor } from "@/lib/sanity/image";
 import {
   ArticleCard,
   type Article,
-} from "@/components/sections/KnowledgeHubArchive";
+} from "@/components/layout/sections/KnowledgeHubArchive";
 
 export const revalidate = 60;
 

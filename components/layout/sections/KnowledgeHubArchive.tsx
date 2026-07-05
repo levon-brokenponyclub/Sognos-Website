@@ -27,7 +27,29 @@ const CATEGORIES = [
   "Insights",
 ] as const;
 
+// Three-way pill state: "featured" (default) shows the featured block + intro
+// copy; "all" and each category filter the grid and swap the page title.
+type PillSelection = "featured" | "all" | (typeof CATEGORIES)[number];
+
+function resolveSelection(initial?: string | null): PillSelection {
+  if (initial === "featured") return "featured";
+  if (initial === "all") return "all";
+  if (initial && (CATEGORIES as readonly string[]).includes(initial)) {
+    return initial as (typeof CATEGORIES)[number];
+  }
+  return "featured";
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function pillClass(isActive: boolean): string {
+  return [
+    "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
+    isActive
+      ? "bg-sognos-navy text-white"
+      : "bg-gray-100 text-sognos-body hover:bg-gray-200",
+  ].join(" ");
+}
 
 const MONTHS = [
   "JAN",
@@ -109,23 +131,35 @@ export function ArticleCard({ article }: { article: Article }) {
 export default function KnowledgeHubArchive({
   articles,
   initialCategory = null,
+  title,
+  description,
 }: {
   articles: Article[];
   initialCategory?: string | null;
+  title: string;
+  description?: string;
 }) {
-  const safeInitialCategory =
-    initialCategory &&
-    (CATEGORIES as readonly string[]).includes(initialCategory)
-      ? initialCategory
-      : null;
-  const [activeCategory, setActiveCategory] = useState<string | null>(
-    safeInitialCategory,
+  const [selection, setSelection] = useState<PillSelection>(() =>
+    resolveSelection(initialCategory),
   );
 
+  const isFeatured = selection === "featured";
   const featured = articles[0] ?? null;
-  const grid = articles
-    .slice(1)
-    .filter((a) => (activeCategory ? a.category === activeCategory : true));
+
+  // Featured: all-but-first, unfiltered. All: full array, unfiltered.
+  // Category: full array, filtered (no featured card takes a slot here).
+  const grid = isFeatured
+    ? articles.slice(1)
+    : selection === "all"
+      ? articles
+      : articles.filter((a) => a.category === selection);
+
+  // Header title tracks the pill: intro title in Featured, else the pill label.
+  const headerTitle = isFeatured
+    ? title
+    : selection === "all"
+      ? "All Articles"
+      : selection;
 
   const categoryCounts = CATEGORIES.reduce<Record<string, number>>(
     (acc, cat) => {
@@ -137,35 +171,57 @@ export default function KnowledgeHubArchive({
 
   return (
     <>
-      {/* Category pills */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl pb-10 lg:px-6">
-          {/* Mobile: horizontal scroll snap slider. md+: wrap. */}
-          <div className="scrollbar-hide -mx-6 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
+      {/* Header — title/description, then category pills below */}
+      <section className="bg-white pt-32 pb-10 lg:pt-40">
+        <div className="mx-auto max-w-7xl px-6">
+          {/* Title zone — fixed height so the pills below never shift between
+              states. Featured: title + intro copy, top-aligned. Non-featured:
+              eyebrow + title pushed to the bottom (title moves down, eyebrow
+              above it), description hidden. */}
+          <div
+            className={`flex flex-col lg:min-h-[160px] ${
+              isFeatured ? "" : "lg:justify-end"
+            }`}
+          >
+            {!isFeatured && (
+              <p className="mb-4 inline-block text-xs font-semibold uppercase tracking-tight text-sognos-muted">
+                Knowledge Hub
+              </p>
+            )}
+            <h1 className="font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              {headerTitle}
+            </h1>
+            {isFeatured && description && (
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
+                {description}
+              </p>
+            )}
+          </div>
+
+          {/* Category pills — below title/description. Mobile: horizontal scroll slider. md+: wrap. */}
+          <div className="scrollbar-hide -mx-6 mt-10 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
+            {/* Special pills — no count badge */}
             <button
-              onClick={() => setActiveCategory(null)}
-              className={[
-                "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
-                activeCategory === null
-                  ? "bg-sognos-navy text-white"
-                  : "bg-gray-100 text-sognos-body hover:bg-gray-200",
-              ].join(" ")}
+              onClick={() => setSelection("featured")}
+              className={pillClass(selection === "featured")}
+            >
+              Featured
+            </button>
+            <button
+              onClick={() => setSelection("all")}
+              className={pillClass(selection === "all")}
             >
               All Articles
             </button>
+            {/* Category pills — keep counts */}
             {CATEGORIES.map((cat) => {
               const count = categoryCounts[cat] ?? 0;
-              const isActive = activeCategory === cat;
+              const isActive = selection === cat;
               return (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(isActive ? null : cat)}
-                  className={[
-                    "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
-                    isActive
-                      ? "bg-sognos-navy text-white"
-                      : "bg-gray-100 text-sognos-body hover:bg-gray-200",
-                  ].join(" ")}
+                  onClick={() => setSelection(cat)}
+                  className={pillClass(isActive)}
                 >
                   {cat}
                   {count > 0 && (
@@ -184,13 +240,13 @@ export default function KnowledgeHubArchive({
         </div>
       </section>
 
-      {/* Featured article — two-up: image left, meta right */}
-      {featured && (
-        <section className="bg-white pb-12 lg:pb-16">
+      {/* Featured article — two-up: image left, meta right (Featured state only) */}
+      {isFeatured && featured && (
+        <section className="bg-white pb-12 lg:pb-16 border-b border-sognos-line mb-12 lg:mb-16">
           <div className="mx-auto max-w-7xl px-6">
             <Link
               href={featured.href}
-              className="group grid items-center gap-8 lg:grid-cols-[2fr_1fr] lg:gap-12"
+              className="group grid items-start gap-8 lg:grid-cols-[760px_1fr] lg:gap-12"
             >
               {/* Image */}
               <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
@@ -202,48 +258,40 @@ export default function KnowledgeHubArchive({
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="h-full w-full bg-gray-200/70" />
+                  <div className="h-full w-full bg-gray-100" />
                 )}
               </div>
-              {/* Meta */}
-              <div>
-                <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
-                  {featured.category}
-                </span>
-                <h2 className="mt-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors group-hover:text-sognos-navy-dark/70 md:text-3xl lg:text-4xl">
-                  {featured.title}
-                </h2>
-                <p className="mt-4 line-clamp-3 text-base leading-relaxed text-sognos-muted">
-                  {featured.excerpt}
-                </p>
+              {/* Meta — category/title/excerpt top, date/read-time bottom */}
+              <div className="flex h-full flex-col justify-between">
+                <div>
+                  <span className="inline-flex w-fit items-center rounded bg-gray-100 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-heading">
+                    {featured.category}
+                  </span>
+                  <h2 className="mt-4 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-pretty md:text-4xl">
+                    {featured.title}
+                  </h2>
+                  <p className="mt-4 line-clamp-3 text-base leading-relaxed text-gray-600">
+                    {featured.excerpt}
+                  </p>
+                </div>
                 <ArticleMeta
                   publishedAt={featured.publishedAt}
                   readTime={featured.readTime}
                 />
-                {featured.author && (
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-500">
-                      {featured.author.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-sm font-medium text-sognos-heading">
-                      {featured.author}
-                    </span>
-                  </div>
-                )}
               </div>
             </Link>
-            <hr className="mt-12 border-gray-200" />
           </div>
         </section>
       )}
 
       {/* All articles — 4-up grid */}
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white pb-12 lg:pb-16">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="mb-8 text-sm font-semibold text-sognos-heading">
-            <span className="mr-1.5 text-sognos-blue-accent">●</span>All
-            articles
-          </p>
+          {isFeatured && (
+            <p className="mb-8 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
+              All articles
+            </p>
+          )}
           {grid.length > 0 ? (
             <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
               {grid.map((article) => (

@@ -220,8 +220,8 @@
 
   /* ── Sognos colour system (lean) ── */
   /* Core brand */
-  --sognos-navy-dark: #0f1936;
-  --sognos-navy: #152248;
+  --sognos-navy-dark: #060e28;
+  --sognos-navy: #060e28;
   --sognos-blue-accent: #1d96fc;
   /* Content / text */
   --sognos-heading: #0f1936;
@@ -230,22 +230,22 @@
   /* Lines */
   --sognos-line: #e2e8f0;
   /* Product: SognosCare */
-  --sognos-care-dark: #03112f;
-  --sognos-care-base: #152248;
+  --sognos-care-dark: #09122a;
+  --sognos-care-base: #203e71;
   --sognos-care-gradient: linear-gradient(
     to bottom right,
-    #5aa0ff,
+    #203e71,
     #3b6fe0,
-    #1f2a78
+    #122348
   );
   /* Product: SognosRoster */
-  --sognos-roster-dark: #0b3a66;
+  --sognos-roster-dark: #191e41;
   --sognos-roster-base: #59bbf7;
   --sognos-roster-gradient: linear-gradient(
     to bottom right,
-    #6fc6fb,
-    #2f97d6,
-    #0e4f86
+    #1d96fc,
+    #104b90,
+    #03112f
   );
   /* Product: Sognos Genogram */
   --sognos-genogram-dark: #250438;

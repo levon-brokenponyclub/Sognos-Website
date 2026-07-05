@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import SolutionUseCases from "@/components/sections/SolutionUseCases";
-import LogoStrip from "@/components/sections/LogoStrip";
-import SolutionHeroDemoButton from "@/components/sections/SolutionHeroDemoButton";
+import SolutionUseCases from "@/components/layout/sections/SolutionUseCases";
+import LogoStrip from "@/components/layout/sections/LogoStrip";
+import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { SOLUTIONS } from "@/lib/constants";
 import { getSolutionContent, getSolutionMeta } from "@/lib/solutions-content";
@@ -64,7 +64,7 @@ export default async function SolutionPage({
               <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 {content.hero.headline}
               </h1>
-              <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-[#4B5563]">
+              <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-gray-600">
                 {content.hero.subtext}
               </p>
               <div className="mt-9">

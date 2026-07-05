@@ -1,10 +1,7 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-
 type Props = {
-  company: string;
+  company?: string;
   description?: string;
+  customer?: string;
   industry?: string;
   state?: string;
   size?: string;
@@ -25,7 +22,12 @@ function ShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on LinkedIn"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 25 24"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M7.44 5C7.44 5.81 6.95 6.55 6.19 6.85 5.44 7.16 4.57 6.98 4.01 6.39 3.44 5.81 3.28 4.94 3.61 4.19 3.94 3.45 4.69 2.98 5.5 3c1.08.03 1.94.92 1.94 2ZM7.5 8.48H3.5V21h4V8.48Zm6.32 0H9.84V21h3.82v-6.57c0-3.66 4.77-3.96 4.77 0V21H22.5v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"
             fill="currentColor"
@@ -39,7 +41,12 @@ function ShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on X"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 21 20"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M15.67 1.875H18.43L12.4 8.758l7.09 9.367h-5.55L9.6 12.444l-4.97 5.681H1.87l6.44-7.363L1.51 1.875H7.2l3.93 5.192 4.54-5.192Zm-.97 15.6h1.53L6.37 3.438H4.73l10.97 14.037Z"
             fill="currentColor"
@@ -53,7 +60,12 @@ function ShareIcons({ postUrl }: { postUrl: string }) {
         className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on Facebook"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          className="h-4 w-4"
+        >
           <path
             d="M14 13.5h2.5l1-4H14V7.5c0-1.03 0-2 2-2H17.5V2.14C17.17 2.1 15.94 2 14.64 2 11.93 2 10 3.66 10 6.7V9.5H7v4h3V22h4v-8.5Z"
             fill="currentColor"
@@ -69,6 +81,7 @@ function ShareIcons({ postUrl }: { postUrl: string }) {
 export default function StoryMetaRail({
   company,
   description,
+  customer,
   industry,
   state,
   size,
@@ -76,9 +89,8 @@ export default function StoryMetaRail({
   downloadUrl,
   postUrl,
 }: Props) {
-  const prefersReducedMotion = useReducedMotion();
-
   const meta = [
+    { label: "Customer", value: customer },
     { label: "Industry", value: industry },
     { label: "State", value: state },
     { label: "Size", value: size },
@@ -86,32 +98,27 @@ export default function StoryMetaRail({
   ].filter((m) => m.value);
 
   return (
-    <motion.aside
-      initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-      whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -20% 0px" }}
-      transition={
-        prefersReducedMotion
-          ? { duration: 0.2 }
-          : { duration: 0.45, ease: [0.16, 1, 0.3, 1] }
-      }
-      className="mb-12 lg:sticky lg:top-[104px] lg:mb-0 lg:self-start"
-    >
-      <h3 className="font-heading text-lg font-medium leading-snug text-sognos-heading">
-        {company}
-      </h3>
-      {description && (
-        <p className="mt-3 text-sm leading-relaxed text-sognos-body/60">
-          {description}
-        </p>
+    <aside className="mb-12 lg:sticky lg:top-[104px] lg:mb-0 lg:self-start">
+      {(company || description) && (
+        <>
+          {company && (
+            <h3 className="font-heading text-lg font-medium leading-snug text-sognos-heading">
+              {company}
+            </h3>
+          )}
+          {description && (
+            <p className="mt-3 text-sm leading-relaxed text-sognos-body/60">
+              {description}
+            </p>
+          )}
+          <div className="my-6 h-px bg-sognos-line" />
+        </>
       )}
-
-      <div className="my-6 h-px bg-gray-200" />
 
       <div className="flex flex-col gap-6">
         {meta.map((m) => (
           <div key={m.label}>
-            <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-body/40">
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
               {m.label}
             </p>
             <p className="text-sm font-medium text-sognos-body">{m.value}</p>
@@ -121,7 +128,7 @@ export default function StoryMetaRail({
 
       {downloadUrl && (
         <>
-          <div className="my-6 h-px bg-gray-200" />
+          <div className="my-6 h-px bg-sognos-line" />
           <a
             href={downloadUrl}
             download
@@ -141,14 +148,14 @@ export default function StoryMetaRail({
         </>
       )}
 
-      <div className="my-6 h-px bg-gray-200" />
+      <div className="my-6 h-px bg-sognos-line" />
 
       <div>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-sognos-body/40">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
           Share
         </p>
         <ShareIcons postUrl={postUrl} />
       </div>
-    </motion.aside>
+    </aside>
   );
 }

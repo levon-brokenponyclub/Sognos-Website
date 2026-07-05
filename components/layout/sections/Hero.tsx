@@ -69,7 +69,7 @@ export default function Hero({
           <button
             type="button"
             onClick={() => openModal()}
-            className="rounded-full bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-all duration-300 hover:bg-sognos-blue-accent hover:text-white"
+            className="rounded-sm bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-all duration-300 hover:bg-sognos-blue-accent hover:text-white"
           >
             {primaryCTA.name}
           </button>

@@ -19,11 +19,11 @@ export default function FooterColumns({ columns }: { columns: FooterColumn[] }) 
   };
 
   return (
-    <div className="flex flex-1 flex-col md:flex-row md:justify-end md:gap-10">
+    <div className="flex flex-1 flex-col md:contents">
       {columns.map((column) => {
         const isOpen = openCols.has(column.title);
         return (
-          <div key={column.title} className="border-b border-white/10 last:border-b-0 md:border-0 md:flex md:flex-col md:gap-y-4">
+          <div key={column.title} className="border-b border-white/10 last:border-b-0 md:border-0 md:flex md:flex-1 md:min-w-0 md:flex-col md:gap-y-4">
 
             {/* Row header */}
             <button
@@ -31,7 +31,7 @@ export default function FooterColumns({ columns }: { columns: FooterColumn[] }) 
               onClick={() => toggle(column.title)}
               className="flex w-full items-center justify-between py-4 text-left md:cursor-default md:py-0 md:pointer-events-none"
             >
-              <span className="text-sm font-medium text-white">{column.title}</span>
+              <span className="text-lg font-medium text-white">{column.title}</span>
               <motion.svg
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
@@ -60,7 +60,7 @@ export default function FooterColumns({ columns }: { columns: FooterColumn[] }) 
                         <Link
                           key={`${column.title}-${link.href}`}
                           href={link.href}
-                          className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
+                          className="text-sm text-white/80 transition-colors duration-200 hover:text-white"
                         >
                           {link.label}
                         </Link>
@@ -77,7 +77,7 @@ export default function FooterColumns({ columns }: { columns: FooterColumn[] }) 
                 <Link
                   key={`${column.title}-${link.href}`}
                   href={link.href}
-                  className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
+                  className="text-sm text-white/80 transition-colors duration-200 hover:text-white"
                 >
                   {link.label}
                 </Link>

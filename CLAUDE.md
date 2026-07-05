@@ -289,9 +289,9 @@ Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live
 - **Framer Motion drawer pattern** — established in ProductSection: `AnimatePresence` wraps conditional render, outer `motion.div` fades, inner panel uses `y: "100%" → 0` spring (`damping: 30, stiffness: 300`)
 - **Next.js 15 async params** — page components receiving `params` must be `async`; use `const { slug } = await params` before accessing route segments
 - **Bulk identical class swaps** — use `sed -i '' 's/old/new/g' file1 file2 file3` rather than individual Edits across multiple files
-- **EditionCards.tsx vs ProductCard.tsx** — editions slider lives in `components/sections/sognoscare/EditionCards.tsx`; `ProductCard.tsx` is the homepage product card — do not confuse
+- **EditionCards.tsx vs ProductCard.tsx** — editions slider lives in `components/layout/sections/sognoscare/EditionCards.tsx`; `ProductCard.tsx` is the homepage product card — do not confuse
 - **Drawer scroll isolation** — requires both `document.body.style.overflow = "hidden"` on expand AND `overscroll-contain` on the inner scroll div; both are needed
-- **ProductCustomerStories** — shared customer stories component at `components/sections/ProductCustomerStories.tsx`; product `Stories.tsx` files are thin wrappers around it
+- **ProductCustomerStories** — shared customer stories component at `components/layout/sections/ProductCustomerStories.tsx`; product `Stories.tsx` files are thin wrappers around it
 - **Knowledge Hub post template** — `app/(marketing)/knowledge-hub/[slug]/page.tsx`; all 6 posts hardcoded for dev, `twoCol: true` enables sticky-meta + scrollable-content layout
 - **Navbar scroll model** — three states: `top` (transparent, white), `hidden` (slides off on scroll-down), `peek` (white bar on scroll-up). `headerHidden` guard includes `!openMenu && !mobileOpen` so an open dropdown never hides the bar. State lives in `Navbar.tsx`; do not add per-section `data-header-dark` listeners back.
 - **ProductSubNav sections prop** — shape is `{ label: string; id: string; href?: string }[]` (matches `SubNavSection` exported from `ProductSubNav.tsx`). `href` is optional — defaults to `#${id}` if omitted.

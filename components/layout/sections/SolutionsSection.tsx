@@ -120,7 +120,10 @@ export default function SolutionsSection() {
   }
 
   return (
-    <section id="solutions" className="w-full bg-white border-b border-gray-100">
+    <section
+      id="solutions"
+      className="w-full bg-white border-b border-sognos-line"
+    >
       <div className="max-w-7xl mx-auto px-6 py-24">
         <div className="flex gap-16 xl:gap-20 items-start">
           {/* Sticky scroll-spy rail */}

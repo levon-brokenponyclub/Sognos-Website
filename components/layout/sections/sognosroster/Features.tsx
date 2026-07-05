@@ -1,7 +1,7 @@
-import FeaturePlaceholderImage from "@/components/sections/FeaturePlaceholderImage";
+import FeaturePlaceholderImage from "@/components/layout/sections/FeaturePlaceholderImage";
 import ProductFeaturesScroll, {
   type ScrollFeature,
-} from "@/components/sections/ProductFeaturesScroll";
+} from "@/components/layout/sections/ProductFeaturesScroll";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 

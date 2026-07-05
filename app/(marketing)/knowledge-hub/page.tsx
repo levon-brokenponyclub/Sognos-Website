@@ -1,6 +1,6 @@
 import KnowledgeHubArchive, {
   type Article,
-} from "@/components/sections/KnowledgeHubArchive";
+} from "@/components/layout/sections/KnowledgeHubArchive";
 import { getKnowledgePostArchive } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -36,25 +36,11 @@ export default async function KnowledgeHubPage({
   }));
 
   return (
-    <>
-      {/* Hero — light, left-aligned, matches Solutions hero */}
-      <section className="bg-white pt-32 pb-12 lg:pt-40 lg:pb-16">
-        <div className="mx-auto max-w-7xl px-6">
-          <h1 className="font-heading text-5xl font-medium tracking-[-0.02em] text-sognos-heading md:text-6xl lg:text-7xl">
-            Knowledge Hub
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#4B5563]">
-            News, guides, case studies, and product updates - covering care
-            operations, workforce scheduling, compliance, and the sectors we
-            serve.
-          </p>
-        </div>
-      </section>
-
-      <KnowledgeHubArchive
-        articles={articles}
-        initialCategory={category ?? null}
-      />
-    </>
+    <KnowledgeHubArchive
+      articles={articles}
+      initialCategory={category ?? null}
+      title="Knowledge Hub"
+      description="News, guides, case studies, and product updates - covering care operations, workforce scheduling, compliance, and the sectors we serve."
+    />
   );
 }

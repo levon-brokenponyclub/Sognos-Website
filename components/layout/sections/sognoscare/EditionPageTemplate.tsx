@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import EditionCards from "@/components/sections/sognoscare/EditionCards";
-import CTASection from "@/components/sections/CTASection";
-import ProductCustomerStories from "@/components/sections/ProductCustomerStories";
+import EditionCards from "@/components/layout/sections/sognoscare/EditionCards";
+import CTASection from "@/components/layout/sections/CTASection";
+import ProductCustomerStories from "@/components/layout/sections/ProductCustomerStories";
 import ProductFeaturesScroll, {
   type ScrollFeature,
-} from "@/components/sections/ProductFeaturesScroll";
+} from "@/components/layout/sections/ProductFeaturesScroll";
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
 
 // ─── Types ────────────────────────────────────────────────────────────────────

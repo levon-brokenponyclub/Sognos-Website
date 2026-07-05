@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import LifeAtSognos from "@/components/sections/LifeAtSognos";
-import OpenRoles from "@/components/sections/OpenRoles";
+import LifeAtSognos from "@/components/layout/sections/LifeAtSognos";
+import OpenRoles from "@/components/layout/sections/OpenRoles";
 
 export const metadata: Metadata = {
   title: "Careers | Sognos",

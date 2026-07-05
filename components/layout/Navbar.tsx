@@ -24,6 +24,12 @@ const DARK_HERO_PATHS = new Set([
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
 
+// ── Hide-on-scroll tuning ──────────────────────────────────────────────────────
+// Bar stays visible until scrolled past HIDE_AFTER, then hides on scroll-down /
+// peeks on scroll-up. DELTA_MIN ignores sub-pixel jitter.
+const HIDE_AFTER = 80;
+const DELTA_MIN = 6;
+
 // ── Light / dark theme seam ────────────────────────────────────────────────────
 
 type NavVariant = "light" | "dark";
@@ -46,7 +52,8 @@ const THEMES: Record<NavVariant, NavTheme> = {
     hoverPill: "bg-sognos-navy-dark",
     navGroup: "bg-gray-100 rounded-full p-2",
     logoFilter: "none",
-    primaryBtn: "bg-sognos-navy-dark text-white hover:bg-sognos-blue-accent hover:text-white",
+    primaryBtn:
+      "bg-sognos-navy-dark text-white hover:bg-sognos-blue-accent hover:text-white",
     secondaryText: "text-sognos-heading hover:text-sognos-heading",
     hamburger: "text-sognos-heading/60 hover:text-sognos-heading",
   },
@@ -54,9 +61,10 @@ const THEMES: Record<NavVariant, NavTheme> = {
     text: "text-white hover:text-sognos-heading",
     activeText: "text-sognos-heading",
     hoverPill: "bg-white",
-    navGroup: "bg-sognos-navy rounded-full p-2",
+    navGroup: "bg-white/5 rounded-full p-2",
     logoFilter: "brightness(0) invert(1)",
-    primaryBtn: "bg-white text-sognos-navy-dark hover:bg-sognos-blue-accent hover:text-white",
+    primaryBtn:
+      "bg-white text-sognos-navy-dark hover:bg-sognos-blue-accent hover:text-white",
     secondaryText: "text-white hover:text-white",
     hamburger: "text-white/80 hover:text-white",
   },
@@ -259,14 +267,19 @@ export default function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrolled, setScrolled] = useState(false);
+  const [headerHidden, setHeaderHidden] = useState(false);
   // Measured dimensions of the active dropdown content — drives CSS transition on card
   const [dropdownWidth, setDropdownWidth] = useState(0);
   const [dropdownHeight, setDropdownHeight] = useState(0);
 
-  // Mobile slide direction
-  const mobilePanelDirectionRef = useRef<"forward" | "back">("forward");
-  // Desktop content directional slide
-  const slideDirectionRef = useRef<"forward" | "back">("forward");
+  // Mobile slide direction — state (not ref) because it drives motion.div animation values during render
+  const [mobilePanelDirection, setMobilePanelDirection] = useState<
+    "forward" | "back"
+  >("forward");
+  // Desktop content directional slide — state (not ref) because it drives motion.div animation values during render
+  const [slideDirection, setSlideDirection] = useState<"forward" | "back">(
+    "forward",
+  );
   // Tracks current open item's nav index so direction can be computed on switch
   const prevOpenIndexRef = useRef<number>(-1);
 
@@ -281,6 +294,13 @@ export default function Navbar({
   useEffect(() => {
     openMenuRef.current = openMenu;
   }, [openMenu]);
+  // Ref mirror of mobileOpen — read inside the scroll handler without re-subscribing
+  const mobileOpenRef = useRef(false);
+  useEffect(() => {
+    mobileOpenRef.current = mobileOpen;
+  }, [mobileOpen]);
+  // Last scroll position — drives scroll-direction detection
+  const lastScrollYRef = useRef(0);
 
   const activeGroup = nav.find(
     (g) => g.label === openMenu && (g.megaMenu || g.items),
@@ -311,13 +331,26 @@ export default function Navbar({
     setDropdownHeight(height);
   }, [openMenu]);
 
-  // ── Scroll state — always visible; only tracks past-top for bar bg swap ──────
+  // ── Scroll state — bar bg swap (past-top) + three-state hide/peek ────────────
+  // top: near the top, always shown. hidden: scrolled down past HIDE_AFTER.
+  // peek: scrolled up. Never hides while a dropdown or the mobile menu is open.
 
   useEffect(() => {
     let ticking = false;
 
     const update = () => {
-      setScrolled(window.scrollY > 8);
+      const y = window.scrollY;
+      const delta = y - lastScrollYRef.current;
+
+      setScrolled(y > 8);
+
+      if (openMenuRef.current || mobileOpenRef.current || y < HIDE_AFTER) {
+        setHeaderHidden(false);
+      } else if (Math.abs(delta) > DELTA_MIN) {
+        setHeaderHidden(delta > 0);
+      }
+
+      lastScrollYRef.current = y;
       ticking = false;
     };
 
@@ -332,6 +365,11 @@ export default function Navbar({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Reveal the bar whenever a dropdown or the mobile menu opens (scroll may not fire).
+  useEffect(() => {
+    if (openMenu || mobileOpen) setHeaderHidden(false);
+  }, [openMenu, mobileOpen]);
 
   // ── Body scroll lock ──────────────────────────────────────────────────────────
 
@@ -397,10 +435,11 @@ export default function Navbar({
   // Set slide direction and update prevOpenIndexRef before calling setOpenMenu
   const recordDirection = (label: string) => {
     const newIndex = nav.findIndex((g) => g.label === label);
-    slideDirectionRef.current =
+    setSlideDirection(
       prevOpenIndexRef.current === -1 || newIndex > prevOpenIndexRef.current
         ? "forward"
-        : "back";
+        : "back",
+    );
     prevOpenIndexRef.current = newIndex;
   };
 
@@ -466,12 +505,12 @@ export default function Navbar({
   };
 
   const goToSubPanel = (label: string) => {
-    mobilePanelDirectionRef.current = "forward";
+    setMobilePanelDirection("forward");
     setMobilePanel(label);
   };
 
   const goToRoot = () => {
-    mobilePanelDirectionRef.current = "back";
+    setMobilePanelDirection("back");
     setMobilePanel("root");
   };
 
@@ -497,12 +536,13 @@ export default function Navbar({
         }}
       />
 
-      {/* ── Header — always visible; bar bg only differs on dark-hero pages ──── */}
+      {/* ── Header — hides on scroll-down, peeks on scroll-up ─────────────────── */}
       <header
         ref={headerRef}
         className={[
-          "fixed inset-x-0 top-0 z-50",
-          "transition-colors duration-300 ease-in-out",
+          "fixed inset-x-0 top-0 z-50 will-change-transform",
+          "transition-[transform,background-color,border-color] duration-300 ease-in-out",
+          headerHidden ? "-translate-y-full" : "translate-y-0",
           useTransparent
             ? barTransparent
               ? "bg-transparent"
@@ -593,7 +633,7 @@ export default function Navbar({
                           }
                         }}
                         className={[
-                          "relative px-4 py-2.5 text-base font-normal cursor-pointer rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          "relative px-4 py-2.5 text-base font-normal cursor-pointer rounded-full tracking-tight transition-colors duration-200",
                           isActive ? t.activeText : t.text,
                         ].join(" ")}
                       >
@@ -636,7 +676,7 @@ export default function Navbar({
                         onClick={closeAll}
                         onMouseEnter={() => setHovered(group.label)}
                         className={[
-                          "relative block px-4 py-3 text-base font-medium rounded-full tracking-[-0.002em] transition-colors duration-200",
+                          "relative block px-4 py-3 text-base font-medium rounded-full tracking-tight transition-colors duration-200",
                           isActive ? t.activeText : t.text,
                         ].join(" ")}
                       >
@@ -666,7 +706,7 @@ export default function Navbar({
             <div className="flex items-center gap-x-2 justify-self-end">
               {/* Desktop CTAs */}
               <div className="hidden lg:flex items-center gap-x-1">
-                <Link
+                {/* <Link
                   href={navCTA.secondary.href}
                   onClick={closeAll}
                   className={[
@@ -675,12 +715,12 @@ export default function Navbar({
                   ].join(" ")}
                 >
                   {navCTA.secondary.name}
-                </Link>
+                </Link> */}
                 <Link
                   href="#book-demo"
                   onClick={onBookDemoClick}
                   className={[
-                    "inline-flex items-center justify-center h-12 rounded-full px-5 text-base font-normal tracking-[-0.002em] transition-colors duration-150",
+                    "inline-flex items-center justify-center h-12 rounded-sm px-4 text-base font-normal tracking-tight transition-colors duration-200",
                     t.primaryBtn,
                   ].join(" ")}
                 >
@@ -808,7 +848,7 @@ export default function Navbar({
                           : {
                               opacity: 0,
                               x:
-                                slideDirectionRef.current === "forward"
+                                slideDirection === "forward"
                                   ? 200
                                   : -200,
                             }
@@ -820,7 +860,7 @@ export default function Navbar({
                           : {
                               opacity: 0,
                               x:
-                                slideDirectionRef.current === "forward"
+                                slideDirection === "forward"
                                   ? -200
                                   : 200,
                             }
@@ -861,7 +901,7 @@ export default function Navbar({
                 <motion.div
                   key="root"
                   initial={{
-                    x: mobilePanelDirectionRef.current === "back" ? "-100%" : 0,
+                    x: mobilePanelDirection === "back" ? "-100%" : 0,
                   }}
                   animate={{ x: 0 }}
                   exit={{ x: "-100%" }}

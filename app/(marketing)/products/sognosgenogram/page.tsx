@@ -1,8 +1,8 @@
-import GenogramHero from "@/components/sections/sognosgenogram/Hero";
-import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
-import GenogramProblems from "@/components/sections/sognosgenogram/Problems";
-import GenogramFeatures from "@/components/sections/sognosgenogram/Features";
-import GenogramStories from "@/components/sections/sognosgenogram/Stories";
+import GenogramHero from "@/components/layout/sections/sognosgenogram/Hero";
+import ProductTrustStrip from "@/components/layout/sections/ProductTrustStrip";
+import GenogramProblems from "@/components/layout/sections/sognosgenogram/Problems";
+import GenogramFeatures from "@/components/layout/sections/sognosgenogram/Features";
+import GenogramStories from "@/components/layout/sections/sognosgenogram/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 

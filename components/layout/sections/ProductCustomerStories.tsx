@@ -37,7 +37,7 @@ export const ALL_STORIES: CaseStudy[] = [
     logo: "/logos/flourish-australia-logo.png",
     panelImage: "/images/customers/flourish-australia.avif",
     quote:
-      "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!",
+      "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - Thank you!",
     author: "Susan McCarthy",
     role: "Chief Operating Officer, Flourish Australia",
     href: "/customer-stories/flourish-australia",
@@ -79,6 +79,28 @@ export const ALL_STORIES: CaseStudy[] = [
     href: "/customer-stories/gentari",
   },
 ];
+
+export function SeeMoreLink({ className }: { className?: string }) {
+  return (
+    <Link
+      href="/customer-stories"
+      className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-heading ${className ?? ""}`}
+    >
+      <span>See more customer stories</span>
+      <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
+        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true" className="w-3">
+          <path
+            d="M3 7h8M7 3l4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </Link>
+  );
+}
 
 function ChevronLeft({ className }: { className?: string }) {
   return (
@@ -167,12 +189,18 @@ export default function ProductCustomerStories({
   );
 
   return (
-    <section id="stories" className="w-full bg-white overflow-hidden">
+    <section
+      id="stories"
+      className="w-full bg-white overflow-hidden border-b border-sognos-line"
+    >
       {/* Heading — constrained to max-w-7xl */}
-      <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-8">
-        <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-navy-dark tracking-tight">
-          Customer Stories
-        </h2>
+      <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-14">
+        <div className="flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start">
+          <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
+            Customer Stories
+          </h2>
+          <SeeMoreLink className="max-sm:hidden" />
+        </div>
       </div>
 
       {/* Embla viewport — full section width (breaks out of max-w-7xl) */}
@@ -222,6 +250,7 @@ export default function ProductCustomerStories({
       {/* Chrome — constrained to max-w-7xl */}
       {showChrome && (
         <div className="max-w-7xl w-full mx-auto px-6 pb-16 lg:pb-24">
+          <SeeMoreLink className="mb-8 sm:hidden" />
           <div className="pt-8 flex items-center justify-between">
             <div className="hidden flex-1 lg:block" />
             {/* Dots */}
@@ -271,7 +300,11 @@ export default function ProductCustomerStories({
       )}
 
       {/* Single-story bottom padding */}
-      {!showChrome && <div className="pb-16 lg:pb-24" />}
+      {!showChrome && (
+        <div className="max-w-7xl w-full mx-auto px-6 pt-8 pb-16 lg:pb-24">
+          <SeeMoreLink className="sm:hidden" />
+        </div>
+      )}
     </section>
   );
 }
@@ -285,45 +318,52 @@ function StoryCard({
   bg: string;
   bgColor?: string;
 }) {
+  const authorLine = [study.author, study.role].filter(Boolean).join(", ");
+
   return (
     <div
       className={`rounded-lg overflow-hidden ${bgColor ? "" : bg}`}
       style={bgColor ? { backgroundColor: bgColor } : undefined}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 min-h-[360px] md:min-h-[400px]">
-        {/* Left — quote top, author/role + link bottom-LEFT, logo bottom-RIGHT */}
-        <div className="md:col-span-8 flex flex-col p-6 lg:p-10">
-          <blockquote className="relative mb-6 lg:mb-8 before:hidden after:hidden">
-            <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
-              {study.quote}
-            </p>
-          </blockquote>
-          <Link
-            href={study.href}
-            className="mt-3 inline-block w-fit text-sm font-medium text-white underline underline-offset-4 hover:opacity-60 transition-opacity"
-          >
-            Read Customer Story
-          </Link>
-          {/* Bottom row: author/role + link on LEFT, logo on RIGHT */}
-          <div className="mt-auto pt-6 flex items-end justify-between gap-6">
-            <div>
-              <p className="text-base font-bold text-white">{study.author}</p>
-              <p className="text-base mt-0.5 text-white">{study.role}</p>
-            </div>
-            {study.logo && (
+      <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[360px] md:min-h-[460px]">
+        {/* Left panel — logo top-left, "Read full story" top-right, quote + author bottom */}
+        <div className="md:col-span-9 flex flex-col p-6 lg:p-10">
+          {/* Top row: logo left, outline button right */}
+          <div className="flex items-center justify-between gap-4">
+            {study.logo ? (
               <Image
                 src={study.logo}
                 alt={study.company}
                 width={140}
                 height={40}
-                className="h-13 w-auto max-w-[160px] object-contain brightness-0 invert flex-shrink-0"
+                className="h-8 w-auto max-w-[160px] object-contain object-left brightness-0 invert flex-shrink-0"
               />
+            ) : (
+              <span />
+            )}
+            <Link
+              href={study.href}
+              className="inline-flex items-center justify-center h-12 rounded-sm border border-white px-4 text-base font-normal text-white transition-colors duration-200 hover:bg-white hover:border-white hover:text-sognos-heading"
+            >
+              Read full story
+            </Link>
+          </div>
+
+          {/* Bottom: quote + one-line author,role,company */}
+          <div className="mt-auto pt-8">
+            <blockquote className="relative mb-4 before:hidden after:hidden">
+              <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
+                {study.quote}
+              </p>
+            </blockquote>
+            {authorLine && (
+              <p className="text-sm text-white/70">{authorLine}</p>
             )}
           </div>
         </div>
 
-        {/* Right — full-bleed image, flush to card edges */}
-        <div className="relative md:col-span-4 min-h-[280px] md:min-h-0 bg-white/5">
+        {/* Right panel — full-bleed image, flush to card edges (clipped by rounded-lg) */}
+        <div className="relative md:col-span-3 min-h-[280px] md:min-h-0 bg-white/5">
           {study.panelVideo ? (
             <video
               src={study.panelVideo}
@@ -340,7 +380,7 @@ function StoryCard({
               fill
               priority
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 40vw"
+              sizes="(max-width: 768px) 100vw, 42vw"
             />
           ) : null}
         </div>

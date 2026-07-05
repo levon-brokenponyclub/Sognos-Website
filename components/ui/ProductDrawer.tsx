@@ -9,7 +9,7 @@ import { useBookDemo } from "@/lib/BookDemoContext";
 import {
   PRODUCT_CARDS,
   ViewProductLink,
-} from "@/components/sections/ProductCard";
+} from "@/components/layout/sections/ProductCard";
 
 type DrawerState = "hidden" | "peek" | "expanded";
 

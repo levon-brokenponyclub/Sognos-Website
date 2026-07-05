@@ -1,10 +1,10 @@
-import SognoscareHero from "@/components/sections/sognoscare/Hero";
-import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
-import SognoscareProblems from "@/components/sections/sognoscare/Problems";
-import SognoscareFeatures from "@/components/sections/sognoscare/Features";
-import SognoscareEditions from "@/components/sections/sognoscare/Editions";
-import SognoscareAdvantages from "@/components/sections/sognoscare/Advantages";
-import SognoscareStories from "@/components/sections/sognoscare/Stories";
+import SognoscareHero from "@/components/layout/sections/sognoscare/Hero";
+import ProductTrustStrip from "@/components/layout/sections/ProductTrustStrip";
+import SognoscareProblems from "@/components/layout/sections/sognoscare/Problems";
+import SognoscareFeatures from "@/components/layout/sections/sognoscare/Features";
+import SognoscareEditions from "@/components/layout/sections/sognoscare/Editions";
+import SognoscareAdvantages from "@/components/layout/sections/sognoscare/Advantages";
+import SognoscareStories from "@/components/layout/sections/sognoscare/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { getSognoscarePageContent } from "@/lib/sanity/queries";

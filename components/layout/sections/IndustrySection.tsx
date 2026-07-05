@@ -47,8 +47,8 @@ export default function IndustrySection() {
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Header — heading left, arrows right (Cohere) */}
         <div className="flex w-full items-end justify-between gap-6 pb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading max-w-[550px]">
-            Powering progress across industries
+          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading max-w-4xl">
+            Purpose-built for service-intensive sectors
           </h2>
           <div className="flex shrink-0 gap-3">
             <ArrowButton
@@ -76,7 +76,7 @@ export default function IndustrySection() {
               href={ind.href}
               data-card
               aria-label={ind.name}
-              className="group/card relative shrink-0 snap-center overflow-hidden rounded-lg h-[289px] w-[289px] md:h-[399px] md:w-[399px] lg:h-[420px] lg:w-[420px]"
+              className="group/card relative shrink-0 snap-center overflow-hidden rounded h-[289px] w-[289px] md:h-[399px] md:w-[399px] lg:h-[420px] lg:w-[420px]"
             >
               <Image
                 src={CARD_IMAGES[ind.slug] ?? ind.image}
@@ -94,7 +94,13 @@ export default function IndustrySection() {
                   {ind.name}
                 </h3>
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sognos-body transition-transform duration-300 group-hover/card:translate-x-0.5">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                  >
                     <path
                       d="M3 7h8M7 3l4 4-4 4"
                       stroke="currentColor"

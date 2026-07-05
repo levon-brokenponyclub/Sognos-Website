@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import TeamSection from "@/components/sections/TeamSection";
-import SocialResponsibilitySection from "@/components/sections/SocialResponsibilitySection";
-import AboutBeliefs from "@/components/sections/AboutBeliefs";
-import AboutValues from "@/components/sections/AboutValues";
-import AboutStats from "@/components/sections/AboutStats";
-import AboutHeroImage from "@/components/sections/AboutHeroImage";
+import TeamSection from "@/components/layout/sections/TeamSection";
+import SocialResponsibilitySection from "@/components/layout/sections/SocialResponsibilitySection";
+import AboutBeliefs from "@/components/layout/sections/AboutBeliefs";
+import AboutValues from "@/components/layout/sections/AboutValues";
+import AboutStats from "@/components/layout/sections/AboutStats";
+import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -208,7 +208,7 @@ export default function AboutPage() {
 
       {/* Careers overview */}
       <section className="w-full bg-[#173465]">
-        {/* <div className="max-w-7xl w-full mx-auto px-6 py-24">
+        <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50 mb-4">
@@ -263,7 +263,7 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
-        </div> */}
+        </div>
       </section>
     </main>
   );

@@ -1,6 +1,6 @@
 import ProductCustomerStories, {
   type CaseStudy,
-} from "@/components/sections/ProductCustomerStories";
+} from "@/components/layout/sections/ProductCustomerStories";
 
 interface SognoscareStoriesProps {
   stories?: CaseStudy[] | null;

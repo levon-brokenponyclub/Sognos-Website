@@ -14,7 +14,7 @@ import {
   DEFAULT_SOGNOSCARE_PAGE_CONTENT,
   type SognoscarePageContent,
 } from "@/lib/content/sognoscarePage";
-import type { CaseStudy } from "@/components/sections/ProductCustomerStories";
+import type { CaseStudy } from "@/components/layout/sections/ProductCustomerStories";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 

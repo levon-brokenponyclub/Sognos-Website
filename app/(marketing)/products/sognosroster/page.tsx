@@ -1,9 +1,9 @@
-import SognoscareRosterHero from "@/components/sections/sognosroster/Hero";
-import ProductTrustStrip from "@/components/sections/ProductTrustStrip";
-import SognoscareRosterProblems from "@/components/sections/sognosroster/Problems";
-import SognoscareRosterFeatures from "@/components/sections/sognosroster/Features";
-import SognoscareRosterAdvantages from "@/components/sections/sognosroster/Advantages";
-import SognoscareRosterStories from "@/components/sections/sognosroster/Stories";
+import SognoscareRosterHero from "@/components/layout/sections/sognosroster/Hero";
+import ProductTrustStrip from "@/components/layout/sections/ProductTrustStrip";
+import SognoscareRosterProblems from "@/components/layout/sections/sognosroster/Problems";
+import SognoscareRosterFeatures from "@/components/layout/sections/sognosroster/Features";
+import SognoscareRosterAdvantages from "@/components/layout/sections/sognosroster/Advantages";
+import SognoscareRosterStories from "@/components/layout/sections/sognosroster/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 

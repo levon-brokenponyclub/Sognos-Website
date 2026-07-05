@@ -19,12 +19,7 @@ function SeeMoreLink({ className }: { className?: string }) {
     >
       <span>See more on the blog</span>
       <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
-        <svg
-          viewBox="0 0 14 14"
-          fill="none"
-          aria-hidden="true"
-          className="w-3"
-        >
+        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true" className="w-3">
           <path
             d="M3 7h8M7 3l4 4-4 4"
             stroke="currentColor"
@@ -62,7 +57,7 @@ export default function NewsInsightSection({
   return (
     <section className="w-full bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
-        <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-14">
+        <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-12">
           <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
             The latest news
           </h2>

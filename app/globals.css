@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./tokens.css";
-
+    
 @custom-variant dark (.dark &);
 
 /* ========================
@@ -27,9 +27,10 @@
 
 @theme inline {
   /* Fonts */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: angellist, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: angellist, ui-sans-serif, system-ui, sans-serif;
   --font-angellist: angellist, ui-sans-serif, system-ui, sans-serif;
+  --font-inter-stack: var(--font-inter), ui-sans-serif, system-ui, sans-serif; /* kept for dev — swap --font-sans back to this to restore Inter */
 
   /* Colors */
   --color-background: #ffffff;

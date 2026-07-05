@@ -1,14 +1,14 @@
-import Hero from "@/components/sections/Hero";
-import HomeProductCards from "@/components/sections/HomeProductCards";
-import LogoStrip from "@/components/sections/LogoStrip";
+import Hero from "@/components/layout/sections/Hero";
+import HomeProductCards from "@/components/layout/sections/HomeProductCards";
+import LogoStrip from "@/components/layout/sections/LogoStrip";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import HowSognosWorks from "@/components/sections/HowSognosWorks";
-import IndustrySection from "@/components/sections/IndustrySection";
-import SolutionsSection from "@/components/sections/SolutionsSection";
+import HowSognosWorks from "@/components/layout/sections/HowSognosWorks";
+import IndustrySection from "@/components/layout/sections/IndustrySection";
+import SolutionsSection from "@/components/layout/sections/SolutionsSection";
 import NewsInsightSection, {
   type NewsInsightArticle,
-} from "@/components/sections/NewsInsightSection";
-import CustomerStories from "@/components/sections/CustomerStories";
+} from "@/components/layout/sections/NewsInsightSection";
+import CustomerStories from "@/components/layout/sections/CustomerStories";
 import { getKnowledgePostArchive } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -39,8 +39,8 @@ export default async function HomePage() {
       <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
       <IndustrySection /> {/* "Powering progress across industries" */}
       <SolutionsSection /> {/* "Our models. Your business." */}
-      <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
       <CustomerStories /> {/* Embla gutter-inset slider, product-dark palette */}
+      <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
     </>
   );
 }

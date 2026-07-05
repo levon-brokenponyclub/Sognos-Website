@@ -110,8 +110,8 @@ export const nav: NavGroup[] = [
             href: "/company/social-responsibility",
           },
           { name: "Customer Stories", href: "/customer-stories" },
+          { name: "Careers", href: "/company/careers" },
           { name: "Contact", href: "/contact" },
-          // { name: "Careers", href: "/company/careers" },
         ],
       },
       // TEMP (menu-styling phase): Column 2 removed; restore after styling is complete.

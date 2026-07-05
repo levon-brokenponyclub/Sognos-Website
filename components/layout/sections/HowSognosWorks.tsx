@@ -25,7 +25,7 @@ export default function HowSognosWorks() {
   return (
     <section className="w-full bg-gray-100 py-16 md:py-[120px]">
       <div className="mx-auto max-w-7xl px-4">
-        <h2 className="mb-10 font-angellist text-3xl text-center tracking-tight font-medium text-sognos-heading">
+        <h2 className="mb-10 font-angellist text-3xl md:text-4xl text-center tracking-tight font-medium text-sognos-heading">
           Demand. Workforce. Outcomes.
         </h2>
 

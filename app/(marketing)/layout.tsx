@@ -1,6 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CTABand from "@/components/sections/CTABand";
+import CTABand from "@/components/layout/sections/CTABand";
 import BookDemoModal from "@/components/ui/BookDemoModal";
 import { BookDemoProvider } from "@/lib/BookDemoContext";
 import { CtaContentProvider } from "@/lib/CtaContentContext";

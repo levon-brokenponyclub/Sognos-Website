@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalPageRenderer } from "@/components/sections/LegalPageRenderer";
+import { LegalPageRenderer } from "@/components/layout/sections/LegalPageRenderer";
 import { getLegalPageBySlug } from "@/lib/sanity/queries";
 
 const SLUG = "privacy-policy";

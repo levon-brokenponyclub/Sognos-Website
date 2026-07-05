@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useBookDemo } from "@/lib/BookDemoContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import CTASection from "@/components/sections/CTASection";
+import CTASection from "@/components/layout/sections/CTASection";
 
 export default function BookDemoModal() {
   const { isOpen, defaultProduct, closeModal } = useBookDemo();

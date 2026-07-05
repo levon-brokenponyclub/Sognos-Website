@@ -23,7 +23,7 @@ export default function SognosRosterHero() {
     <section
       ref={heroRef}
       data-header-dark
-      className="relative overflow-hidden bg-sognos-roster-dark"
+      className="relative overflow-hidden bg-sognos-roster-gradient"
     >
       <motion.div style={{ y, opacity }} className="will-change-transform">
         <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
