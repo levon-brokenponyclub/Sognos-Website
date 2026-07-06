@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import type { ArticleSection } from "@/lib/portableText";
 
-export type ArticleSection = { id: string; label: string };
+export type { ArticleSection };
 
-// Scroll-spy rail for the customer-story body. Structure + detection logic
-// reuse the Solutions page rail verbatim (getDocTop checkpoint at scrollY+140,
-// rAF-throttled) — re-sourced from the article's h2 headings.
-export default function StoryArticleNav({
+// Shared scroll-spy rail for article-style pages (customer stories, knowledge
+// hub). Full-height vertical line + left-aligned rectangle active marker that
+// springs between rows. getDocTop checkpoint at scrollY+140, rAF-throttled.
+export default function ArticleScrollNav({
   sections,
   label = "In This Article",
 }: {
@@ -65,42 +66,48 @@ export default function StoryArticleNav({
   return (
     <nav
       aria-label="Article sections"
-      className="hidden lg:block w-44 xl:w-54 shrink-0"
+      className="relative hidden lg:block w-44 xl:w-54 shrink-0"
     >
-      <p className="mb-5 text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
+      {/* Full-height vertical rail line (light gray track) */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 w-px bg-sognos-line"
+      />
+      <p className="mb-5 pl-4 text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
         {label}
       </p>
       <div className="space-y-0.5">
-        {sections.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => scrollToSection(item.id)}
-            aria-selected={activeId === item.id}
-            className="group flex items-center gap-x-2.5 py-2 text-left w-full"
-          >
-            <span className="relative flex size-2 flex-none items-center justify-center">
-              {activeId === item.id ? (
+        {sections.map((item) => {
+          const isActive = activeId === item.id;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => scrollToSection(item.id)}
+              aria-selected={isActive}
+              className="group relative flex w-full items-center py-2 pl-4 text-left"
+            >
+              {/* Active marker — rectangle on the rail, springs between rows */}
+              {isActive && (
                 <motion.span
-                  layoutId="article-rail-bullet"
-                  className="absolute inset-0 rounded-full bg-current text-sognos-blue-accent"
+                  layoutId="article-rail-marker"
+                  aria-hidden="true"
+                  className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 bg-sognos-blue-accent"
                   transition={{ type: "spring", damping: 30, stiffness: 300 }}
                 />
-              ) : (
-                <span className="size-1.5 rounded-full bg-gray-300 transition-colors group-hover:bg-gray-400" />
               )}
-            </span>
-            <span
-              className={`text-sm font-medium transition-colors duration-300 ${
-                activeId === item.id
-                  ? "text-sognos-blue-accent"
-                  : "text-gray-400 group-hover:text-gray-600"
-              }`}
-            >
-              {item.label}
-            </span>
-          </button>
-        ))}
+              <span
+                className={`text-sm font-medium transition-colors duration-300 ${
+                  isActive
+                    ? "text-sognos-blue-accent"
+                    : "text-gray-400 group-hover:text-gray-600"
+                }`}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );

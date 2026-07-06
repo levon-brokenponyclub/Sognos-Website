@@ -14,13 +14,20 @@ import {
   type Article,
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import StoryMetaRail from "@/components/layout/sections/customer-stories/StoryMetaRail";
-import StoryArticleNav, {
-  type ArticleSection,
-} from "@/components/layout/sections/customer-stories/StoryArticleNav";
+import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
+import {
+  type PortableBlock,
+  slugify,
+  blockPlainText,
+  extractHeadings,
+} from "@/lib/portableText";
+import { ARTICLE_PROSE_MAX_W } from "@/lib/articleLayout";
+import PullQuote from "@/components/portable-text/PullQuote";
+import QuoteCallout from "@/components/portable-text/QuoteCallout";
+import StatRow from "@/components/portable-text/StatRow";
 import HeroScrollFade from "@/components/layout/sections/customer-stories/HeroScrollFade";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { BRAND_BG } from "@/lib/customerStoryBrand";
 
 export const revalidate = 60;
 
@@ -29,7 +36,7 @@ export const revalidate = 60;
 const H2 =
   "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading scroll-mt-28 md:scroll-mt-32";
 const PROSE =
-  "max-w-none text-base leading-relaxed text-sognos-body [&_p]:mb-5 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
+  "max-w-none text-base leading-relaxed text-sognos-body [&_p]:mb-5 [&_ul]:mb-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
 
 // ─── Static params ────────────────────────────────────────────────────────────
 
@@ -64,41 +71,6 @@ function parseQuoteAuthor(raw?: string): { author: string; role: string } {
     : { author: raw.trim(), role: "" };
 }
 
-// ─── Article-heading extraction (server pre-pass over Portable Text) ──────────
-
-type PortableBlock = {
-  _type?: string;
-  style?: string;
-  children?: { text?: string }[];
-};
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function blockPlainText(block: PortableBlock | undefined): string {
-  if (!block || !Array.isArray(block.children)) return "";
-  return block.children
-    .map((c) => c?.text ?? "")
-    .join("")
-    .trim();
-}
-
-function extractHeadings(body: unknown): ArticleSection[] {
-  if (!Array.isArray(body)) return [];
-  return (body as PortableBlock[])
-    .filter((b) => b?._type === "block" && b?.style === "h2")
-    .map((b) => {
-      const label = blockPlainText(b);
-      return { id: slugify(label), label };
-    })
-    .filter((h) => h.label && h.id);
-}
-
 function sidebarValue(
   sidebar: { label: string; value: string }[] | undefined,
   label: string,
@@ -107,16 +79,14 @@ function sidebarValue(
     ?.value;
 }
 
-const QUOTE_CARD_BG: Record<string, string> = {
-  sognoscare: "bg-sognos-care-dark",
-  sognosroster: "bg-sognos-roster-dark",
-  sognosgenogram: "bg-sognos-genogram-dark",
+// Colored callout-block backgrounds. Null / unmapped → brand blue accent.
+const CALLOUT_BG: Record<string, string> = {
+  orange: "bg-orange-600",
+  teal: "bg-teal-600",
+  blue: "bg-sognos-blue-accent",
+  purple: "bg-purple-600",
+  coral: "bg-rose-500",
 };
-
-function quoteCardBg(product: string | undefined): string {
-  const key = product?.toLowerCase().replace(/\s+/g, "");
-  return (key && QUOTE_CARD_BG[key]) || "bg-sognos-navy-dark";
-}
 
 // ─── PortableText components ──────────────────────────────────────────────────
 
@@ -137,13 +107,17 @@ const portableComponents: PortableTextComponents = {
     ),
   },
   list: {
-    bullet: ({ children }) => (
-      <ul className="mb-6 list-disc space-y-2 pl-6">{children}</ul>
-    ),
+    bullet: ({ children }) => <ul className="mb-6 space-y-2">{children}</ul>,
   },
   listItem: {
     bullet: ({ children }) => (
-      <li className="text-base leading-relaxed">{children}</li>
+      <li className="flex items-start gap-3 text-base leading-relaxed">
+        <span
+          aria-hidden="true"
+          className="mt-2 size-1.5 shrink-0 bg-sognos-blue-accent"
+        />
+        <span>{children}</span>
+      </li>
     ),
   },
   marks: {
@@ -174,6 +148,22 @@ const portableComponents: PortableTextComponents = {
         />
       );
     },
+    calloutBlock: ({ value }) => {
+      if (!value?.text) return null;
+      const bg =
+        (value.color && CALLOUT_BG[value.color as string]) ||
+        "bg-sognos-blue-accent";
+      return (
+        <div className={`my-10 w-full rounded-lg p-8 lg:p-10 ${bg}`}>
+          <p className="font-heading text-xl font-normal leading-snug text-white lg:text-2xl">
+            {value.text}
+          </p>
+        </div>
+      );
+    },
+    pullQuote: ({ value }) => <PullQuote {...value} />,
+    quoteCallout: ({ value }) => <QuoteCallout {...value} />,
+    statRow: ({ value }) => <StatRow {...value} />,
   },
 };
 
@@ -193,6 +183,9 @@ export default async function CustomerStoryPage({
   if (!story) notFound();
 
   const postUrl = `https://sognos.com.au/customer-stories/${slug}`;
+  const companyLogoUrl = story.companyLogo
+    ? urlFor(story.companyLogo).width(400).auto("format").url()
+    : null;
   const { author: quoteAuthor, role: quoteRole } = parseQuoteAuthor(
     story.quoteAuthor,
   );
@@ -200,15 +193,7 @@ export default async function CustomerStoryPage({
   const stateValue = sidebarValue(story.sidebar, "State");
   const sizeValue = sidebarValue(story.sidebar, "Size");
   const productValue = sidebarValue(story.sidebar, "Product");
-  const brandBg = story.brandColor ?? BRAND_BG[story.company];
-  const category = "Customer Stories";
   const sections = extractHeadings(story.body);
-
-  const stats = [
-    { label: "Industry", value: industryValue },
-    { label: "State", value: stateValue },
-    { label: "Size", value: sizeValue },
-  ].filter((s) => s.value);
 
   const latest: Article[] = archive
     .filter((s) => s.slug !== slug)
@@ -246,60 +231,63 @@ export default async function CustomerStoryPage({
             Back to Customer Stories
           </Link>
 
-          {/* Category — simplified label, no filled pill */}
-          <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
-            {category}
-          </p>
-
-          {/* Title — same size as before */}
-          <h1 className="mt-4 max-w-4xl font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-5xl">
-            {story.title}
-          </h1>
-
-          {/* 3-col grid: meta col-1 (description top + stats bottom), image col-2 */}
-          <div className="mt-12 lg:mt-16 lg:grid lg:grid-cols-3 lg:gap-16 xl:gap-20">
-            {/* Image col — right, col-span-2 */}
-            {story.heroImage && (
-              <div className="lg:col-span-2">
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded bg-white/5">
-                  <Image
-                    src={urlFor(story.heroImage)
-                      .width(1440)
-                      .auto("format")
-                      .url()}
-                    alt={story.company}
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 66vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            )}
-            {/* Meta col — description top, Industry/State/Size bottom */}
-            <div className="mb-10 flex flex-col lg:col-span-1 lg:mb-0">
-              {story.description && (
-                <p className="text-xl leading-normal text-white">
-                  {story.description}
+          {/* Two-up: left meta rail (line + Case Study + Industry) / right title + pull-quote */}
+          <div className="mt-10 lg:mt-14 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-16 xl:gap-20">
+            {/* Left rail — hero-only vertical line, does NOT extend into the body */}
+            <div className="mb-10 space-y-4 border-l border-white/20 pl-6 lg:mb-0">
+              <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
+                Case Study
+              </p>
+              {industryValue && (
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
+                  {industryValue}
                 </p>
               )}
+            </div>
 
-              {stats.length > 0 && (
-                <dl className="mt-10 flex flex-col lg:mt-auto lg:pt-16">
-                  {stats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="border-t border-white/10 py-4"
+            {/* Right — title + pull-quote */}
+            <div>
+              <h1 className="max-w-3xl font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-5xl">
+                {story.title}
+              </h1>
+
+              {story.quote && (
+                <figure className="mt-10 lg:mt-12">
+                  <blockquote
+                    className={`${ARTICLE_PROSE_MAX_W} font-heading text-2xl font-normal leading-snug text-white md:text-3xl lg:text-4xl`}
+                  >
+                    &ldquo;{story.quote}&rdquo;
+                  </blockquote>
+                  {(companyLogoUrl || quoteAuthor || quoteRole) && (
+                    <figcaption
+                      className={`mt-8 flex items-center gap-4 ${ARTICLE_PROSE_MAX_W}`}
                     >
-                      <dt className="text-xs font-semibold uppercase tracking-widest text-white/80">
-                        {stat.label}
-                      </dt>
-                      <dd className="mt-2 text-sm font-medium text-white">
-                        {stat.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+                      {companyLogoUrl && (
+                        <Image
+                          src={companyLogoUrl}
+                          alt={story.company}
+                          width={160}
+                          height={48}
+                          className="h-10 w-auto max-w-[150px] shrink-0 object-contain brightness-0 invert"
+                        />
+                      )}
+                      {(quoteAuthor || quoteRole) && (
+                        <div>
+                          {quoteAuthor && (
+                            <p className="text-base font-semibold text-white">
+                              {quoteAuthor}
+                            </p>
+                          )}
+                          {quoteRole && (
+                            <p className="mt-0.5 text-sm text-white/70">
+                              {quoteRole}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </figcaption>
+                  )}
+                </figure>
               )}
             </div>
           </div>
@@ -314,15 +302,14 @@ export default async function CustomerStoryPage({
             <div className="lg:col-span-1 lg:sticky lg:top-[100px] lg:self-start">
               {sections.length > 0 && (
                 <div className="hidden lg:block">
-                  <StoryArticleNav sections={sections} />
+                  <ArticleScrollNav sections={sections} />
                   <div className="my-6 h-px bg-sognos-line" />
                 </div>
               )}
               <StoryMetaRail
-                customer={story.company}
-                industry={industryValue}
                 state={stateValue}
                 size={sizeValue}
+                product={productValue}
                 downloadUrl={story.downloadUrl}
                 postUrl={postUrl}
               />
@@ -330,40 +317,12 @@ export default async function CustomerStoryPage({
 
             <ScrollReveal y={24} className="min-w-0 md:col-span-2">
               {/* Body prose */}
-              <div className={`${PROSE} max-w-[46rem]`}>
+              <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
                 <PortableText
                   value={story.body}
                   components={portableComponents}
                 />
               </div>
-
-              {/* Quote card — end of content (matches ProductCustomerStories card body, no logo) */}
-              {story.quote && (
-                <div
-                  className={`mt-12 rounded-lg p-6 lg:mt-16 lg:p-10 ${brandBg ? "" : quoteCardBg(productValue)}`}
-                  style={brandBg ? { backgroundColor: brandBg } : undefined}
-                >
-                  <blockquote>
-                    <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
-                      {story.quote}
-                    </p>
-                  </blockquote>
-                  {(quoteAuthor || quoteRole) && (
-                    <div className="mt-6 lg:mt-8">
-                      {quoteAuthor && (
-                        <p className="text-base font-bold text-white">
-                          {quoteAuthor}
-                        </p>
-                      )}
-                      {quoteRole && (
-                        <p className="mt-0.5 text-base text-white">
-                          {quoteRole}
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
             </ScrollReveal>
           </div>
         </div>

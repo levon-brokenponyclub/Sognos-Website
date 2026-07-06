@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { INDUSTRIES, PRODUCTS } from "@/lib/constants";
 import { getIndustryContent, getIndustryMeta } from "@/lib/industries-content";
+import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
+import IndustryChallengeStack from "@/components/layout/sections/industries/IndustryChallengeStack";
+import IndustryHowTabs from "@/components/layout/sections/industries/IndustryHowTabs";
+import IndustryCustomerStories from "@/components/layout/sections/industries/IndustryCustomerStories";
 
 export function generateStaticParams() {
   return INDUSTRIES.map((i) => ({ slug: i.slug }));
@@ -21,22 +26,32 @@ export async function generateMetadata({
   };
 }
 
-const PRODUCT_META = {
+const PRODUCT_META: Record<
+  string,
+  { href: string; tagline: string; description: string; logo: string }
+> = {
   SognosCare: {
     href: PRODUCTS.care.href,
     tagline: PRODUCTS.care.tagline,
-    accentClass: "bg-(--sognos-edition-green)",
-    borderClass: "border-(--sognos-edition-green)/30",
-    bgClass: "bg-(--sognos-edition-green)/8",
+    description: PRODUCTS.care.description,
+    logo: "/logos/sognos-care-logo-color.svg",
   },
   SognosRoster: {
     href: PRODUCTS.roster.href,
     tagline: PRODUCTS.roster.tagline,
-    accentClass: "bg-sognos-blue-accent",
-    borderClass: "border-sognos-blue-accent/30",
-    bgClass: "bg-sognos-blue-accent/8",
+    description: PRODUCTS.roster.description,
+    logo: "/logos/sognos-roster-logo-color.svg",
   },
-} as const;
+};
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+      <span className="mr-1.5 text-sognos-blue-accent">●</span>
+      {children}
+    </p>
+  );
+}
 
 export default async function IndustryPage({
   params,
@@ -50,171 +65,133 @@ export default async function IndustryPage({
 
   return (
     <>
-      {/* Hero */}
-      <section
-        data-header-dark
-        className="relative overflow-hidden bg-gradient-hero pb-18 pt-40"
-      >
-        <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5">
-            <Link
-              href="/industries"
-              className="text-xs font-semibold uppercase tracking-widest text-white/60 hover:text-white/80 transition-colors duration-200"
-            >
-              Industries
-            </Link>
-            <span className="text-white/30">/</span>
-            <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-              {meta.name}
-            </span>
-          </div>
-          <div className="max-w-5xl text-center">
-            <h1 className="mb-6 font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-              {content.hero.headline}
-            </h1>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/80">
-              {content.hero.subtext}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Challenges */}
-      <section className="bg-white py-24">
+      {/* ── 1. Hero — matches Solutions detail hero (white, no image) ────────── */}
+      <section className="relative bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-end">
-            <div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-                The challenge
-              </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
-                What makes {meta.name} hard to run
-              </h2>
-            </div>
-            <p className="max-w-md text-base leading-relaxed text-sognos-body lg:justify-self-end">
-              {meta.description}
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {content.challenges.map((challenge, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-(--sognos-line) bg-(--sognos-bg-sunken) p-8"
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <Link
+                href="/industries"
+                className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted transition-colors duration-200 hover:text-sognos-heading"
               >
-                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-sognos-navy-dark text-xs font-semibold text-white">
-                  {i + 1}
-                </div>
-                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-heading">
-                  {challenge.title}
-                </h2>
-                <p className="text-sm leading-relaxed text-sognos-body">
-                  {challenge.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How Sognos helps */}
-      <section className="bg-(--sognos-bg-sunken) py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div
-            className={`mb-12 grid gap-8 ${
-              content.howSognosHelpsIntro ? "lg:grid-cols-2 lg:items-end" : ""
-            }`}
-          >
-            <div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-                How Sognos helps
-              </div>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-blue-accent tracking-tight">
-                Purpose-built for {meta.name}
-              </h2>
-            </div>
-            {content.howSognosHelpsIntro && (
-              <p className="max-w-md text-base leading-relaxed text-sognos-body lg:justify-self-end">
-                {content.howSognosHelpsIntro}
+                {meta.name}
+              </Link>
+              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+                {content.hero.headline}
+              </h1>
+              <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-gray-600">
+                {content.hero.subtext}
               </p>
-            )}
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {content.howSognosHelps.map((item, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-(--sognos-line) bg-white p-8"
-              >
-                <h2 className="mb-3 font-heading text-lg font-normal text-sognos-heading">
-                  {item.title}
-                </h2>
-                <p className="text-sm leading-relaxed text-sognos-body">
-                  {item.body}
-                </p>
+              <div className="mt-9">
+                <SolutionHeroDemoButton />
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Products used */}
-      <section className="bg-white py-24">
+      {/* ── 2. The Challenge — stacking sticky cards ─────────────────────────── */}
+      <section className="bg-white pt-20 lg:pt-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-10">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-              Products
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-heading tracking-tight mb-6">
-              What Sognos deploys in {meta.name}
-            </h2>
-          </div>
+          <Eyebrow>The Challenge</Eyebrow>
+          <h2 className="mt-4 max-w-2xl font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+            What makes {meta.name} hard to run
+          </h2>
+        </div>
+        <div className="mt-12 lg:mt-16">
+          <IndustryChallengeStack challenges={content.challenges} />
+        </div>
+      </section>
 
-          <div className="flex flex-wrap gap-4">
+      {/* ── 3. How Sognos helps — interactive tabs ───────────────────────────── */}
+      <section className="bg-gray-200/70 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>How Sognos helps</Eyebrow>
+          <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+            Purpose-built for {meta.name}
+          </h2>
+          {content.howSognosHelpsIntro && (
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-sognos-body">
+              {content.howSognosHelpsIntro}
+            </p>
+          )}
+          <div className="mt-10 lg:mt-12">
+            <IndustryHowTabs items={content.howSognosHelps} />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. What we deploy — product feature blocks ───────────────────────── */}
+      <section className="bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Products</Eyebrow>
+          <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+            What Sognos deploys in {meta.name}
+          </h2>
+          <div className="mt-10 grid gap-3 lg:mt-12 lg:grid-cols-2 lg:gap-4">
             {meta.products.map((product) => {
+              // Energy & Utilities — SognosCare slot becomes a Dynamics 365 card
               if (slug === "energy-utilities" && product === "SognosCare") {
                 return (
                   <div
-                    key="Microsoft Dynamics 365"
-                    className="flex items-center gap-4 rounded-2xl border border-sognos-navy/10 bg-sognos-navy/[0.03] px-6 py-5"
+                    key="microsoft-dynamics-365"
+                    className="flex flex-col rounded-lg border border-sognos-line bg-white p-8 lg:p-10"
                   >
-                    <span className="h-2.5 w-2.5 rounded-full bg-sognos-navy/70" />
-                    <div>
-                      <p className="text-sm font-semibold text-sognos-heading">
-                        Microsoft Dynamics 365
-                      </p>
-                      <p className="mt-0.5 text-xs text-sognos-muted">
-                        Core platform for utility operations.
-                      </p>
-                    </div>
+                    <Image
+                      src="/logos/Microsoft-icon-logo.svg"
+                      alt="Microsoft Dynamics 365"
+                      width={40}
+                      height={40}
+                      className="h-9 w-9 object-contain"
+                    />
+                    <h3 className="mt-6 font-heading text-2xl font-medium tracking-tight text-sognos-heading">
+                      Microsoft Dynamics 365
+                    </h3>
+                    <p className="mt-2 text-sm text-sognos-muted">
+                      Core platform for utility operations
+                    </p>
                   </div>
                 );
               }
 
-              const p = PRODUCT_META[product as keyof typeof PRODUCT_META];
+              const p = PRODUCT_META[product];
               if (!p) return null;
               return (
                 <Link
                   key={product}
                   href={p.href}
-                  className={`group flex items-center gap-4 rounded-2xl border px-6 py-5 transition-shadow duration-200 hover:shadow-md ${p.borderClass} ${p.bgClass}`}
+                  className="group flex flex-col rounded-lg border border-sognos-line bg-white p-8 transition-colors duration-200 hover:border-sognos-blue-accent/40 lg:p-10"
                 >
-                  <span
-                    className={`h-2.5 w-2.5 rounded-full ${p.accentClass}`}
+                  <Image
+                    src={p.logo}
+                    alt={product}
+                    width={180}
+                    height={40}
+                    className="h-9 w-auto object-contain"
                   />
-                  <div>
-                    <p className="text-sm font-semibold text-sognos-heading">
-                      {product}
-                    </p>
-                    <p className="mt-0.5 text-xs text-sognos-muted">
-                      {p.tagline}
-                    </p>
-                  </div>
-                  <span className="ml-4 text-xs font-medium text-sognos-blue-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                    Explore →
+                  <h3 className="mt-6 font-heading text-2xl font-medium tracking-tight text-sognos-heading">
+                    {product}
+                  </h3>
+                  <p className="mt-2 text-sm text-sognos-muted">{p.tagline}</p>
+                  <p className="mt-4 text-base leading-relaxed text-sognos-body">
+                    {p.description}
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sognos-blue-accent">
+                    Explore {product}
+                    <svg
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      aria-hidden="true"
+                      className="w-3 transition-transform duration-300 group-hover:translate-x-0.5"
+                    >
+                      <path
+                        d="M3 7h8M7 3l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </span>
                 </Link>
               );
@@ -223,6 +200,8 @@ export default async function IndustryPage({
         </div>
       </section>
 
+      {/* ── 5. Customer stories from this industry (hidden if none) ──────────── */}
+      <IndustryCustomerStories industryName={meta.name} />
     </>
   );
 }
