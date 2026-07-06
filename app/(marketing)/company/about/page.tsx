@@ -62,22 +62,30 @@ export default function AboutPage() {
       {/* ── Hero — white, eyebrow + heading + CTA (matches solutions/[slug]) ─── */}
       <section className="bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
+            {/* Left — eyebrow + heading + intro */}
             <div className="lg:col-span-7">
-              <p className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-[#6B7280]">
+              <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                 About Sognos
               </p>
               <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Smarter automation for modern teams
               </h1>
-              <div className="mt-9">
-                <Link
-                  href="/company/careers"
-                  className="inline-flex items-center justify-center rounded-full bg-sognos-navy px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
-                >
-                  Explore Careers
-                </Link>
-              </div>
+              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+                Built to serve the organisations that serve others. Since 2016,
+                Sognos has helped service organisations work smarter - replacing
+                disconnected tools with a single intelligent platform built
+                natively on Microsoft Dynamics 365.
+              </p>
+            </div>
+            {/* Right — CTA, right-aligned, bottom-aligned with the intro copy */}
+            <div className="flex lg:col-span-5 lg:justify-end">
+              <Link
+                href="/company/careers"
+                className="inline-flex items-center justify-center rounded-full bg-sognos-navy px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
+              >
+                Explore Careers
+              </Link>
             </div>
           </div>
         </div>
@@ -90,21 +98,20 @@ export default function AboutPage() {
       {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
       <section className="bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[200px_1fr] lg:gap-16">
-            {/* Eyebrow */}
-            <div className="pt-1.5">
-              <p className="text-sm font-medium text-sognos-muted">
-                <span className="mr-1.5 text-sognos-blue-accent">●</span>
-                About Sognos
-              </p>
-            </div>
-            {/* Content */}
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+            {/* Column 1 — eyebrow + title */}
             <div>
-              <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl lg:text-5xl">
+              <p className="text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                Our Story
+              </p>
+              <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl lg:text-5xl">
                 Healthcare First. Field Service Always. AI at the Centre.
               </h2>
+            </div>
+            {/* Column 2 — body paragraphs + stats */}
+            <div>
               {/* Body paragraphs */}
-              <div className="mt-8 max-w-3xl space-y-5 text-base leading-relaxed text-sognos-muted">
+              <div className="max-w-3xl space-y-5 text-base leading-relaxed text-sognos-muted">
                 <p>
                   For over a decade, Sognos has been helping organisations
                   simplify complex frontline operations through connected,

@@ -1,5 +1,76 @@
 # Changelog
 
+## 2026-07-06 — TeamSection: restore active-name marker (offset from rail)
+
+- **Re-added the `layoutId` active-name marker** (dropped in the prior build). A small `h-2 w-2 bg-sognos-blue-accent` sharp square rendered only in the active row's button (`{isActive && <motion.span layoutId="team-nav-marker" transition={{ type:"spring", damping:30, stiffness:300 }} />}`) — springs between rows on active change, same pattern as `StoryArticleNav`.
+- **Positioned to avoid the earlier clash:** the previous version sat on the rail (`left-0`, `-translate-x-[3.5px]`) and blended into the fill. This one is offset to **`left-3` (12px)** — into the gap between the 2px rail (`left-0`) and the name (`pl-8` = 32px), vertically centred (`top-1/2 -translate-y-1/2`) — so it coexists with the per-item blue fill and blue active text without overlapping the rail. `aria-hidden` (decorative; `aria-current` on the button already conveys active).
+- **Kept unchanged:** per-item eased rail, autoplay, 0.3s crossfade, mobile conditional-render slider.
+- **Verified (DOM, no screenshots per task):** `npm run build` green, `tsc` clean. SSR: marker present on exactly the active row (1 instance), inside the `aria-current="true"` button. **Runtime click confirmed** (desktop viewport 1457px): marker at row 0 → click Miloni → row 2 → click Kunal → row 0. Autoplay-tick moves it via the same `setActive`-driven `{isActive && …}` render.
+- **Files:** `components/layout/sections/TeamSection.tsx`.
+
+## 2026-07-06 — TeamSection: corrected per-item eased rail + conditional-render mobile
+
+Brings `TeamSection` in line with `docs/SLIDER_PATTERN.md` Shape 1 (supersedes the earlier continuous-cumulative-rail build).
+
+- **Progress rail — now per-item eased, not cumulative.** The rAF loop tracks elapsed **within the current item's 10s window** (`itemStartRef`), advancing `active = (i+1)%len` when it passes `AUTOPLAY_MS` and resetting `itemStartRef` (autoplay derived from the same loop). Each frame maps `p = elapsed/AUTOPLAY_MS` → `easeOutCubic` (`1-(1-p)³`, fast early / decelerating) → `barRef.style.transform = translateY(-(1-eased)*100%)`. Structure now matches the Diffblue DOM: one full-height `w-[2px] overflow-hidden bg-sognos-line` track + one `absolute inset-0 bg-sognos-blue-accent` overlay, reset to `translateY(-100%)` at each item start and easing to `0%`. Manual `select(i)` sets `itemStartRef=null` → next frame restarts the window (rail snaps to "just started" **and** the autoplay interval resets from that item — kept the Sognos reset-on-click deviation).
+- **`layoutId` square marker — dropped (reported).** Re-evaluated against the corrected full-height fill: a same-blue square at the active name blends into the rail as it fills past that row, so it clashed. The blue active-name text is the sole active indicator.
+- **Card crossfade — 300ms `ease`.** `AnimatePresence mode="wait"`, `opacity 0→1`, `transition = { duration: 0.3, ease: [0.25,0.1,0.25,1] }` (CSS-default `ease`, was 0.25s/custom).
+- **Mobile — conditional render (DOM removal), not CSS-hidden.** New `useIsMobile()` (`matchMedia("(max-width: 1023.98px)")`) drives a hard swap: `isMobile === true ? <MobileLeadership/> : <DesktopLeadership/>`. Pre-mount/SSR → desktop (team names in SSR HTML for SEO; verified the mobile slider is absent from SSR DOM). Desktop nav+rAF and the mobile Embla live in separate child components, so the inactive layout is fully unmounted (nav removed from DOM on mobile; no rAF running on mobile; no Embla on desktop).
+- **Mobile slider** = SLIDER_PATTERN Shape 2 / `ProductCustomerStories` convention: `useEmblaCarousel({ loop:false, align:"start", containScroll:"trimSnaps" }, [Autoplay({ delay: AUTOPLAY_MS, stopOnInteraction:true })])`, `paddingLeft:1.5rem` + trailing spacer, cards `basis-[70%] max-w-[380px] mr-6` → slidesPerView ≈1.43, peek ≈30% (in the 28–44% spec band), `mr-6` = 24px gutter. Image (`aspect-[4/5]`) + name + role + LinkedIn.
+- **Section `overflow-hidden` removed** — it was breaking the desktop sticky nav (overflow-hidden ancestor kills `position:sticky`). Overflow is now contained by the mobile Embla viewport's own `overflow-hidden`, which only mounts on mobile (no sticky there).
+- **Kept:** `TEAM`, `LinkedInIcon`, 10s autoplay, first-paragraph + `line-clamp-4` bio, white section / title / no eyebrow.
+- **Verified (DOM, no screenshots per task):** `npm run build` green, `tsc` clean. SSR-confirmed: rail track + `translateY(-100%)` overlay present, cumulative `scaleY` gone, section not `overflow-hidden`, sticky nav present, mobile slider absent from SSR (conditional render), Kunal active/blue, bio clamp. **Live rail frame-sampling not possible** in the backgrounded automation tab (browser pauses `requestAnimationFrame`); the easing is deterministic and standard-rAF.
+- **Files:** `components/layout/sections/TeamSection.tsx`.
+
+## 2026-07-06 — Docs: shared slider/carousel pattern reference
+
+- **New `docs/SLIDER_PATTERN.md`** — codifies one reusable slider pattern so every card slider defaults to the same values (prevents prompt-by-prompt drift). Shared values: 10s autoplay, **no** hover-pause, **reset-on-interaction** (deliberate Sognos deviation from Diffblue), 300ms/`ease` transitions, loop. **Shape 1 (nav rail)** — sticky nav + crossfading pane; **per-item eased rail** (resets to ~-96/-100% and eases to 0% per active item, `translateY` on a same-height bar in an `overflow-hidden` wrapper, `bg-sognos-line` track / `bg-sognos-blue-accent` overlay); hard-swaps to Shape 2 below `lg` (conditional render, nav removed from DOM). **Shape 2 (peek carousel)** — `slide`, ~1.5 slidesPerView, 28–44% peek (proportional, not hardcoded px), 24px / `gap-3 lg:gap-4` gutter, dots (`ProductCustomerStories` canonical: active `w-4 h-2 bg-sognos-navy-dark`, inactive `bg-sognos-navy-dark/25`). Canonical examples: `ProductCustomerStories` (Shape 2, already conformant), `TeamSection` (Shape 1 desktop / Shape 2 mobile). **Sync note in-doc:** `TeamSection`'s current rail is continuous-cumulative; a later prompt will bring it to the per-item eased Shape 1 spec — doc is source of truth until then.
+- Linked from `docs/DESIGN_MIGRATION_STATE.md` top-level "Related docs" pointer.
+- **Docs-only** — no component code touched (`ProductCustomerStories.tsx`/`TeamSection.tsx` untouched per task).
+- **Files:** `docs/SLIDER_PATTERN.md` (new), `docs/DESIGN_MIGRATION_STATE.md`, `docs/CHANGELOG.md`.
+
+## 2026-07-06 — TeamSection: continuous progress rail, card crossfade, mobile peek slider
+
+Follow-up fixes to the Leadership section (`components/layout/sections/TeamSection.tsx`).
+
+- **Progress rail rebuilt — one continuous, time-driven bar** (was independent per-item `scaleY` segments that reset/snapped). Now a single full-height `w-[2px] bg-sognos-line` track (spans the whole nav) with one `origin-top bg-sognos-blue-accent` overlay. A `requestAnimationFrame` loop computes `progress = (anchorProgress + elapsed / (AUTOPLAY_MS × TEAM.length))` wrapped to `[0,1)` and sets `barRef.current.style.transform = scaleY(progress)` **imperatively every frame** (no per-frame React re-render). `active` index is *derived* (`Math.floor(progress × TEAM.length)`) and only `setActive`d when it changes — so the old `setInterval` autoplay is gone; the rAF loop is the single time source. Reveal is smooth top→bottom across all leaders, loops to 0 at the first name. Manual `select(i)` sets `anchorProgress = i/len` and nulls `anchorTime` (next frame restarts elapsed at 0) → jumps the fill to that item and restarts. Matches the Diffblue `translateY(-X%)`-continuous-rail reference (used `scaleY`/origin-top as the cleaner equivalent).
+- **`layoutId` square marker dropped** — with the continuous rail reading correctly, the springing square was redundant (the prior build had flagged it as one active-cue too many). Cues now = rail fill + blue active name.
+- **Card crossfade added** — the desktop card content is wrapped in `AnimatePresence mode="wait"` with `opacity 0→1` enter/exit, **0.25s** each, keyed on `member.name` (was a hard swap).
+- **Mobile peek slider added** — below `lg`, the nav+card is replaced by a full-section-width Embla carousel reusing the `ProductCustomerStories` convention: `useEmblaCarousel({ loop:false, align:"start", containScroll:"trimSnaps" }, [Autoplay({ delay: AUTOPLAY_MS, stopOnInteraction:true })])`, `paddingLeft:1.5rem` gutter + trailing `1.5rem` spacer so the last card ends flush; cards `basis-[80%] sm:basis-[55%] max-w-[360px]` with `mr-4` so the next card peeks. Each card = image (`aspect-[4/5]`) + name + role + LinkedIn icon. **Breakpoint: `lg`** (not `md`) — the desktop card's inner `md:grid-cols-2` (photo + text) needs the width; at `md` it'd be cramped, so the slider covers `< lg` and nav+card is `lg+`.
+- **Kept:** `TEAM` data, `LinkedInIcon`, `AUTOPLAY_MS = 10000`, first-paragraph + `line-clamp-4` bio, white section / title / no eyebrow.
+- **Verified (DOM, no screenshots per task):** `npm run build` green, `tsc` clean. Confirmed 1 continuous rail track + 1 `scaleY` overlay (initial `scaleY(0)`), zero old per-item fills, zero `layoutId` marker, desktop `hidden lg:grid`, mobile `lg:hidden` full-width slider with 3 `basis-[80%]` cards + gutter spacer, `AnimatePresence` card, `line-clamp-4` bio. **Runtime rail advancement could not be frame-sampled** — the automation browser tab runs backgrounded, where the browser pauses `requestAnimationFrame` (a rAF probe timed out while `setTimeout` still resolved and the bar held `scaleY(0)`); the fill is deterministic and standard-rAF, verified structurally.
+- **Files:** `components/layout/sections/TeamSection.tsx`.
+
+## 2026-07-06 — About page: Leadership section → nav + auto-playing profile card
+
+Full rewrite of `components/layout/sections/TeamSection.tsx` (replaces the 3-card grid + bottom-drawer modal).
+
+- **Section:** `bg-sognos-navy` → **white**; eyebrow pill ("● Leadership") removed; title "Senior Leadership Team" → **"Meet our senior leadership team"** (sole heading).
+- **Layout:** `grid lg:grid-cols-[300px_1fr]` — nav left (sticky `lg:top-[120px]`), active-leader card right. Modal/drawer, backdrop, `active` modal state, and the card grid all deleted.
+- **Nav (col 1):** vertical name list; each row has a `w-[3px] bg-sognos-line` rail segment. **Active segment fills** via a `motion.span` `scaleY 0→1`, `ease:"linear"`, `duration: AUTOPLAY_MS/1000` (10s) — **time-driven, not scroll-driven**; keyed by a `cycle` counter so it remounts and restarts on every advance/click. A `layoutId="team-nav-marker"` square springs to the active name (StoryArticleNav bullet pattern). Active name `text-sognos-blue-accent`, inactive grey, uppercase `tracking-[0.15em]`.
+- **Autoplay:** local `setInterval` at `AUTOPLAY_MS = 10000` (no embla — this is state-driven active-index, not a scroll carousel). Advances `active = (i+1) % TEAM.length` + bumps `cycle`. Manual `select(i)` sets active, bumps `cycle`, and calls `startTimer()` to reset the 10s window (stopOnInteraction-equivalent).
+- **Card (col 2):** `border border-sognos-line rounded-lg`, inner `md:grid-cols-2` — col 1 `flex justify-between` (LinkedIn icon top-left → `member.linkedin`; name + role + bio pinned bottom), col 2 photo `fill object-cover` full-height (`min-h-[340px]` both sides so the row equalises). Keyed `motion.div` opacity fade on member change.
+- **Bio handling (flagged):** the `TEAM[].bio` entries are long/multi-paragraph; the card shows the **first paragraph only** (`bio.split("\\n\\n")[0]`) with **`line-clamp-4`** so card height stays consistent across leaders. No copy edited.
+- **Nav-fill vs reference (flagged):** the Diffblue reference implies a continuous multi-segment line; per the prompt I used the **simpler independent-per-item segment** approach (each active segment fills on its own), not one continuous line.
+- **Kept:** `TEAM` data + `LinkedInIcon` unchanged.
+- **Verified (DOM, no screenshots per task):** `npm run build` green, `tsc` clean. Confirmed white section, title, no eyebrow pill, 3 nav names (Kunal active blue / others grey), `origin-top bg-sognos-blue-accent` fill, `layoutId` marker, 3× `sognos-line` rail tracks, LinkedIn hrefs, `line-clamp-4` bio, modal fully removed.
+- **Files:** `components/layout/sections/TeamSection.tsx`.
+
+## 2026-07-05 — About page: "Our Values" stacking cards → 2-col restructure
+
+- **`components/layout/sections/AboutValues.tsx`.** Removed the section-level `<h2>Our Values</h2>` block (scrolled away before the cards pinned). `CARDS` data: per-card `eyebrow` ("Our Mission"/"Our Vision") → shared `eyebrow: "Our Values"` + new `title` ("Mission"/"Vision"); `number` ("01"/"02") field dropped. Each card's inner layout → equal-width `lg:grid-cols-2` (About Sognos pattern), vertically centred within the existing `min-h-[520px]`/`lg:min-h-[56vh]`: col 1 = eyebrow (`text-xs uppercase tracking-widest text-white/70`) + title (`font-heading text-3xl md:text-4xl lg:text-5xl text-white`); col 2 = the `statement` copy as body text (`text-base leading-relaxed text-white/80`, down from the old `text-3xl…lg:text-5xl` statement size). Number badge removed from the top row. Sticky/stacking mechanics (`sticky`, `top`, `zIndex`, min-heights), per-card `bg`, and `statement` copy unchanged.
+- **Verified:** `tsc` clean, `npm run build` green; DOM-confirmed (h2 removed, eyebrow "Our Values" ×2, titles Mission/Vision, `lg:grid-cols-2` ×2 cards, no number badges).
+- **Files:** `components/layout/sections/AboutValues.tsx`.
+
+## 2026-07-05 — About page: hero CTA reposition + "Our Story" 2-col restructure
+
+Both in `app/(marketing)/company/about/page.tsx`.
+
+- **Hero — "Explore Careers" CTA repositioned.** Was stacked below the intro paragraph inside a single `lg:col-span-7` column. Now the eyebrow + `h1` + intro stay in the left `lg:col-span-7` column and the CTA moves to a right `lg:col-span-5` column, **right-aligned** (`flex lg:justify-end`) and **bottom-aligned with the intro paragraph** (grid `items-center` → `items-end`). Button styling (navy pill, hover to blue-accent) and `AboutHeroImage` below are unchanged.
+- **"About Sognos" section → equal-width 2-col ("Our Story" pattern).** Grid `lg:grid-cols-[200px_1fr]` → **`lg:grid-cols-2`**. Column 1 = eyebrow (**"About Sognos" → "Our Story"**) + the `h2` (title moved up from column 2, same copy/scale, `mt-6` under the eyebrow). Column 2 = the four body paragraphs + `<AboutStats />` (paragraphs lost their `mt-8` so they top-align with the eyebrow across the gutter — matches the Pallet "Our Story" reference). Body copy + `AboutStats` component unchanged. Stats read fine at half-width (3 stats + `border-r` dividers, room to spare — not cramped).
+- **Verified:** `npm run build` green; `tsc --noEmit` clean; browser-confirmed CTA bottom-aligned right in the hero, and the 50/50 "Our Story" split with stats comfortable in the right column.
+- **Files:** `app/(marketing)/company/about/page.tsx`.
+
 ## 2026-07-05 — Knowledge Hub archive: "Featured" pill + three-way pill-driven header/grid
 
 Extends the same-day header/featured entry below. All in `components/layout/sections/KnowledgeHubArchive.tsx`.
