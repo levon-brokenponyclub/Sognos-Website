@@ -203,19 +203,18 @@ export default function ProductCustomerStories({
         </div>
       </div>
 
-      {/* Embla viewport — full section width (breaks out of max-w-7xl) */}
+      {/* Embla viewport — full section width. Shape 3: center-focus, half-width
+          cards on lg+ (align:"center" → visible peek of prev/next both sides). */}
       {showChrome ? (
-        <div ref={emblaRef} className="relative overflow-hidden">
-          <div
-            className="flex"
-            style={{
-              paddingLeft: "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
-            }}
-          >
+        <div
+          ref={emblaRef}
+          className="relative overflow-hidden max-w-7xl mx-auto"
+        >
+          <div className="flex">
             {stories.map((study, i) => (
               <div
                 key={i}
-                className={`shrink-0 min-w-0 w-[calc(100vw-3rem)] lg:w-[calc(100vw-12rem)] max-w-[1332px]${i < stories.length - 1 ? " mr-6 sm:mr-8" : ""}`}
+                className="min-w-0 flex-[0_0_100%] pl-3 lg:flex-[0_0_50%] lg:pl-4"
               >
                 <StoryCard
                   study={study}
@@ -224,17 +223,6 @@ export default function ProductCustomerStories({
                 />
               </div>
             ))}
-            {/* Trailing spacer — browsers exclude container paddingRight from scrollWidth,
-                so Embla's maxScroll ignores it and the last slide ends flush to the screen.
-                Using mr-* on slides (not gap) means no automatic spacing before this spacer,
-                so scrollWidth = last_slide.right + spacer_width = right gutter exactly. */}
-            <div
-              aria-hidden="true"
-              className="shrink-0"
-              style={{
-                width: "max(1.5rem, calc((100vw - 86.25rem) / 2 + 1.5rem))",
-              }}
-            />
           </div>
         </div>
       ) : (
@@ -325,7 +313,7 @@ function StoryCard({
       className={`rounded-lg overflow-hidden ${bgColor ? "" : bg}`}
       style={bgColor ? { backgroundColor: bgColor } : undefined}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[360px] md:min-h-[460px]">
+      <div className="grid grid-cols-1 md:grid-cols-1 items-stretch min-h-[360px] md:min-h-[460px]">
         {/* Left panel — logo top-left, "Read full story" top-right, quote + author bottom */}
         <div className="md:col-span-9 flex flex-col p-6 lg:p-10">
           {/* Top row: logo left, outline button right */}
@@ -352,7 +340,7 @@ function StoryCard({
           {/* Bottom: quote + one-line author,role,company */}
           <div className="mt-auto pt-8">
             <blockquote className="relative mb-4 before:hidden after:hidden">
-              <p className="font-angellist text-xl md:text-2xl lg:text-3xl font-normal leading-tight tracking-tight text-white">
+              <p className="font-angellist text-xl md:text-2xl lg:text-2xl font-normal leading-snug tracking-tight text-white">
                 {study.quote}
               </p>
             </blockquote>
@@ -363,7 +351,7 @@ function StoryCard({
         </div>
 
         {/* Right panel — full-bleed image, flush to card edges (clipped by rounded-lg) */}
-        <div className="relative md:col-span-3 min-h-[280px] md:min-h-0 bg-white/5">
+        {/* <div className="relative md:col-span-3 max-h-0 lg:min-h-[280px] bg-white/5 md:hidden">
           {study.panelVideo ? (
             <video
               src={study.panelVideo}
@@ -383,7 +371,7 @@ function StoryCard({
               sizes="(max-width: 768px) 100vw, 42vw"
             />
           ) : null}
-        </div>
+        </div> */}
       </div>
     </div>
   );

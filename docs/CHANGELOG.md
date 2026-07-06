@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-07-06 — Navy token split + homepage Hero heading treatment
+
+- **`--sognos-navy` `#060e28` → `#152248`** (`app/tokens.css`). It had drifted to the same value as `--sognos-navy-dark` (`#060e28`); restored to the distinct medium navy (`#152248`) — which is what DESIGN_MIGRATION_STATE's colour table already documented. Two-tone navy is back: **`navy` = `#152248`** (medium — section bands like `bg-sognos-navy`) vs **`navy-dark` = `#060e28`** (near-black — deepest surfaces). Token-value change cascades with no rebuild; touches every `bg-sognos-navy`/`text-sognos-navy` surface (SolutionsSection, CTABand section, About Values Vision card, etc.).
+- **Homepage Hero heading** (`components/layout/sections/Hero.tsx`): alignment `text-center` → **`text-left lg:text-center`** (left on mobile, centred desktop); `<h1>` scale `text-6xl leading-[1.02] -tracking-[1.2px]` → **`text-5xl tracking-tight text-balance lg:text-6xl`** (responsive size, standard tight tracking, dropped the custom line-height).
+- **Files:** `app/tokens.css`, `components/layout/sections/Hero.tsx`.
+
+## 2026-07-06 — ProductCustomerStories: Shape 3 center-focus slider + Shape 2 deprecation
+
+- **`ProductCustomerStories` slider → SLIDER_PATTERN Shape 3 (center-focus peek).** Replaced the trailing-peek mechanics: **removed** the `paddingLeft: max(1.5rem, calc(...))` gutter-inset inline style, the `aria-hidden` trailing spacer div, and the per-slide `mr-6 sm:mr-8` margins. Slides are now `min-w-0 flex-[0_0_100%] pl-3 lg:flex-[0_0_50%] lg:pl-4` on a `flex -ml-3 lg:-ml-4` container (Embla padding-gutter convention, `gap-3 lg:gap-4` = 12/16px). With the **unchanged** Embla config (`{loop:false, align:"center", containScroll:"trimSnaps"}`), `basis-1/2` on `lg` + center-align now renders the active card centred with **both** the previous (left) and next (right) card peeking (~half each). Below `lg`: `basis-full`, no peek (matches the shadcn `lg:basis-1/2` reference's default responsiveness — noted; no mobile peek added). Modelled on shadcn's `<Carousel><CarouselItem lg:basis-1/2>` layout math but on raw Embla (site convention), not shadcn wrappers.
+- **Unchanged:** `StoryCard` visual design, `AUTOPLAY_MS=10000`, Autoplay `stopOnInteraction`, dots (active `w-4 h-2 bg-sognos-navy-dark`), arrow chrome (`size-12 rounded-full` sliding-fill), section header, `showChrome` single-story fallback, `ALL_STORIES`/`SeeMoreLink`/`BRAND_BG`, and all `selectedIndex`/`canPrev`/`canNext`/`scrollPrev`/`scrollNext`/`scrollTo` + `on("select"|"reInit")` wiring.
+- **Docs:** `SLIDER_PATTERN.md` gains **Shape 3** (center-focus peek, `ProductCustomerStories` canonical) and **deprecates Shape 2** (trailing-peek; only `TeamSection` mobile still uses it, migratable separately); "When to apply" now defaults new sliders to Shape 3 or Shape 1.
+- **Card-proportion flag (reported, not fixed per prompt):** at `basis-1/2` each card is ~half its former width; the `StoryCard` `md:grid-cols-12` split + quote scaling to `lg:text-3xl` (`min-h-[360px] md:min-h-[460px]`) will likely wrap tighter / feel cramped at the narrower width — worth a follow-up styling pass (e.g. drop the quote to `lg:text-2xl` and/or adjust the internal grid). Not touched here.
+- **Verified (DOM, no screenshots per task):** `npm run build` green, `tsc` clean. On `/products/sognoscare`: new `flex -ml-3 lg:-ml-4` container + `flex-[0_0_100%] pl-3 lg:flex-[0_0_50%] lg:pl-4` slides present, old `paddingLeft:max(...)` / `w-[calc(100vw-3rem)] lg:w-[calc(100vw-12rem)]` / trailing spacer all gone (0), dots + arrow chrome intact.
+- **Files:** `components/layout/sections/ProductCustomerStories.tsx`, `docs/SLIDER_PATTERN.md`.
+
+## 2026-07-06 — CTABand: dot-grid background (Deck-style)
+
+- Added the decorative dot-grid `/images/cta-bg.svg` (1900×200, 2500 white dots + near-black backing + gradient) to `components/layout/sections/CTABand.tsx`, anchored to the bottom of the navy section (`absolute inset-x-0 bottom-0 w-full`, `pointer-events-none`, `aria-hidden`, decorative `<img alt="">`). **`mix-blend-screen`** drops the SVG's `#0D100F` backing (screen against navy ≈ navy) so only the white dots read over `bg-sognos-navy` — no harsh dark band. Section made `overflow-hidden`; content wrapper `relative z-10` to sit above the texture. Matches the Deck.co reference's textured dark footer.
+- **Verified:** `tsc` clean; browser-confirmed the dots fade in along the bottom of the navy section (below the blue Book-a-Demo card, above the footer), full-width, `mix-blend-mode: screen` applied; no console errors.
+- **Files:** `components/layout/sections/CTABand.tsx`.
+
 ## 2026-07-06 — TeamSection: restore active-name marker (offset from rail)
 
 - **Re-added the `layoutId` active-name marker** (dropped in the prior build). A small `h-2 w-2 bg-sognos-blue-accent` sharp square rendered only in the active row's button (`{isActive && <motion.span layoutId="team-nav-marker" transition={{ type:"spring", damping:30, stiffness:300 }} />}`) — springs between rows on active change, same pattern as `StoryArticleNav`.

@@ -39,13 +39,13 @@ export default function Hero({
 
   return (
     <section className="relative overflow-hidden bg-sognos-navy-dark pt-40 pb-20">
-      <div className="mx-auto max-w-7xl px-6 text-center">
+      <div className="mx-auto max-w-7xl px-6 text-left lg:text-center">
         <motion.h1
           custom={0}
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-6xl leading-[1.02] -tracking-[1.2px] text-balance"
+          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-5xl tracking-tight text-balance lg:text-6xl"
         >
           {headline}
         </motion.h1>

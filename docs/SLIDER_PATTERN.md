@@ -2,20 +2,21 @@
 
 > **Purpose:** One shared, reusable slider pattern so every card slider in the codebase defaults to the same timing and behaviour unless a prompt explicitly overrides it. This prevents the prompt-by-prompt drift we kept correcting.
 >
-> **How to reference:** A prompt building a new slider should say _"use the shared slider pattern (`docs/SLIDER_PATTERN.md`), Shape 1"_ (or Shape 2) instead of re-specifying autoplay/transition/peek/dot values. Deviations are allowed but must be **called out explicitly as intentional overrides**, never left as silent drift.
+> **How to reference:** A prompt building a new slider should say _"use the shared slider pattern (`docs/SLIDER_PATTERN.md`), Shape 3"_ (or Shape 1) instead of re-specifying autoplay/transition/peek/dot values. Deviations are allowed but must be **called out explicitly as intentional overrides**, never left as silent drift.
 
 Canonical implementations:
 
 | Shape | Canonical example | Also used by |
 |-------|-------------------|--------------|
 | **Shape 1 — Nav rail** | `TeamSection` (desktop) | — |
-| **Shape 2 — Peek carousel** | `ProductCustomerStories` | `TeamSection` (mobile, `< lg`) |
+| **Shape 3 — Center-focus peek carousel** | `ProductCustomerStories` | — |
+| **Shape 2 — Trailing-peek carousel** _(deprecated)_ | — | `TeamSection` (mobile, `< lg`) — last user |
 
-> ✅ **Conformance (2026-07-06):** `TeamSection` now matches Shape 1 (per-item eased rail, reset-on-click, no hover-pause, `lg` conditional-render swap) and `ProductCustomerStories` matches Shape 2. Both are live reference implementations.
+> ✅ **Conformance (2026-07-06):** `TeamSection` matches Shape 1 (per-item eased rail, reset-on-click, no hover-pause, `lg` conditional-render swap). `ProductCustomerStories` was migrated Shape 2 → **Shape 3** (center-focus, both-side peek). **Shape 2 is deprecated** — only `TeamSection` mobile still uses it and can be migrated to Shape 3 separately.
 
 ---
 
-## Shared values (apply to BOTH shapes)
+## Shared values (apply to ALL shapes)
 
 | Value | Setting | Notes |
 |-------|---------|-------|
@@ -50,9 +51,36 @@ Desktop nav + content pane. Canonical: `TeamSection` (once corrected).
 
 ---
 
-## Shape 2 — "Peek carousel"
+## Shape 3 — "Center-focus peek carousel"
 
-Full-bleed horizontal slider with the next card peeking. Canonical: `ProductCustomerStories`.
+Full-bleed horizontal slider where the **active card sits centred** and both the previous card (left) and next card (right) **peek**. Canonical: `ProductCustomerStories` (migrated from Shape 2, 2026-07-06). Modelled on shadcn's `<Carousel><CarouselItem className="lg:basis-1/2">` layout math — but built on **raw Embla** (the site's convention in this file + `TeamSection`), not shadcn's `Carousel`/`Button`/CVA wrappers.
+
+**Layout / behaviour**
+- **Effect:** `slide` — real horizontal swipe/drag, touch enabled.
+- **Slide sizing:** desktop (`lg:`+) each slide `flex-[0_0_50%]` (= `basis-1/2`); mobile (`< lg`) `flex-[0_0_100%]` (basis-full, no peek by default).
+- **`align: "center"`** produces the both-side peek: the centred half-width card leaves ~25% on each side, showing ~half of each neighbour. First/last snaps trimmed by `containScroll: "trimSnaps"` (first left-aligns, last right-aligns).
+- **Between-slide gutter:** Embla padding convention — negative margin on the flex container + `pl-*` on each item (`-ml-3 lg:-ml-4` + `pl-3 lg:pl-4`, the `gap-3 lg:gap-4` token pair). **No** `paddingLeft: max(...)` gutter-inset, **no** trailing spacer, **no** per-slide `mr-*` (those were Shape 2's trailing-flush trick — not needed here).
+
+**Embla config**
+```ts
+const [emblaRef, emblaApi] = useEmblaCarousel(
+  { loop: false, align: "center", containScroll: "trimSnaps" },
+  [Autoplay({ delay: AUTOPLAY_MS, stopOnInteraction: true })],
+);
+```
+> `loop: false` is the same intentional override as Shape 2 (kept for this component). Autoplay 10s, reset-on-interaction — shared values.
+
+**Progress indicator — dots** (identical to Shape 2's): active `w-4 h-2 bg-sognos-navy-dark`, inactive `w-2 h-2 bg-sognos-navy-dark/25 hover:bg-sognos-navy-dark/50`, clickable (`scrollTo(i)`).
+
+**Arrow chrome** — same as `ProductCustomerStories`': `size-12 rounded-full` buttons, `border-sognos-line`, sliding navy-fill-up-on-hover with white chevron, `disabled` at edges. Dots centred, arrows right on `lg:`.
+
+---
+
+## Shape 2 — "Trailing-peek carousel" _(deprecated — use Shape 3)_
+
+> ⚠️ **Deprecated (2026-07-06).** Superseded by Shape 3 (center-focus). Do not use for new builds. Only `TeamSection` mobile still uses it (`basis-[70%] max-w-[380px]`); it can be migrated to Shape 3 in a follow-up. Kept here for reference.
+
+Full-bleed horizontal slider with the next card peeking at the trailing edge only.
 
 **Layout / behaviour**
 - **Effect:** `slide` (not fade) — real horizontal swipe/drag. Touch/swipe **enabled**.
@@ -80,6 +108,6 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
 
 ## When to apply
 
-- Any **new** slider/carousel component defaults to these values (Shape 1 or Shape 2).
+- Any **new** slider/carousel component defaults to these values — **Shape 3** (center-focus peek carousel) or **Shape 1** (nav-rail). **Shape 2 (trailing-peek) is deprecated — not for new builds.**
 - A prompt should reference this doc rather than re-specifying values.
 - **Deviations are allowed but must be explicit** ("intentional override: X because Y"), not silent.
