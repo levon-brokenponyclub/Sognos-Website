@@ -35,23 +35,28 @@ export default function ContactForm() {
     setPending(true);
     setError(null);
 
-    const fd = new FormData(e.currentTarget);
-    const result = await submitContact({
-      firstName: fd.get("first-name") as string,
-      lastName: fd.get("last-name") as string,
-      email: fd.get("email") as string,
-      phone: fd.get("phone") as string,
-      organisation: fd.get("organisation") as string,
-      reason: fd.get("reason") as string,
-      product: fd.get("product") as string,
-      message: fd.get("message") as string,
-    });
+    try {
+      const fd = new FormData(e.currentTarget);
+      const result = await submitContact({
+        firstName: fd.get("first-name") as string,
+        lastName: fd.get("last-name") as string,
+        email: fd.get("email") as string,
+        phone: fd.get("phone") as string,
+        organisation: fd.get("organisation") as string,
+        reason: fd.get("reason") as string,
+        product: fd.get("product") as string,
+        message: fd.get("message") as string,
+      });
 
-    setPending(false);
-    if (result.ok) {
-      setSuccess(true);
-    } else {
-      setError(result.error);
+      if (result.ok) {
+        setSuccess(true);
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      setError("Message could not be sent right now. Please try again.");
+    } finally {
+      setPending(false);
     }
   }
 

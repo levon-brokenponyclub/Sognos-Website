@@ -31,24 +31,30 @@ export default function EventRegistrationForm({
     setErrorMsg(null);
     setSubmitting(true);
 
-    const result = await registerForEvent({
-      firstName,
-      surname,
-      companyName,
-      jobTitle,
-      email,
-      phone,
-      dietaryRequirements,
-    });
+    try {
+      const result = await registerForEvent({
+        firstName,
+        surname,
+        companyName,
+        jobTitle,
+        email,
+        phone,
+        dietaryRequirements,
+      });
 
-    setSubmitting(false);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return;
+      }
 
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
+      setSubmitted(true);
+    } catch {
+      setErrorMsg(
+        "Registration could not be submitted right now. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
     }
-
-    setSubmitted(true);
   };
 
   if (submitted) {

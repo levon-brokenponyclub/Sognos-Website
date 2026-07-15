@@ -54,20 +54,29 @@ export async function registerForEvent(
     return { ok: false, error: "Registration is not configured." };
   }
 
-  const { error } = await supabase.from("event_registrations").insert({
-    event_slug: EVENT_SLUG,
-    first_name: firstName,
-    surname,
-    company_name: companyName,
-    job_title: jobTitle,
-    email,
-    phone: phone || null,
-    dietary_requirements: dietary || null,
-  });
+  try {
+    const { error } = await supabase.from("event_registrations").insert({
+      event_slug: EVENT_SLUG,
+      first_name: firstName,
+      surname,
+      company_name: companyName,
+      job_title: jobTitle,
+      email,
+      phone: phone || null,
+      dietary_requirements: dietary || null,
+    });
 
-  if (error) {
-    return { ok: false, error: error.message ?? "Registration failed." };
+    if (error) {
+      return { ok: false, error: error.message ?? "Registration failed." };
+    }
+
+    return { ok: true };
+  } catch (e) {
+    console.error("Event registration failed", e);
+    return {
+      ok: false,
+      error:
+        "Registration could not be submitted right now. Please try again.",
+    };
   }
-
-  return { ok: true };
 }
