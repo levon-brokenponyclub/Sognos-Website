@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   title: "Careers | Sognos",
   description:
     "Join a community of passionate individuals driving innovation in service operations. Explore opportunities at Sognos.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
 };
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -50,7 +58,7 @@ export default function CareersPage() {
             Join Sognos to drive innovation together.
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
-            We're not just a company - we're a community of passionate
+            We&apos;re not just a company - we&apos;re a community of passionate
             individuals committed to driving innovation and creating positive
             change.
           </p>
