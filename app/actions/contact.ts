@@ -93,9 +93,10 @@ export async function submitContact(
 
     return { ok: true };
   } catch (e) {
+    console.error("Contact form submission failed", e);
     return {
       ok: false,
-      error: e instanceof Error ? e.message : "Unexpected error.",
+      error: "Message could not be sent right now. Please try again.",
     };
   }
 }

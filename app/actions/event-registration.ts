@@ -1,5 +1,6 @@
 "use server";
 
+import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
 export type EventRegistrationInput = {
@@ -17,6 +18,7 @@ export type EventRegistrationResult =
   | { ok: false; error: string };
 
 const EVENT_SLUG = "nfp-real-care";
+const EVENT_LABEL = "NFP Real Care";
 
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -49,6 +51,15 @@ export async function registerForEvent(
     return { ok: false, error: "Please enter a valid email address." };
   }
 
+  const apiKey =
+    process.env.RESEND_API_KEY ?? process.env.RESEND ?? process.env["Resend"];
+  if (!apiKey) {
+    return {
+      ok: false,
+      error: "Email service is not configured. Please contact us directly.",
+    };
+  }
+
   const supabase = getSupabaseClient();
   if (!supabase) {
     return { ok: false, error: "Registration is not configured." };
@@ -68,6 +79,37 @@ export async function registerForEvent(
 
     if (error) {
       return { ok: false, error: error.message ?? "Registration failed." };
+    }
+
+    const resend = new Resend(apiKey);
+    const { error: emailError } = await resend.emails.send({
+      from: "Sognos Events <website@sognos.com.au>",
+      to: [
+        "matthew.thelmo@sognos.com.au",
+        "reem@sognos.com.au",
+        "contact@sognos.com.au",
+        "events@sognos.com.au",
+      ],
+      replyTo: email,
+      subject: `Event registration: ${firstName} ${surname} - ${companyName}`,
+      text: [
+        `New ${EVENT_LABEL} registration from the Sognos website.`,
+        "",
+        `First name: ${firstName}`,
+        `Surname: ${surname}`,
+        `Company: ${companyName}`,
+        `Job title: ${jobTitle}`,
+        `Email: ${email}`,
+        `Phone: ${phone || "Not provided"}`,
+        `Dietary requirements: ${dietary || "Not provided"}`,
+      ].join("\n"),
+    });
+
+    if (emailError) {
+      return {
+        ok: false,
+        error: emailError.message ?? "Registration email failed.",
+      };
     }
 
     return { ok: true };
