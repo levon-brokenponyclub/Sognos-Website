@@ -80,13 +80,21 @@ export const ALL_STORIES: CaseStudy[] = [
   },
 ];
 
-export function SeeMoreLink({ className }: { className?: string }) {
+export function SeeMoreLink({
+  className,
+  href = "/customer-stories",
+  label = "See more customer stories",
+}: {
+  className?: string;
+  href?: string;
+  label?: string;
+}) {
   return (
     <Link
-      href="/customer-stories"
+      href={href}
       className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-heading ${className ?? ""}`}
     >
-      <span>See more customer stories</span>
+      <span>{label}</span>
       <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
         <svg viewBox="0 0 14 14" fill="none" aria-hidden="true" className="w-3">
           <path

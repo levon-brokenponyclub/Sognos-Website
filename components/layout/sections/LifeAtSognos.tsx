@@ -1,96 +1,148 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const TABS = [
+const TESTIMONIALS = [
   {
-    name: "Bhavin Shah",
-    role: "Project Manager",
+    name: "Brian Kasmara",
+    role: "Technical Consultant",
+    image: "/images/team/Brian-Kasmara.webp",
     quote:
-      "Sognos has a friendly and collaborative atmosphere. Management is transparent and genuinely cares about the team. It's a place where your voice is heard.",
+      "As a technical consultant I appreciate the challenges that come every day. It discourages having a narrow view and encourages puzzle-solving with others. It's common that we are required to innovate within the Field Services space and as a result, we have a team that is highly supportive and willing to share knowledge across different areas.",
+  },
+  {
+    name: "Mrigul Arora aka Mac",
+    role: "Business Analyst",
+    image: "/images/team/Mrigul-Arora.webp",
+    quote:
+      "Working at Sognos is a true delight. The vibrant atmosphere fosters creativity, allowing me to explore innovative ideas freely. Moreover, the infectious enthusiasm of my seniors towards achieving greatness is truly inspiring. It's not just a job; it's a journey towards excellence.",
+  },
+  {
+    name: "Mayank Raval",
+    role: "Dynamics 365 CE Technical Lead",
+    image: "/images/team/Mayank-Raval.webp",
+    quote:
+      "I appreciate working with Sognos for its dynamic environment, where innovation thrives, and the opportunity to contribute to cutting-edge solutions allows for continuous learning and professional growth. I also appreciate the work-life balance and flexibility with my working hours that Sognos offers. It's not just a job; it's a journey of both professional and personal growth within a group that feels like family.",
   },
   {
     name: "Rishit Patel",
     role: "Dynamics 365 Technical Consultant",
+    image: "/images/team/Rishit-Patel.webp",
     quote:
-      "At Sognos, I've discovered more than just a workplace - it's a close-knit family dedicated to fostering improvement. Every challenge is a chance to grow.",
+      "At Sognos, I am empowered to unravel the complexities of business processes to streamline field services. They value my knowledge and expertise, making the work I do alongside our customers intuitive and impactful.",
   },
   {
-    name: "Praneetha Pulivendula",
-    role: "Dynamics 365 Senior Technical Consultant",
+    name: "Arayen Desai",
+    role: "Dynamics 365 Technical Consultant",
+    image: "/images/team/Arayen-Desai.webp",
     quote:
-      "I thoroughly enjoy working with my co-workers, constantly learning more about Dynamics 365 modules. The collaborative spirit here is genuinely special.",
+      "At Sognos, I've discovered more than just a workplace; it's a close-knit family dedicated to fostering improvement and reaching for excellence together. Every day, we turn challenges into opportunities, creating a thriving environment where success is a collective journey.",
   },
 ];
 
 export default function LifeAtSognos() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const active = TABS[activeIndex];
+  const active = TESTIMONIALS[activeIndex];
 
   return (
-    <section className="w-full bg-sognos-blue-accent border-b border-sognos-line overflow-hidden">
+    <section className="w-full overflow-hidden border-b border-sognos-line bg-sognos-navy">
       <div className="max-w-7xl w-full mx-auto px-6 py-24">
         {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end pb-6">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
+        <div className="grid grid-cols-1 items-end gap-12 pb-10 lg:grid-cols-2 lg:gap-16">
+          <h2 className="font-heading text-3xl font-medium tracking-tight text-white md:text-4xl">
             Life at Sognos
           </h2>
-          <p className="font-heading font-medium text-white/80 justify-self-end max-w-sm">
+          <p className="max-w-sm font-heading font-medium text-white/80 lg:justify-self-end">
             Hear directly from the people who build and deliver Sognos every day.
           </p>
         </div>
 
-        {/* 3-col panel */}
-        <div className="flex gap-4 min-h-[420px]">
-
-          {/* Col 1 - tab list */}
-          <div className="shrink-0 w-[22%] bg-gray-100 rounded-lg p-7 flex flex-col justify-center gap-0">
-            {TABS.map((tab, i) => (
+        <div className="grid gap-4 lg:min-h-[520px] lg:grid-cols-[0.72fr_1fr_1.1fr]">
+          {/* Col 1 - testimonial list */}
+          <div
+            role="tablist"
+            aria-label="Employee testimonials"
+            className="rounded-lg bg-gray-100 p-4 lg:p-6"
+          >
+            {TESTIMONIALS.map((tab, i) => (
               <button
                 key={tab.name}
+                type="button"
+                role="tab"
+                aria-selected={i === activeIndex}
+                aria-controls="life-at-sognos-panel"
                 onClick={() => setActiveIndex(i)}
-                className="text-left border-t border-gray-300 py-5 cursor-pointer"
+                className="group flex w-full items-center gap-3 border-t border-gray-300 py-4 text-left first:border-t-0"
               >
-                <span
-                  className={`block font-heading text-lg font-semibold leading-snug tracking-tight transition-opacity duration-200 text-sognos-body ${
-                    i === activeIndex ? "opacity-100" : "opacity-30"
+                <Image
+                  src={tab.image}
+                  alt={tab.name}
+                  width={70}
+                  height={70}
+                  loading="lazy"
+                  className={`h-11 w-11 shrink-0 rounded-full object-cover transition-opacity duration-200 ${
+                    i === activeIndex ? "opacity-100" : "opacity-45"
                   }`}
-                >
-                  {tab.name}
-                </span>
-                <span
-                  className={`block text-xs mt-0.5 transition-opacity duration-200 text-sognos-body ${
-                    i === activeIndex ? "opacity-60" : "opacity-20"
-                  }`}
-                >
-                  {tab.role}
+                />
+                <span className="min-w-0">
+                  <span
+                    className={`block truncate font-heading text-base font-semibold leading-snug tracking-tight text-sognos-body transition-opacity duration-200 ${
+                      i === activeIndex ? "opacity-100" : "opacity-35"
+                    }`}
+                  >
+                    {tab.name}
+                  </span>
+                  <span
+                    className={`mt-0.5 block truncate text-xs text-sognos-body transition-opacity duration-200 ${
+                      i === activeIndex ? "opacity-60" : "opacity-25"
+                    }`}
+                  >
+                    {tab.role}
+                  </span>
                 </span>
               </button>
             ))}
           </div>
 
-          {/* Col 2 - image placeholder */}
-          <div className="flex-1 rounded-lg overflow-hidden bg-gray-300 relative">
+          {/* Col 2 - active employee image */}
+          <div className="relative min-h-[420px] overflow-hidden rounded-lg bg-sognos-navy">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
-                initial={{ opacity: 0 }}
+                className="absolute inset-0"
+                initial={{ opacity: 0, scale: 1.03 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="absolute inset-0 flex items-end p-7"
+                exit={{ opacity: 0, scale: 1.01 }}
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
               >
-                <div className="bg-white/10 backdrop-blur-sm rounded-md px-4 py-2">
-                  <p className="text-sm font-semibold text-white">{active.name}</p>
-                  <p className="text-xs text-white/70">{active.role}</p>
-                </div>
+                <Image
+                  src={active.image}
+                  alt={active.name}
+                  fill
+                  loading="lazy"
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
               </motion.div>
             </AnimatePresence>
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-sognos-navy/85 via-sognos-navy/35 to-transparent p-7">
+              <div className="w-fit rounded-md bg-white/10 px-4 py-2 backdrop-blur-sm">
+                <p className="text-sm font-semibold text-white">
+                  {active.name}
+                </p>
+                <p className="text-xs text-white/70">{active.role}</p>
+              </div>
+            </div>
           </div>
 
           {/* Col 3 - quote */}
-          <div className="shrink-0 w-[34%] bg-sognos-navy rounded-lg p-8 flex flex-col justify-between">
+          <div
+            id="life-at-sognos-panel"
+            role="tabpanel"
+            className="flex min-h-[420px] flex-col justify-between rounded-lg bg-sognos-navy p-8"
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
@@ -98,14 +150,18 @@ export default function LifeAtSognos() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                className="flex flex-col h-full justify-between"
+                className="flex h-full flex-col justify-between"
               >
-                <p className="font-heading text-xl font-normal leading-snug tracking-tight text-white">
+                <p className="font-heading text-xl font-normal leading-snug tracking-tight text-white lg:text-2xl">
                   &ldquo;{active.quote}&rdquo;
                 </p>
                 <div className="mt-8">
-                  <p className="text-sm font-semibold text-white">{active.name}</p>
-                  <p className="text-xs text-white/60 mt-0.5">{active.role}</p>
+                  <p className="text-sm font-semibold text-white">
+                    {active.name}
+                  </p>
+                  <p className="mt-0.5 text-xs text-white/60">
+                    {active.role}
+                  </p>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -123,7 +179,6 @@ export default function LifeAtSognos() {
               />
             </svg>
           </div>
-
         </div>
       </div>
     </section>

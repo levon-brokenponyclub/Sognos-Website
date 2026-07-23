@@ -1,44 +1,50 @@
-// Stacking sticky-scroll cards for the industry "Challenge" section. Pattern
-// copied from AboutValues.tsx (sticky + per-index top/zIndex + rounded-t-lg) —
-// inner card layout differs (number + big title + body), so it's a separate
-// component rather than a shared extraction. Server Component (sticky is pure
-// CSS, no JS). Handles any number of challenges (2–5).
+import type { ReactNode } from "react";
 
 type Challenge = { title: string; body: string };
 
-// First card pins ~80px below the viewport top (clears the navbar); each
-// subsequent card pins 56px lower, leaving a sliver of the one beneath it.
-const BASE_TOP = 80;
-const TOP_STEP = 56;
-
 export default function IndustryChallengeStack({
   challenges,
+  heading,
+  description,
 }: {
   challenges: readonly Challenge[];
+  heading: ReactNode;
+  description: string;
 }) {
   return (
-    <>
-      {challenges.map((challenge, i) => (
-        <div
-          key={i}
-          style={{ top: BASE_TOP + i * TOP_STEP, zIndex: (i + 1) * 10 }}
-          className={`sticky rounded-t-lg ${
-            i % 2 === 0 ? "bg-sognos-navy-dark" : "bg-sognos-navy"
-          }`}
-        >
-          <div className="mx-auto flex min-h-[520px] max-w-7xl flex-col justify-center px-6 pt-8 pb-10 lg:min-h-[56vh] lg:pt-10 lg:pb-16">
-            <p className="font-heading text-xl font-normal text-white/30">
+    <div>
+      <div className="mx-auto max-w-4xl text-center">
+        <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
+          The Challenge
+        </p>
+        <h2 className="mt-6 font-heading text-4xl font-normal leading-tight tracking-tight text-white text-balance lg:text-4xl">
+          {heading}
+        </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">
+          {description}
+        </p>
+      </div>
+
+      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-24 lg:grid-cols-3">
+        {challenges.map((challenge, i) => (
+          <div
+            key={i}
+            className="flex min-h-[255px] flex-col rounded-lg bg-white/[0.055] p-8 sm:min-h-[300px] lg:min-h-[340px]"
+          >
+            <p className="font-mono text-base leading-relaxed text-sognos-blue-accent">
               {String(i + 1).padStart(2, "0")}
             </p>
-            <h3 className="mt-6 max-w-4xl font-heading text-4xl font-normal leading-tight tracking-tight text-white lg:text-6xl">
-              {challenge.title}
-            </h3>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70 lg:text-lg">
-              {challenge.body}
-            </p>
+            <div className="mt-auto">
+              <h3 className="font-heading text-xl font-medium leading-tight tracking-tight text-white lg:text-2xl">
+                {challenge.title}
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-white/70 lg:text-lg">
+                {challenge.body}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
-    </>
+        ))}
+      </div>
+    </div>
   );
 }

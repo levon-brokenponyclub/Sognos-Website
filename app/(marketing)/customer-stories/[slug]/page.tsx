@@ -232,11 +232,11 @@ export default async function CustomerStoryPage({
           </Link>
 
           {/* Two-up: left meta rail (line + Case Study + Industry) / right title + pull-quote */}
-          <div className="mt-10 lg:mt-14 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-16 xl:gap-20">
+          <div className="mt-10 lg:mt-14 lg:grid lg:grid-cols-[24rem_1fr] lg:gap-16 xl:gap-20">
             {/* Left rail — hero-only vertical line, does NOT extend into the body */}
             <div className="mb-10 space-y-4 border-l border-white/20 pl-6 lg:mb-0">
               <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                Case Study
+                Customer Story
               </p>
               {industryValue && (
                 <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
@@ -252,9 +252,9 @@ export default async function CustomerStoryPage({
               </h1>
 
               {story.quote && (
-                <figure className="mt-10 lg:mt-12">
+                <figure className="mt-10 lg:mt-20">
                   <blockquote
-                    className={`${ARTICLE_PROSE_MAX_W} font-heading text-2xl font-normal leading-snug text-white md:text-3xl lg:text-4xl`}
+                    className={`${ARTICLE_PROSE_MAX_W} font-heading text-2xl font-normal leading-snug text-white md:text-2xl`}
                   >
                     &ldquo;{story.quote}&rdquo;
                   </blockquote>

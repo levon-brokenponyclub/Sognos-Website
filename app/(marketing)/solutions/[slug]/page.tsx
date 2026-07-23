@@ -31,9 +31,6 @@ export async function generateMetadata({
 const HERO_IMAGE = "/solutions/SolutionsHero.avif";
 const PROBLEM_ICON = "/solutions/Inon.avif";
 
-// Shared dark purple band behind "What it solves" + Capabilities.
-const SECTION_BG = "#152248";
-
 export default async function SolutionPage({
   params,
 }: {
@@ -98,7 +95,7 @@ export default async function SolutionPage({
           <div className="mx-auto max-w-7xl px-6">
             <div className="mb-14 flex flex-col items-center text-center">
               <p
-                className="mb-4 text-xs font-semibold uppercase tracking-[0.08em]"
+                className="mb-4 text-xs font-semibold uppercase tracking-tight"
                 style={{ color: "#B7A9D9" }}
               >
                 The problem

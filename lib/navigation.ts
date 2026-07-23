@@ -207,7 +207,8 @@ export const nav: NavGroup[] = [
         items: [
           { name: "Insights", href: "/knowledge-hub" },
           { name: "News", href: "/knowledge-hub?category=News" },
-          // { name: "Customer Stories", href: "/customer-stories" },
+          { name: "Events", href: "/knowledge-hub?category=Events" },
+          { name: "Customer Stories", href: "/customer-stories" },
         ],
       },
       // TEMP (menu-styling phase): Column 2 removed; restore after styling is complete.

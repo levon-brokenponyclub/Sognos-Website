@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import LifeAtSognos from "@/components/layout/sections/LifeAtSognos";
 import OpenRoles from "@/components/layout/sections/OpenRoles";
+import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 
 export const metadata: Metadata = {
   title: "Careers | Sognos",
@@ -10,27 +12,22 @@ export const metadata: Metadata = {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-// Row 1, col 1 = section title. Cols 2-3 + row 2 = 5 benefit items.
 const BENEFITS = [
   {
-    title: "Engage with empathy",
-    body: "Have empathy and a deep understanding for your peers and our customers. No ego - actively listen to each other.",
+    title: "Collaborative culture",
+    body: "High-trust teams that share knowledge freely across disciplines.",
   },
   {
-    title: "Volunteer assistance",
-    body: "Helping others is always a priority, even when it isn't immediately related to our own goals. We foster inclusiveness.",
+    title: "Continuous learning",
+    body: "Grow your Microsoft Dynamics 365 expertise with real, complex engagements.",
   },
   {
-    title: "Expect authenticity",
-    body: "We do not compromise our values when it comes to our team and our customers. Be yourself.",
+    title: "Work-life balance",
+    body: "Flexibility to do your best work while still making time for what matters.",
   },
   {
-    title: "Own it",
-    body: "We're all company owners and we act like it. We jump at the opportunity to be accountable and take action.",
-  },
-  {
-    title: "Build with purpose",
-    body: "We're collectively building the platform and company we're proud of. We always strive to improve and sweat the details.",
+    title: "Equal opportunity",
+    body: "We welcome people of all backgrounds, identities, and abilities.",
   },
 ];
 
@@ -40,68 +37,71 @@ export default function CareersPage() {
   return (
     <main className="w-full bg-white">
       {/* Hero */}
-      <section className="bg-gradient-hero w-full">
-        <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-            Careers
+      <section className="bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                Careers
+              </p>
+              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+                Join Sognos to drive innovation together.
+              </h1>
+              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+                We&apos;re not just a company - we&apos;re a community of passionate
+                individuals committed to driving innovation and creating
+                positive change.
+              </p>
+            </div>
+            <div className="flex lg:col-span-5 lg:justify-end">
+              <Link
+                href="#positions"
+                className="inline-flex items-center justify-center rounded-full bg-sognos-navy px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
+              >
+                Open Positions
+              </Link>
+            </div>
           </div>
-          <h1 className="mx-auto max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-            Join Sognos to drive innovation together.
-          </h1>
-          <p className="mt-6 text-lg text-white/70 max-w-xl leading-relaxed">
-            We're not just a company - we're a community of passionate
-            individuals committed to driving innovation and creating positive
-            change.
-          </p>
+        </div>
+        <div className="mt-16 lg:mt-20">
+          <AboutHeroImage />
         </div>
       </section>
 
-      {/* Our People - Our Planet: 3×2 grid, title in row-1 col-1 */}
-      <section className="w-full border-b border-sognos-line bg-slate-50">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <div className="grid grid-cols-1 md:grid-cols-3">
-            {/* Row 1, Col 1 - section title */}
-            <div className="border-t border-dashed border-sognos-line md:border-r p-8 flex items-start">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
-                Our People -{" "}
-                <span className="text-sognos-muted">Our Planet</span>
+      {/* Our People - Our Planet */}
+      <section className="w-full bg-sognos-navy-dark py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <div className="text-white lg:sticky lg:top-32 lg:self-start">
+              <h2 className="max-w-sm font-heading text-5xl font-normal leading-[1.05] tracking-tight text-white text-balance lg:text-6xl">
+                Our people - our planet
               </h2>
+              <p className="mt-6 max-w-sm text-base leading-relaxed text-white/60 md:text-lg">
+                How we show up for our team, our customers, and the communities
+                we work in.
+              </p>
             </div>
 
-            {/* Row 1, Cols 2–3 */}
-            {BENEFITS.slice(0, 2).map((b, i) => (
-              <div
-                key={b.title}
-                className={`border-t border-dashed border-sognos-line p-8 ${
-                  i === 0 ? "md:border-r" : ""
-                }`}
-              >
-                <p className="font-heading text-base font-semibold text-sognos-body">
-                  {b.title}
-                </p>
-                <p className="mt-2 text-sm text-sognos-body leading-relaxed">
-                  {b.body}
-                </p>
-              </div>
-            ))}
-
-            {/* Row 2, Cols 1–3 */}
-            {BENEFITS.slice(2).map((b, i) => (
-              <div
-                key={b.title}
-                className={`border-t border-dashed border-sognos-line p-8 ${
-                  i < 2 ? "md:border-r" : ""
-                }`}
-              >
-                <p className="font-heading text-base font-semibold text-sognos-body">
-                  {b.title}
-                </p>
-                <p className="mt-2 text-sm text-sognos-body leading-relaxed">
-                  {b.body}
-                </p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {BENEFITS.map((benefit, index) => (
+                <div
+                  key={benefit.title}
+                  className="flex min-h-[255px] flex-col rounded-lg bg-white/[0.055] p-8 text-white sm:min-h-[300px]"
+                >
+                  <p className="font-mono text-base leading-relaxed tracking-tight text-sognos-blue-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <div className="mt-auto max-w-md">
+                    <h3 className="font-heading text-xl font-medium leading-tight tracking-tight text-white lg:text-2xl">
+                      {benefit.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-relaxed text-white/65 md:text-lg">
+                      {benefit.body}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

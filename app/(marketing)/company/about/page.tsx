@@ -118,7 +118,7 @@ export default function AboutPage() {
                   intelligent business solutions built around real work.
                 </p>
                 <p>
-                  Since 2016, we've partnered with organisations across
+                  Since 2016, we&apos;ve partnered with organisations across
                   healthcare, social care, government and essential services to
                   modernise the way teams deliver care, services and community
                   support every day. From frontline healthcare providers to
@@ -156,34 +156,34 @@ export default function AboutPage() {
       {/* Partners - Sticky Scroll Layout */}
       <section className="w-full border-b border-sognos-line bg-white">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          <div className="grid grid-cols-1 gap-16 items-start lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
             {/* Left column - Sticky */}
-            <div className="lg:col-span-5 lg:sticky lg:top-32">
+            <div className="lg:sticky lg:top-32">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-muted mb-4">
-                Partners
+                Our Partners
               </p>
               <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-blue-accent lg:text-left tracking-tight mb-6">
-                Our Partners
+                Let&apos;s build. Together.
               </h2>
               <p className="text-lg text-sognos-body leading-relaxed max-w-md">
-                We've partnered with some of the best innovators in the industry
+                We&apos;ve partnered with some of the best innovators in the industry
                 to bring you new and exciting possibilities - enhanced and
                 integrated business solutions to your most complex problems.
               </p>
             </div>
 
             {/* Right column - Scrolling stack */}
-            <div className="lg:col-span-7 space-y-4 lg:space-y-6">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
               {PARTNERS.map((partner) => (
                 <div
                   key={partner.name}
-                  className="group bg-slate-50 border border-sognos-line rounded-lg overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:border-sognos-blue-accent/30"
+                  className="group flex min-h-[360px] flex-col overflow-hidden rounded-lg border border-sognos-line bg-slate-50 transition-all duration-300 hover:border-sognos-blue-accent/30"
                 >
                   {/* Logo cell */}
                   <div
-                    className={`shrink-0 w-full sm:w-48 flex items-center justify-center p-8 ${partner.logoBg} border-b sm:border-b-0 sm:border-r border-sognos-line`}
+                    className={`flex min-h-44 w-full shrink-0 items-center justify-center border-b border-sognos-line p-8 ${partner.logoBg}`}
                   >
-                    <div className="relative w-48 h-28 transition-transform duration-500 group-hover:scale-110">
+                    <div className="relative h-24 w-48 transition-transform duration-500 group-hover:scale-110">
                       <Image
                         src={partner.logo}
                         alt={partner.name}
@@ -193,14 +193,14 @@ export default function AboutPage() {
                     </div>
                   </div>
                   {/* Info cell */}
-                  <div className="flex-1 p-8 lg:p-10">
+                  <div className="flex flex-1 flex-col p-8">
                     <p className="text-xs font-bold uppercase tracking-[0.12em] text-sognos-blue-accent mb-2">
                       {partner.type}
                     </p>
                     <h3 className="text-2xl font-medium text-sognos-body leading-tight text-balance transition-colors duration-200 mb-4">
                       {partner.name}
                     </h3>
-                    <p className="text text-sognos-body leading-relaxed ">
+                    <p className="text text-sognos-body leading-relaxed">
                       {partner.description}
                     </p>
                   </div>
@@ -225,7 +225,7 @@ export default function AboutPage() {
                 Join Sognos to drive innovation together.
               </h2>
               <p className="mt-6 text-white/70 leading-relaxed">
-                We're a community of passionate individuals committed to driving
+                We&apos;re a community of passionate individuals committed to driving
                 innovation and creating positive change. If you thrive in a
                 collaborative, high-trust environment and want your work to
                 matter, Sognos is built for you.

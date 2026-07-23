@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 
 export const metadata: Metadata = {
   title: "Social Responsibility | Sognos",
@@ -47,23 +49,35 @@ export default function SocialResponsibilityPage() {
   return (
     <main className="w-full bg-white">
       {/* Hero */}
-      <section className="bg-gradient-hero w-full border-b border-sognos-line">
-        <div className="max-w-7xl w-full mx-auto px-6 pb-18 pt-40 flex flex-col items-center text-center">
-          <div className="">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-              Social Responsibility
+      <section className="bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                Social Responsibility
+              </p>
+              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+                Our commitment to community and planet.
+              </h1>
+              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+                At Sognos we understand that our impact extends far beyond the
+                services we provide. Social responsibility is at the core of our
+                values - we are committed to making a difference where we live,
+                work, and do business.
+              </p>
+            </div>
+            <div className="flex lg:col-span-5 lg:justify-end">
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-full bg-sognos-navy px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
+              >
+                Contact us
+              </Link>
             </div>
           </div>
-          <h1 className="mx-auto max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-            Our commitment to community and planet.
-          </h1>
-          <p className="mt-6 text-lg max-w-3xl leading-relaxed text-white/80">
-            At Sognos we understand that our impact extends far beyond the
-            services we provide. Social responsibility is at the core of our
-            values - we are committed to making a difference where we live,
-            work, and do business.
-          </p>
+        </div>
+        <div className="mt-16 lg:mt-20">
+          <AboutHeroImage src="/images/about/social-responsibility-hero-img.webp" />
         </div>
       </section>
 
@@ -79,23 +93,39 @@ export default function SocialResponsibilityPage() {
       </section>
 
       {/* Pillars grid */}
-      <section className="w-full border-b border-sognos-line bg-slate-50">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
-            {PILLARS.map((pillar) => (
+      <section className="w-full bg-sognos-navy py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
+              Our Pillars
+            </p>
+            <h2 className="mt-6 font-heading text-4xl font-normal leading-tight tracking-tight text-white text-balance lg:text-4xl">
+              Practical commitments that guide how we show up.
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">
+              Social responsibility is part of how we operate, from community
+              partnerships and ethical conduct to sustainable practice and
+              employee wellbeing.
+            </p>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-24 lg:grid-cols-3">
+            {PILLARS.map((pillar, index) => (
               <div
                 key={pillar.number}
-                className="border-t border-r border-sognos-line p-8 last:border-r-0 [&:nth-child(3n)]:border-r-0"
+                className="flex min-h-[255px] flex-col rounded-lg bg-white/[0.055] p-8 sm:min-h-[300px] lg:min-h-[340px]"
               >
-                <span className="text-xs font-mono text-sognos-muted">
-                  {pillar.number}
-                </span>
-                <h2 className="mt-3 font-heading text-lg font-semibold text-sognos-body tracking-tight">
-                  {pillar.title}
-                </h2>
-                <p className="mt-3 text-sm text-sognos-body leading-relaxed">
-                  {pillar.body}
+                <p className="font-mono text-base leading-relaxed text-sognos-blue-accent">
+                  {String(index + 1).padStart(2, "0")}
                 </p>
+                <div className="mt-auto">
+                  <h3 className="font-heading text-xl font-medium leading-tight tracking-tight text-white lg:text-2xl">
+                    {pillar.title}
+                  </h3>
+                  <p className="mt-3 text-base leading-relaxed text-white/70 lg:text-lg">
+                    {pillar.body}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

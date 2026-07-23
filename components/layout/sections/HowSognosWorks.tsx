@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 // Cohere Home slot: "Safe. Flexible. Independent." — 3-block grid.
@@ -29,18 +28,18 @@ export default function HowSognosWorks() {
           Demand. Workforce. Outcomes.
         </h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-3 lg:mt-16 lg:gap-4">
+        <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-3 lg:mt-16 lg:gap-8">
           {BLOCKS.map(({ title, copy, href }) => (
             <div key={title} className="flex flex-col bg-white rounded-lg">
-              <div className="h-3 w-full bg-sognos-navy"></div>
+              <div className="h-3 w-full bg-sognos-blue-accent"></div>
               <div className="p-6">
-                <Image
+                {/* <Image
                   src="/solutions/Inon.avif"
                   alt=""
                   width={40}
                   height={40}
                   className="h-10 w-10 object-contain"
-                />
+                /> */}
                 <h3 className="mt-5 font-angellist text-2xl font-normal tracking-tight text-sognos-heading">
                   {title}
                 </h3>

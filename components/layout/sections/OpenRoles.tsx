@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 type Role = {
   title: string;
   type: string;
@@ -42,126 +38,66 @@ const ROLES: Role[] = [
   },
 ];
 
-const DEPARTMENTS = ["All", ...Array.from(new Set(ROLES.map((r) => r.department)))];
-const LOCATIONS = ["All", ...Array.from(new Set(ROLES.map((r) => r.location)))];
-
 export default function OpenRoles() {
-  const [dept, setDept] = useState("All");
-  const [loc, setLoc] = useState("All");
-
-  const filtered = ROLES.filter(
-    (r) =>
-      (dept === "All" || r.department === dept) &&
-      (loc === "All" || r.location === loc),
-  );
-
   return (
-    <section className="w-full border-b border-sognos-line">
-      <div className="max-w-7xl w-full mx-auto px-6 py-24">
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-                <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-                Open roles
-              </div>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-tight mb-6">
-            Current opportunities
-          </h2>
-          {/* Filters */}
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <select
-                value={dept}
-                onChange={(e) => setDept(e.target.value)}
-                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-line bg-white text-sm text-sognos-body font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-sognos-navy/20"
-              >
-                {DEPARTMENTS.map((d) => (
-                  <option key={d} value={d}>
-                    {d === "All" ? "Department" : d}
-                  </option>
-                ))}
-              </select>
-              <svg
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sognos-body/50"
-                viewBox="0 0 16 16"
-                fill="none"
+    <section
+      id="positions"
+      className="w-full scroll-mt-32 border-b border-sognos-line bg-white"
+    >
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          {/* Left — label rail */}
+          <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+            <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
+              <span
                 aria-hidden="true"
-              >
-                <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div className="relative">
-              <select
-                value={loc}
-                onChange={(e) => setLoc(e.target.value)}
-                className="appearance-none pl-4 pr-9 py-2.5 rounded-full border border-sognos-line bg-white text-sm text-sognos-body font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-sognos-navy/20"
-              >
-                {LOCATIONS.map((l) => (
-                  <option key={l} value={l}>
-                    {l === "All" ? "Location" : l}
-                  </option>
-                ))}
-              </select>
-              <svg
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sognos-body/50"
-                viewBox="0 0 16 16"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Role list */}
-        {filtered.length > 0 ? (
-          <ul>
-            {filtered.map((role) => (
-              <li key={role.title} className="border-t border-sognos-line">
-                <a
-                  href="mailto:careers@sognos.com.au"
-                  className="flex items-center justify-between gap-6 py-6 group"
-                >
-                  <div>
-                    <p className="font-heading text-xl font-medium text-sognos-body tracking-tight group-hover:text-sognos-body transition-colors">
-                      {role.title}
-                    </p>
-                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                      <span className="text-sm text-sognos-muted">{role.type}</span>
-                      <span className="text-sognos-muted/40 text-xs">•</span>
-                      <span className="text-sm text-sognos-muted">{role.location}</span>
-                      <span className="text-sognos-muted/40 text-xs">•</span>
-                      <span className="text-sm text-sognos-muted">{role.department}</span>
-                    </div>
-                  </div>
-                  <div className="shrink-0 w-10 h-10 rounded-full border border-sognos-line flex items-center justify-center text-sognos-body group-hover:bg-sognos-navy group-hover:text-white group-hover:border-sognos-navy transition-colors">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </a>
-              </li>
-            ))}
-            <li className="border-t border-sognos-line" />
-          </ul>
-        ) : (
-          <div className="border-t border-sognos-line pt-12 pb-4">
-            <p className="text-sognos-muted text-sm">
-              No roles match the selected filters.
+                className="h-2.5 w-2.5 rounded-full bg-sognos-blue-accent"
+              />
+              Careers
             </p>
           </div>
-        )}
 
-        <p className="mt-10 text-sm text-sognos-muted">
-          Don't see a fit?{" "}
-          <a
-            href="mailto:careers@sognos.com.au"
-            className="text-sognos-body font-medium underline underline-offset-2 hover:opacity-70 transition-opacity"
-          >
-            Send us your CV anyway
-          </a>{" "}
-          - we're always interested in hearing from talented people.
-        </p>
+          {/* Right — heading + role list */}
+          <div className="lg:col-[3/-1]">
+            <h2 className="font-heading text-5xl font-normal tracking-tight text-sognos-header text-balance md:text-6xl lg:text-7xl">
+              Open positions
+            </h2>
+
+            <ul className="mt-16 border-y border-sognos-line lg:mt-20">
+              {ROLES.map((role) => (
+                <li key={role.title} className="border-t border-sognos-line first:border-t-0">
+                  <a
+                    href="mailto:careers@sognos.com.au"
+                    className="group grid gap-4 py-6 transition-colors duration-200 hover:bg-slate-50 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-7"
+                  >
+                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
+                      <p className="font-heading text-xl font-medium tracking-tight text-sognos-body transition-colors group-hover:text-sognos-blue-accent lg:text-2xl">
+                        {role.title}
+                      </p>
+                      <span className="rounded-md bg-slate-100 px-3 py-1 text-sm font-medium text-sognos-body">
+                        Hybrid / {role.type}
+                      </span>
+                    </div>
+                    <p className="text-base leading-relaxed text-sognos-muted sm:text-right lg:text-xl">
+                      {role.location}
+                    </p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-8 text-sm leading-relaxed text-sognos-muted">
+              Don&apos;t see a fit?{" "}
+              <a
+                href="mailto:careers@sognos.com.au"
+                className="font-medium text-sognos-body underline underline-offset-2 transition-opacity hover:opacity-70"
+              >
+                Send us your CV anyway
+              </a>{" "}
+              - we&apos;re always interested in hearing from talented people.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

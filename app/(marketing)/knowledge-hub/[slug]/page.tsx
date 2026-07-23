@@ -24,6 +24,7 @@ import { ARTICLE_PROSE_MAX_W } from "@/lib/articleLayout";
 import PullQuote from "@/components/portable-text/PullQuote";
 import QuoteCallout from "@/components/portable-text/QuoteCallout";
 import StatRow from "@/components/portable-text/StatRow";
+import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 
 export const revalidate = 60;
 
@@ -183,7 +184,7 @@ export default async function KnowledgeHubPost({
 
   return (
     <main className="bg-white">
-      {/* ── Hero — back link, then meta+title (left) / featured image (right) ── */}
+      {/* ── Hero — back link, then meta+title with featured image below ── */}
       <section className="overflow-hidden bg-white pt-32 lg:pt-40">
         <div className="mx-auto max-w-7xl px-6">
           {/* Back link — above the rail line */}
@@ -198,9 +199,9 @@ export default async function KnowledgeHubPost({
             Back to Knowledge Hub
           </Link>
 
-          <div className="mt-10 lg:grid lg:grid-cols-5 lg:gap-12 xl:gap-16">
+          <div className="mt-10 border-l border-sognos-line pl-6 lg:grid lg:grid-cols-3 lg:gap-x-16 xl:gap-x-20">
             {/* Left — border-line starts at the meta row, then title */}
-            <div className="border-l border-sognos-line pl-6 lg:col-span-2">
+            <div className="lg:col-span-2">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                 <span>{post.category}</span>
                 <span aria-hidden="true" className="text-sognos-line">
@@ -221,19 +222,17 @@ export default async function KnowledgeHubPost({
               </h1>
             </div>
 
-            {/* Right — featured image, constrained to prose width, right-aligned */}
+            {/* Featured image — aligned to the prose/content column below */}
             {heroUrl && (
               <div
-                className={`mt-10 ml-auto lg:col-span-3 lg:mt-0 ${ARTICLE_PROSE_MAX_W}`}
+                className="mt-14 w-full lg:col-span-2 lg:col-start-2 lg:row-start-2 lg:mt-80 lg:-ml-6 lg:w-[calc(100%+1.5rem)]"
               >
-                <div className="relative h-[60vh] w-full overflow-hidden rounded-lg lg:h-[80vh]">
-                  <Image
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={heroUrl}
                     alt={post.title}
-                    fill
-                    priority
-                    className="object-cover object-top"
-                    sizes="(min-width: 1024px) 60vw, 100vw"
+                    className="h-full w-full object-cover object-top"
                   />
                 </div>
               </div>
@@ -243,7 +242,7 @@ export default async function KnowledgeHubPost({
       </section>
 
       {/* ── Body — sticky scroll-spy nav + prose ── */}
-      <section className="bg-white pt-16 pb-16 lg:pt-24 lg:pb-24">
+      <section className="bg-white pt-0 pb-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="lg:grid lg:grid-cols-3 lg:gap-16 xl:gap-20">
             {/* Col 1 — sticky scroll-spy nav */}
@@ -269,10 +268,16 @@ export default async function KnowledgeHubPost({
       {latest.length > 0 && (
         <section className="border-t border-gray-200 bg-white">
           <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
-            <p className="mb-8 text-sm font-semibold text-sognos-heading">
-              <span className="mr-1.5 text-sognos-blue-accent">●</span>Latest
-              articles
-            </p>
+            <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-12">
+              <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
+                The latest news
+              </h2>
+              <SeeMoreLink
+                className="max-sm:hidden"
+                href="/knowledge-hub"
+                label="See more on the blog"
+              />
+            </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {latest.map((article) => (
                 <ArticleCard key={article.slug} article={article} />

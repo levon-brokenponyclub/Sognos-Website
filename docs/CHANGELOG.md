@@ -1,5 +1,54 @@
 # Changelog
 
+## 2026-07-23 — Company, careers, social responsibility, industry and content-section refinements
+
+- **Careers page hero and image rhythm** (`app/(marketing)/company/careers/page.tsx`):
+  - Replaced the old centered gradient hero with the About-page style white hero: eyebrow, large left-column heading, intro copy, right-aligned `Open Positions` CTA, and the scroll-shrinking `<AboutHeroImage />` below.
+  - Updated hero JSX apostrophes to HTML entities so the page passes `react/no-unescaped-entities`.
+- **Careers benefits section** (`app/(marketing)/company/careers/page.tsx`):
+  - Replaced the previous five “Our People - Our Planet” values with four benefits: `Collaborative culture`, `Continuous learning`, `Work-life balance`, and `Equal opportunity`.
+  - Changed the section from the old 3×2 dashed-grid treatment to a dark navy left-intro plus 2×2 benefit-card layout.
+- **Open roles section** (`components/layout/sections/OpenRoles.tsx`):
+  - Refactored from a client-side filtered roles list to a server-rendered AngelList-style open-positions layout.
+  - Removed department/location filters and client state.
+  - Added the `SognosCare Advantages`-style left rail, large `Open positions` heading, divided job rows, work-type pills, right-aligned locations, and retained `mailto:careers@sognos.com.au` role links.
+- **Life at Sognos testimonials** (`components/layout/sections/LifeAtSognos.tsx`):
+  - Replaced old testimonial data with Brian Kasmara, Mrigul Arora, Mayank Raval, Rishit Patel, and Arayen Desai.
+  - Switched images from remote `sognos.com.au` URLs to local `/images/team/*.webp` assets.
+  - Migrated raw `<img>` usage to `next/image`, added avatar thumbnails, a large active employee image, tab semantics, and animated image/quote transitions.
+  - Updated the section background to `bg-sognos-navy`.
+- **Social responsibility page** (`app/(marketing)/company/social-responsibility/page.tsx`):
+  - Rebuilt the hero to match the About-page hero layout: white background, eyebrow, large heading, intro copy, right-aligned `Contact us` CTA, and a hero image below.
+  - Wired the hero image to `/images/about/social-responsibility-hero-img.webp`.
+  - Replaced the static image block with `<AboutHeroImage src="...">` so the image uses the same scroll shrink/parallax effect as the About hero.
+  - Refactored the pillars grid from a light bordered grid into a dark navy `IndustryChallengeStack`-style section with centered intro and responsive numbered cards.
+- **Shared hero image component** (`components/layout/sections/AboutHeroImage.tsx`):
+  - Added optional `src` and `alt` props while preserving the default About/Careers image behavior.
+  - Kept the existing scroll-linked max-width shrink, border-radius interpolation, and vertical parallax behavior.
+- **About page and beliefs layout**:
+  - `app/(marketing)/company/about/page.tsx`: refactored the partners block into a sticky left rail plus 2-column partner cards; updated the label/heading copy to `Our Partners` and `Let's build. Together.`
+  - `components/layout/sections/AboutBeliefs.tsx`: changed the beliefs section to a dark navy grid with a title/intro cell and numbered card-style belief items.
+- **Industry detail pages**:
+  - `app/(marketing)/industries/[slug]/page.tsx`: restored the industry hero image column, changed the challenge section to a dark card-grid section, added the industry slider for “Explore other industries,” and replaced the older product-card block with the new platform section.
+  - `components/layout/sections/industries/IndustryChallengeStack.tsx`: changed from sticky stacked cards to a reusable centered-heading plus numbered responsive-card grid; accepts `heading` and `description`.
+  - `components/layout/sections/industries/IndustryHowTabs.tsx`: expanded the simple tab view into an autoplaying, reduced-motion-aware dark workflow panel with vertical desktop tabs, mobile accordions, animated content, and a workflow mockup.
+  - `components/layout/sections/industries/IndustryPlatformSection.tsx` added: product/platform cards for SognosCare, SognosRoster, Sognos Genogram, Dynamics 365 Field Service, and Microsoft Cloud context.
+  - `components/layout/sections/IndustrySection.tsx`: added optional `heading` and `excludeSlug` props for reuse on industry detail pages; tightened card rounding/overlay treatment.
+- **Knowledge Hub and Customer Story pages**:
+  - `app/(marketing)/knowledge-hub/[slug]/page.tsx`: reworked the post hero so meta/title sit on a left rail and the featured image aligns below with the content column; changed the “Latest articles” footer into a heading/link row using `SeeMoreLink`.
+  - `app/(marketing)/customer-stories/[slug]/page.tsx`: widened the hero rail, changed the label from `Case Study` to `Customer Story`, increased quote spacing, and reduced the pull-quote desktop size.
+  - `components/layout/sections/ProductCustomerStories.tsx`: made `SeeMoreLink` reusable with optional `href` and `label`.
+- **Homepage/product and section polish**:
+  - `components/layout/sections/HomeProductCards.tsx`: tightened product-card copy and reduced the section bottom padding.
+  - `components/layout/sections/HowSognosWorks.tsx`: increased desktop card gap, changed card accent bars to `bg-sognos-blue-accent`, and disabled the placeholder icon image.
+  - `app/(marketing)/solutions/[slug]/page.tsx`: tightened the “The problem” eyebrow tracking.
+- **Navigation** (`lib/navigation.ts`):
+  - Added `Events` and restored `Customer Stories` in the Resources menu.
+- **New local assets**:
+  - Added About/social images: `public/images/about/sognos-team.webp`, `public/images/about/social-responsibility-hero-img.webp`, `public/images/about/iStock-1391579515-scaled.webp`.
+  - Added team testimonial images: `public/images/team/{Arayen-Desai,Brian-Kasmara,Mayank-Raval,Mrigul-Arora,Rishit-Patel}.webp`.
+- **Verification run during the work:** targeted ESLint passed for `LifeAtSognos.tsx`, `OpenRoles.tsx`, `AboutHeroImage.tsx`, `careers/page.tsx`, and `social-responsibility/page.tsx`. Local dev server ran on `http://localhost:3002` after port `3000` was occupied.
+
 ## 2026-07-07 — Article content blocks: PullQuote, QuoteCallout, StatRow + square bullets
 
 Four reusable Portable Text elements (Pallet-style, Sognos tokens), usable in both Knowledge Hub posts and Customer Stories. All render inside the article prose column (inherit `max-w-[46rem]`; no width classes inside the components).

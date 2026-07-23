@@ -19,7 +19,13 @@ import {
 //    source visible in the crop, matches AngelList devtools value) and
 //    settles at 0. The image is 60px taller than its container so it has
 //    room to translate.
-export default function AboutHeroImage() {
+export default function AboutHeroImage({
+  src = "/images/about/sognos-team.webp",
+  alt = "",
+}: {
+  src?: string;
+  alt?: string;
+}) {
   const { scrollY } = useScroll();
   const progress = useTransform(scrollY, [0, 600], [0, 1], { clamp: true });
 
@@ -38,8 +44,8 @@ export default function AboutHeroImage() {
           className="absolute left-0 top-0 h-full w-full"
         >
           <Image
-            src="/images/about/hero-img.webp"
-            alt=""
+            src={src}
+            alt={alt}
             width={2016}
             height={768}
             priority

@@ -16,10 +16,21 @@ const CARD_IMAGES: Record<string, string> = {
   "energy-utilities": "/images/home/industries/energy-utilities.jpg",
 };
 
-export default function IndustrySection() {
+type IndustrySectionProps = {
+  heading?: string;
+  excludeSlug?: string;
+};
+
+export default function IndustrySection({
+  heading = "Purpose-built for service-intensive sectors",
+  excludeSlug,
+}: IndustrySectionProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
+  const industries = excludeSlug
+    ? INDUSTRIES.filter((ind) => ind.slug !== excludeSlug)
+    : INDUSTRIES;
 
   const updateArrows = useCallback(() => {
     const el = scrollerRef.current;
@@ -48,7 +59,7 @@ export default function IndustrySection() {
         {/* Header — heading left, arrows right (Cohere) */}
         <div className="flex w-full items-end justify-between gap-6 pb-10">
           <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading max-w-4xl">
-            Purpose-built for service-intensive sectors
+            {heading}
           </h2>
           <div className="flex shrink-0 gap-3">
             <ArrowButton
@@ -70,26 +81,26 @@ export default function IndustrySection() {
           onScroll={updateArrows}
           className="flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {INDUSTRIES.map((ind) => (
+          {industries.map((ind) => (
             <Link
               key={ind.slug}
               href={ind.href}
               data-card
               aria-label={ind.name}
-              className="group/card relative shrink-0 snap-center overflow-hidden rounded h-[289px] w-[289px] md:h-[399px] md:w-[399px] lg:h-[420px] lg:w-[420px]"
+              className="group/card relative isolate shrink-0 snap-center overflow-hidden rounded-lg h-[289px] w-[289px] md:h-[399px] md:w-[399px] lg:h-[420px] lg:w-[420px]"
             >
               <Image
                 src={CARD_IMAGES[ind.slug] ?? ind.image}
                 alt={ind.name}
                 fill
-                className="object-cover transition-transform duration-500 ease-out group-hover/card:scale-[1.2]"
+                className="rounded-lg object-cover transition-transform duration-500 ease-out group-hover/card:scale-[1.2]"
                 sizes="(min-width: 1024px) 420px, (min-width: 768px) 399px, 289px"
               />
               {/* Legibility gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-sognos-navy-dark/85 via-sognos-navy-dark/10 to-transparent" />
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-sognos-navy-dark/85 via-sognos-navy-dark/10 to-transparent" />
 
               {/* Title + arrow pinned bottom */}
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-6">
+              <div className="absolute inset-x-0 bottom-0 rounded-b-lg flex items-end justify-between gap-3 p-6">
                 <h3 className="font-heading text-xl lg:text-2xl font-medium tracking-tight text-white text-balance max-w-[80%]">
                   {ind.name}
                 </h3>

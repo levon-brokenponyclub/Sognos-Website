@@ -8,8 +8,8 @@ import Link from "next/link";
 const PRODUCTS = [
   {
     name: "One platform. From intake to outcome.",
-    lead: "Deliver safer, simpler care in the field.",
-    rest: " From mental health to aged care, we help providers reduce admin and stay service-ready - whatever changes come next.",
+    lead: "Deliver safer, simpler care in the field",
+    rest: " with intake, plans, compliance and outcomes connected in one workflow.",
     accent: "#1d96fc",
     href: "/products/sognoscare",
     logo: "/logos/sognos-care-logo.svg",
@@ -18,8 +18,8 @@ const PRODUCTS = [
   },
   {
     name: "The right worker for every job, in real time.",
-    lead: "From scheduling to routing, SognosRoster puts the right worker on every shift",
-    rest: " - factoring skills, location, availability and compliance automatically.",
+    lead: "Put the right worker on every shift",
+    rest: " with skills, location, availability and compliance factored in automatically.",
     accent: "#59bbf7",
     href: "/products/sognosroster",
     logo: "/logos/sognos-roster-logo.svg",
@@ -27,8 +27,8 @@ const PRODUCTS = [
   },
   {
     name: "Family context. Built into every record.",
-    lead: "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery",
-    rest: " - giving your team the context they need to deliver better outcomes.",
+    lead: "Map relationships, histories and support networks",
+    rest: " so every worker has the context they need to deliver better outcomes.",
     accent: "#91278c",
     href: "/products/sognosgenogram",
     logo: "/logos/SognosGenogram-logo.svg",
@@ -110,7 +110,7 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
 
 export default function HomeProductCards() {
   return (
-    <section className="bg-sognos-navy-dark pb-24">
+    <section className="bg-sognos-navy-dark pb-2">
       <div className="mx-auto max-w-6xl px-6">
         <div className="group/cards flex items-start snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible lg:gap-6">
           {PRODUCTS.map((product) => (
