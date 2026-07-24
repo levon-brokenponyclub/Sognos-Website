@@ -27,8 +27,6 @@ export async function generateMetadata({
   };
 }
 
-// Shared placeholder images (same across all solutions for now).
-const HERO_IMAGE = "/solutions/SolutionsHero.avif";
 const PROBLEM_ICON = "/solutions/Inon.avif";
 
 export default async function SolutionPage({
@@ -71,7 +69,7 @@ export default async function SolutionPage({
             <div className="lg:col-span-5">
               <div className="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]">
                 <Image
-                  src={HERO_IMAGE}
+                  src={content.hero.image}
                   alt={`${meta.name} preview`}
                   fill
                   sizes="(min-width: 1024px) 40vw, 100vw"

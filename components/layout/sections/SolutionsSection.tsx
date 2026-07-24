@@ -21,7 +21,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/frontline",
     title: "End-to-end field service management",
     copy: "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
-    image: "/product/feature-01.webp",
+    image:
+      "https://plus.unsplash.com/premium_photo-1681967118118-586c2408d0fc?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "crm",
@@ -29,7 +30,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/customer-relationship-management",
     title: "A complete client relationship record",
     copy: "Centralise every client interaction, service history, and communication in one place — giving every team member the context they need.",
-    image: "/product/feature-02.webp",
+    image:
+      "https://images.unsplash.com/photo-1748609160056-7b95f30041f0?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "customer-insights",
@@ -37,7 +39,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/customer-insights",
     title: "Turn service data into operational intelligence",
     copy: "Unified data from care records, rostering, and field operations — surfaced as live dashboards that show what's working and where to act.",
-    image: "/product/feature-03.webp",
+    image:
+      "https://plus.unsplash.com/premium_photo-1682126285167-4bbf25c628c6?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "customer-experience",
@@ -45,7 +48,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/customer-experience",
     title: "Consistent service quality at every touchpoint",
     copy: "From first contact through ongoing delivery, every interaction is tracked, measured, and optimised for consistent service quality.",
-    image: "/product/feature-04.webp",
+    image:
+      "https://images.unsplash.com/photo-1586936893354-362ad6ae47ba?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "customer-service",
@@ -53,7 +57,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/customer-service",
     title: "Faster resolution, clearer accountability",
     copy: "Unified case management, escalation workflows, and response tracking — so every issue is owned, actioned, and closed on time.",
-    image: "/product/feature-05.webp",
+    image:
+      "https://plus.unsplash.com/premium_photo-1661573764813-a6ae0ea91e37?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "power-platform",
@@ -61,7 +66,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/power-platform",
     title: "Extend and automate without engineering overhead",
     copy: "Power Apps, Power Automate, and Power Pages built into the Sognos platform so your team can customise workflows without writing code.",
-    image: "/product/feature-06.webp",
+    image:
+      "https://plus.unsplash.com/premium_photo-1663134266506-248c1ca36909?auto=format&fit=crop&w=1600&q=80",
   },
   {
     id: "quick-start",
@@ -69,7 +75,8 @@ const SOLUTIONS: Solution[] = [
     href: "/solutions/quick-start",
     title: "Live in weeks, not months",
     copy: "Sognos Quick Start delivers a production-ready deployment in four weeks — pre-built configuration, training, and go-live support included.",
-    image: "/product/feature-01.webp",
+    image:
+      "https://plus.unsplash.com/premium_photo-1727356845265-18e80b32081d?auto=format&fit=crop&w=1600&q=80",
   },
 ];
 

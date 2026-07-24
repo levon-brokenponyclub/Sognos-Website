@@ -2,7 +2,7 @@ import { SOLUTIONS } from "./constants";
 
 export type SolutionContent = {
   slug: string;
-  hero: { headline: string; subtext: string };
+  hero: { headline: string; subtext: string; image: string };
   whatItSolves: {
     intro: string;
     painPoints: { title: string; body: string }[];
@@ -21,6 +21,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Coordinate field teams without the chaos",
       subtext:
         "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1681967118118-586c2408d0fc?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -85,6 +87,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "One place for every client relationship",
       subtext:
         "Centralise client records, service history, and interactions so your team always has the context they need - and nothing falls through the cracks.",
+      image:
+        "https://images.unsplash.com/photo-1748609160056-7b95f30041f0?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -149,6 +153,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Understand your service demand before it happens",
       subtext:
         "Surface patterns in client behaviour, service demand, and operational outcomes so your team can make decisions with data - not instinct.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1682126285167-4bbf25c628c6?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -213,6 +219,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Consistent service across every interaction",
       subtext:
         "Deliver the same standard of care and communication at every touchpoint - so clients always know what to expect and your team always knows what to do.",
+      image:
+        "https://images.unsplash.com/photo-1586936893354-362ad6ae47ba?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -277,6 +285,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Resolve cases faster with unified tracking",
       subtext:
         "Give your service team a single place to log, track, and close every case - with full context, SLA visibility, and a complete audit trail.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1661573764813-a6ae0ea91e37?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -341,6 +351,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Extend your operations with low-code tools",
       subtext:
         "Build custom apps, automate workflows, and connect your systems without a development team. Power Platform turns your operational needs into working solutions - fast.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1663134266506-248c1ca36909?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:
@@ -401,6 +413,8 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       headline: "Live in weeks, not months",
       subtext:
         "A fixed-scope, fast-track implementation of Sognos that gets your core operations running quickly - without the risk or cost of a long enterprise project.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1727356845265-18e80b32081d?auto=format&fit=crop&w=1600&q=80",
     },
     whatItSolves: {
       intro:

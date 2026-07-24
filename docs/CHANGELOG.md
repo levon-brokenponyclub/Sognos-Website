@@ -4,6 +4,7 @@
 
 - **Solution landing/detail page polish**:
   - `app/(marketing)/solutions/[slug]/page.tsx`: tightened the hero typography and spacing, swapped hard-coded gray text to Sognos tokens, moved the trusted-logo strip below the dark “The problem” section, and aligned the section eyebrow styling with the current uppercase/wide-tracking system.
+  - Replaced the shared solution hero placeholder with per-solution imagery by moving hero image URLs into `lib/solutions-content.ts` and rendering `content.hero.image` on each solution detail page.
   - `components/layout/sections/SolutionHeroDemoButton.tsx`: restyled the hero CTA to the brighter Sognos blue accent treatment with tighter pill padding.
   - `components/layout/sections/SolutionUseCases.tsx`: moved the capabilities section onto the navy background token and normalized the section eyebrow styling to match the rest of the updated marketing pages.
 - **Homepage / hero CTA motion**:
@@ -14,12 +15,13 @@
   - Refined the upcoming-event card typography and spacing: smaller eyebrow label, sharper heading scale, tighter metadata treatment, and slightly reduced minimum height.
   - Swapped featured-article excerpt copy from generic gray text to the standard `text-sognos-body` token.
 - **Section background / typography consistency**:
+  - `components/layout/sections/SolutionsSection.tsx`: updated the homepage solutions cards to use the same per-solution hero imagery as the corresponding detail pages.
   - `components/layout/sections/LogoStrip.tsx`: promoted the logo-strip heading from paragraph markup to an `h3` and strengthened it to full white on the navy band.
   - `components/layout/sections/NewsInsightSection.tsx`: shifted the section background from white to `bg-gray-50`.
   - `components/layout/sections/ProductCustomerStories.tsx`: removed the bottom border from the customer-story carousel wrapper.
   - `components/layout/sections/industries/IndustryChallengeStack.tsx` and `components/layout/sections/industries/IndustryHowTabs.tsx`: updated the section eyebrow labels to the heavier uppercase tracking style used across the rest of the redesign.
 - **Verification during the work**:
-  - `npm run build`
+  - `npm run build` passed on Friday, July 24, 2026.
 
 ## 2026-07-24 — Announcement banner, cookie-consent panel, and section polish
 
