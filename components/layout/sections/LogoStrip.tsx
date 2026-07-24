@@ -1,6 +1,10 @@
 import Image from "next/image";
 import type { SanityImageSource } from "@sanity/image-url";
-import { DEFAULT_LOGOS } from "@/lib/content/logoStrip";
+import {
+  DEFAULT_LOGOS,
+  LOGO_STRIP_LOGO_LIMIT,
+  LOGO_STRIP_TITLE,
+} from "@/lib/content/logoStrip";
 import { getLogoStripContent } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
@@ -9,9 +13,6 @@ type Logo = {
   src?: string;
   image?: SanityImageSource;
 };
-
-const TITLE = "Trusted by industry leaders and professionals worldwide";
-const MAX_LOGOS = 5;
 
 function resolveLogoSrc(logo: Logo) {
   return logo.image
@@ -25,7 +26,7 @@ export default async function LogoStrip() {
     content?.logos?.length
       ? content.logos.map((logo) => ({ alt: logo.alt, image: logo.image }))
       : DEFAULT_LOGOS
-  ).slice(0, MAX_LOGOS);
+  ).slice(0, LOGO_STRIP_LOGO_LIMIT);
 
   return (
     <section
@@ -34,7 +35,7 @@ export default async function LogoStrip() {
     >
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
         <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-white/70">
-          {TITLE}
+          {LOGO_STRIP_TITLE}
         </p>
         <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
           {logos.map((logo, index) => {

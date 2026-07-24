@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useBookDemo } from "@/lib/BookDemoContext";
 
 export default function CTABand() {
+  const { openModal } = useBookDemo();
+
   return (
-    <section className="relative w-full overflow-hidden bg-sognos-navy-dark py-16 lg:py-24 border-b border-white/10">
+    <section className="relative w-full overflow-hidden bg-sognos-navy-darkest py-16 lg:py-24 border-b border-white/10">
       {/* Decorative dot-grid, bottom-anchored (Deck-style). `mix-blend-screen`
           drops the SVG's near-black backing so only the dots read over navy. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -26,7 +29,7 @@ export default function CTABand() {
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
               type="button"
-              disabled
+              onClick={() => openModal()}
               className="rounded bg-sognos-blue-accent px-6 py-3 text-base font-medium text-white transition-opacity hover:opacity-90"
             >
               Book a demo

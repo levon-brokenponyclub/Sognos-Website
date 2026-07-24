@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./tokens.css";
-    
+
 @custom-variant dark (.dark &);
 
 /* ========================
@@ -191,6 +191,7 @@
   --shadow-wh-card-lg: 0 4px 24px rgb(39 39 39 / 0.1);
 
   /* ── NEW Sognos lean colour system — Tailwind utilities ── */
+  --color-sognos-navy-darkest: var(--sognos-navy-darkest);
   --color-sognos-navy-dark: var(--sognos-navy-dark);
   --color-sognos-navy: var(--sognos-navy);
   --color-sognos-blue-accent: var(--sognos-blue-accent);

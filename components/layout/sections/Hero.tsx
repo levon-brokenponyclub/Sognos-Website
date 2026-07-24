@@ -38,7 +38,7 @@ export default function Hero({
   const { openModal } = useBookDemo();
 
   return (
-    <section className="relative overflow-hidden bg-sognos-navy-dark pt-40 pb-20">
+    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-20">
       <div className="mx-auto max-w-7xl px-6 text-left lg:text-center">
         <motion.h1
           custom={0}

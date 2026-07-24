@@ -29,7 +29,7 @@ export default function BookDemoModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-100 bg-sognos-blue-accent/60 backdrop-blur-xs"
+            className="fixed inset-0 z-100 bg-sognos-navy-dark/80 backdrop-blur-xs"
             onClick={closeModal}
           />
 
@@ -40,7 +40,7 @@ export default function BookDemoModal() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-100 mx-auto max-w-3xl max-h-[90svh] flex flex-col bg-white rounded-t-lg overflow-hidden"
+            className="fixed bottom-0 left-0 right-0 z-100 mx-auto flex max-h-[94svh] max-w-7xl flex-col overflow-hidden rounded-t-lg bg-sognos-blue-accent"
           >
             {/* Handle bar */}
             <div className="w-full flex justify-center pt-3 pb-1 shrink-0">

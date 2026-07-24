@@ -17,6 +17,7 @@ import { useBookDemo } from "@/lib/BookDemoContext";
 // ── Transparent-over-hero: paths whose first section is a dark hero ────────────
 const DARK_HERO_PATHS = new Set([
   "/",
+  "/contact",
   "/products/sognoscare",
   "/products/sognosroster",
   "/products/sognosgenogram",
@@ -311,7 +312,8 @@ export default function Navbar({
   const useTransparent =
     transparentOverHero !== undefined
       ? transparentOverHero
-      : DARK_HERO_PATHS.has(pathname) ||
+      : variant === "dark" ||
+        DARK_HERO_PATHS.has(pathname) ||
         DARK_HERO_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   // Content theme is fixed per page — never flips on scroll.
@@ -368,7 +370,9 @@ export default function Navbar({
 
   // Reveal the bar whenever a dropdown or the mobile menu opens (scroll may not fire).
   useEffect(() => {
-    if (openMenu || mobileOpen) setHeaderHidden(false);
+    if (!openMenu && !mobileOpen) return;
+    const frame = requestAnimationFrame(() => setHeaderHidden(false));
+    return () => cancelAnimationFrame(frame);
   }, [openMenu, mobileOpen]);
 
   // ── Body scroll lock ──────────────────────────────────────────────────────────

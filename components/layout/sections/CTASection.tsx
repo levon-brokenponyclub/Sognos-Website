@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { bookDemo } from "@/app/actions/book-demo";
 import { useCtaContent } from "@/lib/CtaContentContext";
 import { CTA_VARIANT_STYLES } from "@/lib/content/ctaSection";
+import { LOGO_STRIP_LOGO_LIMIT, LOGO_STRIP_TITLE } from "@/lib/content/logoStrip";
 
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -18,9 +19,10 @@ function AnimatedCounter({ value }: { value: number }) {
       },
       { threshold: 0.1 },
     );
-    if (ref.current) observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) observer.observe(currentRef);
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (currentRef) observer.unobserve(currentRef);
       observer.disconnect();
     };
   }, []);
@@ -81,12 +83,21 @@ const MONTH_NAMES = [
   "December",
 ];
 
+const DEMO_BENEFITS = [
+  "Unify care, workforce and field service operations",
+  "See where Dynamics 365, Power Platform and AI fit",
+  "Map your current process to a practical rollout path",
+  "Leave with clear next steps for your team",
+];
+
 export default function CTASection({
   defaultProduct,
   hideStats,
   bare,
 }: CTASectionProps = {}) {
   const cta = useCtaContent();
+  const isDrawerLayout = bare && hideStats;
+  const drawerLogos = cta.trustLogos.slice(0, LOGO_STRIP_LOGO_LIMIT);
 
   const melbourneNow = new Date(
     new Date().toLocaleString("en-US", { timeZone: "Australia/Melbourne" }),
@@ -150,10 +161,11 @@ export default function CTASection({
   function isTimePast(t: string): boolean {
     if (!isToday) return false;
     const [timePart, meridiem] = t.split(" ");
-    let [h, m] = timePart.split(":").map(Number);
+    const [hour, minute] = timePart.split(":").map(Number);
+    let h = hour;
     if (meridiem === "PM" && h !== 12) h += 12;
     if (meridiem === "AM" && h === 12) h = 0;
-    const slotMinutes = h * 60 + m;
+    const slotMinutes = h * 60 + minute;
     const nowMinutes = melbourneNow.getHours() * 60 + melbourneNow.getMinutes();
     return slotMinutes <= nowMinutes;
   }
@@ -161,24 +173,106 @@ export default function CTASection({
   const inner = (
     <div className={bare ? "" : "rounded-md overflow-hidden"}>
       <div
-        className={`grid gap-4 ${hideStats ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[3fr_2fr]"}`}
+        className={`grid gap-4 ${
+          isDrawerLayout
+            ? "min-h-[82svh] grid-cols-1 bg-sognos-blue-accent p-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(560px,1fr)] lg:gap-0 lg:pt-10 lg:pb-0"
+            : hideStats
+              ? "grid-cols-1"
+              : "grid-cols-1 lg:grid-cols-[3fr_2fr]"
+        }`}
       >
-        {/* Left - Calendar / Book a Demo */}
-        <div className="bg-white p-5 lg:p-6 rounded-md shadow-sm flex flex-col w-full">
-          <div className="w-full flex flex-col">
-            <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
-              <h3 className="mb-2 font-heading text-2xl font-medium text-sognos-body tracking-tight">
+        {isDrawerLayout && (
+          <div className="flex min-h-[360px] flex-col justify-between px-2 py-8 text-white lg:min-h-0 lg:px-10 lg:pb-10">
+            <div>
+              <h2 className="mt-0 max-w-lg font-heading text-5xl font-normal leading-[1.06] tracking-tight text-white text-balance lg:mt-0 lg:text-6xl">
                 {cta.bookDemoHeading}
-              </h3>
-              <p className="text-gray-600 leading-relaxed text-base mb-1 balanced">
+              </h2>
+              <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
                 {cta.bookDemoDescription}
               </p>
+
+              <ul className="mt-8 space-y-4">
+                {DEMO_BENEFITS.map((benefit) => (
+                  <li
+                    key={benefit}
+                    className="flex items-center gap-4 text-base text-white/65"
+                  >
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-sognos-navy">
+                      <svg
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        className="h-3 w-3"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="m3 7 2.5 2.5L11 4"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
             </div>
+
+            <div className="mt-12">
+              <p className="text-base font-medium text-white">
+                {LOGO_STRIP_TITLE}
+              </p>
+              <div className="mt-6 grid max-w-xl grid-cols-3 border border-white/10">
+                {drawerLogos.map((logo, i) => (
+                  <div
+                    key={`${logo.alt}-${i}`}
+                    className={`flex h-20 items-center justify-center border-white/10 px-5 ${
+                      i % 3 !== 2 ? "border-r" : ""
+                    } ${i < 3 ? "border-b" : ""}`}
+                  >
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={120}
+                      height={36}
+                      className="max-h-8 w-auto max-w-32 object-contain brightness-0 invert opacity-55"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-sm leading-relaxed text-white/45">
+                Looking for a specific product? We can walk through SognosCare,
+                SognosRoster, Sognos Genogram, or the full platform.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Left - Calendar / Book a Demo */}
+        <div
+          className={`flex w-full flex-col bg-white ${
+            isDrawerLayout
+              ? "rounded-t-lg px-6 pt-6 pb-0 shadow-2xl shadow-black/25 lg:min-h-[78svh] lg:px-8 lg:pt-8 lg:pb-0"
+              : "rounded-md p-5 shadow-sm lg:p-6"
+          }`}
+        >
+          <div className="w-full flex flex-col">
+            {!isDrawerLayout && (
+              <div className="flex-shrink-0 pb-3 mb-3 border-b border-gray-100">
+                <h3 className="mb-2 font-heading text-2xl font-medium text-sognos-body tracking-tight">
+                  {cta.bookDemoHeading}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-base mb-1 balanced">
+                  {cta.bookDemoDescription}
+                </p>
+              </div>
+            )}
 
             <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
               <div className="h-full flex flex-col space-y-3">
                 <div className="flex-shrink-0">
-                  <h3 className="text-[15px] font-semibold text-gray-900">
+                  <h3 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-2xl">
                     {step === 1 && "Choose a date"}
                     {step === 2 && "Choose a time"}
                     {step === 3 && "Add your details"}
@@ -494,7 +588,7 @@ export default function CTASection({
                       </svg>
                     </div>
                     <h4 className="text-xl font-bold text-gray-900 mb-2">
-                      You're booked!
+                      You&apos;re booked!
                     </h4>
                     <p className="text-sm text-gray-600 max-w-[250px] mx-auto">
                       We have received your booking request for{" "}

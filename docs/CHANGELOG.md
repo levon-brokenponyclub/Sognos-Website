@@ -1,5 +1,45 @@
 # Changelog
 
+## 2026-07-23 — Events launch, CTA/contact redesign, proxy migration, and local Sanity repair
+
+- **New event landing page + registration flow**:
+  - Added `app/(marketing)/events/nfp-real-care/page.tsx`: a full marketing/event page for **“Designing Services Around Real Lives, Not System Boundaries”** with hero, event metadata cards, challenge/why-attend sections, speaker profile, agenda timeline, attendee-role chips, Sognos/Microsoft context, location/travel guidance, and repeated registration CTAs.
+  - Added `lib/EventRegistrationContext.tsx`, `components/layout/sections/events/nfp-real-care/{RegisterButton,EventRegistrationModal,EventRegistrationForm}.tsx`, and `app/actions/event-registration.ts`.
+  - Registration is handled via a Server Action that validates the form, writes to Supabase `event_registrations`, and emails the internal events/contact recipients through Resend.
+  - Added the supporting event assets under `public/images/events/nfp-real-care/`.
+- **Knowledge Hub now promotes events + latest customer story** (`components/layout/sections/KnowledgeHubArchive.tsx`):
+  - Added a new **Upcoming Events** section linked to `/events/nfp-real-care`.
+  - Replaced the old placeholder case-study band with a linked **Customer Story** promo for Gentari using the real image/logo treatment.
+  - Changed the featured-grid heading from `All articles` to `Latest articles`.
+  - Added `INITIAL_ARTICLE_LIMIT = 4` with a **Load all articles** button in the featured state.
+  - Reset the article-limit state whenever the user switches archive pills.
+- **Contact page rebuilt as a dark split-screen lead form** (`app/(marketing)/contact/page.tsx`):
+  - Replaced the old gradient hero + office/sidebar layout with a full-height dark hero/form composition.
+  - Added a left-column benefits list and a 3×2 trust-logo grid sourced from CTA/Logo Strip content.
+  - Simplified the right side to a single `Get in touch.` form surface and removed the previous office / ABN / LinkedIn panels from the page layout.
+- **CTA surfaces reworked around the same lead-gen layout**:
+  - `components/layout/sections/CTASection.tsx`: added a new **drawer-style** layout for the bare+hideStats variant, including the same four demo benefits, trust-logo grid, and roomier white form panel.
+  - `components/layout/sections/CTABand.tsx`: the `Book a demo` button is live again and opens the shared Book Demo modal instead of being disabled.
+  - `components/ui/BookDemoModal.tsx`: darkened the backdrop and widened the drawer container to a `max-w-7xl` blue-surface treatment.
+  - `lib/content/ctaSection.ts`, `lib/content/logoStrip.ts`, and `lib/sanity/queries.ts`: introduced `trustLogos`, centralized `LOGO_STRIP_TITLE` / `LOGO_STRIP_LOGO_LIMIT`, and wired CTA trust logos to the Logo Strip CMS/default content.
+  - `components/layout/sections/LogoStrip.tsx`: now reads the shared title/logo-limit constants instead of hardcoding them locally.
+- **Navigation/runtime cleanup for Next.js 16**:
+  - Deleted `middleware.ts` and added `proxy.ts`, keeping the same cookie-consent and pathname header forwarding while moving to the new Next.js 16 file/function convention.
+  - `components/layout/Navbar.tsx`: treats `/contact` as a dark-hero route, respects `variant === "dark"` when deciding transparent mode, and uses a `requestAnimationFrame` reveal when menus open so the bar reliably unhides.
+- **Colour/token updates**:
+  - `app/tokens.css` / `app/globals.css`: introduced `--sognos-navy-darkest`, darkened `--sognos-navy-dark`, and shifted the SognosCare dark/base tokens deeper.
+  - `components/layout/sections/Hero.tsx` and `HomeProductCards.tsx`: switched the home hero/product-card section backgrounds from `bg-sognos-navy-dark` to `bg-sognos-navy`.
+  - `components/layout/sections/CTABand.tsx`: moved the band background to `bg-sognos-navy-darkest`.
+- **Sanity/local-env repair + diagnostics**:
+  - Root-caused the customer-story/article 404s to a local Sanity env load failure: the workspace could not open the previous symlinked `.env.local`, so slug fetches returned `null` and detail routes fell through to `notFound()`.
+  - Replaced the broken symlink with a real local `.env.local` using `NEXT_PUBLIC_SANITY_PROJECT_ID=vg117fxr` and `NEXT_PUBLIC_SANITY_DATASET=production`, restoring Sanity-backed routes in local dev.
+  - `lib/sanity/client.ts`: added dev-only warnings for missing Sanity config and dev-only error logging around failed fetches.
+  - `lib/sanity/image.ts`: migrated from the deprecated default `@sanity/image-url` export to the named `createImageUrlBuilder` export.
+- **Verification during the work**:
+  - Local dev restarted successfully with `.env.local` loading.
+  - Verified `200 OK` for `/customer-stories/flourish-australia`, `/knowledge-hub/north-sydney-office`, and `/knowledge-hub`.
+- **Files:** `app/(marketing)/events/nfp-real-care/page.tsx`, `app/actions/event-registration.ts`, `components/layout/sections/events/nfp-real-care/{RegisterButton,EventRegistrationModal,EventRegistrationForm}.tsx`, `lib/EventRegistrationContext.tsx`, `components/layout/sections/{KnowledgeHubArchive,CTASection,CTABand,LogoStrip,Hero,HomeProductCards}.tsx`, `app/(marketing)/contact/page.tsx`, `components/ui/BookDemoModal.tsx`, `lib/content/{ctaSection,logoStrip}.ts`, `lib/sanity/{client,image,queries}.ts`, `proxy.ts`, `middleware.ts` (deleted), `app/{globals,tokens}.css`, `components/layout/Navbar.tsx`, `public/images/events/nfp-real-care/*`.
+
 ## 2026-07-23 — Company, careers, social responsibility, industry and content-section refinements
 
 - **Careers page hero and image rhythm** (`app/(marketing)/company/careers/page.tsx`):

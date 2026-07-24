@@ -4,7 +4,7 @@ export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon).*)"],
 };
 
-export default function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const consent = req.cookies.get("cookie_consent")?.value ?? "unset";
 
   // Forward consent state as a request header so server components can read it

@@ -220,9 +220,11 @@
 
   /* ── Sognos colour system (lean) ── */
   /* Core brand */
-  --sognos-navy-dark: #060e28;
+  --sognos-navy-dark: #0f1936;
   --sognos-navy: #152248;
   --sognos-blue-accent: #1d96fc;
+  --sognos-navy-darkest: #060e28;
+
   /* Content / text */
   --sognos-heading: #0f1936;
   --sognos-body: #152248;
@@ -230,8 +232,8 @@
   /* Lines */
   --sognos-line: #e2e8f0;
   /* Product: SognosCare */
-  --sognos-care-dark: #09122a;
-  --sognos-care-base: #203e71;
+  --sognos-care-dark: #0f1936;
+  --sognos-care-base: #122e58;
   --sognos-care-gradient: linear-gradient(
     to bottom right,
     #203e71,

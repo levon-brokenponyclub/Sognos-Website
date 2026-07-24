@@ -1,197 +1,105 @@
-import { getSiteSettings } from "@/lib/sanity/queries";
+import Image from "next/image";
+import { getCtaSectionContent } from "@/lib/sanity/queries";
 import ContactForm from "./ContactForm";
+
+const CONTACT_BENEFITS = [
+  "Unify care, workforce and field service operations",
+  "See where Dynamics 365, Power Platform and AI fit",
+  "Map your current process to a practical rollout path",
+  "Leave with clear next steps for your team",
+];
 
 export const revalidate = 60;
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
-  const offices = settings.offices ?? [];
+  const ctaContent = await getCtaSectionContent();
+  const trustLogos = ctaContent.trustLogos.slice(0, 6);
 
   return (
-    <main className="w-full bg-white">
-      {/* Hero */}
-      <section className="bg-gradient-hero w-full">
-        <div className="max-w-7xl w-full mx-auto text-center px-6 py-28 pb-18 pt-40">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-            Contact
-          </div>
-          <h1 className="mx-auto mb-6 max-w-5xl font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-            Get in touch.
-          </h1>
-          <p className="mt-6 text-lg text-white/80 max-w-xl mx-auto leading-relaxed">
-            Contact us to discuss how we can assist your organisation and foster
-            a valuable partnership. We respond within one business day.
-          </p>
-        </div>
-      </section>
+    <main className="w-full bg-sognos-navy">
+      <section
+        data-header-dark
+        className="min-h-screen w-full bg-sognos-navy pt-32 lg:pt-40"
+      >
+        <div className="mx-auto max-w-7xl px-6 pb-12 lg:pb-16">
+          <div className="grid min-h-[calc(100vh-10rem)] grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(560px,1fr)] lg:gap-0">
+            {/* Left — contact intro */}
+            <div className="flex min-h-[520px] flex-col justify-between px-2 py-8 text-white lg:min-h-0 lg:px-10 lg:py-0">
+              <div>
+                <h1 className="max-w-lg font-heading text-5xl font-normal leading-[1.06] tracking-tight text-white text-balance lg:text-6xl">
+                  Get in touch
+                </h1>
+                <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+                  Contact us to discuss how we can assist your organisation and
+                  foster a valuable partnership. We respond within one business
+                  day.
+                </p>
 
-      {/* Form + sidebar */}
-      <section className="w-full bg-slate-50 border-b border-sognos-line">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
-            {/* Form */}
-            <div className="rounded-2xl border border-sognos-line bg-white p-8 lg:p-10">
-              <h2 className="mb-8 font-heading text-2xl font-medium text-sognos-body tracking-tight">
-                Send us a message
-              </h2>
-              <ContactForm />
-            </div>
-
-            {/* Sidebar */}
-            <div className="flex flex-col gap-6">
-              {/* Response time */}
-              {(settings.responseTimeHeading || settings.responseTimeBody) && (
-                <div className="rounded-2xl border border-sognos-line bg-white p-8">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-                    Response time
-                  </div>
-                  {settings.responseTimeHeading && (
-                    <p className="font-heading text-2xl font-medium text-sognos-body">
-                      {settings.responseTimeHeading}
-                    </p>
-                  )}
-                  {settings.responseTimeBody && (
-                    <p className="mt-2 text-sm leading-relaxed text-sognos-body">
-                      {settings.responseTimeBody}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Office locations */}
-              {offices.length > 0 && (
-                <div className="rounded-2xl border border-sognos-line bg-white overflow-hidden">
-                  {offices.map((office, i) => (
-                    <div
-                      key={office.region}
-                      className={`p-8 ${i > 0 ? "border-t border-sognos-line" : ""}`}
+                <ul className="mt-8 space-y-4">
+                  {CONTACT_BENEFITS.map((benefit) => (
+                    <li
+                      key={benefit}
+                      className="flex items-center gap-4 text-base text-white/70"
                     >
-                      <div className="flex items-center gap-2 mb-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sognos-muted">
-                          {office.region}
-                        </p>
-                        {office.label && (
-                          <>
-                            <span className="text-xs text-sognos-muted/50">
-                              -
-                            </span>
-                            <p className="text-xs text-sognos-muted">
-                              {office.label}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                      <p className="text-sm font-semibold text-sognos-body mb-2">
-                        {office.entity}
-                      </p>
-                      <address className="not-italic text-sm text-sognos-body leading-relaxed mb-3">
-                        {office.address.map((line) => (
-                          <span key={line} className="block">
-                            {line}
-                          </span>
-                        ))}
-                      </address>
-                      <div className="space-y-1">
-                        {office.phone && (
-                          <a
-                            href={`tel:${office.phone.replace(/\s/g, "")}`}
-                            className="flex items-center gap-2 text-sm text-sognos-body hover:opacity-70 transition-opacity"
-                          >
-                            <svg
-                              width="13"
-                              height="13"
-                              viewBox="0 0 14 14"
-                              fill="none"
-                              aria-hidden="true"
-                            >
-                              <path
-                                d="M2 2.5C2 8.299 5.701 12 11.5 12l.5-.5v-2l-.5-.5-2-.5-.5.5-.75.75C7.25 9 5 6.75 4.25 5.75L5 5l.5-.5L5 3 4.5 1 4 .5H2L1.5 1C1.5 1 2 2 2 2.5Z"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                            {office.phone}
-                          </a>
-                        )}
-                        {office.email && (
-                          <a
-                            href={`mailto:${office.email}`}
-                            className="flex items-center gap-2 text-sm text-sognos-body hover:opacity-70 transition-opacity"
-                          >
-                            <svg
-                              width="13"
-                              height="13"
-                              viewBox="0 0 14 14"
-                              fill="none"
-                              aria-hidden="true"
-                            >
-                              <rect
-                                x="1"
-                                y="3"
-                                width="12"
-                                height="8"
-                                rx="1.5"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                              />
-                              <path
-                                d="M1 4l6 4 6-4"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            {office.email}
-                          </a>
-                        )}
-                      </div>
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-sognos-navy">
+                        <svg
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          className="h-3 w-3"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="m3 7 2.5 2.5L11 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-12">
+                <p className="text-base font-medium text-white">
+                  Trusted by industry leaders and professionals worldwide
+                </p>
+                <div className="mt-6 grid max-w-xl grid-cols-3 border border-white/10">
+                  {trustLogos.map((logo, i) => (
+                    <div
+                      key={`${logo.alt}-${i}`}
+                      className={`flex h-20 items-center justify-center border-white/10 px-5 ${
+                        i % 3 !== 2 ? "border-r" : ""
+                      } ${i < 3 ? "border-b" : ""}`}
+                    >
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={120}
+                        height={36}
+                        className="max-h-8 w-auto max-w-32 object-contain brightness-0 invert opacity-55"
+                      />
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
+            </div>
 
-              {/* ABN + LinkedIn */}
-              {(settings.abn || settings.linkedinUrl) && (
-                <div className="rounded-2xl border border-sognos-line bg-white p-8">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
-                    <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
-                    Company info
-                  </div>
-                  {settings.abn && (
-                    <dl className="space-y-2 text-sm">
-                      <div className="flex gap-2">
-                        <dt className="text-sognos-muted shrink-0">ABN</dt>
-                        <dd className="text-sognos-body font-medium">
-                          {settings.abn}
-                        </dd>
-                      </div>
-                    </dl>
-                  )}
-                  {settings.linkedinUrl && (
-                    <a
-                      href={settings.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-sognos-body/60 hover:text-sognos-body transition-colors"
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                      </svg>
-                      Sognos on LinkedIn
-                    </a>
-                  )}
-                </div>
-              )}
+            {/* Right — contact form */}
+            <div className="flex w-full flex-col rounded-t-lg bg-white px-6 pt-6 pb-0 shadow-2xl shadow-black/25 lg:min-h-[78vh] lg:px-8 lg:pt-8 lg:pb-0">
+              <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-2xl">
+                Get in touch.
+              </h2>
+              <p className="mt-3 border-b border-gray-100 pb-5 text-base leading-relaxed text-gray-600">
+                Send us a message and we&apos;ll route your enquiry to the right
+                team.
+              </p>
+              <div className="min-h-0 flex-1 overflow-y-auto pt-6">
+                <ContactForm />
+              </div>
             </div>
           </div>
         </div>

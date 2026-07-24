@@ -7,6 +7,10 @@ import {
   type CtaStatVariant,
 } from "@/lib/content/ctaSection";
 import {
+  DEFAULT_LOGOS,
+  LOGO_STRIP_LOGO_LIMIT,
+} from "@/lib/content/logoStrip";
+import {
   DEFAULT_FOOTER_CONTENT,
   type FooterContent,
 } from "@/lib/content/footer";
@@ -628,13 +632,31 @@ type RawCtaSection = {
 };
 
 export async function getCtaSectionContent(): Promise<CtaSectionContent> {
-  const result = await sanityFetch<RawCtaSection>(
-    CTA_SECTION_QUERY,
-    {},
-    { next: { revalidate: 60 } },
-  );
+  const [result, logoStripContent] = await Promise.all([
+    sanityFetch<RawCtaSection>(
+      CTA_SECTION_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    ),
+    getLogoStripContent(),
+  ]);
 
-  if (!result) return DEFAULT_CTA_CONTENT;
+  const trustLogos = (
+    logoStripContent?.logos?.length
+      ? logoStripContent.logos.flatMap((logo) =>
+          logo.image && logo.alt
+            ? [
+                {
+                  src: urlFor(logo.image).width(220).auto("format").url(),
+                  alt: logo.alt,
+                },
+              ]
+            : [],
+        )
+      : DEFAULT_LOGOS
+  ).slice(0, LOGO_STRIP_LOGO_LIMIT);
+
+  if (!result) return { ...DEFAULT_CTA_CONTENT, trustLogos };
 
   const logos =
     result.logos?.flatMap((l) =>
@@ -670,6 +692,7 @@ export async function getCtaSectionContent(): Promise<CtaSectionContent> {
     logoBlockHeading:
       result.logoBlockHeading || DEFAULT_CTA_CONTENT.logoBlockHeading,
     logos: logos.length > 0 ? logos : DEFAULT_CTA_CONTENT.logos,
+    trustLogos,
     stats: stats.length > 0 ? stats : DEFAULT_CTA_CONTENT.stats,
   };
 }

@@ -1,3 +1,8 @@
+import {
+  DEFAULT_LOGOS,
+  LOGO_STRIP_LOGO_LIMIT,
+} from "@/lib/content/logoStrip";
+
 export type CtaStatVariant = "light" | "dark" | "blue";
 
 export type CtaSectionContent = {
@@ -5,6 +10,7 @@ export type CtaSectionContent = {
   bookDemoDescription: string;
   logoBlockHeading: string;
   logos: { src: string; alt: string }[];
+  trustLogos: { src: string; alt: string }[];
   stats: {
     numericValue: number;
     suffix: string;
@@ -27,6 +33,7 @@ export const DEFAULT_CTA_CONTENT: CtaSectionContent = {
     { src: "/logos/platform/PowerPages_scalable.svg", alt: "Power Pages" },
     { src: "/logos/platform/Dataverse_scalable.svg", alt: "Dataverse" },
   ],
+  trustLogos: DEFAULT_LOGOS.slice(0, LOGO_STRIP_LOGO_LIMIT),
   stats: [
     {
       numericValue: 3,

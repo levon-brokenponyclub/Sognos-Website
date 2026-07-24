@@ -24,6 +24,8 @@ const baseClient = createClient({
 
 export const client = baseClient;
 
+const shouldLogSanityIssues = process.env.NODE_ENV !== "production";
+
 /**
  * Safe wrapper around `client.fetch`. Returns `null` when Sanity is not
  * configured or the request fails, letting callers fall back to defaults.
@@ -34,10 +36,24 @@ export async function sanityFetch<T = any>(
   params: Record<string, unknown> = {},
   options?: FilteredResponseQueryOptions,
 ): Promise<T | null> {
-  if (!isSanityConfigured) return null;
+  if (!isSanityConfigured) {
+    if (shouldLogSanityIssues) {
+      console.warn(
+        "[sanityFetch] Sanity is not configured. NEXT_PUBLIC_SANITY_PROJECT_ID is missing or .env.local could not be loaded.",
+      );
+    }
+    return null;
+  }
   try {
     return await baseClient.fetch<T>(query, params, options);
-  } catch {
+  } catch (error) {
+    if (shouldLogSanityIssues) {
+      console.error("[sanityFetch] Request failed", {
+        query,
+        params,
+        error,
+      });
+    }
     return null;
   }
 }

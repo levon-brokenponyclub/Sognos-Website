@@ -1,5 +1,9 @@
 export type DefaultLogo = { src: string; alt: string };
 
+export const LOGO_STRIP_TITLE =
+  "Trusted by industry leaders and professionals worldwide";
+export const LOGO_STRIP_LOGO_LIMIT = 6;
+
 export const DEFAULT_LOGOS: DefaultLogo[] = [
   { src: "/logos/clients/client-01.png", alt: "Sognos client" },
   { src: "/logos/clients/asc-secom.png", alt: "ASC Secom" },

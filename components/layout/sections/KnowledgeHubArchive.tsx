@@ -27,6 +27,31 @@ const CATEGORIES = [
   "Insights",
 ] as const;
 
+const INITIAL_ARTICLE_LIMIT = 4;
+
+const EVENTS = [
+  {
+    category: "Breakfast event",
+    title: "Designing Services Around Real Lives, Not System Boundaries",
+    dateStart: "Sep 17, 2026",
+    dateEnd: "8.30 am - 10.30 am",
+    location: "Microsoft, North Sydney, AU",
+    href: "/events/nfp-real-care",
+    image: "/images/events/nfp-real-care/MSFT-header-img.png",
+  },
+] as const;
+
+const LATEST_CUSTOMER_STORY = {
+  slug: "gentari",
+  company: "Gentari Solar Australia",
+  title:
+    "Gentari Solar Australia: End-to-End Asset Management with Microsoft Dynamics 365 Field Service",
+  date: "Nov 5, 2024",
+  readTime: "4 min read",
+  image: "/images/customers/gentari.webp",
+  logo: "/logos/gentari-logo-rect.webp",
+} as const;
+
 // Three-way pill state: "featured" (default) shows the featured block + intro
 // copy; "all" and each category filter the grid and swap the page title.
 type PillSelection = "featured" | "all" | (typeof CATEGORIES)[number];
@@ -126,6 +151,81 @@ export function ArticleCard({ article }: { article: Article }) {
   );
 }
 
+function EventsSection() {
+  return (
+    <section className="w-full border-b border-sognos-line bg-white py-16 lg:py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          {/* Left — label rail */}
+          <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+            <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
+              <span
+                aria-hidden="true"
+                className="h-2.5 w-2.5 rounded-full bg-sognos-blue-accent"
+              />
+              Upcoming Events
+            </p>
+          </div>
+
+          {/* Right — event rows */}
+          <div className="lg:col-[3/-1]">
+            <div className="divide-y divide-white">
+              {EVENTS.map((event) => (
+                <Link
+                  key={event.href}
+                  href={event.href}
+                  className="group grid min-h-[420px] rounded overflow-hidden bg-gray-50 transition-colors duration-200 hover:bg-gray-100 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]"
+                >
+                  <div className="flex min-h-[360px] flex-col justify-between p-7 md:p-9 lg:p-10">
+                    <div>
+                      <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
+                        <span
+                          aria-hidden="true"
+                          className="h-2.5 w-2.5 rounded-full border border-sognos-muted/30 bg-transparent"
+                        />
+                        {event.category}
+                      </p>
+                      <h2 className="mt-8 max-w-4xl font-heading text-4xl font-normal leading-[1.04] tracking-tight text-sognos-heading text-balance md:text-5xl">
+                        {event.title}
+                      </h2>
+                    </div>
+
+                    <dl className="border-t border-sognos-line text-base md:text-lg">
+                      <div className="grid grid-cols-[120px_1fr] gap-6 border-b border-sognos-line py-4">
+                        <dt className="text-sognos-muted">Date</dt>
+                        <dd className="text-right font-medium text-sognos-body">
+                          {event.dateStart}
+                          <span className="mx-4 text-sognos-muted">-</span>
+                          {event.dateEnd}
+                        </dd>
+                      </div>
+                      <div className="grid grid-cols-[120px_1fr] gap-6 py-4">
+                        <dt className="text-sognos-muted">Location</dt>
+                        <dd className="text-right font-medium text-sognos-body">
+                          {event.location}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div className="relative min-h-[260px] overflow-hidden lg:min-h-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── Archive ──────────────────────────────────────────────────────────────────
 
 export default function KnowledgeHubArchive({
@@ -142,6 +242,7 @@ export default function KnowledgeHubArchive({
   const [selection, setSelection] = useState<PillSelection>(() =>
     resolveSelection(initialCategory),
   );
+  const [showAllArticles, setShowAllArticles] = useState(false);
 
   const isFeatured = selection === "featured";
   const featured = articles[0] ?? null;
@@ -153,6 +254,11 @@ export default function KnowledgeHubArchive({
     : selection === "all"
       ? articles
       : articles.filter((a) => a.category === selection);
+  const shouldLimitArticles = isFeatured && !showAllArticles;
+  const visibleGrid = shouldLimitArticles
+    ? grid.slice(0, INITIAL_ARTICLE_LIMIT)
+    : grid;
+  const hasMoreArticles = isFeatured && grid.length > visibleGrid.length;
 
   // Header title tracks the pill: intro title in Featured, else the pill label.
   const headerTitle = isFeatured
@@ -202,13 +308,19 @@ export default function KnowledgeHubArchive({
           <div className="scrollbar-hide -mx-6 mt-10 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
             {/* Special pills — no count badge */}
             <button
-              onClick={() => setSelection("featured")}
+              onClick={() => {
+                setSelection("featured");
+                setShowAllArticles(false);
+              }}
               className={pillClass(selection === "featured")}
             >
               Featured
             </button>
             <button
-              onClick={() => setSelection("all")}
+              onClick={() => {
+                setSelection("all");
+                setShowAllArticles(false);
+              }}
               className={pillClass(selection === "all")}
             >
               All Articles
@@ -220,7 +332,10 @@ export default function KnowledgeHubArchive({
               return (
                 <button
                   key={cat}
-                  onClick={() => setSelection(cat)}
+                  onClick={() => {
+                    setSelection(cat);
+                    setShowAllArticles(false);
+                  }}
                   className={pillClass(isActive)}
                 >
                   {cat}
@@ -289,15 +404,28 @@ export default function KnowledgeHubArchive({
         <div className="mx-auto max-w-7xl px-6">
           {isFeatured && (
             <p className="mb-8 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
-              All articles
+              Latest articles
             </p>
           )}
           {grid.length > 0 ? (
-            <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
-              {grid.map((article) => (
-                <ArticleCard key={article.slug} article={article} />
-              ))}
-            </div>
+            <>
+              <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
+                {visibleGrid.map((article) => (
+                  <ArticleCard key={article.slug} article={article} />
+                ))}
+              </div>
+              {hasMoreArticles && (
+                <div className="mt-12 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllArticles(true)}
+                    className="rounded bg-sognos-navy px-6 py-3 text-base font-medium text-white transition-opacity hover:opacity-90"
+                  >
+                    Load all articles
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="rounded-lg border border-(--sognos-line) bg-white px-8 py-16 text-center">
               <p className="font-heading text-xl text-sognos-heading">
@@ -314,32 +442,53 @@ export default function KnowledgeHubArchive({
       {/* Case Study — full-bleed dark band */}
       <section className="bg-sognos-navy py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <Link
+            href={`/customer-stories/${LATEST_CUSTOMER_STORY.slug}`}
+            className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+          >
             {/* Left */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
-                <span className="mr-1.5 text-sognos-blue-accent">●</span>Case
-                Study
+                <span className="mr-1.5 text-sognos-blue-accent">●</span>Customer Story
               </p>
-              <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl">
-                Sognos helps Flourish Australia modernise service delivery with
-                a single Dynamics 365 platform
+              <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-white transition-opacity group-hover:opacity-80 md:text-4xl lg:text-5xl">
+                {LATEST_CUSTOMER_STORY.title}
               </h2>
               <div className="mt-6 flex items-center gap-3">
-                <span className="text-sm text-white/50">January 2025</span>
+                <span className="text-sm text-white/50">
+                  {LATEST_CUSTOMER_STORY.date}
+                </span>
                 <span className="text-white/30">·</span>
-                <span className="text-sm text-white/50">5 min read</span>
+                <span className="text-sm text-white/50">
+                  {LATEST_CUSTOMER_STORY.readTime}
+                </span>
               </div>
             </div>
-            {/* Right — cover image placeholder */}
-            <div className="flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100">
-              <span className="text-sm font-medium text-gray-400">
-                Cover image — placeholder
-              </span>
+            {/* Right — customer story cover image */}
+            <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={LATEST_CUSTOMER_STORY.company}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                src={LATEST_CUSTOMER_STORY.image}
+              />
+              <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={LATEST_CUSTOMER_STORY.company}
+                  className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
+                  src={LATEST_CUSTOMER_STORY.logo}
+                />
+              </div>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
             </div>
-          </div>
+          </Link>
         </div>
       </section>
+
+      <EventsSection />
+
     </>
   );
 }
