@@ -104,7 +104,7 @@ Header structure:
 - Products
   - SognosCare
   - SognosRoster
-  - Sognos Genogram
+  - SognosGenogram
 - Solutions
   - Frontline
   - Customer Relationship Management

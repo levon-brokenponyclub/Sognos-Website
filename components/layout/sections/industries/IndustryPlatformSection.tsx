@@ -76,7 +76,7 @@ const PRODUCT_META: Record<string, PlatformProduct> = {
     bgImage: "/images/home/industries/industrial-services.jpg",
     accent: "#59bbf7",
   },
-  "Sognos Genogram": {
+  "SognosGenogram": {
     name: PRODUCTS.genogram.name,
     href: PRODUCTS.genogram.href,
     byline: PRODUCTS.genogram.tagline,

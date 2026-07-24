@@ -9,7 +9,7 @@ import { PRODUCT_CARDS, type ProductCardData } from "./ProductCard";
 const EYEBROWS: Record<string, string> = {
   SognosCare: "Care delivery",
   SognosRoster: "Workforce coordination",
-  "Sognos Genogram": "Family context",
+  "SognosGenogram": "Family context",
 };
 
 const CUSTOMER_STAT = {
@@ -153,7 +153,7 @@ export default function ProductSection() {
               The platform powering modern service delivery
             </h2>
             <p className="max-w-[612px] text-lg leading-relaxed text-sognos-body text-balance">
-              SognosCare, SognosRoster, and Sognos Genogram work together as one
+              SognosCare, SognosRoster, and SognosGenogram work together as one
               platform — purpose-built for service organisations running on
               Microsoft Dynamics 365 and Copilot-powered workflows.
             </p>

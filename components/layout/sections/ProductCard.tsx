@@ -51,11 +51,11 @@ export const PRODUCT_CARDS: ProductCardData[] = [
   },
   {
     logo: "/logos/sognos-genogram-logo-color.svg",
-    logoAlt: "Sognos Genogram",
+    logoAlt: "SognosGenogram",
     byline: "Family context.\nBuilt into every record.",
     description:
-      "Sognos Genogram maps the relationships, histories, and support networks that shape service delivery - giving your team the context they need to deliver better outcomes.",
-    ctaText: "Explore Sognos Genogram",
+      "SognosGenogram maps the relationships, histories, and support networks that shape service delivery - giving your team the context they need to deliver better outcomes.",
+    ctaText: "Explore SognosGenogram",
     ctaLink: "/products/sognosgenogram",
     hoverBg: "#92278D",
   },

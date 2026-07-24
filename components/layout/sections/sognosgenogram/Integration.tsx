@@ -14,7 +14,7 @@ export default function GenogramIntegration() {
             Context that lives inside the case, not beside it
           </h2>
           <p className="mb-12 max-w-xl text-base leading-relaxed text-white/60">
-            Sognos Genogram is designed to work alongside SognosCare.
+            SognosGenogram is designed to work alongside SognosCare.
             Relationship maps sit directly inside case records - no separate
             system, no copy-pasting, no version mismatch.
           </p>
@@ -24,7 +24,7 @@ export default function GenogramIntegration() {
             {/* Genogram node */}
             <div className="flex flex-col gap-2 rounded-xl border border-sognos-genogram-base/30 bg-sognos-genogram-base/10 px-6 py-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-sognos-genogram-base">
-                Sognos Genogram
+                SognosGenogram
               </p>
               <p className="text-sm text-white/60">
                 Family map · support network · risk tags · historical snapshots

@@ -89,9 +89,9 @@ Completed:
 - "Works with" product chips on solution pages — shown only where genuine relationship exists
 - 22 total routes, all statically generated
 
-### Phase 5b: Sognos Genogram ✅ Complete
+### Phase 5b: SognosGenogram ✅ Complete
 
-Sognos Genogram added as third primary product.
+SognosGenogram added as third primary product.
 
 Delivered:
 - `genogram` added to `lib/constants.ts` PRODUCTS

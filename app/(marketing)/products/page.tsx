@@ -4,9 +4,9 @@ import AnimatedButton from "@/components/ui/AnimatedButton";
 import { PRODUCTS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Products - SognosCare, SognosRoster & Sognos Genogram | Sognos",
+  title: "Products - SognosCare, SognosRoster & SognosGenogram | Sognos",
   description:
-    "Three products built for service operations. SognosCare for care management, SognosRoster for workforce scheduling, and Sognos Genogram for relationship and family context.",
+    "Three products built for service operations. SognosCare for care management, SognosRoster for workforce scheduling, and SognosGenogram for relationship and family context.",
 };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -289,7 +289,7 @@ export default function ProductsPage() {
             Three products. One operating system for service delivery.
           </h1>
           <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/60">
-            SognosCare, SognosRoster, and Sognos Genogram are built to stand
+            SognosCare, SognosRoster, and SognosGenogram are built to stand
             alone - and designed to work together. All run on Microsoft Dynamics
             365, enhanced with Copilot AI.
           </p>

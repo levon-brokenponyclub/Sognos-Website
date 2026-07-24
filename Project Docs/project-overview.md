@@ -31,10 +31,10 @@ Sognos is a service operations platform built around three standalone products:
 
 - SognosCare: care operations and compliance
 - SognosRoster: workforce scheduling and optimisation
-- Sognos Genogram: relationship and family context mapping — embeds support networks, histories, and family structures into case records
+- SognosGenogram: relationship and family context mapping — embeds support networks, histories, and family structures into case records
 
 Relationship:
-SognosCare manages services. SognosRoster coordinates the workforce that delivers them. Sognos Genogram enriches case records with relational context. All three are standalone.
+SognosCare manages services. SognosRoster coordinates the workforce that delivers them. SognosGenogram enriches case records with relational context. All three are standalone.
 
 Supporting architecture:
 - Solutions are supporting/customised engagements
@@ -47,7 +47,7 @@ Hard rule: no standalone Platform nav or page layer.
 Products:
 - SognosCare
 - SognosRoster
-- Sognos Genogram
+- SognosGenogram
 
 Solutions:
 - Frontline
@@ -98,7 +98,7 @@ Industries:
 - Products
   - SognosCare
   - SognosRoster
-  - Sognos Genogram
+  - SognosGenogram
 - Solutions
   - Frontline
   - Customer Relationship Management

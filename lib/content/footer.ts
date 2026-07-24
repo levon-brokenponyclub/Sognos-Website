@@ -15,6 +15,17 @@ export type FooterContent = {
   legalLinks: FooterLink[];
 };
 
+export const COMPANY_FOOTER_LINKS: FooterLink[] = [
+  { label: "About", href: "/company/about" },
+  { label: "Social Responsibility", href: "/company/social-responsibility" },
+  { label: "Knowledge Hub", href: "/knowledge-hub" },
+  { label: "News", href: "/news" },
+  { label: "Events", href: "/events/nfp-real-care" },
+  { label: "Customer Stories", href: "/customer-stories" },
+  { label: "Careers", href: "/company/careers" },
+  { label: "Contact", href: "/contact" },
+];
+
 export const DEFAULT_FOOTER_CONTENT: FooterContent = {
   brandLogo: "/logos/sognos-logo.svg",
   brandLogoAlt: SITE.name,
@@ -43,14 +54,7 @@ export const DEFAULT_FOOTER_CONTENT: FooterContent = {
     },
     {
       title: "Company",
-      links: [
-        { label: "About", href: "/company/about" },
-        { label: "Social Responsibility", href: "/company/social-responsibility" },
-        { label: "Customer Stories", href: "/customer-stories" },
-        { label: "Careers", href: "/company/careers" },
-        { label: "Knowledge Hub", href: "/knowledge-hub" },
-        { label: "Contact", href: "/contact" },
-      ],
+      links: COMPANY_FOOTER_LINKS,
     },
   ],
   acknowledgement:

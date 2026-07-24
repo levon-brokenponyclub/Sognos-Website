@@ -11,6 +11,7 @@ import {
   LOGO_STRIP_LOGO_LIMIT,
 } from "@/lib/content/logoStrip";
 import {
+  COMPANY_FOOTER_LINKS,
   DEFAULT_FOOTER_CONTENT,
   type FooterContent,
 } from "@/lib/content/footer";
@@ -721,6 +722,29 @@ type RawFooter = {
   legalLinks?: RawFooterLink[];
 };
 
+function normalizeFooterLabel(label: string): string {
+  return label === "Sognos Genogram" ? "SognosGenogram" : label;
+}
+
+function normalizeFooterColumns(columns: FooterContent["columns"]): FooterContent["columns"] {
+  return columns.map((column) => {
+    if (column.title === "Company") {
+      return {
+        title: column.title,
+        links: COMPANY_FOOTER_LINKS,
+      };
+    }
+
+    return {
+      ...column,
+      links: column.links.map((link) => ({
+        ...link,
+        label: normalizeFooterLabel(link.label),
+      })),
+    };
+  });
+}
+
 export async function getFooterContent(): Promise<FooterContent> {
   const result = await sanityFetch<RawFooter>(
     FOOTER_QUERY,
@@ -762,7 +786,9 @@ export async function getFooterContent(): Promise<FooterContent> {
       platformLogos.length > 0
         ? platformLogos
         : DEFAULT_FOOTER_CONTENT.platformLogos,
-    columns: columns.length > 0 ? columns : DEFAULT_FOOTER_CONTENT.columns,
+    columns: normalizeFooterColumns(
+      columns.length > 0 ? columns : DEFAULT_FOOTER_CONTENT.columns,
+    ),
     acknowledgement:
       result.acknowledgement || DEFAULT_FOOTER_CONTENT.acknowledgement,
     copyrightSuffix:

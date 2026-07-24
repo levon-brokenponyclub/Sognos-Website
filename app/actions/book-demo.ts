@@ -19,7 +19,7 @@ export type BookDemoResult = { ok: true } | { ok: false; error: string };
 const PRODUCT_LABELS: Record<string, string> = {
   sognoscare: "SognosCare",
   sognosroster: "SognosRoster",
-  sognosgenogram: "Sognos Genogram",
+  sognosgenogram: "SognosGenogram",
   "not-sure": "Not sure yet",
 };
 

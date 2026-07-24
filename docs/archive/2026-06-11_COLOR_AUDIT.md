@@ -260,7 +260,7 @@ In this project's `@theme` block: `--color-muted: var(--sognos-neutral-100)`. Th
 
 ---
 
-### Sognos Genogram (`components/sections/sognosgenogram/*`)
+### SognosGenogram (`components/sections/sognosgenogram/*`)
 
 **Semantic tokens:**
 - `prussian-blue-800` (7), `prussian-blue-950` (1)
@@ -305,14 +305,14 @@ The following are the actual colours in live use on canonical pages. The new pal
 |--------|-----|-------|
 | SognosCare accent | `#1D96FC` | 91 Tailwind + inline uses |
 | SognosRoster accent | `#3990c5` | 8 uses |
-| Sognos Genogram accent | `#92278d` | 25 uses |
+| SognosGenogram accent | `#92278d` | 25 uses |
 
 ### Product hero backgrounds (inline `HERO_BG` consts)
 | Product | Hex |
 |---------|-----|
 | SognosCare | `#03112f` |
 | SognosRoster | `#0b5dab` |
-| Sognos Genogram | `#250438` |
+| SognosGenogram | `#250438` |
 
 ### Text-on-white (solutions pages, not using token layer)
 - Heading: `#1A1A1A`

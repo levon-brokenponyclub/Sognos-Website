@@ -243,7 +243,7 @@ export default function CTASection({
               </div>
               <p className="mt-8 text-sm leading-relaxed text-white/45">
                 Looking for a specific product? We can walk through SognosCare,
-                SognosRoster, Sognos Genogram, or the full platform.
+                SognosRoster, SognosGenogram, or the full platform.
               </p>
             </div>
           </div>
@@ -543,7 +543,7 @@ export default function CTASection({
                           <option value="sognoscare">SognosCare</option>
                           <option value="sognosroster">SognosRoster</option>
                           <option value="sognosgenogram">
-                            Sognos Genogram
+                            SognosGenogram
                           </option>
                           <option value="not-sure">Not sure yet</option>
                         </select>

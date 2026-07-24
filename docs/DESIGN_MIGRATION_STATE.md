@@ -99,9 +99,9 @@ All values from `app/tokens.css`. Utilities generated via `@theme inline` in `ap
 | SognosRoster | `--sognos-roster-dark` | `#0b3a66` |
 | SognosRoster | `--sognos-roster-base` | `#59bbf7` |
 | SognosRoster | `--sognos-roster-gradient` | `linear-gradient(to bottom right, #6fc6fb, #2f97d6, #0e4f86)` |
-| Sognos Genogram | `--sognos-genogram-dark` | `#250438` |
-| Sognos Genogram | `--sognos-genogram-base` | `#91278c` |
-| Sognos Genogram | `--sognos-genogram-gradient` | `linear-gradient(to bottom right, #7b3fa8, #4a1670, #1a0224)` |
+| SognosGenogram | `--sognos-genogram-dark` | `#250438` |
+| SognosGenogram | `--sognos-genogram-base` | `#91278c` |
+| SognosGenogram | `--sognos-genogram-gradient` | `linear-gradient(to bottom right, #7b3fa8, #4a1670, #1a0224)` |
 
 ### Edition sector tokens (NEW — these are the canonical set)
 
@@ -215,7 +215,7 @@ Heading tokens: `--leading-heading: 1.05`, `--tracking-heading: -0.02em`
 | **NewsInsightSection** | `components/layout/sections/NewsInsightSection.tsx` | done | 3 callout cards with morphing SVG notch (`.callout-card__svg`), Framer Motion drag slider |
 | **CTABand** | `components/layout/sections/CTABand.tsx` | done | Globally rendered in marketing layout above `<Footer />`. Book a Demo button `disabled` — interim until `/book-demo` page built. `useBookDemo` modal wiring removed. **Dot-grid bg (2026-07-06):** decorative `/images/cta-bg.svg` (1900×200 dot band) `absolute inset-x-0 bottom-0 w-full` on the navy section, `mix-blend-screen` so the SVG's near-black backing drops out and only the dots read over navy (Deck-style textured footer); section is `overflow-hidden`, content wrapper `relative z-10`. |
 | **CTASection** | `components/layout/sections/CTASection.tsx` | scaffolded | File exists (25 KB) but removed from all page imports. Retained for now; can be deleted later. |
-| **ProductTrustStrip** | `components/layout/sections/ProductTrustStrip.tsx` | done | Static 5-logo strip. Always `bg-white`, `grayscale opacity-70` logos. Wired to SognosCare, SognosRoster, and Sognos Genogram pages (after Hero, wrapped in `<ScrollReveal>`). **Dividers added (2026-07-02):** `border-l border-gray-200` on each logo wrapper except first (`index > 0`), hidden on mobile, `md:flex-1 md:px-10` per-logo wrapper for breathing room. `divide-x` utility was skipped (Tailwind v4 child-selector issue); per-item conditional class used instead. |
+| **ProductTrustStrip** | `components/layout/sections/ProductTrustStrip.tsx` | done | Static 5-logo strip. Always `bg-white`, `grayscale opacity-70` logos. Wired to SognosCare, SognosRoster, and SognosGenogram pages (after Hero, wrapped in `<ScrollReveal>`). **Dividers added (2026-07-02):** `border-l border-gray-200` on each logo wrapper except first (`index > 0`), hidden on mobile, `md:flex-1 md:px-10` per-logo wrapper for breathing room. `divide-x` utility was skipped (Tailwind v4 child-selector issue); per-item conditional class used instead. |
 | **ProductFeaturesScroll** | `components/layout/sections/ProductFeaturesScroll.tsx` | styling-pending | Side-by-side cards (text left / `PlaceholderBox` right). Stacking removed — normal `space-y-8 lg:space-y-12` flow. Sticky left rail + scroll-spy intact. Lottie wiring pending export-size decision. |
 | **PlaceholderBox** | `components/ui/PlaceholderBox.tsx` | done | Self-measuring `ResizeObserver` box showing live W×H + aspect ratio. Temporary — will be replaced by `LottieInView` player. |
 | **SognosCare Hero** | `components/layout/sections/sognoscare/Hero.tsx` | done | **AngelList pattern:** single `motion.div` wraps all content; `<section>` owns static `bg-sognos-care-dark`. `useScroll({ target: heroRef, offset: ["start start","end start"] })`. `y: [0,1]→[0,60]` (content pushes DOWN on scroll — parallax). `opacity: [0,0.7]→[1,0]` (fades to 0 by 70% scroll-through). `useReducedMotion()` guard: both y and opacity set to no-op ranges when reduced motion preferred. `pb-4 md:pb-0`. |
@@ -313,7 +313,7 @@ Product grid + `BetterTogether`. CTASection removed.
 
 Sections: Hero, Problems (white bg — dark pending), Features, Advantages, Stories.
 
-### Sognos Genogram — `app/(marketing)/products/sognosgenogram/page.tsx`
+### SognosGenogram — `app/(marketing)/products/sognosgenogram/page.tsx`
 
 Sections: Hero, SubNav, Problems (white bg — dark pending), Features, Stories.
 

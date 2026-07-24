@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-24 — Legal-page typography pass, footer company links, and SognosGenogram naming
+
+- **Legal pages refactor and typography audit** (`components/layout/sections/LegalPageRenderer.tsx`):
+  - Replaced the old gradient-hero legal-page layout with a document-style two-column layout using a sticky left rail that links `Privacy Policy`, `Privacy Collection Notice`, and `ISMS Policy`.
+  - Standardized legal-page typography across headings, paragraphs, links, metadata, and footer notes to the current Sognos type scale and spacing rhythm.
+  - Updated unordered lists to use the Sognos blue-square bullet treatment and kept ordered lists on a styled semantic `<ol>` after fixing the invalid Portable Text list-item render path.
+  - Hid the introductory privacy-policy title/subhead block so `/company/privacy-policy` opens directly into the legal content body.
+- **Footer / navigation content corrections**:
+  - `lib/content/footer.ts` and `lib/sanity/queries.ts`: locked the footer `Company` column to the required site links and order: `About`, `Social Responsibility`, `Knowledge Hub`, `News`, `Events`, `Customer Stories`, `Careers`, `Contact`.
+  - Normalized footer link labels sourced from Sanity so any legacy `Sognos Genogram` label is rendered as `SognosGenogram`.
+- **Repo-wide product naming normalization**:
+  - Updated product names, metadata, CTA copy, navigation labels, content strings, and supporting docs to consistently use `SognosGenogram` instead of `Sognos Genogram`.
+  - Touched the shared product constants/navigation plus the SognosGenogram product page and related marketing surfaces so the naming is consistent across UI, forms, and internal documentation.
+- **Verification during the work**:
+  - `npm run build` passed on Friday, July 24, 2026.
+
 ## 2026-07-24 — Solution-page presentation polish + archive CTA refinements
 
 - **Solution landing/detail page polish**:
@@ -114,7 +130,7 @@
   - `app/(marketing)/industries/[slug]/page.tsx`: restored the industry hero image column, changed the challenge section to a dark card-grid section, added the industry slider for “Explore other industries,” and replaced the older product-card block with the new platform section.
   - `components/layout/sections/industries/IndustryChallengeStack.tsx`: changed from sticky stacked cards to a reusable centered-heading plus numbered responsive-card grid; accepts `heading` and `description`.
   - `components/layout/sections/industries/IndustryHowTabs.tsx`: expanded the simple tab view into an autoplaying, reduced-motion-aware dark workflow panel with vertical desktop tabs, mobile accordions, animated content, and a workflow mockup.
-  - `components/layout/sections/industries/IndustryPlatformSection.tsx` added: product/platform cards for SognosCare, SognosRoster, Sognos Genogram, Dynamics 365 Field Service, and Microsoft Cloud context.
+  - `components/layout/sections/industries/IndustryPlatformSection.tsx` added: product/platform cards for SognosCare, SognosRoster, SognosGenogram, Dynamics 365 Field Service, and Microsoft Cloud context.
   - `components/layout/sections/IndustrySection.tsx`: added optional `heading` and `excludeSlug` props for reuse on industry detail pages; tightened card rounding/overlay treatment.
 - **Knowledge Hub and Customer Story pages**:
   - `app/(marketing)/knowledge-hub/[slug]/page.tsx`: reworked the post hero so meta/title sit on a left rail and the featured image aligns below with the content column; changed the “Latest articles” footer into a heading/link row using `SeeMoreLink`.

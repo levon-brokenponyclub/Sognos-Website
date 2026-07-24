@@ -31,7 +31,7 @@ export default function GenogramHero() {
             className="text-xs font-semibold uppercase tracking-[0.08em]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
-            Sognos Genogram
+            SognosGenogram
           </p>
 
           <h1 className="mx-auto mt-6 max-w-[1100px] font-heading text-balance text-white text-5xl sm:text-6xl lg:text-7xl font-medium tracking-[-0.02em]">
@@ -67,7 +67,7 @@ export default function GenogramHero() {
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src="/logos/SognosGenogram-logo.svg"
-                alt="Sognos Genogram"
+                alt="SognosGenogram"
                 width={220}
                 height={48}
                 priority

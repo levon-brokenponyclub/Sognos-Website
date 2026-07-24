@@ -7,9 +7,9 @@ import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export const metadata = {
-  title: "Sognos Genogram - Relationship & Family Context Platform | Sognos",
+  title: "SognosGenogram - Relationship & Family Context Platform | Sognos",
   description:
-    "Map family structures, support networks, and relationship histories directly into case records. Sognos Genogram gives every worker the relational context they need.",
+    "Map family structures, support networks, and relationship histories directly into case records. SognosGenogram gives every worker the relational context they need.",
 };
 
 const SECTIONS = [
@@ -27,7 +27,7 @@ export default function SognosGenogramPage() {
         <ProductTrustStrip />
       </ScrollReveal>
       <div className="bg-sognos-genogram-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
-        <ProductSubNav productName="Sognos Genogram" sections={SECTIONS} />
+        <ProductSubNav productName="SognosGenogram" sections={SECTIONS} />
       </div>
       <ScrollReveal>
         <GenogramProblems />

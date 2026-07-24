@@ -1,6 +1,6 @@
 # Product Data Audit — Stats · Customer Stories · Client Logos
 
-> **Read-only audit.** No components, content, lib files, or Sanity documents were modified. This document only catalogues what exists and where it lives, so a decision can be made about what to surface on the SognosCare, SognosRoster, and Sognos Genogram product pages.
+> **Read-only audit.** No components, content, lib files, or Sanity documents were modified. This document only catalogues what exists and where it lives, so a decision can be made about what to surface on the SognosCare, SognosRoster, and SognosGenogram product pages.
 >
 > **Authoritative source of truth:** the 8 `.md` files in `Project Docs/Site Content/Customer Stories/`. The currently-wired content in `CustomerStories.tsx` / `ProductCustomerStories.tsx` / per-product `Stories.tsx` is the *general/placeholder* set the homepage and product pages fall back to — it has 4 of the 8 stories and **no product link beyond a hardcoded image path on the hub page**.
 
@@ -12,7 +12,7 @@
 |---------|-------|---------------------------|--------------|
 | **SognosCare** | ✓ — 1 real story stat wired (Flourish `1,100+`); 4 more in docs not wired. Edition pages have placeholder `35% / 40% / 100% / 99% / 3×` literals. No standalone stat block on the page itself. | ✓ — 1 docs-mapped story (Flourish) currently wired via shared default. Sanity has `featuredStories[]` ref on the product page doc — that's the link, **product→story**. | ✓ — `ProductTrustStrip` wired with 5 hardcoded customer logos (Flourish, Auckland, Penrith, Gentari, NPS). No per-product Sanity field — static array. |
 | **SognosRoster** | ✓ — 4 real story stats reachable in docs (Penrith `25 min → 10 sec`, Auckland `100% adoption`, Gentari `10,000+ assets`, NPS `5,000+ contracts`). None of these are wired as stat tiles. Currently shows: shared `companySize` values + one in-prose `20–30%` placeholder. Orphan `sognosroster/Proof.tsx` has `40% / 1,100+ / 95% / <1hr` but is **not rendered**. | ✓ — 4 docs-mapped stories exist (Penrith, Auckland, Gentari, plus APP/ASC/NPS). Currently wired via shared default (same 4 as Care). Sanity query is **broken/stale** — `getSognosrosterPageContent` selects `stories` but the schema field is `featuredStories`. | ✗ — `ProductTrustStrip` **not imported on the Roster page**. No logo strip rendered at all. |
-| **Sognos Genogram** | ✗ (new product) → propose fallback: qualitative capability highlights; the only story metric remotely adjacent is Flourish's `1,100+` mental-health staff. | ✗ — no story in the docs describes a relationship-mapping workflow. Closest adjacency is Flourish (mental health). Currently wired via shared default (same 4). **No `sognosgenogramPage` Sanity schema exists.** | ✗ — no logo strip wired. No customer overlap to draw a strip from. → propose fallback: re-use the global `LogoStrip` set, or a Microsoft/platform trust signal. |
+| **SognosGenogram** | ✗ (new product) → propose fallback: qualitative capability highlights; the only story metric remotely adjacent is Flourish's `1,100+` mental-health staff. | ✗ — no story in the docs describes a relationship-mapping workflow. Closest adjacency is Flourish (mental health). Currently wired via shared default (same 4). **No `sognosgenogramPage` Sanity schema exists.** | ✗ — no logo strip wired. No customer overlap to draw a strip from. → propose fallback: re-use the global `LogoStrip` set, or a Microsoft/platform trust signal. |
 
 ---
 
@@ -33,7 +33,7 @@ The product mapping below is derived from each doc's *industry*, *"The Solution"
 | 7 | **All Purpose Pumps** (`AllPurposePumps.md`) | Industrial / Pumping · 100–150 · VIC | **SognosRoster** — running behind schedule on PM jobs; quote-to-work-order; van-stock visibility; D365 FS + Sales. | (no discrete %s) qualitative outcomes only | (none) | ✓ Hub only (productLogo = `sognos-roster-logo.svg`). **Not on Roster page.** |
 | 8 | **Natural Power Solutions** (`NPS.md`) | Power & Lighting Protection · 30–50 · National AU | **SognosRoster** — 5,000+ PM contracts in Excel; no work-order visibility; D365 FS + Sales. | `5,000+ PM contracts managed in Excel (before)`; `360-degree view of each customer`; increased sales due to advanced reporting | "By implementing this system, we've been able to demonstrate that value by talking to the customer, showing them what they have, showing them what they need…" — Daniel Sargent, Head of Sales | ✓ Hub only (productLogo = `sognos-roster-logo.svg`). **Not on Roster page.** Featured on `Industries/IndustrialServices.md` copy. |
 
-**Sognos Genogram:** none of the 8 stories describe a relationship-mapping workflow. Flourish is the only adjacent client (mental health). No Genogram-specific story exists.
+**SognosGenogram:** none of the 8 stories describe a relationship-mapping workflow. Flourish is the only adjacent client (mental health). No Genogram-specific story exists.
 
 ### 1a. Product → story mapping summary
 
@@ -41,7 +41,7 @@ The product mapping below is derived from each doc's *industry*, *"The Solution"
 |---------|------------------------------|--------------------------------------|
 | SognosCare | Flourish Australia (1) | Flourish only via shared default fallback. Sanity `featuredStories[]` would replace if populated. |
 | SognosRoster | Penrith, Auckland, Gentari, ASC, APP, NPS (6) | Generic shared default (Flourish, Auckland, Penrith, Gentari) — **3 of 6 Roster-fit stories**. ASC, APP, NPS not wired. Sanity query is **broken/stale** (selects `stories`; schema is `featuredStories`). |
-| Sognos Genogram | none (0) | Generic shared default (same 4 as everywhere else). |
+| SognosGenogram | none (0) | Generic shared default (same 4 as everywhere else). |
 | Unassigned | NECA (1) | Hub only. |
 
 ---
@@ -112,7 +112,7 @@ The product mapping below is derived from each doc's *industry*, *"The Solution"
 | `near-zero paper-based work` | ASC | qualitative |
 | `delivered on time and on budget` | Auckland | qualitative |
 
-### 2.3 Sognos Genogram — stats currently visible on `/products/sognosgenogram`
+### 2.3 SognosGenogram — stats currently visible on `/products/sognosgenogram`
 
 | Value | Label / context | Where on page | Source | Real vs Placeholder |
 |-------|------------------|----------------|--------|---------------------|
@@ -343,7 +343,7 @@ There are **two parallel, independent customer-logo systems, both global, with n
 | No real stat tiles | Orphan `sognosroster/Proof.tsx` exists with placeholders (`40% / 95% / <1hr`); real outcomes (`25 min → 10 sec` Penrith, `100% adoption` Auckland, `10,000+ assets` Gentari, `5,000+ contracts` NPS) sit unused in docs. | Replace the placeholder Proof with a real stat block sourced verbatim from Penrith, Auckland, Gentari, NPS — attribute each to the client. |
 | Roster Problems body has unattributed `20–30%` | Inline prose claim with no source. | Replace or attribute. |
 
-### 5.3 Sognos Genogram (new — expected empty, confirmed empty)
+### 5.3 SognosGenogram (new — expected empty, confirmed empty)
 
 | Gap | Detail | Proposed fallback (no fabrication) |
 |-----|--------|------------------------------------|

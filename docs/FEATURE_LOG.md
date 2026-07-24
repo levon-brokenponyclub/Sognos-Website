@@ -37,7 +37,7 @@ Running list of features to build, revisit, or decide on. Add as you go. No prio
 - [x] **EditionsDrawer removed** — drawer component, `drawerOpen` state, `onOpenDrawer` prop, "View all editions" trigger, `SOGNOSCARE_EDITIONS`/`EditionCards` imports all removed from `ProductSection.tsx`.
 - [x] **Problems section dark bg** — `#03112f` bg, inverted text, `subNav` slot renders pill nav centred between heading and content. (`sognoscare/Problems.tsx`)
 - [ ] **SognosRoster Problems dark section** — `#3990c5` bg + inverted text (same pattern).
-- [ ] **Sognos Genogram Problems dark section** — `#250438` bg + inverted text (same pattern).
+- [ ] **SognosGenogram Problems dark section** — `#250438` bg + inverted text (same pattern).
 
 ---
 
