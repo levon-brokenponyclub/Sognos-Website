@@ -8,6 +8,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type MouseEvent as ReactMouseEvent,
 } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -34,6 +35,7 @@ const UPCOMING_EVENT = {
 
 const BANNER_HEIGHT_CLASS = "top-14 md:top-14";
 const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
+const BANNER_SPACE_CLASS = "h-14";
 
 // ── Hide-on-scroll tuning ──────────────────────────────────────────────────────
 // Bar stays visible until scrolled past HIDE_AFTER, then hides on scroll-down /
@@ -279,7 +281,6 @@ export default function Navbar({
   const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrolled, setScrolled] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
-  const [bannerDismissed, setBannerDismissed] = useState(false);
   // Measured dimensions of the active dropdown content — drives CSS transition on card
   const [dropdownWidth, setDropdownWidth] = useState(0);
   const [dropdownHeight, setDropdownHeight] = useState(0);
@@ -531,25 +532,45 @@ export default function Navbar({
 
   // ── Derived ───────────────────────────────────────────────────────────────────
 
+  const bannerDismissed = useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === "undefined") {
+        return () => {};
+      }
+
+      const handleChange = () => onStoreChange();
+
+      window.addEventListener("storage", handleChange);
+      window.addEventListener("navbar-banner-dismissed", handleChange);
+
+      return () => {
+        window.removeEventListener("storage", handleChange);
+        window.removeEventListener("navbar-banner-dismissed", handleChange);
+      };
+    },
+    () => {
+      if (typeof window === "undefined") {
+        return false;
+      }
+      return window.localStorage.getItem(BANNER_STORAGE_KEY) === "true";
+    },
+    () => false,
+  );
+
   const activePillLabel = hovered ?? openMenu;
   const bannerOffsetClass = bannerDismissed ? "top-0" : BANNER_HEIGHT_CLASS;
 
-  useEffect(() => {
-    const dismissed = window.localStorage.getItem(BANNER_STORAGE_KEY);
-    if (dismissed === "true") {
-      setBannerDismissed(true);
-    }
-  }, []);
-
   const dismissBanner = () => {
-    setBannerDismissed(true);
     window.localStorage.setItem(BANNER_STORAGE_KEY, "true");
+    window.dispatchEvent(new Event("navbar-banner-dismissed"));
   };
 
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
     <>
+      {!bannerDismissed && <div aria-hidden="true" className={BANNER_SPACE_CLASS} />}
+
       {/* ── Announcement banner ─────────────────────────────────────────────── */}
       {!bannerDismissed && (
         <div className="fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white">

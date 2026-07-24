@@ -27,6 +27,8 @@
   - Added a sticky top-of-page event banner for the upcoming **Designing Services Around Real Lives, Not System Boundaries** event, with left-aligned label, centered title/date metadata, right-aligned `View event` CTA, and dismiss control.
   - Wired the CTA and close button to persist dismissal in `localStorage`, so the banner stays hidden after either action for that event payload.
   - Shifted the desktop backdrop blur, fixed header, and mobile menu overlay down while the banner is visible, then collapses them back to `top-0` once dismissed.
+  - Replaced the effect-driven banner dismissal state with `useSyncExternalStore` over `localStorage` plus a custom window event, removing the React cascading-render warning from Friday, July 24, 2026.
+  - Added an in-flow 56px banner spacer so pages keep the same visual gap beneath the fixed header when the event ribbon is visible.
 - **Cookie consent UI replacement** (`components/ui/CookieBanner.tsx`, `components/ui/cookie-banner-1.tsx`):
   - Replaced the old full-width bottom bar with a compact floating cookie panel using the new shadcn-style component structure under `components/ui`.
   - Added inline preference controls for `Functional`, `Analytics`, and `Marketing` cookies while keeping `Strictly necessary` locked on.
