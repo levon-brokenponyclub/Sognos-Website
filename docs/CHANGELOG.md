@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-07-24 — Announcement banner, cookie-consent panel, and section polish
+
+- **Navbar announcement banner** (`components/layout/Navbar.tsx`):
+  - Added a sticky top-of-page event banner for the upcoming **Designing Services Around Real Lives, Not System Boundaries** event, with left-aligned label, centered title/date metadata, right-aligned `View event` CTA, and dismiss control.
+  - Wired the CTA and close button to persist dismissal in `localStorage`, so the banner stays hidden after either action for that event payload.
+  - Shifted the desktop backdrop blur, fixed header, and mobile menu overlay down while the banner is visible, then collapses them back to `top-0` once dismissed.
+- **Cookie consent UI replacement** (`components/ui/CookieBanner.tsx`, `components/ui/cookie-banner-1.tsx`):
+  - Replaced the old full-width bottom bar with a compact floating cookie panel using the new shadcn-style component structure under `components/ui`.
+  - Added inline preference controls for `Functional`, `Analytics`, and `Marketing` cookies while keeping `Strictly necessary` locked on.
+  - Preserved the app’s existing consent flow by continuing to write the `cookie_consent` cookie and calling `router.refresh()`, so `app/layout.tsx` still governs analytics loading and banner visibility from request headers.
+  - Added preference persistence via `localStorage`, plus links to `/company/privacy-policy` and `/company/privacy-collection-notice`.
+- **Section refinements**:
+  - `components/layout/sections/LogoStrip.tsx`: aligned the trusted-organisations band with the current homepage navy by switching the section background from `bg-sognos-navy-dark` to `bg-sognos-navy`.
+  - `components/layout/sections/SolutionUseCases.tsx`: removed the extra left rule on each use-case row and normalized button/content padding for a cleaner stacked-accordion rhythm.
+- **Verification during the work**:
+  - `npm run build` passed on Friday, July 24, 2026.
+
 ## 2026-07-23 — Events launch, CTA/contact redesign, proxy migration, and local Sanity repair
 
 - **New event landing page + registration flow**:

@@ -31,7 +31,7 @@ export default async function LogoStrip() {
   return (
     <section
       aria-label="Trusted organisations"
-      className="w-full bg-sognos-navy-dark"
+      className="w-full bg-sognos-navy"
     >
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
         <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-white/70">

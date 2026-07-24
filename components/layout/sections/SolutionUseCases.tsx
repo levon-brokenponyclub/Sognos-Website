@@ -82,20 +82,20 @@ export default function SolutionUseCases({
                 return (
                   <div
                     key={i}
-                    className={`border-t border-white/100 border-l-2 ${
+                    className={`border-t border-white/100 ${
                       isActive
                     }`}
                   >
                     <button
                       onClick={() => setActive(i)}
-                      className="w-full pt-2 pb-9 pl-6 pr-2 text-left text-2xl font-normal"
+                      className="w-full py-6 px-2 text-left text-2xl font-normal"
                       style={{ color: "#FFFFFF" }}
                     >
                       {cap.title}
                     </button>
                     {/* Height animation via grid-template-rows 0fr -> 1fr */}
                     <div
-                      className="grid pl-6 pr-2"
+                      className="grid px-2"
                       style={{
                         gridTemplateRows: isActive ? "1fr" : "0fr",
                         transition: `grid-template-rows ${T_DURATION} ${T_EASING}`,

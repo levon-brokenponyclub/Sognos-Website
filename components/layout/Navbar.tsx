@@ -25,6 +25,16 @@ const DARK_HERO_PATHS = new Set([
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
 
+const UPCOMING_EVENT = {
+  href: "/events/nfp-real-care",
+  label: "Upcoming event",
+  title: "Designing Services Around Real Lives, Not System Boundaries",
+  meta: "Thu 17 Sep • North Sydney",
+} as const;
+
+const BANNER_HEIGHT_CLASS = "top-14 md:top-14";
+const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
+
 // ── Hide-on-scroll tuning ──────────────────────────────────────────────────────
 // Bar stays visible until scrolled past HIDE_AFTER, then hides on scroll-down /
 // peeks on scroll-up. DELTA_MIN ignores sub-pixel jitter.
@@ -269,6 +279,7 @@ export default function Navbar({
   const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrolled, setScrolled] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
   // Measured dimensions of the active dropdown content — drives CSS transition on card
   const [dropdownWidth, setDropdownWidth] = useState(0);
   const [dropdownHeight, setDropdownHeight] = useState(0);
@@ -521,16 +532,88 @@ export default function Navbar({
   // ── Derived ───────────────────────────────────────────────────────────────────
 
   const activePillLabel = hovered ?? openMenu;
+  const bannerOffsetClass = bannerDismissed ? "top-0" : BANNER_HEIGHT_CLASS;
+
+  useEffect(() => {
+    const dismissed = window.localStorage.getItem(BANNER_STORAGE_KEY);
+    if (dismissed === "true") {
+      setBannerDismissed(true);
+    }
+  }, []);
+
+  const dismissBanner = () => {
+    setBannerDismissed(true);
+    window.localStorage.setItem(BANNER_STORAGE_KEY, "true");
+  };
 
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
     <>
+      {/* ── Announcement banner ─────────────────────────────────────────────── */}
+      {!bannerDismissed && (
+        <div className="fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white">
+          <div className="max-w-7xl mx-auto relative flex h-14 w-full items-center overflow-hidden px-2">
+            <div className="relative z-30 flex shrink-0 items-center self-stretch border-r border-white/15 bg-sognos-blue-accent/10 px-4">
+              <span className="mr-2 inline-flex rounded border border-white/25 px-2 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] align-middle md:text-xs">
+                {UPCOMING_EVENT.label}
+              </span>
+            </div>
+
+            <div className="flex-1 overflow-hidden">
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-4">
+                <div className="flex min-w-0 items-center justify-center gap-3 text-center text-sm font-medium text-white">
+                  <span className="truncate">{UPCOMING_EVENT.title}</span>
+                  <span className="text-white/85" aria-hidden="true">
+                    •
+                  </span>
+                  <span className="shrink-0">{UPCOMING_EVENT.meta}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative z-30 flex shrink-0 items-center self-stretch bg-sognos-blue-accent/10">
+              <Link
+                href={UPCOMING_EVENT.href}
+                onClick={dismissBanner}
+                className="group/cta flex items-center gap-1.5 self-stretch border-l border-white/15 px-4 text-xs font-semibold uppercase tracking-[0.08em] align-middle md:text-xs text-white transition-opacity hover:opacity-80"
+              >
+                View event
+                <svg
+                  className="h-3 w-3 transition-transform group-hover/cta:translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+
+              <button
+                type="button"
+                onClick={dismissBanner}
+                className="flex items-center self-stretch border-l border-white/15 px-3 text-white transition-opacity hover:opacity-80"
+                aria-label="Close announcement banner"
+              >
+                <IconClose />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Backdrop blur — desktop only (menu-open) ──────────────────────────── */}
       <div
         aria-hidden="true"
         className={[
-          "hidden lg:block fixed inset-x-0 top-0 z-40 min-h-screen w-full pointer-events-none",
+          "hidden lg:block fixed inset-x-0 z-40 min-h-screen w-full pointer-events-none",
+          bannerOffsetClass,
           "backdrop-blur-[30px] transition-opacity duration-300 ease-in-out",
           openMenu ? "opacity-100" : "opacity-0",
         ].join(" ")}
@@ -544,7 +627,8 @@ export default function Navbar({
       <header
         ref={headerRef}
         className={[
-          "fixed inset-x-0 top-0 z-50 will-change-transform",
+          "fixed inset-x-0 z-50 will-change-transform",
+          bannerOffsetClass,
           "transition-[transform,background-color,border-color] duration-300 ease-in-out",
           headerHidden ? "-translate-y-full" : "translate-y-0",
           useTransparent
@@ -897,7 +981,10 @@ export default function Navbar({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-0 z-[51] bg-white flex flex-col overflow-hidden"
+            className={[
+              "lg:hidden fixed inset-x-0 bottom-0 z-[51] bg-white flex flex-col overflow-hidden",
+              bannerOffsetClass,
+            ].join(" ")}
           >
             <AnimatePresence mode="wait">
               {mobilePanel === "root" ? (
