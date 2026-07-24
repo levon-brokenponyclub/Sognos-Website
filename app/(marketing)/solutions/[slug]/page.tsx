@@ -54,17 +54,17 @@ export default async function SolutionPage({
             <div className="lg:col-span-7">
               <Link
                 href="/solutions"
-                className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-[#6B7280] hover:text-[#1A1A1A] transition-colors duration-200"
+                className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted hover:text-sognos-blue-accent transition-colors duration-200"
               >
                 {meta.name}
               </Link>
-              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-4 font-heading text-3xl font-normal leading-16 tracking-tight text-sognos-header text-balance lg:text-6xl">
                 {content.hero.headline}
               </h1>
-              <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-gray-600">
+              <p className="mt-5 max-w-[600px] text-lg leading-relaxed text-sognos-body">
                 {content.hero.subtext}
               </p>
-              <div className="mt-9">
+              <div className="mt-10">
                 <SolutionHeroDemoButton />
               </div>
             </div>
@@ -84,20 +84,12 @@ export default async function SolutionPage({
         </div>
       </section>
 
-      {/* Trusted by logos */}
-      <ScrollReveal>
-        <LogoStrip />
-      </ScrollReveal>
-
       {/* What it solves — borderless columns on dark purple band */}
       <ScrollReveal>
         <section className="py-24 lg:py-32 bg-sognos-navy">
           <div className="mx-auto max-w-7xl px-6">
             <div className="mb-14 flex flex-col items-center text-center">
-              <p
-                className="mb-4 text-xs font-semibold uppercase tracking-tight"
-                style={{ color: "#B7A9D9" }}
-              >
+              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
                 The problem
               </p>
               <h2
@@ -182,6 +174,11 @@ export default async function SolutionPage({
             </div>
           </div>
         </section>
+      </ScrollReveal>
+
+      {/* Trusted by logos */}
+      <ScrollReveal>
+        <LogoStrip />
       </ScrollReveal>
 
       {/* Works with */}

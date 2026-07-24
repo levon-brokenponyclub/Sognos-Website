@@ -69,9 +69,12 @@ export default function Hero({
           <button
             type="button"
             onClick={() => openModal()}
-            className="rounded-sm bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-all duration-300 hover:bg-sognos-blue-accent hover:text-white"
+            className="group/demo relative overflow-hidden rounded-sm bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-colors duration-300"
           >
-            {primaryCTA.name}
+            <span className="absolute bottom-0 left-0 h-40 w-full origin-bottom translate-y-full rounded-[50px] bg-sognos-blue-accent transition-transform duration-300 ease-out group-hover/demo:translate-y-12" />
+            <span className="relative z-10 transition-colors duration-300 group-hover/demo:text-white">
+              {primaryCTA.name}
+            </span>
           </button>
           <Link
             href={secondaryCTA.href}

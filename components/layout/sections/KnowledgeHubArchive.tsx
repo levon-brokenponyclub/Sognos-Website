@@ -46,6 +46,8 @@ const LATEST_CUSTOMER_STORY = {
   company: "Gentari Solar Australia",
   title:
     "Gentari Solar Australia: End-to-End Asset Management with Microsoft Dynamics 365 Field Service",
+  excerpt:
+    "How Gentari connected field delivery, asset visibility, and service operations in one Microsoft Dynamics 365 Field Service workflow.",
   date: "Nov 5, 2024",
   readTime: "4 min read",
   image: "/images/customers/gentari.webp",
@@ -174,28 +176,25 @@ function EventsSection() {
                 <Link
                   key={event.href}
                   href={event.href}
-                  className="group grid min-h-[420px] rounded overflow-hidden bg-gray-50 transition-colors duration-200 hover:bg-gray-100 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]"
+                  className="group grid min-h-[400px] rounded overflow-hidden bg-gray-50 transition-colors duration-200 hover:bg-gray-100 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]"
                 >
                   <div className="flex min-h-[360px] flex-col justify-between p-7 md:p-9 lg:p-10">
                     <div>
-                      <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
-                        <span
-                          aria-hidden="true"
-                          className="h-2.5 w-2.5 rounded-full border border-sognos-muted/30 bg-transparent"
-                        />
+                      <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                         {event.category}
                       </p>
-                      <h2 className="mt-8 max-w-4xl font-heading text-4xl font-normal leading-[1.04] tracking-tight text-sognos-heading text-balance md:text-5xl">
+
+                      <h2 className="mt-5 max-w-4xl font-heading text-3xl font-normal tracking-tight leading-tight text-sognos-header text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl">
                         {event.title}
                       </h2>
                     </div>
 
-                    <dl className="border-t border-sognos-line text-base md:text-lg">
+                    <dl className="border-t border-sognos-line text-xs font-semibold uppercase tracking-widest">
                       <div className="grid grid-cols-[120px_1fr] gap-6 border-b border-sognos-line py-4">
                         <dt className="text-sognos-muted">Date</dt>
-                        <dd className="text-right font-medium text-sognos-body">
+                        <dd className="text-right text-sognos-body">
                           {event.dateStart}
-                          <span className="mx-4 text-sognos-muted">-</span>
+                          <span className="mx-4 text-sognos-body">-</span>
                           {event.dateEnd}
                         </dd>
                       </div>
@@ -385,7 +384,7 @@ export default function KnowledgeHubArchive({
                   <h2 className="mt-4 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-pretty md:text-4xl">
                     {featured.title}
                   </h2>
-                  <p className="mt-4 line-clamp-3 text-base leading-relaxed text-gray-600">
+                  <p className="mt-4 line-clamp-3 text-base leading-relaxed text-sognos-body">
                     {featured.excerpt}
                   </p>
                 </div>
@@ -440,7 +439,7 @@ export default function KnowledgeHubArchive({
       </section>
 
       {/* Case Study — full-bleed dark band */}
-      <section className="bg-sognos-navy py-20 lg:py-28">
+      <section className="bg-sognos-navy py-16 lg:py-16">
         <div className="mx-auto max-w-7xl px-6">
           <Link
             href={`/customer-stories/${LATEST_CUSTOMER_STORY.slug}`}
@@ -448,18 +447,19 @@ export default function KnowledgeHubArchive({
           >
             {/* Left */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
-                <span className="mr-1.5 text-sognos-blue-accent">●</span>Customer Story
-              </p>
-              <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-white transition-opacity group-hover:opacity-80 md:text-4xl lg:text-5xl">
+              <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">Customer Story</p>
+              <h2 className="mt-6 font-heading text-3xl font-normal tracking-tight leading-tight text-white text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl ">
                 {LATEST_CUSTOMER_STORY.title}
               </h2>
-              <div className="mt-6 flex items-center gap-3">
-                <span className="text-sm text-white/50">
+              <p className="mt-5 max-w-2xl line-clamp-3 text-base leading-relaxed text-white/80 text-balance">
+                {LATEST_CUSTOMER_STORY.excerpt}
+              </p>
+              <div className="mt-10 flex items-center gap-3">
+                <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
                   {LATEST_CUSTOMER_STORY.date}
                 </span>
                 <span className="text-white/30">·</span>
-                <span className="text-sm text-white/50">
+                <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
                   {LATEST_CUSTOMER_STORY.readTime}
                 </span>
               </div>

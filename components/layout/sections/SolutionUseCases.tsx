@@ -36,13 +36,10 @@ export default function SolutionUseCases({
   const activeImageIndex = active % CAPABILITY_IMAGES.length;
 
   return (
-    <section className="py-24 lg:py-32" style={{ backgroundColor: SECTION_BG }}>
+    <section className="py-24 lg:py-32 bg-sognos-navy">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12">
-          <p
-            className="mb-4 text-xs font-semibold uppercase tracking-[0.08em]"
-            style={{ color: "#B7A9D9" }}
-          >
+          <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
             Capabilities
           </p>
           <h2

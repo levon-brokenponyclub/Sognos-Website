@@ -34,9 +34,9 @@ export default async function LogoStrip() {
       className="w-full bg-sognos-navy"
     >
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
-        <p className="mb-10 font-heading text-3xl tracking-tight font-medium text-white/70">
+        <h3 className="mb-10 font-heading text-3xl tracking-tight text-white">
           {LOGO_STRIP_TITLE}
-        </p>
+        </h3>
         <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
           {logos.map((logo, index) => {
             const src = resolveLogoSrc(logo);

@@ -14,7 +14,7 @@ export default function IndustryChallengeStack({
   return (
     <div>
       <div className="mx-auto max-w-4xl text-center">
-        <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
+        <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
           The Challenge
         </p>
         <h2 className="mt-6 font-heading text-4xl font-normal leading-tight tracking-tight text-white text-balance lg:text-4xl">

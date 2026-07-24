@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-07-24 — Solution-page presentation polish + archive CTA refinements
+
+- **Solution landing/detail page polish**:
+  - `app/(marketing)/solutions/[slug]/page.tsx`: tightened the hero typography and spacing, swapped hard-coded gray text to Sognos tokens, moved the trusted-logo strip below the dark “The problem” section, and aligned the section eyebrow styling with the current uppercase/wide-tracking system.
+  - `components/layout/sections/SolutionHeroDemoButton.tsx`: restyled the hero CTA to the brighter Sognos blue accent treatment with tighter pill padding.
+  - `components/layout/sections/SolutionUseCases.tsx`: moved the capabilities section onto the navy background token and normalized the section eyebrow styling to match the rest of the updated marketing pages.
+- **Homepage / hero CTA motion**:
+  - `components/layout/sections/Hero.tsx`: replaced the plain hover color swap on `Book a Demo` with a work-button style bottom-up accent fill animation while preserving the existing button size and layout.
+- **Knowledge Hub archive + event/story promo polish** (`components/layout/sections/KnowledgeHubArchive.tsx`):
+  - Added a reusable excerpt for the featured Gentari customer story and rendered it beneath the dark-band promo title.
+  - Tightened the customer-story promo spacing, upgraded the hover treatment from opacity-only to text-color emphasis, and normalized the date/read-time metadata styling.
+  - Refined the upcoming-event card typography and spacing: smaller eyebrow label, sharper heading scale, tighter metadata treatment, and slightly reduced minimum height.
+  - Swapped featured-article excerpt copy from generic gray text to the standard `text-sognos-body` token.
+- **Section background / typography consistency**:
+  - `components/layout/sections/LogoStrip.tsx`: promoted the logo-strip heading from paragraph markup to an `h3` and strengthened it to full white on the navy band.
+  - `components/layout/sections/NewsInsightSection.tsx`: shifted the section background from white to `bg-gray-50`.
+  - `components/layout/sections/ProductCustomerStories.tsx`: removed the bottom border from the customer-story carousel wrapper.
+  - `components/layout/sections/industries/IndustryChallengeStack.tsx` and `components/layout/sections/industries/IndustryHowTabs.tsx`: updated the section eyebrow labels to the heavier uppercase tracking style used across the rest of the redesign.
+- **Verification during the work**:
+  - `npm run build`
+
 ## 2026-07-24 — Announcement banner, cookie-consent panel, and section polish
 
 - **Navbar announcement banner** (`components/layout/Navbar.tsx`):

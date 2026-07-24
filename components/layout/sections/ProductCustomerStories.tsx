@@ -199,7 +199,7 @@ export default function ProductCustomerStories({
   return (
     <section
       id="stories"
-      className="w-full bg-white overflow-hidden border-b border-sognos-line"
+      className="w-full bg-white overflow-hidden"
     >
       {/* Heading — constrained to max-w-7xl */}
       <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-14">
