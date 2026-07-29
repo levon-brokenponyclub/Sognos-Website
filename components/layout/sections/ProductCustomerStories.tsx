@@ -214,23 +214,22 @@ export default function ProductCustomerStories({
       {/* Embla viewport — full section width. Shape 3: center-focus, half-width
           cards on lg+ (align:"center" → visible peek of prev/next both sides). */}
       {showChrome ? (
-        <div
-          ref={emblaRef}
-          className="relative overflow-hidden max-w-7xl mx-auto"
-        >
-          <div className="flex">
-            {stories.map((study, i) => (
-              <div
-                key={i}
-                className="min-w-0 flex-[0_0_100%] pl-3 lg:flex-[0_0_50%] lg:pl-4"
-              >
-                <StoryCard
-                  study={study}
-                  bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]}
-                  bgColor={study.brandColor ?? BRAND_BG[study.company]}
-                />
-              </div>
-            ))}
+        <div className="mx-auto w-full max-w-7xl px-6">
+          <div ref={emblaRef} className="relative overflow-hidden">
+            <div className="flex gap-3 lg:gap-4">
+              {stories.map((study, i) => (
+                <div
+                  key={i}
+                  className="min-w-0 flex-[0_0_100%] lg:flex-[0_0_calc(50%-0.5rem)]"
+                >
+                  <StoryCard
+                    study={study}
+                    bg={TESTIMONIAL_PALETTE[i % TESTIMONIAL_PALETTE.length]}
+                    bgColor={study.brandColor ?? BRAND_BG[study.company]}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       ) : (
