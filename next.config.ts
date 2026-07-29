@@ -24,7 +24,8 @@ const nextConfig: NextConfig = {
       { source: "/about-us/our-team", destination: "/company/about", permanent: true },
       { source: "/about-us/partners", destination: "/company/about", permanent: true },
       { source: "/about-us/social-responsibility", destination: "/company/social-responsibility", permanent: true },
-      { source: "/about-us/careers", destination: "/company/careers", permanent: true },
+      { source: "/about-us/careers", destination: "/", permanent: true },
+      { source: "/company/careers", destination: "/", permanent: true },
       { source: "/contact-us", destination: "/contact", permanent: true },
 
       // Knowledge Hub consolidation
