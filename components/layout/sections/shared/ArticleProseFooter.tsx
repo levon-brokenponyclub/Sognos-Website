@@ -19,7 +19,7 @@ export default function ArticleProseFooter({
   return (
     <footer
       className={cn(
-        "mt-16 flex flex-col gap-8 border-t border-sognos-line pt-8 sm:flex-row sm:items-center",
+        "mt-6 flex flex-col gap-8 border-t border-sognos-line pt-8 sm:flex-row sm:items-center",
         className,
       )}
     >

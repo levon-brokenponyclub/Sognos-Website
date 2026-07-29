@@ -31,9 +31,13 @@
   - Reworked Knowledge Hub article heroes into a wider editorial title/excerpt composition, moved the featured image into the article grid, and constrained it to the shared `ARTICLE_PROSE_MAX_W` measure used by the prose.
   - Extended `ArticleScrollNav` with optional external-track rendering so Knowledge Hub articles can use an Amigo-style full-height rail while retaining the shared active-section marker and scroll-spy behavior.
   - Moved customer-story company logos above the hero title, refined quote/author spacing, and added bordered list-row treatment to story body bullets.
+  - Added a Sognos blue conversion panel after the prose on every Knowledge Hub post and customer story, with a white `Book a demo` modal trigger and `Talk to Sales` contact link.
+  - Extended `SolutionHeroDemoButton` with class overrides so server-rendered article routes can reuse the existing client-side demo-modal trigger with context-specific styling.
   - Added the shared `ArticleProseFooter` after both article bodies with back-to-index navigation and the existing LinkedIn, X, and Facebook `ShareIcons`.
-  - Exported `ShareIcons` from `StoryMetaRail` for reuse and removed its duplicate in-rail share block.
+  - Exported `ShareIcons` from `StoryMetaRail` for reuse, removed its duplicate in-rail share block, switched the icon surfaces to white, and tightened the footer spacing beneath the new conversion panel.
   - Retuned the global `text-8xl` size to `2.5rem` with `1.1` line-height for the updated article hero treatment.
+- **Spacing refinements**:
+  - Reduced the Customer Stories heading-to-carousel gap and removed excess top padding from the drawer-style Book Demo introduction.
 - **SognosCare editions**:
   - Reworked edition-card hover/focus states into a left-to-right full-card colour reveal above the base logo, with description, white title, white action surface, navy arrow, and 60% opacity on non-active sibling cards.
   - Added configurable slider-control positioning and refactored Related Editions into a left eyebrow rail with a right-column heading, introduction, inline controls, and card slider.

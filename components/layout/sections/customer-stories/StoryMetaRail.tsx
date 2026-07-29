@@ -18,7 +18,7 @@ export function ShareIcons({ postUrl }: { postUrl: string }) {
         href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
+        className="inline-flex h-9 w-9 items-center justify-center rounded bg-white p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on LinkedIn"
       >
         <svg
@@ -37,7 +37,7 @@ export function ShareIcons({ postUrl }: { postUrl: string }) {
         href={`https://twitter.com/intent/tweet?url=${postUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
+        className="inline-flex h-9 w-9 items-center justify-center rounded bg-white p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on X"
       >
         <svg
@@ -56,7 +56,7 @@ export function ShareIcons({ postUrl }: { postUrl: string }) {
         href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded bg-sognos-navy/5 p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
+        className="inline-flex h-9 w-9 items-center justify-center rounded bg-white p-2 text-sognos-navy transition-colors hover:bg-sognos-navy/15"
         aria-label="Share on Facebook"
       >
         <svg

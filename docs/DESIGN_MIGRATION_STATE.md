@@ -194,7 +194,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `Navbar.tsx` | Production | Fixed 80px header, transparent dark-hero mode, scroll hide/peek, measured desktop dropdown, two-level mobile menu, and a 56px event announcement ribbon. The bottom border is hidden at page load and restored in the correct theme after scrolling. Ribbon dismissal persists per event payload after close or `View event`; `useSyncExternalStore` keeps localStorage state React-safe. |
 | `Footer.tsx` / `FooterColumns.tsx` | Production | Sanity-backed columns with client-side mobile accordions. The Company column is normalized to About, Social Responsibility, Knowledge Hub, News, Events, Customer Stories, Careers, Contact. |
 | `CTABand.tsx` | Production | Global dark band rendered by the marketing layout. `Book a demo` opens the shared modal; background uses `sognos-navy-darkest`. |
-| `CTASection.tsx` | Active variant | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, spacing, and trust-logo sizing with the contact experience. |
+| `CTASection.tsx` | Active variant | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, compact top spacing, and trust-logo sizing with the contact experience. |
 | `BookDemoModal.tsx` | Production | Shared wide drawer modal, managed by `BookDemoContext`. |
 | `CookieBanner.tsx` / `cookie-banner-1.tsx` | Production | Compact floating preference panel. Necessary cookies are locked; functional, analytics, and marketing preferences persist. Existing `cookie_consent` cookie and `router.refresh()` flow are preserved. |
 | `Hero.tsx` | Production | Navy homepage hero with staggered entrance, Book a Demo modal trigger, bottom-up CTA hover fill, and supporting copy aligned to the shared wide body measure. |
@@ -203,7 +203,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `HowSognosWorks.tsx` | Production | Interactive three-step process with auto-advance, desktop timeline progress, mobile controls, active accent cards, Microsoft platform branding, and reduced-motion handling. |
 | `SolutionsSection.tsx` | Production | Sticky scroll-spy rail with seven flowing solution rows and per-solution imagery shared with detail pages. |
 | `IndustrySection.tsx` | Production | Horizontal industry card slider; reusable on detail pages with exclusion support. |
-| `ProductCustomerStories.tsx` | Production | Reusable center-focus Embla carousel with dark per-product palette and reusable `SeeMoreLink`. |
+| `ProductCustomerStories.tsx` | Production | Reusable center-focus Embla carousel with dark per-product palette, tightened heading-to-carousel spacing, and reusable `SeeMoreLink`. |
 | `KnowledgeHubArchive.tsx` | Production | Category/featured controls, inline search trigger, initial four-article limit, upcoming-event section, and Gentari customer-story promo with excerpt. |
 | `knowledge-hub-search-dialog.tsx` | Production | Focused archive-search modal with overlay and keyboard dismissal, query filtering, empty state, and recent article, event, and customer-story results. |
 | `ContactForm.tsx` | Production | Validated three-step journey for details, enquiry reason, and product interest. Descriptive radio rows replace compact selects and preserve step-level error focus. |
@@ -214,9 +214,10 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `LegalPageRenderer.tsx` | Production | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro. |
 | `AboutHeroImage.tsx` | Production | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides. |
 | `ArticleScrollNav.tsx` | Production | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. |
-| `ArticleProseFooter.tsx` | Production | Shared end-of-prose footer with back-to-index navigation and the existing social `ShareIcons`. |
+| `ArticleProseFooter.tsx` | Production | Shared post-conversion-panel footer with compact spacing, back-to-index navigation, and the existing social `ShareIcons`. |
 | `scroll-progress.tsx` | Production | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families. |
-| `StoryMetaRail.tsx` / `ShareIcons` | Production | Customer-story metadata rail; social share controls are exported and reused by the shared article footer. |
+| `StoryMetaRail.tsx` / `ShareIcons` | Production | Customer-story metadata rail; white-surface social share controls are exported and reused by the shared article footer. |
+| `SolutionHeroDemoButton.tsx` | Production | Shared client-side Book Demo modal trigger with configurable label and class overrides for solution heroes and article conversion panels. |
 | `PullQuote.tsx`, `QuoteCallout.tsx`, `StatRow.tsx` | Ready | Portable Text content blocks registered for articles and customer stories; authoring adoption remains content-dependent. |
 
 ## 7. Route Map
@@ -301,13 +302,14 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   stories, upcoming events, and customer-story promotion.
 - `/knowledge-hub/[slug]`: editorial title/excerpt hero, featured image and
   prose constrained to `ARTICLE_PROSE_MAX_W`, full-height scroll rail, fixed
-  page-progress indicator, shared end-of-prose navigation/sharing, Portable
-  Text custom blocks, and latest articles.
+  page-progress indicator, post-prose demo/contact conversion panel, shared
+  end-of-prose navigation/sharing, Portable Text custom blocks, and latest
+  articles.
 - `/customer-stories`: archive cards.
 - `/customer-stories/[slug]`: dark customer-story hero with the company logo
   above the title, sticky metadata/article rail, fixed page-progress indicator,
-  shared end-of-prose navigation/sharing, Portable Text blocks, callouts, and
-  related reading.
+  post-prose demo/contact conversion panel, shared end-of-prose
+  navigation/sharing, Portable Text blocks, callouts, and related reading.
 - Both dynamic content families depend on readable local Sanity configuration:
   `NEXT_PUBLIC_SANITY_PROJECT_ID=vg117fxr` and dataset `production`.
 
@@ -366,6 +368,9 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   scroll progress, editorial hero adjustments, constrained featured media,
   improved article rails, and the reusable `ArticleProseFooter` backed by the
   existing `ShareIcons`.
+- Added matching post-prose conversion panels to Knowledge Hub posts and
+  customer stories, reusing the demo modal trigger alongside a direct sales
+  contact path; tightened footer and share-control presentation beneath them.
 - Updated navbar border behavior, footer acknowledgement layout, Careers
   testimonial composition, and Open Roles hover/focus interactions.
 - Reworked SognosCare edition-card interactions and Related Editions layout;

@@ -29,6 +29,7 @@ import StatRow from "@/components/portable-text/StatRow";
 import HeroScrollFade from "@/components/layout/sections/customer-stories/HeroScrollFade";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export const revalidate = 60;
@@ -109,7 +110,9 @@ const portableComponents: PortableTextComponents = {
     ),
   },
   list: {
-    bullet: ({ children }) => <ul className="mb-6 space-y-2 border-t border-sognos-line">{children}</ul>,
+    bullet: ({ children }) => (
+      <ul className="mb-6 space-y-2 border-t border-sognos-line">{children}</ul>
+    ),
   },
   listItem: {
     bullet: ({ children }) => (
@@ -325,6 +328,31 @@ export default async function CustomerStoryPage({
                   components={portableComponents}
                 />
               </div>
+              <aside
+                className={`mt-16 bg-sognos-blue-accent p-6 text-white md:px-8 rounded md:py-8 ${ARTICLE_PROSE_MAX_W}`}
+              >
+                <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-3xl">
+                  Book a demo today
+                </h2>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
+                  Discover how one intelligent platform helps you simplify
+                  operations, empower your workforce, and make faster,
+                  data-driven decisions.
+                </p>
+                <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                  <SolutionHeroDemoButton
+                    label="Book a demo"
+                    className="rounded bg-white text-sognos-navy"
+                  />
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-70"
+                  >
+                    Talk to Sales
+                    <span aria-hidden="true">&#8599;</span>
+                  </Link>
+                </div>
+              </aside>
               <ArticleProseFooter
                 backHref="/customer-stories"
                 backLabel="All customer stories"

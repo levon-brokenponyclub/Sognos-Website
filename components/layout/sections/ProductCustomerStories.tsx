@@ -197,12 +197,9 @@ export default function ProductCustomerStories({
   );
 
   return (
-    <section
-      id="stories"
-      className="w-full bg-white overflow-hidden"
-    >
+    <section id="stories" className="w-full bg-white overflow-hidden">
       {/* Heading — constrained to max-w-7xl */}
-      <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-14">
+      <div className="max-w-7xl w-full mx-auto px-6 pt-16 lg:pt-24 pb-10">
         <div className="flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start">
           <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
             Customer Stories

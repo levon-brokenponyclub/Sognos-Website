@@ -5,7 +5,10 @@ import { useState, useEffect, useRef } from "react";
 import { bookDemo } from "@/app/actions/book-demo";
 import { useCtaContent } from "@/lib/CtaContentContext";
 import { CTA_VARIANT_STYLES } from "@/lib/content/ctaSection";
-import { LOGO_STRIP_LOGO_LIMIT, LOGO_STRIP_TITLE } from "@/lib/content/logoStrip";
+import {
+  LOGO_STRIP_LOGO_LIMIT,
+  LOGO_STRIP_TITLE,
+} from "@/lib/content/logoStrip";
 
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -204,7 +207,7 @@ export default function CTASection({
         }`}
       >
         {isDrawerLayout && (
-          <div className="flex min-h-[520px] flex-col px-2 py-8 text-white lg:min-h-0 lg:self-start lg:px-10 lg:pb-10">
+          <div className="flex min-h-[520px] flex-col px-2 pb-8 text-white lg:min-h-0 lg:self-start lg:px-10 lg:pb-10">
             <div>
               <h2 className="max-w-lg font-heading text-5xl font-normal leading-snug tracking-tight text-white text-balance lg:text-5xl">
                 {cta.bookDemoHeading}
@@ -577,9 +580,7 @@ export default function CTASection({
                               key={item.value}
                               className={[
                                 "flex cursor-pointer items-center justify-between gap-6 bg-white px-5 py-5 transition-colors duration-200 hover:bg-slate-50 has-[:checked]:bg-sognos-blue-accent/[0.055]",
-                                index > 0
-                                  ? "border-t border-sognos-line"
-                                  : "",
+                                index > 0 ? "border-t border-sognos-line" : "",
                               ].join(" ")}
                             >
                               <span className="min-w-0">
@@ -734,7 +735,10 @@ export default function CTASection({
   if (bare) return inner;
 
   return (
-    <section id="book-demo" className="w-full bg-sognos-blue-accent scroll-mt-[140px]">
+    <section
+      id="book-demo"
+      className="w-full bg-sognos-blue-accent scroll-mt-[140px]"
+    >
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {inner}
       </div>
