@@ -54,7 +54,7 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto mt-6 max-w-[655px] text-lg leading-[1.5] text-white/70 max-md:text-base"
+          className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/80"
         >
           {subtext}
         </motion.p>

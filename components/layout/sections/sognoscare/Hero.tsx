@@ -9,6 +9,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 const PANEL_HLS_SRC =
   "https://stream.mux.com/jQkiowhjcNANEVOdEj02JRdSnvM5TaFudLXF9BmyAVms.m3u8?max_resolution=1080p";
@@ -63,7 +64,7 @@ interface SognoscareHeroProps {
 }
 
 const DEFAULTS = {
-  headline: "One platform. From intake to outcome.",
+  headline: "One platform. From intake to outcome",
   subtext:
     "Manage cases, track service delivery, meet compliance obligations, and report with confidence - in one platform built end-to-end for care.",
 };
@@ -93,32 +94,29 @@ export default function SognoscareHero({
     <section
       ref={heroRef}
       data-header-dark
-      className="relative overflow-hidden pb-4 md:pb-0 bg-sognos-care-dark"
+      className="relative overflow-hidden pb-0 md:pb-0 bg-sognos-care-dark"
     >
       {/* Single animated wrapper — all hero content fades/translates as one unit
           over the static dark section background. AngelList pattern. */}
       <motion.div style={{ y, opacity }} className="will-change-transform">
         <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
           {/* Eyebrow */}
-          <p
-            className="text-xs font-semibold uppercase tracking-[0.08em]"
-            style={{ color: "rgba(255,255,255,0.6)" }}
-          >
+          <AnimatedEyebrow textClassName="text-white/60">
             SognosCare
-          </p>
+          </AnimatedEyebrow>
 
           {/* Headline */}
-          <h1 className="mx-auto mt-6 max-w-5xl font-angellist text-pretty text-white text-5xl sm:text-6xl lg:text-6xl font-normal tracking-[-0.02em]">
+          <h1 className="mx-auto mt-4 font-heading font-normal text-white leading-14 text-5xl tracking-tight text-balance lg:text-6xl lg:leading-20">
             {headline}
           </h1>
 
           {/* Subtext */}
-          {/* <p
-            className="mx-auto mt-6 max-w-[640px] text-lg leading-relaxed"
+          <p
+            className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/80"
             style={{ color: "rgba(255,255,255,0.7)" }}
           >
             {subtext}
-          </p> */}
+          </p>
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -142,7 +140,7 @@ export default function SognoscareHero({
         {/* Placeholder visual — plain child inside the animated wrapper.
             Swap the gradient div for a real <Image> when the asset is ready. */}
         <div className="mx-auto mt-16 max-w-6xl px-6">
-          <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-2xl bg-sognos-care-gradient">
+          <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-lg bg-sognos-care-gradient">
             <PanelBackgroundVideo />
             <div className="relative flex h-full w-full items-center justify-center">
               <Image

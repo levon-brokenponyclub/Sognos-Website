@@ -16,7 +16,12 @@
   - Rebuilt `HowSognosWorks.tsx` as an interactive, auto-advancing three-step process with desktop timeline progress, mobile step controls, active accent cards, reduced-motion handling, and Dynamics 365, Microsoft Solutions Partner, and Copilot branding.
   - Replaced the previous selectable employee testimonial layout with a responsive `LifeAtSognos` bento grid containing one featured testimonial and four supporting cards.
   - Added the reusable `AnimatedEyebrow` component with a square marker, staggered entrance, configurable text/dot colours, and reduced-motion support; applied it across homepage, SognosCare, About, Social Responsibility, and Careers section labels.
+  - Widened and tightened the homepage hero supporting copy to the shared three-quarter-width measure and current body-text treatment.
   - Refined the About and Careers compositions and added a V7-style Open Roles hover/focus interaction with a smooth row inset, light surface transition, and responsive `Apply` action.
+- **Product hero refinement**:
+  - Updated the SognosCare hero with the shared animated eyebrow, restored supporting copy, tightened heading rhythm, and aligned its media panel radius with the current card system.
+  - Refined the SognosRoster hero headline and supporting-copy measure, then added a delayed logo-to-video handoff: the logo fades in, holds for four seconds, and crossfades into a looping simulated-conversation video.
+  - Converted the supplied roster conversation asset to browser-compatible H.264 and used screen blending so its baked black field reveals the existing roster gradient.
 - **Knowledge Hub, navigation, and footer**:
   - Added `KnowledgeHubSearchDialog`, opened from the archive’s inline search icon, with a modal overlay, keyboard/overlay dismissal, query filtering, empty state, and recent article, event, and customer-story results.
   - Updated the Navbar so its bottom border is transparent at page load and returns with the correct light/dark colour after scrolling.
@@ -35,8 +40,8 @@
   - Removed the embedded calendar CTA from edition templates and temporarily gated the edition customer-story section off.
   - Simplified edition Advantages lists by removing the outer dividers/radius, softening alternating rows, vertically centering items, and using white check icons.
 - **Assets and verification**:
-  - Added the Microsoft Solutions Partner logo used by the new platform strip and prepared local Frontline and Customer Service solution hero assets.
-  - Repeated targeted ESLint checks and `npx tsc --noEmit` passed during the implementation; the running homepage returned HTTP `200` from `http://localhost:3001/`.
+  - Added the Microsoft Solutions Partner logo used by the new platform strip, prepared local Frontline and Customer Service solution hero assets, and added the optimized SognosRoster conversation video.
+  - Repeated targeted ESLint checks, `npx tsc --noEmit`, and the Next.js production build passed during the implementation; the running homepage returned HTTP `200` from `http://localhost:3001/`.
 
 ## 2026-07-24 — Legal-page typography pass, footer company links, and SognosGenogram naming
 

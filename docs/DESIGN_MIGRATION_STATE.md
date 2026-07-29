@@ -197,7 +197,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `CTASection.tsx` | Active variant | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, spacing, and trust-logo sizing with the contact experience. |
 | `BookDemoModal.tsx` | Production | Shared wide drawer modal, managed by `BookDemoContext`. |
 | `CookieBanner.tsx` / `cookie-banner-1.tsx` | Production | Compact floating preference panel. Necessary cookies are locked; functional, analytics, and marketing preferences persist. Existing `cookie_consent` cookie and `router.refresh()` flow are preserved. |
-| `Hero.tsx` | Production | Navy homepage hero with staggered entrance, Book a Demo modal trigger, and bottom-up CTA hover fill. |
+| `Hero.tsx` | Production | Navy homepage hero with staggered entrance, Book a Demo modal trigger, bottom-up CTA hover fill, and supporting copy aligned to the shared wide body measure. |
 | `HomeProductCards.tsx` | Production with polish debt | Three product cards, swipe/peek on mobile and three columns on desktop. SognosGenogram imagery remains an area to verify. |
 | `LogoStrip.tsx` | Production | Sanity-backed CSS marquee on `bg-sognos-navy`; title is semantic `h3`. Shared constants govern title and logo limit. |
 | `HowSognosWorks.tsx` | Production | Interactive three-step process with auto-advance, desktop timeline progress, mobile controls, active accent cards, Microsoft platform branding, and reduced-motion handling. |
@@ -209,6 +209,8 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `ContactForm.tsx` | Production | Validated three-step journey for details, enquiry reason, and product interest. Descriptive radio rows replace compact selects and preserve step-level error focus. |
 | `EditionCards.tsx` | Production | Horizontal edition slider with configurable controls. Hover/focus reveals the edition colour from left to right, exposes the description, preserves the base logo, and dims inactive siblings to 60% opacity. |
 | `AnimatedEyebrow.tsx` | Production | Shared square-dot eyebrow entrance with reduced-motion support and configurable container, dot, and text classes. |
+| `sognoscare/Hero.tsx` | Production | Dark product hero with shared animated eyebrow, restored supporting copy, HLS media panel, and current heading/card-radius treatment. |
+| `sognosroster/Hero.tsx` | Production | Gradient product hero with a timed logo entrance and four-second hold before crossfading into a looping, screen-blended local conversation video. |
 | `LegalPageRenderer.tsx` | Production | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro. |
 | `AboutHeroImage.tsx` | Production | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides. |
 | `ArticleScrollNav.tsx` | Production | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. |
@@ -355,6 +357,9 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   Dynamics 365, Microsoft Solutions Partner, and Copilot branding.
 - Added the shared `AnimatedEyebrow` motion primitive and applied it across
   homepage, product, About, Social Responsibility, and Careers labels.
+- Refined homepage and product-hero typography and supporting-copy measures;
+  updated SognosCare to the shared eyebrow treatment and added the delayed
+  logo-to-video handoff to the SognosRoster media panel.
 - Added the Knowledge Hub search dialog with recent article, event, and
   customer-story results.
 - Refined Knowledge Hub and customer-story detail pages with shared fixed
@@ -367,8 +372,9 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   removed the edition-template calendar CTA and temporarily hid its customer
   story.
 - Rebuilt the style guide around the live token and production component system.
-- Ran targeted ESLint checks and `npx tsc --noEmit`; the running homepage
-  returned HTTP `200` from `http://localhost:3001/`.
+- Ran targeted ESLint checks, `npx tsc --noEmit`, and the Next.js production
+  build; the running homepage returned HTTP `200` from
+  `http://localhost:3001/`.
 
 ### 2026-07-24
 
