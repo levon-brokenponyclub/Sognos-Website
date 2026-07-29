@@ -1,3 +1,5 @@
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
+
 const CARDS = [
   {
     eyebrow: "Our Values",
@@ -34,9 +36,12 @@ export default function AboutValues() {
             <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
               {/* Column 1 — eyebrow + title */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
+                <AnimatedEyebrow
+                  dotClassName="bg-white/70"
+                  textClassName="text-white/70"
+                >
                   {card.eyebrow}
-                </p>
+                </AnimatedEyebrow>
                 <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl">
                   {card.title}
                 </h2>

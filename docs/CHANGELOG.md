@@ -1,5 +1,35 @@
 # Changelog
 
+## 2026-07-29 — Form journeys, design-system consolidation, content search, and interaction polish
+
+- **Style guide and migration state**:
+  - Rebuilt `app/style-guide/page.tsx` around the live lean token system from `app/tokens.css`, covering core, product, and edition colours plus typography, weights, radii, shadows, and layout metrics.
+  - Replaced the legacy configurable palette and outdated action examples with production-aligned component samples, including the bottom-up `Book a Demo` fill treatment and lightweight `Explore products` link.
+  - Reconciled `docs/DESIGN_MIGRATION_STATE.md` into a clearer current baseline covering the stack, conventions, route/component inventory, completed work, and known migration debt.
+- **Contact and demo form journeys**:
+  - Reworked `ContactForm.tsx` into a validated three-step flow: `Details`, `What are you interested in?`, and `Product interest`.
+  - Replaced compact selects with descriptive radio rows for enquiry reasons and SognosCare, SognosRoster, SognosGenogram, and `Not sure yet`; removed the standalone Dynamics 365 and Power Platform product options.
+  - Standardized contact inputs, helper text, focus states, navigation controls, error handling, and mobile-visible actions around the current Sognos form family.
+  - Refined the contact-page split layout with a non-sticky left introduction, benefits, and correctly sized 3x2 trusted-logo grid while retaining normal page scrolling into the CTA and footer.
+  - Updated the Book Demo details step in `CTASection.tsx` to use the same field styling and descriptive product radio rows, and aligned its left-column copy, spacing, benefits, and trusted-logo sizing with the contact page.
+- **Homepage and shared section interactions**:
+  - Rebuilt `HowSognosWorks.tsx` as an interactive, auto-advancing three-step process with desktop timeline progress, mobile step controls, active accent cards, reduced-motion handling, and Dynamics 365, Microsoft Solutions Partner, and Copilot branding.
+  - Replaced the previous selectable employee testimonial layout with a responsive `LifeAtSognos` bento grid containing one featured testimonial and four supporting cards.
+  - Added the reusable `AnimatedEyebrow` component with a square marker, staggered entrance, configurable text/dot colours, and reduced-motion support; applied it across homepage, SognosCare, About, Social Responsibility, and Careers section labels.
+  - Refined the About and Careers compositions and added a V7-style Open Roles hover/focus interaction with a smooth row inset, light surface transition, and responsive `Apply` action.
+- **Knowledge Hub, navigation, and footer**:
+  - Added `KnowledgeHubSearchDialog`, opened from the archive’s inline search icon, with a modal overlay, keyboard/overlay dismissal, query filtering, empty state, and recent article, event, and customer-story results.
+  - Updated the Navbar so its bottom border is transparent at page load and returns with the correct light/dark colour after scrolling.
+  - Added the requested acknowledgement line break in `Footer.tsx` and standardized the acknowledgement row as centered, compact supporting text.
+- **SognosCare editions**:
+  - Reworked edition-card hover/focus states into a left-to-right full-card colour reveal above the base logo, with description, white title, white action surface, navy arrow, and 60% opacity on non-active sibling cards.
+  - Added configurable slider-control positioning and refactored Related Editions into a left eyebrow rail with a right-column heading, introduction, inline controls, and card slider.
+  - Removed the embedded calendar CTA from edition templates and temporarily gated the edition customer-story section off.
+  - Simplified edition Advantages lists by removing the outer dividers/radius, softening alternating rows, vertically centering items, and using white check icons.
+- **Assets and verification**:
+  - Added the Microsoft Solutions Partner logo used by the new platform strip and prepared local Frontline and Customer Service solution hero assets.
+  - Repeated targeted ESLint checks and `npx tsc --noEmit` passed during the implementation; the running homepage returned HTTP `200` from `http://localhost:3001/`.
+
 ## 2026-07-24 — Legal-page typography pass, footer company links, and SognosGenogram naming
 
 - **Legal pages refactor and typography audit** (`components/layout/sections/LegalPageRenderer.tsx`):

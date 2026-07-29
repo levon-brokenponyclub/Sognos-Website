@@ -1,4 +1,5 @@
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 import EditionCards from "./EditionCards";
 
 type EditionCardItem = {
@@ -21,17 +22,19 @@ export default function SognoscareEditions({
     editions && editions.length > 0 ? editions : SOGNOSCARE_EDITIONS;
 
   return (
-    <section id="editions" className="bg-gray-200/70 py-24">
+    <section id="editions" className="bg-gray-50 py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-2">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading">
+        <div className="flex flex-col items-center text-center">
+          <AnimatedEyebrow className="justify-center">Editions</AnimatedEyebrow>
+          <h2 className="mt-4 max-w-5xl text-balance font-heading text-3xl font-medium tracking-tight leading-tight text-sognos-navy md:text-4xl">
             Choose the Right SognosCare Edition for Your Service
           </h2>
-          <p className="mt-2 text-lg text-sognos-muted">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sognos-body">
             SognosCare offers six tailored editions, each pre-configured for its
             funding model, compliance framework, and operational workflows.
           </p>
         </div>
+
         <EditionCards
           editions={cards}
           showSliderButtons

@@ -17,6 +17,7 @@ interface EditionCardsProps {
   editions: readonly Edition[];
   showSliderButtons?: boolean;
   containerClassName?: string;
+  controlsClassName?: string;
   dark?: boolean; // kept for EditionPageTemplate compat — not applied to new arrow style
 }
 
@@ -65,40 +66,59 @@ function EditionCard({
   cardWidthClass?: string;
 }) {
   const title = edition.label ?? edition.name ?? "";
-  const [glow, setGlow] = useState({ x: 0, y: 0, visible: false });
 
   return (
     <Link
       href={edition.href}
       data-card
       className={[
-        "group relative flex overflow-hidden rounded-lg bg-white p-6",
+        "group relative flex overflow-hidden rounded-lg bg-gray-200/60 p-6",
+        "transition-opacity duration-500 group-hover/cards:opacity-60 hover:opacity-100! focus-visible:opacity-100!",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent",
         "flex-shrink-0 snap-center w-[82vw]",
         "aspect-square sm:aspect-auto lg:aspect-[3/4]",
         cardWidthClass,
       ].join(" ")}
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        setGlow((p) => ({ ...p, x: e.clientX - r.left, y: e.clientY - r.top }));
-      }}
-      onMouseEnter={() => setGlow((p) => ({ ...p, visible: true }))}
-      onMouseLeave={() => setGlow((p) => ({ ...p, visible: false }))}
     >
-      {/* AngelList card glow — cursor-tracked, opacity-0→1 on hover */}
+      {/* Edition-colour reveal — a complete card layer wipes in left to right. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-0 size-[272px] transition-[background,opacity] duration-700"
-        style={{
-          opacity: glow.visible ? 1 : 0,
-          transform: `translateX(${glow.x}px) translateY(${glow.y}px)`,
-          backgroundImage: `radial-gradient(50% 50%, ${edition.accentColor} 0%, transparent 100%)`,
-        }}
-      />
+        className="pointer-events-none absolute inset-0 z-10 overflow-hidden p-6 [clip-path:inset(0_100%_0_0)] transition-[clip-path] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[clip-path:inset(0_0_0_0)] group-focus-visible:[clip-path:inset(0_0_0_0)]"
+        style={{ backgroundColor: edition.accentColor }}
+      >
+        <div className="flex h-full w-full flex-col justify-between gap-8">
+          <p className="max-w-[45ch] text-base text-sognos-navy">
+            {edition.description}
+          </p>
+
+          <div className="flex w-full items-center justify-between">
+            <h3 className="font-heading text-lg font-medium tracking-tight text-white text-balance">
+              {title}
+            </h3>
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white">
+              <svg
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+                className="h-5 w-5 text-sognos-navy"
+              >
+                <path
+                  d="M3 7h8M7 3l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Card body — pushes title+button to bottom */}
       <div className="relative flex w-full flex-col justify-between gap-8">
         {/* Top — logo icon + hover-revealed description */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-10">
           {/* Logo as placeholder icon (h-8 / size-8 area).
               FLAG: swap to a dedicated per-edition icon in the styling pass. */}
           <div className="w-[140px]">
@@ -113,7 +133,7 @@ function EditionCard({
 
           {/* Description — hidden at rest, revealed on hover.
               FLAG: not visible on touch/mobile — make always-visible on small screens in styling pass. */}
-          <p className="max-w-[45ch] translate-y-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 text-sm text-sognos-muted">
+          <p className="max-w-[45ch] translate-y-2 text-base text-sognos-navy opacity-0">
             {edition.description}
           </p>
         </div>
@@ -136,7 +156,7 @@ function EditionCard({
                 viewBox="0 0 14 14"
                 fill="none"
                 aria-hidden="true"
-                className="h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-sognos-heading"
+                className="h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-white"
               >
                 <path
                   d="M3 7h8M7 3l4 4-4 4"
@@ -158,6 +178,7 @@ export default function EditionCards({
   editions,
   showSliderButtons = true,
   containerClassName = "",
+  controlsClassName = "mb-5 flex justify-end gap-3",
 }: EditionCardsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -190,7 +211,7 @@ export default function EditionCards({
   return (
     <div className={`relative ${containerClassName}`}>
       {showSliderButtons && (
-        <div className="mb-5 flex justify-end gap-3">
+        <div className={controlsClassName}>
           <ArrowButton
             dir="prev"
             disabled={!canPrev}
@@ -206,7 +227,7 @@ export default function EditionCards({
       <div
         ref={scrollerRef}
         onScroll={updateArrows}
-        className="flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="group/cards flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {editions.map((edition) => (
           <EditionCard

@@ -2,6 +2,33 @@ import Link from "next/link";
 import { getFooterContent } from "@/lib/sanity/queries";
 import FooterColumns from "@/components/layout/FooterColumns";
 
+const ACKNOWLEDGEMENT_BREAK_AFTER =
+  "We respect and honour Aboriginal and Torres Strait Islander Elders past, present, and future.";
+
+function AcknowledgementText({ text }: { text: string }) {
+  const breakAt = text.indexOf(ACKNOWLEDGEMENT_BREAK_AFTER);
+
+  if (breakAt === -1) {
+    return text;
+  }
+
+  const firstLineEnd = breakAt + ACKNOWLEDGEMENT_BREAK_AFTER.length;
+  const firstLine = text.slice(0, firstLineEnd);
+  const secondLine = text.slice(firstLineEnd).trimStart();
+
+  return (
+    <>
+      {firstLine}
+      {secondLine && (
+        <>
+          <br />
+          {secondLine}
+        </>
+      )}
+    </>
+  );
+}
+
 export default async function Footer() {
   const content = await getFooterContent();
   const year = new Date().getFullYear();
@@ -21,8 +48,8 @@ export default async function Footer() {
       {content.acknowledgement && (
         <div className="mx-auto max-w-7xl px-6">
           <div className="border-t border-white/10 py-8">
-            <p className="max-w-5xl text-left text-sm leading-relaxed text-white/50">
-              {content.acknowledgement}
+            <p className="max-w-7xl text-center text-xs leading-relaxed text-white/80">
+              <AcknowledgementText text={content.acknowledgement} />
             </p>
           </div>
         </div>

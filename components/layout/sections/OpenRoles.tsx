@@ -1,3 +1,5 @@
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
+
 type Role = {
   title: string;
   type: string;
@@ -48,39 +50,43 @@ export default function OpenRoles() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Left — label rail */}
           <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
-            <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
-              <span
-                aria-hidden="true"
-                className="h-2.5 w-2.5 rounded-full bg-sognos-blue-accent"
-              />
+            <AnimatedEyebrow textClassName="text-sognos-muted">
               Careers
-            </p>
+            </AnimatedEyebrow>
           </div>
 
           {/* Right — heading + role list */}
           <div className="lg:col-[3/-1]">
-            <h2 className="font-heading text-5xl font-normal tracking-tight text-sognos-header text-balance md:text-6xl lg:text-7xl">
+            <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-navy md:text-4xl">
               Open positions
             </h2>
+            <p className="mt-4 text-base leading-relaxed text-sognos-body">
+              Explore open roles across teams at Sognos.
+            </p>
 
-            <ul className="mt-16 border-y border-sognos-line lg:mt-20">
+            <ul className="mt-16 border-y border-sognos-line lg:mt-10">
               {ROLES.map((role) => (
                 <li key={role.title} className="border-t border-sognos-line first:border-t-0">
                   <a
                     href="mailto:careers@sognos.com.au"
-                    className="group grid gap-4 py-6 transition-colors duration-200 hover:bg-slate-50 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-7"
+                    className="group grid gap-4 py-4 transition-[padding-left,padding-right,background-color] duration-[400ms] ease-[cubic-bezier(0.2,0,0.4,1)] hover:bg-slate-50 hover:px-6 focus-visible:bg-slate-50 focus-visible:px-6 focus-visible:outline-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-6"
                   >
                     <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
-                      <p className="font-heading text-xl font-medium tracking-tight text-sognos-body transition-colors group-hover:text-sognos-blue-accent lg:text-2xl">
+                      <p className="font-heading text-xl font-normal tracking-tight text-sognos-body lg:text-xl">
                         {role.title}
                       </p>
                       <span className="rounded-md bg-slate-100 px-3 py-1 text-sm font-medium text-sognos-body">
                         Hybrid / {role.type}
                       </span>
                     </div>
-                    <p className="text-base leading-relaxed text-sognos-muted sm:text-right lg:text-xl">
-                      {role.location}
-                    </p>
+                    <div className="flex items-center justify-between gap-5 sm:justify-end">
+                      <p className="text-base leading-relaxed text-sognos-muted sm:text-right lg:text-base">
+                        {role.location}
+                      </p>
+                      <span className="shrink-0 rounded-full border border-sognos-line px-4 py-2 text-sm font-medium text-sognos-body opacity-100 transition-opacity duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
+                        Apply
+                      </span>
+                    </div>
                   </a>
                 </li>
               ))}

@@ -63,8 +63,8 @@ type CTASectionProps = {
 // ─── Form styles (matches contact page) ────────────────────────────────────
 
 const INPUT =
-  "w-full rounded-lg border border-sognos-line bg-slate-50 px-4 py-3 text-sm text-sognos-body placeholder:text-sognos-muted focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/20";
-const LABEL = "mb-1.5 block text-sm font-medium text-sognos-body";
+  "w-full min-h-16 rounded-lg border border-sognos-line bg-white px-5 py-4 text-base text-sognos-body placeholder:text-sognos-muted transition-[border-color,box-shadow] duration-200 hover:border-sognos-navy/25 focus:border-sognos-blue-accent focus:outline-none focus:ring-2 focus:ring-sognos-blue-accent/15";
+const LABEL = "mb-2 block text-sm font-medium text-sognos-body";
 
 // ─── Section ────────────────────────────────────────────────────────────────
 
@@ -86,9 +86,31 @@ const MONTH_NAMES = [
 const DEMO_BENEFITS = [
   "Unify care, workforce and field service operations",
   "See where Dynamics 365, Power Platform and AI fit",
-  "Map your current process to a practical rollout path",
   "Leave with clear next steps for your team",
 ];
+
+const DEMO_PRODUCTS = [
+  {
+    label: "SognosCare",
+    value: "sognoscare",
+    description: "Connect care operations from intake through to outcomes",
+  },
+  {
+    label: "SognosRoster",
+    value: "sognosroster",
+    description: "Coordinate workforce scheduling, matching, and delivery",
+  },
+  {
+    label: "SognosGenogram",
+    value: "sognosgenogram",
+    description: "Bring family and relationship context into every record",
+  },
+  {
+    label: "Not sure yet",
+    value: "not-sure",
+    description: "Let our team help identify the right product or solution",
+  },
+] as const;
 
 export default function CTASection({
   defaultProduct,
@@ -175,19 +197,19 @@ export default function CTASection({
       <div
         className={`grid gap-4 ${
           isDrawerLayout
-            ? "min-h-[82svh] grid-cols-1 bg-sognos-blue-accent p-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(560px,1fr)] lg:gap-0 lg:pt-10 lg:pb-0"
+            ? "min-h-[82svh] grid-cols-1 bg-sognos-blue-accent p-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(560px,1fr)] lg:gap-22 lg:pt-10 lg:pb-0"
             : hideStats
               ? "grid-cols-1"
               : "grid-cols-1 lg:grid-cols-[3fr_2fr]"
         }`}
       >
         {isDrawerLayout && (
-          <div className="flex min-h-[360px] flex-col justify-between px-2 py-8 text-white lg:min-h-0 lg:px-10 lg:pb-10">
+          <div className="flex min-h-[520px] flex-col px-2 py-8 text-white lg:min-h-0 lg:self-start lg:px-10 lg:pb-10">
             <div>
-              <h2 className="mt-0 max-w-lg font-heading text-5xl font-normal leading-[1.06] tracking-tight text-white text-balance lg:mt-0 lg:text-6xl">
+              <h2 className="max-w-lg font-heading text-5xl font-normal leading-snug tracking-tight text-white text-balance lg:text-5xl">
                 {cta.bookDemoHeading}
               </h2>
-              <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+              <p className="mt-3 max-w-xl text-xl text-white">
                 {cta.bookDemoDescription}
               </p>
 
@@ -195,7 +217,7 @@ export default function CTASection({
                 {DEMO_BENEFITS.map((benefit) => (
                   <li
                     key={benefit}
-                    className="flex items-center gap-4 text-base text-white/65"
+                    className="flex items-center gap-4 text-base text-white/80"
                   >
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-sognos-navy">
                       <svg
@@ -217,34 +239,34 @@ export default function CTASection({
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className="mt-12">
-              <p className="text-base font-medium text-white">
-                {LOGO_STRIP_TITLE}
-              </p>
-              <div className="mt-6 grid max-w-xl grid-cols-3 border border-white/10">
-                {drawerLogos.map((logo, i) => (
-                  <div
-                    key={`${logo.alt}-${i}`}
-                    className={`flex h-20 items-center justify-center border-white/10 px-5 ${
-                      i % 3 !== 2 ? "border-r" : ""
-                    } ${i < 3 ? "border-b" : ""}`}
-                  >
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      width={120}
-                      height={36}
-                      className="max-h-8 w-auto max-w-32 object-contain brightness-0 invert opacity-55"
-                    />
-                  </div>
-                ))}
+              <div className="mt-22">
+                <p className="font-heading text-xl font-medium text-white">
+                  {LOGO_STRIP_TITLE}
+                </p>
+                <div className="mt-5 grid max-w-xl grid-cols-3 border border-white/10">
+                  {drawerLogos.map((logo, i) => (
+                    <div
+                      key={`${logo.alt}-${i}`}
+                      className={`relative flex items-center justify-center border-white/10 p-3 sm:p-6 ${
+                        i % 3 !== 2 ? "border-r" : ""
+                      } ${i < 3 ? "border-b" : ""}`}
+                    >
+                      <Image
+                        src={logo.src}
+                        alt={logo.alt}
+                        width={128}
+                        height={64}
+                        className="h-12 w-full max-w-32 object-contain brightness-0 invert opacity-70"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-8 text-sm leading-relaxed text-white/45">
+                  Looking for a specific product? We can walk through
+                  SognosCare, SognosRoster, SognosGenogram, or the full
+                  platform.
+                </p>
               </div>
-              <p className="mt-8 text-sm leading-relaxed text-white/45">
-                Looking for a specific product? We can walk through SognosCare,
-                SognosRoster, SognosGenogram, or the full platform.
-              </p>
             </div>
           </div>
         )}
@@ -497,10 +519,14 @@ export default function CTASection({
                       }}
                     >
                       <div>
-                        <label className={LABEL}>Full Name *</label>
+                        <label htmlFor="demo-full-name" className={LABEL}>
+                          Full Name *
+                        </label>
                         <input
+                          id="demo-full-name"
                           required
                           type="text"
+                          autoComplete="name"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
                           className={INPUT}
@@ -508,10 +534,14 @@ export default function CTASection({
                         />
                       </div>
                       <div>
-                        <label className={LABEL}>Work Email *</label>
+                        <label htmlFor="demo-email" className={LABEL}>
+                          Work Email *
+                        </label>
                         <input
+                          id="demo-email"
                           required
                           type="email"
+                          autoComplete="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           className={INPUT}
@@ -519,35 +549,60 @@ export default function CTASection({
                         />
                       </div>
                       <div>
-                        <label className={LABEL}>Company *</label>
+                        <label htmlFor="demo-company" className={LABEL}>
+                          Company *
+                        </label>
                         <input
+                          id="demo-company"
                           required
                           type="text"
+                          autoComplete="organization"
                           value={company}
                           onChange={(e) => setCompany(e.target.value)}
                           className={INPUT}
                           placeholder="Acme Health Group"
                         />
                       </div>
-                      <div>
-                        <label className={LABEL}>Product of interest *</label>
-                        <select
-                          required
-                          value={product}
-                          onChange={(e) => setProduct(e.target.value)}
-                          className={INPUT}
-                        >
-                          <option value="" disabled>
-                            Select a product
-                          </option>
-                          <option value="sognoscare">SognosCare</option>
-                          <option value="sognosroster">SognosRoster</option>
-                          <option value="sognosgenogram">
-                            SognosGenogram
-                          </option>
-                          <option value="not-sure">Not sure yet</option>
-                        </select>
-                      </div>
+                      <fieldset>
+                        <legend className="text-xl font-medium tracking-tight text-sognos-heading">
+                          Product of interest
+                        </legend>
+                        <p className="mt-2 text-sm leading-relaxed text-sognos-muted">
+                          Select the product you would like to explore.
+                        </p>
+
+                        <div className="mt-5 overflow-hidden rounded-lg border border-sognos-line">
+                          {DEMO_PRODUCTS.map((item, index) => (
+                            <label
+                              key={item.value}
+                              className={[
+                                "flex cursor-pointer items-center justify-between gap-6 bg-white px-5 py-5 transition-colors duration-200 hover:bg-slate-50 has-[:checked]:bg-sognos-blue-accent/[0.055]",
+                                index > 0
+                                  ? "border-t border-sognos-line"
+                                  : "",
+                              ].join(" ")}
+                            >
+                              <span className="min-w-0">
+                                <span className="block text-base font-medium text-sognos-heading">
+                                  {item.label}
+                                </span>
+                                <span className="mt-1 block text-sm leading-relaxed text-sognos-muted">
+                                  {item.description}
+                                </span>
+                              </span>
+                              <input
+                                type="radio"
+                                name="demo-product"
+                                value={item.value}
+                                checked={product === item.value}
+                                onChange={(e) => setProduct(e.target.value)}
+                                required
+                                className="size-7 shrink-0 cursor-pointer appearance-none rounded-full border border-sognos-muted/60 bg-white transition-[border-color,box-shadow] duration-200 checked:border-[7px] checked:border-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-sognos-blue-accent"
+                              />
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
                       {errorMsg && (
                         <p
                           role="alert"

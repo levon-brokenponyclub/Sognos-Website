@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import EditionCards from "@/components/layout/sections/sognoscare/EditionCards";
-import CTASection from "@/components/layout/sections/CTASection";
 import ProductCustomerStories from "@/components/layout/sections/ProductCustomerStories";
 import ProductFeaturesScroll, {
   type ScrollFeature,
@@ -76,6 +75,8 @@ const FLOURISH_STORY = {
   role: "Chief Operating Officer, Flourish Australia",
   href: "/customer-stories/flourish-australia",
 };
+
+const SHOW_EDITION_CUSTOMER_STORY = false;
 
 // ─── Section: Hero ────────────────────────────────────────────────────────────
 
@@ -272,7 +273,7 @@ function CheckIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-sognos-blue-accent"
+      className="shrink-0 text-white"
       aria-hidden="true"
     >
       <path d="M18 4 7 16l-5-5" />
@@ -315,13 +316,13 @@ function Advantages({ data }: { data: EditionData }) {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-15% 0px -15% 0px" }}
-              className="divide-y divide-white/10 rounded-lg overflow-hidden"
+              className="overflow-hidden"
             >
               {data.advantages.map((advantage, i) => (
                 <motion.li
                   key={i}
                   variants={itemVariants}
-                  className={`flex items-start gap-4 px-6 py-5 ${
+                  className={`flex items-center gap-4 px-6 py-5 ${
                     i % 2 === 0 ? "bg-white/10" : ""
                   }`}
                 >
@@ -353,22 +354,35 @@ function RelatedEditions({ data }: { data: EditionData }) {
   );
 
   return (
-    <section id="editions" className="bg-gray-200/70 py-24">
+    <section id="editions" className="bg-gray-50 py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-2">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading">
-            Other SognosCare Editions
-          </h2>
-          <p className="mt-2 text-lg text-sognos-muted">
-            SognosCare is purpose-built for each care sector — choose the
-            edition that fits your funding model and compliance requirements.
-          </p>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+            <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
+              Editions
+            </p>
+          </div>
+
+          <div className="min-w-0 lg:col-[3/-1]">
+            <div>
+              <h2 className="max-w-5xl text-balance font-heading text-3xl font-medium leading-tight tracking-tight text-sognos-navy md:text-4xl">
+                Other SognosCare Editions
+              </h2>
+              <p className="mt-3 max-w-5xl text-base leading-relaxed text-sognos-body">
+                Tailored editions, each pre-configured for
+                its funding model, compliance framework, and operational
+                workflows.
+              </p>
+            </div>
+
+            <EditionCards
+              editions={relatedEditions}
+              showSliderButtons
+              containerClassName="mt-12 w-full"
+              controlsClassName="mb-5 flex justify-end gap-3 lg:absolute lg:right-0 lg:-top-20 lg:mb-0"
+            />
+          </div>
         </div>
-        <EditionCards
-          editions={relatedEditions}
-          showSliderButtons
-          containerClassName="w-full"
-        />
       </div>
     </section>
   );
@@ -383,11 +397,8 @@ export default function EditionPageTemplate({ data }: { data: EditionData }) {
       <WhatItSolves data={data} />
       <Features data={data} />
       <Advantages data={data} />
-      <ProofStories />
       <RelatedEditions data={data} />
-      <div id="calendar">
-        <CTASection defaultProduct="sognoscare" />
-      </div>
+      {SHOW_EDITION_CUSTOMER_STORY && <ProofStories />}
     </main>
   );
 }

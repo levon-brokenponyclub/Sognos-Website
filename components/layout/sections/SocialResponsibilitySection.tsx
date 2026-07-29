@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 const SR_PILLARS = [
   {
@@ -31,10 +32,12 @@ export default function SocialResponsibilitySection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           {/* Left Content - Sticky */}
           <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-              <span className="w-2 h-2 bg-sognos-blue-accent rounded-full"></span>
+            <AnimatedEyebrow
+              className="mb-6"
+              textClassName="text-white"
+            >
               Social Responsibility
-            </div>
+            </AnimatedEyebrow>
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
               Our commitment to <br /> community and planet.
             </h2>

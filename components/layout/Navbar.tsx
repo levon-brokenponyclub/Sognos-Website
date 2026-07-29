@@ -652,11 +652,17 @@ export default function Navbar({
           bannerOffsetClass,
           "transition-[transform,background-color,border-color] duration-300 ease-in-out",
           headerHidden ? "-translate-y-full" : "translate-y-0",
+          "border-b",
+          scrolled
+            ? useTransparent
+              ? "border-sognos-navy"
+              : "border-sognos-line"
+            : "border-transparent",
           useTransparent
             ? barTransparent
               ? "bg-transparent"
               : "bg-sognos-navy-dark"
-            : "bg-white border-b border-black/5",
+            : "bg-white",
         ].join(" ")}
       >
         {/* ── Inner positioning context — max-w-7xl ── */}

@@ -104,14 +104,14 @@ export default function SognoscareAdvantages({
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-15% 0px -15% 0px" }}
-              className="divide-y divide-white/10 rounded-lg overflow-hidden"
+              className="overflow-hidden"
             >
               {items.map((advantage, i) => (
                 <motion.li
                   key={i}
                   variants={itemVariants}
-                  className={`flex items-start gap-4 px-6 py-5 ${
-                    i % 2 === 0 ? "bg-white/10" : ""
+                  className={`flex items-center gap-4 px-6 py-5 ${
+                    i % 2 === 0 ? "bg-white/5" : ""
                   }`}
                 >
                   <CheckIcon />

@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  KnowledgeHubSearchDialog,
+  type KnowledgeHubSearchItem,
+} from "@/components/ui/knowledge-hub-search-dialog";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -274,10 +278,60 @@ export default function KnowledgeHubArchive({
     {},
   );
 
+  const articleSearchItems: KnowledgeHubSearchItem[] = articles.map(
+    (article) => ({
+      href: article.href,
+      title: article.title,
+      category: article.category,
+      meta: [
+        article.publishedAt ? formatDate(article.publishedAt) : null,
+        article.readTime,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      image: article.image,
+      keywords: [
+        article.excerpt,
+        article.industry,
+        article.useCase,
+        article.author,
+      ],
+    }),
+  );
+  const eventSearchItems: KnowledgeHubSearchItem[] = EVENTS.map((event) => ({
+    href: event.href,
+    title: event.title,
+    category: "Event",
+    meta: `${event.dateStart} · ${event.location}`,
+    image: event.image,
+    keywords: [event.category, event.dateEnd],
+  }));
+  const customerStorySearchItem: KnowledgeHubSearchItem = {
+    href: `/customer-stories/${LATEST_CUSTOMER_STORY.slug}`,
+    title: LATEST_CUSTOMER_STORY.title,
+    category: "Customer Story",
+    meta: `${LATEST_CUSTOMER_STORY.date} · ${LATEST_CUSTOMER_STORY.readTime}`,
+    image: LATEST_CUSTOMER_STORY.image,
+    keywords: [
+      LATEST_CUSTOMER_STORY.company,
+      LATEST_CUSTOMER_STORY.excerpt,
+    ],
+  };
+  const searchItems = [
+    ...articleSearchItems,
+    ...eventSearchItems,
+    customerStorySearchItem,
+  ];
+  const recentSearchItems = [
+    articleSearchItems[0],
+    eventSearchItems[0],
+    customerStorySearchItem,
+  ].filter((item): item is KnowledgeHubSearchItem => Boolean(item));
+
   return (
     <>
       {/* Header — title/description, then category pills below */}
-      <section className="bg-white pt-32 pb-10 lg:pt-40">
+      <section className="bg-white pt-32 pb-8 lg:pt-40">
         <div className="mx-auto max-w-7xl px-6">
           {/* Title zone — fixed height so the pills below never shift between
               states. Featured: title + intro copy, top-aligned. Non-featured:
@@ -289,7 +343,7 @@ export default function KnowledgeHubArchive({
             }`}
           >
             {!isFeatured && (
-              <p className="mb-4 inline-block text-xs font-semibold uppercase tracking-tight text-sognos-muted">
+              <p className="mb-16 inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                 Knowledge Hub
               </p>
             )}
@@ -304,66 +358,76 @@ export default function KnowledgeHubArchive({
           </div>
 
           {/* Category pills — below title/description. Mobile: horizontal scroll slider. md+: wrap. */}
-          <div className="scrollbar-hide -mx-6 mt-10 flex flex-nowrap items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
-            {/* Special pills — no count badge */}
-            <button
-              onClick={() => {
-                setSelection("featured");
-                setShowAllArticles(false);
-              }}
-              className={pillClass(selection === "featured")}
-            >
-              Featured
-            </button>
-            <button
-              onClick={() => {
-                setSelection("all");
-                setShowAllArticles(false);
-              }}
-              className={pillClass(selection === "all")}
-            >
-              All Articles
-            </button>
-            {/* Category pills — keep counts */}
-            {CATEGORIES.map((cat) => {
-              const count = categoryCounts[cat] ?? 0;
-              const isActive = selection === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelection(cat);
-                    setShowAllArticles(false);
-                  }}
-                  className={pillClass(isActive)}
-                >
-                  {cat}
-                  {count > 0 && (
-                    <span
-                      className={`ml-1.5 text-xs ${
-                        isActive ? "text-white/70" : "text-sognos-blue-accent"
-                      }`}
-                    >
-                      {count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+          <div className="mt-10 flex items-center gap-3 ">
+            <div className="scrollbar-hide -ml-6 flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto pl-6 md:ml-0 md:flex-wrap md:overflow-visible md:pl-0">
+              {/* Special pills — no count badge */}
+              <button
+                onClick={() => {
+                  setSelection("featured");
+                  setShowAllArticles(false);
+                }}
+                className={pillClass(selection === "featured")}
+              >
+                Featured
+              </button>
+              <button
+                onClick={() => {
+                  setSelection("all");
+                  setShowAllArticles(false);
+                }}
+                className={pillClass(selection === "all")}
+              >
+                All Articles
+              </button>
+              {/* Category pills — keep counts */}
+              {CATEGORIES.map((cat) => {
+                const count = categoryCounts[cat] ?? 0;
+                const isActive = selection === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSelection(cat);
+                      setShowAllArticles(false);
+                    }}
+                    className={pillClass(isActive)}
+                  >
+                    {cat}
+                    {count > 0 && (
+                      <span
+                        className={`ml-1.5 text-xs ${
+                          isActive
+                            ? "text-white/70"
+                            : "text-sognos-blue-accent"
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="shrink-0">
+              <KnowledgeHubSearchDialog
+                items={searchItems}
+                recentItems={recentSearchItems}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured article — two-up: image left, meta right (Featured state only) */}
       {isFeatured && featured && (
-        <section className="bg-white pb-12 lg:pb-16 border-b border-sognos-line mb-12 lg:mb-16">
+        <section className="bg-white p-10 border-b border-t border-sognos-line mb-12 lg:mb-16">
           <div className="mx-auto max-w-7xl px-6">
             <Link
               href={featured.href}
-              className="group grid items-start gap-8 lg:grid-cols-[760px_1fr] lg:gap-12"
+              className="group grid items-start gap-8 lg:grid-cols-[920px_1fr] lg:gap-8"
             >
               {/* Image */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
+              <div className="relative aspect-[16/8] w-full overflow-hidden rounded-lg">
                 {featured.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img

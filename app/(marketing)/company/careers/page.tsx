@@ -3,6 +3,7 @@ import Link from "next/link";
 import LifeAtSognos from "@/components/layout/sections/LifeAtSognos";
 import OpenRoles from "@/components/layout/sections/OpenRoles";
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 export const metadata: Metadata = {
   title: "Careers | Sognos",
@@ -41,13 +42,16 @@ export default function CareersPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
-              <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+              <AnimatedEyebrow
+                dotClassName="bg-sognos-blue-accent"
+                textClassName="text-sognos-muted"
+              >
                 Careers
-              </p>
+              </AnimatedEyebrow>
               <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Join Sognos to drive innovation together.
               </h1>
-              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-sognos-body">
                 We&apos;re not just a company - we&apos;re a community of passionate
                 individuals committed to driving innovation and creating
                 positive change.
@@ -71,15 +75,23 @@ export default function CareersPage() {
       {/* Our People - Our Planet */}
       <section className="w-full bg-sognos-navy-dark py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
             <div className="text-white lg:sticky lg:top-32 lg:self-start">
-              <h2 className="max-w-sm font-heading text-5xl font-normal leading-[1.05] tracking-tight text-white text-balance lg:text-6xl">
-                Our people - our planet
+              <h2 className="font-heading text-5xl font-normal leading-[1.05] tracking-tight text-white text-balance lg:text-4xl">
+                Drive innovation together.
               </h2>
-              <p className="mt-6 max-w-sm text-base leading-relaxed text-white/60 md:text-lg">
-                How we show up for our team, our customers, and the communities
-                we work in.
+              <p className="mt-6 text-base leading-relaxed text-white/60 md:text-lg">
+                We&apos;re a community of passionate individuals committed to
+                driving innovation and creating positive change. If you thrive
+                in a collaborative, high-trust environment and want your work
+                to matter, Sognos is built for you.
               </p>
+              <Link
+                href="#positions"
+                className="mt-8 inline-flex items-center justify-center rounded bg-sognos-blue-accent px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
+              >
+                Meet our leadership team
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -106,7 +118,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Life at Sognos - tabs | image | quote */}
+      {/* Life at Sognos - testimonial bento grid */}
       <LifeAtSognos />
 
       {/* Open roles */}
