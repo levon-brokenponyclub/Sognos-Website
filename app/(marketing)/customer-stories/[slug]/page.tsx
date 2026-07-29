@@ -15,6 +15,7 @@ import {
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import StoryMetaRail from "@/components/layout/sections/customer-stories/StoryMetaRail";
 import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
+import ArticleProseFooter from "@/components/layout/sections/shared/ArticleProseFooter";
 import {
   type PortableBlock,
   slugify,
@@ -28,6 +29,7 @@ import StatRow from "@/components/portable-text/StatRow";
 import HeroScrollFade from "@/components/layout/sections/customer-stories/HeroScrollFade";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export const revalidate = 60;
 
@@ -36,7 +38,7 @@ export const revalidate = 60;
 const H2 =
   "mt-10 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading scroll-mt-28 md:scroll-mt-32";
 const PROSE =
-  "max-w-none text-base leading-relaxed text-sognos-body [&_p]:mb-5 [&_ul]:mb-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
+  "text-base leading-relaxed text-sognos-body [&_p]:mb-5 [&_ul]:mb-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
 
 // ─── Static params ────────────────────────────────────────────────────────────
 
@@ -107,11 +109,11 @@ const portableComponents: PortableTextComponents = {
     ),
   },
   list: {
-    bullet: ({ children }) => <ul className="mb-6 space-y-2">{children}</ul>,
+    bullet: ({ children }) => <ul className="mb-6 space-y-2 border-t border-sognos-line">{children}</ul>,
   },
   listItem: {
     bullet: ({ children }) => (
-      <li className="flex items-start gap-3 text-base leading-relaxed">
+      <li className="flex items-start gap-3 text-base leading-relaxed mb-0  py-3 border-b border-sognos-line">
         <span
           aria-hidden="true"
           className="mt-2 size-1.5 shrink-0 bg-sognos-blue-accent"
@@ -216,17 +218,19 @@ export default async function CustomerStoryPage({
 
   return (
     <main className="bg-white">
+      <ScrollProgress />
+
       {/* ── Dark hero (scroll parallax + fade) — layout matches Diffblue ref ── */}
-      <HeroScrollFade className="relative overflow-hidden bg-sognos-navy pt-32 pb-16 lg:pt-40 lg:pb-20">
+      <HeroScrollFade className="relative overflow-hidden bg-sognos-navy pt-32 lg:pt-40 lg:pb-0">
         <div className="mx-auto max-w-7xl px-6">
           {/* Back link */}
           <Link
             href="/customer-stories"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-white"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-sognos-blue-accent"
           >
             <ArrowLeft
               size={14}
-              className="transition-transform duration-200 group-hover:-translate-x-0.5"
+              className="transition-transform duration-200 group-hover:text-sognos-blue-accent group-hover:-translate-x-0.5"
             />
             Back to Customer Stories
           </Link>
@@ -247,44 +251,43 @@ export default async function CustomerStoryPage({
 
             {/* Right — title + pull-quote */}
             <div>
-              <h1 className="max-w-3xl font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-5xl">
+              {companyLogoUrl && (
+                <Image
+                  src={companyLogoUrl}
+                  alt={story.company}
+                  width={160}
+                  height={48}
+                  className="mb-8 h-10 w-auto max-w-[150px] shrink-0 object-contain brightness-0 invert"
+                />
+              )}
+
+              <h1 className="max-w-3xl font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
                 {story.title}
               </h1>
 
               {story.quote && (
-                <figure className="mt-10 lg:mt-20">
+                <figure className="mt-10 lg:mt-24 pb-20">
                   <blockquote
-                    className={`${ARTICLE_PROSE_MAX_W} font-heading text-2xl font-normal leading-snug text-white md:text-2xl`}
+                    className={`${ARTICLE_PROSE_MAX_W} max-w-lg font-heading text-xl font-normal leading-snug tracking-tight text-white md:text-xl`}
                   >
                     &ldquo;{story.quote}&rdquo;
                   </blockquote>
-                  {(companyLogoUrl || quoteAuthor || quoteRole) && (
+                  {(quoteAuthor || quoteRole) && (
                     <figcaption
-                      className={`mt-8 flex items-center gap-4 ${ARTICLE_PROSE_MAX_W}`}
+                      className={`mt-12 flex items-center gap-8 ${ARTICLE_PROSE_MAX_W}`}
                     >
-                      {companyLogoUrl && (
-                        <Image
-                          src={companyLogoUrl}
-                          alt={story.company}
-                          width={160}
-                          height={48}
-                          className="h-10 w-auto max-w-[150px] shrink-0 object-contain brightness-0 invert"
-                        />
-                      )}
-                      {(quoteAuthor || quoteRole) && (
-                        <div>
-                          {quoteAuthor && (
-                            <p className="text-base font-semibold text-white">
-                              {quoteAuthor}
-                            </p>
-                          )}
-                          {quoteRole && (
-                            <p className="mt-0.5 text-sm text-white/70">
-                              {quoteRole}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                      <div>
+                        {quoteAuthor && (
+                          <p className="text-base font-semibold text-white">
+                            {quoteAuthor}
+                          </p>
+                        )}
+                        {quoteRole && (
+                          <p className="mt-0.5 text-sm text-white/70">
+                            {quoteRole}
+                          </p>
+                        )}
+                      </div>
                     </figcaption>
                   )}
                 </figure>
@@ -311,7 +314,6 @@ export default async function CustomerStoryPage({
                 size={sizeValue}
                 product={productValue}
                 downloadUrl={story.downloadUrl}
-                postUrl={postUrl}
               />
             </div>
 
@@ -323,6 +325,12 @@ export default async function CustomerStoryPage({
                   components={portableComponents}
                 />
               </div>
+              <ArticleProseFooter
+                backHref="/customer-stories"
+                backLabel="All customer stories"
+                postUrl={postUrl}
+                className={ARTICLE_PROSE_MAX_W}
+              />
             </ScrollReveal>
           </div>
         </div>

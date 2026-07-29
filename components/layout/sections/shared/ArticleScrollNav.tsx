@@ -12,9 +12,11 @@ export type { ArticleSection };
 export default function ArticleScrollNav({
   sections,
   label = "In This Article",
+  showTrack = true,
 }: {
   sections: ArticleSection[];
   label?: string;
+  showTrack?: boolean;
 }) {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
   const rafRef = useRef(0);
@@ -66,13 +68,15 @@ export default function ArticleScrollNav({
   return (
     <nav
       aria-label="Article sections"
-      className="relative hidden lg:block w-44 xl:w-54 shrink-0"
+      className="relative hidden lg:block w-full shrink-0"
     >
       {/* Full-height vertical rail line (light gray track) */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 w-px bg-sognos-line"
-      />
+      {showTrack && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 w-px bg-sognos-line"
+        />
+      )}
       <p className="mb-5 pl-4 text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
         {label}
       </p>
@@ -84,7 +88,7 @@ export default function ArticleScrollNav({
               key={item.id}
               type="button"
               onClick={() => scrollToSection(item.id)}
-              aria-selected={isActive}
+              aria-current={isActive ? "location" : undefined}
               className="group relative flex w-full items-center py-2 pl-4 text-left"
             >
               {/* Active marker — rectangle on the rail, springs between rows */}

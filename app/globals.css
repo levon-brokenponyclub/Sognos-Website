@@ -101,8 +101,8 @@
   --text-6xl--line-height: 1.05;
   --text-7xl: 4.5rem;
   --text-7xl--line-height: 1.05;
-  --text-8xl: 5.5rem;
-  --text-8xl--line-height: 1.03;
+  --text-8xl: 2.5rem;
+  --text-8xl--line-height: 1.1;
 
   /* Shadows */
   --shadow-sm: var(--sognos-shadow-sm);

@@ -90,7 +90,10 @@ Resolved items:
 - `ProductFeaturesScroll.tsx` and `SolutionsSection.tsx`: sticky rail plus
   requestAnimationFrame-throttled scroll-spy.
 - `ArticleScrollNav.tsx`: shared article heading rail for Knowledge Hub and
-  Customer Stories.
+  Customer Stories; supports either its own track or a page-level full-height
+  rail.
+- `scroll-progress.tsx`: fixed, spring-smoothed page progress indicator shared
+  by Knowledge Hub posts and customer stories.
 - `AboutHeroImage.tsx`: full-width image that shrinks to the main container with
   scroll-linked parallax and reduced-motion handling.
 - Product heroes: `useScroll`/`useTransform` fade and vertical movement with a
@@ -208,7 +211,10 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `AnimatedEyebrow.tsx` | Production | Shared square-dot eyebrow entrance with reduced-motion support and configurable container, dot, and text classes. |
 | `LegalPageRenderer.tsx` | Production | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro. |
 | `AboutHeroImage.tsx` | Production | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides. |
-| `ArticleScrollNav.tsx` | Production | Shared customer-story and Knowledge Hub heading rail. |
+| `ArticleScrollNav.tsx` | Production | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. |
+| `ArticleProseFooter.tsx` | Production | Shared end-of-prose footer with back-to-index navigation and the existing social `ShareIcons`. |
+| `scroll-progress.tsx` | Production | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families. |
+| `StoryMetaRail.tsx` / `ShareIcons` | Production | Customer-story metadata rail; social share controls are exported and reused by the shared article footer. |
 | `PullQuote.tsx`, `QuoteCallout.tsx`, `StatRow.tsx` | Ready | Portable Text content blocks registered for articles and customer stories; authoring adoption remains content-dependent. |
 
 ## 7. Route Map
@@ -291,11 +297,15 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 - `/knowledge-hub`: Sanity archive with category controls, featured/latest
   article handling, modal search across recent articles/events/customer
   stories, upcoming events, and customer-story promotion.
-- `/knowledge-hub/[slug]`: editorial hero, constrained image/prose measure,
-  shared scroll rail, Portable Text custom blocks, and latest articles.
+- `/knowledge-hub/[slug]`: editorial title/excerpt hero, featured image and
+  prose constrained to `ARTICLE_PROSE_MAX_W`, full-height scroll rail, fixed
+  page-progress indicator, shared end-of-prose navigation/sharing, Portable
+  Text custom blocks, and latest articles.
 - `/customer-stories`: archive cards.
-- `/customer-stories/[slug]`: dark customer-story hero, sticky metadata/article
-  rail, shared Portable Text blocks, callouts, and related reading.
+- `/customer-stories/[slug]`: dark customer-story hero with the company logo
+  above the title, sticky metadata/article rail, fixed page-progress indicator,
+  shared end-of-prose navigation/sharing, Portable Text blocks, callouts, and
+  related reading.
 - Both dynamic content families depend on readable local Sanity configuration:
   `NEXT_PUBLIC_SANITY_PROJECT_ID=vg117fxr` and dataset `production`.
 
@@ -347,6 +357,10 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   homepage, product, About, Social Responsibility, and Careers labels.
 - Added the Knowledge Hub search dialog with recent article, event, and
   customer-story results.
+- Refined Knowledge Hub and customer-story detail pages with shared fixed
+  scroll progress, editorial hero adjustments, constrained featured media,
+  improved article rails, and the reusable `ArticleProseFooter` backed by the
+  existing `ShareIcons`.
 - Updated navbar border behavior, footer acknowledgement layout, Careers
   testimonial composition, and Open Roles hover/focus interactions.
 - Reworked SognosCare edition-card interactions and Related Editions layout;

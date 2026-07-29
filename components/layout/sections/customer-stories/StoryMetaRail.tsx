@@ -7,12 +7,11 @@ type Props = {
   size?: string;
   product?: string;
   downloadUrl?: string;
-  postUrl: string;
 };
 
 // ─── Share icons ──────────────────────────────────────────────────────────────
 
-function ShareIcons({ postUrl }: { postUrl: string }) {
+export function ShareIcons({ postUrl }: { postUrl: string }) {
   return (
     <div className="flex items-center gap-2">
       <a
@@ -87,7 +86,6 @@ export default function StoryMetaRail({
   size,
   product,
   downloadUrl,
-  postUrl,
 }: Props) {
   const meta = [
     { label: "Customer", value: customer },
@@ -147,15 +145,6 @@ export default function StoryMetaRail({
           </a>
         </>
       )}
-
-      <div className="my-6 h-px bg-sognos-line" />
-
-      <div>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-          Share
-        </p>
-        <ShareIcons postUrl={postUrl} />
-      </div>
     </aside>
   );
 }
