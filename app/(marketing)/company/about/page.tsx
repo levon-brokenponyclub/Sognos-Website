@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import TeamSection from "@/components/layout/sections/TeamSection";
 import SocialResponsibilitySection from "@/components/layout/sections/SocialResponsibilitySection";
-import AboutBeliefs from "@/components/layout/sections/AboutBeliefs";
 import AboutValues from "@/components/layout/sections/AboutValues";
 import AboutStats from "@/components/layout/sections/AboutStats";
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
@@ -66,9 +65,7 @@ export default function AboutPage() {
           <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
             {/* Left — eyebrow + heading + intro */}
             <div className="lg:col-span-7">
-              <AnimatedEyebrow
-                textClassName="text-sognos-muted"
-              >
+              <AnimatedEyebrow textClassName="text-sognos-muted">
                 About Sognos
               </AnimatedEyebrow>
               <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
@@ -99,25 +96,23 @@ export default function AboutPage() {
       </section>
 
       {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white py-20 pt-0 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="grid grid-cols-3 gap-4 lg:grid-cols-3 lg:gap-10">
             {/* Column 1 — eyebrow + title */}
-            <div>
-              <AnimatedEyebrow
-                textClassName="text-sognos-muted"
-              >
+            <div className="col-span-1">
+              <AnimatedEyebrow textClassName="text-sognos-muted">
                 Our Story
               </AnimatedEyebrow>
-              <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl lg:text-5xl">
+              <h2 className="mt-4 max-w-5xl font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
                 Healthcare First. Field Service Always. AI at the Centre.
               </h2>
             </div>
             {/* Column 2 — body paragraphs + stats */}
-            <div>
+            <div className="col-span-2">
               {/* Body paragraphs */}
-              <div className="max-w-3xl space-y-5 text-base leading-relaxed text-sognos-muted">
-                <p>
+              <div className="max-w-2xl space-y-5 text-lg leading-relaxed text-sognos-body">
+                <p className="mt-12 text-2xl font-medium">
                   For over a decade, Sognos has been helping organisations
                   simplify complex frontline operations through connected,
                   intelligent business solutions built around real work.
@@ -153,9 +148,6 @@ export default function AboutPage() {
       {/* ── Our Values — stacking sticky cards (Mission + Vision) ─────────────── */}
       <AboutValues />
 
-      {/* ── Our Beliefs — single static card (3 values) ───────────────────────── */}
-      <AboutBeliefs />
-
       <TeamSection />
 
       {/* Partners - Sticky Scroll Layout */}
@@ -174,9 +166,9 @@ export default function AboutPage() {
                 Let&apos;s build. Together.
               </h2>
               <p className="text-lg text-sognos-body leading-relaxed max-w-md">
-                We&apos;ve partnered with some of the best innovators in the industry
-                to bring you new and exciting possibilities - enhanced and
-                integrated business solutions to your most complex problems.
+                We&apos;ve partnered with some of the best innovators in the
+                industry to bring you new and exciting possibilities - enhanced
+                and integrated business solutions to your most complex problems.
               </p>
             </div>
 
@@ -226,19 +218,16 @@ export default function AboutPage() {
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <AnimatedEyebrow
-                className="mb-4"
-                textClassName="text-white/50"
-              >
+              <AnimatedEyebrow className="mb-4" textClassName="text-white/50">
                 Careers
               </AnimatedEyebrow>
               <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
                 Join Sognos to drive innovation together.
               </h2>
               <p className="mt-6 text-white/70 leading-relaxed">
-                We&apos;re a community of passionate individuals committed to driving
-                innovation and creating positive change. If you thrive in a
-                collaborative, high-trust environment and want your work to
+                We&apos;re a community of passionate individuals committed to
+                driving innovation and creating positive change. If you thrive
+                in a collaborative, high-trust environment and want your work to
                 matter, Sognos is built for you.
               </p>
               <Link

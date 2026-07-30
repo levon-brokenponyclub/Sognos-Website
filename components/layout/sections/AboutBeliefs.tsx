@@ -17,36 +17,29 @@ export default function AboutBeliefs() {
   return (
     <section className="bg-sognos-navy-dark py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {/* Left — title + intro */}
-          <div className="flex min-h-[255px] flex-col justify-start rounded-lg p-2 text-white sm:min-h-[300px] lg:min-h-[340px] lg:p-0">
-            <h2 className="max-w-sm font-heading text-5xl font-normal leading-[1.05] tracking-tight text-white text-balance lg:text-6xl">
-              Our beliefs
-            </h2>
-            <p className="mt-6 max-w-sm text-base leading-relaxed text-white/60 md:text-lg">
-              The convictions that guide how we build, partner, and serve.
-            </p>
-          </div>
+        <div className="max-w-5xl">
+          <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
+            Our Beliefs
+          </p>
+          <h2 className="mt-8 max-w-4xl font-heading text-5xl font-normal leading-[1.05] tracking-tight text-white text-balance md:text-6xl lg:text-7xl">
+            The convictions that guide how we build, partner, and serve.
+          </h2>
+        </div>
 
-          {/* Right — three values */}
-          {VALUES.map((v, index) => (
-            <div
-              key={v.title}
-              className="flex min-h-[255px] flex-col rounded-lg bg-white/[0.055] p-8 text-white sm:min-h-[300px] lg:min-h-[340px]"
-            >
-              <p className="font-mono text-base leading-relaxed tracking-tight text-sognos-blue-accent">
-                {String(index + 1).padStart(2, "0")}
-              </p>
-              <div className="mt-auto max-w-md">
-                <h3 className="font-heading text-xl font-medium leading-tight tracking-tight text-white lg:text-2xl">
+        <div className="mt-16 border-t border-white/15 pt-10 lg:mt-20 lg:pt-14">
+          <div className="grid grid-cols-1 gap-y-12 md:grid-cols-3 md:gap-x-12 lg:gap-x-24">
+            {VALUES.map((v) => (
+              <div key={v.title} className="max-w-md text-white">
+                <h3 className="font-heading text-2xl font-medium leading-tight tracking-tight text-white md:text-xl lg:text-2xl">
                   {v.title}
+                  <span className="ml-2 text-sognos-blue-accent">+</span>
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-white/65 md:text-lg">
+                <p className="mt-6 text-lg leading-relaxed text-white/65 md:text-base lg:text-lg">
                   {v.body}
                 </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

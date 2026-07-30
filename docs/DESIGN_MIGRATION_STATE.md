@@ -1,6 +1,6 @@
 # Sognos Design Migration - State of Record
 
-> **Last reconciled:** 2026-07-29 against the live `redesign` worktree and
+> **Last reconciled:** 2026-07-30 against the live `redesign` worktree and
 > [`CHANGELOG.md`](./CHANGELOG.md).
 >
 > This is the current implementation record. Historical implementation detail
@@ -34,15 +34,15 @@ authority for section order and behavior.
 
 These are current discrepancies, incomplete migrations, or operational risks.
 
-| Priority | Flag | Current reality |
-|---|---|---|
-| High | Design hard rules are not fully enforced | Live marketing/UI files still contain `rounded-xl`, `rounded-2xl`, `bg-gray-100`, and shadow utilities. Treat the rules below as the target for new work, not a claim that migration is complete. |
-| High | Old edition tokens remain live | `--sognos-edition-green` is still used by product, industry, solution, and integration surfaces. The legacy `orange`, `coral`, and `purple` definitions also remain in `app/tokens.css`. Do not purge these tokens until all references migrate. |
-| Medium | Workhorse tokens remain | `app/globals.css` still exposes temporary `--color-wh-*`, `--radius-wh-*`, and `--shadow-wh-*` tokens. Their consumers must be audited before removal. |
-| Medium | Product feature visuals are mixed | Several feature/flow components remain placeholders or scaffolds. `PlaceholderBox`, hard-coded green values, and visual prototypes still exist alongside production content. |
-| Medium | `CTASection.tsx` is now live in a variant flow | The component is no longer merely an unused 25 KB scaffold: its drawer-style `bare + hideStats` variant was redesigned on 2026-07-23. Confirm all intended call sites before deleting or simplifying it. |
-| Low | Solution image cleanup pending | The tracked solution image mapping uses remote per-solution imagery. Two local files, `CustomerServiceHero.webp` and `FrontlineHero.webp`, remain untracked and are not part of the current committed implementation. |
-| Low | Typography scale remains provisional | The `--text-*` values are still Tailwind defaults. Page-level compositions establish the practical hierarchy, but a final token lock pass has not happened. |
+| Priority | Flag                                           | Current reality                                                                                                                                                                                                                                  |
+| -------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| High     | Design hard rules are not fully enforced       | Live marketing/UI files still contain `rounded-xl`, `rounded-2xl`, `bg-gray-100`, and shadow utilities. Treat the rules below as the target for new work, not a claim that migration is complete.                                                |
+| High     | Old edition tokens remain live                 | `--sognos-edition-green` is still used by product, industry, solution, and integration surfaces. The legacy `orange`, `coral`, and `purple` definitions also remain in `app/tokens.css`. Do not purge these tokens until all references migrate. |
+| Medium   | Workhorse tokens remain                        | `app/globals.css` still exposes temporary `--color-wh-*`, `--radius-wh-*`, and `--shadow-wh-*` tokens. Their consumers must be audited before removal.                                                                                           |
+| Medium   | Product feature visuals are mixed              | Several feature/flow components remain placeholders or scaffolds. `PlaceholderBox`, hard-coded green values, and visual prototypes still exist alongside production content.                                                                     |
+| Medium   | `CTASection.tsx` is now live in a variant flow | The component is no longer merely an unused 25 KB scaffold: its drawer-style `bare + hideStats` variant was redesigned on 2026-07-23. Confirm all intended call sites before deleting or simplifying it.                                         |
+| Low      | Solution image cleanup pending                 | The tracked solution image mapping uses remote per-solution imagery. Two local files, `CustomerServiceHero.webp` and `FrontlineHero.webp`, remain untracked and are not part of the current committed implementation.                            |
+| Low      | Typography scale remains provisional           | The `--text-*` values are still Tailwind defaults. Page-level compositions establish the practical hierarchy, but a final token lock pass has not happened.                                                                                      |
 
 Resolved items:
 
@@ -115,42 +115,42 @@ Source of truth: `app/tokens.css`, surfaced to Tailwind by `app/globals.css`.
 
 ### Core brand
 
-| Token | Value | Primary use |
-|---|---|---|
-| `--sognos-navy-darkest` | `#060e28` | CTA band / deepest surface |
-| `--sognos-navy-dark` | `#0f1936` | Dark product and content surfaces |
-| `--sognos-navy` | `#152248` | Homepage hero, logo strip, body brand surface |
-| `--sognos-blue-accent` | `#1d96fc` | CTA, active state, link, and bullet accent |
+| Token                   | Value     | Primary use                                   |
+| ----------------------- | --------- | --------------------------------------------- |
+| `--sognos-navy-darkest` | `#060e28` | CTA band / deepest surface                    |
+| `--sognos-navy-dark`    | `#0f1936` | Dark product and content surfaces             |
+| `--sognos-navy`         | `#152248` | Homepage hero, logo strip, body brand surface |
+| `--sognos-blue-accent`  | `#1d96fc` | CTA, active state, link, and bullet accent    |
 
 ### Text and lines
 
-| Token | Value | Primary use |
-|---|---|---|
-| `--sognos-heading` | `#0f1936` | Headings |
-| `--sognos-body` | `#152248` | Body copy |
-| `--sognos-muted` | `#68706f` | Secondary copy and metadata |
-| `--sognos-line` | `#e2e8f0` | Borders and dividers |
-| `--sognos-border` | `var(--color-neutral-200)` | shadcn border/input bridge |
-| `--sognos-bg-sunken` | `var(--color-neutral-200)` | Legacy sunken surface |
+| Token                | Value                      | Primary use                 |
+| -------------------- | -------------------------- | --------------------------- |
+| `--sognos-heading`   | `#0f1936`                  | Headings                    |
+| `--sognos-body`      | `#152248`                  | Body copy                   |
+| `--sognos-muted`     | `#68706f`                  | Secondary copy and metadata |
+| `--sognos-line`      | `#e2e8f0`                  | Borders and dividers        |
+| `--sognos-border`    | `var(--color-neutral-200)` | shadcn border/input bridge  |
+| `--sognos-bg-sunken` | `var(--color-neutral-200)` | Legacy sunken surface       |
 
 ### Product identity
 
-| Product | Dark | Base | Gradient |
-|---|---|---|---|
-| SognosCare | `#0f1936` | `#122e58` | `--sognos-care-gradient` |
-| SognosRoster | `#191e41` | `#59bbf7` | `--sognos-roster-gradient` |
+| Product        | Dark      | Base      | Gradient                     |
+| -------------- | --------- | --------- | ---------------------------- |
+| SognosCare     | `#0f1936` | `#122e58` | `--sognos-care-gradient`     |
+| SognosRoster   | `#191e41` | `#59bbf7` | `--sognos-roster-gradient`   |
 | SognosGenogram | `#250438` | `#91278c` | `--sognos-genogram-gradient` |
 
 ### Canonical SognosCare edition tokens
 
-| Sector | Base token | Dark token |
-|---|---|---|
-| Residential Aged Care | `--sognos-edition-aged-care` | `--sognos-edition-aged-care-dark` |
-| Allied Health | `--sognos-edition-allied-health` | `--sognos-edition-allied-health-dark` |
-| Support at Home | `--sognos-edition-support-at-home` | `--sognos-edition-support-at-home-dark` |
-| Hospital in the Home | `--sognos-edition-hospital-in-the-home` | `--sognos-edition-hospital-in-the-home-dark` |
-| Child & Family Services | `--sognos-edition-child-and-family-services` | `--sognos-edition-child-and-family-services-dark` |
-| Disability & Mental Health | `--sognos-edition-disability` | `--sognos-edition-disability-dark` |
+| Sector                     | Base token                                   | Dark token                                        |
+| -------------------------- | -------------------------------------------- | ------------------------------------------------- |
+| Residential Aged Care      | `--sognos-edition-aged-care`                 | `--sognos-edition-aged-care-dark`                 |
+| Allied Health              | `--sognos-edition-allied-health`             | `--sognos-edition-allied-health-dark`             |
+| Support at Home            | `--sognos-edition-support-at-home`           | `--sognos-edition-support-at-home-dark`           |
+| Hospital in the Home       | `--sognos-edition-hospital-in-the-home`      | `--sognos-edition-hospital-in-the-home-dark`      |
+| Child & Family Services    | `--sognos-edition-child-and-family-services` | `--sognos-edition-child-and-family-services-dark` |
+| Disability & Mental Health | `--sognos-edition-disability`                | `--sognos-edition-disability-dark`                |
 
 Legacy `green`, `orange`, `coral`, and `purple` edition tokens remain until the
 references listed in the reconciliation flags are migrated.
@@ -174,51 +174,52 @@ testing. Bureau Sans has been removed.
 
 The practical hierarchy currently used across the refreshed pages is:
 
-| Role | Current convention |
-|---|---|
-| Eyebrow | `text-xs font-semibold uppercase tracking-widest` |
-| Marketing hero | `text-5xl md:text-6xl lg:text-7xl`, normal/medium weight |
+| Role                   | Current convention                                                            |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| Eyebrow                | `text-xs font-semibold uppercase tracking-widest`                             |
+| Marketing hero         | `text-5xl md:text-6xl lg:text-7xl`, normal/medium weight                      |
 | Standard H1 / legal H1 | `text-4xl lg:text-5xl` target; legal renderer currently caps at `lg:text-4xl` |
-| Section H2 | `text-3xl md:text-4xl`, medium weight |
-| H3 / feature heading | `text-2xl md:text-3xl`, medium weight |
-| Body | `text-base leading-relaxed`; introductory copy may use `text-lg` |
-| Metadata | `text-xs` or `text-sm`, commonly uppercase with wide tracking |
-| Article prose measure | shared `ARTICLE_PROSE_MAX_W = "max-w-[46rem]"` |
+| Section H2             | `text-3xl md:text-4xl`, medium weight                                         |
+| H3 / feature heading   | `text-2xl md:text-3xl`, medium weight                                         |
+| Body                   | `text-base leading-relaxed`; introductory copy may use `text-lg`              |
+| Metadata               | `text-xs` or `text-sm`, commonly uppercase with wide tracking                 |
+| Article prose measure  | shared `ARTICLE_PROSE_MAX_W = "max-w-[46rem]"`                                |
 
 The Tailwind `--text-*` values are still default values and remain provisional.
 
 ## 6. Shared Component State
 
-| Component | State | Current behavior |
-|---|---|---|
-| `Navbar.tsx` | Production | Fixed 80px header, transparent dark-hero mode, scroll hide/peek, measured desktop dropdown, two-level mobile menu, and a 56px event announcement ribbon. The bottom border is hidden at page load and restored in the correct theme after scrolling. Ribbon dismissal persists per event payload after close or `View event`; `useSyncExternalStore` keeps localStorage state React-safe. |
-| `Footer.tsx` / `FooterColumns.tsx` | Production | Sanity-backed columns with client-side mobile accordions. The Company column is normalized to About, Social Responsibility, Knowledge Hub, News, Events, Customer Stories, Careers, Contact. |
-| `CTABand.tsx` | Production | Global dark band rendered by the marketing layout. `Book a demo` opens the shared modal; background uses `sognos-navy-darkest`. |
-| `CTASection.tsx` | Active variant | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, compact top spacing, and trust-logo sizing with the contact experience. |
-| `BookDemoModal.tsx` | Production | Shared wide drawer modal, managed by `BookDemoContext`. |
-| `CookieBanner.tsx` / `cookie-banner-1.tsx` | Production | Compact floating preference panel. Necessary cookies are locked; functional, analytics, and marketing preferences persist. Existing `cookie_consent` cookie and `router.refresh()` flow are preserved. |
-| `Hero.tsx` | Production | Navy homepage hero with staggered entrance, Book a Demo modal trigger, bottom-up CTA hover fill, and supporting copy aligned to the shared wide body measure. |
-| `HomeProductCards.tsx` | Production with polish debt | Three product cards, swipe/peek on mobile and three columns on desktop. SognosGenogram imagery remains an area to verify. |
-| `LogoStrip.tsx` | Production | Sanity-backed CSS marquee on `bg-sognos-navy`; title is semantic `h3`. Shared constants govern title and logo limit. |
-| `HowSognosWorks.tsx` | Production | Interactive three-step process with auto-advance, desktop timeline progress, mobile controls, active accent cards, Microsoft platform branding, and reduced-motion handling. |
-| `SolutionsSection.tsx` | Production | Sticky scroll-spy rail with seven flowing solution rows and per-solution imagery shared with detail pages. |
-| `IndustrySection.tsx` | Production | Horizontal industry card slider; reusable on detail pages with exclusion support. |
-| `ProductCustomerStories.tsx` | Production | Reusable center-focus Embla carousel with dark per-product palette, tightened heading-to-carousel spacing, and reusable `SeeMoreLink`. |
-| `KnowledgeHubArchive.tsx` | Production | Category/featured controls, inline search trigger, initial four-article limit, upcoming-event section, and Gentari customer-story promo with excerpt. |
-| `knowledge-hub-search-dialog.tsx` | Production | Focused archive-search modal with overlay and keyboard dismissal, query filtering, empty state, and recent article, event, and customer-story results. |
-| `ContactForm.tsx` | Production | Validated three-step journey for details, enquiry reason, and product interest. Descriptive radio rows replace compact selects and preserve step-level error focus. |
-| `EditionCards.tsx` | Production | Horizontal edition slider with configurable controls. Hover/focus reveals the edition colour from left to right, exposes the description, preserves the base logo, and dims inactive siblings to 60% opacity. |
-| `AnimatedEyebrow.tsx` | Production | Shared square-dot eyebrow entrance with reduced-motion support and configurable container, dot, and text classes. |
-| `sognoscare/Hero.tsx` | Production | Dark product hero with shared animated eyebrow, restored supporting copy, HLS media panel, and current heading/card-radius treatment. |
-| `sognosroster/Hero.tsx` | Production | Gradient product hero with a timed logo entrance and four-second hold before crossfading into a looping, screen-blended local conversation video. |
-| `LegalPageRenderer.tsx` | Production | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro. |
-| `AboutHeroImage.tsx` | Production | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides. |
-| `ArticleScrollNav.tsx` | Production | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. |
-| `ArticleProseFooter.tsx` | Production | Shared post-conversion-panel footer with compact spacing, back-to-index navigation, and the existing social `ShareIcons`. |
-| `scroll-progress.tsx` | Production | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families. |
-| `StoryMetaRail.tsx` / `ShareIcons` | Production | Customer-story metadata rail; white-surface social share controls are exported and reused by the shared article footer. |
-| `SolutionHeroDemoButton.tsx` | Production | Shared client-side Book Demo modal trigger with configurable label and class overrides for solution heroes and article conversion panels. |
-| `PullQuote.tsx`, `QuoteCallout.tsx`, `StatRow.tsx` | Ready | Portable Text content blocks registered for articles and customer stories; authoring adoption remains content-dependent. |
+| Component                                          | State                       | Current behavior                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Navbar.tsx`                                       | Production                  | Fixed 80px header, transparent dark-hero mode, scroll hide/peek, measured desktop dropdown, two-level mobile menu, and a 56px event announcement ribbon. The bottom border is hidden at page load and restored in the correct theme after scrolling. Ribbon dismissal persists per event payload after close or `View event`; `useSyncExternalStore` keeps localStorage state React-safe. |
+| `Footer.tsx` / `FooterColumns.tsx`                 | Production                  | Sanity-backed columns with client-side mobile accordions. The Company column is normalized to About, Social Responsibility, Knowledge Hub, News, Events, Customer Stories, Careers, Contact.                                                                                                                                                                                              |
+| `CTABand.tsx`                                      | Production                  | Global dark band rendered by the marketing layout. `Book a demo` opens the shared modal; background uses `sognos-navy-darkest`.                                                                                                                                                                                                                                                           |
+| `CTASection.tsx`                                   | Active variant              | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, compact top spacing, and trust-logo sizing with the contact experience.                                                                                                                                                                            |
+| `BookDemoModal.tsx`                                | Production                  | Shared wide drawer modal, managed by `BookDemoContext`.                                                                                                                                                                                                                                                                                                                                   |
+| `CookieBanner.tsx` / `cookie-banner-1.tsx`         | Production                  | Compact floating preference panel. Necessary cookies are locked; functional, analytics, and marketing preferences persist. Existing `cookie_consent` cookie and `router.refresh()` flow are preserved.                                                                                                                                                                                    |
+| `Hero.tsx`                                         | Production                  | Navy homepage hero with staggered entrance, Book a Demo modal trigger, bottom-up CTA hover fill, and supporting copy aligned to the shared wide body measure.                                                                                                                                                                                                                             |
+| `HomeProductCards.tsx`                             | Production with polish debt | Three product cards, swipe/peek on mobile and three columns on desktop. SognosGenogram imagery remains an area to verify.                                                                                                                                                                                                                                                                 |
+| `LogoStrip.tsx`                                    | Production                  | Sanity-backed CSS marquee on `bg-sognos-navy`; title is semantic `h3`. Shared constants govern title and logo limit.                                                                                                                                                                                                                                                                      |
+| `HowSognosWorks.tsx`                               | Production                  | Interactive three-step process with auto-advance, desktop timeline progress, mobile controls, active accent cards, Microsoft platform branding, and reduced-motion handling.                                                                                                                                                                                                              |
+| `SolutionsSection.tsx`                             | Production                  | Sticky scroll-spy rail with seven flowing solution rows and per-solution imagery shared with detail pages.                                                                                                                                                                                                                                                                                |
+| `IndustrySection.tsx`                              | Production                  | Horizontal industry card slider; reusable on detail pages with exclusion support.                                                                                                                                                                                                                                                                                                         |
+| `ProductCustomerStories.tsx`                       | Production                  | Reusable center-focus Embla carousel with dark per-product palette, tightened heading-to-carousel spacing, and reusable `SeeMoreLink`.                                                                                                                                                                                                                                                    |
+| `KnowledgeHubArchive.tsx`                          | Production                  | Category/featured controls, inline search trigger, initial four-article limit, upcoming-event section, and Gentari customer-story promo with excerpt.                                                                                                                                                                                                                                     |
+| `knowledge-hub-search-dialog.tsx`                  | Production                  | Focused archive-search modal with overlay and keyboard dismissal, query filtering, empty state, and recent article, event, and customer-story results.                                                                                                                                                                                                                                    |
+| `ContactForm.tsx`                                  | Production                  | Validated three-step journey for details, enquiry reason, and product interest. Descriptive radio rows replace compact selects and preserve step-level error focus.                                                                                                                                                                                                                       |
+| `EditionCards.tsx`                                 | Production                  | Horizontal edition slider with configurable controls. Hover/focus reveals the edition colour from left to right, exposes the description, preserves the base logo, and dims inactive siblings to 60% opacity.                                                                                                                                                                             |
+| `AnimatedEyebrow.tsx`                              | Production                  | Shared square-dot eyebrow entrance with reduced-motion support and configurable container, dot, and text classes.                                                                                                                                                                                                                                                                         |
+| `sognoscare/Hero.tsx`                              | Production                  | Dark product hero with shared animated eyebrow, restored supporting copy, HLS media panel, and current heading/card-radius treatment.                                                                                                                                                                                                                                                     |
+| `sognosroster/Hero.tsx`                            | Production                  | Gradient product hero with a timed logo entrance and four-second hold before crossfading into a looping, screen-blended local conversation video.                                                                                                                                                                                                                                         |
+| `LegalPageRenderer.tsx`                            | Production                  | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro.                                                                                                                                                                                                          |
+| `AboutHeroImage.tsx`                               | Production                  | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides.                                                                                                                                                                                                                                                                                              |
+| `ArticleScrollNav.tsx`                             | Production                  | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership.                                                                                                                                                                                                               |
+| `ArticleProseFooter.tsx`                           | Production                  | Shared post-conversion-panel footer with compact spacing, back-to-index navigation, and exported copy/share controls from `ShareIcons`.                                                                                                                                                                                                                                                   |
+| `scroll-progress.tsx`                              | Production                  | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families.                                                                                                                                                                                                                                                                                   |
+| `StoryMetaRail.tsx` / `ShareIcons`                 | Production                  | Customer-story metadata rail; exported share controls provide copy-link feedback plus an X, LinkedIn, and Facebook dropdown for the shared article footer.                                                                                                                                                                                                                                |
+| `TeamSection.tsx`                                  | Production                  | Responsive leadership card grid with expanded modal profiles, Escape dismissal, focus management, and LinkedIn actions.                                                                                                                                                                                                                                                                   |
+| `SolutionHeroDemoButton.tsx`                       | Production                  | Shared client-side Book Demo modal trigger with configurable label and class overrides for solution heroes and article conversion panels.                                                                                                                                                                                                                                                 |
+| `PullQuote.tsx`, `QuoteCallout.tsx`, `StatRow.tsx` | Ready                       | Portable Text content blocks registered for articles and customer stories; authoring adoption remains content-dependent.                                                                                                                                                                                                                                                                  |
 
 ## 7. Route Map
 
@@ -315,9 +316,9 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 
 ### Company and legal
 
-- `/company/about`: white image-led hero, story/stats, Mission and Vision,
-  beliefs, team, partner grid, social-responsibility content, and shared
-  animated section eyebrows.
+- `/company/about`: white image-led hero, tightened story/stats composition,
+  consolidated navy Mission/Vision/Beliefs band, modal leadership grid, partner
+  grid, social-responsibility content, and shared animated section eyebrows.
 - `/company/careers`: About-style hero, benefits, Life at Sognos bento
   testimonials, and open-position rows with an inset hover/focus transition and
   responsive Apply action.
@@ -348,6 +349,16 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   typography, weights, radii, shadows, layout metrics, and common actions.
 
 ## 8. Recently Completed
+
+### 2026-07-30
+
+- Refined the About page story area, consolidated Mission, Vision, and Beliefs
+  into the navy values band, and removed the final belief-card right divider.
+- Rebuilt the leadership section as a responsive grid with expanded modal
+  profiles, focus handling, Escape dismissal, and LinkedIn actions.
+- Refactored shared article `ShareIcons` into copy-link feedback plus an X,
+  LinkedIn, and Facebook dropdown with complete hover, active, focus, and
+  dismissal states.
 
 ### 2026-07-29
 
@@ -445,25 +456,25 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 
 ## 10. Source Map
 
-| Concern | Source |
-|---|---|
-| Primitive/semantic tokens | `app/tokens.css` |
-| Tailwind mappings and global CSS | `app/globals.css` |
-| Design-system reference | `app/style-guide/page.tsx` |
-| Root consent/analytics handling | `app/layout.tsx`, `proxy.ts` |
-| Marketing composition | `app/(marketing)/layout.tsx` |
-| Navigation | `components/layout/Navbar.tsx`, `lib/navigation.ts` |
-| Footer | `components/layout/Footer.tsx`, `components/layout/FooterColumns.tsx`, `lib/content/footer.ts`, `lib/sanity/queries.ts` |
-| CTA/contact | `CTABand.tsx`, `CTASection.tsx`, `BookDemoModal.tsx`, `app/(marketing)/contact/*` |
-| Cookie UI | `components/ui/CookieBanner.tsx`, `components/ui/cookie-banner-1.tsx` |
-| Shared eyebrow motion | `components/ui/AnimatedEyebrow.tsx` |
-| Homepage process timeline | `components/layout/sections/HowSognosWorks.tsx` |
-| Knowledge Hub search | `components/ui/knowledge-hub-search-dialog.tsx`, `components/layout/sections/KnowledgeHubArchive.tsx` |
-| Product content | `lib/constants.ts`, `lib/content/editions.ts`, product route folders |
-| Edition cards/templates | `components/layout/sections/sognoscare/EditionCards.tsx`, `components/layout/sections/sognoscare/EditionPageTemplate.tsx`, `components/layout/sections/sognoscare/Editions.tsx` |
-| Solution content | `lib/solutions-content.ts` |
-| Industry content | `lib/industries-content.ts` |
-| Article layout/parser | `lib/articleLayout.ts`, `lib/portableText.ts` |
-| Sanity integration | `lib/sanity/client.ts`, `lib/sanity/image.ts`, `lib/sanity/queries.ts` |
-| Event workflow | `app/(marketing)/events/nfp-real-care`, `components/layout/sections/events/nfp-real-care`, `app/actions/event-registration.ts`, `lib/EventRegistrationContext.tsx` |
-| State history | `docs/CHANGELOG.md` |
+| Concern                          | Source                                                                                                                                                                          |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Primitive/semantic tokens        | `app/tokens.css`                                                                                                                                                                |
+| Tailwind mappings and global CSS | `app/globals.css`                                                                                                                                                               |
+| Design-system reference          | `app/style-guide/page.tsx`                                                                                                                                                      |
+| Root consent/analytics handling  | `app/layout.tsx`, `proxy.ts`                                                                                                                                                    |
+| Marketing composition            | `app/(marketing)/layout.tsx`                                                                                                                                                    |
+| Navigation                       | `components/layout/Navbar.tsx`, `lib/navigation.ts`                                                                                                                             |
+| Footer                           | `components/layout/Footer.tsx`, `components/layout/FooterColumns.tsx`, `lib/content/footer.ts`, `lib/sanity/queries.ts`                                                         |
+| CTA/contact                      | `CTABand.tsx`, `CTASection.tsx`, `BookDemoModal.tsx`, `app/(marketing)/contact/*`                                                                                               |
+| Cookie UI                        | `components/ui/CookieBanner.tsx`, `components/ui/cookie-banner-1.tsx`                                                                                                           |
+| Shared eyebrow motion            | `components/ui/AnimatedEyebrow.tsx`                                                                                                                                             |
+| Homepage process timeline        | `components/layout/sections/HowSognosWorks.tsx`                                                                                                                                 |
+| Knowledge Hub search             | `components/ui/knowledge-hub-search-dialog.tsx`, `components/layout/sections/KnowledgeHubArchive.tsx`                                                                           |
+| Product content                  | `lib/constants.ts`, `lib/content/editions.ts`, product route folders                                                                                                            |
+| Edition cards/templates          | `components/layout/sections/sognoscare/EditionCards.tsx`, `components/layout/sections/sognoscare/EditionPageTemplate.tsx`, `components/layout/sections/sognoscare/Editions.tsx` |
+| Solution content                 | `lib/solutions-content.ts`                                                                                                                                                      |
+| Industry content                 | `lib/industries-content.ts`                                                                                                                                                     |
+| Article layout/parser            | `lib/articleLayout.ts`, `lib/portableText.ts`                                                                                                                                   |
+| Sanity integration               | `lib/sanity/client.ts`, `lib/sanity/image.ts`, `lib/sanity/queries.ts`                                                                                                          |
+| Event workflow                   | `app/(marketing)/events/nfp-real-care`, `components/layout/sections/events/nfp-real-care`, `app/actions/event-registration.ts`, `lib/EventRegistrationContext.tsx`              |
+| State history                    | `docs/CHANGELOG.md`                                                                                                                                                             |
