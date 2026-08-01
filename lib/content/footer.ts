@@ -33,7 +33,7 @@ export const DEFAULT_FOOTER_CONTENT: FooterContent = {
   platformLogos: [
     { src: "/logos/Microsoft-icon-logo.svg", alt: "Microsoft" },
     { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
-    { src: "/logos/copilot-logo.png", alt: "Microsoft Copilot" },
+    { src: "/logos/copilot-logo.svg", alt: "Microsoft Copilot" },
   ],
   columns: [
     {

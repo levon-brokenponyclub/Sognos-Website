@@ -89,7 +89,7 @@ export default function HowSognosWorks() {
                 className="h-8 w-px bg-sognos-navy/30"
               />
               <Image
-                src="/logos/copilot-logo.png"
+                src="/logos/copilot-logo.svg"
                 alt="Microsoft Copilot"
                 width={128}
                 height={128}

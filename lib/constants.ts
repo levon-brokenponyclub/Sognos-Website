@@ -217,3 +217,18 @@ export const SOGNOSCARE_EDITIONS = [
       "Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.",
   },
 ] as const;
+
+/**
+ * The Microsoft stack Sognos is built on. Single source of truth — consumed by
+ * the CTA section, the footer, and the shared PlatformSection, so the set stays
+ * consistent wherever the "powered by" proof appears.
+ */
+export const MICROSOFT_PLATFORM_LOGOS = [
+  { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
+  { src: "/logos/copilot-logo.svg", alt: "Microsoft Copilot" },
+  { src: "/logos/platform/PowerBI_scalable.svg", alt: "Power BI" },
+  { src: "/logos/platform/PowerAutomate_scalable.svg", alt: "Power Automate" },
+  { src: "/logos/platform/PowerApps_scalable.svg", alt: "Power Apps" },
+  { src: "/logos/platform/PowerPages_scalable.svg", alt: "Power Pages" },
+  { src: "/logos/platform/Dataverse_scalable.svg", alt: "Dataverse" },
+] as const;

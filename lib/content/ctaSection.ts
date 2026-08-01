@@ -2,6 +2,7 @@ import {
   DEFAULT_LOGOS,
   LOGO_STRIP_LOGO_LIMIT,
 } from "@/lib/content/logoStrip";
+import { MICROSOFT_PLATFORM_LOGOS } from "@/lib/constants";
 
 export type CtaStatVariant = "light" | "dark" | "blue";
 
@@ -24,15 +25,7 @@ export const DEFAULT_CTA_CONTENT: CtaSectionContent = {
   bookDemoDescription:
     "Schedule a 45-minute call to see how Sognos can unify your operations and boost efficiency.",
   logoBlockHeading: "Powered by Microsoft",
-  logos: [
-    { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
-    { src: "/logos/copilot-logo.png", alt: "Microsoft Copilot" },
-    { src: "/logos/platform/PowerBI_scalable.svg", alt: "Power BI" },
-    { src: "/logos/platform/PowerAutomate_scalable.svg", alt: "Power Automate" },
-    { src: "/logos/platform/PowerApps_scalable.svg", alt: "Power Apps" },
-    { src: "/logos/platform/PowerPages_scalable.svg", alt: "Power Pages" },
-    { src: "/logos/platform/Dataverse_scalable.svg", alt: "Dataverse" },
-  ],
+  logos: [...MICROSOFT_PLATFORM_LOGOS],
   trustLogos: DEFAULT_LOGOS.slice(0, LOGO_STRIP_LOGO_LIMIT),
   stats: [
     {
