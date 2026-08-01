@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-08-01 — Page transitions, About hero grid, and motion/token refinements
+
+- **Page transition wrapper** (`components/layout/PageTransition.tsx`, new):
+  - Client component wrapping `<Navbar>` + `<main>` in the marketing layout with `AnimatePresence mode="wait"` keyed on `usePathname()`.
+  - 0.36s opacity fade-in (`ease: [0.33, 1, 0.68, 1]`) / 0.3s fade-out; `useReducedMotion` guard passes children through as-is.
+  - `CTABand`, `Footer`, and `BookDemoModal` sit outside the wrapper so they do not participate in page transitions.
+  - `app/(marketing)/layout.tsx`: wrapped `<Navbar>` + `<main>` in `<PageTransition>`.
+
+- **About hero grid** (`components/layout/sections/AboutHeroGrid.tsx`, new):
+  - Replaced the scroll-parallax `<AboutHeroImage />` on the About page hero with a full-width mosaic brand-pillar grid.
+  - Grid: 7 × 10 columns/rows on mobile, 22 × 9 on desktop; 2px `bg-sognos-navy` divider lines on both axes.
+  - 5 icon + label tiles (Care teams, Field service, Connected operations, Better decisions, People first) with staggered slide-and-fade entrances (`delay: 0.2 + index × 0.1`, 1.3s spring ease `[0.16, 1, 0.3, 1]`).
+  - 3 photography panels (hero-img, sognos-team, iStock) revealed with a left-to-right `clipPath` wipe (`delay: 0.55 + index × 0.18`).
+  - `useReducedMotion` guard disables all entrance animations and shows tiles/images at rest state.
+  - 3 new surface tokens added to `app/tokens.css`: `--sognos-about-blue-light: #c9d8ff`, `--sognos-about-purple-light: #d9ccff`, `--sognos-about-amber: #e4ae72`. Registered in `app/globals.css` `@theme inline`.
+
+- **`ScrollReveal` wrapper removal on two surfaces**:
+  - `app/(marketing)/page.tsx`: commented out the `<ScrollReveal y={40} duration={0.7}>` wrapper on `<LogoStrip>` (trust band now renders without a deferred entrance).
+  - `app/(marketing)/solutions/[slug]/page.tsx`: commented out `<ScrollReveal>` wrapper on `<SolutionUseCases>`.
+
+- **Navbar event banner label chip** (`components/layout/Navbar.tsx`):
+  - Changed from a transparent outline pill to a white-fill, `text-sognos-heading`-text solid chip with `bg-white px-3 py-2.5 tracking-wider`; previously `border-white/25` with no fill.
+
+- **`AboutHeroImage.tsx` shrink width**:
+  - Max-width shrink target shifted from `80rem` to `84rem` — image holds slightly wider at full scroll depth.
+
+- **`globals.css` base**:
+  - Removed `scroll-smooth` from the `html` base rule; native scroll is now the default and scroll-smooth can be scoped per-element.
+
+- **Files:** `components/layout/PageTransition.tsx` (new), `components/layout/sections/AboutHeroGrid.tsx` (new), `app/(marketing)/layout.tsx`, `app/(marketing)/company/about/page.tsx`, `app/tokens.css`, `app/globals.css`, `app/(marketing)/page.tsx`, `app/(marketing)/solutions/[slug]/page.tsx`, `components/layout/Navbar.tsx`, `components/layout/sections/AboutHeroImage.tsx`.
+
 ## 2026-07-30 — About-page leadership polish and article sharing controls
 
 - **Company/About page refinements**:

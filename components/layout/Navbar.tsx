@@ -576,7 +576,7 @@ export default function Navbar({
         <div className="fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white">
           <div className="max-w-7xl mx-auto relative flex h-14 w-full items-center overflow-hidden px-2">
             <div className="relative z-30 flex shrink-0 items-center self-stretch border-r border-white/15 bg-sognos-blue-accent/10 px-4">
-              <span className="mr-2 inline-flex rounded border border-white/25 px-2 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] align-middle md:text-xs">
+              <span className="mr-2 inline-flex rounded border border-white/25 bg-white text-sognos-heading px-3 py-2.5 text-xs font-semibold uppercase tracking-wider align-middle md:text-xs">
                 {UPCOMING_EVENT.label}
               </span>
             </div>

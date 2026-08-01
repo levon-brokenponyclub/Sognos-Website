@@ -237,6 +237,10 @@
     --sognos-edition-child-and-family-services-dark
   );
   --color-sognos-edition-disability-dark: var(--sognos-edition-disability-dark);
+
+  --color-sognos-about-blue-light: var(--sognos-about-blue-light);
+  --color-sognos-about-purple-light: var(--sognos-about-purple-light);
+  --color-sognos-about-amber: var(--sognos-about-amber);
 }
 
 /* ========================
@@ -248,7 +252,7 @@
   }
 
   html {
-    @apply font-sans antialiased scroll-smooth;
+    @apply font-sans antialiased;
   }
 
   body {

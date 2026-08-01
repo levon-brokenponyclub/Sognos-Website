@@ -272,4 +272,8 @@
   --sognos-edition-hospital-in-the-home-dark: #9aad2c;
   --sognos-edition-child-and-family-services-dark: #e95ca0;
   --sognos-edition-disability-dark: #039b84;
+  /* About page brand pillars — hero grid tile surfaces */
+  --sognos-about-blue-light: #c9d8ff;
+  --sognos-about-purple-light: #d9ccff;
+  --sognos-about-amber: #e4ae72;
 }

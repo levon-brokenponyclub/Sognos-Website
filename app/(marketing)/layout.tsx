@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageTransition from "@/components/layout/PageTransition";
 import CTABand from "@/components/layout/sections/CTABand";
 import BookDemoModal from "@/components/ui/BookDemoModal";
 import { BookDemoProvider } from "@/lib/BookDemoContext";
@@ -16,8 +17,10 @@ export default async function MarketingLayout({
   return (
     <CtaContentProvider value={ctaContent}>
       <BookDemoProvider>
-        <Navbar />
-        <main className="flex-1">{children}</main>
+        <PageTransition>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+        </PageTransition>
         <CTABand />
         <Footer />
         <BookDemoModal />

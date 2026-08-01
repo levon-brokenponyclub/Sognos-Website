@@ -29,7 +29,7 @@ export default function AboutHeroImage({
   const { scrollY } = useScroll();
   const progress = useTransform(scrollY, [0, 600], [0, 1], { clamp: true });
 
-  const maxWidth = useMotionTemplate`calc(100vw - ((100vw - 80rem) * ${progress}))`;
+  const maxWidth = useMotionTemplate`calc(100vw - ((100vw - 84rem) * ${progress}))`;
   const borderRadius = useTransform(progress, [0, 1], [0, 12]);
   const y = useTransform(progress, [0, 1], [-70, 0]);
 

@@ -133,12 +133,12 @@ export default async function SolutionPage({
       </ScrollReveal>
 
       {/* Capabilities — tab switcher with visual (component, also on purple) */}
-      <ScrollReveal>
+      {/* <ScrollReveal> */}
         <SolutionUseCases
           solutionName={meta.name}
           capabilities={content.capabilities}
         />
-      </ScrollReveal>
+      {/* </ScrollReveal> */}
 
       {/* Platform */}
       <ScrollReveal>

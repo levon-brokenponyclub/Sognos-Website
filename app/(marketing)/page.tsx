@@ -33,9 +33,9 @@ export default async function HomePage() {
       {/* Home framework — section order mapped from Cohere Home.html */}
       <Hero /> {/* Hero · navy, text block only */}
       <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) — peeks above fold */}
-      <ScrollReveal y={40} duration={0.7}>
+      {/* <ScrollReveal y={40} duration={0.7}> */}
         <LogoStrip /> {/* "Trusted by industry leaders and professionals worldwide" */}
-      </ScrollReveal>
+      {/* </ScrollReveal> */}
       <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
       <IndustrySection /> {/* "Powering progress across industries" */}
       <SolutionsSection /> {/* "Our models. Your business." */}

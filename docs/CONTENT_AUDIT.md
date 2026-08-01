@@ -135,3 +135,18 @@
 3. **`ImageWithCaption`** (add `caption` to `inlineImage`).
 4. **`PullQuoteBlock`** (new type, both bodies).
 5. Decide the **CS `heroImage`** question (use vs deprecate).
+
+---
+
+## Actions since audit (as of 2026-08-01)
+
+| Recommendation | Status |
+|---|---|
+| **PullQuoteBlock** (both bodies) | ✅ Done (2026-07-07) — `pullQuote` + `quoteCallout` + `statRow` object types added to `knowledgePost.body` and `customerStory.body`; renderers registered. **0 live uses still** (adoption is content-side). |
+| **Square bullets** (KH + CS) | ✅ Done (2026-07-07) — `list.bullet` rewritten to `flex gap-3` + `bg-sognos-blue-accent` square marker; `[&_ul]:list-disc pl-6` removed from PROSE on both pages. |
+| **Industry taxonomy drift** (A4 — Auckland Airport labelled "Transport") | ✅ Fixed (2026-07-02) — all 8 `customerStory` Sanity docs remapped to the canonical 5-category taxonomy via Sanity MCP. |
+| **CS `heroImage` not rendered** (HIGH flag A0) | ⚠️ Still open — field populated 8/8 in Sanity; hero composition has not been updated to use it. Decide: wire to hero right column, or deprecate the field and stop uploading. |
+| **`ProductSpotlight`** end-of-article card (HIGH) | 🔲 Not started. |
+| **`calloutBlock` → `knowledgePost`** parity (MEDIUM) | 🔲 Not started. `calloutBlock` is live on `customerStory` only. |
+| **`ImageWithCaption`** — add `caption` to `inlineImage` (MEDIUM) | 🔲 Not started. |
+| **`neca` missing product + `Products`→`Product` label drift** (data hygiene) | 🔲 Not confirmed fixed in Sanity. |
