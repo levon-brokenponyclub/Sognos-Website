@@ -7,7 +7,7 @@ export default function CookieBanner() {
     <CookiePanel
       title="This site uses cookies"
       message="We use cookies to analyse site usage and improve your experience. You can accept or decline non-essential cookies."
-      acceptText="Accept all"
+      acceptText="Give me the cookies"
       customizeText="Customize"
       icon="cookie"
       privacyHref="/company/privacy-policy"

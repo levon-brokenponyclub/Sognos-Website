@@ -157,7 +157,7 @@ const CookiePanel = (props: CookiePanelProps) => {
     field: keyof Prefs;
     locked?: boolean;
   }) => (
-    <div className="flex items-start gap-2 rounded-lg border border-white/12 bg-white/[0.03] p-2.5">
+    <div className="flex items-start gap-3 rounded-lg border border-sognos-line bg-gray-200/70 p-3">
       <button
         type="button"
         disabled={locked}
@@ -165,26 +165,30 @@ const CookiePanel = (props: CookiePanelProps) => {
           !locked && setPrefs((current) => ({ ...current, [field]: !current[field] }))
         }
         className={cn(
-          "mt-0.5 inline-flex size-5 items-center justify-center rounded border transition-colors",
+          "mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded border transition-colors duration-200",
           locked
-            ? "cursor-not-allowed border-white/12 bg-white/10 text-white/45"
-            : "cursor-pointer border-white/18 bg-transparent text-white hover:bg-white/10"
+            ? "cursor-not-allowed border-sognos-line bg-white text-sognos-muted"
+            : prefs[field]
+              ? "cursor-pointer border-sognos-blue-accent bg-sognos-blue-accent text-white"
+              : "cursor-pointer border-sognos-line bg-white text-transparent hover:border-sognos-blue-accent"
         )}
         aria-pressed={prefs[field]}
         aria-label={`${rowTitle} cookie preference`}
       >
-        {prefs[field] && <Check className="size-4" />}
+        {prefs[field] && <Check className="size-3.5" strokeWidth={2.5} />}
       </button>
 
       <div className="flex-1">
-        <div className="text-xs font-medium text-white">
+        <div className="text-sm font-medium text-sognos-heading">
           {rowTitle}{" "}
           {locked && (
-            <span className="text-[10px] text-white/55">(required)</span>
+            <span className="text-xs font-normal text-sognos-muted">
+              (required)
+            </span>
           )}
         </div>
 
-        <p className="mt-0.5 text-[11px] leading-4 text-white/65">{desc}</p>
+        <p className="mt-1 text-xs leading-relaxed text-sognos-muted">{desc}</p>
       </div>
     </div>
   );
@@ -195,12 +199,13 @@ const CookiePanel = (props: CookiePanelProps) => {
       aria-live="polite"
       aria-label="Cookie consent"
       className={cn(
-        "fixed bottom-4 right-4 z-50 w-[380px] max-w-[calc(100vw-2rem)] md:bottom-6 md:right-6"
+        "fixed bottom-4 left-4 z-50 w-[380px] max-w-[calc(100vw-2rem)] md:bottom-6 md:left-6"
       )}
     >
       <div
         className={cn(
-          "relative flex flex-col gap-3 rounded-xl border border-white/12 bg-sognos-navy px-4 py-4 text-white shadow-xl backdrop-blur",
+          // No shadow — the border carries the separation from page content.
+          "relative flex flex-col gap-4 rounded-lg border border-sognos-line bg-white p-5",
           visible
             ? cn("animate-in", "fade-in", "slide-in-from-bottom-8")
             : cn("animate-out", "fade-out", "slide-out-to-bottom-8"),
@@ -209,64 +214,64 @@ const CookiePanel = (props: CookiePanelProps) => {
         )}
       >
         <div className="flex items-center gap-3">
-          <span className="inline-flex size-9 items-center justify-center rounded-lg bg-white/10 text-white ring-1 ring-white/12">
-            <IconEl className="size-5" aria-hidden="true" />
+          <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-gray-200/70 text-sognos-heading">
+            <IconEl className="size-[18px]" aria-hidden="true" />
           </span>
 
-          <h2 className="text-sm font-semibold leading-5 text-white">{title}</h2>
+          <h2 className="font-heading text-base font-medium tracking-tight text-sognos-heading">
+            {title}
+          </h2>
 
           <button
             type="button"
             onClick={() => closeWithExit("false")}
-            className="ml-auto inline-flex size-8 items-center justify-center rounded-md text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+            className="ml-auto inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-sognos-muted transition-colors duration-200 hover:bg-gray-200/70 hover:text-sognos-heading"
             aria-label="Close cookie banner"
           >
             <X className="size-4" />
           </button>
         </div>
 
-        <p className="max-w-[32rem] text-xs leading-5 text-white/72">
+        <p className="text-sm leading-relaxed text-sognos-body">
           {message} See our{" "}
           <Link
             href={privacyHref}
-            className="underline underline-offset-4 transition-colors hover:text-white"
+            className="font-medium text-sognos-blue-accent underline underline-offset-4 transition-opacity duration-200 hover:opacity-80"
           >
             Privacy Policy
           </Link>{" "}
           and{" "}
           <Link
             href={termsHref}
-            className="underline underline-offset-4 transition-colors hover:text-white"
+            className="font-medium text-sognos-blue-accent underline underline-offset-4 transition-opacity duration-200 hover:opacity-80"
           >
             Privacy Collection Notice
           </Link>
           .
         </p>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={acceptAll}
+            className="flex-1 rounded-lg bg-sognos-navy-dark px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
+          >
+            {acceptText}
+          </button>
+
           <button
             type="button"
             onClick={() => setShowPrefs((current) => !current)}
-            className={cn(
-              "flex items-center gap-1 rounded-md border border-white/12 bg-white/6 px-3 py-1.5 text-xs text-white/78 transition-colors hover:bg-white/10 hover:text-white"
-            )}
+            className="flex items-center gap-1.5 rounded-lg border border-sognos-line bg-white px-4 py-2.5 text-sm font-medium text-sognos-heading transition-colors duration-200 hover:bg-gray-200/70"
             aria-expanded={showPrefs}
             aria-controls="cookie-preferences-inline"
           >
             {customizeText}
             {showPrefs ? (
-              <ChevronUp className="size-3" />
+              <ChevronUp className="size-3.5" />
             ) : (
-              <ChevronDown className="size-3" />
+              <ChevronDown className="size-3.5" />
             )}
-          </button>
-
-          <button
-            type="button"
-            onClick={acceptAll}
-            className="rounded-md bg-sognos-blue-accent px-3 py-1.5 text-xs text-white transition-colors hover:bg-sognos-blue-accent/90"
-          >
-            {acceptText}
           </button>
         </div>
 
@@ -277,7 +282,7 @@ const CookiePanel = (props: CookiePanelProps) => {
           className="overflow-hidden transition-[height] duration-300 ease-out will-change-[height]"
         >
           {showPrefs && (
-            <div className="mt-2 flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="mt-4 flex flex-col gap-3 border-t border-sognos-line pt-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
               <PrefRow
                 rowTitle="Strictly necessary"
                 desc="Required for core site functionality."
@@ -300,21 +305,21 @@ const CookiePanel = (props: CookiePanelProps) => {
                 field="marketing"
               />
 
-              <div className="mt-1 flex justify-end gap-2">
+              <div className="mt-1 flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setShowPrefs(false)}
-                  className="rounded-md border border-white/12 bg-white/6 px-2.5 py-1 text-xs text-white/78 transition-colors hover:bg-white/10 hover:text-white"
+                  onClick={savePreferences}
+                  className="flex-1 rounded-lg bg-sognos-navy-dark px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-sognos-blue-accent"
                 >
-                  Cancel
+                  Save preferences
                 </button>
 
                 <button
                   type="button"
-                  onClick={savePreferences}
-                  className="rounded-md bg-sognos-blue-accent px-2.5 py-1 text-xs text-white transition-colors hover:bg-sognos-blue-accent/90"
+                  onClick={() => setShowPrefs(false)}
+                  className="rounded-lg border border-sognos-line bg-white px-4 py-2.5 text-sm font-medium text-sognos-heading transition-colors duration-200 hover:bg-gray-200/70"
                 >
-                  Save preferences
+                  Cancel
                 </button>
               </div>
             </div>
