@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Clock } from "lucide-react";
 
 export const metadata = {
@@ -170,29 +171,116 @@ function StoryCard({ story }: { story: StoryCard }) {
   );
 }
 
+// ─── Featured list item (right column) ────────────────────────────────────────
+
+// One card for all three featured slots so they read as a family. The lead
+// stacks image over text; the other two run image-left / text-right. Grid rows
+// are auto, so the lead's image flexes to match the two stacked beside it.
+function FeaturedCard({
+  story,
+  lead = false,
+}: {
+  story: StoryCard;
+  lead?: boolean;
+}) {
+  return (
+    <Link
+      href={`/customer-stories/${story.slug}`}
+      className={`group flex h-full ${
+        lead ? "flex-col" : "flex-col lg:flex-row"
+      }`}
+    >
+      <div
+        className={`relative overflow-hidden rounded-lg ${
+          lead
+            ? "min-h-[16rem] flex-1 lg:min-h-[26rem]"
+            : "aspect-[16/9] w-full shrink-0 lg:aspect-auto lg:h-full lg:w-1/2"
+        }`}
+      >
+        <Image
+          src={story.image}
+          alt=""
+          fill
+          priority={lead}
+          sizes={
+            lead
+              ? "(min-width: 1024px) 50vw, 100vw"
+              : "(min-width: 1024px) 25vw, 100vw"
+          }
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
+          <Image
+            src={story.logo}
+            alt={story.company}
+            width={440}
+            height={128}
+            className={`w-auto object-contain brightness-0 invert ${
+              lead ? "h-16 max-w-[220px]" : "h-12 max-w-[140px]"
+            }`}
+          />
+        </div>
+      </div>
+
+      {/* Text column — under the image on the lead, beside it on the other two */}
+      <div
+        className={
+          lead
+            ? "mt-5"
+            : "mt-5 flex min-w-0 flex-1 flex-col justify-center lg:mt-0 lg:pl-5"
+        }
+      >
+        <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-sognos-muted">
+          <span className="border border-sognos-line px-2 py-1">
+            Customer Story
+          </span>
+          <span>{formatDate(story.date)}</span>
+        </div>
+
+        <h3
+          className={`mt-3 font-heading font-normal leading-snug tracking-tight text-sognos-header text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent ${
+            lead ? "text-2xl lg:text-3xl" : "text-lg lg:text-xl"
+          }`}
+        >
+          {story.title}
+        </h3>
+      </div>
+    </Link>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function CustomersPage() {
+  // First three for now — a `featured` flag in Sanity replaces this later.
+  const [featuredLead, ...featuredRest] = STORIES.slice(0, 3);
+
   return (
     <>
-      {/* Hero */}
-      <section
-        data-header-dark
-        className="relative overflow-hidden bg-gradient-hero pb-18 pt-40"
-      >
-        <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
-            <span className="w-2 h-2 bg-sognos-blue-accent rounded-full" />
+      {/* Hero — headline and subcopy match the Knowledge Hub treatment, then a
+          featured block: one lead story left, the remaining two stacked right. */}
+      <section className="bg-white pt-32 pb-16 lg:pt-40 lg:pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <h1 className="font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
             Customer Stories
-          </div>
-          <div className="max-w-3xl text-center">
-            <h1 className="mx-auto mb-6 font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-              Real outcomes from real organisations
-            </h1>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-white/80">
-              See how organisations across health, transport, local government,
-              and energy use Sognos to transform their service operations.
-            </p>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sognos-body">
+            See how organisations across health, transport, local government,
+            and energy use Sognos to transform their service operations.
+          </p>
+
+          {/* Two equal columns, two rows; the lead spans both on the left.
+              Rows are auto rather than the fixed heights the reference uses —
+              titles here run to three lines and would clip. The lead's image
+              flexes instead, so its card still matches the column height. */}
+          <div className="mt-16 grid gap-3 lg:mt-20 lg:grid-cols-2 lg:grid-rows-2 lg:gap-4">
+            <div className="lg:row-span-2">
+              <FeaturedCard story={featuredLead} lead />
+            </div>
+            {featuredRest.map((story) => (
+              <FeaturedCard key={story.slug} story={story} />
+            ))}
           </div>
         </div>
       </section>
