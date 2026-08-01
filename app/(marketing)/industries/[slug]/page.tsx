@@ -89,7 +89,7 @@ export default async function IndustryPage({
       </section>
 
       {/* ── 3. How Sognos helps — interactive tabs ───────────────────────────── */}
-      <section className="bg-gray-100 py-20 lg:py-28">
+      <section className="bg-sognos-navy py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <IndustryHowTabs
             items={content.howSognosHelps}
@@ -105,18 +105,15 @@ export default async function IndustryPage({
         excludeSlug={slug}
       />
 
-      {/* ── 5. What we deploy — product and platform blocks ─────────────────── */}
-      <section className="bg-sognos-navy py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <IndustryPlatformSection
-            industryName={meta.name}
-            productNames={meta.products}
-          />
+      {/* ── 5. Customer stories from this industry (hidden if none) ──────────── */}
+      <IndustryCustomerStories industryName={meta.name} />
+
+      {/* ── 6. What we deploy — product and platform blocks ─────────────────── */}
+      <section className="bg-sognos-navy-dark py-20 lg:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <IndustryPlatformSection industryName={meta.name} />
         </div>
       </section>
-
-      {/* ── 6. Customer stories from this industry (hidden if none) ──────────── */}
-      <IndustryCustomerStories industryName={meta.name} />
     </>
   );
 }
