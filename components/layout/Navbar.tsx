@@ -33,9 +33,9 @@ const UPCOMING_EVENT = {
   meta: "Thu 17 Sep • North Sydney",
 } as const;
 
-const BANNER_HEIGHT_CLASS = "top-14 md:top-14";
+const BANNER_HEIGHT_CLASS = "top-11 md:top-11";
 const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
-const BANNER_SPACE_CLASS = "h-14";
+const BANNER_SPACE_CLASS = "h-11";
 
 // ── Light / dark theme seam ────────────────────────────────────────────────────
 
@@ -318,6 +318,21 @@ export default function Navbar({
   // Only the bar background changes on scroll (dark-hero pages).
   const barTransparent = useTransparent && !scrolled;
 
+  // Banner runs opposite the hero so it always separates from what is below it:
+  // white over a dark hero, navy over a light one. Text and borders have to flip
+  // with the background, not just the fill.
+  const bannerTheme = useTransparent
+    ? {
+        bar: "bg-white border-white/0",
+        text: "text-sognos-heading",
+        chipBorder: "border-sognos-line",
+      }
+    : {
+        bar: "bg-sognos-navy-dark border-white/15",
+        text: "text-white",
+        chipBorder: "border-white/25",
+      };
+
   // ── Measure dropdown dimensions ───────────────────────────────────────────────
   // Runs synchronously before paint so card dimensions are correct from first frame
 
@@ -536,35 +551,33 @@ export default function Navbar({
       {!bannerDismissed && (
         <div
           className={[
-            "fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white",
+            "fixed inset-x-0 top-0 z-[60] border-b",
+            bannerTheme.bar,
+            bannerTheme.text,
             "transition-transform duration-300 ease-in-out",
             scrolled ? "-translate-y-full" : "translate-y-0",
           ].join(" ")}
         >
-          <div className="max-w-7xl mx-auto relative flex h-14 w-full items-center overflow-hidden px-2">
-            <div className="relative z-30 flex shrink-0 items-center self-stretch border-r border-white/15 bg-sognos-blue-accent/10 px-4">
-              <span className="mr-2 inline-flex rounded border border-white/25 bg-white text-sognos-heading px-3 py-2.5 text-xs font-semibold uppercase tracking-wider align-middle md:text-xs">
+          {/* One centred group: label, event name, then the CTA. The segmented
+              panels (border-r / border-l dividers and the tinted backings) are
+              gone, as is UPCOMING_EVENT.meta — the constant is still read by
+              BANNER_STORAGE_KEY, so nothing is orphaned by hiding it here. */}
+          <div className="max-w-7xl mx-auto relative flex h-11 w-full items-center px-2">
+            <div className="flex min-w-0 flex-1 items-center justify-center gap-3">
+              <span
+                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2.5 py-1 text-sm font-normal align-middle md:text-xs`}
+              >
                 {UPCOMING_EVENT.label}
               </span>
-            </div>
 
-            <div className="flex-1 overflow-hidden">
-              <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-4">
-                <div className="flex min-w-0 items-center justify-center gap-3 text-center text-sm font-medium text-white">
-                  <span className="truncate">{UPCOMING_EVENT.title}</span>
-                  <span className="text-white/85" aria-hidden="true">
-                    •
-                  </span>
-                  <span className="shrink-0">{UPCOMING_EVENT.meta}</span>
-                </div>
-              </div>
-            </div>
+              <span className="truncate text-sm font-medium">
+                {UPCOMING_EVENT.title}
+              </span>
 
-            <div className="relative z-30 flex shrink-0 items-center self-stretch bg-sognos-blue-accent/10">
               <Link
                 href={UPCOMING_EVENT.href}
                 onClick={dismissBanner}
-                className="group/cta flex items-center gap-1.5 self-stretch border-l border-white/15 px-4 text-xs font-semibold uppercase tracking-[0.08em] align-middle md:text-xs text-white transition-opacity hover:opacity-80"
+                className="group/cta flex shrink-0 items-center gap-1.5 text-sm font-medium underline decoration-dotted transition-colors duration-200 hover:text-sognos-blue-accent"
               >
                 View event
                 <svg
@@ -582,16 +595,16 @@ export default function Navbar({
                   />
                 </svg>
               </Link>
-
-              <button
-                type="button"
-                onClick={dismissBanner}
-                className="flex items-center self-stretch border-l border-white/15 px-3 text-white transition-opacity hover:opacity-80"
-                aria-label="Close announcement banner"
-              >
-                <IconClose />
-              </button>
             </div>
+
+            <button
+              type="button"
+              onClick={dismissBanner}
+              className="ml-2 flex shrink-0 items-center px-2 transition-opacity hover:opacity-70"
+              aria-label="Close announcement banner"
+            >
+              <IconClose />
+            </button>
           </div>
         </div>
       )}
