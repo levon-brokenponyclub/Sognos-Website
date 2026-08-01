@@ -79,8 +79,6 @@
   --font-weight-regular: var(--sognos-font-weight-regular);
 
   /* Typography — type scale (single source of truth) */
-  --text-xxs: 0.65rem;
-  --text-xxs--line-height: 0.9rem;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;

@@ -689,20 +689,23 @@ export default function Navbar({
             <Link
               href={UPCOMING_EVENT.href}
               onClick={dismissBanner}
-              className="flex min-w-0 flex-1 items-center gap-2 self-stretch md:hidden"
+              // bannerTheme.text is repeated here because the base layer styles
+              // every `a` as text-sognos-blue-accent; without it the banner
+              // link would not follow the light/dark hero inversion.
+              className={`flex min-w-0 flex-1 items-center gap-2 self-stretch md:hidden ${bannerTheme.text}`}
             >
               <span
-                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2 py-0.5 text-xxs font-medium uppercase tracking-wider align-middle`}
+                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wider align-middle`}
               >
                 {UPCOMING_EVENT.label}
               </span>
 
               <div className="min-w-0 flex-1 overflow-hidden">
                 <div className="banner-marquee-track" aria-hidden="true">
-                  <span className="whitespace-nowrap pr-10 text-xxs font-medium">
+                  <span className="whitespace-nowrap pr-10 text-xs font-medium">
                     {UPCOMING_EVENT.title}
                   </span>
-                  <span className="whitespace-nowrap pr-10 text-xxs font-medium">
+                  <span className="whitespace-nowrap pr-10 text-xs font-medium">
                     {UPCOMING_EVENT.title}
                   </span>
                 </div>
