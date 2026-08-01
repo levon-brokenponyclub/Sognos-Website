@@ -144,6 +144,16 @@ export default defineConfig({
                             { field: "date", direction: "desc" },
                           ]),
                       ),
+                    S.listItem()
+                      .title("Events")
+                      .id("events")
+                      .child(
+                        S.documentTypeList("event")
+                          .title("Events")
+                          .defaultOrdering([
+                            { field: "date", direction: "desc" },
+                          ]),
+                      ),
                   ]),
               ),
           ]),

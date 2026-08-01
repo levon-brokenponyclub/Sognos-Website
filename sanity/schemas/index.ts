@@ -1,6 +1,7 @@
 import { ctaSection } from "./ctaSection";
 import { customerStory } from "./customerStory";
 import { edition } from "./edition";
+import { event } from "./event";
 import { footer } from "./footer";
 import { knowledgePost } from "./knowledgePost";
 import { legalPage } from "./legalPage";
@@ -15,6 +16,7 @@ export const schemas = [
   edition,
   customerStory,
   knowledgePost,
+  event,
   logoStrip,
   siteSettings,
   ctaSection,
