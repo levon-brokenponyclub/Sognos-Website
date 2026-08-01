@@ -17,11 +17,13 @@
 
 - **`UPCOMING_EVENT` moved** from `Navbar.tsx` to `lib/upcomingEvent.ts`. It had to: Navbar is `"use client"`, and importing a value from a client file into a Server Component yields a client reference rather than the object — the trap `lib/customerStoryBrand.ts` already records.
 
-- **Mobile announcement banner** (`components/layout/Navbar.tsx`): below `md` the banner drops the "View event" link, uses `text-xxs`, and marquees the title right-to-left since it cannot fit. Desktop is unchanged apart from the label now being uppercase.
+- **Mobile announcement banner** (`components/layout/Navbar.tsx`): below `md` the banner drops the "View event" link and marquees the title right-to-left since it cannot fit. Desktop is unchanged apart from the label now being uppercase. Both keep `text-xs`.
   - The whole mobile group is the link, so removing the CTA doesn't strand the event, and it's `self-stretch` for a **44px tap target** rather than the 20px the text alone gave — under the 24px WCAG minimum.
   - Title rendered twice so the shared `trust-marquee-scroll` keyframe loops seamlessly; both copies `aria-hidden` with one `sr-only` copy, or screen readers announce it twice. `.banner-marquee-track` reuses that keyframe rather than adding another and carries the same `prefers-reduced-motion` guard.
 
-- **`--text-xxs` (0.65rem)** added to the type scale in `app/globals.css` with a paired line-height. Verified it compiles to `font-size: .65rem` — worth knowing Tailwind v4 **inlines** token values rather than emitting `var(--text-*)`, and only emits a utility once something uses it, so a new token produces no CSS until referenced.
+- **The mobile banner group re-applies `bannerTheme.text`.** Wrapping it in a `Link` made it inherit the base-layer rule at `app/globals.css:278`, which styles every `a` as `text-sognos-blue-accent` — so the banner rendered blue instead of following the light/dark hero inversion. Verified both branches: navy bar → white text, white bar → `#0f1936`.
+
+- **`--text-xxs` (0.65rem) was added and then removed.** It sat below the 12px many accessibility guidelines treat as a floor, and the one place it was used reads fine at `text-xs`. Worth recording from the exercise: Tailwind v4 **inlines** token values rather than emitting `var(--text-*)`, and only emits a utility once something uses it, so a new token produces no CSS at all until referenced.
 
 - **Files:** `sanity/schemas/event.ts`, `sanity/schemas/index.ts`, `sanity.config.ts`, `scripts/seed-events.ts`, `lib/featuredNav.ts`, `lib/upcomingEvent.ts`, `app/(marketing)/layout.tsx`, `components/layout/Navbar.tsx`, `app/globals.css`.
 
