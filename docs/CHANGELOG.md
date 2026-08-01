@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-01 — Customer story rebuilt on the Pallet layout
+
+- **Hero** (`app/(marketing)/customer-stories/[slug]/page.tsx`): replaced the two-column `[24rem_1fr]` grid and its bordered left meta rail with a single centred column — breadcrumb, title, brand panel, pull-quote.
+  - Title dropped `text-8xl` → `text-5xl`; centred at the old size it overwhelmed the panel below it.
+  - Pull-quote centred with `sognos-blue-accent` quote marks; attribution collapsed to Pallet's single `Name / ROLE` line.
+  - "Back to Customer Stories" removed, replaced by a `Customer Stories / Company` breadcrumb. The first crumb is a link — without it, removing the back link would leave no route to the index.
+
+- **Brand panel replaces the hero image.** A 16:8 `rounded-lg` panel with the client logo centred on a radial gradient in the client's own colour:
+  `radial-gradient(circle at 25% 20%, color-mix(in oklab, {brand} 65%, white) 0%, {brand} 40%, var(--sognos-navy-dark) 100%)`.
+  - Colour resolves `story.brandColor` → `BRAND_BG[company]` → `#1d96fc`, matching the precedence the customer-story slider already used. Both inputs existed; neither was used on this page.
+  - The navy floor keeps the white logo on a dark field regardless of hue. Measured white-on-brand contrast: Auckland Airport 14.89:1, Gentari 9.26:1, Flourish 3.54:1, Penrith 3.15:1 — all clear the 3:1 non-text threshold, and logos are exempt from contrast requirements anyway. A future client lighter than `#f26522` would drop below 3:1.
+  - `color-mix()` needs Safari 16.2+ / Chrome 111+ — newer than the `@property` floor recorded in CLAUDE.md's gotchas.
+  - `story.heroImage` is no longer rendered on the detail page; archive cards and related reading still use it.
+
+- **Body → three columns** (`[300px_48px_1fr]`), the same tracks as the Knowledge Hub template, so both article families now share one body layout. Rail sticky offset moved to `top-36` to line up with the progress line, and `ArticleScrollNav` lost its own track since the progress line now owns the vertical rule.
+
+- **`ArticleProgressLine` rewritten** (`components/layout/sections/shared/ArticleProgressLine.tsx`): was a full-height fill scaled across the whole row, leaving thousands of pixels of filled line behind the reader. Now the fill sits in a viewport-tall sticky box and scales from its top edge. Added a `top` prop (default 144) because the two article templates used different sticky offsets, and the `resize` listener the previous version lacked — the progress maths depends on viewport height. **Shared component, so Knowledge Hub articles get the new behaviour too.**
+
+- **Industry moved to `StoryMetaRail`** via the `industry` prop it already had but the page never passed. `StoryMetaRail` also dropped its internal `lg:sticky lg:top-[104px]` — the grid column wrapping it is already sticky, so it was nesting one pinned element inside another.
+
+- **Not included:** Pallet's three-up stats row. `customerStory` has no metrics field, and deriving one from the generic `sidebar` array would conflate metadata with results.
+
+- **Files:** `app/(marketing)/customer-stories/[slug]/page.tsx`, `components/layout/sections/shared/ArticleProgressLine.tsx`, `components/layout/sections/customer-stories/StoryMetaRail.tsx`.
+
 ## 2026-08-01 — Mobile dropdown TOC for article scroll nav
 
 - **`ArticleScrollNav.tsx` is now responsive** rather than desktop-only. The `lg` sidebar rail is unchanged; below `lg` it renders a sticky collapsible dropdown driven by the same `activeId` scroll-spy, so there is one source of truth for the active section at every breakpoint.

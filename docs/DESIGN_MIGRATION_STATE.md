@@ -95,6 +95,12 @@ Resolved items:
   dropdown below it, both driven by one scroll-spy. Both call sites wrap it in
   a `contents lg:block` element so the sticky mobile bar is bounded by the
   full-height body grid rather than a self-sized column.
+- `ArticleProgressLine.tsx`: read-progress line in the column between the meta
+  rail and the prose on both article families. Full-height track with the fill
+  inside a viewport-tall sticky box, scaled from its top edge so the indicator
+  stays compact rather than trailing the full scrolled length behind. Takes a
+  `top` prop (default 144) that must match the sticky offset of the rail beside
+  it. Distinct from `scroll-progress.tsx`, which is the fixed page-top bar.
 - `scroll-progress.tsx`: fixed, spring-smoothed page progress indicator shared
   by Knowledge Hub posts and customer stories.
 - `AboutHeroImage.tsx`: full-width image that shrinks to the main container with
@@ -218,6 +224,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `AboutHeroImage.tsx`                               | Production                  | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides.                                                                                                                                                                                                                                                                                              |
 | `ArticleScrollNav.tsx`                             | Production                  | Shared customer-story and Knowledge Hub heading nav with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. Sidebar rail from `lg`; sticky collapsible dropdown below `lg` (overlay panel, `grid-template-rows` accordion, breakpoint-derived scroll offset).                                                              |
 | `ArticleProseFooter.tsx`                           | Production                  | Shared post-conversion-panel footer with compact spacing, back-to-index navigation, and exported copy/share controls from `ShareIcons`.                                                                                                                                                                                                                                                   |
+| `ArticleProgressLine.tsx`                          | Production                  | Read-progress line for the middle column of the article body grid. Full-height track, fill in a viewport-tall sticky box scaled from its top edge; `top` prop (default 144) aligns it with the rail beside it. Shared by Knowledge Hub and customer stories.                                                                                                                              |
 | `scroll-progress.tsx`                              | Production                  | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families.                                                                                                                                                                                                                                                                                   |
 | `StoryMetaRail.tsx` / `ShareIcons`                 | Production                  | Customer-story metadata rail; exported share controls provide copy-link feedback plus an X, LinkedIn, and Facebook dropdown for the shared article footer.                                                                                                                                                                                                                                |
 | `TeamSection.tsx`                                  | Production                  | Responsive leadership card grid with expanded modal profiles, Escape dismissal, focus management, and LinkedIn actions.                                                                                                                                                                                                                                                                   |
@@ -310,10 +317,22 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   end-of-prose navigation/sharing, Portable Text custom blocks, and latest
   articles.
 - `/customer-stories`: archive cards.
-- `/customer-stories/[slug]`: dark customer-story hero with the company logo
-  above the title, sticky metadata/article rail, fixed page-progress indicator,
-  post-prose demo/contact conversion panel, shared end-of-prose
-  navigation/sharing, Portable Text blocks, callouts, and related reading.
+- `/customer-stories/[slug]`: dark centred hero — breadcrumb, title, a 16:8
+  brand panel carrying the client logo on a radial gradient in their own
+  colour, then a centred pull-quote with `Name / ROLE` attribution. Body is a
+  three-column grid from `lg` (`[300px_48px_1fr]`, the same tracks as the
+  Knowledge Hub template): sticky TOC + metadata rail, `ArticleProgressLine`,
+  prose. Plus fixed page-progress indicator, post-prose demo/contact conversion
+  panel, shared end-of-prose navigation/sharing, Portable Text blocks,
+  callouts, and related reading.
+  - Brand panel colour resolves `story.brandColor` → `BRAND_BG[company]` →
+    `#1d96fc`, the same precedence the customer-story slider uses. The gradient
+    drops to `--sognos-navy-dark` at the edges so the white logo keeps a dark
+    field whatever hue the client brings; all four current clients clear the
+    3:1 non-text contrast floor, Penrith closest at 3.15:1.
+  - `story.heroImage` is still queried and still populated, but the detail page
+    no longer renders it — the brand panel replaced it. The archive cards and
+    related-reading list continue to use it.
 - Both dynamic content families depend on readable local Sanity configuration:
   `NEXT_PUBLIC_SANITY_PROJECT_ID=vg117fxr` and dataset `production`.
 
