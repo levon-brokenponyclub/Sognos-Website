@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import {
   getAllCustomerStorySlugs,
@@ -15,6 +14,7 @@ import {
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import StoryMetaRail from "@/components/layout/sections/customer-stories/StoryMetaRail";
 import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
+import ArticleProgressLine from "@/components/layout/sections/shared/ArticleProgressLine";
 import ArticleProseFooter from "@/components/layout/sections/shared/ArticleProseFooter";
 import {
   type PortableBlock,
@@ -191,6 +191,11 @@ export default async function CustomerStoryPage({
   const companyLogoUrl = story.companyLogo
     ? urlFor(story.companyLogo).width(400).auto("format").url()
     : null;
+  // heroImage is typed optional, so the hero renders without it rather than
+  // breaking on a story that has none.
+  const heroImageUrl = story.heroImage
+    ? urlFor(story.heroImage).width(1600).auto("format").url()
+    : null;
   const { author: quoteAuthor, role: quoteRole } = parseQuoteAuthor(
     story.quoteAuthor,
   );
@@ -226,97 +231,116 @@ export default async function CustomerStoryPage({
       {/* ── Dark hero (scroll parallax + fade) — layout matches Diffblue ref ── */}
       <HeroScrollFade className="relative overflow-hidden bg-sognos-navy pt-32 lg:pt-40 lg:pb-0">
         <div className="mx-auto max-w-7xl px-6">
-          {/* Back link */}
-          <Link
-            href="/customer-stories"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-sognos-blue-accent"
-          >
-            <ArrowLeft
-              size={14}
-              className="transition-transform duration-200 group-hover:text-sognos-blue-accent group-hover:-translate-x-0.5"
-            />
-            Back to Customer Stories
-          </Link>
+          {/* Single centred column — logo, breadcrumb, title, image, pull-quote. */}
+          <div className="mx-auto max-w-4xl text-center">
+            {companyLogoUrl && (
+              <Image
+                src={companyLogoUrl}
+                alt={story.company}
+                width={160}
+                height={48}
+                className="mx-auto mb-8 h-10 w-auto max-w-[150px] object-contain brightness-0 invert"
+              />
+            )}
 
-          {/* Two-up: left meta rail (line + Case Study + Industry) / right title + pull-quote */}
-          <div className="mt-10 lg:mt-14 lg:grid lg:grid-cols-[24rem_1fr] lg:gap-16 xl:gap-20">
-            {/* Left rail — hero-only vertical line, does NOT extend into the body */}
-            <div className="mb-10 space-y-4 border-l border-white/20 pl-6 lg:mb-0">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                Customer Story
-              </p>
-              {industryValue && (
-                <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
-                  {industryValue}
-                </p>
-              )}
-            </div>
-
-            {/* Right — title + pull-quote */}
-            <div>
-              {companyLogoUrl && (
-                <Image
-                  src={companyLogoUrl}
-                  alt={story.company}
-                  width={160}
-                  height={48}
-                  className="mb-8 h-10 w-auto max-w-[150px] shrink-0 object-contain brightness-0 invert"
-                />
-              )}
-
-              <h1 className="max-w-3xl font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
-                {story.title}
-              </h1>
-
-              {story.quote && (
-                <figure className="mt-10 lg:mt-24 pb-20">
-                  <blockquote
-                    className={`${ARTICLE_PROSE_MAX_W} max-w-lg font-heading text-xl font-normal leading-snug tracking-tight text-white md:text-xl`}
+            {/* Breadcrumb replaces the old back link, so the route back to the
+                index survives the link's removal. */}
+            <nav aria-label="Breadcrumb">
+              <ol className="flex flex-wrap items-center justify-center text-xs font-semibold uppercase tracking-widest text-white/60">
+                <li>
+                  <Link
+                    href="/customer-stories"
+                    className="transition-colors duration-200 hover:text-white"
                   >
-                    &ldquo;{story.quote}&rdquo;
-                  </blockquote>
-                  {(quoteAuthor || quoteRole) && (
-                    <figcaption
-                      className={`mt-12 flex items-center gap-8 ${ARTICLE_PROSE_MAX_W}`}
-                    >
-                      <div>
-                        {quoteAuthor && (
-                          <p className="text-base font-semibold text-white">
-                            {quoteAuthor}
-                          </p>
-                        )}
-                        {quoteRole && (
-                          <p className="mt-0.5 text-sm text-white/70">
-                            {quoteRole}
-                          </p>
-                        )}
-                      </div>
-                    </figcaption>
-                  )}
-                </figure>
-              )}
-            </div>
+                    Customer Stories
+                  </Link>
+                </li>
+                <li aria-hidden="true" className="px-2 text-white/30">
+                  /
+                </li>
+                <li aria-current="page" className="text-white/80">
+                  {story.company}
+                </li>
+              </ol>
+            </nav>
+
+            <h1 className="mt-5 font-heading text-3xl font-normal leading-tight tracking-tight text-white text-balance lg:text-5xl">
+              {story.title}
+            </h1>
           </div>
+
+          {/* Hero image — the centrepiece of the Pallet layout */}
+          {heroImageUrl && (
+            <div className="mx-auto mt-12 max-w-5xl lg:mt-16">
+              <Image
+                src={heroImageUrl}
+                alt=""
+                width={1600}
+                height={900}
+                priority
+                sizes="(min-width: 1024px) 64rem, 100vw"
+                className="aspect-[16/9] w-full rounded-lg object-cover"
+              />
+            </div>
+          )}
+
+          {story.quote && (
+            <figure className="mx-auto mt-14 max-w-2xl pb-20 text-center lg:mt-20">
+              <blockquote className="font-heading text-2xl font-normal leading-snug tracking-tight text-white lg:text-3xl">
+                <span aria-hidden="true" className="text-sognos-blue-accent">
+                  &ldquo;
+                </span>
+                {story.quote}
+                <span aria-hidden="true" className="text-sognos-blue-accent">
+                  &rdquo;
+                </span>
+              </blockquote>
+
+              {(quoteAuthor || quoteRole) && (
+                <figcaption className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+                  {quoteAuthor && (
+                    <span className="text-base font-medium text-white">
+                      {quoteAuthor}
+                    </span>
+                  )}
+                  {quoteAuthor && quoteRole && (
+                    <span aria-hidden="true" className="text-white/30">
+                      /
+                    </span>
+                  )}
+                  {quoteRole && (
+                    <span className="text-xs font-medium uppercase tracking-widest text-white/60">
+                      {quoteRole}
+                    </span>
+                  )}
+                </figcaption>
+              )}
+            </figure>
+          )}
         </div>
       </HeroScrollFade>
 
       {/* ── Body: sticky rail + content (quote card + prose) ── */}
       <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="lg:grid lg:grid-cols-3 lg:gap-16 xl:grid-cols-3 xl:gap-20">
+          {/* 3-col from lg: [rail 300px] [progress line 48px] [prose 1fr].
+              Same track definition as the knowledge-hub template, so both
+              article families share one body layout. */}
+          <div className="lg:grid lg:grid-cols-[300px_48px_1fr] lg:gap-x-10">
             {/* Column 1 — article scroll-spy nav (sticky) stacked above meta rail.
                 `contents` below lg so this wrapper creates no box: the nav's own
                 sticky mobile dropdown is then bounded by the full-height body
                 grid rather than this self-sized column, so it tracks the whole
                 article. From lg it becomes a normal sticky grid item. */}
-            <div className="contents lg:block lg:col-span-1 lg:sticky lg:top-[100px] lg:self-start">
+            <div className="contents lg:block lg:sticky lg:top-36 lg:self-start">
               {sections.length > 0 && (
                 <>
-                  <ArticleScrollNav sections={sections} />
+                  <ArticleScrollNav sections={sections} showTrack={false} />
                   <div className="my-6 hidden h-px bg-sognos-line lg:block" />
                 </>
               )}
               <StoryMetaRail
+                industry={industryValue}
                 state={stateValue}
                 size={sizeValue}
                 product={productValue}
@@ -324,7 +348,12 @@ export default async function CustomerStoryPage({
               />
             </div>
 
-            <ScrollReveal y={24} className="min-w-0 md:col-span-2">
+            {/* Column 2 — read-progress line, stretches to prose height via grid */}
+            <div className="hidden lg:block">
+              <ArticleProgressLine />
+            </div>
+
+            <ScrollReveal y={24} className="min-w-0">
               {/* Body prose */}
               <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
                 <PortableText

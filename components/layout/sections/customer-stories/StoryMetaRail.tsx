@@ -214,8 +214,10 @@ export default function StoryMetaRail({
     { label: "Product", value: product },
   ].filter((m) => m.value);
 
+  // No sticky here — the body grid column that wraps this is already sticky, so
+  // a second one just nests pointlessly inside a pinned parent.
   return (
-    <aside className="mb-12 lg:sticky lg:top-[104px] lg:mb-0 lg:self-start">
+    <aside className="mb-12 lg:mb-0">
       {(company || description) && (
         <>
           {company && (
