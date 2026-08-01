@@ -23,6 +23,7 @@ import {
   extractHeadings,
 } from "@/lib/portableText";
 import { ARTICLE_PROSE_MAX_W } from "@/lib/articleLayout";
+import { BRAND_BG } from "@/lib/customerStoryBrand";
 import PullQuote from "@/components/portable-text/PullQuote";
 import QuoteCallout from "@/components/portable-text/QuoteCallout";
 import StatRow from "@/components/portable-text/StatRow";
@@ -191,11 +192,11 @@ export default async function CustomerStoryPage({
   const companyLogoUrl = story.companyLogo
     ? urlFor(story.companyLogo).width(400).auto("format").url()
     : null;
-  // heroImage is typed optional, so the hero renders without it rather than
-  // breaking on a story that has none.
-  const heroImageUrl = story.heroImage
-    ? urlFor(story.heroImage).width(1600).auto("format").url()
-    : null;
+  // Drives the hero brand panel. Same precedence the customer-story slider
+  // uses: Sanity field first, then the hand-kept map, then the house accent so
+  // an unlisted client still gets a deliberate panel rather than a flat block.
+  const brandColor =
+    story.brandColor ?? BRAND_BG[story.company] ?? "#1d96fc";
   const { author: quoteAuthor, role: quoteRole } = parseQuoteAuthor(
     story.quoteAuthor,
   );
@@ -229,20 +230,10 @@ export default async function CustomerStoryPage({
       <ScrollProgress />
 
       {/* ── Dark hero (scroll parallax + fade) — layout matches Diffblue ref ── */}
-      <HeroScrollFade className="relative overflow-hidden bg-sognos-navy pt-32 lg:pt-40 lg:pb-0">
+      <HeroScrollFade className="relative overflow-hidden bg-sognos-navy pt-32 lg:pt-40 lg:pb-10">
         <div className="mx-auto max-w-7xl px-6">
-          {/* Single centred column — logo, breadcrumb, title, image, pull-quote. */}
+          {/* Single centred column — breadcrumb, title, brand panel, pull-quote. */}
           <div className="mx-auto max-w-4xl text-center">
-            {companyLogoUrl && (
-              <Image
-                src={companyLogoUrl}
-                alt={story.company}
-                width={160}
-                height={48}
-                className="mx-auto mb-8 h-10 w-auto max-w-[150px] object-contain brightness-0 invert"
-              />
-            )}
-
             {/* Breadcrumb replaces the old back link, so the route back to the
                 index survives the link's removal. */}
             <nav aria-label="Breadcrumb">
@@ -269,20 +260,32 @@ export default async function CustomerStoryPage({
             </h1>
           </div>
 
-          {/* Hero image — the centrepiece of the Pallet layout */}
-          {heroImageUrl && (
-            <div className="mx-auto mt-12 max-w-5xl lg:mt-16">
-              <Image
-                src={heroImageUrl}
-                alt=""
-                width={1600}
-                height={900}
-                priority
-                sizes="(min-width: 1024px) 64rem, 100vw"
-                className="aspect-[16/9] w-full rounded-lg object-cover"
-              />
+          {/* Brand panel — replaces the hero image. Radial bloom in the client's
+              own colour, dropping to navy at the edges so the white logo always
+              sits on a dark field whatever hue the client brings. */}
+          <div className="mx-auto mt-12 max-w-4xl lg:mt-16">
+            <div
+              className="flex aspect-2/1 items-center justify-center rounded-lg p-8"
+              style={{
+                backgroundImage: `radial-gradient(circle at 25% 20%, color-mix(in oklab, ${brandColor} 65%, white) 0%, ${brandColor} 40%, var(--sognos-navy-dark) 100%)`,
+              }}
+            >
+              {companyLogoUrl ? (
+                <Image
+                  src={companyLogoUrl}
+                  alt={story.company}
+                  width={480}
+                  height={144}
+                  priority
+                  className="h-20 w-auto max-w-[55%] object-contain brightness-0 invert"
+                />
+              ) : (
+                <p className="font-heading text-2xl font-medium tracking-tight text-white lg:text-4xl">
+                  {story.company}
+                </p>
+              )}
             </div>
-          )}
+          </div>
 
           {story.quote && (
             <figure className="mx-auto mt-14 max-w-2xl pb-20 text-center lg:mt-20">
