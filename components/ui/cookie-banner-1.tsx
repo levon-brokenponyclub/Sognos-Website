@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   Check,
@@ -44,6 +50,64 @@ function writeConsentCookie(value: "true" | "false") {
 
 function getConsentFromPrefs(prefs: Prefs): "true" | "false" {
   return prefs.analytics || prefs.marketing ? "true" : "false";
+}
+
+// Declared at module scope, not inside CookiePanel. A component defined in a
+// render body is a new component type on every render, so React unmounts and
+// remounts each row whenever any preference changes — losing focus and
+// discarding row state. Passing prefs/setPrefs keeps the type stable.
+function PrefRow({
+  rowTitle,
+  desc,
+  field,
+  locked,
+  prefs,
+  setPrefs,
+}: {
+  rowTitle: string;
+  desc: string;
+  field: keyof Prefs;
+  locked?: boolean;
+  prefs: Prefs;
+  setPrefs: Dispatch<SetStateAction<Prefs>>;
+}) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg border border-sognos-line bg-gray-200/70 p-3">
+      <button
+        type="button"
+        disabled={locked}
+        onClick={() =>
+          !locked &&
+          setPrefs((current) => ({ ...current, [field]: !current[field] }))
+        }
+        className={cn(
+          "mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded border transition-colors duration-200",
+          locked
+            ? "cursor-not-allowed border-sognos-line bg-white text-sognos-muted"
+            : prefs[field]
+              ? "cursor-pointer border-sognos-blue-accent bg-sognos-blue-accent text-white"
+              : "cursor-pointer border-sognos-line bg-white text-transparent hover:border-sognos-blue-accent"
+        )}
+        aria-pressed={prefs[field]}
+        aria-label={`${rowTitle} cookie preference`}
+      >
+        {prefs[field] && <Check className="size-3.5" strokeWidth={2.5} />}
+      </button>
+
+      <div className="flex-1">
+        <div className="text-sm font-medium text-sognos-heading">
+          {rowTitle}{" "}
+          {locked && (
+            <span className="text-xs font-normal text-sognos-muted">
+              (required)
+            </span>
+          )}
+        </div>
+
+        <p className="mt-1 text-xs leading-relaxed text-sognos-muted">{desc}</p>
+      </div>
+    </div>
+  );
 }
 
 const CookiePanel = (props: CookiePanelProps) => {
@@ -146,53 +210,6 @@ const CookiePanel = (props: CookiePanelProps) => {
   const IconEl =
     icon === "shield" ? Shield : icon === "info" ? Info : Cookie;
 
-  const PrefRow = ({
-    rowTitle,
-    desc,
-    field,
-    locked,
-  }: {
-    rowTitle: string;
-    desc: string;
-    field: keyof Prefs;
-    locked?: boolean;
-  }) => (
-    <div className="flex items-start gap-3 rounded-lg border border-sognos-line bg-gray-200/70 p-3">
-      <button
-        type="button"
-        disabled={locked}
-        onClick={() =>
-          !locked && setPrefs((current) => ({ ...current, [field]: !current[field] }))
-        }
-        className={cn(
-          "mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded border transition-colors duration-200",
-          locked
-            ? "cursor-not-allowed border-sognos-line bg-white text-sognos-muted"
-            : prefs[field]
-              ? "cursor-pointer border-sognos-blue-accent bg-sognos-blue-accent text-white"
-              : "cursor-pointer border-sognos-line bg-white text-transparent hover:border-sognos-blue-accent"
-        )}
-        aria-pressed={prefs[field]}
-        aria-label={`${rowTitle} cookie preference`}
-      >
-        {prefs[field] && <Check className="size-3.5" strokeWidth={2.5} />}
-      </button>
-
-      <div className="flex-1">
-        <div className="text-sm font-medium text-sognos-heading">
-          {rowTitle}{" "}
-          {locked && (
-            <span className="text-xs font-normal text-sognos-muted">
-              (required)
-            </span>
-          )}
-        </div>
-
-        <p className="mt-1 text-xs leading-relaxed text-sognos-muted">{desc}</p>
-      </div>
-    </div>
-  );
-
   return (
     <div
       role="dialog"
@@ -288,21 +305,29 @@ const CookiePanel = (props: CookiePanelProps) => {
                 desc="Required for core site functionality."
                 field="necessary"
                 locked
+                prefs={prefs}
+                setPrefs={setPrefs}
               />
               <PrefRow
                 rowTitle="Functional"
                 desc="Remembers your site preferences."
                 field="functional"
+                prefs={prefs}
+                setPrefs={setPrefs}
               />
               <PrefRow
                 rowTitle="Analytics"
                 desc="Helps us improve the site and measure usage."
                 field="analytics"
+                prefs={prefs}
+                setPrefs={setPrefs}
               />
               <PrefRow
                 rowTitle="Marketing"
                 desc="Supports campaign attribution and related outreach."
                 field="marketing"
+                prefs={prefs}
+                setPrefs={setPrefs}
               />
 
               <div className="mt-1 flex items-center gap-3">
