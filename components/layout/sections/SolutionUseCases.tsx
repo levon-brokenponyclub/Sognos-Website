@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 
 type Capability = {
@@ -13,110 +10,82 @@ type Props = {
   capabilities: Capability[];
 };
 
-const SECTION_BG = "#152248";
-
-// Cycled per capability index (images[i % 3]).
 const CAPABILITY_IMAGES = [
   "/solutions/solutionTab-Image.avif",
   "/solutions/solutionTab-Image-2.avif",
   "/solutions/solutionTab-Image-3.avif",
 ];
 
-// Pulled from Cohere's live healthcare-and-life-sciences accordion (computed styles).
-const T_DURATION = "150ms";
-const T_EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+// Each card sticks at this offset from the top of the viewport.
+// STACK_REVEAL controls how many px of the previous card remain visible —
+// should loosely match the header-strip height so the full title stays readable.
+const TOP_BASE = 80; // clears the fixed navbar
+const STACK_REVEAL = 80;
 
-export default function SolutionUseCases({
-  solutionName,
-  capabilities,
-}: Props) {
-  const [active, setActive] = useState(0);
-  if (capabilities.length === 0) return null;
-
-  const activeImageIndex = active % CAPABILITY_IMAGES.length;
+export default function SolutionUseCases({ solutionName, capabilities }: Props) {
+  if (!capabilities.length) return null;
 
   return (
-    <section className="py-24 lg:py-32 bg-sognos-navy">
+    <section className="bg-white">
+      {/* Section header */}
+      <div className="mx-auto max-w-7xl px-6 pb-16 pt-20 lg:pt-28">
+        <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+          Capabilities
+        </p>
+        <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight text-sognos-heading max-w-2xl">
+          What you get with {solutionName}
+        </h2>
+      </div>
+
+      {/* Stacking card runway */}
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
-            Capabilities
-          </p>
-          <h2
-            className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em]"
-            style={{ color: "#FFFFFF" }}
+        {capabilities.map((cap, i) => (
+          <article
+            key={i}
+            className="sticky overflow-hidden rounded-t-lg border-t border-sognos-line grid grid-cols-1 lg:grid-cols-2"
+            style={{ top: TOP_BASE + i * STACK_REVEAL, zIndex: i + 1 }}
           >
-            What you get with {solutionName}
-          </h2>
-        </div>
-
-        {/* 50/50 split, lg:gap-44 (176px) — matches Cohere. */}
-        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-44">
-          <div>
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]">
-              {CAPABILITY_IMAGES.map((src, i) => (
-                <Image
-                  key={src}
-                  src={src}
-                  alt={`${solutionName} capability visual ${i + 1}`}
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                  style={{
-                    opacity: activeImageIndex === i ? 1 : 0,
-                    transition: `opacity ${T_DURATION} ${T_EASING}`,
-                  }}
-                  priority={i === 0}
-                />
-              ))}
+            {/* Left — white, dark text */}
+            <div className="bg-white">
+              {/* Header strip: height ~= STACK_REVEAL so the title stays readable when stacked */}
+              <div className="flex items-center gap-5 border-b border-sognos-line px-8 py-6 lg:px-12">
+                <span className="shrink-0 tabular-nums text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-heading text-xl font-medium tracking-tight text-sognos-heading">
+                  {cap.title}
+                </h3>
+              </div>
+              {/* Body — covered by the next stacking card; only visible on the bottommost card */}
+              <div className="min-h-[280px] px-8 py-10 lg:min-h-[420px] lg:px-12 lg:py-14">
+                <p className="max-w-md text-base leading-relaxed text-sognos-body">
+                  {cap.body}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <div className="flex flex-col">
-              {capabilities.map((cap, i) => {
-                const isActive = active === i;
-                return (
-                  <div
-                    key={i}
-                    className={`border-t border-white/100 ${
-                      isActive
-                    }`}
-                  >
-                    <button
-                      onClick={() => setActive(i)}
-                      className="w-full py-6 px-2 text-left text-2xl font-normal"
-                      style={{ color: "#FFFFFF" }}
-                    >
-                      {cap.title}
-                    </button>
-                    {/* Height animation via grid-template-rows 0fr -> 1fr */}
-                    <div
-                      className="grid px-2"
-                      style={{
-                        gridTemplateRows: isActive ? "1fr" : "0fr",
-                        transition: `grid-template-rows ${T_DURATION} ${T_EASING}`,
-                      }}
-                    >
-                      <div className="overflow-hidden">
-                        <p
-                          className="pb-9 text-lg leading-snug"
-                          style={{
-                            color: "#FFFFFF",
-                            opacity: isActive ? 1 : 0,
-                            transition: `opacity ${T_DURATION} ${T_EASING}`,
-                          }}
-                        >
-                          {cap.body}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Right — dark visual */}
+            <div
+              className="relative aspect-video bg-sognos-navy-dark lg:aspect-auto"
+              aria-hidden="true"
+            >
+              <Image
+                src={CAPABILITY_IMAGES[i % CAPABILITY_IMAGES.length]}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+                priority={i === 0}
+              />
             </div>
-          </div>
-        </div>
+          </article>
+        ))}
+
+        {/* Tail: holds the fully-stacked state briefly before the section ends */}
+        <div
+          aria-hidden="true"
+          style={{ height: (capabilities.length - 1) * STACK_REVEAL + 200 }}
+        />
       </div>
     </section>
   );

@@ -37,12 +37,6 @@ const BANNER_HEIGHT_CLASS = "top-14 md:top-14";
 const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
 const BANNER_SPACE_CLASS = "h-14";
 
-// ── Hide-on-scroll tuning ──────────────────────────────────────────────────────
-// Bar stays visible until scrolled past HIDE_AFTER, then hides on scroll-down /
-// peeks on scroll-up. DELTA_MIN ignores sub-pixel jitter.
-const HIDE_AFTER = 80;
-const DELTA_MIN = 6;
-
 // ── Light / dark theme seam ────────────────────────────────────────────────────
 
 type NavVariant = "light" | "dark";
@@ -280,7 +274,6 @@ export default function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"root" | string>("root");
   const [scrolled, setScrolled] = useState(false);
-  const [headerHidden, setHeaderHidden] = useState(false);
   // Measured dimensions of the active dropdown content — drives CSS transition on card
   const [dropdownWidth, setDropdownWidth] = useState(0);
   const [dropdownHeight, setDropdownHeight] = useState(0);
@@ -307,14 +300,6 @@ export default function Navbar({
   useEffect(() => {
     openMenuRef.current = openMenu;
   }, [openMenu]);
-  // Ref mirror of mobileOpen — read inside the scroll handler without re-subscribing
-  const mobileOpenRef = useRef(false);
-  useEffect(() => {
-    mobileOpenRef.current = mobileOpen;
-  }, [mobileOpen]);
-  // Last scroll position — drives scroll-direction detection
-  const lastScrollYRef = useRef(0);
-
   const activeGroup = nav.find(
     (g) => g.label === openMenu && (g.megaMenu || g.items),
   );
@@ -345,47 +330,21 @@ export default function Navbar({
     setDropdownHeight(height);
   }, [openMenu]);
 
-  // ── Scroll state — bar bg swap (past-top) + three-state hide/peek ────────────
-  // top: near the top, always shown. hidden: scrolled down past HIDE_AFTER.
-  // peek: scrolled up. Never hides while a dropdown or the mobile menu is open.
+  // ── Scroll state — bar bg swap + banner hide ─────────────────────────────────
 
   useEffect(() => {
     let ticking = false;
-
     const update = () => {
-      const y = window.scrollY;
-      const delta = y - lastScrollYRef.current;
-
-      setScrolled(y > 8);
-
-      if (openMenuRef.current || mobileOpenRef.current || y < HIDE_AFTER) {
-        setHeaderHidden(false);
-      } else if (Math.abs(delta) > DELTA_MIN) {
-        setHeaderHidden(delta > 0);
-      }
-
-      lastScrollYRef.current = y;
+      setScrolled(window.scrollY > 8);
       ticking = false;
     };
-
     const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
-
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Reveal the bar whenever a dropdown or the mobile menu opens (scroll may not fire).
-  useEffect(() => {
-    if (!openMenu && !mobileOpen) return;
-    const frame = requestAnimationFrame(() => setHeaderHidden(false));
-    return () => cancelAnimationFrame(frame);
-  }, [openMenu, mobileOpen]);
 
   // ── Body scroll lock ──────────────────────────────────────────────────────────
 
@@ -558,7 +517,9 @@ export default function Navbar({
   );
 
   const activePillLabel = hovered ?? openMenu;
-  const bannerOffsetClass = bannerDismissed ? "top-0" : BANNER_HEIGHT_CLASS;
+  // Banner hides on scroll (translate-y) and navbar shifts up to top-0
+  const bannerScrolledAway = bannerDismissed || scrolled;
+  const bannerOffsetClass = bannerScrolledAway ? "top-0" : BANNER_HEIGHT_CLASS;
 
   const dismissBanner = () => {
     window.localStorage.setItem(BANNER_STORAGE_KEY, "true");
@@ -573,7 +534,13 @@ export default function Navbar({
 
       {/* ── Announcement banner ─────────────────────────────────────────────── */}
       {!bannerDismissed && (
-        <div className="fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white">
+        <div
+          className={[
+            "fixed inset-x-0 top-0 z-[60] border-b border-white/15 bg-gradient-to-b from-sognos-blue-accent to-sognos-blue-accent text-white",
+            "transition-transform duration-300 ease-in-out",
+            scrolled ? "-translate-y-full" : "translate-y-0",
+          ].join(" ")}
+        >
           <div className="max-w-7xl mx-auto relative flex h-14 w-full items-center overflow-hidden px-2">
             <div className="relative z-30 flex shrink-0 items-center self-stretch border-r border-white/15 bg-sognos-blue-accent/10 px-4">
               <span className="mr-2 inline-flex rounded border border-white/25 bg-white text-sognos-heading px-3 py-2.5 text-xs font-semibold uppercase tracking-wider align-middle md:text-xs">
@@ -648,10 +615,9 @@ export default function Navbar({
       <header
         ref={headerRef}
         className={[
-          "fixed inset-x-0 z-50 will-change-transform",
+          "fixed inset-x-0 z-50",
           bannerOffsetClass,
-          "transition-[transform,background-color,border-color] duration-300 ease-in-out",
-          headerHidden ? "-translate-y-full" : "translate-y-0",
+          "transition-[top,background-color,border-color] duration-300 ease-in-out",
           "border-b",
           scrolled
             ? useTransparent
