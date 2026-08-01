@@ -316,7 +316,23 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   page-progress indicator, post-prose demo/contact conversion panel, shared
   end-of-prose navigation/sharing, Portable Text custom blocks, and latest
   articles.
-- `/customer-stories`: archive cards.
+- `/customer-stories`: light left-aligned hero using the Knowledge Hub headline
+  and subcopy treatment, then a featured block and an archive grid.
+  - Featured is two equal columns over two rows with the lead spanning both on
+    the left (after `anam.ai/blog`). Rows are auto rather than fixed so long
+    titles cannot clip; the lead's image flexes to match the column height. One
+    `FeaturedCard` serves all three slots — the lead stacks image over text, the
+    other two run image-left / text-right from `lg` and stack below it.
+  - Archive cards follow `middesk.com`'s "Explore more stories": no card
+    surface, just image, mono meta row (chip · date, read time right-aligned),
+    title, and Read More on the section background.
+  - `FEATURED_COUNT` drives both slices, so the archive excludes whatever the
+    featured block already showed and no story appears twice.
+  - **Still a hardcoded `STORIES` array** while `/customer-stories/[slug]` is
+    Sanity-driven. The two are in sync today but nothing enforces it — a story
+    added in Sanity will not appear here. Migrating to
+    `getCustomerStoryArchive()` pairs naturally with adding a `featured` flag,
+    which is what replaces the current first-three selection.
 - `/customer-stories/[slug]`: dark centred hero — breadcrumb, title, a 16:8
   brand panel carrying the client logo on a radial gradient in their own
   colour, then a centred pull-quote with `Name / ROLE` attribution. Body is a

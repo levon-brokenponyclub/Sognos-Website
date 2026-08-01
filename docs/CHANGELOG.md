@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-08-01 — Customer stories index rebuilt as featured grid + archive
+
+- **Hero** (`app/(marketing)/customer-stories/page.tsx`): the dark centred hero — pill badge, "Real outcomes from real organisations", subcopy — is replaced by a light left-aligned one using the Knowledge Hub headline and subcopy treatment. The headline is now the page name, matching how Knowledge Hub uses its own; the former headline's descriptive line became the subcopy. `data-header-dark` dropped, since the hero is light and those per-section listeners are already recorded as removed.
+
+- **Featured block** after `middesk.com/customers` and `anam.ai/blog`: two equal columns over two rows with the lead spanning both on the left, per anam's `repeat(2, minmax(50px, 1fr))` with `grid-row: span 2`.
+  - Rows are **auto**, not the fixed 311px the reference uses — titles here run to three lines and would clip. The lead's image flexes instead (`min-h-[16rem] lg:min-h-[26rem]`), so its card still matches the column height.
+  - One `FeaturedCard` serves all three slots so they cannot drift apart. The lead stacks image over text; the other two run image-left / text-right from `lg` and stack below it, which takes their titles from six lines to three at 375px.
+  - Gap follows the house `gap-3 lg:gap-4` rather than the reference's 20px.
+
+- **Archive** now excludes the featured stories. Previously all eight rendered in both places, so every featured story appeared twice on the page. A `FEATURED_COUNT` constant drives both slices so they cannot fall out of step.
+
+- **Archive cards** follow middesk's "Explore more stories": the white card surface and grey meta block are gone, leaving image, mono meta row (chip · date, read time right-aligned), title, and Read More directly on the section background. Image moves 3/2 → 16/9 and the title to `text-lg lg:text-xl font-normal`, so the archive matches the featured cards above it. The logo overlay is **kept**, unlike the reference's plain photos — the featured cards and the detail-page brand panels both carry the client mark.
+
+- **Images**: featured lead and archive cards moved to `next/image`; the lead takes `priority` as the page's LCP element. This cleared the file's two pre-existing `no-img-element` warnings — it now lints at zero.
+
+- **Known gap:** the index still reads a hardcoded 8-story `STORIES` array while the detail pages are Sanity-driven. They match today but nothing enforces it. Featured selection is `slice(0, 3)`; a `featured` flag in Sanity replaces it, and that change pairs naturally with migrating the index to `getCustomerStoryArchive()`.
+
+- **Cookie banner** (`components/ui/CookieBanner.tsx`): title changed to "We value your privacy".
+
+- **Files:** `app/(marketing)/customer-stories/page.tsx`, `components/ui/CookieBanner.tsx`.
+
 ## 2026-08-01 — Customer story rebuilt on the Pallet layout
 
 - **Hero** (`app/(marketing)/customer-stories/[slug]/page.tsx`): replaced the two-column `[24rem_1fr]` grid and its bordered left meta rail with a single centred column — breadcrumb, title, brand panel, pull-quote.
