@@ -5,6 +5,7 @@ import SolutionUseCases from "@/components/layout/sections/SolutionUseCases";
 import LogoStrip from "@/components/layout/sections/LogoStrip";
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import PlatformLogoRow from "@/components/layout/sections/shared/PlatformLogoRow";
 import { SOLUTIONS } from "@/lib/constants";
 import { getSolutionContent, getSolutionMeta } from "@/lib/solutions-content";
 import { PRODUCTS } from "@/lib/constants";
@@ -26,8 +27,6 @@ export async function generateMetadata({
     description: meta.description,
   };
 }
-
-const PROBLEM_ICON = "/solutions/Inon.avif";
 
 export default async function SolutionPage({
   params,
@@ -82,49 +81,46 @@ export default async function SolutionPage({
         </div>
       </section>
 
-      {/* What it solves — borderless columns on dark purple band */}
+      {/* What it solves — 2x2 on dark band: copy cell + three numbered cards.
+          All seven solutions define exactly three painPoints, so the grid is
+          fixed rather than flowing; a fourth entry would wrap to a new row. */}
       <ScrollReveal>
         <section className="py-24 lg:py-32 bg-sognos-navy">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="mb-14 flex flex-col items-center text-center">
-              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
-                The problem
-              </p>
-              <h2
-                className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em]"
-                style={{ color: "#FFFFFF" }}
-              >
-                What {meta.name} solves
-              </h2>
-              <p
-                className="mt-6 max-w-2xl text-base leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.72)" }}
-              >
-                {content.whatItSolves.intro}
-              </p>
-            </div>
+            <div className="grid gap-3 lg:gap-4 md:grid-cols-2">
+              {/* Cell 1 — section copy, no card surface */}
+              <div className="flex flex-col justify-center p-2 md:p-6 lg:p-8">
+                <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
+                  The problem
+                </p>
+                <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em] text-white text-balance">
+                  What {meta.name} solves
+                </h2>
+                <p className="mt-6 max-w-md text-base leading-relaxed text-white/70">
+                  {content.whatItSolves.intro}
+                </p>
+              </div>
 
-            <div className="grid gap-8 md:grid-cols-3 lg:gap-12">
+              {/* Cells 2-4 — numbered pain points */}
               {content.whatItSolves.painPoints.map((point, i) => (
-                <div key={i}>
-                  <div className="relative mb-5 h-12 w-12">
-                    <Image
-                      src={PROBLEM_ICON}
-                      alt=""
-                      fill
-                      sizes="48px"
-                      className="object-contain"
-                    />
-                  </div>
-                  <h3 className="mb-3 font-heading text-xl font-medium text-white">
-                    {point.title}
-                  </h3>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "rgba(255,255,255,0.72)" }}
+                <div
+                  key={i}
+                  className="flex min-h-[320px] flex-col justify-between rounded-lg bg-white/5 p-6 lg:min-h-[380px] lg:p-8"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-sm text-sognos-blue-accent"
                   >
-                    {point.body}
-                  </p>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="font-heading text-xl lg:text-2xl font-medium text-white">
+                      {point.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-relaxed text-white/70">
+                      {point.body}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -144,30 +140,27 @@ export default async function SolutionPage({
       <ScrollReveal>
         <section className="bg-white py-24 lg:py-32">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="rounded-lg bg-[#F7F8FA] px-10 py-14 lg:px-14 lg:py-16">
+            <div className="rounded-lg bg-gray-200/70 px-10 py-14 lg:px-14 lg:py-16">
               <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
                 <div className="lg:max-w-sm">
-                  <h2
-                    className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em]"
-                    style={{ color: "#1A1A1A" }}
-                  >
+                  <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em] text-sognos-heading">
                     Platform
                   </h2>
                 </div>
                 <div className="lg:max-w-xl">
-                  <h3
-                    className="font-heading text-xl md:text-2xl font-medium tracking-[-0.01em]"
-                    style={{ color: "#1A1A1A" }}
-                  >
+                  {/* Per-solution: which part of the stack leads here. */}
+                  <h3 className="font-heading text-xl md:text-2xl font-medium tracking-[-0.01em] text-sognos-heading">
                     Built on {content.platform.label}
                   </h3>
-                  <p
-                    className="mt-4 text-base leading-relaxed"
-                    style={{ color: "#4B5563" }}
-                  >
+                  <p className="mt-4 text-base leading-relaxed text-sognos-body">
                     {content.platform.description}
                   </p>
                 </div>
+              </div>
+
+              {/* Generic: the full Microsoft foundation, identical everywhere. */}
+              <div className="mt-12 border-t border-sognos-line pt-10">
+                <PlatformLogoRow variant="light" />
               </div>
             </div>
           </div>

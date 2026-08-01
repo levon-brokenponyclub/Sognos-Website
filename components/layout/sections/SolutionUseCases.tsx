@@ -48,7 +48,7 @@ export default function SolutionUseCases({ solutionName, capabilities }: Props) 
             {/* Left — white, dark text */}
             <div className="bg-white">
               {/* Header strip: height ~= STACK_REVEAL so the title stays readable when stacked */}
-              <div className="flex items-center gap-5 border-b border-sognos-line px-8 py-6 lg:px-12">
+              <div className="flex items-center gap-5 px-8 py-6 lg:px-12">
                 <span className="shrink-0 tabular-nums text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                   {String(i + 1).padStart(2, "0")}
                 </span>
