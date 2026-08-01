@@ -79,6 +79,8 @@
   --font-weight-regular: var(--sognos-font-weight-regular);
 
   /* Typography — type scale (single source of truth) */
+  --text-xxs: 0.65rem;
+  --text-xxs--line-height: 0.9rem;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;
@@ -310,6 +312,20 @@
 
 @media (prefers-reduced-motion: reduce) {
   .trust-marquee-track {
+    animation: none;
+  }
+}
+
+/* Announcement banner marquee — mobile only. Content is duplicated in the
+   markup so the shared 0 → -50% keyframe loops seamlessly. */
+.banner-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: trust-marquee-scroll 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-marquee-track {
     animation: none;
   }
 }

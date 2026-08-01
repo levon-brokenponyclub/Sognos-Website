@@ -14,6 +14,8 @@ import {
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
+import { UPCOMING_EVENT } from "@/lib/upcomingEvent";
+import type { FeaturedNavItem, FeaturedNavMap } from "@/lib/featuredNav";
 
 // ── Transparent-over-hero: paths whose first section is a dark hero ────────────
 const DARK_HERO_PATHS = new Set([
@@ -26,12 +28,8 @@ const DARK_HERO_PATHS = new Set([
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
 
-const UPCOMING_EVENT = {
-  href: "/events/nfp-real-care",
-  label: "Upcoming event",
-  title: "Designing Services Around Real Lives, Not System Boundaries",
-  meta: "Thu 17 Sep • North Sydney",
-} as const;
+// Lives in a plain module so the server-side layout can read it too — see
+// lib/upcomingEvent.ts.
 
 const BANNER_HEIGHT_CLASS = "top-11 md:top-11";
 const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
@@ -88,14 +86,126 @@ function getLinkCols(group: NavGroup) {
 
 // ── Desktop dropdown content ───────────────────────────────────────────────────
 
+function IconArrowUpRight() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+// Single image-backed block: full-bleed photo, copy and arrow over it. The
+// reference has no scrim, but the hero images here are light enough that white
+// text needs one — hence the gradient.
+function FeaturedPromo({
+  item,
+  onClose,
+}: {
+  item: FeaturedNavItem;
+  onClose: () => void;
+}) {
+  return (
+    <Link
+      href={item.href}
+      onClick={onClose}
+      className="group/feat w-[26rem] shrink-0"
+    >
+      <div className="relative flex h-full min-h-[240px] flex-col justify-end overflow-hidden rounded-lg bg-sognos-navy">
+        <Image
+          src={item.image}
+          alt=""
+          fill
+          sizes="416px"
+          className="object-cover transition-transform duration-500 group-hover/feat:scale-105"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
+
+        <div className="relative z-10 flex items-end justify-between gap-4 p-5">
+          <div className="min-w-0">
+            <p className="font-heading text-lg font-medium leading-snug text-white">
+              {item.title}
+            </p>
+            {item.description && (
+              <p className="mt-1.5 text-sm leading-snug text-white/80">
+                {item.description}
+              </p>
+            )}
+          </div>
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white bg-white text-sognos-navy transition-colors duration-200 group-hover/feat:bg-transparent group-hover/feat:text-white">
+            <IconArrowUpRight />
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function FeaturedColumn({
+  items,
+  onClose,
+}: {
+  items: FeaturedNavItem[];
+  onClose: () => void;
+}) {
+  return (
+    <div className="w-[26rem] shrink-0 rounded-lg bg-gray-50 p-6">
+      <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+        Featured
+      </p>
+      <div className="flex flex-col gap-5">
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onClose}
+            className="group/feat flex items-start gap-4"
+          >
+            <div className="relative aspect-[16/10] w-28 shrink-0 overflow-hidden rounded-lg bg-sognos-navy">
+              <Image
+                src={item.image}
+                alt=""
+                fill
+                sizes="112px"
+                className="object-cover transition-transform duration-500 group-hover/feat:scale-105"
+              />
+            </div>
+            <div className="min-w-0">
+              <p className="font-heading text-sm font-medium leading-snug text-sognos-heading transition-colors duration-200 group-hover/feat:text-sognos-blue-accent">
+                {item.title}
+              </p>
+              <p className="mt-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                {item.label}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DropdownContent({
   group,
   onClose,
+  featured = {},
 }: {
   group: NavGroup;
   onClose: () => void;
+  featured?: FeaturedNavMap;
 }) {
   const linkCols = getLinkCols(group);
+  // Groups absent from the map keep the gradient panel.
+  const featuredGroup = featured[group.label];
+  const featuredItems = featuredGroup?.items ?? [];
   return (
     <div className="flex gap-12">
       {linkCols.map((col, i) => (
@@ -120,7 +230,13 @@ function DropdownContent({
           </ul>
         </div>
       ))}
-      <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+      {featuredGroup?.variant === "promo" && featuredItems[0] ? (
+        <FeaturedPromo item={featuredItems[0]} onClose={onClose} />
+      ) : featuredItems.length > 0 ? (
+        <FeaturedColumn items={featuredItems} onClose={onClose} />
+      ) : (
+        <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+      )}
     </div>
   );
 }
@@ -262,9 +378,12 @@ function MobileFooter({
 export default function Navbar({
   variant = "light",
   transparentOverHero,
+  featured = {},
 }: {
   variant?: NavVariant;
   transparentOverHero?: boolean;
+  /** Keyed by nav group label; resolved server-side — see lib/featuredNav.ts. */
+  featured?: FeaturedNavMap;
 }) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
@@ -325,12 +444,12 @@ export default function Navbar({
     ? {
         bar: "bg-white border-white/0",
         text: "text-sognos-heading",
-        chipBorder: "border-sognos-line",
+        chipBorder: "border-sognos-muted",
       }
     : {
         bar: "bg-sognos-navy-dark border-white/15",
         text: "text-white",
-        chipBorder: "border-white/25",
+        chipBorder: "border-white/60",
       };
 
   // ── Measure dropdown dimensions ───────────────────────────────────────────────
@@ -563,9 +682,38 @@ export default function Navbar({
               gone, as is UPCOMING_EVENT.meta — the constant is still read by
               BANNER_STORAGE_KEY, so nothing is orphaned by hiding it here. */}
           <div className="max-w-7xl mx-auto relative flex h-11 w-full items-center px-2">
-            <div className="flex min-w-0 flex-1 items-center justify-center gap-3">
+            {/* Mobile — chip plus a right-to-left marquee of the title. The
+                title is duplicated for a seamless loop, so the visible copies
+                are hidden from assistive tech and a single sr-only copy carries
+                the text. */}
+            <Link
+              href={UPCOMING_EVENT.href}
+              onClick={dismissBanner}
+              className="flex min-w-0 flex-1 items-center gap-2 self-stretch md:hidden"
+            >
               <span
-                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2.5 py-1 text-sm font-normal align-middle md:text-xs`}
+                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2 py-0.5 text-xxs font-medium uppercase tracking-wider align-middle`}
+              >
+                {UPCOMING_EVENT.label}
+              </span>
+
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <div className="banner-marquee-track" aria-hidden="true">
+                  <span className="whitespace-nowrap pr-10 text-xxs font-medium">
+                    {UPCOMING_EVENT.title}
+                  </span>
+                  <span className="whitespace-nowrap pr-10 text-xxs font-medium">
+                    {UPCOMING_EVENT.title}
+                  </span>
+                </div>
+                <span className="sr-only">{UPCOMING_EVENT.title}</span>
+              </div>
+            </Link>
+
+            {/* Desktop — centred group with the CTA */}
+            <div className="hidden min-w-0 flex-1 items-center justify-center gap-3 md:flex">
+              <span
+                className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2.5 py-1 text-sm font-normal uppercase tracking-wider align-middle md:text-xs`}
               >
                 {UPCOMING_EVENT.label}
               </span>
@@ -669,7 +817,11 @@ export default function Navbar({
                   className="p-6"
                   style={{ width: "max-content" }}
                 >
-                  <DropdownContent group={group} onClose={() => {}} />
+                  <DropdownContent
+                    group={group}
+                    onClose={() => {}}
+                    featured={featured}
+                  />
                 </div>
               ))}
           </div>
@@ -967,6 +1119,7 @@ export default function Navbar({
                         <DropdownContent
                           group={activeGroup}
                           onClose={closeAll}
+                          featured={featured}
                         />
                       </div>
                     </motion.div>
