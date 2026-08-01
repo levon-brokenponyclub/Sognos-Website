@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-08-01 — Mobile dropdown TOC for article scroll nav
+
+- **`ArticleScrollNav.tsx` is now responsive** rather than desktop-only. The `lg` sidebar rail is unchanged; below `lg` it renders a sticky collapsible dropdown driven by the same `activeId` scroll-spy, so there is one source of truth for the active section at every breakpoint.
+  - Sticky at `top-20` / `z-40`, matching the navbar's `h-20` (80px) content row and sitting under the `z-50` header so the peeking bar covers it.
+  - Toggle row with a rotating `ChevronDown`; tapping a link scrolls to the heading and closes the panel.
+  - `variant="dark"` now covers the dropdown too — added `panelBg` / `panelText` / `panelBorder` to the existing `colors` map. No call site passes `dark` yet; this is correctness-for-later.
+
+- **Panel overlays instead of displacing.** The links panel is `absolute inset-x-0 top-full` inside a `relative` bar, so opening it no longer pushes the article body down ~500px mid-read.
+
+- **Accordion animates `grid-template-rows` 0fr→1fr, not `height: auto`.** Deliberate deviation from the `FooterColumns.tsx` pattern: Framer measures an `auto` keyframe by reflowing and then calling `window.scrollTo()` to restore position. That restore landed *after* `scrollToSection()` and cancelled its smooth scroll — tapping a link closed the panel but never moved the page. The `fr` interpolation needs no measurement, so the scroll survives. Verified via a patched `window.scrollTo` capturing the offending call from `measureAllKeyframes`.
+
+- **Scroll offset is now breakpoint-derived** (`landingOffset()`). Below `lg` the sticky bar overlays the article top, so the old fixed `-112` landed headings ~21px behind the bar. Offset is computed from the bar's own height (`MOBILE_BAR_TOP + offsetHeight + SCROLL_GAP`) rather than its current possibly-unstuck position, so it is stable wherever the click happens; `offsetParent === null` detects the `display:none` desktop case and falls back to the original 112.
+
+- **Scroll-spy checkpoint follows the same offset.** Was a fixed `scrollY + 140`, which sat *above* the mobile landing position — so immediately after tapping a link the TOC highlighted the previous section. Now `max(SPY_CHECKPOINT, landingOffset() + 1)`; desktop keeps its original 140 exactly.
+
+- **Call sites: `contents lg:block`.** Both pages previously wrapped the component in `hidden lg:block`, which would have suppressed the mobile block entirely. Replaced with `contents` below `lg` so the wrapper creates no box and the sticky bar is bounded by the full-height body grid rather than a self-sized column — without this the bar scrolls out of view immediately instead of tracking the article. Desktop-only siblings (`ArticleProgressLine`, the customer-story divider) stay `hidden lg:block`.
+
+- **Verified** at 375 / 768 / 1280px on both article families: dropdown open/close, link scroll landing 16px below the bar, active-entry sync, desktop rail + marker + progress line unchanged, no console errors. `tsc --noEmit` and `eslint` clean.
+
+- **Files:** `components/layout/sections/shared/ArticleScrollNav.tsx`, `app/(marketing)/knowledge-hub/[slug]/page.tsx`, `app/(marketing)/customer-stories/[slug]/page.tsx`.
+
 ## 2026-08-01 — Page transitions, About hero grid, and motion/token refinements
 
 - **Page transition wrapper** (`components/layout/PageTransition.tsx`, new):

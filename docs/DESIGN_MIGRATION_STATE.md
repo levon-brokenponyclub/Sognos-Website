@@ -89,9 +89,12 @@ Resolved items:
 
 - `ProductFeaturesScroll.tsx` and `SolutionsSection.tsx`: sticky rail plus
   requestAnimationFrame-throttled scroll-spy.
-- `ArticleScrollNav.tsx`: shared article heading rail for Knowledge Hub and
+- `ArticleScrollNav.tsx`: shared article heading nav for Knowledge Hub and
   Customer Stories; supports either its own track or a page-level full-height
-  rail.
+  rail. Responsive by breakpoint — sidebar rail from `lg`, sticky collapsible
+  dropdown below it, both driven by one scroll-spy. Both call sites wrap it in
+  a `contents lg:block` element so the sticky mobile bar is bounded by the
+  full-height body grid rather than a self-sized column.
 - `scroll-progress.tsx`: fixed, spring-smoothed page progress indicator shared
   by Knowledge Hub posts and customer stories.
 - `AboutHeroImage.tsx`: full-width image that shrinks to the main container with
@@ -213,7 +216,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `sognosroster/Hero.tsx`                            | Production                  | Gradient product hero with a timed logo entrance and four-second hold before crossfading into a looping, screen-blended local conversation video.                                                                                                                                                                                                                                         |
 | `LegalPageRenderer.tsx`                            | Production                  | Sticky legal-page rail, Portable Text document layout, normalized headings/body, blue-square unordered lists, semantic ordered lists, and hidden duplicate privacy-policy intro.                                                                                                                                                                                                          |
 | `AboutHeroImage.tsx`                               | Production                  | Reusable About/Careers/Social Responsibility scroll-shrink image with `src`/`alt` overrides.                                                                                                                                                                                                                                                                                              |
-| `ArticleScrollNav.tsx`                             | Production                  | Shared customer-story and Knowledge Hub heading rail with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership.                                                                                                                                                                                                               |
+| `ArticleScrollNav.tsx`                             | Production                  | Shared customer-story and Knowledge Hub heading nav with active-section scroll-spy, accessible current-state semantics, and optional external full-height track ownership. Sidebar rail from `lg`; sticky collapsible dropdown below `lg` (overlay panel, `grid-template-rows` accordion, breakpoint-derived scroll offset).                                                              |
 | `ArticleProseFooter.tsx`                           | Production                  | Shared post-conversion-panel footer with compact spacing, back-to-index navigation, and exported copy/share controls from `ShareIcons`.                                                                                                                                                                                                                                                   |
 | `scroll-progress.tsx`                              | Production                  | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families.                                                                                                                                                                                                                                                                                   |
 | `StoryMetaRail.tsx` / `ShareIcons`                 | Production                  | Customer-story metadata rail; exported share controls provide copy-link feedback plus an X, LinkedIn, and Facebook dropdown for the shared article footer.                                                                                                                                                                                                                                |

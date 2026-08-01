@@ -15,6 +15,7 @@ import {
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
 import ArticleProseFooter from "@/components/layout/sections/shared/ArticleProseFooter";
+import ArticleProgressLine from "@/components/layout/sections/shared/ArticleProgressLine";
 import {
   type PortableBlock,
   slugify,
@@ -37,9 +38,6 @@ const H2 =
   "mt-0 mb-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading scroll-mt-28 md:scroll-mt-32";
 const PROSE =
   "text-base leading-relaxed text-sognos-body [&_p]:mb-5 [&_ul]:mb-6 [&_ul]:space-y-2 [&_li]:text-base [&_li]:leading-relaxed";
-const HERO_EXCERPT_PLACEHOLDER =
-  "A practical perspective on replacing disconnected systems with a connected platform that gives teams clearer context, safer workflows, and better outcomes.";
-
 // ─── Static params ────────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
@@ -192,97 +190,114 @@ export default async function KnowledgeHubPost({
     <main className="bg-white">
       <ScrollProgress />
 
-      {/* ── Hero — back link, then meta+title with featured image below ── */}
-      <section className="overflow-hidden bg-white pt-32 lg:pt-40">
+      {/* ── Hero — dark, Pallet-style: meta → title → image ── */}
+      <section className="bg-sognos-navy pt-32 pb-16 lg:pt-40 lg:pb-20">
         <div className="mx-auto max-w-7xl px-6">
-          {/* Back link — above the rail line */}
+          {/* Back link */}
           <Link
             href="/knowledge-hub"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-sognos-body/60 transition-colors hover:text-sognos-body"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-white/40 transition-colors hover:text-white/70"
           >
             <ArrowLeft
               size={14}
               className="transition-transform duration-200 group-hover:-translate-x-0.5"
             />
-            Back to Knowledge Hub
+            Knowledge Hub
           </Link>
 
-          <div className="mt-10 border-l border-sognos-line pl-6 lg:grid lg:grid-cols-4 lg:gap-x-16 xl:gap-x-20">
-            {/* Left — border-line starts at the meta row, then title */}
-            <div className="lg:col-span-2">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                <span>{post.category}</span>
-                <span aria-hidden="true" className="text-sognos-line">
-                  |
-                </span>
-                <span>{formatMetaDate(post.date)}</span>
+          {/* Rail line — spans full hero height including image */}
+          <div className="mt-10 border-l border-white/20 pl-6 lg:mt-14">
+            {/* Two-col: stacked meta left / title right — matches CS hero spacing */}
+            <div className="lg:grid lg:grid-cols-[9rem_1fr] lg:gap-0">
+              {/* Left — stacked meta with labels */}
+              <div className="mb-10 space-y-8 lg:mb-0">
+                <div>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
+                    Category
+                  </p>
+                  <span className="inline-flex w-fit items-center rounded bg-sognos-muted/40 px-2.5 h-6.5 py-1 text-xs font-normal text-white">
+                    {post.category}
+                  </span>
+                </div>
+                <div>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
+                    Published
+                  </p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-white">
+                    {formatMetaDate(post.date)}
+                  </p>
+                </div>
                 {post.readTime && (
-                  <>
-                    <span aria-hidden="true" className="text-sognos-line">
-                      |
-                    </span>
-                    <span>{post.readTime}</span>
-                  </>
+                  <div>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
+                      Read Time
+                    </p>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-white">
+                      {post.readTime}
+                    </p>
+                  </div>
                 )}
               </div>
-              <h1 className="mt-6 font-heading text-3xl font-medium leading-tight tracking-tight text-sognos-heading lg:text-8xl">
-                {post.title}
-              </h1>
-            </div>
 
-            {/* Excerpt rail — placeholder copy until article excerpts are approved */}
-            <div className="mt-10 lg:col-span-2 lg:col-start-3 lg:row-start-1 lg:mt-60 lg:self-end">
-              <div className="relative border-l border-sognos-line pl-6 lg:min-h-[210px] lg:pl-10">
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-px top-0 hidden h-6 w-1 bg-sognos-blue-accent lg:block"
-                />
-                <p className="max-w-md font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading md:text-xl">
-                  {HERO_EXCERPT_PLACEHOLDER}
-                </p>
+              {/* Col 2 — title + image */}
+              <div className="mx-auto max-w-3xl">
+                <h1 className="font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
+                  {post.title}
+                </h1>
+
+                {heroUrl && (
+                  <div className="mt-12 lg:mt-16">
+                    <div className="relative aspect-[16/8] overflow-hidden rounded-lg">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={heroUrl}
+                        alt=""
+                        className="h-full w-full object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Body — sticky scroll-spy nav + prose ── */}
-      <section className="bg-white pt-0 pb-16 lg:pb-24">
+      {/* ── Body — TOC | progress line | prose ── */}
+      <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="relative lg:grid lg:grid-cols-3 lg:gap-x-16 lg:gap-y-16 xl:gap-x-20">
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-sognos-line lg:block"
-            />
-
-            {/* Featured image — aligned to the prose/content column below */}
-            {heroUrl && (
-              <div
-                id="article-featured-image"
-                className={`mb-12 w-full lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mb-0 lg:ml-0 ${ARTICLE_PROSE_MAX_W}`}
-              >
-                <div className="relative aspect-[16/8] w-full overflow-hidden rounded-lg">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={heroUrl}
-                    alt={post.title}
-                    className="h-full w-full object-cover object-top"
+          {/* 3-col when headings exist: [TOC 300px] [line 48px] [prose 1fr]
+              Falls back to single column when article has no h2 headings. */}
+          <div
+            className={
+              sections.length > 0
+                ? "lg:grid lg:grid-cols-[300px_48px_1fr] lg:gap-x-10"
+                : ""
+            }
+          >
+            {sections.length > 0 && (
+              <>
+                {/* Col 1 — TOC. `contents` below lg so this wrapper creates no
+                    box: the component's own sticky mobile dropdown is then
+                    bounded by the full-height body grid instead of a
+                    self-sized column, so it tracks the whole article. From lg
+                    it becomes a normal sticky grid item. */}
+                <div className="contents lg:block lg:sticky lg:top-36 lg:self-start">
+                  <ArticleScrollNav
+                    sections={sections}
+                    showTrack={false}
                   />
                 </div>
-              </div>
+
+                {/* Col 2 — progress line (stretches to prose height via grid) */}
+                <div className="hidden lg:block">
+                  <ArticleProgressLine />
+                </div>
+              </>
             )}
 
-            {/* Col 1 — sticky scroll-spy nav */}
-            <div className="lg:col-span-1 lg:row-start-2 lg:self-stretch">
-              {sections.length > 0 && (
-                <div className="hidden lg:sticky lg:top-[100px] lg:block">
-                  <ArticleScrollNav sections={sections} showTrack={false} />
-                </div>
-              )}
-            </div>
-
-            {/* Col 2 — prose */}
-            <div className="min-w-0 md:col-span-2 lg:col-start-2 lg:row-start-2">
+            {/* Col 3 (or full-width) — prose */}
+            <div className="min-w-0">
               <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
                 <PortableText
                   value={post.body}
@@ -290,7 +305,7 @@ export default async function KnowledgeHubPost({
                 />
               </div>
               <aside
-                className={`mt-16 bg-sognos-blue-accent p-6 text-white md:px-8 rounded md:py-8 ${ARTICLE_PROSE_MAX_W}`}
+                className={`mt-16 rounded bg-sognos-blue-accent p-6 text-white md:px-8 md:py-8 ${ARTICLE_PROSE_MAX_W}`}
               >
                 <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-3xl">
                   Book a demo today

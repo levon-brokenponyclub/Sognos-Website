@@ -304,13 +304,17 @@ export default async function CustomerStoryPage({
       <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="lg:grid lg:grid-cols-3 lg:gap-16 xl:grid-cols-3 xl:gap-20">
-            {/* Column 1 — article scroll-spy nav (sticky) stacked above meta rail */}
-            <div className="lg:col-span-1 lg:sticky lg:top-[100px] lg:self-start">
+            {/* Column 1 — article scroll-spy nav (sticky) stacked above meta rail.
+                `contents` below lg so this wrapper creates no box: the nav's own
+                sticky mobile dropdown is then bounded by the full-height body
+                grid rather than this self-sized column, so it tracks the whole
+                article. From lg it becomes a normal sticky grid item. */}
+            <div className="contents lg:block lg:col-span-1 lg:sticky lg:top-[100px] lg:self-start">
               {sections.length > 0 && (
-                <div className="hidden lg:block">
+                <>
                   <ArticleScrollNav sections={sections} />
-                  <div className="my-6 h-px bg-sognos-line" />
-                </div>
+                  <div className="my-6 hidden h-px bg-sognos-line lg:block" />
+                </>
               )}
               <StoryMetaRail
                 state={stateValue}
