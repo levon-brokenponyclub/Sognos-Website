@@ -254,9 +254,9 @@ Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live
 ### Phase 7 — UI Polish & Motion (started 2026-06-10)
 
 - [x] **Navbar full rewrite** — `AnimatePresence mode="popLayout"` cross-fade, hover intent (100ms open / 150ms close), `grid grid-cols-[1fr_auto_1fr]`, mobile accordion + orange dot.
-- [x] **Three-state scroll behavior** — `top` → `hidden` → `peek`. `HIDE_AFTER=80`, `DELTA_MIN=6`, rAF-throttled.
+- [x] **Scroll behavior — persistent bar** (supersedes the three-state `top` → `hidden` → `peek` model, removed 2026-08-01 in `df77a59`) — the header no longer translates. The announcement banner slides up (`-translate-y-full`) and the header animates `top` from the banner offset to `0`. `HIDE_AFTER`, `DELTA_MIN`, `headerHidden`, `mobileOpenRef` and `lastScrollYRef` are gone; the rAF-throttled handler now only sets `scrolled`.
 - [x] **Nav transitions overhaul** — `duration-300` unified; logo `transition-[filter]`; `pt-3` hover bridge; `mode="popLayout"` + `position: "absolute"` exit.
-- [x] **Mobile/tablet nav improvements** — hamburger right-aligned; `h-[76px] lg:h-[68px]`; tablet panel `md:w-[380px]`; "Book a Demo" `hidden sm:inline-flex lg:hidden`; backdrop-blur overlay with 72% CSS mask.
+- [x] **Mobile/tablet nav improvements** — hamburger right-aligned; content row is `h-20` (80px, all breakpoints — the old `h-[76px] lg:h-[68px]` no longer exists); tablet panel `md:w-[380px]`; "Book a Demo" `hidden sm:inline-flex lg:hidden`; backdrop-blur overlay with 72% CSS mask.
 - [x] **ProductSubNav → pills-only** — IntersectionObserver scroll-spy, `layoutId="subnav-pill"`. Removed dock/sticky/logo/button machinery.
 - [x] **SognosCare brand colour** — `#11102B` → `#03112f` across all affected files.
 - [x] **SognosCare Hero — cinematic scroll** — `useScroll`/`useTransform`: scale 0.9→1, y 0→−160px, opacity fade; all-four-corner rounding.
@@ -294,7 +294,8 @@ Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live
 - **Drawer scroll isolation** — requires both `document.body.style.overflow = "hidden"` on expand AND `overscroll-contain` on the inner scroll div; both are needed
 - **ProductCustomerStories** — shared customer stories component at `components/layout/sections/ProductCustomerStories.tsx`; product `Stories.tsx` files are thin wrappers around it
 - **Knowledge Hub post template** — `app/(marketing)/knowledge-hub/[slug]/page.tsx`; all 6 posts hardcoded for dev, `twoCol: true` enables sticky-meta + scrollable-content layout
-- **Navbar scroll model** — three states: `top` (transparent, white), `hidden` (slides off on scroll-down), `peek` (white bar on scroll-up). `headerHidden` guard includes `!openMenu && !mobileOpen` so an open dropdown never hides the bar. State lives in `Navbar.tsx`; do not add per-section `data-header-dark` listeners back.
+- **Navbar scroll model** — one persistent bar. The header is `fixed` with an `h-20` (80px) content row and never translates on scroll; only its `top` animates, from the banner offset to `0`, as the announcement banner slides itself up on first scroll. A single `scrolled` flag (`window.scrollY > 8`) drives the banner slide plus the bar's background/border swap. The old three-state `top` → `hidden` → `peek` model, and its `HIDE_AFTER` / `DELTA_MIN` / `headerHidden` state and the effect that force-revealed the bar when a dropdown opened, were removed in `df77a59` — do not reintroduce them. State lives in `Navbar.tsx`; do not add per-section `data-header-dark` listeners back.
+- **80px is a fixed offset** — because the bar no longer hides, anything positioning beneath it can rely on a constant 80px. Already assumed by `SolutionUseCases` (`TOP_BASE`) and `ArticleScrollNav` (`MOBILE_BAR_TOP`, sticky `top-20`). Changing the navbar height means updating those.
 - **ProductSubNav sections prop** — shape is `{ label: string; id: string; href?: string }[]` (matches `SubNavSection` exported from `ProductSubNav.tsx`). `href` is optional — defaults to `#${id}` if omitted.
 
 ---
