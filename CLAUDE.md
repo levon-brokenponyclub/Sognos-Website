@@ -215,6 +215,7 @@ CTAs: `Contact Sales` | `Book a Demo`
 - **Components:** Server Components by default; Client Components only when interaction is required
 - **Section backgrounds (gray):** always `bg-gray-200/70` — never `bg-[#FAFAFA]`, `bg-slate-50`, `bg-gray-100`, `bg-gray-200`
 - **Shadows:** NEVER. No `shadow-sm`, `shadow-md`, `shadow-xl`, `shadow-2xl` anywhere
+- **Dark color default:** `bg-sognos-navy` is the default dark surface. Only use `bg-sognos-navy-dark` or `bg-sognos-navy-darkest` when explicitly instructed
 - **Gaps:** `gap-3 lg:gap-4` as standard grid/flex gap
 - **Stat blocks:** always match CTASection.tsx stat block pattern exactly:
   - Container: `grid grid-cols-2 gap-3 lg:gap-4`
