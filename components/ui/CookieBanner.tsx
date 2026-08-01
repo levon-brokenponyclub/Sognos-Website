@@ -5,7 +5,7 @@ import { CookiePanel } from "@/components/ui/cookie-banner-1";
 export default function CookieBanner() {
   return (
     <CookiePanel
-      title="This site uses cookies"
+      title="We value your privacy"
       message="We use cookies to analyse site usage and improve your experience. You can accept or decline non-essential cookies."
       acceptText="Give me the cookies"
       customizeText="Customize"
