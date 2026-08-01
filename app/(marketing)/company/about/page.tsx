@@ -5,7 +5,7 @@ import TeamSection from "@/components/layout/sections/TeamSection";
 import SocialResponsibilitySection from "@/components/layout/sections/SocialResponsibilitySection";
 import AboutValues from "@/components/layout/sections/AboutValues";
 import AboutStats from "@/components/layout/sections/AboutStats";
-import AboutHeroGrid from "@/components/layout/sections/AboutHeroGrid";
+import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 export const metadata: Metadata = {
@@ -91,8 +91,8 @@ export default function AboutPage() {
         </div>
       </section>
       
-      {/* Mosaic grid — brand pillars with photography */}
-      <AboutHeroGrid />
+      {/* Scroll-shrink hero image */}
+      <AboutHeroImage />
 
       {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
       <section className="bg-white py-20 pt-0 lg:pb-24">
