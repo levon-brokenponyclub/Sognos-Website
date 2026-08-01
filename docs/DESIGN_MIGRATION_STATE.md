@@ -181,6 +181,13 @@ The live default font is the local variable **AngelList** face:
 `Inter` remains available as `--font-inter-stack` for development/fallback
 testing. Bureau Sans has been removed.
 
+The type scale in `app/globals.css` adds `--text-xxs` (0.65rem ≈ 10.4px) below
+`--text-xs`, with a paired line-height like every other step. Intended for
+uppercase micro-labels only — it sits under the 12px many accessibility
+guidelines treat as a floor for body copy. Note Tailwind v4 **inlines** these
+values rather than emitting `var(--text-*)`, and only emits a utility once
+something uses it, so a new token produces no CSS until it is referenced.
+
 The practical hierarchy currently used across the refreshed pages is:
 
 | Role                   | Current convention                                                            |
@@ -200,7 +207,7 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 
 | Component                                          | State                       | Current behavior                                                                                                                                                                                                                                                                                                                                                                          |
 | -------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Navbar.tsx`                                       | Production                  | Fixed 80px header, transparent dark-hero mode, scroll hide/peek, measured desktop dropdown, two-level mobile menu, and a 56px event announcement ribbon. The bottom border is hidden at page load and restored in the correct theme after scrolling. Ribbon dismissal persists per event payload after close or `View event`; `useSyncExternalStore` keeps localStorage state React-safe. |
+| `Navbar.tsx`                                       | Production                  | Fixed 80px header, transparent dark-hero mode, persistent bar (no hide/peek — see §10), measured desktop dropdown, two-level mobile menu, and an event announcement banner that inverts against the hero. Dropdowns end in a featured column driven by `lib/featuredNav.ts`; groups absent from that map keep the gradient placeholder. Below `md` the banner drops its CTA, uses `text-xxs`, and marquees the title as a single 44px tap target. Dismissal persists per event payload; `useSyncExternalStore` keeps localStorage state React-safe. |
 | `Footer.tsx` / `FooterColumns.tsx`                 | Production                  | Sanity-backed columns with client-side mobile accordions. The Company column is normalized to About, Social Responsibility, Knowledge Hub, News, Events, Customer Stories, Careers, Contact.                                                                                                                                                                                              |
 | `CTABand.tsx`                                      | Production                  | Global dark band rendered by the marketing layout. `Book a demo` opens the shared modal; background uses `sognos-navy-darkest`.                                                                                                                                                                                                                                                           |
 | `CTASection.tsx`                                   | Active variant              | Drawer-style lead form exists for `bare + hideStats`; its details step shares field styling, descriptive product radio rows, benefits, compact top spacing, and trust-logo sizing with the contact experience.                                                                                                                                                                            |

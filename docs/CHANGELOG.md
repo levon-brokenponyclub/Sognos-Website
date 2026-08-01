@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-08-02 — Nav featured columns, event schema, mobile banner
+
+- **Event document type** (`sanity/schemas/event.ts`, new): listing-level `event` — title, slug, excerpt, date, location, meta, heroImage, registrationOpen — registered in the schema index and surfaced as **Posts → Events** beside Customer Stories and Knowledge Hub.
+  - **Listing-level only, deliberately.** The event pages are hand-built (`/events/nfp-real-care` is 564 lines with agenda, speakers, partner logos and a Supabase/Resend registration form) and their bullet lists are keyed to lucide **icon components**, which Sanity cannot store. A full migration needs a decision on storing icon names and mapping them client-side. `body` is present but unused so page content can move later without a schema migration.
+  - `scripts/seed-events.ts` seeds the NFP Real Care document and uploads its hero image. Idempotent — `createOrReplace` against a fixed `_id`.
+  - **The seed has not been run.** `SANITY_API_WRITE_TOKEN` is absent from `.env.local`, and it writes to the production dataset that preview and production share. The type also won't appear in the production Studio until `redesign` merges to `main` — the Studio bundle ships with the app, same as `brandColor`.
+
+- **Featured columns in the nav dropdowns** (`lib/featuredNav.ts`, new): the dropdowns previously ended in an empty gradient placeholder.
+  - **Knowledge Hub** — three stacked rows: latest insight, latest customer story, upcoming event.
+  - **Why Sognos** — a single image-backed promo for Social Responsibility, after `diffblue.com`'s card: full-bleed photo with copy and an arrow over it.
+  - Navbar is a client component and cannot fetch, so the marketing layout resolves the items server-side and passes them down; the two archives join the existing `getCtaSectionContent()` in one `Promise.all`.
+  - Entries are keyed by nav group label and carry a `variant` (`list` | `promo`), so Products / Solutions / Industries are a map entry with **no Navbar change**. Groups absent from the map keep the gradient.
+  - Two deviations from the reference: `rounded-lg` rather than its 3px radius (design rules), and a **gradient scrim it does not have** — white text on a light photo would otherwise be unreadable over `social-responsibility-hero-img.webp`.
+  - Titles are the destination pages' own h1 copy so menu and page agree.
+
+- **`UPCOMING_EVENT` moved** from `Navbar.tsx` to `lib/upcomingEvent.ts`. It had to: Navbar is `"use client"`, and importing a value from a client file into a Server Component yields a client reference rather than the object — the trap `lib/customerStoryBrand.ts` already records.
+
+- **Mobile announcement banner** (`components/layout/Navbar.tsx`): below `md` the banner drops the "View event" link, uses `text-xxs`, and marquees the title right-to-left since it cannot fit. Desktop is unchanged apart from the label now being uppercase.
+  - The whole mobile group is the link, so removing the CTA doesn't strand the event, and it's `self-stretch` for a **44px tap target** rather than the 20px the text alone gave — under the 24px WCAG minimum.
+  - Title rendered twice so the shared `trust-marquee-scroll` keyframe loops seamlessly; both copies `aria-hidden` with one `sr-only` copy, or screen readers announce it twice. `.banner-marquee-track` reuses that keyframe rather than adding another and carries the same `prefers-reduced-motion` guard.
+
+- **`--text-xxs` (0.65rem)** added to the type scale in `app/globals.css` with a paired line-height. Verified it compiles to `font-size: .65rem` — worth knowing Tailwind v4 **inlines** token values rather than emitting `var(--text-*)`, and only emits a utility once something uses it, so a new token produces no CSS until referenced.
+
+- **Files:** `sanity/schemas/event.ts`, `sanity/schemas/index.ts`, `sanity.config.ts`, `scripts/seed-events.ts`, `lib/featuredNav.ts`, `lib/upcomingEvent.ts`, `app/(marketing)/layout.tsx`, `components/layout/Navbar.tsx`, `app/globals.css`.
+
 ## 2026-08-01 — Customer stories index rebuilt as featured grid + archive
 
 - **Hero** (`app/(marketing)/customer-stories/page.tsx`): the dark centred hero — pill badge, "Real outcomes from real organisations", subcopy — is replaced by a light left-aligned one using the Knowledge Hub headline and subcopy treatment. The headline is now the page name, matching how Knowledge Hub uses its own; the former headline's descriptive line became the subcopy. `data-header-dark` dropped, since the hero is light and those per-section listeners are already recorded as removed.
