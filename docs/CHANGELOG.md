@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-02 — Fix white screen on article routes (page transition)
+
+- **Customer story and Knowledge Hub post pages rendered as a blank white page on the first click**, and only came good after a browser reload. The whole page went — navbar included.
+
+- **Root cause: `components/layout/PageTransition.tsx`.** It wrapped the Navbar and the entire routed page in a Framer `AnimatePresence mode="wait"` keyed on `usePathname()`. The App Router commits the pathname change and swaps `children` in a single render, so AnimatePresence's exit cycle raced that commit. On routes slow enough to commit — the two article templates, which ship the largest RSC payloads — the exit tween ended up running on the element that already held the new page's content, and no enter animation followed. The wrapper was left at inline `opacity: 0` permanently.
+  - A reload worked because `initial={false}` makes the first mount skip the hidden state entirely. That asymmetry is the whole "fine after refresh" symptom.
+  - **Reproduced in a local production build, not dev** — dev never showed it. Measured on `/knowledge-hub/celebrating-10-years-…`: page committed at ~307 ms with the wrapper at `opacity: 1`, then hard-cut to `0` at ~564 ms (≈ the 300 ms exit duration) and stayed there past 8 s. `document.title`, `location.pathname` and `document.body.innerText` were all correct throughout — the content was rendered, just invisible. No JS errors. `/products/sognoscare`, `/company/about` and `/knowledge-hub` all navigated at `opacity: 1`, which is why only the article routes broke.
+
+- **Fix: the transition is now a CSS animation** (`.page-fade-in` in `app/globals.css`), keyed on the pathname, with no Framer involvement.
+  - **It cannot fail closed.** `animation-fill-mode` is left at `none`, so the element's own `opacity: 1` applies whenever the animation is absent, cancelled, or interrupted. A transition that does not run now yields a visible page rather than a blank one — the property that mattered most, given this wrapper contains the whole site.
+  - `prefers-reduced-motion` is handled in the stylesheet rather than via `useReducedMotion()`, so the component holds no motion logic.
+
+- **Two deliberate behaviour changes**, both flagged rather than assumed:
+  - **The cross-fade is now a fade-in only.** The outgoing page no longer fades out — that fade-out is precisely the animation that was stranding the page. Navigations are a 0.36 s fade-in of the incoming route.
+  - **The route you enter on never animates.** Fading the server-rendered first paint would hold LCP back by the length of the animation on every visit. The cost is that navigating *back* to that one route also skips the fade.
+
+- Reduced-motion users now get the same keyed wrapper as everyone else. Previously that branch returned a bare fragment, so its subtree did not remount across navigations.
+
+- **`PageTransition` now wraps only the routed page, not the Navbar** (`app/(marketing)/layout.tsx`). The Navbar is persistent chrome; keeping it inside meant every navigation remounted it, and put the entire site inside the blast radius of anything going wrong in that wrapper. It no longer fades with the page.
+  - `<main className="flex-1">` stays *inside* the wrapper deliberately. Moving it out would make it a direct flex child of `body.flex.min-h-full.flex-col` and activate the `flex-1` that is currently inert, changing page height behaviour — out of scope for a bug fix.
+
+- **Files:** `components/layout/PageTransition.tsx`, `app/(marketing)/layout.tsx`, `app/globals.css`.
+  - A "Next.js prod" entry (port 3001) was also added to `.claude/launch.json` for the repro, but `.claude/` is gitignored, so that is local only and not part of this change.
+
 ## 2026-08-02 — Nav featured columns, event schema, mobile banner
 
 - **Event document type** (`sanity/schemas/event.ts`, new): listing-level `event` — title, slug, excerpt, date, location, meta, heroImage, registrationOpen — registered in the schema index and surfaced as **Posts → Events** beside Customer Stories and Knowledge Hub.

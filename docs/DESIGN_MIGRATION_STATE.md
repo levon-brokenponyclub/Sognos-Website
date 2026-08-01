@@ -46,6 +46,12 @@ These are current discrepancies, incomplete migrations, or operational risks.
 
 Resolved items:
 
+- Article routes rendering as a blank white page on first click. `PageTransition`
+  gated the Navbar and the whole page behind a Framer `AnimatePresence
+  mode="wait"` enter animation, which raced the router commit on the slowest
+  routes and stranded the wrapper at `opacity: 0`. It is now a CSS animation
+  with no fill mode, so a transition that fails to run leaves the page visible.
+  **Only reproducible in a production build** — dev never showed it.
 - The project is on Next.js 16 and uses `proxy.ts`; `middleware.ts` was removed.
 - The navbar banner no longer performs synchronous `setState` inside an effect.
 - Customer-story/article 404s were traced to an unreadable local Sanity env
@@ -250,7 +256,8 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 CtaContentProvider
   BookDemoProvider
     Navbar
-    route content
+    PageTransition          (keyed on pathname)
+      route content
     CTABand
     Footer
     BookDemoModal
@@ -258,6 +265,21 @@ CtaContentProvider
 
 Cookie consent is handled at the root layout using the request cookie forwarded
 through `proxy.ts`.
+
+`PageTransition` fades the routed content in on each client-side navigation
+using the `.page-fade-in` CSS animation, keyed on `usePathname()`. Two rules
+govern it:
+
+- **It stays CSS, not Framer.** The animation carries no `fill-mode`, so the
+  element's own `opacity: 1` applies whenever it does not run — a transition
+  that fails leaves the page visible. Its previous Framer `AnimatePresence
+  mode="wait"` implementation had no such floor and stranded the article routes
+  at `opacity: 0`; see §2.
+- **The Navbar stays outside it.** It is persistent chrome, so a navigation no
+  longer remounts it, and the fade cannot take the whole site with it.
+
+The route entered on does not animate, so the server-rendered first paint is
+not held back. Navigating back to that one route therefore also skips the fade.
 
 ### Homepage
 

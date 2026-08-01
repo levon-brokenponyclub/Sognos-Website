@@ -29,8 +29,11 @@ export default async function MarketingLayout({
   return (
     <CtaContentProvider value={ctaContent}>
       <BookDemoProvider>
+        {/* Navbar sits outside the transition: it is persistent chrome, and
+            keeping it out means a navigation no longer remounts it and the
+            fade cannot take the whole site with it. */}
+        <Navbar featured={featuredNav} />
         <PageTransition>
-          <Navbar featured={featuredNav} />
           <main className="flex-1">{children}</main>
         </PageTransition>
         <CTABand />

@@ -287,6 +287,31 @@
   }
 }
 
+/* Page transition — fades routed content in on each client-side navigation.
+   Applied by PageTransition.tsx, which wraps the routed page (not the Navbar).
+   Kept in CSS with no fill mode on purpose: the element's own opacity of 1
+   applies whenever the animation is absent or interrupted, so a failed
+   transition can never leave the page invisible. */
+.page-fade-in {
+  animation: page-fade-in 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-in {
+    animation: none;
+  }
+}
+
 /* Trust marquee */
 .trust-marquee-track {
   display: flex;
