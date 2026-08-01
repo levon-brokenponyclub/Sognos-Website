@@ -123,50 +123,58 @@ function formatDate(dateStr: string): string {
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
+// Archive card. No card surface — image, mono meta row, title, Read More,
+// sitting directly on the section background.
 function StoryCard({ story }: { story: StoryCard }) {
   return (
     <Link
       href={`/customer-stories/${story.slug}`}
-      className="group flex flex-col bg-white rounded-lg p-2"
+      className="group flex flex-col"
     >
-      {/* Image */}
-      <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
-        <img
+      <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
+        <Image
           src={story.image}
-          alt={story.company}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
-        {/* Logo - customer only, centered */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
         <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
-          <img
+          <Image
             src={story.logo}
             alt={story.company}
-            className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
+            width={440}
+            height={128}
+            className="h-12 w-auto max-w-[170px] object-contain brightness-0 invert"
           />
         </div>
-
-        {/* Gradient overlays */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
       </div>
 
-      {/* Meta */}
-      <div className="mt-2 shrink-0 bg-gray-200/70 rounded-lg p-7">
-        <h3 className="font-heading text-xl lg:text-xl font-medium text-sognos-body line-clamp-2 leading-normal group-hover:text-sognos-body/70 transition-colors duration-200">
-          {story.title}
-        </h3>
-        <div className="mt-2 flex items-center gap-3 text-sm text-sognos-body/80">
-          <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-sognos-navy/80" />
-            {formatDate(story.date)}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Clock size={12} />
-            {story.readTime}
-          </span>
-        </div>
+      <div className="mt-5 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-sognos-muted">
+        <span className="border border-sognos-line px-2 py-1">
+          Customer Story
+        </span>
+        <span>{formatDate(story.date)}</span>
+        <span className="ml-auto flex items-center gap-1.5">
+          <Clock size={12} aria-hidden="true" />
+          {story.readTime}
+        </span>
       </div>
+
+      <h3 className="mt-3 font-heading text-lg lg:text-xl font-normal leading-snug tracking-tight text-sognos-header text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
+        {story.title}
+      </h3>
+
+      <span className="mt-4 text-sm font-medium text-sognos-body transition-colors duration-200 group-hover:text-sognos-blue-accent">
+        Read More{" "}
+        <span
+          aria-hidden="true"
+          className="inline-block transition-transform duration-200 group-hover:translate-x-0.5"
+        >
+          &rarr;
+        </span>
+      </span>
     </Link>
   );
 }
@@ -252,9 +260,13 @@ function FeaturedCard({
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
+const FEATURED_COUNT = 3;
+
 export default function CustomersPage() {
   // First three for now — a `featured` flag in Sanity replaces this later.
-  const [featuredLead, ...featuredRest] = STORIES.slice(0, 3);
+  const [featuredLead, ...featuredRest] = STORIES.slice(0, FEATURED_COUNT);
+  // Archive excludes whatever the featured block already showed.
+  const rest = STORIES.slice(FEATURED_COUNT);
 
   return (
     <>
@@ -286,10 +298,13 @@ export default function CustomersPage() {
       </section>
 
       {/* Grid */}
-      <section className="bg-gray-200/70 py-16 lg:py-24">
+      <section className="bg-gray-100 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6">
+          <h2 className="mb-8 font-heading text-center text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
+            Explore more stories
+          </h2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {STORIES.map((story) => (
+            {rest.map((story) => (
               <StoryCard key={story.slug} story={story} />
             ))}
           </div>
