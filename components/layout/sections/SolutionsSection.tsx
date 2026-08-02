@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+// Horizontal card slider. Swapped with IndustrySection: solutions used to be
+// the sticky stack and industries the slider.
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+
+// Must stay equal to the track's `gap-2`, or arrow paging drifts by the
+// difference on every press.
+const CARD_GAP_PX = 8;
 
 type Solution = {
   id: string;
@@ -80,170 +84,144 @@ const SOLUTIONS: Solution[] = [
   },
 ];
 
-export default function SolutionsSection() {
-  const [activeId, setActiveId] = useState(SOLUTIONS[0].id);
-  const refs = useRef<Map<string, HTMLElement>>(new Map());
+export default function SolutionsSection({
+  heading = "One intelligent platform for demand, workforce, and outcomes",
+}: {
+  heading?: string;
+}) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
 
-  useEffect(() => {
-    function getDocTop(el: HTMLElement): number {
-      let top = 0;
-      let cur: HTMLElement | null = el;
-      while (cur) {
-        top += cur.offsetTop;
-        cur = cur.offsetParent as HTMLElement | null;
-      }
-      return top;
-    }
-
-    let rafId = 0;
-
-    function onScroll() {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const checkpoint = window.scrollY + 140;
-        let found = SOLUTIONS[0].id;
-        for (const s of SOLUTIONS) {
-          const el = refs.current.get(s.id);
-          if (!el) continue;
-          if (getDocTop(el) <= checkpoint) found = s.id;
-        }
-        setActiveId(found);
-      });
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(rafId);
-    };
+  const updateArrows = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 8);
+    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
   }, []);
 
-  function scrollToSolution(id: string) {
-    const el = refs.current.get(id);
+  useEffect(() => {
+    updateArrows();
+    window.addEventListener("resize", updateArrows);
+    return () => window.removeEventListener("resize", updateArrows);
+  }, [updateArrows]);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 96;
-    window.scrollTo({ top, behavior: "smooth" });
-  }
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + CARD_GAP_PX : el.clientWidth * 0.8;
+    el.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
 
   return (
+    // Grey surface so the white cards read against it — the reference's cards
+    // are white on a light page, and white-on-white would be invisible.
     <section
       id="solutions"
-      className="w-full bg-white border-b border-sognos-line"
+      className="w-full bg-gray-50 border-b border-sognos-line"
     >
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <div className="flex gap-16 xl:gap-20 items-start">
-          {/* Sticky scroll-spy rail */}
-          <nav
-            aria-label="Solutions navigation"
-            className="hidden lg:block w-44 xl:w-54 shrink-0 sticky top-[100px] z-10"
-          >
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
-              Solutions
-            </p>
-            <div className="space-y-0.5">
-              {SOLUTIONS.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => scrollToSolution(s.id)}
-                  aria-selected={activeId === s.id}
-                  className="group flex items-center gap-x-2.5 py-2 text-left w-full"
-                >
-                  <span className="relative flex size-2 flex-none items-center justify-center">
-                    {activeId === s.id ? (
-                      <motion.span
-                        layoutId="solutions-rail-bullet"
-                        className="absolute inset-0 rounded-full bg-current text-sognos-blue-accent"
-                        transition={{
-                          type: "spring",
-                          damping: 30,
-                          stiffness: 300,
-                        }}
-                      />
-                    ) : (
-                      <span className="size-1.5 rounded-full bg-gray-300 transition-colors group-hover:bg-gray-400" />
-                    )}
-                  </span>
-                  <span
-                    className={`whitespace-nowrap text-sm font-medium transition-colors duration-300 ${
-                      activeId === s.id
-                        ? "text-sognos-blue-accent"
-                        : "text-gray-400 group-hover:text-gray-600"
-                    }`}
-                  >
-                    {s.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </nav>
-
-          {/* Right column: heading + flowing cards */}
-          <div className="flex-1 min-w-0">
-            <div className="mb-12">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-body tracking-[-0.03em] max-w-2xl">
-                One intelligent platform for demand, workforce, and outcomes
-              </h2>
-            </div>
-
-            <div className="space-y-8 lg:space-y-12">
-              {SOLUTIONS.map((s) => (
-                <div
-                  key={s.id}
-                  ref={(el) => {
-                    if (el) refs.current.set(s.id, el);
-                    else refs.current.delete(s.id);
-                  }}
-                  className="scroll-m-28 grid md:grid-cols-[1fr_minmax(0,360px)] items-stretch gap-8 md:gap-10 lg:gap-12 md:min-h-[380px] lg:min-h-[450px]"
-                >
-                  {/* Image column — left */}
-                  <div className="relative h-full min-h-[260px] w-full overflow-hidden rounded-lg bg-gray-200">
-                    <Image
-                      src={s.image}
-                      alt=""
-                      width={1312}
-                      height={918}
-                      sizes="(min-width: 1024px) 640px, (min-width: 768px) 50vw, 100vw"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  </div>
-
-                  {/* Text column — right */}
-                  <div className="flex flex-col gap-4">
-                    <h3 className="font-heading text-2xl md:text-3xl font-medium text-sognos-body tracking-tight leading-snug">
-                      {s.title}
-                    </h3>
-                    <p className="text-base leading-relaxed text-gray-600">
-                      {s.copy}
-                    </p>
-                    <Link
-                      href={s.href}
-                      className="mt-2 inline-flex w-fit items-center gap-x-2 text-sm font-medium text-sognos-blue-accent transition-opacity hover:opacity-70"
-                    >
-                      Explore {s.label}
-                      <svg
-                        className="size-3"
-                        viewBox="0 0 12 13"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M0.75 6.46875H11.25M11.25 6.46875L6 11.7188M11.25 6.46875L6 1.21875"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+        {/* Heading left, arrows right */}
+        <div className="flex w-full items-end justify-between gap-6 pb-10">
+          <h2 className="font-heading text-3xl md:text-4xl font-normal tracking-tight text-sognos-heading max-w-4xl">
+            {heading}
+          </h2>
+          <div className="flex shrink-0 gap-3">
+            <ArrowButton
+              dir="prev"
+              disabled={!canPrev}
+              onClick={() => scrollByCard(-1)}
+            />
+            <ArrowButton
+              dir="next"
+              disabled={!canNext}
+              onClick={() => scrollByCard(1)}
+            />
           </div>
+        </div>
+
+        <div
+          ref={scrollerRef}
+          onScroll={updateArrows}
+          className="flex snap-x snap-mandatory gap-2 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {SOLUTIONS.map((s) => (
+            <Link
+              key={s.id}
+              href={s.href}
+              data-card
+              aria-label={s.label}
+              // Widths are a fraction of the visible track, not fixed px, so
+              // the card count per view is exact and the next card peeks by a
+              // deliberate amount. For n cards in view the track holds n cards
+              // + n gaps + the peek, so w = (100% − n·8px − peek) / n: 3 up
+              // from lg, 2 at md, 1 below.
+              //
+              // The peek is 120px from lg and 48px below it — the same 120px
+              // on a 375px screen would eat half the card. To retune, change
+              // the peek in the subtraction: lg is 3·8 + 120 = 144.
+              // `snap-start` keeps each card flush to the left edge.
+              className="group/card relative isolate flex aspect-[334/354] shrink-0 snap-start flex-col items-start justify-start gap-12 overflow-hidden rounded-lg bg-white p-6 w-[calc(100%-56px)] md:w-[calc((100%-64px)/2)] lg:w-[calc((100%-144px)/3)]"
+            >
+              {/* 8px accent square, inset by the card's own 24px padding. */}
+              <span
+                aria-hidden="true"
+                className="absolute right-6 top-6 h-2 w-2 bg-sognos-blue-accent"
+              />
+
+              {/* 16px title-to-copy and a 16px right inset, per the reference's
+                  text group. Both are weight 400 — it has no weight step
+                  between them. */}
+              <div className="flex flex-col items-start justify-start gap-4 self-stretch pr-4">
+                <h3 className="font-heading text-xl font-normal text-sognos-heading transition-colors duration-200 group-hover/card:text-sognos-blue-accent">
+                  {s.title}
+                </h3>
+                <p className="text-base font-normal leading-[1.4] text-sognos-body">
+                  {s.copy}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function ArrowButton({
+  dir,
+  disabled,
+  onClick,
+}: {
+  dir: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === "prev" ? "Previous" : "Next"}
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-colors hover:bg-gray-200/70 disabled:cursor-not-allowed disabled:opacity-30"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 14 14"
+        fill="none"
+        aria-hidden="true"
+        className={dir === "prev" ? "rotate-180" : ""}
+      >
+        <path
+          d="M3 7h8M7 3l4 4-4 4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }

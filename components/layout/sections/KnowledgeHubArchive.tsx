@@ -188,7 +188,7 @@ function EventsSection() {
                         {event.category}
                       </p>
 
-                      <h2 className="mt-5 max-w-4xl font-heading text-3xl font-normal tracking-tight leading-tight text-sognos-header text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl">
+                      <h2 className="mt-5 max-w-4xl font-heading text-3xl font-normal tracking-tight leading-tight text-sognos-heading text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl">
                         {event.title}
                       </h2>
                     </div>
@@ -347,7 +347,7 @@ export default function KnowledgeHubArchive({
                 Knowledge Hub
               </p>
             )}
-            <h1 className="font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+            <h1 className="font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
               {headerTitle}
             </h1>
             {isFeatured && description && (

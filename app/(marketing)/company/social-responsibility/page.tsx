@@ -56,7 +56,7 @@ export default function SocialResponsibilityPage() {
               <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
                 Social Responsibility
               </p>
-              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Our commitment to community and planet.
               </h1>
               <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">

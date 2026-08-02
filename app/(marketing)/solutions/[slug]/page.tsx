@@ -55,7 +55,7 @@ export default async function SolutionPage({
               >
                 {meta.name}
               </Link>
-              <h1 className="mt-4 font-heading text-3xl font-normal leading-16 tracking-tight text-sognos-header text-balance lg:text-6xl">
+              <h1 className="mt-4 font-heading text-3xl font-normal leading-16 tracking-tight text-sognos-heading text-balance lg:text-6xl">
                 {content.hero.headline}
               </h1>
               <p className="mt-5 max-w-[600px] text-lg leading-relaxed text-sognos-body">

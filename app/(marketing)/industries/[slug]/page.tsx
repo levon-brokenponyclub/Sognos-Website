@@ -51,7 +51,7 @@ export default async function IndustryPage({
               >
                 {meta.name}
               </Link>
-              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 {content.hero.headline}
               </h1>
               <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-gray-600">
@@ -99,7 +99,7 @@ export default async function IndustryPage({
         </div>
       </section>
 
-      {/* ── 4. Other industries — card slider ───────────────────────────────── */}
+      {/* ── 4. Other industries — sticky card stack ─────────────────────────── */}
       <IndustrySection
         heading="Explore other industries"
         excludeSlug={slug}

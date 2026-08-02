@@ -162,7 +162,7 @@ function StoryCard({ story }: { story: StoryCard }) {
         </span>
       </div>
 
-      <h3 className="mt-3 font-heading text-lg lg:text-xl font-normal leading-snug tracking-tight text-sognos-header text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
+      <h3 className="mt-3 font-heading text-lg lg:text-xl font-normal leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
         {story.title}
       </h3>
 
@@ -247,7 +247,7 @@ function FeaturedCard({
         </div>
 
         <h3
-          className={`mt-3 font-heading font-normal leading-snug tracking-tight text-sognos-header text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent ${
+          className={`mt-3 font-heading font-normal leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent ${
             lead ? "text-2xl lg:text-3xl" : "text-lg lg:text-xl"
           }`}
         >
@@ -274,7 +274,7 @@ export default function CustomersPage() {
           featured block: one lead story left, the remaining two stacked right. */}
       <section className="bg-white pt-32 pb-16 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          <h1 className="font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+          <h1 className="font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
             Customer Stories
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sognos-body">

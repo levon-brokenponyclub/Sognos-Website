@@ -1,13 +1,13 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
+// Sticky card stack after middesk.com. Each industry pins at the navbar's 80px
+// and the next scrolls up over it — pure CSS, no scroll listener, so this needs
+// no client state.
+//
+// Swapped with SolutionsSection: industries used to be the horizontal card
+// slider and solutions the stack.
 import Link from "next/link";
 import Image from "next/image";
 import { INDUSTRIES } from "@/lib/constants";
 
-// Cohere Home slot: "Powering progress across industries"
-// Left heading + prev/next arrow buttons; horizontal snap-scroll row of large
-// square image cards with hover zoom (scale-[1.2]). rounded-lg per design system.
 const CARD_IMAGES: Record<string, string> = {
   "health-social-care": "/images/home/industries/health-social-care.jpg",
   "facilities-management": "/images/home/industries/facilities-management.jpg",
@@ -25,144 +25,100 @@ export default function IndustrySection({
   heading = "Purpose-built for service-intensive sectors",
   excludeSlug,
 }: IndustrySectionProps) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
   const industries = excludeSlug
     ? INDUSTRIES.filter((ind) => ind.slug !== excludeSlug)
     : INDUSTRIES;
 
-  const updateArrows = useCallback(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 8);
-    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-  }, []);
-
-  useEffect(() => {
-    updateArrows();
-    window.addEventListener("resize", updateArrows);
-    return () => window.removeEventListener("resize", updateArrows);
-  }, [updateArrows]);
-
-  const scrollByCard = (dir: 1 | -1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: step * dir, behavior: "smooth" });
-  };
-
   return (
-    <section className="w-full bg-background border-b border-sognos-line">
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
-        {/* Header — heading left, arrows right (Cohere) */}
-        <div className="flex w-full items-end justify-between gap-6 pb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-heading max-w-4xl">
-            {heading}
-          </h2>
-          <div className="flex shrink-0 gap-3">
-            <ArrowButton
-              dir="prev"
-              disabled={!canPrev}
-              onClick={() => scrollByCard(-1)}
-            />
-            <ArrowButton
-              dir="next"
-              disabled={!canNext}
-              onClick={() => scrollByCard(1)}
-            />
+    <section className="w-full bg-background">
+      <div className="max-w-7xl w-full mx-auto px-6 pt-24">
+        <h2 className="font-heading text-3xl md:text-4xl font-normal tracking-tight text-sognos-heading max-w-2xl">
+          {heading}
+        </h2>
+      </div>
+
+      {/* Two things make the stack work and will silently break it: each
+          wrapper needs an opaque background, or the cards show through each
+          other; and no ancestor may set a transform, filter or overflow clip,
+          which would make the sticky element scroll with its container instead
+          of pinning. `ScrollReveal` sets a transform — do not wrap this. */}
+      {industries.map((ind, i) => (
+        <div
+          key={ind.slug}
+          id={ind.slug}
+          className="sticky top-20 bg-background"
+        >
+          <div className="max-w-7xl mx-auto px-6 pt-6 pb-18">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
+              {/* Text — left half */}
+              <div className="flex w-full flex-col md:w-1/2 md:self-stretch">
+                {/* Rule and notch belong to this column alone. The notch is
+                    offset by its own 8px height so it rides on the border
+                    rather than crossing it, and the `pt-6` above gives it room
+                    to overhang without clipping. */}
+                <div
+                  aria-hidden="true"
+                  className="relative border-t border-sognos-line"
+                >
+                  <svg
+                    width="72"
+                    height="8"
+                    viewBox="0 0 72 8"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute -top-2 left-0 fill-sognos-line"
+                  >
+                    <path d="M72 8L65.3171 2.03269C63.851 0.723577 61.9543 0 59.9888 0H2C0.895431 0 0 0.895431 0 2V8H72Z" />
+                  </svg>
+                </div>
+
+                {/* Rule pinned to the top, copy centred in what is left. */}
+                <div className="flex h-full flex-col justify-center py-6 md:py-0">
+                  <span className="font-mono text-xs font-normal uppercase tracking-[0.06em] text-sognos-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-4 max-w-xl font-heading text-3xl font-normal tracking-tight text-sognos-body">
+                    {ind.name}
+                  </h3>
+                  <p className="mt-4 max-w-105 text-base font-normal text-sognos-body">
+                    {ind.description}
+                  </p>
+                  <Link
+                    href={ind.href}
+                    className="mt-6 inline-flex w-fit items-center gap-x-2 text-sm font-normal text-sognos-blue-accent transition-opacity hover:opacity-70"
+                  >
+                    Explore {ind.name}
+                    <svg
+                      className="size-3"
+                      viewBox="0 0 12 13"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M0.75 6.46875H11.25M11.25 6.46875L6 11.7188M11.25 6.46875L6 1.21875"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Media — right half */}
+              <div className="relative aspect-[680/467] w-full overflow-hidden rounded-lg bg-gray-200 md:w-1/2 md:shrink-0">
+                <Image
+                  src={CARD_IMAGES[ind.slug] ?? ind.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Horizontal snap-scroll carousel */}
-        <div
-          ref={scrollerRef}
-          onScroll={updateArrows}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {industries.map((ind) => (
-            <Link
-              key={ind.slug}
-              href={ind.href}
-              data-card
-              aria-label={ind.name}
-              className="group/card relative isolate shrink-0 snap-center overflow-hidden rounded-lg h-[289px] w-[289px] md:h-[399px] md:w-[399px] lg:h-[420px] lg:w-[420px]"
-            >
-              <Image
-                src={CARD_IMAGES[ind.slug] ?? ind.image}
-                alt={ind.name}
-                fill
-                className="rounded-lg object-cover transition-transform duration-500 ease-out group-hover/card:scale-[1.2]"
-                sizes="(min-width: 1024px) 420px, (min-width: 768px) 399px, 289px"
-              />
-              {/* Legibility gradient */}
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-sognos-navy-dark/85 via-sognos-navy-dark/10 to-transparent" />
-
-              {/* Title + arrow pinned bottom */}
-              <div className="absolute inset-x-0 bottom-0 rounded-b-lg flex items-end justify-between gap-3 p-6">
-                <h3 className="font-heading text-xl lg:text-2xl font-medium tracking-tight text-white text-balance max-w-[80%]">
-                  {ind.name}
-                </h3>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sognos-body transition-transform duration-300 group-hover/card:translate-x-0.5">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 7h8M7 3l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      ))}
     </section>
-  );
-}
-
-function ArrowButton({
-  dir,
-  disabled,
-  onClick,
-}: {
-  dir: "prev" | "next";
-  disabled: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-colors hover:bg-gray-200/70 disabled:cursor-not-allowed disabled:opacity-30"
-    >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 14 14"
-        fill="none"
-        aria-hidden="true"
-        className={dir === "prev" ? "rotate-180" : ""}
-      >
-        <path
-          d="M3 7h8M7 3l4 4-4 4"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
   );
 }

@@ -1,6 +1,13 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+
+// Capability accent bar travel, after lumosdata.com. The reference slides
+// 150px on a 674px bar (~22%); these bars are roughly a quarter of that width,
+// so a literal 150px would start well outside the block and read as a flash
+// rather than a slide. 60px is the same gesture at this scale.
+const BAR_TRAVEL_PX = 60;
 
 type Capability = {
   number: string;
@@ -62,6 +69,8 @@ export default function SognoscareProblems({
   capabilities = DEFAULT_CAPABILITIES,
   subNav,
 }: SognoscareProblemsProps = {}) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section id="problems" className="overflow-clip">
       {/* Dark half — Problem block + subNav */}
@@ -109,11 +118,13 @@ export default function SognoscareProblems({
                 </p>
               </div>
 
-              <div className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 border-t border-sognos-line lg:divide-x lg:divide-sognos-line">
-                {capabilities.map((cap) => (
+              <div className="mt-16 gap-1 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                {capabilities.map((cap, i) => (
+                  // overflow-hidden clips the accent bar while it slides in
+                  // from outside the block.
                   <div
                     key={cap.number}
-                    className="relative flex flex-col px-5 py-6 pb-10"
+                    className="relative flex flex-col bg-white rounded-xl overflow-hidden px-5 py-6 pb-10"
                   >
                     <span className="font-mono text-xs text-sognos-muted">
                       {cap.number}
@@ -124,9 +135,30 @@ export default function SognoscareProblems({
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600">
                       {cap.description}
                     </p>
-                    <div
+                    {/* Accent bar slides in from the left and fades as its
+                        block enters view, then resets when it leaves.
+                        Deliberately NOT `once: true`: every other reveal on
+                        this site latches, but the reference replays on each
+                        entry. Add `once: true` to fall back in line. */}
+                    <motion.div
                       aria-hidden="true"
                       className="absolute bottom-0 left-5 right-5 h-[2px] bg-sognos-blue-accent"
+                      initial={
+                        prefersReducedMotion
+                          ? { x: 0, opacity: 1 }
+                          : { x: -BAR_TRAVEL_PX, opacity: 0 }
+                      }
+                      whileInView={{ x: 0, opacity: 1 }}
+                      viewport={{ amount: 0.6 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : {
+                              duration: 0.8,
+                              delay: i * 0.08,
+                              ease: [0.22, 1, 0.36, 1],
+                            }
+                      }
                     />
                   </div>
                 ))}

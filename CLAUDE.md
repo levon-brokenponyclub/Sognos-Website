@@ -213,7 +213,8 @@ CTAs: `Contact Sales` | `Book a Demo`
 - **Gradients:** hero and deliberate highlight surfaces only
 - **Container:** `max-w-7xl`
 - **Components:** Server Components by default; Client Components only when interaction is required
-- **Section backgrounds (gray):** always `bg-gray-200/70` — never `bg-[#FAFAFA]`, `bg-slate-50`, `bg-gray-100`, `bg-gray-200`
+- **Section backgrounds (gray):** always `bg-gray-50` — never `bg-[#FAFAFA]`, `bg-slate-50`, `bg-gray-100`, `bg-gray-200`, `bg-gray-200/70`
+  - Superseded `bg-gray-200/70` on 2026-08-02. **Applies to new and edited sections only — do not sweep existing greys.** Other values are still in use across the codebase by choice; leave them unless the section is being worked on for another reason.
 - **Shadows:** NEVER. No `shadow-sm`, `shadow-md`, `shadow-xl`, `shadow-2xl` anywhere
 - **Dark color default:** `bg-sognos-navy` is the default dark surface. Only use `bg-sognos-navy-dark` or `bg-sognos-navy-darkest` when explicitly instructed
 - **Gaps:** `gap-3 lg:gap-4` as standard grid/flex gap

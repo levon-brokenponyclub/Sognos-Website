@@ -14,7 +14,7 @@ const LEGAL_NAV = [
 
 const BODY_TEXT = "text-base leading-relaxed text-sognos-body";
 const H1 =
-  "font-heading text-4xl font-medium leading-tight tracking-tight text-sognos-header lg:text-4xl";
+  "font-heading text-4xl font-medium leading-tight tracking-tight text-sognos-heading lg:text-4xl";
 const H2 =
   "mt-16 mb-2 font-heading text-3xl font-medium leading-snug tracking-tight text-sognos-heading lg:text-3xl";
 const H3 =

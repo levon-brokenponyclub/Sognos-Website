@@ -48,7 +48,7 @@ export default function CareersPage() {
               >
                 Careers
               </AnimatedEyebrow>
-              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Join Sognos to drive innovation together.
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-sognos-body">

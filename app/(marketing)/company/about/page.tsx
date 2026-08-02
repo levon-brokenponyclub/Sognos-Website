@@ -86,7 +86,7 @@ export default function AboutPage() {
               <AnimatedEyebrow textClassName="text-sognos-muted">
                 About Sognos
               </AnimatedEyebrow>
-              <h1 className="mt-5 font-heading font-normal text-sognos-header text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
                 Smarter automation for modern teams
               </h1>
               <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">

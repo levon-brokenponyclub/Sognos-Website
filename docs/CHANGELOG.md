@@ -1,5 +1,163 @@
 # Changelog
 
+## 2026-08-02 — Swept the non-existent text-sognos-header token
+
+- **`text-sognos-header` was never a real utility.** Only `--color-sognos-heading` is defined in `globals.css`, so the class emitted nothing and every element using it fell back to inherited colour. All **11 occurrences across 8 files** are now `text-sognos-heading`.
+  - Checked the prefix before sweeping — all 11 were `text-`, none were `border-`/`bg-`, so a single `sed` was safe. `text-sognos-header` is not a prefix of `text-sognos-heading` (they diverge at `header`/`heading`), so there was no risk of double-substitution.
+  - Files: `customer-stories/page.tsx` (×3), `industries/[slug]/page.tsx`, `solutions/[slug]/page.tsx`, `company/about`, `company/careers`, `company/social-responsibility`, `LegalPageRenderer.tsx`, `KnowledgeHubArchive.tsx` (×2).
+
+- **This is a visible change, not a no-op.** The token resolves to `rgb(15, 25, 54)` while the inherited body colour is `rgb(21, 34, 72)` — so those headings were rendering slightly lighter than intended. Verified on the customer-stories archive: all 8 card titles now compute to `rgb(15, 25, 54)`, and no `text-sognos-header` remains anywhere in the served markup.
+
+- **Files:** 8 files across `app/(marketing)/` and `components/layout/sections/`.
+
+## 2026-08-02 — Grey section rule changes to bg-gray-50; Solutions cards go white
+
+- **The grey section background is now `bg-gray-50`.** It was `bg-gray-200/70`, which §7 of `CLAUDE.md` mandated. That rule has been rewritten so the two no longer contradict, with a note recording the supersession.
+  - **Deliberately not swept, and not to be swept later.** The rule applies to new and edited sections only; existing greys stay as they are by choice. Current spread across `app/` and `components/`: `bg-gray-50` ×17, `bg-gray-100` ×32, `bg-gray-200/70` ×19 — three greys in play, intentionally.
+
+- **Solutions slider cards dropped their background image for the reference's white content card.** Card is now `bg-white` at 24px padding, `rounded-lg`, with an 8px accent square inset by that same 24px, and a text group at 16px title-to-copy with a 16px right inset. Both heading and copy are weight 400.
+  - **The section moved to `bg-gray-50` as a consequence** — the reference's cards are white on a light page, and white cards on the white section this was would have been invisible.
+  - **No icon.** The reference card leads with a 104×104 SVG; there are no equivalent assets for the solutions, so the card starts at the text group. The 48px card gap is in place for one to drop into.
+  - The gradient scrim went with the image — with no photo under it there is nothing to make legible, and the card rules would not allow it.
+  - `SOLUTIONS[].image` is now unused by this section. Left in the data rather than removed, in case the card regains imagery.
+
+- **Peek increased to 120px from `lg`**, up from 48px, and now breakpoint-dependent: below `lg` it stays 48px, since 120px on a 375px screen would eat half the card.
+
+- **Verified:** section `bg-gray-100`; 7 cards at 396×420, white, `rounded-lg`, 24px padding, 48px internal gap; no image and **0** gradients on the card; accent dot 8×8 at 24px/24px in `rgb(29,150,252)`; text group 16px gap / 16px right pad; heading 20px/400, copy 16px/400 at 22.4px; 3 cards fully visible with a **120px** peek.
+
+- **Files:** `components/layout/sections/SolutionsSection.tsx`, `CLAUDE.md`.
+
+## 2026-08-02 — Industries and Solutions swap layouts; mobile deck syncs to swipes
+
+- **The two section layouts were swapped.** Solutions is now the horizontal card slider (7 cards) and Industries the sticky card stack (5 cards). Both keep the treatments already built for them — only which section wears which changed.
+  - **`IndustrySection.tsx`** dropped `"use client"`: the arrow state and scroll listener went with the slider, and a CSS sticky stack needs no client state. It renders the same notched rule, numbered eyebrow, half/half text-and-media card as the stack it inherited.
+  - **`SolutionsSection.tsx`** gained `"use client"` back for the arrow state, and carries the slider's 3-up-with-48px-peek widths and `ArrowButton`.
+  - The slider card keeps its gradient scrim — there is white text over the image, which is what the card rules allow a gradient for. That is the opposite of the case removed from the partner cards, where the scrim covered nothing.
+  - **`IndustrySection` is also used on industry detail pages** (`excludeSlug`, so four cards) as the "Explore other industries" slot. That is now a sticky stack mid-page rather than a slider — a much heavier treatment in that context. Its comment there was updated; worth a look at whether it suits that page.
+  - Verified: Industries has 5 sticky cards pinning at 80px on an opaque background with 5 notches and no slider; scrolling through shows card 0 at 80px, then 0 and 1 both at 80px, then all three — the stack piles. Solutions has 7 cards, `overflow-x: auto`, 8px gap, 420px cards and 2 arrow buttons, and is not sticky.
+
+- **`TimerCardDeck` now syncs `active` back from a user swipe.** Previously the ring kept counting down on a card the reader had already scrolled past, and autoplay resumed from wherever it had got to rather than from what was on screen.
+  - The scroll handler picks the card nearest the track's centre and calls `go()`, which also resets the countdown — so a swipe behaves like a tap.
+  - **Guarded against a feedback loop.** The deck scrolls the track itself when autoplay advances; without a flag the handler would read the mid-flight positions of that smooth scroll as user input and fight the advance it was reacting to. The flag is released on a timer rather than `scrollend`, which Safari only shipped recently.
+  - It also only fires on a real index change — in controlled mode it would otherwise call `onActiveChange` on every frame of every scroll.
+  - **Verified as far as the pane allows:** the handler is rAF-throttled and the pane reports `visibilityState: "hidden"`, where rAF never fires (0 frames in 1500ms), so the sync cannot execute there. Running the handler's nearest-card maths against a real post-scroll `scrollLeft` of 602 picks card 3 — the card scrolled to. **The end-to-end behaviour needs a real browser.**
+
+- **Files:** `components/layout/sections/IndustrySection.tsx`, `components/layout/sections/SolutionsSection.tsx`, `components/layout/sections/shared/TimerCardDeck.tsx`, `app/(marketing)/industries/[slug]/page.tsx` (comment only).
+
+## 2026-08-02 — NewsInsightSection cards match the customer-stories archive card
+
+- **`NewsInsightSection.tsx`** dropped `ArticleCard` from `KnowledgeHubArchive` for a local card matching `StoryCard` in `app/(marketing)/customer-stories/page.tsx`: no card surface, 16:9 image with hover zoom, mono meta row, title, "Read More", sitting directly on the section background. The grid also moved to the archive's `gap-x-8 gap-y-12`.
+  - **Two departures from that card**, both because these are articles rather than customer stories: no company logo to centre over the image, and therefore no gradient scrim — a scrim with nothing over it is decoration on a card, which §7 does not allow. The chip carries the article's own category rather than a fixed "Customer Story".
+  - `KnowledgeHubArchive`'s `ArticleCard` is untouched and still used by the knowledge-hub archive, knowledge-hub post and customer-story pages.
+
+- **`text-sognos-header` is not a real token.** `StoryCard` uses it for its title, but only `--color-sognos-heading` is defined in `globals.css` — so that class emits nothing and the title falls back to inherited colour. It appears **11 times** across the codebase against 130 uses of the correct `text-sognos-heading`. The new card uses the working token, so its title resolves to `rgb(15, 25, 54)` rather than inheriting. The other 11 are untouched and worth a sweep.
+
+- **Verified after a cache-busting load:** grid `32px / 48px` gaps; image `16 / 9` at `8px` radius; **0** gradients on the card; meta row in `ui-monospace` reading "Milestone · 31 July 2026 · 4 min read" with a 1px `sognos-line` chip border and the clock icon; title 20px weight 400; Read More present.
+  - The dev server served stale markup again — `curl` showed the new card while the pane rendered the old one. A plain reload did not clear it; a query-string cache-bust did.
+
+- **Files:** `components/layout/sections/NewsInsightSection.tsx`.
+
+## 2026-08-02 — IndustrySection shows four flush cards, no peek
+
+- **`IndustrySection.tsx`** card widths moved from fixed px (`289 / 399 / 420`) to a fraction of the visible track, so a whole number of cards fills it and none peeks: `w-full` below `md`, two up from `md`, **four up from `lg`** (`calc((100%-24px)/4)` — three 8px gaps subtracted).
+  - **`snap-center` became `snap-start`.** Sizing alone would not have removed the peek: centring the snapped card leaves partial cards at *both* edges after every scroll. Aligning to the start is what makes the four sit flush.
+  - Measured at 1440px: track 1332px, gap 8px, cards 327px — 4 × 327 + 3 × 8 = **1332**, exactly the track. 4 fully visible, **0 partial**. With five industries the fifth sits off-screen, so the slider still pages.
+  - Paging still lands on a card boundary: one press moves 335px (card + gap) and ends flush with 4 visible, 0 partial.
+
+- **Note on verifying sliders in the dev pane.** The arrow appeared not to work — `delta: 0`. It was an artifact: the pane reports `visibilityState: "hidden"`, and with `scroll-behavior: smooth` even a direct `scrollLeft` assignment is animated, so nothing moves. Setting `scrollBehavior='auto'` first proves the geometry. Worth remembering before chasing a phantom bug here again.
+
+- **Files:** `components/layout/sections/IndustrySection.tsx`.
+
+## 2026-08-02 — SolutionsSection rebuilt as a sticky card stack
+
+- **`SolutionsSection.tsx`** now follows `middesk.com`'s stacking-card section. Each of the seven solutions is a card that pins at the navbar's 80px while the next scrolls up and covers it.
+  - **Pure CSS sticky — no scroll listener.** The old rAF scroll-spy, its `getDocTop` walk, `activeId`/`refs` state and `scrollToSolution` are all gone. With no client state left the file dropped `"use client"` and is a Server Component again.
+  - **Two things make the stack work and would break it silently**, so both are commented in the file: every card wrapper needs an opaque background or the cards show through each other; and no ancestor may set a `transform`, `filter` or overflow clip, which would make the sticky elements scroll with their container instead of pinning. Verified there are currently **zero** such ancestors — worth re-checking if this section is ever wrapped in `ScrollReveal`, whose `motion.div` sets a transform.
+
+- **Measured against the reference and matched exactly** (that page runs a 10px root, so its `rem` values are already px):
+
+  | | Reference | Ours |
+  | --- | --- | --- |
+  | Eyebrow | 12px / 400 / 0.72px / mono / uppercase | same |
+  | Heading | 32px / 400 / 35.2px / −0.32px | same |
+  | Copy | 16px / 400 / 22.4px / max-width 420px | same |
+  | Eyebrow → heading | 16px | 16px |
+  | Heading → copy | 16px | 16px |
+  | Text ↔ media gap | 8px | 8px |
+  | Halves | 672 / 680 | 658 / 666 |
+
+  **Every weight is 400** — the reference has no weight step between heading and copy anywhere in this section, which is the main thing that made the old treatment read differently.
+
+- **Three deliberate departures**, all chosen rather than assumed: the scroll-spy rail was dropped (the reference has none, and removing it gives the cards full container width); media moved to the right half with text on the left, matching the reference; and all seven solutions stack rather than the reference's four.
+  - Sticky offset is 80px, not the reference's 64px, because that is this site's navbar height.
+  - Media radius is `rounded-lg`, not the reference's 16px, per §7.
+
+- **Verified by scrolling the live section**: at the section top card 0 sits at 80px with cards 1 and 2 below at 525px and 1078px; 700px further down cards 0 and 1 are both at 80px; 800px further all three are at 80px — the stack piles as intended.
+
+- **Each card carries the notched top rule** — the same treatment `AboutStats.tsx` uses: a 1px `sognos-line` border with a 72×8 notch riding on it, offset by its own height so it sits on the rule rather than across it. The card's `pt-6` leaves room for the overhang without clipping.
+  - **The rule belongs to the text column only, not the whole card.** It was first built spanning the full card width; the reference puts it inside the left half, and the media column has none. Verified: rule width 658px equals the text half exactly, stops short of the media column, and the media column has no border.
+  - That in turn required the reference's inner structure — the rule pinned to the column top with a `h-full … justify-center` wrapper holding the copy, so the text stays vertically centred in what is left rather than sitting directly under the rule.
+  - **The notch SVG path is now duplicated in two files.** Worth extracting before a third use, or the two will drift.
+
+- **Files:** `components/layout/sections/SolutionsSection.tsx`.
+
+## 2026-08-02 — SolutionsSection spacing and weights match Middesk's platform cards
+
+- **`SolutionsSection.tsx`** brought onto `middesk.com/platform`'s Platform Overview card metrics. Background images kept as-is.
+  - **Between cards: 8px.** The stack moved from `space-y-8 lg:space-y-12` to `flex flex-col gap-2`. The reference uses flex + gap for this rather than a space-y stack, and `space-y-2` also produced no margin here — the switch is both more faithful and works.
+  - **Within a card: 48px** between the visual and the copy, matching the reference's icon-to-text gap. **16px** between title and copy, with a **16px** right inset on the text group.
+  - **Fixed card height removed.** `md:min-h-[380px] lg:min-h-[450px]` is gone — the reference lets cards size to content and stretch to the tallest in the row. Rows now measure 260px (set by the image's own `min-h-[260px]`) except one at 288px where the copy runs longer.
+  - **Font weights: both heading and copy are `font-normal`.** The reference has no weight step between them; the `h3` was `font-medium`.
+
+- **No card chrome was applied.** The reference's cards are `bg-white` on a light page; this section is `bg-white` itself, so white cards with 24px padding would have been invisible against it. Adding them means first changing the section background, which is a separate call.
+
+- **Verified from the DOM:** stack `display: flex` with an 8px row gap and a measured 8px between cards; 48px internal gap; `min-height: auto`; text group 16px gap and 16px right padding; `h3` and `p` both computed weight 400. **Not verified visually** — the dev-server pane reports `visibilityState: "hidden"` and returns blank captures below the fold, so screenshots of this section could not be taken.
+
+- **Files:** `components/layout/sections/SolutionsSection.tsx`.
+
+## 2026-08-02 — HowSognosWorks becomes a Middesk-style timer deck
+
+- **`TimerCardDeck.tsx`** (new, `components/layout/sections/shared/`): auto-advancing card deck after `middesk.com`. The active card takes half the row and the rest share the other half, so widening one narrows the others in the same `grid-template-columns` transition. Inactive cards translate their content down by its own height less the card padding, leaving just the title showing; the active card slides its content up and fades in the description and CTA.
+  - **The reference runs a 10px root**, so its `23.5rem` / `0.8rem` / `2.4rem` are **235px / 8px / 24px** — not 376/13/38. Reading them as 16px rem would have made the deck 60% too tall. Timings: 800ms grid, 900ms content, 800ms fade, 8s autoplay.
+  - The description is pinned to a measured width via `ResizeObserver` rather than left to flow. Without it the copy re-wraps on every frame while the columns animate. The reference does the same — its description carries a `min-width` of 417px, exactly the 465px active column less its 2×24px padding.
+  - Autoplay runs on `requestAnimationFrame` so the countdown ring and the advance share one clock; a separate interval would drift against the ring. The ring is two semicircle arcs at `pathLength=1`, the first covering the opening half of the interval and the second the closing half.
+  - Controlled/uncontrolled: pass `active` + `onActiveChange` to drive it from outside, or let it own its state.
+  - `prefers-reduced-motion` disables autoplay and every transition.
+
+- **`HowSognosWorks.tsx`** now renders the deck in place of its 3-card grid, and **the numbered stepper above it was removed**. With the stepper gone the section has no state left, so it dropped `"use client"` and is a Server Component again — the only interactive part is the deck, which owns its own client boundary.
+  - Dwell moved from 5s to the reference's 8s: the ring now shows the interval, and 5s reads as hurried at that size.
+  - `BLOCKS[].label` is now unused — it existed only for the stepper — but is left in place as the copy is worth keeping.
+
+- **Not applied to `sognoscare/Problems.tsx`.** The deck was fitted there first and then removed; that section keeps its static five-card grid and the Lumos accent-bar reveal.
+
+- **Verification is partial and worth recording.** The dev-server browser pane reports `visibilityState: "hidden"`, which suspends `requestAnimationFrame`, CSS transitions, and painting below the fold. Measured from the DOM: deck 235px tall, 8px gap, columns `658px 329px 329px` (0.5fr / 0.25fr / 0.25fr), 800ms transition, radius 12px, padding 24px, ring on the active card, 3 CTAs. Autoplay was observed advancing 0 → 1 during a screenshot, when the tab briefly rendered — but a sustained cycle and a visual of the animation could not be captured in that pane. **Needs a look in a real browser.**
+
+- **Card type and radius set against the house rules, not the reference:** `rounded-lg` (8px) rather than the reference's 10px or the 12px first used, title `text-xl`, copy `text-base` at `leading-[1.4]`. Applied to both the desktop and mobile layouts.
+  - Card padding moved from an inline `style` to `p-6`. `CARD_PADDING_PX` stays because two things cannot read CSS — the translate that parks inactive content, and the measured width the description is pinned to — and now carries a comment that it must track `p-6`.
+  - **The card is now full at 235px.** Measured across all three cards: 155px of content into 155px of available space, **0px headroom**. The copy currently runs to two lines and the clamp allows three, so a longer description would be clipped by the card's `overflow-hidden` rather than wrapping. Either the deck height or the clamp needs to give before the copy grows.
+
+- **Files:** `components/layout/sections/shared/TimerCardDeck.tsx` (new), `components/layout/sections/HowSognosWorks.tsx`.
+
+## 2026-08-02 — SognosCare capability bars animate in and out
+
+- **The five capability blocks in `Problems.tsx` now animate their accent bar**, after `lumosdata.com`. The bar slides in from the left and fades as its block enters view, and resets when the block leaves.
+
+- **The reference was measured, not guessed.** The pasted markup showed only the settled state (`transform: none; opacity: 1`), so the live site was sampled through a full cycle: out of view `translateX(-150px) / opacity 0`, in view + 0.4s unchanged (there is a delay), in view + 1.5s `translateX(-0.6px) / opacity 0.996`, scrolled away back to `-150px / 0`, re-entered settled again. That last pair is what confirmed it replays rather than latching.
+
+- **Deliberately not `once: true`.** Every other reveal on this site latches via `ScrollReveal`; this is the only element that replays on each entry. The code says so, and says which single prop to change to bring it back in line.
+
+- **Travel is 60px, not the reference's 150px.** Lumos slides 150px on a 674px bar (~22%); these bars measure 124px, so a literal 150px would start the bar entirely outside its own block and read as a flash rather than a slide.
+
+- The blocks gained `overflow-hidden` to clip the bar while it travels — the reference card does the same with `overflow: clip`. A 0.08s per-block stagger runs across the five, and `prefers-reduced-motion` renders the bar in place with no transition.
+
+- **Only the bar animates.** The number, title and description are untouched, and the bar keeps its flat 2px `bg-sognos-blue-accent` rather than the reference's 25px 4-stop gradient — §7 restricts gradients to hero and deliberate highlight surfaces.
+
+- Kept inline in `Problems.tsx` rather than extracted: the file is already `"use client"`, so a separate component bought nothing.
+
+- **Verified across the full cycle in the browser:** all five bars at `-60px / 0` before entry; mid-flight the stagger is visible (bar 1 at `-29px / 0.14` while bar 2 is still at `-51px / 0`); all settled at `none / 1`; all back to `-60px / 0` after scrolling away.
+
+- **Files:** `components/layout/sections/sognoscare/Problems.tsx`.
+
 ## 2026-08-02 — About page: Partners, Social Responsibility and Careers brought onto the design rules
 
 Compliance pass against §7 of `CLAUDE.md` across the three sections. No layout or copy changes.
@@ -36,6 +194,13 @@ Compliance pass against §7 of `CLAUDE.md` across the three sections. No layout 
   - The reference's `rounded-[6px]` is `rounded-lg` here — the radius rule allows no arbitrary values.
   - `IconArrowUpRight` is inlined rather than imported — the same mark exists in `Navbar.tsx` but as a non-exported local inside a `"use client"` module.
   - Not carried over: the reference staggers each card's entrance by 55ms via inline `transition-delay`. That needs per-card scripting for a purely decorative effect, so it was left out.
+
+- **Mobile is a horizontal overflow-x track**, replacing the stacked accordion it was first built as. Cards are `w-[75vw]` with `min-h-[220px]` (the reference's `22rem` at its 10px root), 8px gap, `snap-center`.
+  - Uses **native `overflow-x-auto`** rather than the reference's `translateX`, so a swipe works without touch handling. Autoplay keeps the active card centred by scrolling the track itself — deliberately not `scrollIntoView`, which would also move the page vertically to bring the card into view.
+  - Each card uses the reference's four-row grid — eyebrow, a spacer that collapses when active, title, then the body that expands into the space the spacer gave up. That is what slides the title down to the card's foot while it is inactive, and it animates `grid-template-rows` between `auto 1fr auto 0fr` and `auto 0fr auto 1fr`.
+  - The body is pinned to `min-w-[calc(75vw-48px)]` — the card's inner width — so the copy does not re-wrap while the rows animate. The reference does the same with a hard `min-width`.
+  - **The countdown ring shows on mobile too**, on the active card, which the first pass omitted.
+  - Measured at 430px: track scrollable (984 > 382), cards 322.5px = exactly 75vw, content min-width 274.5px = 75vw − 48px, gap 8px, min-height 220px, ring present on the active card, and the active card's rows resolve to `32px 0px 32px 141.6px` — spacer collapsed, body expanded.
 
 - **Open issue, now the section's main visual problem — the partner logo files all have opaque baked-in backgrounds.** Sampled corner pixels: Microsoft `#FFFFFF`, SoftwareOne `#000000`, Ingram Micro `#1570EF`, Resco `#0066CC`; none is transparent. The old design hid this by giving each logo a cell tinted to match its file. Now that the resting state of every card is *the logo alone, centred on navy*, each one reads as a coloured rectangle floating on the surface. The Ingram file is also cropped at its own edges. Fixing it needs transparent PNG/SVG assets, or a deliberate logo plate; inverting will not help, since inverting an opaque image inverts the whole rectangle.
 
