@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ProgressButton } from "@/components/layout/sections/shared/TimerCardDeck";
+import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
 import { BRAND_BG } from "@/lib/customerStoryBrand";
 
 export type CaseStudy = {
@@ -22,6 +23,9 @@ export type CaseStudy = {
   panelImage: string;
   panelVideo?: string;
   quote: string;
+  /** The story's short description, from Sanity. Optional — a story without
+   *  one simply runs quote straight into attribution, as this card did before. */
+  description?: string;
   author: string;
   role: string;
   href: string;
@@ -49,6 +53,8 @@ export const ALL_STORIES: CaseStudy[] = [
     panelImage: "/images/customers/flourish-australia.avif",
     quote:
       "Congratulations and well done to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - Thank you!",
+    description:
+      "Leading not-for-profit organisation supporting people with lived experience of mental health issues to live fulfilling, independent lives.",
     author: "Susan McCarthy",
     role: "Chief Operating Officer, Flourish Australia",
     href: "/customer-stories/flourish-australia",
@@ -61,6 +67,8 @@ export const ALL_STORIES: CaseStudy[] = [
     panelImage: "/images/customers/auckland-airport.webp",
     quote:
       "Thank you to the Sognos team. Hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!",
+    description:
+      "New Zealand's largest and busiest airport, serving as a critical gateway for international and domestic travel and freight.",
     author: "Anthony Hart",
     role: "Operations Delivery Lead, Auckland Airport",
     href: "/customer-stories/auckland-airport",
@@ -73,6 +81,8 @@ export const ALL_STORIES: CaseStudy[] = [
     panelImage: "/images/customers/penrith-city-council.png",
     quote:
       "We've moved from reactive to proactive compliance. Every inspection now, the auditors comment on how thorough our records are. That wasn't possible before Sognos.",
+    description:
+      "Local government council in New South Wales, Australia, transforming field operations management with a custom Dynamics 365 solution.",
     author: "Claire Donovan",
     role: "Service Delivery Manager, Penrith City Council",
     href: "/customer-stories/penrith-city-council",
@@ -116,61 +126,6 @@ export function SeeMoreLink({
             strokeLinejoin="round"
           />
         </svg>
-      </span>
-    </Link>
-  );
-}
-
-// Reference's easing and duration for the slide-fill button. Written as a
-// constant, not repeated inline — Tailwind scans this file's raw text for
-// candidates, so the literal below is what gets emitted.
-const SLIDE_FILL_MOTION =
-  "duration-500 ease-[cubic-bezier(0.77,0.01,0.26,1.01)]";
-
-// Outlined pill whose fill rises from below on hover while the label rolls up
-// and is replaced by its own duplicate in the inverse colour — middesk.com's
-// button. The duplicate is what makes it read as one label moving through the
-// button rather than two crossfading, so it is `aria-hidden` and the visible
-// label carries the text.
-export function SlideFillLink({
-  href,
-  label,
-  className,
-}: {
-  href: string;
-  label: string;
-  className?: string;
-}) {
-  return (
-    <Link
-      href={href}
-      // 16px/4px padding and a 500ms border fade, per the reference. `border`
-      // rather than its `outline` at a -0.5px offset: the fill covers the
-      // padding box and leaves the border showing, which is the same result
-      // with one less thing to reason about.
-      className={`group relative inline-flex items-center overflow-hidden rounded-lg border border-sognos-line px-4 py-1 transition-colors ${SLIDE_FILL_MOTION} hover:border-sognos-blue-accent ${className ?? ""}`}
-    >
-      {/* Full-height panel parked directly below the button, driven by `top`
-          rather than a transform so it cannot inherit the label's movement. */}
-      <span
-        aria-hidden="true"
-        className={`absolute inset-x-0 top-full h-full bg-sognos-blue-accent transition-[top] ${SLIDE_FILL_MOTION} group-hover:top-0`}
-      />
-
-      {/* Clips both labels to one line's height, so each leaves and arrives
-          out of sight rather than overrunning the button. */}
-      <span className="relative flex items-center justify-center overflow-hidden">
-        <span
-          className={`relative z-10 block py-1 text-base font-medium text-sognos-heading transition-transform ${SLIDE_FILL_MOTION} group-hover:-translate-y-full`}
-        >
-          {label}
-        </span>
-        <span
-          aria-hidden="true"
-          className={`absolute left-0 top-full z-10 py-1 text-base font-medium text-white transition-transform ${SLIDE_FILL_MOTION} group-hover:-translate-y-full`}
-        >
-          {label}
-        </span>
       </span>
     </Link>
   );
@@ -424,15 +379,16 @@ function StoryCard({ study }: { study: CaseStudy }) {
   const shift = (y: number) => (prefersReducedMotion ? 0 : y);
 
   return (
-    <div className="flex w-full flex-col items-start gap-4 overflow-hidden rounded-lg bg-white p-4 md:min-h-[360px] md:flex-row md:gap-12 md:p-6">
+    <div className="flex w-full flex-col items-start gap-4 overflow-hidden rounded-lg bg-white p-4 md:min-h-490px] md:flex-row md:gap-12 md:p-6">
       {/* Media — a quarter of the card, matching the reference's 3/12, and
           stretched to the text column's height rather than a fixed ratio. */}
       <div className="relative aspect-[4/3] w-full flex-none overflow-hidden rounded-lg bg-gray-50 md:aspect-auto md:w-3/12 md:self-stretch">
+        {/* The story photo, back under the sweep. */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={study.href}
             initial={{ opacity: 0, filter: "blur(20px)", scale: 1.05 }}
-            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            animate={{ opacity: 1, filter: "blur(3px)", scale: 1 }}
             exit={{ opacity: 0, filter: "blur(20px)", scale: 0.95 }}
             transition={t(0.6)}
             className="absolute inset-0"
@@ -457,13 +413,39 @@ function StoryCard({ study }: { study: CaseStudy }) {
             ) : null}
           </motion.div>
         </AnimatePresence>
-      </div>
 
-      {/* Text — logo pinned top, quote group bottom. The right inset keeps the
-          quote off the card edge at width, as the reference does; it steps up
-          with the viewport instead of running to the full 204px, and clears
-          the countdown ring sitting in the card's top-right corner. */}
-      <div className="flex min-w-[200px] flex-1 flex-col justify-between gap-8 self-stretch max-md:w-full md:pr-6 lg:pr-12 xl:pr-24">
+        {/* Navy panel, after the mgghealth.com service cards — two straight
+            segments, not a curve: a steep cut from the left edge down to a
+            vertex a seventh of the way across, then a long shallow rise to the
+            right edge. Straight is the point. It is what gives the join its
+            architectural read rather than a soft swoosh, and it is also what
+            makes the shape safe to stretch — a line stays a line under
+            `preserveAspectRatio="none"` where a bezier's control points skew.
+
+            Static rather than keyed to the story: it is the house frame, not
+            the client's, so it holds still while the photo behind it changes.
+
+            Authored on a 0–100 grid, so the three vertices read directly as
+            percentages of the panel at any ratio. Sits above the photo and
+            below the `z-10` logo by DOM order alone — no z-index needed. */}
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 h-full w-full"
+        >
+          <path
+            d="M0 65 L14 77 L100 68 L100 100 L0 100 Z"
+            fill="var(--sognos-navy)"
+          />
+        </svg>
+
+        {/* Logo, overlaid on the media rather than sitting above the quote.
+            The container spans the whole panel and flexbox does the placing —
+            `items-end justify-end` with a uniform `p-6`. Anchoring to the
+            panel rather than to the shape means the inset stays constant and
+            nothing here has to be re-tuned when the wedge moves. `z-10` clears
+            the photo layer. */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={study.href}
@@ -471,24 +453,67 @@ function StoryCard({ study }: { study: CaseStudy }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: shift(-10) }}
             transition={t(0.3)}
-            className="h-8"
+            // Fixed box rather than a bare height, because the client marks
+            // are not the same kind of asset: Flourish is a stacked lockup
+            // (mark over name over tagline) at 1.6:1 while Auckland and
+            // Penrith are single-line horizontal ones at 3.5:1 and 5:1.
+            // Normalising on height alone rendered Flourish 52px wide against
+            // Penrith's 160px. Letterboxing each mark into one box instead
+            // means every logo fills whichever axis binds it — Flourish on
+            // height, the wide ones on width — which is as consistent as
+            // geometry gets while the stacked artwork is what it is.
+            // `flex` is not decoration: the mark is a `<span>`, so it is
+            // inline by default and its width/height would be ignored without
+            // a flex container to blockify it.
+            className="absolute inset-0 z-10 flex items-end justify-end p-5"
           >
             {study.logo ? (
-              <Image
-                src={study.logo}
-                alt={study.company}
-                width={140}
-                height={40}
-                // Flattened to a black silhouette so a mixed set of client
-                // marks reads as one family on white, the same treatment the
-                // archive cards use inverted on dark.
-                className="h-8 w-auto max-w-[160px] object-contain object-left brightness-0"
+              // Recoloured by mask rather than filter. Every mark is flat
+              // artwork with real alpha — 50–82% of each file is fully
+              // transparent — so using it to mask a token-coloured surface
+              // lands on the exact brand blue and makes the wash strength a
+              // single alpha value on the background. A `filter` chain could
+              // only approximate a hex, and unreadably.
+              //
+              // The trade is `next/image`: `mask-image` takes a raw URL, so
+              // these serve unoptimised at ~45KB each. Acceptable at one
+              // visible logo at a time; if the set grows, pre-render the
+              // masks as SVG instead of reaching back for a filter.
+              //
+              // `object-contain` has no mask equivalent, so `mask-size:
+              // contain` restates the letterboxing, and `right center` anchors
+              // the result. The anchor is not cosmetic: a wide mark fills the
+              // box's width and looks right-aligned wherever it is anchored,
+              // but a mark bound by height — Flourish, at 1.6:1 in a 3:1 box —
+              // only reaches 60% of the width, so under `center` it floated
+              // clear of the card's right inset while the others sat flush.
+              <span
+                role="img"
+                aria-label={study.company}
+                style={{
+                  maskImage: `url(${study.logo})`,
+                  maskRepeat: "no-repeat",
+                  maskPosition: "right center",
+                  maskSize: "contain",
+                  WebkitMaskImage: `url(${study.logo})`,
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskPosition: "right center",
+                  WebkitMaskSize: "contain",
+                }}
+                className="h-10 w-32 bg-white md:h-12 md:w-36"
               />
             ) : null}
           </motion.div>
         </AnimatePresence>
+      </div>
 
-        <div className="flex flex-col items-start gap-4">
+      {/* Text — the quote group alone now the logo has moved onto the media.
+          `justify-center` rather than the `justify-between` it needed with two
+          children: one block against a 490px-tall card reads better centred
+          than pinned to the top with the slack all below it. The right inset
+          keeps the quote off the card edge at width, as the reference does. */}
+      <div className="flex min-w-[200px] max-w-3xl flex-1 flex-col justify-center gap-8 self-stretch max-md:w-full">
+        <div className="flex flex-col items-start gap-6">
           <QuoteMark />
 
           {/* Clips the quote's travel so it rises into place rather than
@@ -503,9 +528,10 @@ function StoryCard({ study }: { study: CaseStudy }) {
                 transition={t(0.5)}
                 className="before:hidden after:hidden"
               >
-                {/* `text-3xl` is 32px/1.1 — the reference's quote size exactly.
-                    `leading-heading` restates it so the 24px mobile step keeps
-                    the same 1.1 instead of the 1.3 that `text-2xl` carries. */}
+                {/* `text-quote` is the 28px one-off in globals.css — between
+                    `2xl` and `3xl`. `leading-heading` restates the line height
+                    so the 24px mobile step keeps the same ratio instead of the
+                    1.3 that `text-2xl` carries. */}
                 <p className="font-heading text-2xl font-normal leading-heading tracking-heading text-sognos-heading lg:text-3xl">
                   {study.quote}
                 </p>
@@ -524,6 +550,16 @@ function StoryCard({ study }: { study: CaseStudy }) {
               transition={t(0.3, 0.2)}
               className="flex flex-col items-start gap-4"
             >
+              {/* The reference sets a body paragraph between its quote and the
+                  attribution — 16px on a 1.4 line-height in the muted tone.
+                  `leading-snug` is 1.375, the nearest step to that without an
+                  arbitrary value. */}
+              {study.description && (
+                <p className="text-base font-medium leading-normal text-sognos-heading/60">
+                  {study.description}
+                </p>
+              )}
+
               <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="text-xs text-sognos-heading">
                   {study.author}
@@ -582,7 +618,7 @@ function IndicatorBlock({
           layoutId="story-indicator"
           aria-hidden="true"
           transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
-          className="pointer-events-none absolute inset-0 rounded-lg border border-sognos-blue-accent"
+          className="pointer-events-none absolute inset-0 rounded-lg"
         />
       )}
 

@@ -64,7 +64,7 @@ export function AnimatedEyebrow({
           ease: ENTRANCE_EASE,
         }}
         className={cn(
-          "text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent",
+          "text-xs font-normal uppercase tracking-widest text-sognos-blue-accent",
           textClassName,
         )}
       >

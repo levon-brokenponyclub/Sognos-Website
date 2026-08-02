@@ -474,6 +474,12 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   contact form.
 - The navbar announcement ribbon links to the event and remains dismissed after
   close or click for the current event payload.
+- The event now also exists as a Sanity `event` document (`nfp-real-care`), but
+  **nothing on the live site reads it yet**. Three hardcoded copies still drive
+  what ships: `lib/upcomingEvent.ts` (consumed by `Navbar.tsx` and
+  `lib/featuredNav.ts`), `KnowledgeHubArchive.tsx:36`, and the page itself.
+  Rewiring those, plus a standalone `/events` archive for past and upcoming, is
+  the next pass. `/events` has no index route — only the one child page.
 
 ### Other
 
@@ -482,6 +488,21 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   typography, weights, radii, shadows, layout metrics, and common actions.
 
 ## 8. Recently Completed
+
+### 2026-08-03
+
+- Events became CMS content: `getUpcomingEvents()`, `getEventArchive()` and
+  `getAllEventSlugs()` added, a `format` eyebrow field added to the schema, and
+  `nfp-real-care` seeded into the production dataset with its hero asset.
+  Webinars are events with a `format`, not a post category.
+- `getHomeFeed()` normalises upcoming events, customer stories and knowledge
+  posts into one `HomeFeedItem[]`, upcoming events banded first.
+- `BentoGrid` built against that feed and parked at `/dev/bento-preview` —
+  a throwaway, unlinked, `noindex` route. Not wired to the homepage;
+  `NewsInsightSection` is still what ships.
+- Customer-story panel rebuilt: brand-gradient panel, navy wedge after
+  `mgghealth.com`, masked white client logos anchored bottom-right, and the
+  `--text-quote` 28px type token.
 
 ### 2026-07-30
 

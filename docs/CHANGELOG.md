@@ -1,5 +1,179 @@
 # Changelog
 
+## 2026-08-03 — Events into Sanity; bento feed and grid; customer-story panel rebuilt
+
+### Events become CMS content
+
+- **`event` documents now have queries.** The schema was registered but nothing
+  read it — `lib/sanity/queries.ts` had no event getter at all, so the type's
+  own comment about feeding the Knowledge Hub and announcement banner described
+  something that did not exist. Added `getUpcomingEvents()`,
+  `getEventArchive()` and `getAllEventSlugs()`.
+- **"Upcoming" includes `registrationOpen`**, not just the date. A future event
+  whose registration has closed drops off the homepage and stays in the archive.
+- **`dateTime()` on both sides of the comparison.** `date` is a datetime and
+  comparing it to `now()` as raw strings only works while both carry the same
+  offset format; coercing makes it true by construction. Verified against the
+  live dataset rather than assumed: `2026-09-17T08:30Z → true`,
+  `2024-01-01 → false`, at `now() = 2026-08-02T20:51Z`.
+- **`format` field added to the event schema** — the eyebrow, from a five-value
+  list (Breakfast event / Webinar / Conference / Roundtable / Event). This is
+  how webinars reach the grid: a webinar is an event with a date, so it takes
+  the same upcoming path rather than a parallel one. It is a label and never a
+  behaviour switch. **Not yet deployed to the Studio schema.**
+- **Seeded `nfp-real-care`** into the production dataset, with its hero image
+  uploaded as an asset (1086×863). Stored as `2026-09-16T22:30:00Z`, which is
+  Thu 17 Sep 2026 8:30 AM AEST — NSW daylight saving does not begin until
+  4 October, so September is UTC+10 and storing the wall-clock time as UTC
+  would have put the breakfast at 6:30 pm.
+- **Three hardcoded copies of that event still drive the live site** —
+  `lib/upcomingEvent.ts` (consumed by `Navbar.tsx` and `lib/featuredNav.ts`),
+  `KnowledgeHubArchive.tsx:36`, and the hand-built page. None were rewired;
+  that is nav surgery and a separate pass.
+
+### Home feed
+
+- **`getHomeFeed(limit?)`** normalises upcoming events, customer stories and
+  knowledge posts into one `HomeFeedItem[]` with a `kind` discriminator, so
+  consumers never branch on `_type`.
+- **Composed in TypeScript, not as a GROQ union.** A union across types whose
+  projections differ needs `select()` per field and reads far worse, for one
+  saved round trip that `Promise.all` and a 60s revalidate make cheap.
+- **Two sort bands, not one sort.** An event's date is in the future, so a
+  single `date desc` ranks events by how far away they are — a December talk
+  outranking next week's, both above today's news. Upcoming events band first
+  and soonest first; everything else newest first.
+
+### Bento grid (preview only — not wired to the homepage)
+
+- `BentoGrid.tsx`: 4 columns, 6 tiles, feature spanning 2×2. Server Component.
+- **Spans are a function of index *and* total.** A trailing tile that would sit
+  alone on the final row widens to fill it; without that, five items leave half
+  a row empty and the section reads as broken rather than short.
+- **A fixed `220px` row, not `auto-rows-fr`.** The first pass used `fr` with
+  image bands above the text — a 16/9 band in a 608px-wide tile is 342px on its
+  own, and `fr` sizes every row to the tallest tile, so the grid came out
+  **1,496px tall with 488px rows**. One treatment at every size (photo fills,
+  copy over a navy gradient) brings it to **692px**.
+- **The event tile is navy rather than photo-backed.** The date has to be the
+  loudest thing on it and cannot be over an arbitrary photograph.
+- `/dev/bento-preview` is a throwaway, unlinked, `noindex` route for reviewing
+  it. Delete the directory when the layout is signed off.
+
+### Customer stories panel
+
+- **Logos normalised into a fixed 180×56 box**, then 150 and finally
+  `h-10 w-32 md:h-12 md:w-36`. Height alone was not enough: Flourish is a
+  stacked lockup at 1.6:1 while Auckland and Penrith are single-line at 3.5:1
+  and 5:1, so `h-8` rendered Flourish 52px wide against Penrith's 160px.
+- **`mask-position: right center`, not `center`.** A wide mark fills the box and
+  looks right-aligned wherever it is anchored; a height-bound mark only reaches
+  60% of the width, so under `center` Flourish floated clear of the card's right
+  inset while the others sat flush.
+- **Recoloured by mask rather than filter.** Every mark carries real alpha
+  (50–82% of each file fully transparent), so masking a token-coloured surface
+  lands on the exact brand value where a `filter` chain could only approximate a
+  hex. The trade is `next/image` — `mask-image` takes a raw URL, so these serve
+  unoptimised at ~45KB each.
+- **Photo restored under a navy wedge**, two straight segments after
+  `mgghealth.com` (`M0 65 L14 77 L100 68`). Straight rather than curved is also
+  what makes it safe to stretch: a line stays a line under
+  `preserveAspectRatio="none"` where a bezier's control points skew.
+- **`brandPanelGradient()` extracted** to `lib/customerStoryBrand.ts` so the
+  detail hero and the slider cannot drift; the gradient was previously a literal
+  written out in both.
+- `--text-quote: 1.75rem` added to `globals.css` — 28px, between `2xl` and
+  `3xl`. Named rather than numbered so it cannot be mistaken for a ramp step; a
+  second use is the signal to fix the ramp instead of adding another one-off.
+
+### Notes
+
+- **A data-URI mask in `globals.css` is silently dropped by the CSS pipeline.**
+  The rule survives in the source file, the declarations never reach the served
+  bundle. Applied via `style` instead, which React writes straight to the
+  element. Worth knowing before reaching for a mask class again.
+- **Turbopack's module cache can go stale for a newly created file.** `touch`,
+  cache-busting query strings and `force-dynamic` all failed; only a dev-server
+  restart picked up edits to `BentoGrid.tsx`.
+- **Verified:** `npm run build` clean, `tsc` clean, `eslint` clean (one
+  pre-existing `ScrollReveal` unused warning in `app/(marketing)/page.tsx`).
+  Bento measured live at 1280px — feature 608×456, remainder 220px rows, no
+  holes, 30 feed items with 1 upcoming event in the feature slot.
+
+- **Files:** `lib/sanity/queries.ts`, `lib/customerStoryBrand.ts`,
+  `sanity/schemas/event.ts`, `components/layout/sections/BentoGrid.tsx` (new),
+  `app/(marketing)/dev/bento-preview/page.tsx` (new),
+  `components/layout/sections/ProductCustomerStories.tsx`,
+  `app/(marketing)/customer-stories/[slug]/page.tsx`, `app/globals.css`.
+
+## 2026-08-02 — Platform-logo orbit added to HeadlineCTA
+
+21st.dev's `integration-7` orbit, above the statement line.
+
+- **Three rows of platform logos slide under a radial mask**, rows 1 and 3 forward and row 2 reversed, all at 26s. Behind them a 32px dot-grid at `-z-10`; over them a hub lozenge carrying the Sognos wordmark.
+- **No new dependencies.** The reference drives its slider with `react-use-measure`, `clsx`, `tailwind-merge` and framer's `animate`. The existing CSS marquee keyframes (`trust-marquee-scroll` and `cta-band-scroll-reverse`) do the same job with no JS, so `.platform-orbit-track` is 8 lines of CSS reusing both.
+- **Spacing is a margin on each pill, not a flex `gap`** — the same seam problem as the logo marquee. Verified: 72px unit, 576px half-track, exactly 8 units, no jump.
+- **The hub is a lozenge, not the reference's circle.** The Sognos mark is a wordmark; shrinking it into a 64px round would put it past legibility. No `shadow-xl` either — the reference has one, the house rules forbid it.
+
+- **The logos come from Sanity, not a constant.** I first wired this to `MICROSOFT_PLATFORM_LOGOS` and described it as static — wrong. That constant is only the fallback inside `getCtaSectionContent()`; the live values are `ctaSection.logos`, the same set `CTASection` renders as "Powered by Microsoft". The page resolves them server-side and passes them in, because `HeadlineCTA` is a Client Component. Confirmed at runtime: **8** logos returned, one more than the 7-item fallback, ending in a "Microsoft" mark the constant does not contain.
+  - `CTABand.tsx` has no logos at all — it is a dot-grid background plus heading and buttons. The `.cta-band-track` CSS is left over from a marquee that is no longer there.
+
+- **Verified** at 1458px: 3 rows; row 2 on `cta-band-scroll-reverse`, rows 1 and 3 on `trust-marquee-scroll`, all 26s; 16 pills per track (8 × 2); pills 48×48 `rounded-full` with a 1px white/18 border on navy; 24px margins; 72px row gaps; orbit 448×216 under `radial-gradient(50% 50%, #000 70%, transparent)`; grid backdrop `32px 32px` at `z-index: -10`. Order still Industries → **HeadlineCTA** → Solutions. `tsc` clean, `eslint` clean.
+  - **No build run**, per standing instruction. **Motion unverified** — the tab's timeline is frozen while hidden, which is also why the pill logos report as not yet loaded.
+
+- **Files:** `components/layout/sections/HeadlineCTA.tsx`, `app/(marketing)/page.tsx`, `app/globals.css`.
+
+## 2026-08-02 — HeadlineCTA statement section on the homepage
+
+`middesk.com`'s headline section, sitting between Industries and Solutions. Their `midnight` surface becomes `bg-sognos-navy`.
+
+- **The line resolves word by word out of a blur** — each word `opacity 0 → 1` and `blur(8px) → 0` over 0.6s on `[0.22, 1, 0.36, 1]`, staggered 80ms and scroll-triggered `once`.
+  - Stagger offsets are **derived, not counted**. A mutable index incremented inside the render's `.map` is what React's immutability rule exists to stop; the count of words preceding each line is computed up front instead, so the stagger still runs continuously across the line break.
+  - Splitting a heading into per-word elements reads as a pile of fragments to a screen reader, so the real `<h2>` is `sr-only` and the animated copy is `aria-hidden`.
+- **Gradient text** at the reference's own angles — `-80.8deg` below `md`, `-72.5deg` above — running the accent into `#f0f0f0` over `bg-clip-text`.
+- **The icon is used as a mask, not an image.** `icon-stack-cta.svg` has its 43 dots hardcoded to `#0B3139`; masking and painting with `bg-sognos-blue-accent` means the colour comes from the token rather than from whatever the file contains, and avoids inlining 43 elements to get `currentColor`.
+
+- **No new button.** The section uses the existing `SolutionHeroDemoButton`, which already opens the shared booking modal. **This is a deliberate departure from the reference**, whose CTA is a different component — two fills passing vertically, a rolling label, and an accent square that becomes a circle and rotates while its arrow counter-rotates. Building that would mean a new button, which is not something to do unprompted; worth a conversation if the treatment is wanted.
+
+- **The reference's chart illustration is omitted** — there is no Sognos equivalent asset, and inventing one is not a build decision.
+
+- **Verified** at 1458px: section `rgb(21,34,72)`, icon 40×40 masked and filled `rgb(29,150,252)`, headline 48px/60px with `background-clip: text` and `color: transparent` over `linear-gradient(-72.5deg, rgb(29,150,252) 1%, rgb(240,240,240) 63%)`, 6 words each parked at `opacity: 0` / `blur(8px)` awaiting scroll. Section order confirmed: Industries → **HeadlineCTA** → Solutions. `tsc` clean, `eslint` clean.
+  - **No build run**, per standing instruction — builds crash the dev server. **The reveal itself is unverified**; the tab's document timeline is frozen while hidden.
+
+- **Files:** `components/layout/sections/HeadlineCTA.tsx` (new), `app/(marketing)/page.tsx`.
+
+## 2026-08-02 — Trust strips become a logo marquee; animated dividers on the news grid
+
+Two motion devices lifted from `middesk.com`, both now shared components.
+
+### Animated dividers — `AnimatedDivider`
+
+- The 2px rule between cards is a clipped window holding a track at **200%** of its length. The track carries a gradient that is line-coloured at each end and accent-coloured in the middle; sliding it half a length walks that bright band along the rule. Reference values throughout: 35%/50%/65% gradient stops, `translateY(-50%) → 0`, **2.2s linear infinite**.
+- Two elements rather than one rotated — the track's length has to follow the axis it travels on, so it runs across the top while cards are stacked and down the leading edge once they are a row.
+- Colours are custom properties (`--divider-base` / `--divider-accent`), so one implementation serves both surfaces. A dark section adds `divider-on-dark` and nothing else changes — a `#e2e8f0` rule would otherwise read as a bright white stripe on navy.
+- **Tailwind v4 compiles `translate-y-*` to the `translate` property, not `transform`.** The parked state reads `translate: 0px 100%` with `transform: none`; `transition-all` covers it either way.
+
+### Logo marquee — `LogoMarquee`
+
+Replaces the static bordered row in both `LogoStrip` and `ProductTrustStrip`.
+
+- Reference sizes, converted off its 10px root: tiles **220×118** at **8px** radius — which is `rounded-lg` exactly, so the house radius rule and the reference agree here — 8px gaps, 156×62 logo box, 88px edge fades.
+- **Every other tile carries a spinning conic border.** A conic-gradient square at twice the tile's width sits centred behind the tile and rotates over **6s linear**; the tile's `p-px` is the only place it shows, so it reads as a border with two bright arcs travelling round it. The inner panel must carry the section's own background or the gradient floods the whole tile — hence the `panelClass` prop.
+- Beam placement is keyed off the position in the *original* list rather than the doubled one, so the alternation does not flip at the seam on an odd logo count.
+- **The 8px gap is a margin on each tile, not `gap` on the track.** `trust-marquee-scroll` travels exactly -50%, and with a flex `gap` that lands **4px short** of the seam — a gap sits between the halves but not after the last tile, so the loop jumps once per cycle. A uniform 228px tile+margin unit divides evenly. Verified: half-track 1368px = exactly 6 units.
+- Reuses the existing `.trust-marquee-track` (hover-pause and reduced-motion already handled). Under reduced motion the beam stops and falls back to a still border — it is a border, not decoration.
+
+### Also
+
+- **`SlideFillLink` extracted to `shared/`** and now used by the News section's CTA as well as the story card. No `"use client"` — the whole effect is CSS hover state, so it stays a Server Component in both places.
+- **`ProductTrustStrip` was ignoring its `className` prop.** `/products/sognoscare` has been passing `bg-sognos-care-dark` into a hardcoded `bg-white` section. The prop now applies, and `dark` / `fadeClass` were added alongside it so the caller can tune the tile borders, logos and fades to match. **That page's trust strip changes from white to dark as a result** — which is what the caller always asked for.
+
+**Verified** at 1459px: tiles 220×118 with 1px padding and an 8px radius; beam 440×440 running `logo-tile-spin 6s linear`, conic resolving to `rgb(29,150,252)` against `rgba(255,255,255,0.18)`; plain tiles bordered in the same white/18; fades 88px each end from `rgb(21,34,72)`; track 2736px over 12 tiles; loop seam exact. Divider tracks 2px × 200%, `divider-slide-y 2.2s linear infinite`. `tsc` clean, `eslint` clean.
+
+- **No build was run** — builds crash the running dev server, so validation here is `tsc` + `eslint` + measurement. **Motion is unverified**: the tab's document timeline is frozen while it is hidden, so the beam and the divider both sit at frame 0.
+
+- **Files:** `components/layout/sections/shared/{AnimatedDivider,LogoMarquee,SlideFillLink}.tsx` (new), `components/layout/sections/{LogoStrip,ProductTrustStrip,NewsInsightSection,ProductCustomerStories}.tsx`, `app/(marketing)/products/sognoscare/page.tsx`, `app/globals.css`.
+
 ## 2026-08-02 — Story video replaces the hero logo, with a timed handover
 
 Natural Power Solutions is the first customer story with a video. On load the client's logo rises in, holds, drops away, and the video crossfades up behind it — the `sognosroster/Hero.tsx` pattern, with travel added to the logo, which the Roster hero does not do.

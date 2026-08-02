@@ -3,7 +3,7 @@
 // Horizontal card slider. Swapped with IndustrySection: solutions used to be
 // the sticky stack and industries the slider.
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
 
 // Must stay equal to the track's `gap-2`, or arrow paging drifts by the
 // difference on every press.
@@ -85,7 +85,7 @@ const SOLUTIONS: Solution[] = [
 ];
 
 export default function SolutionsSection({
-  heading = "One intelligent platform for demand, workforce, and outcomes",
+  heading = "Solutions",
 }: {
   heading?: string;
 }) {
@@ -123,8 +123,8 @@ export default function SolutionsSection({
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
         {/* Heading left, arrows right */}
-        <div className="flex w-full items-end justify-between gap-6 pb-10">
-          <h2 className="font-heading text-3xl md:text-4xl font-normal tracking-tight text-sognos-heading max-w-4xl">
+        <div className="flex w-full items-end justify-center gap-6 pb-10">
+          <h2 className="font-heading text-3xl md:text-6xl font-light tracking-tight text-sognos-heading max-w-4xl">
             {heading}
           </h2>
           <div className="flex shrink-0 gap-3">
@@ -147,11 +147,12 @@ export default function SolutionsSection({
           className="flex snap-x snap-mandatory gap-2 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {SOLUTIONS.map((s) => (
-            <Link
+            // A div, not a link: the card now carries its own `SlideFillLink`,
+            // and an anchor inside an anchor is invalid — the browser closes
+            // the outer one early and the card falls apart.
+            <div
               key={s.id}
-              href={s.href}
               data-card
-              aria-label={s.label}
               // Widths are a fraction of the visible track, not fixed px, so
               // the card count per view is exact and the next card peeks by a
               // deliberate amount. For n cards in view the track holds n cards
@@ -162,7 +163,13 @@ export default function SolutionsSection({
               // on a 375px screen would eat half the card. To retune, change
               // the peek in the subtraction: lg is 3·8 + 120 = 144.
               // `snap-start` keeps each card flush to the left edge.
-              className="group/card relative isolate flex aspect-[334/354] shrink-0 snap-start flex-col items-start justify-start gap-12 overflow-hidden rounded-lg bg-white p-6 w-[calc(100%-56px)] md:w-[calc((100%-64px)/2)] lg:w-[calc((100%-144px)/3)]"
+              // `gap-7` rather than the `gap-12` this had before the CTA. The
+              // height is fixed by the aspect ratio, so a third child at 44px
+              // plus a second gap has to come out of the spacing: at `gap-12`
+              // the column overran by 11px, at `gap-8` by 3px, which left
+              // `mt-auto` no slack to pin the button against the bottom
+              // padding. At `gap-7` it fits with room to spare.
+              className="group/card relative isolate flex aspect-[334/354] shrink-0 snap-start flex-col items-start justify-start gap-7 overflow-hidden rounded-lg bg-white p-6 w-[calc(100%-56px)] md:w-[calc((100%-64px)/2)] lg:w-[calc((100%-144px)/3)]"
             >
               {/* 8px accent square, inset by the card's own 24px padding. */}
               <span
@@ -205,7 +212,18 @@ export default function SolutionsSection({
                   {s.copy}
                 </p>
               </div>
-            </Link>
+
+              {/* Pinned to the card's foot, so the CTA sits on one line across
+                  the row whatever the copy above it runs to. `shrink-0` is not
+                  optional: the card's height is fixed by its aspect ratio, so
+                  without it the flex layout crushes the button to a sliver
+                  rather than letting the column overflow. */}
+              <SlideFillLink
+                href={s.href}
+                label="Learn more"
+                className="mt-auto shrink-0"
+              />
+            </div>
           ))}
         </div>
       </div>

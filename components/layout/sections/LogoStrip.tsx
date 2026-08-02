@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { SanityImageSource } from "@sanity/image-url";
 import {
   DEFAULT_LOGOS,
@@ -7,6 +6,9 @@ import {
 } from "@/lib/content/logoStrip";
 import { getLogoStripContent } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
+import LogoMarquee, {
+  type MarqueeLogo,
+} from "@/components/layout/sections/shared/LogoMarquee";
 
 type Logo = {
   alt: string;
@@ -28,36 +30,31 @@ export default async function LogoStrip() {
       : DEFAULT_LOGOS
   ).slice(0, LOGO_STRIP_LOGO_LIMIT);
 
+  const marqueeLogos: MarqueeLogo[] = logos.flatMap((logo) => {
+    const src = resolveLogoSrc(logo);
+    return src ? [{ src, alt: logo.alt }] : [];
+  });
+
   return (
     <section
       aria-label="Trusted organisations"
-      className="w-full bg-sognos-navy"
+      // `divider-on-dark` retunes the tile border and the beam's base colour
+      // for navy; the travelling arcs stay the brand accent.
+      className="divider-on-dark w-full bg-sognos-navy"
     >
-      <div className="mx-auto max-w-6xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
-        <h3 className="mb-10 font-heading text-3xl tracking-tight text-white">
+      <div className="mx-auto max-w-2xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-2">
+        <h3 className="mb-12 font-heading text-3xl tracking-tight text-white">
           {LOGO_STRIP_TITLE}
         </h3>
-        <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:flex-nowrap md:justify-between md:gap-x-0">
-          {logos.map((logo, index) => {
-            const src = resolveLogoSrc(logo);
-            if (!src) return null;
-            return (
-              <div
-                key={logo.alt + index}
-                className={`flex items-center justify-center md:flex-1 md:px-8 py-5${index > 0 ? " md:border-l md:border-white/15" : ""}`}
-              >
-                <Image
-                  src={src}
-                  alt={logo.alt}
-                  width={150}
-                  height={40}
-                  className="h-10 w-auto object-contain md:h-10"
-                  style={{ filter: "brightness(0) invert(1)", opacity: 1 }}
-                />
-              </div>
-            );
-          })}
-        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-6 pb-16 md:pb-20">
+        <LogoMarquee
+          logos={marqueeLogos}
+          panelClass="bg-sognos-navy"
+          fadeClass="from-sognos-navy"
+          invertLogos
+        />
       </div>
     </section>
   );

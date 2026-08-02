@@ -30,7 +30,7 @@ export default function IndustrySection({
     : INDUSTRIES;
 
   return (
-    <section className="w-full bg-background">
+    <section className="w-full bg-gray-50">
       <div className="max-w-7xl w-full mx-auto px-6 pt-24">
         <h2 className="font-heading text-3xl md:text-4xl font-normal tracking-tight text-sognos-heading max-w-2xl">
           {heading}

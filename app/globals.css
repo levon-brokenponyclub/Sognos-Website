@@ -104,6 +104,14 @@
   --text-8xl: 2.5rem;
   --text-8xl--line-height: 1.1;
 
+  /* One-off, deliberately outside the ramp: pull quotes need 28px, which
+     falls between `2xl` (24px) and `3xl` (32px). Named for its use rather
+     than numbered so it cannot be mistaken for a scale step — if a second
+     use appears, that is the signal to revisit the ramp instead of adding
+     another one of these. */
+  --text-quote: 1.75rem;
+  --text-quote--line-height: 1.25;
+
   /* Shadows */
   --shadow-sm: var(--sognos-shadow-sm);
   --shadow-md: var(--sognos-shadow-md);
@@ -1320,5 +1328,126 @@ p.section-header-description {
   .testimonial-quote::before,
   .testimonial-quote::after {
     font-size: 4.5rem;
+  }
+}
+
+/* ── Animated card dividers (NewsInsightSection) ───────────────────────────
+   After middesk.com's article grid. The rule is a 2px clipped window; inside
+   it sits a track at 200% of the window's length carrying a gradient that is
+   line-coloured at each end and accent-coloured in the middle. Sliding the
+   track by half its length walks that bright band along the rule.
+
+   Values are the reference's own: a 35%/50%/65% gradient and 2.2s linear.
+
+   The two colours are custom properties so one implementation serves both a
+   light section and a dark one — a dark surface sets `--divider-base` and
+   nothing else changes. */
+:root {
+  --divider-base: var(--color-sognos-line);
+  --divider-accent: var(--color-sognos-blue-accent);
+}
+
+/* Dark surfaces: the line colour has to come from the surface, not the token,
+   or a #e2e8f0 rule reads as a bright white stripe on navy. */
+.divider-on-dark {
+  --divider-base: rgb(255 255 255 / 0.18);
+}
+
+@keyframes divider-slide-y {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes divider-slide-x {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.divider-track-y {
+  width: 100%;
+  /* Twice the window, so half a length of travel returns it to its start. */
+  height: 200%;
+  background: linear-gradient(
+    to bottom,
+    var(--divider-base) 35%,
+    var(--divider-accent) 50%,
+    var(--divider-base) 65%
+  );
+  animation: divider-slide-y 2.2s linear infinite;
+  will-change: transform;
+}
+
+.divider-track-x {
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(
+    to right,
+    var(--divider-base) 35%,
+    var(--divider-accent) 50%,
+    var(--divider-base) 65%
+  );
+  animation: divider-slide-x 2.2s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The rule still has to be there — it is the grid's divider, not decoration.
+     It just stops travelling and sits at its line colour. */
+  .divider-track-y,
+  .divider-track-x {
+    animation: none;
+    background: var(--divider-base);
+  }
+}
+
+/* ── Logo tile beam (LogoStrip / ProductTrustStrip) ────────────────────────
+   After middesk.com. A conic-gradient square at twice the tile's width, centred
+   behind the tile and spinning. The tile's 1px padding is the only place it
+   shows, so it reads as a border with two bright arcs travelling round it — the
+   inner panel has to carry the section's own background or the gradient floods
+   the whole tile.
+
+   Own keyframe rather than Tailwind's `spin`, so nothing here depends on a
+   utility being emitted elsewhere. Colours are the two custom properties the
+   dividers already use, so `divider-on-dark` retunes these too. */
+@keyframes logo-tile-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.logo-tile-beam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  aspect-ratio: 1 / 1;
+  width: 200%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  background: conic-gradient(
+    from 0deg,
+    var(--divider-accent),
+    var(--divider-base) 30%,
+    var(--divider-base) 70%,
+    var(--divider-accent)
+  );
+  /* 12s rather than the reference's 6s — at our tile size the arcs read as a
+     slow orbit rather than a spin. */
+  animation: logo-tile-spin 12s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-tile-beam {
+    animation: none;
+    /* Still a border, just a still one. */
+    background: var(--divider-base);
   }
 }

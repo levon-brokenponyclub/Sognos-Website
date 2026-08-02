@@ -28,7 +28,11 @@ export default async function SognosCarePage() {
         subtext={content.hero.subtext}
       />
       <ScrollReveal>
-        <ProductTrustStrip className="bg-sognos-care-dark" />
+        <ProductTrustStrip
+          className="bg-sognos-care-dark"
+          fadeClass="from-sognos-care-dark"
+          dark
+        />
       </ScrollReveal>
       <SognoscareProblems
         subNav={<ProductSubNav productName="SognosCare" sections={content.subNav} />}

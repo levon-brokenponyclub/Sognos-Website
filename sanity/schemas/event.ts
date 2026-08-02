@@ -36,6 +36,25 @@ export const event = defineType({
       description: "Short summary used in listings and meta descriptions.",
     }),
     defineField({
+      name: "format",
+      title: "Format",
+      type: "string",
+      options: {
+        list: [
+          { title: "Breakfast event", value: "Breakfast event" },
+          { title: "Webinar", value: "Webinar" },
+          { title: "Conference", value: "Conference" },
+          { title: "Roundtable", value: "Roundtable" },
+          { title: "Event", value: "Event" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "Event",
+      description:
+        "The eyebrow shown above the title. A webinar is an event for every purpose that matters here — it has a date, it can be upcoming, and it belongs in the same archive — so this only changes the label, never the behaviour.",
+      validation: (R) => R.required(),
+    }),
+    defineField({
       name: "date",
       title: "Event date",
       type: "datetime",

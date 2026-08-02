@@ -24,7 +24,12 @@ import {
   extractHeadings,
 } from "@/lib/portableText";
 import { ARTICLE_PROSE_MAX_W } from "@/lib/articleLayout";
-import { BRAND_BG, STORY_VIDEO } from "@/lib/customerStoryBrand";
+import {
+  BRAND_BG,
+  BRAND_FALLBACK,
+  STORY_VIDEO,
+  brandPanelGradient,
+} from "@/lib/customerStoryBrand";
 import PullQuote from "@/components/portable-text/PullQuote";
 import QuoteCallout from "@/components/portable-text/QuoteCallout";
 import StatRow from "@/components/portable-text/StatRow";
@@ -198,7 +203,7 @@ export default async function CustomerStoryPage({
   // uses: Sanity field first, then the hand-kept map, then the house accent so
   // an unlisted client still gets a deliberate panel rather than a flat block.
   const brandColor =
-    story.brandColor ?? BRAND_BG[story.company] ?? "#1d96fc";
+    story.brandColor ?? BRAND_BG[story.company] ?? BRAND_FALLBACK;
   const storyVideo = STORY_VIDEO[slug] ?? null;
   // Poster for that video. The story's own hero image where Sanity has one, so
   // the panel shows something of the client before a byte of video is fetched.
@@ -288,9 +293,7 @@ export default async function CustomerStoryPage({
             ) : (
               <div
                 className="flex aspect-2/1 items-center justify-center overflow-hidden rounded-lg p-8"
-                style={{
-                  backgroundImage: `radial-gradient(circle at 25% 20%, color-mix(in oklab, ${brandColor} 65%, white) 0%, ${brandColor} 40%, var(--sognos-navy-dark) 100%)`,
-                }}
+                style={{ backgroundImage: brandPanelGradient(brandColor) }}
               >
                 {companyLogoUrl ? (
                   <Image

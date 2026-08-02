@@ -57,14 +57,14 @@ export default function HowSognosWorks() {
   return (
     <section className="w-full bg-gray-50 py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-5xl text-center">
+        <div className="mx-auto max-w-4xl text-center flex flex-col gap-4">
           <AnimatedEyebrow className="justify-center">
             How Sognos works
           </AnimatedEyebrow>
-          <h2 className="mt-4 font-angellist text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+          <h2 className="font-angellist text-4xl font-normal tracking-tight text-sognos-heading lg:text-6xl">
             Healthcare First. Field Services Always. AI at the Centre.
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-sognos-body">
+          <p className="mx-auto max-w-xl text-base leading-normal text-sognos-body">
             One connected process takes service demand from first contact to
             coordinated delivery and measurable outcomes.
           </p>

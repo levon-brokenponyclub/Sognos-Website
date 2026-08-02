@@ -91,6 +91,7 @@ const SOGNOSCARE_PAGE_QUERY = `*[_type == "sognoscarePage"][0]{
   "featuredStories": featuredStories[]->{
     "slug": slug.current,
     company,
+    description,
     quote,
     quoteAuthor,
     sidebar,
@@ -122,6 +123,7 @@ type RawSidebarRow = { label?: string; value?: string };
 type RawStoryRef = {
   slug?: string;
   company?: string;
+  description?: string;
   quote?: string;
   quoteAuthor?: string;
   sidebar?: RawSidebarRow[];
@@ -188,6 +190,7 @@ function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
       ? urlFor(raw.heroImage).width(1200).auto("format").url()
       : "",
     quote: raw.quote ?? "",
+    description: raw.description,
     author,
     role,
     href: `/customer-stories/${raw.slug}`,
@@ -831,4 +834,177 @@ export async function getLegalPageBySlug(slug: string) {
     { slug },
     { next: { revalidate: 60 } },
   );
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────
+
+// `dateTime()` on both sides rather than a bare string compare: `date` is a
+// datetime, and comparing it to `now()` as strings only happens to work while
+// both carry the same offset format. Coercing makes it true by construction.
+//
+// `registrationOpen` is deliberately part of "upcoming" — an event whose date
+// has not passed but whose registration has closed should drop off the
+// homepage while staying in the archive.
+const UPCOMING_EVENTS_QUERY = `*[
+  _type == "event"
+  && registrationOpen == true
+  && dateTime(date) >= dateTime(now())
+] | order(date asc){
+  "slug": slug.current,
+  title,
+  excerpt,
+  format,
+  date,
+  location,
+  meta,
+  heroImage,
+  registrationOpen
+}`;
+
+// Everything, newest first. The archive shows past and upcoming together, so
+// it does not filter — the split is the caller's to make from `date`.
+const EVENT_ARCHIVE_QUERY = `*[_type == "event"] | order(date desc){
+  "slug": slug.current,
+  title,
+  excerpt,
+  format,
+  date,
+  location,
+  meta,
+  heroImage,
+  registrationOpen
+}`;
+
+const ALL_EVENT_SLUGS_QUERY = `*[_type == "event" && defined(slug.current)]{
+  "slug": slug.current
+}`;
+
+export type EventListing = {
+  slug: string;
+  title: string;
+  excerpt?: string | null;
+  /** Display eyebrow — "Breakfast event", "Webinar", … Never a behaviour switch. */
+  format: string;
+  date: string;
+  location?: string | null;
+  /** Hand-written display line. Compose from date + location when absent. */
+  meta?: string | null;
+  heroImage?: SanityImageSource;
+  registrationOpen: boolean;
+};
+
+export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
+  return (
+    (await sanityFetch<{ slug: string }[]>(
+      ALL_EVENT_SLUGS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
+}
+
+export async function getUpcomingEvents(): Promise<EventListing[]> {
+  return (
+    (await sanityFetch<EventListing[]>(
+      UPCOMING_EVENTS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
+}
+
+export async function getEventArchive(): Promise<EventListing[]> {
+  return (
+    (await sanityFetch<EventListing[]>(
+      EVENT_ARCHIVE_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )) ?? []
+  );
+}
+
+// ─── Home feed ────────────────────────────────────────────────────────────────
+
+export type HomeFeedKind = "event" | "story" | "post";
+
+export type HomeFeedItem = {
+  kind: HomeFeedKind;
+  /** Stable React key. Slugs collide across types, the pair does not. */
+  id: string;
+  /** Eyebrow above the title — the event's format, "Customer story", or the post's category. */
+  eyebrow: string;
+  title: string;
+  href: string;
+  /** ISO. For an event this is when it happens, not when it was written. */
+  date: string;
+  /** Second line: an event's display meta, or a post's read time. */
+  meta?: string | null;
+  image?: SanityImageSource;
+  /** Only ever true for an event, and only while it is still ahead of us. */
+  upcoming: boolean;
+};
+
+// Composed in TypeScript from the three existing getters rather than as one
+// GROQ union. A union across types whose projections differ needs `select()`
+// per field and reads far worse than this, for one saved round trip that
+// `Promise.all` and a 60s revalidate make cheap.
+function eventToFeedItem(e: EventListing): HomeFeedItem {
+  return {
+    kind: "event",
+    id: `event:${e.slug}`,
+    eyebrow: e.format,
+    title: e.title,
+    href: `/events/${e.slug}`,
+    date: e.date,
+    meta: e.meta ?? e.location ?? null,
+    image: e.heroImage,
+    upcoming: true,
+  };
+}
+
+/**
+ * The homepage feed, in display order: upcoming events first and soonest
+ * first, then everything else newest first.
+ *
+ * Two bands rather than one sort, because an event's `date` is in the future
+ * and a single `date desc` would rank it by how far away it is — a talk in
+ * December outranking one next week, and both sitting above today's news for
+ * no better reason than the calendar.
+ */
+export async function getHomeFeed(limit?: number): Promise<HomeFeedItem[]> {
+  const [events, stories, posts] = await Promise.all([
+    getUpcomingEvents(),
+    getCustomerStoryArchive(),
+    getKnowledgePostArchive(),
+  ]);
+
+  const upcoming = events.map(eventToFeedItem);
+
+  const rest: HomeFeedItem[] = [
+    ...stories.map((s) => ({
+      kind: "story" as const,
+      id: `story:${s.slug}`,
+      eyebrow: "Customer story",
+      title: s.title,
+      href: `/customer-stories/${s.slug}`,
+      date: s.date,
+      meta: s.readTime ?? null,
+      image: s.heroImage,
+      upcoming: false,
+    })),
+    ...posts.map((p) => ({
+      kind: "post" as const,
+      id: `post:${p.slug}`,
+      eyebrow: p.category,
+      title: p.title,
+      href: `/knowledge-hub/${p.slug}`,
+      date: p.date,
+      meta: p.readTime ?? null,
+      image: p.heroImage,
+      upcoming: false,
+    })),
+  ].sort((a, b) => b.date.localeCompare(a.date));
+
+  const feed = [...upcoming, ...rest];
+  return limit ? feed.slice(0, limit) : feed;
 }

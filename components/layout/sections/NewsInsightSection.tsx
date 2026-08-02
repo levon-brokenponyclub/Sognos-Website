@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Clock } from "lucide-react";
+import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
+import AnimatedDivider from "@/components/layout/sections/shared/AnimatedDivider";
 
 export type NewsInsightArticle = {
   slug?: string;
@@ -21,28 +23,6 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function SeeMoreLink({ className }: { className?: string }) {
-  return (
-    <Link
-      href="/knowledge-hub"
-      className={`group inline-flex items-center gap-x-1 text-base font-medium text-sognos-heading ${className ?? ""}`}
-    >
-      <span>See more on the blog</span>
-      <span className="ml-1 inline-flex transition-all duration-300 ease-in-out group-hover:ml-2">
-        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true" className="w-3">
-          <path
-            d="M3 7h8M7 3l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-    </Link>
-  );
-}
-
 // Article card, matching `StoryCard` in the customer-stories archive: no card
 // surface — 16:9 image, mono meta row, title, Read More, sitting directly on
 // the section background.
@@ -54,7 +34,14 @@ function SeeMoreLink({ className }: { className?: string }) {
 // category rather than a fixed "Customer Story".
 function ArticleCard({ article }: { article: NewsInsightArticle }) {
   return (
-    <Link href={article.href} className="group flex flex-col">
+    <Link
+      href={article.href}
+      // The divider rides the card's own leading edge, so the card is the
+      // positioning context and carries the inset that keeps content off it.
+      className="group relative flex flex-col pt-4 md:pt-0 md:pl-6"
+    >
+      <AnimatedDivider />
+
       <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
         <Image
           src={article.image}
@@ -107,19 +94,30 @@ export default function NewsInsightSection({
       <div className="mx-auto max-w-7xl px-4 lg:px-6">
         <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-12">
           <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
-            The latest news
+            The latest from Sognos
           </h2>
-          <SeeMoreLink className="max-sm:hidden" />
+          <SlideFillLink
+            href="/knowledge-hub"
+            label="View more resources"
+            className="max-sm:hidden"
+          />
         </div>
 
-        {/* Same track and gaps as the customer-stories archive grid. */}
-        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Same track as the customer-stories archive grid. The column gap is
+            24px rather than that grid's 32px so it matches each card's 24px
+            leading inset — the divider then sits optically centred in the
+            channel between two cards instead of hugging the right-hand one. */}
+        <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3">
           {articles.slice(0, 3).map((article) => (
             <ArticleCard key={article.slug ?? article.href} article={article} />
           ))}
         </div>
 
-        <SeeMoreLink className="mt-8 sm:hidden" />
+        <SlideFillLink
+          href="/knowledge-hub"
+          label="View more resources"
+          className="mt-8 sm:hidden"
+        />
       </div>
     </section>
   );
