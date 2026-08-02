@@ -78,7 +78,7 @@ function ArticleCard({ article }: { article: NewsInsightArticle }) {
         )}
       </div>
 
-      <h3 className="mt-3 font-heading text-lg lg:text-xl font-normal leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
+      <h3 className="mt-3 font-heading text-lg lg:text-xl lg:leading-snug font-normal leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
         {article.title}
       </h3>
 

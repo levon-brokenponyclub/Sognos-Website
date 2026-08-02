@@ -1,5 +1,154 @@
 # Changelog
 
+## 2026-08-02 — Story video replaces the hero logo, with a timed handover
+
+Natural Power Solutions is the first customer story with a video. On load the client's logo rises in, holds, drops away, and the video crossfades up behind it — the `sognosroster/Hero.tsx` pattern, with travel added to the logo, which the Roster hero does not do.
+
+- **`STORY_VIDEO` map in `lib/customerStoryBrand.ts`**, keyed by slug — the same hand-kept shape as `BRAND_BG` beside it, and there for the same reason: a plain module, so a Server Component importing it gets the object rather than a client reference. Filled one client at a time; a story without an entry keeps its logo panel untouched.
+
+- **`StoryHeroMedia.tsx`** owns the video panel. A Client Component only because the sequence needs timers — the page around it stays a Server Component. Timings: 0.6s rise, 2.6s hold, 0.5s fall, against a 0.9s video fade that is deliberately **longer than the logo's exit so the two overlap** and the panel is never briefly empty.
+  - `prefers-reduced-motion` skips the performance and opens on the video. Derived from the media query rather than set inside the effect — an effect that only exists to `setState` costs a second render to describe what the first one already could.
+
+- **The video frame is 16/9 and unpadded, for video stories only.** The file is 1280×720, so at 16/9 it fills the frame exactly with nothing cropped and nothing letterboxed — verified, the video's box is 896×504 against a panel of 896×504. Logo stories keep the 2/1 panel with `p-8` they were designed against.
+  - The interim `aspect-16/9 p-9` did not achieve this: 36px of padding takes the *inner* box to 824×432, a ratio of 1.907 rather than 1.778, so the video still letterboxed. The aspect has to sit on the box the video actually fills.
+
+- **The video is not autoplayed.** It is a 170-second narrative film, not ambient b-roll — the Roster hero's video is muted, looping and 901KB, this one is **94MB**. `preload="none"` holds the fetch until someone presses play; the crossfade brings up the poster frame and the controls. Verified `buffered.length: 0` forty seconds after load. The poster is the story's own Sanity hero image, so the panel shows something of the client before a byte of video moves.
+  - `pointer-events` are off the video until it is revealed, or its controls would take clicks from behind the logo.
+
+- **Verified:** panel 896×504 at `aspect-ratio: 16 / 9`, `padding: 0px`, `overflow: hidden`, bloom intact behind. Video absolutely positioned at `inset: 0`, `object-cover`, filling the panel exactly. Pre-reveal state correct — video `opacity: 0` and `pointer-events: none`, logo layer landed from its rise. `tsc` clean, `eslint` clean, production build compiles.
+  - **The handover at 3.2s was not observed.** The logo's entrance was caught mid-flight (`opacity: 0.9938`, `translateY(0.1px)`), which is good evidence it runs — but the tab reports `visibilityState: "hidden"`, and forty seconds after load the reveal still had not fired, `pointer-events` still `none`. Background timer throttling, not a defect in the sequence. **The handover needs a real foregrounded window.**
+
+- **Files:** `components/layout/sections/customer-stories/StoryHeroMedia.tsx` (new), `app/(marketing)/customer-stories/[slug]/page.tsx`, `lib/customerStoryBrand.ts`.
+
+## 2026-08-02 — Image panel above the How Sognos Works deck
+
+The reference's stacked image panel (`middesk.com`), which sits above the card deck and swaps with the active card.
+
+- **Built into `TimerCardDeck`, not `HowSognosWorks`.** The panel needs the active index, and lifting that into the section would have forced `HowSognosWorks` back into being a Client Component — something a comment at the top of that file records as deliberately undone. An optional `image` on `TimerCard` keeps the state where it already lives, and matches how the reference wraps panel and deck in one region.
+  - The deck's root changed from a fragment to a `flex flex-col gap-2` wrapper, the reference's 8px. No panel images, no panel — existing callers are unaffected.
+
+- **Every image sits in the same grid cell** (`col-start-1 row-start-1`), so the panel holds one height and the layers cross inside it. Both inactive states park at `translate-y-full`, which is what produces the reference's motion: the incoming image rises from below while the outgoing one drops back down, each fading over 800ms. **Nothing ever exits upward.**
+  - Tailwind v4 compiles `translate-y-*` to the `translate` property rather than `transform`, so the movement reads as `translate: 0px 100%` and `transform: none`. `transition-all` covers it either way — worth knowing before anyone concludes from `transform` alone that the translate is not applying.
+
+- **`panelAspect` prop, defaulting to the reference's `1440 / 800`.** The art supplied is 2720×976 (2.79:1), far wider than the reference's 1.8:1, and cropping it to that frame would have cut roughly a third off the sides. The section passes the art's own ratio, so `object-cover` has nothing to crop. A shared component hardcoding one consumer's art ratio was the alternative.
+  - Resulting panel is 1332×478 — **262px shorter** than the reference-ratio frame would have been, which suits the section better anyway.
+
+- **Images:** `howitworks01/02/03.webp`, supplied mid-task. They replaced `01/02/03.webp`, of which **01 and 03 were byte-identical** (`md5 2f0ffa5e…`) — steps one and three would have shown the same picture. The three new files are all distinct and share one ratio. The old trio is now referenced by nothing; left in place rather than deleted.
+
+- **Verified:** panel 1332×478 at `aspect-ratio: 2720 / 976` — matching the computed 478px exactly — `rounded-lg`, `overflow: hidden`, 8px above a 235px deck. All three layers in cell 1/1 at 1332×478; active at `translate: 0px` / `opacity: 1`, both inactive at `0px 100%` / `0`, all three at 800ms. Files resolve in order to `howitworks01/02/03.webp` with alts carrying the step names. `tsc` clean, `eslint` clean, production build compiles.
+  - **The transition has not been watched** — the tab reports `visibilityState: "hidden"`, where rAF never fires. **Needs a real foregrounded browser.**
+
+- **Files:** `components/layout/sections/shared/TimerCardDeck.tsx`, `components/layout/sections/HowSognosWorks.tsx`.
+
+## 2026-08-02 — Blur glow layers on the homepage hero
+
+**The reference does not animate its blur.** Inspected `diffblue.com/developer-productivity/` in both settled and initial state: all three `*-blur-dp` images compute to `opacity: 1`, `transform: none`, `filter: none`, no keyframes and no transition driving anything. Its `h1` and body copy carry no entrance either. The only motion in that hero is the eyebrow — a 7px dot rising 20px and its label sliding in 10px, both fading. The frosted look is a static `backdrop-blur-xl` on the panel, not an entrance. So the entrance here is **new work in the reference's idiom**, not a port.
+
+- **Three glow layers added at the foot of the hero**, back to front: `bottom` (z-0), the fade gradient (z-10), `middle` (z-20), `top` (z-30) — the reference's own order, where the widest glow sits behind a `from-sognos-navy` gradient that fades it into the section instead of letting it stop at an edge.
+  - Intrinsic sizes are the files' own — 1335×612, 1360×337, 1335×268 — which match the reference's markup exactly.
+
+- **Each layer resolves out of a blur as it rises**: `opacity 0 → 1`, `y 40 → 0`, `blur(24px) → blur(0)` over 1.2s on `[0.22, 1, 0.36, 1]`, staggered 0.12s back to front and starting at 0.15s so the headline lands first and the glow settles under it. `prefers-reduced-motion` drops the entrance entirely (`initial={false}`).
+
+- **`isolate` on the layer wrapper is load-bearing.** The wrapper is `absolute` with no z-index, so it forms no stacking context, and the `z-30` top layer would have outranked the `z-10` content in the section's own context and painted over the headline. Isolating contains the layer z-values to that subtree. Verified: `isolation: isolate`, layers at 0/20/30 inside it, content at 10 above it.
+
+- **The images bypass the image optimizer (`unoptimized`).** They are already AVIF at 12–34KB, so there is nothing to win, and two things to lose: `next/image` re-encodes to **JPEG** for any client not advertising AVIF or WebP, and `sips` confirms these glows carry an alpha channel — that fallback would flatten them to a solid box. Re-encoding a 1335×612 AVIF is also slow enough on a cold cache to stall the hero (a `curl` for the AVIF-negotiated variant did not return inside two minutes). Confirmed serving raw after the change: `/images/home/*.avif`, no srcset.
+
+- **Verified:** all three files serve `200` at 26808 / 34314 / 12365 bytes; wrapper, gradient and z-order as above; layers frozen at their authored initial state (`opacity: 0`, `filter: blur(24px)`). `tsc` clean, `eslint` clean, production build compiles.
+  - **The entrance itself has not been watched.** The tab reports `visibilityState: "hidden"`, where rAF never fires — which is also why the images read as "not loaded" in the DOM while serving 200 over HTTP. **Needs a real foregrounded browser.**
+  - **Animating `filter` on three full-bleed layers repaints a large area each frame.** It is a one-shot 1.2s entrance, not a loop, but it is the one thing here worth watching on a low-end machine. Swapping the blur for a `scale` would cost nothing to composite if it stutters.
+
+- **Files:** `components/layout/sections/Hero.tsx`.
+
+## 2026-08-02 — Indicator blocks become a mobile track, not a stack
+
+Matched to the reference's mobile treatment (`middesk.com/solutions/use-cases/lending`) and to `HowSognosWorks`, which already carries this pattern.
+
+- **The indicator row was `flex-col` below `md`, stacking the blocks.** It is now a real `overflow-x` track: 75vw blocks with `shrink-0` and `snap-center`, so a swipe works natively rather than being a translated track the reference uses. From `md` the overflow and snap go away and the same blocks lay out as equal columns — one element, not two DOM trees.
+  - `w-[75vw]` is `HowSognosWorks`' width, and the reference's `w-3/4`, which is the same figure measured against the track rather than the viewport.
+
+- **The track behaviour is `TimerCardDeck`'s, lifted whole**, so the two sections behave identically:
+  - Autoplay scrolls the active block into view — the track itself, not `scrollIntoView`, which would drag the page vertically to reach it.
+  - A swipe syncs the active story back, picking the block nearest the track's centre, so the countdown ring cannot keep running on a story the reader has already scrolled past.
+  - Guarded by a `programmaticScrollRef` flag, or the listener reads the mid-flight positions of our own smooth scroll as user input and fights the advance it is reacting to. Released on a 700ms timer rather than `scrollend`, which Safari only shipped recently.
+  - Bails when `scrollWidth <= clientWidth`, so none of it runs from `md` up.
+
+- **The track is `relative`** so the blocks' `offsetLeft` is measured against it rather than the section wrapper, which is the nearest positioned ancestor otherwise. The scroll maths depends on that. Confirmed: `offsetParent` is the track.
+
+- **Verified at 1457px** — the whole mobile mechanism is correctly inert: track `overflow-x: visible`, `scroll-snap-type: none`, `scrollWidth === clientWidth`, blocks 662px equal columns. That the base `overflow-x-auto` and `snap-x snap-mandatory` are being overridden is itself proof `md:overflow-x-visible` and `md:snap-none` emitted and apply.
+  - The mobile state could not be measured — the window resize does not reflow a tab the OS reports as hidden, and `innerWidth` stayed at 1457. Probed the utilities directly instead: `w-[75vw]` computes to 1092.75px against a 1457px viewport (75.0%), `shrink-0` to `flex-shrink: 0`, `overscroll-x-contain` to `overscroll-behavior-x: contain`, and `snap-center` reads `scroll-snap-align: center` on the real blocks. **The swipe itself still needs a real device.**
+  - `tsc` clean, `eslint` clean, production build compiles.
+
+- **Files:** `components/layout/sections/ProductCustomerStories.tsx`.
+
+## 2026-08-02 — Split-testimonial motion on the customer-story card
+
+Motion lifted from `21st.dev/@jatin-yadav05/components/split-testimonial`. The registry endpoint is auth-walled (`403 authentication_required` on `/r/…json` and `/api/r/…`) and the on-page code viewer would not yield its text, so the source came from the user directly.
+
+- **Embla is gone from this component, and from the codebase.** The reference's motion is a crossfade of one rendered item keyed on the active index; embla renders every slide in a track and translates it. The two cannot coexist — so the carousel is now `active = visible[activeIndex]` with `AnimatePresence`, and only the active story is in the DOM (verified: 1 `blockquote`, was 2).
+  - **This drops touch-swipe.** The indicator blocks stack and are tappable on mobile, and the section is a single full-width card rather than a peeking slider, so there is no longer a track to swipe. Worth a look on a real phone.
+  - `embla-carousel-react` and `embla-carousel-autoplay` are now unused by any file. Both remain in `package.json`; not pulled as part of this change.
+
+- **Each element of the card animates on its own curve**, every `AnimatePresence` keyed on the story and set to `mode="wait"` so exit finishes before enter:
+  - Media — `blur(20px)` and `scale 1.05 → 1` in, `scale 0.95` out, 0.6s.
+  - Logo — 10px rise, 0.3s.
+  - Quote — 40px rise on `[0.22, 1, 0.36, 1]`, 0.5s, inside `relative overflow-hidden` so the travel is clipped rather than overrunning the attribution.
+  - Attribution and its "Read full story" link — opacity only, 0.3s at a **0.2s delay**, so they settle after the quote lands instead of competing with it.
+  - **`prefers-reduced-motion` keeps the swap but removes the travel, blur and delay** — `duration: 0`, no `y`. The story still changes; it just cuts.
+
+- **The active indicator block is marked by a `layoutId` outline**, the reference's active-dot device at block scale — framer moves one element between blocks rather than cross-fading two.
+
+- **The card is pinned to `md:min-h-[360px]`.** Quote lengths differ by a factor of two across the stories; without it the card resizes underneath the transition. 360px is what it already measured at, and the reference's card is a fixed 400px.
+
+- **Empty-list guard added.** A caller can hand over `[]` — a Sanity query that matched nothing — and reading `visible[0]` off it would throw. Now returns `null`. This was reachable before this change too: the old single-story branch read `stories[0]` just as unguardedly.
+
+- **Verified static only:** card 1332×360 with `min-height: 360px` holding, one story in the DOM, the `layoutId` outline covering the active block exactly at `rgb(29,150,252)`. `tsc` clean, `eslint` clean, production build compiles.
+  - **No interaction or motion was verified, and the earlier `aria-current` check no longer reproduces.** Both browser surfaces report `visibilityState: "hidden"`, and in that state this page flushes no React state at all — the navbar's own "Open menu" button, untouched by this work, also fails to toggle. So the frozen indicator is the environment, not the component. **Autoplay, the crossfades, the countdown ring and the block clicks all need a real foregrounded browser.**
+
+- **Files:** `components/layout/sections/ProductCustomerStories.tsx`.
+
+## 2026-08-02 — ProductCustomerStories rebuilt on the Middesk testimonial
+
+- **Backup taken first**, at `.backups/ProductCustomerStories.tsx.2026-08-02.bak`. `.backups/` was added to `.gitignore` in the same pass — it was not ignored, so the backup would otherwise have been committed alongside the refactor it exists to undo.
+
+- **The section is now Middesk's testimonial block** (`middesk.com/solutions/use-cases/lending`): a white card on a grey section, media left at a quarter width, and logo / quote / attribution stacked right with the logo pinned top and the quote group bottom. It was a dark brand-coloured card with the quote at 24px.
+  - Measured against the reference, which runs a **10px root font** — its `rem` values are half what they read. Card padding 24px, media 3/12, text-column gap 32px, quote-group gap 16px, all literal px in the source and carried over unchanged.
+  - **The quote lands on the reference exactly through tokens, not arbitrary values.** `text-3xl` is `2rem`/1.1 in `globals.css` = **32px/35.2px**, which is what the reference computes to. `leading-heading` restates the 1.1 so the 24px mobile step does not pick up the 1.3 that `text-2xl` carries.
+  - Attribution is the reference's row — name, 8px accent square, role — at `text-xs`. The reference's 16.8px line-height was dropped for the `text-xs` token's 16px rather than keeping an arbitrary `leading-[1.4]` for a 0.8px difference.
+  - The 10×9 double-prime mark above the quote is the reference's own path.
+
+- **Only three stories render**, capped by `MAX_STORIES`. Callers pass whatever they have — Sanity, or `IndustryCustomerStories`' filter, which can return one — and anything past the third is dropped rather than shrunk.
+
+- **Three blocks below the card are the slide indicator**, one per story, replacing the dots. Each is the reference's fact block — white, `rounded-lg`, 24px padding with a 48px right inset, 8px square top-right — carrying a numbered eyebrow, the company name and its industry. The square takes the client's brand colour from `BRAND_BG`, full strength on the active block and at 25% on the rest.
+  - **Prev/next arrows were removed.** The reference has none, and with three blocks that each jump directly they were redundant. `canPrev`/`canNext` and both chevron components went with them.
+
+- **The countdown is `TimerCardDeck`'s ring, now exported and shared rather than reimplemented.** A per-block progress rail was built first and removed in favour of it. One ring for the section, anchored to the card's top-right corner, with the same play/pause toggle.
+  - **`embla-carousel-autoplay` is no longer used here, or anywhere** — the plugin owns its timer privately, so a ring fed from a second timer would drift against the slide it describes. One rAF loop now drives both the advance and the ring, the same clock `TimerCardDeck` uses. The package is still in `package.json`; left alone rather than pulled in this change.
+  - Hover-pause was dropped so the ring's play/pause icon cannot disagree with the actual state — matching `TimerCardDeck`, where only the button toggles.
+  - `prefers-reduced-motion` suppresses autoplay and the ring entirely; the blocks still work as a manual control.
+
+- **"Read full story" moved from the card's top-right to below the attribution** — the ring now occupies that corner — and is the shared `SeeMoreLink` rather than an outline button.
+
+- **Verified** at 1457px: section `bg-gray-50`, card 1332×360 at 24px padding, media 321×311, ring 40×40 inset 24px from the card's top-right, blocks 662px each in a row, quote 32px/35.2px, brand squares `rgb(0,150,169)` at opacity 1 (active) and `rgb(21,28,107)` at 0.25. Clicking a block moves `aria-current` to it. `tsc` clean, `eslint` clean on both files, production build passes.
+  - **The motion is not verified.** Both browser surfaces report `visibilityState: "hidden"`, where rAF never fires — 0 frames in 1200ms — so the ring reads a static `stroke-dashoffset` of 1 and embla's transform never leaves the identity matrix. Autoplay, the ring's countdown and the slide transition **need a real foregrounded browser**. The rAF loop is `TimerCardDeck`'s, which is already shipping on the homepage.
+
+- **Deliberate deviations from the reference:** the media keeps `rounded-lg` instead of the reference's bottom-left cutout mask, whose SVG is authored against a fixed 395×419 viewBox and does not scale to an arbitrary box; the logo stays at 32px rather than the reference's 20px, which our crest-style client marks cannot carry, and is flattened to a black silhouette so a mixed set reads as one family on white.
+
+- **Files:** `components/layout/sections/ProductCustomerStories.tsx`, `components/layout/sections/shared/TimerCardDeck.tsx` (export only), `.gitignore`.
+
+## 2026-08-02 — Solutions card icons and two-line title clamp
+
+- **`public/animations/lottie.json` deleted.** 3.9MB, referenced by nothing, left over from a reverted feature. It was never committed, so nothing enters git history.
+
+- **`icon-placeholder.svg` added to the Solutions cards**, in the 48px slot the reference reserves for its 104×104 icon. The SVG is authored at exactly 104×104, so it needs no scaling. Decorative — empty `alt`, kept out of the accessibility tree, since the card is already labelled by its heading. One placeholder across all seven until per-solution icons exist.
+  - **It is a plain `<img>`, not `next/image`.** The Next image optimizer returns **400** for SVG unless `dangerouslyAllowSVG` is set in `next.config`, which it is not — so `next/image` could not have served this at all, in dev or production. Turning that flag on site-wide to serve a 2.6KB local file is not a trade worth making, and there is nothing in an SVG for the optimizer to do. Confirmed the raw file serves 200 / 2646 bytes while `/_next/image?url=…` returns 400.
+
+- **Card titles now show the solution name rather than the descriptive headline** — "Frontline" instead of "End-to-end field service management". The descriptive line is already carried by the copy beneath.
+  - **This made the two-line clamp redundant and it was removed.** A clamp plus `min-h-16` was added first, to stop a one-line title leaving its copy higher than a two-line title's. With every label fitting on one line that problem disappears, and the min-height would only have left 32px of empty space under each title. Titles are back to `leading-normal` with no clamp.
+  - Verified across all seven cards: every title occupies exactly **1** line at a 30px box, and every copy block starts at **222px** from the card top — one distinct value, so the cards align without needing the clamp. Icons load 7/7.
+  - **`SOLUTIONS[].title` and `[].image` are now both unrendered by this section.** Left in the data — `title` still reads as the useful long-form description if a card or another surface wants it later.
+
+- **Files:** `components/layout/sections/SolutionsSection.tsx`, `public/animations/lottie.json` (deleted).
+
 ## 2026-08-02 — Swept the non-existent text-sognos-header token
 
 - **`text-sognos-header` was never a real utility.** Only `--color-sognos-heading` is defined in `globals.css`, so the class emitted nothing and every element using it fell back to inherited colour. All **11 occurrences across 8 files** are now `text-sognos-heading`.

@@ -24,11 +24,12 @@ import {
   extractHeadings,
 } from "@/lib/portableText";
 import { ARTICLE_PROSE_MAX_W } from "@/lib/articleLayout";
-import { BRAND_BG } from "@/lib/customerStoryBrand";
+import { BRAND_BG, STORY_VIDEO } from "@/lib/customerStoryBrand";
 import PullQuote from "@/components/portable-text/PullQuote";
 import QuoteCallout from "@/components/portable-text/QuoteCallout";
 import StatRow from "@/components/portable-text/StatRow";
 import HeroScrollFade from "@/components/layout/sections/customer-stories/HeroScrollFade";
+import StoryHeroMedia from "@/components/layout/sections/customer-stories/StoryHeroMedia";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
@@ -198,6 +199,12 @@ export default async function CustomerStoryPage({
   // an unlisted client still gets a deliberate panel rather than a flat block.
   const brandColor =
     story.brandColor ?? BRAND_BG[story.company] ?? "#1d96fc";
+  const storyVideo = STORY_VIDEO[slug] ?? null;
+  // Poster for that video. The story's own hero image where Sanity has one, so
+  // the panel shows something of the client before a byte of video is fetched.
+  const heroImageUrl = story.heroImage
+    ? urlFor(story.heroImage).width(1280).auto("format").url()
+    : null;
   const { author: quoteAuthor, role: quoteRole } = parseQuoteAuthor(
     story.quoteAuthor,
   );
@@ -263,29 +270,44 @@ export default async function CustomerStoryPage({
 
           {/* Brand panel — replaces the hero image. Radial bloom in the client's
               own colour, dropping to navy at the edges so the white logo always
-              sits on a dark field whatever hue the client brings. */}
+              sits on a dark field whatever hue the client brings. Where the
+              story has a video it takes the panel instead, and the bloom stays
+              behind it as the letterbox for a 16:9 file in a 2:1 frame. */}
           <div className="mx-auto mt-12 max-w-4xl lg:mt-16">
-            <div
-              className="flex aspect-2/1 items-center justify-center rounded-lg p-8"
-              style={{
-                backgroundImage: `radial-gradient(circle at 25% 20%, color-mix(in oklab, ${brandColor} 65%, white) 0%, ${brandColor} 40%, var(--sognos-navy-dark) 100%)`,
-              }}
-            >
-              {companyLogoUrl ? (
-                <Image
-                  src={companyLogoUrl}
-                  alt={story.company}
-                  width={480}
-                  height={144}
-                  priority
-                  className="h-20 w-auto max-w-[55%] object-contain brightness-0 invert"
-                />
-              ) : (
-                <p className="font-heading text-2xl font-medium tracking-tight text-white lg:text-4xl">
-                  {story.company}
-                </p>
-              )}
-            </div>
+            {storyVideo ? (
+              // Owns its own panel: the video frame is 16/9 and unpadded so the
+              // film fills it, where a logo panel is 2/1 with room around the
+              // mark. Only stories listed in STORY_VIDEO take this path.
+              <StoryHeroMedia
+                videoSrc={storyVideo}
+                poster={heroImageUrl ?? undefined}
+                logoUrl={companyLogoUrl}
+                company={story.company}
+                brandColor={brandColor}
+              />
+            ) : (
+              <div
+                className="flex aspect-2/1 items-center justify-center overflow-hidden rounded-lg p-8"
+                style={{
+                  backgroundImage: `radial-gradient(circle at 25% 20%, color-mix(in oklab, ${brandColor} 65%, white) 0%, ${brandColor} 40%, var(--sognos-navy-dark) 100%)`,
+                }}
+              >
+                {companyLogoUrl ? (
+                  <Image
+                    src={companyLogoUrl}
+                    alt={story.company}
+                    width={480}
+                    height={144}
+                    priority
+                    className="h-20 w-auto max-w-[55%] object-contain brightness-0 invert"
+                  />
+                ) : (
+                  <p className="font-heading text-2xl font-medium tracking-tight text-white lg:text-4xl">
+                    {story.company}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {story.quote && (

@@ -63,3 +63,13 @@ schema.json
 
 # Scaffold reference dumps (not shipping)
 public/images/new/
+
+# Pre-refactor file backups (local safety net, never shipped)
+.backups/
+
+# Customer-story film — 94MB, and this repo has no LFS, so committing it would
+# add that to every clone for good. Kept local until it is either re-encoded to
+# a sane size or moved to a video host. The hero panel that plays it will 404
+# its source on any deploy until then. `simulated-conversations.mp4` is 901KB
+# and stays tracked.
+public/videos/NPS-Customer-Story.mp4

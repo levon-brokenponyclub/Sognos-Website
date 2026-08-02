@@ -17,18 +17,25 @@ const BLOCKS = [
     label: "Intake and triage",
     copy: "Built for care teams delivering complex services across communities, homes and frontline environments.",
     href: "/products/sognoscare",
+    image: "/images/how-it-works/howitworks01.webp",
+    // Test: step one's panel is a Lottie rather than the still. The JSON is
+    // 1440×1024 against a 2.79:1 panel, so it letterboxes until one or the
+    // other is re-cut — see the changelog.
+    animation: "/animations/hiw01.json",
   },
   {
     title: "Coordinate workforce",
     label: "Planning and delivery",
     copy: "Designed around the realities of mobile workforces, scheduling, compliance and service delivery in the field.",
     href: "/products/sognosroster",
+    image: "/images/how-it-works/howitworks02.webp",
   },
   {
     title: "Track outcomes",
     label: "Insight and improvement",
     copy: "Practical AI embedded where it matters most, helping teams reduce admin, improve decisions and focus on people.",
     href: "/solutions/customer-insights",
+    image: "/images/how-it-works/howitworks03.webp",
   },
 ] as const;
 
@@ -40,6 +47,10 @@ const CARDS: readonly TimerCard[] = BLOCKS.map((b, i) => ({
   title: b.title,
   description: b.copy,
   href: b.href,
+  // Alt is the step it illustrates — the panel is not decorative, it is the
+  // slide's content.
+  image: { src: b.image, alt: b.title },
+  animation: "animation" in b ? { src: b.animation } : undefined,
 }));
 
 export default function HowSognosWorks() {
@@ -95,7 +106,13 @@ export default function HowSognosWorks() {
         {/* Auto-advancing deck after middesk.com. The deck owns its own timing
             and active state now that the stepper it used to drive is gone. */}
         <div className="mt-10 md:mt-12 lg:mt-16">
-          <TimerCardDeck cards={CARDS} autoplayMs={STEP_DURATION} />
+          {/* All three panel images are 2720×976 — the panel takes their own
+              ratio so nothing is cropped. */}
+          <TimerCardDeck
+            cards={CARDS}
+            autoplayMs={STEP_DURATION}
+            panelAspect="2720 / 976"
+          />
         </div>
       </div>
     </section>

@@ -170,14 +170,38 @@ export default function SolutionsSection({
                 className="absolute right-6 top-6 h-2 w-2 bg-sognos-blue-accent"
               />
 
+              {/* 104×104, the reference's icon size — the SVG is authored at
+                  exactly that, so it needs no scaling. Decorative, so the alt
+                  is empty and it stays out of the accessibility tree; the card
+                  is already labelled by its heading. One placeholder for all
+                  seven until per-solution icons exist.
+
+                  A plain <img>, not next/image: the optimizer returns 400 for
+                  SVG unless `dangerouslyAllowSVG` is set in next.config, and
+                  turning that on site-wide to serve a 2.6KB local file is not
+                  a trade worth making. There is nothing to optimise here. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/solutions/icon-placeholder.svg"
+                alt=""
+                width={104}
+                height={104}
+                className="shrink-0"
+              />
+
               {/* 16px title-to-copy and a 16px right inset, per the reference's
                   text group. Both are weight 400 — it has no weight step
                   between them. */}
-              <div className="flex flex-col items-start justify-start gap-4 self-stretch pr-4">
-                <h3 className="font-heading text-xl font-normal text-sognos-heading transition-colors duration-200 group-hover/card:text-sognos-blue-accent">
-                  {s.title}
+              <div className="flex flex-col items-start justify-start gap-4 self-stretch pr-5">
+                {/* Clamped to two lines from lg, with a matching min-height —
+                    the clamp alone caps a long title but leaves a one-line
+                    title short, so the copy below would still start at a
+                    different height on each card. `leading-8` pins the line box
+                    to 32px so `min-h-16` is provably exactly two lines. */}
+                <h3 className="font-heading text-xl font-normal leading-normal text-sognos-heading transition-colors duration-200 group-hover/card:text-sognos-blue-accent">
+                  {s.label}
                 </h3>
-                <p className="text-base font-normal leading-[1.4] text-sognos-body">
+                <p className="text-base font-normal leading-normal text-sognos-body">
                   {s.copy}
                 </p>
               </div>

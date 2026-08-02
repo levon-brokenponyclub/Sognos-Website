@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import LottiePanel from "@/components/layout/sections/shared/LottiePanel";
 import { ArrowRight } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 
@@ -26,6 +28,7 @@ const AUTOPLAY_MS = 8000;
 const GRID_MS = 800;
 const CONTENT_MS = 900;
 const FADE_MS = 800;
+const IMAGE_MS = 800;
 
 export type TimerCard = {
   number: string;
@@ -34,16 +37,26 @@ export type TimerCard = {
   /** Optional CTA, as the reference card carries. */
   href?: string;
   ctaLabel?: string;
+  /** Optional panel image. Supply one per card and the deck renders the
+   *  reference's stacked panel above itself; omit them and it does not. */
+  image?: { src: string; alt: string };
+  /** Lottie JSON for this card's panel, taking the place of `image`. Cards can
+   *  mix the two — the panel does not care which a given slide uses. */
+  animation?: { src: string };
 };
 
 export default function TimerCardDeck({
   cards,
   autoplayMs = AUTOPLAY_MS,
+  panelAspect = "1440 / 800",
   active: controlledActive,
   onActiveChange,
 }: {
   cards: readonly TimerCard[];
   autoplayMs?: number;
+  /** Ratio of the image panel, as a CSS `aspect-ratio`. Defaults to the
+   *  reference's 1440×800; pass the art's own ratio to avoid cropping it. */
+  panelAspect?: string;
   /** Supply with onActiveChange to drive the deck from outside — e.g. when a
    *  stepper elsewhere on the page has to stay in step with it. */
   active?: number;
@@ -215,8 +228,69 @@ export default function TimerCardDeck({
     .map((_, i) => `${i === active ? ACTIVE_FR : inactiveFr}fr`)
     .join(" ");
 
+  const hasPanel = cards.some((c) => c.image || c.animation);
+
   return (
-    <>
+    // 8px between the panel and the deck, per the reference, which wraps the
+    // two in one region.
+    <div
+      className="flex w-full flex-col gap-2"
+      role={hasPanel ? "region" : undefined}
+      aria-roledescription={hasPanel ? "carousel" : undefined}
+      aria-label={hasPanel ? "Featured" : undefined}
+    >
+      {/* ── Panel ──
+          Every image occupies the same grid cell, so the panel keeps one
+          height and the layers cross within it. Both inactive states park at
+          `translate-y-full`, which is what gives the reference its motion: the
+          incoming image rises from below while the outgoing one drops back
+          down, each fading as it goes. Nothing ever exits upward.
+
+          `panelAspect` sets the frame. Give it the art's own ratio and
+          `object-cover` has nothing to crop; leave it and the panel keeps the
+          reference's 1440×800 and crops whatever does not fit. */}
+      {hasPanel && (
+        <div
+          className="relative grid w-full overflow-hidden rounded-lg bg-sognos-navy"
+          style={{ aspectRatio: panelAspect }}
+        >
+          {cards.map((card, i) =>
+            card.image || card.animation ? (
+              <div
+                key={card.number}
+                aria-hidden={i !== active}
+                className={`pointer-events-none relative col-start-1 row-start-1 h-full w-full transition-all ease-in-out ${
+                  i === active
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-full opacity-0"
+                }`}
+                style={{
+                  transitionDuration: prefersReducedMotion
+                    ? "0ms"
+                    : `${IMAGE_MS}ms`,
+                }}
+              >
+                {card.animation ? (
+                  <LottiePanel
+                    src={card.animation.src}
+                    active={i === active}
+                    className="h-full w-full"
+                  />
+                ) : card.image ? (
+                  <Image
+                    src={card.image.src}
+                    alt={card.image.alt}
+                    fill
+                    sizes="(min-width: 1380px) 1332px, 100vw"
+                    className="object-cover"
+                  />
+                ) : null}
+              </div>
+            ) : null,
+          )}
+        </div>
+      )}
+
       {/* ── Desktop deck ── */}
       <div
         ref={deckRef}
@@ -420,14 +494,16 @@ export default function TimerCardDeck({
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 
 // Circular countdown ring. Two semicircle arcs drawn in sequence — the first
 // covers the opening half of the interval, the second the closing half — each
 // with pathLength 1 so the dash offset is just the remaining fraction.
-function ProgressButton({
+// Exported so other autoplaying sections use this timer rather than growing
+// their own — ProductCustomerStories does.
+export function ProgressButton({
   paused,
   progress,
   onToggle,
