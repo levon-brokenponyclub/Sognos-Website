@@ -41,7 +41,7 @@ export default function SocialResponsibilitySection() {
             <h2 className="font-heading text-3xl md:text-4xl font-medium text-white text-center lg:text-left tracking-tight mb-6">
               Our commitment to <br /> community and planet.
             </h2>
-            <p className="font-heading font-normal leading-relaxed lg:text-lg mb-10 text-white/80">
+            <p className="mb-10 font-normal leading-relaxed text-white/80 lg:text-lg">
               At Sognos, our impact extends far beyond the services we provide.
               Social responsibility is at the core of our values - we are
               committed to making a difference where we live, work, and do
@@ -75,37 +75,37 @@ export default function SocialResponsibilitySection() {
                 <button
                   key={p.title}
                   onClick={() => setActiveSR(idx)}
-                  className={`text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between h-full group ${
+                  className={`group flex h-full flex-col justify-between rounded-lg border p-4 text-left transition-all duration-300 ${
                     activeSR === idx
-                      ? "border-sognos-blue-accent bg-[#F1F9FF] shadow-sm"
-                      : "border-gray-100 bg-white hover:border-gray-200"
+                      ? "border-sognos-blue-accent bg-sognos-blue-accent/5"
+                      : "border-sognos-line bg-white hover:border-sognos-line"
                   }`}
                 >
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="mb-2 flex items-center gap-3">
                     <span
-                      className={`flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-bold transition-colors ${
+                      className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
                         activeSR === idx
                           ? "bg-sognos-blue-accent text-white"
-                          : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
+                          : "bg-gray-200/70 text-sognos-muted"
                       }`}
                     >
                       {idx + 1}
                     </span>
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                      className={`text-xs font-semibold uppercase tracking-widest transition-colors ${
                         activeSR === idx
                           ? "text-sognos-blue-accent"
-                          : "text-gray-400 group-hover:text-gray-500"
+                          : "text-sognos-muted"
                       }`}
                     >
                       Pillar
                     </span>
                   </div>
                   <span
-                    className={`font-semibold text-sm transition-colors ${
+                    className={`text-sm font-semibold transition-colors ${
                       activeSR === idx
-                        ? "text-sognos-body"
-                        : "text-gray-500 group-hover:text-gray-700"
+                        ? "text-sognos-heading"
+                        : "text-sognos-muted group-hover:text-sognos-body"
                     }`}
                   >
                     {p.title}
@@ -118,18 +118,18 @@ export default function SocialResponsibilitySection() {
             <div className="bg-white rounded-lg p-2 overflow-hidden relative group">
               <div className="flex flex-col lg:flex-row min-h-[460px]">
                 {/* Left Column - Info Panel */}
-                <div className="shrink-0 lg:w-[40%] bg-gray-200/60 rounded-lg p-7 flex flex-col justify-between">
+                <div className="flex shrink-0 flex-col justify-between rounded-lg bg-gray-200/70 p-7 lg:w-[40%]">
                   <div className="flex flex-col">
-                    <h2 className="mt-3 mb-6 font-heading text-[26px] font-medium text-sognos-body tracking-tight">
+                    <h2 className="mt-3 mb-6 font-heading text-2xl font-medium tracking-tight text-sognos-heading">
                       {SR_PILLARS[activeSR].title}
                     </h2>
-                    <p className="font-heading text-base font-normal leading-relaxed text-sognos-body lg:text-lg">
+                    <p className="text-base font-normal leading-relaxed text-sognos-body lg:text-lg">
                       {SR_PILLARS[activeSR].body}
                     </p>
                   </div>
                   <Link
                     href="/company/social-responsibility"
-                    className="mt-5 inline-flex items-center gap-2.5 text-md font-semibold text-sognos-body hover:opacity-70 transition-opacity"
+                    className="mt-5 inline-flex items-center gap-2.5 text-base font-semibold text-sognos-body transition-opacity hover:opacity-70"
                   >
                     Read more
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sognos-navy text-white shrink-0">
@@ -161,7 +161,6 @@ export default function SocialResponsibilitySection() {
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     sizes="(max-width: 1024px) 100vw, 60vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
               </div>
             </div>

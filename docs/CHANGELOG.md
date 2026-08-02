@@ -1,5 +1,61 @@
 # Changelog
 
+## 2026-08-02 — About page: Partners, Social Responsibility and Careers brought onto the design rules
+
+Compliance pass against §7 of `CLAUDE.md` across the three sections. No layout or copy changes.
+
+- **Careers ran on a hardcoded `#173465`** for both the section background and the CTA label — a colour that exists in no token. Now `bg-sognos-navy` / `text-sognos-navy`. **This is a visible change**: `--sognos-navy` is `#152248`, appreciably darker and less blue than the hex it replaces.
+- **Social Responsibility** carried the clearest breaches: `rounded-2xl` and `shadow-sm` on the pillar tabs, `bg-[#F1F9FF]` for the active tab (now `bg-sognos-blue-accent/5`), and `bg-gray-200/60` on the info panel where the rule specifies `/70`.
+  - A `bg-gradient-to-t from-black/40` scrim sat over the card image. No text overlays it, so it was decoration on a card — removed under "no gradients on standard cards or subcards".
+  - Body copy was set in `font-heading`. Headings are Inter Tight, body is Inter; the paragraphs now use the body face.
+- **Our Partners** cards were `bg-slate-50`, an explicitly banned value. Now `bg-white`, which keeps them light and lets the existing border define the card. `bg-gray-200/70` was the alternative if a tinted card is wanted.
+  - Card grid was `gap-4 lg:gap-6`, Careers was a flat `gap-4`; both are now the standard `gap-3 lg:gap-4`.
+  - The partner `h3` had no `font-heading` and used `text-sognos-body`; it now uses the heading face and `text-sognos-heading`. Type labels moved from `font-bold tracking-[0.12em]` to the house `font-semibold tracking-widest` used in 59 other places.
+
+- **Two invalid Tailwind classes were silently doing nothing** and are now real values:
+  - `className="text text-sognos-body"` on the partner description — `text` is not a class. Now `text-base` (verified 16px).
+  - `text-md` on the Social Responsibility "Read more" link — Tailwind has no `text-md`. Now `text-base`.
+
+- **`rounded-full` was left alone.** It appears 152 times site-wide including the Navbar pills, so it is convention for pills and circular badges, not a breach — the radius rule bans the `xl`/`2xl`/`3xl`/arbitrary scale.
+
+- **Flagged, not changed:** the Social Responsibility pillar tabs carry `hidden` on their container. `setActiveSR` is only called from there, so `activeSR` is permanently `0` — two of the three pillars are unreachable, and the component is a Client Component whose state can never change. That is a content/behaviour question, not a style rule, so the markup was left intact (and brought onto the rules in case it is ever unhidden).
+
+- **Verified in the browser:** across all three sections, 0 box-shadows, 0 border radii above 8px, 0 gradients. Careers background resolves to `rgb(21, 34, 72)`, partner cards to white, the info panel to `gray-200/70`. Partner grid gap 16px, `h3` on the heading face at `rgb(15, 25, 54)`, labels at weight 600 / 1.2px tracking.
+
+- **Partners section rebuilt twice, landing on `mintlify.com/customers`.** It first moved onto the Why Sognos nav promo (`FeaturedPromo`, `Navbar.tsx:109`) — one `bg-sognos-navy` surface, content bottom-left, arrow bottom-right — then onto the Mintlify split.
+  - **The section is now `bg-sognos-navy-dark` with `bg-sognos-navy` cards**, and **completely borderless** — no block outline, no column dividers, no card outlines.
+    - The cards therefore separate on a **1.12:1 tonal step alone**. It holds up, but there is no margin left in it: lightening the section or darkening the cards will make them disappear. The section comment says so.
+    - The arrow badge lost its `border-white` too — it sat on `bg-white`, so it was invisible regardless. It is only there in the reference because that badge inverts to `bg-transparent` on hover; ours just fades in.
+  - Going dark took the rest of the section with it: the eyebrow to `text-white/50`, body copy to `text-white/70` (~9.2:1), and the heading to `text-white`, matching the other dark sections on this page. Rules that survived the borderless pass would have needed `border-white/10` — `sognos-line` is a light-mode hairline and vanishes on navy.
+  - **Columns:** the `0.7fr / 1.3fr` grid became `flex flex-col lg:flex-row` — statement at `lg:w-1/3 lg:shrink-0` with `p-7`, card grid at `min-w-0 flex-1` behind a `lg:border-l` divider, the whole block in a `rounded-lg` border. Below `lg` the divider becomes a `border-b` under the statement.
+  - **The left column is no longer sticky.** The divider is a full-height border on the right column, and a sticky left column would leave it running past the copy.
+  - **Cards are `aspect-[163/104]`, `lg:aspect-[160/155]`** — near-square on desktop — in a fixed `grid-cols-2` at `gap-3 lg:gap-4` with `p-3`.
+  - **Resting state is the logo alone, centred; detail crosses in on hover.** The logo lifts and fades out while type / name / description fade up, and the arrow badge fades in bottom-right. Both layers are absolutely positioned in the same box, so neither reserves height and the card holds its aspect ratio in either state. `motion-reduce:transition-none` on both.
+  - Cards are links to the partners' own sites, `target="_blank"` with `rel="noopener noreferrer"`, so the arrow badge means something. `href` added to each `PARTNERS` entry, plus `aria-label` since the visible label is `aria-hidden`.
+  - `logoBg` and `logoFilter` removed from the data: with one navy surface there is no per-logo cell to tint.
+  - The reference's `rounded-[6px]` is `rounded-lg` here — the radius rule allows no arbitrary values.
+  - `IconArrowUpRight` is inlined rather than imported — the same mark exists in `Navbar.tsx` but as a non-exported local inside a `"use client"` module.
+  - Not carried over: the reference staggers each card's entrance by 55ms via inline `transition-delay`. That needs per-card scripting for a purely decorative effect, so it was left out.
+
+- **Open issue, now the section's main visual problem — the partner logo files all have opaque baked-in backgrounds.** Sampled corner pixels: Microsoft `#FFFFFF`, SoftwareOne `#000000`, Ingram Micro `#1570EF`, Resco `#0066CC`; none is transparent. The old design hid this by giving each logo a cell tinted to match its file. Now that the resting state of every card is *the logo alone, centred on navy*, each one reads as a coloured rectangle floating on the surface. The Ingram file is also cropped at its own edges. Fixing it needs transparent PNG/SVG assets, or a deliberate logo plate; inverting will not help, since inverting an opaque image inverts the whole rectangle.
+
+- **Partners content now sits flush to the container edges.** `p-7` on the statement and `p-3` on the card grid became `py-*`, so the statement's left edge and the last card's right edge land on the container's content box (54 / 1386 at a 1440 viewport) and line up with the rest of the page. Column separation moved to a `lg:gap-10` on the flex row — a gap does not inset the outer edges the way padding did, which is the whole point of the change.
+
+- **Our Story: the left column drops to meet the right column's first line.** `mt-12` on the column matches the lead paragraph's own `mt-12`, so the eyebrow no longer floats above the body copy. Change one and the other has to follow.
+  - The eyebrow also needed `className="flex w-fit"`. `AnimatedEyebrow` defaults to `inline-flex`, and as an inline box it sat in the column's 24px line box and picked up 5px of leading above it — so matching the column tops still left the eyebrow hanging 5px low. Measured at delta 0 after the change. `w-fit` keeps it shrink-to-fit.
+
+- **`AboutStats` rebuilt after `middesk.com/solutions/use-cases/lending`** (`components/layout/sections/AboutStats.tsx`). Was a rAF count-up between `border-r` dividers; now three ruled columns, each with a 72×8 notch sitting on its top rule, the metric above a label.
+  - **The number rolls rather than counts.** A stack of 30 interpolated values is clipped to one row tall and translated to the last entry — the digits slide, which is what gives the reference its character. A numeric count-up cannot produce that.
+  - The last entry in the stack is always the exact target, so the resting frame is correct even where the interpolation would have rounded. Years start at `value * 0.97` rather than 0, or the roll spends its whole length in the 0–1900s.
+  - Reduced motion renders a single row with no transition — nothing to travel through, so nothing can land wrong.
+  - The scrolling stack is `aria-hidden`; a `sr-only` span announces `"2016, Founded"` once, following the reference's pattern.
+  - Gaps are the house `md:gap-3 lg:gap-4` rather than the reference's flat 8px, and `gap-8` when stacked below `md`.
+  - The rule and its notch stay on `sognos-line`. They were tried in `sognos-blue-accent` and reverted — the blue rule competed with the blue eyebrow marker directly above it. If they are ever recoloured, both must move together; a blue notch on a grey rule reads as a mistake. The metric sits at `text-7xl`.
+
+- **`TeamSection.tsx` picked up two rule breaches in the same commit**, from separate hand edits: the card info block gained `rounded-xl` and the section moved from `bg-gray-50` to `bg-gray-100`. Both are explicitly banned by §7 — radius is `rounded-lg` with no exceptions, and gray section backgrounds are `bg-gray-200/70`. Left as authored rather than silently corrected, but recorded here so the compliance pass above is not read as covering this file.
+
+- **Files:** `app/(marketing)/company/about/page.tsx`, `components/layout/sections/SocialResponsibilitySection.tsx`, `components/layout/sections/AboutStats.tsx`, `components/layout/sections/TeamSection.tsx`.
+
 ## 2026-08-02 — Knowledge Hub post adopts the customer story body layout
 
 - **`app/(marketing)/knowledge-hub/[slug]/page.tsx` now runs the same three tracks as the customer story template** (`[260px_1fr_260px]`): meta rail, prose, TOC. The `[TOC 300px] [line 48px] [prose 1fr]` layout is gone, and with it the deliberate split recorded earlier the same day — the two article families share one body layout again.

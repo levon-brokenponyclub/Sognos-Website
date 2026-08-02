@@ -106,7 +106,7 @@ function TeamCard({
           />
         </motion.div>
 
-        <div className="pt-6 flex items-start justify-between gap-5">
+        <div className="py-6 px-5 flex rounded-xl items-start justify-between gap-5 bg-white">
           <div className="">
             <h3 className="font-heading text-xl font-medium tracking-tight text-heading lg:text-2xl">
               {member.name}
@@ -275,7 +275,7 @@ export default function TeamSection() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   return (
-    <section className="w-full bg-gray-50 py-20 lg:py-28">
+    <section className="w-full bg-gray-100 py-20 lg:py-28">
       <LayoutGroup>
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
