@@ -89,7 +89,7 @@ export const INDUSTRIES = [
     href: "/industries/health-social-care",
     description:
       "Coordinate complex care delivery, multidisciplinary teams, and compliance-heavy service operations.",
-    products: ["SognosCare", "SognosRoster"],
+    products: ["SognosCare", "SognosRoster", "SognosGenogram"],
     image: "/images/industries/health-social-care.webp",
     features: [
       "Real-time care delivery tracking across multidisciplinary teams",

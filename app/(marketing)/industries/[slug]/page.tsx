@@ -37,6 +37,13 @@ const PRODUCT_META = {
     borderClass: "border-(--sognos-accent)/30",
     bgClass: "bg-(--sognos-accent)/8",
   },
+  SognosGenogram: {
+    href: PRODUCTS.genogram.href,
+    tagline: PRODUCTS.genogram.tagline,
+    accentClass: "bg-purple-500",
+    borderClass: "border-purple-500/30",
+    bgClass: "bg-purple-500/8",
+  },
 } as const;
 
 export default async function IndustryPage({
