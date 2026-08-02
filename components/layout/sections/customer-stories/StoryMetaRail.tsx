@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   company?: string;
-  description?: string;
-  customer?: string;
   industry?: string;
   state?: string;
   size?: string;
   product?: string;
+  /** Sanity's "Short description" — rendered as the About row. */
+  description?: string;
   downloadUrl?: string;
 };
 
@@ -198,49 +198,45 @@ export function ShareIcons({ postUrl }: { postUrl: string }) {
 
 export default function StoryMetaRail({
   company,
-  description,
-  customer,
   industry,
   state,
   size,
   product,
+  description,
   downloadUrl,
 }: Props) {
+  // Order is fixed: Company, Industry, State, Size, Product, About. Rows with
+  // no value drop out, so a story missing a sidebar field just closes the gap.
+  // `prose` marks the longer-form values that read as a paragraph rather than a
+  // single term.
   const meta = [
-    { label: "Customer", value: customer },
+    { label: "Company", value: company },
     { label: "Industry", value: industry },
     { label: "State", value: state },
     { label: "Size", value: size },
     { label: "Product", value: product },
+    { label: "About", value: description, prose: true },
   ].filter((m) => m.value);
 
   // No sticky here — the body grid column that wraps this is already sticky, so
   // a second one just nests pointlessly inside a pinned parent.
   return (
     <aside className="mb-12 lg:mb-0">
-      {(company || description) && (
-        <>
-          {company && (
-            <h3 className="font-heading text-lg font-medium leading-snug text-sognos-heading">
-              {company}
-            </h3>
-          )}
-          {description && (
-            <p className="mt-3 text-sm leading-relaxed text-sognos-body/60">
-              {description}
-            </p>
-          )}
-          <div className="my-6 h-px bg-sognos-line" />
-        </>
-      )}
-
       <div className="flex flex-col gap-6">
         {meta.map((m) => (
           <div key={m.label}>
             <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
               {m.label}
             </p>
-            <p className="text-sm font-medium text-sognos-body">{m.value}</p>
+            <p
+              className={
+                m.prose
+                  ? "text-sm leading-relaxed text-sognos-body"
+                  : "text-sm font-medium text-sognos-body"
+              }
+            >
+              {m.value}
+            </p>
           </div>
         ))}
       </div>

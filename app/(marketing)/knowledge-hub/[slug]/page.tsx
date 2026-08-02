@@ -15,7 +15,7 @@ import {
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
 import ArticleProseFooter from "@/components/layout/sections/shared/ArticleProseFooter";
-import ArticleProgressLine from "@/components/layout/sections/shared/ArticleProgressLine";
+import { ShareIcons } from "@/components/layout/sections/customer-stories/StoryMetaRail";
 import {
   type PortableBlock,
   slugify,
@@ -166,6 +166,13 @@ export default async function KnowledgeHubPost({
     ? urlFor(post.heroImage).width(1400).auto("format").url()
     : null;
   const sections = extractHeadings(post.body);
+  // Body meta rail. Category was a pill in the dark hero; on the white body it
+  // reads as a plain value like the other rows. Rows with no value drop out.
+  const postMeta = [
+    { label: "Category", value: post.category },
+    { label: "Published", value: formatMetaDate(post.date) },
+    { label: "Read Time", value: post.readTime },
+  ].filter((m) => m.value);
 
   const latest: Article[] = archive
     .filter((p) => p.slug !== slug)
@@ -205,99 +212,96 @@ export default async function KnowledgeHubPost({
             Knowledge Hub
           </Link>
 
-          {/* Rail line — spans full hero height including image */}
-          <div className="mt-10 border-l border-white/20 pl-6 lg:mt-14">
-            {/* Two-col: stacked meta left / title right — matches CS hero spacing */}
-            <div className="lg:grid lg:grid-cols-[9rem_1fr] lg:gap-0">
-              {/* Left — stacked meta with labels */}
-              <div className="mb-10 space-y-8 lg:mb-0">
-                <div>
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
-                    Category
-                  </p>
-                  <span className="inline-flex w-fit items-center rounded bg-sognos-muted/40 px-2.5 h-6.5 py-1 text-xs font-normal text-white">
-                    {post.category}
-                  </span>
-                </div>
-                <div>
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
-                    Published
-                  </p>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-white">
-                    {formatMetaDate(post.date)}
-                  </p>
-                </div>
-                {post.readTime && (
-                  <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-white/80">
-                      Read Time
-                    </p>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-white">
-                      {post.readTime}
-                    </p>
-                  </div>
-                )}
-              </div>
+          {/* Title + image. Category / Published / Read Time used to sit in a
+              left column here; they are now rows in the body meta rail, the
+              same place the customer story template keeps its metadata. The
+              border-l rail went with them — it existed to bind the two hero
+              columns together. */}
+          <div className="mx-auto mt-10 max-w-3xl lg:mt-14">
+            <h1 className="font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
+              {post.title}
+            </h1>
 
-              {/* Col 2 — title + image */}
-              <div className="mx-auto max-w-3xl">
-                <h1 className="font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
-                  {post.title}
-                </h1>
-
-                {heroUrl && (
-                  <div className="mt-12 lg:mt-16">
-                    <div className="relative aspect-[16/8] overflow-hidden rounded-lg">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={heroUrl}
-                        alt=""
-                        className="h-full w-full object-cover object-top"
-                      />
-                    </div>
-                  </div>
-                )}
+            {heroUrl && (
+              <div className="mt-12 lg:mt-16">
+                <div className="relative aspect-[16/8] overflow-hidden rounded-lg">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={heroUrl}
+                    alt=""
+                    className="h-full w-full object-cover object-top"
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* ── Body — TOC | progress line | prose ── */}
+      {/* ── Body — meta | prose | TOC ── */}
       <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          {/* 3-col when headings exist: [TOC 300px] [line 48px] [prose 1fr]
-              Falls back to single column when article has no h2 headings. */}
+          {/* Same three tracks as the customer story template — the two article
+              families share one body layout again.
+
+              The two side tracks are the SAME width on purpose: equal side
+              columns put the prose on the container's centre line, so it shares
+              an axis with the centred hero title and image. Changing one width
+              without the other breaks that alignment.
+
+              Every child is placed explicitly with col-start/row-start, because
+              DOM order here is the *mobile* order and no longer matches the
+              column order: the nav has to come first so its sticky dropdown
+              sits above the article, but it belongs in the last column.
+
+              Falls back to two columns when the article has no h2 headings. */}
           <div
             className={
               sections.length > 0
-                ? "lg:grid lg:grid-cols-[300px_48px_1fr] lg:gap-x-10"
-                : ""
+                ? "lg:grid lg:grid-cols-[260px_1fr_260px] lg:gap-x-10"
+                : "lg:grid lg:grid-cols-[260px_1fr] lg:gap-x-10"
             }
           >
             {sections.length > 0 && (
-              <>
-                {/* Col 1 — TOC. `contents` below lg so this wrapper creates no
-                    box: the component's own sticky mobile dropdown is then
-                    bounded by the full-height body grid instead of a
-                    self-sized column, so it tracks the whole article. From lg
-                    it becomes a normal sticky grid item. */}
-                <div className="contents lg:block lg:sticky lg:top-36 lg:self-start">
-                  <ArticleScrollNav
-                    sections={sections}
-                    showTrack={false}
-                  />
-                </div>
+              /* Article scroll-spy nav — right column from lg.
+                 `contents` below lg so this wrapper creates no box: the nav's
+                 own sticky mobile dropdown is then bounded by the full-height
+                 body grid rather than this self-sized column, so it tracks the
+                 whole article. */
+              <div className="contents lg:sticky lg:top-36 lg:col-start-3 lg:row-start-1 lg:block lg:self-start">
+                <ArticleScrollNav sections={sections} showTrack={false} />
 
-                {/* Col 2 — progress line (stretches to prose height via grid) */}
-                <div className="hidden lg:block">
-                  <ArticleProgressLine />
+                {/* Copy link + share. Desktop only — below lg the wrapper is
+                    `contents` and the nav is a sticky bar, so there is no
+                    column to sit under. */}
+                <div className="mt-8 hidden lg:block">
+                  <ShareIcons postUrl={postUrl} />
                 </div>
-              </>
+              </div>
             )}
 
-            {/* Col 3 (or full-width) — prose */}
-            <div className="min-w-0">
+            {/* Meta rail — column 1, sticky. Row treatment matches
+                StoryMetaRail so both article families read the same. Kept
+                inline rather than shared: it is three rows of static markup and
+                a second component for it would be abstraction for its own
+                sake. */}
+            <aside className="mb-12 lg:sticky lg:top-36 lg:col-start-1 lg:row-start-1 lg:mb-0 lg:self-start">
+              <div className="flex flex-col gap-6">
+                {postMeta.map((m) => (
+                  <div key={m.label}>
+                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                      {m.label}
+                    </p>
+                    <p className="text-sm font-medium text-sognos-body">
+                      {m.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </aside>
+
+            {/* Prose — column 2 */}
+            <div className="min-w-0 lg:col-start-2 lg:row-start-1">
               <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
                 <PortableText
                   value={post.body}
@@ -334,6 +338,7 @@ export default async function KnowledgeHubPost({
                 backLabel="Knowledge Hub"
                 postUrl={postUrl}
                 className={ARTICLE_PROSE_MAX_W}
+                showShare={sections.length === 0}
               />
             </div>
           </div>

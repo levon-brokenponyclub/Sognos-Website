@@ -192,21 +192,29 @@ export default function ArticleScrollNav({
         </AnimatePresence>
       </div>
 
-      {/* ── Desktop: sticky sidebar rail ── */}
+      {/* ── Desktop: sticky sidebar rail ──
+          Spacing and type after mintlify.com/customers/coinbase: mono label at
+          the column edge, items indented past it, and a hairline marker that
+          spans the active item's full height rather than a fixed-height tab.
+          Colours stay on the Sognos tokens rather than the reference's. */}
       <nav
         aria-label="Article sections"
-        className="relative hidden lg:block w-full shrink-0"
+        className="hidden w-full shrink-0 flex-col gap-1.5 lg:flex"
       >
-        {showTrack && (
-          <span
-            aria-hidden="true"
-            className={`pointer-events-none absolute inset-y-0 left-0 w-px ${colors.track}`}
-          />
-        )}
-        <p className={`mb-5 pl-4 text-xs font-semibold uppercase tracking-[0.08em] ${colors.label}`}>
+        <p
+          className={`font-mono text-xs font-medium uppercase leading-[150%] tracking-[0.6px] ${colors.label}`}
+        >
           {label}
         </p>
-        <div className="space-y-0.5">
+        {/* Caps at half the viewport and scrolls, so a long contents list
+            cannot outgrow the sticky column and clip its own tail. */}
+        <div className="scrollbar-hide relative flex max-h-[50vh] flex-col gap-2 overflow-y-auto overscroll-contain py-2">
+          {showTrack && (
+            <span
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-y-0 left-0 w-px ${colors.track}`}
+            />
+          )}
           {sections.map((item) => {
             const isActive = activeId === item.id;
             return (
@@ -215,18 +223,21 @@ export default function ArticleScrollNav({
                 type="button"
                 onClick={() => scrollToSection(item.id)}
                 aria-current={isActive ? "location" : undefined}
-                className="group relative flex w-full items-center py-2 pl-4 text-left"
+                className="group relative block w-full pl-7 text-left"
               >
                 {isActive && (
+                  // inset-y-0 rather than a fixed height: layoutId animates the
+                  // box, so the marker grows and shrinks to each item's line
+                  // count as it moves.
                   <motion.span
                     layoutId="article-rail-marker"
                     aria-hidden="true"
-                    className={`absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 ${colors.marker}`}
+                    className={`absolute inset-y-0 left-0 w-[1.5px] ${colors.marker}`}
                     transition={{ type: "spring", damping: 30, stiffness: 300 }}
                   />
                 )}
                 <span
-                  className={`text-sm font-medium transition-colors duration-300 ${
+                  className={`block text-sm leading-6 tracking-[-0.084px] transition-colors duration-300 ${
                     isActive ? colors.active : colors.inactive
                   }`}
                 >

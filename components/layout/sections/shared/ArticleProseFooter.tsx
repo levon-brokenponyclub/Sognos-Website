@@ -9,6 +9,13 @@ type ArticleProseFooterProps = {
   postUrl: string;
   className?: string;
   variant?: "light" | "dark";
+  /**
+   * Both article templates now carry `ShareIcons` under the TOC, so they pass
+   * false to avoid offering the same control twice. They pass true again when
+   * the article has no headings: there is no TOC column in that case, and this
+   * footer is the only place left to share from.
+   */
+  showShare?: boolean;
 };
 
 export default function ArticleProseFooter({
@@ -17,6 +24,7 @@ export default function ArticleProseFooter({
   postUrl,
   className,
   variant = "light",
+  showShare = true,
 }: ArticleProseFooterProps) {
   const isDark = variant === "dark";
   return (
@@ -52,9 +60,11 @@ export default function ArticleProseFooter({
         </span>
       </Link>
 
-      <div className="sm:ml-auto">
-        <ShareIcons postUrl={postUrl} />
-      </div>
+      {showShare && (
+        <div className="sm:ml-auto">
+          <ShareIcons postUrl={postUrl} />
+        </div>
+      )}
     </footer>
   );
 }

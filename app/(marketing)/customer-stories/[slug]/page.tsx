@@ -12,9 +12,10 @@ import {
   ArticleCard,
   type Article,
 } from "@/components/layout/sections/KnowledgeHubArchive";
-import StoryMetaRail from "@/components/layout/sections/customer-stories/StoryMetaRail";
+import StoryMetaRail, {
+  ShareIcons,
+} from "@/components/layout/sections/customer-stories/StoryMetaRail";
 import ArticleScrollNav from "@/components/layout/sections/shared/ArticleScrollNav";
-import ArticleProgressLine from "@/components/layout/sections/shared/ArticleProgressLine";
 import ArticleProseFooter from "@/components/layout/sections/shared/ArticleProseFooter";
 import {
   type PortableBlock,
@@ -326,37 +327,59 @@ export default async function CustomerStoryPage({
       {/* ── Body: sticky rail + content (quote card + prose) ── */}
       <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto max-w-7xl px-6">
-          {/* 3-col from lg: [rail 300px] [progress line 48px] [prose 1fr].
-              Same track definition as the knowledge-hub template, so both
-              article families share one body layout. */}
-          <div className="lg:grid lg:grid-cols-[300px_48px_1fr] lg:gap-x-10">
-            {/* Column 1 — article scroll-spy nav (sticky) stacked above meta rail.
-                `contents` below lg so this wrapper creates no box: the nav's own
-                sticky mobile dropdown is then bounded by the full-height body
-                grid rather than this self-sized column, so it tracks the whole
-                article. From lg it becomes a normal sticky grid item. */}
-            <div className="contents lg:block lg:sticky lg:top-36 lg:self-start">
-              {sections.length > 0 && (
-                <>
-                  <ArticleScrollNav sections={sections} showTrack={false} />
-                  <div className="my-6 hidden h-px bg-sognos-line lg:block" />
-                </>
-              )}
+          {/* 3-col from lg, after mintlify.com/customers/coinbase:
+              [meta 260px] [prose 1fr] [TOC 260px]. The knowledge-hub template
+              uses the same three tracks — keep the two in step.
+
+              The two side tracks are the SAME width on purpose: equal side
+              columns put the prose on the container's centre line, so it shares
+              an axis with the centred hero title, brand panel and pull-quote.
+              Changing one width without the other breaks that alignment.
+
+              Every child is placed explicitly with col-start/row-start, because
+              DOM order here is the *mobile* order and no longer matches the
+              column order: the nav has to come first so its sticky dropdown
+              sits above the article, but it belongs in the last column. */}
+          <div
+            className={
+              sections.length > 0
+                ? "lg:grid lg:grid-cols-[260px_1fr_260px] lg:gap-x-10"
+                : "lg:grid lg:grid-cols-[260px_1fr] lg:gap-x-10"
+            }
+          >
+            {sections.length > 0 && (
+              /* Article scroll-spy nav — right column from lg.
+                 `contents` below lg so this wrapper creates no box: the nav's
+                 own sticky mobile dropdown is then bounded by the full-height
+                 body grid rather than this self-sized column, so it tracks the
+                 whole article. No left padding here: the nav indents its own
+                 items and keeps its label flush to the column edge. */
+              <div className="contents lg:sticky lg:top-36 lg:col-start-3 lg:row-start-1 lg:block lg:self-start">
+                <ArticleScrollNav sections={sections} showTrack={false} />
+
+                {/* Copy link + share, same control as the prose footer.
+                    Desktop only — below lg the wrapper is `contents` and the
+                    nav is a sticky bar, so there is no column to sit under. */}
+                <div className="mt-8 hidden lg:block">
+                  <ShareIcons postUrl={postUrl} />
+                </div>
+              </div>
+            )}
+
+            {/* Meta rail — column 1, sticky. */}
+            <div className="lg:sticky lg:top-36 lg:col-start-1 lg:row-start-1 lg:self-start">
               <StoryMetaRail
+                company={story.company}
                 industry={industryValue}
                 state={stateValue}
                 size={sizeValue}
                 product={productValue}
+                description={story.description}
                 downloadUrl={story.downloadUrl}
               />
             </div>
 
-            {/* Column 2 — read-progress line, stretches to prose height via grid */}
-            <div className="hidden lg:block">
-              <ArticleProgressLine />
-            </div>
-
-            <ScrollReveal y={24} className="min-w-0">
+            <ScrollReveal y={24} className="min-w-0 lg:col-start-2 lg:row-start-1">
               {/* Body prose */}
               <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
                 <PortableText
@@ -394,6 +417,7 @@ export default async function CustomerStoryPage({
                 backLabel="All customer stories"
                 postUrl={postUrl}
                 className={ARTICLE_PROSE_MAX_W}
+                showShare={sections.length === 0}
               />
             </ScrollReveal>
           </div>

@@ -101,6 +101,17 @@ Resolved items:
   dropdown below it, both driven by one scroll-spy. Both call sites wrap it in
   a `contents lg:block` element so the sticky mobile bar is bounded by the
   full-height body grid rather than a self-sized column.
+  - Desktop rail spacing and type follow `mintlify.com/customers/coinbase`:
+    mono uppercase label flush to the column edge, items at `pl-7` with
+    `gap-2` and `text-sm leading-6`, list capped at `max-h-[50vh]` and
+    scrollable. Colours stay on the Sognos tokens.
+  - The active marker is `inset-y-0 w-[1.5px]`, not a fixed-height tab. The
+    existing `layoutId` animates the whole box, so it grows and shrinks to
+    each item's line count with no measurement code — do not give it a fixed
+    height.
+  - **One treatment for both templates.** The rail looks the same on Knowledge
+    Hub and Customer Stories, and both now sit in the same right-hand column
+    with `ShareIcons` beneath.
 - `ArticleProgressLine.tsx`: read-progress line in the column between the meta
   rail and the prose on both article families. Full-height track with the fill
   inside a viewport-tall sticky box, scaled from its top edge so the indicator
@@ -342,11 +353,23 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 - `/knowledge-hub`: Sanity archive with category controls, featured/latest
   article handling, modal search across recent articles/events/customer
   stories, upcoming events, and customer-story promotion.
-- `/knowledge-hub/[slug]`: editorial title/excerpt hero, featured image and
-  prose constrained to `ARTICLE_PROSE_MAX_W`, full-height scroll rail, fixed
-  page-progress indicator, post-prose demo/contact conversion panel, shared
-  end-of-prose navigation/sharing, Portable Text custom blocks, and latest
+- `/knowledge-hub/[slug]`: dark hero — back link, title, 16:8 featured image,
+  no metadata. Body is the **same three tracks as the customer story
+  template** (`[260px_1fr_260px]`): sticky meta rail, prose constrained to
+  `ARTICLE_PROSE_MAX_W`, sticky TOC with the `ShareIcons` control beneath it.
+  Plus fixed page-progress indicator, post-prose demo/contact conversion panel,
+  end-of-prose back navigation, Portable Text custom blocks, and latest
   articles.
+  - **The two article families share one body layout again.** The temporary
+    split — where this template kept `[TOC][line][prose]` — is over. Keep them
+    in step, and keep the two side tracks equal so the prose stays on the
+    container's centre line with the hero title and image.
+  - Category / Published / Read Time moved out of the hero into meta rail rows.
+    Category was a pill on the dark hero; on the white body it is a plain value
+    like the other rows. The rows are inline markup rather than a shared
+    component — three rows of static JSX did not justify one.
+  - **No `ArticleProgressLine`.** Dropped from both templates; the component is
+    now unused by any page.
 - `/customer-stories`: light left-aligned hero using the Knowledge Hub headline
   and subcopy treatment, then a featured block and an archive grid.
   - Featured is two equal columns over two rows with the lead spanning both on
@@ -367,11 +390,38 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 - `/customer-stories/[slug]`: dark centred hero — breadcrumb, title, a 16:8
   brand panel carrying the client logo on a radial gradient in their own
   colour, then a centred pull-quote with `Name / ROLE` attribution. Body is a
-  three-column grid from `lg` (`[300px_48px_1fr]`, the same tracks as the
-  Knowledge Hub template): sticky TOC + metadata rail, `ArticleProgressLine`,
-  prose. Plus fixed page-progress indicator, post-prose demo/contact conversion
-  panel, shared end-of-prose navigation/sharing, Portable Text blocks,
-  callouts, and related reading.
+  three-column grid from `lg` (`[260px_1fr_260px]`) after
+  `mintlify.com/customers/coinbase`: sticky metadata rail, prose, sticky TOC.
+  Plus fixed page-progress indicator, post-prose demo/contact conversion panel,
+  shared end-of-prose navigation/sharing, Portable Text blocks, callouts, and
+  related reading.
+  - **No `ArticleProgressLine` here.** It briefly sat in the right column and
+    was dropped. The component stays in the repo — the Knowledge Hub template
+    still uses it — so this page keeps only the fixed `ScrollProgress` bar.
+  - **The two side tracks must stay equal.** Equal side columns put the prose on
+    the container's centre line so it shares an axis with the centred hero
+    title, brand panel and pull-quote. Narrowing one without the other breaks
+    that alignment.
+  - The right column carries the TOC and, below it, the same `ShareIcons`
+    copy-link/share control the prose footer uses. Desktop only — below `lg`
+    the wrapper is `contents` and the nav is a sticky bar, so there is no
+    column to sit under. The control therefore appears twice on the page.
+  - `StoryMetaRail` renders six labelled rows in a fixed order: Company,
+    Industry, State, Size, Product, About. Company and About come straight from
+    the `company` and `description` (Sanity "Short description") fields already
+    in `STORY_BY_SLUG_QUERY`; Industry / State / Size / Product come from the
+    `sidebar` array via `sidebarValue()`. Empty rows drop out.
+  - **The Knowledge Hub template uses the same three tracks.** Keep the two in
+    step — they briefly diverged and were brought back together.
+  - Every grid child is placed explicitly with `col-start`/`row-start`, because
+    DOM order is the *mobile* order and no longer matches the column order. The
+    nav has to come first so its sticky mobile dropdown sits above the article,
+    but it belongs in the last column. Mobile order stays TOC → meta → prose.
+  - `ArticleProgressLine` shares the right column's grid cell with the TOC but
+    sits **outside** the sticky wrapper, at `lg:w-12 lg:justify-self-start`. It
+    measures progress against its own height, so it has to stretch to the full
+    row; inside the sticky box it would shrink to the nav's height and read
+    100% immediately.
   - Brand panel colour resolves `story.brandColor` → `BRAND_BG[company]` →
     `#1d96fc`, the same precedence the customer-story slider uses. The gradient
     drops to `--sognos-navy-dark` at the edges so the white logo keeps a dark

@@ -1,5 +1,56 @@
 # Changelog
 
+## 2026-08-02 — Knowledge Hub post adopts the customer story body layout
+
+- **`app/(marketing)/knowledge-hub/[slug]/page.tsx` now runs the same three tracks as the customer story template** (`[260px_1fr_260px]`): meta rail, prose, TOC. The `[TOC 300px] [line 48px] [prose 1fr]` layout is gone, and with it the deliberate split recorded earlier the same day — the two article families share one body layout again.
+
+- **Hero metadata moved into the body.** Category / Published / Read Time were a left column in the dark hero; they are now rows in the meta rail. The hero is back link → title → 16:8 image, and the `border-l` rail went with them — it existed to bind the two hero columns together.
+  - Category was a pill on the dark hero. On the white body it renders as a plain value like the other rows.
+  - The rows are inline markup, not a shared component. Three rows of static JSX beside `StoryMetaRail`'s six named props did not justify a second abstraction; the row classes are copied so both rails read the same.
+
+- **`ArticleProgressLine` dropped here too.** It is now **unused by any page** — the file remains in `components/layout/sections/shared/` but nothing imports it.
+
+- **Copy link + share moved to the TOC column on both templates**, and `ArticleProseFooter` gained a `showShare` prop (default `true`) so the prose footer no longer offers the same control twice. Both pages pass `showShare={sections.length === 0}`: an article with no h2 headings has no TOC column, so the footer stays the one place left to share from. The footer otherwise keeps its back link.
+
+- **Verified at 1440px and 375px.** Knowledge Hub grid resolves to `260px 732px 260px` with three children; meta rail at x=54 carrying Category / Published / Read Time; prose, `h1` and hero image all centred on 720px; TOC at x=1126 with the share control present; no progress line and no hero metadata left. Customer stories report exactly one copy button, in the TOC column, with the footer back link intact. On mobile both templates order TOC → meta → prose, the bar sticks at 80px, the panel opens and scrolls, the share block is `display: none`, and there is no horizontal scroll.
+
+- **Files:** `app/(marketing)/knowledge-hub/[slug]/page.tsx`, `app/(marketing)/customer-stories/[slug]/page.tsx`, `components/layout/sections/shared/ArticleProseFooter.tsx`.
+
+## 2026-08-02 — Customer story body: TOC to a right column, meta rail rebuilt
+
+- **`app/(marketing)/customer-stories/[slug]/page.tsx`**, after `mintlify.com/customers/coinbase`. The body grid goes from `[rail 300px] [line 48px] [prose 1fr]` — TOC and metadata stacked together in column 1 — to `[meta 260px] [prose 1fr] [line + TOC 260px]`. Metadata keeps column 1 alone; the TOC moves to a new right column.
+  - **The two side tracks are the same width on purpose.** Equal side columns put the prose on the container's centre line, so it shares an axis with the centred hero title, brand panel and pull-quote — all four measure a centre of 720px at a 1440px viewport. Changing one side width without the other breaks that alignment, which is why the grid carries a comment saying so.
+  - Reference at 1440px: meta ~200px, prose 558px, TOC 220px sticky. Ours lands at meta 260 / prose 732 / TOC 260.
+
+- **The meta rail is now six labelled rows in a fixed order** (`StoryMetaRail.tsx`): Company, Industry, State, Size, Product, About. Previously it rendered Company as a heading with the description as a muted paragraph above the rows; both are now rows in the requested sequence, with About last.
+  - **No schema or query change was needed.** `company` and `description` (Sanity's "Short description") were already in `STORY_BY_SLUG_QUERY` — the page simply was not passing them down. Industry / State / Size / Product still come from the `sidebar` array via `sidebarValue()`.
+  - About renders without `font-medium` and with `leading-relaxed`, since it is a sentence rather than a single term.
+  - The unused `customer` prop was removed. It rendered a "Customer" row ahead of Industry, which would have contradicted the fixed order above; nothing passed it, and the component is used only on this page.
+  - Rows with no value still drop out, so a story missing a sidebar field closes the gap rather than showing an empty label.
+
+- **`ArticleProgressLine` is gone from this page.** It moved into the right column during this session and was then dropped: with the TOC indented to `pl-6`, the line, the TOC's active marker and its labels all competed for the same x. The right column is now the TOC alone, and the page keeps only the fixed `ScrollProgress` bar at the top of the viewport.
+  - The component itself stays — the Knowledge Hub template still renders it in its own `[TOC][line][prose]` layout. Only the import and the grid item were removed here.
+
+- **Every grid child is now placed explicitly with `col-start`/`row-start`.** DOM order here is the *mobile* order and no longer matches column order: `ArticleScrollNav` has to come first so its sticky mobile dropdown sits above the article, but it belongs in the last column. Mobile order is unchanged — TOC → meta → prose.
+
+- ~~**The two article templates are now deliberately different.** The Knowledge Hub post template keeps `[TOC][line][prose]`.~~ **Superseded the same day** — Knowledge Hub was refactored onto these tracks too; see the entry above.
+
+- **Verified in the browser at 1440px and 375px.** Grid resolves to `260px 732px 260px` with a 40px gap and three children in the right cells. Prose, `h1`, brand panel and pull-quote all centre on 720px. No stray hairline elements remain after removing the line; scroll-spy still highlights the right section. On mobile, order stays TOC → meta → prose, the bar sticks at 80px under the navbar, the panel opens, and tapping a link scrolls with the heading landing clear of the bar. No text overflow in the narrower rail and no horizontal page scroll.
+
+- **The desktop TOC rail was restyled after the same reference** (`components/layout/sections/shared/ArticleScrollNav.tsx`). Spacing and type only — colours stay on the Sognos tokens rather than the reference's white-on-black.
+  - Label is now `font-mono text-xs font-medium uppercase tracking-[0.6px]`, sitting flush to the column edge. `font-mono` is already an established treatment here (the customer stories index meta rows use it), so this introduces no new typeface.
+  - Items indent to `pl-7` with `gap-2` between them and `text-sm leading-6 tracking-[-0.084px]`, matching the reference exactly.
+  - **The active marker now spans the item's full height** instead of being a fixed 24px tab. It is `inset-y-0 w-[1.5px]`, and because the existing `layoutId` animates the whole box, it grows and shrinks to each item's line count as it moves — no measurement code. Verified against a 3-line heading: marker 72px, item 72px, the same value the reference renders.
+  - The list caps at `max-h-[50vh]` and scrolls (`scrollbar-hide`, already a project utility), so a long contents list cannot outgrow the sticky column and clip its own tail.
+  - **This applies to both article templates** — one component, one look. The Knowledge Hub post layout is otherwise untouched: its grid still resolves to `300px 48px 904px` with its progress line intact.
+
+- **Copy link + share added below the TOC** on customer stories, reusing the same `ShareIcons` the prose footer renders. Desktop only: below `lg` the wrapper is `contents` and the nav is a sticky bar, so there is no column to sit under. The popover opens right-aligned and stays inside the viewport from the 260px column.
+  - The prose footer still carries its own copy, so the page now offers the control in two places.
+
+- **`lg:pl-6` dropped from the TOC wrapper.** It was added to clear the progress line, which is gone, and it fought the new indent — the reference keeps the label flush to the column edge and indents only the items, which is what `pl-7` now does.
+
+- **Files:** `app/(marketing)/customer-stories/[slug]/page.tsx`, `components/layout/sections/customer-stories/StoryMetaRail.tsx`, `components/layout/sections/shared/ArticleScrollNav.tsx`, `app/(marketing)/knowledge-hub/[slug]/page.tsx` (comment only).
+
 ## 2026-08-02 — Fix white screen on article routes (page transition)
 
 - **Customer story and Knowledge Hub post pages rendered as a blank white page on the first click**, and only came good after a browser reload. The whole page went — navbar included.
