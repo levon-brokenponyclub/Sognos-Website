@@ -108,10 +108,10 @@ export default function NewsInsightSection({
   const [first, second, third, fourth] = tiles;
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 lg:px-6">
+    <section className="w-full bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-12">
-          <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
+          <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-4xl">
             The latest from Sognos
           </h2>
           <SlideFillLink

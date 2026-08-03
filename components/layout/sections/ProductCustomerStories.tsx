@@ -291,10 +291,10 @@ export default function ProductCustomerStories({
     <section className="relative w-full overflow-hidden bg-sognos-navy-darkest text-white">
       <ElegantDarkPattern />
 
-      <div className="relative z-10 py-12 md:py-24 lg:py-32">
+      <div className="relative z-10 py-20 md:py-28">
         <div className="mx-auto mb-8 flex max-w-7xl items-end justify-between gap-2 px-6 md:mb-12 md:items-center lg:mb-20">
           {heading ? (
-            <h2 className="font-heading text-3xl font-normal tracking-tight text-white text-balance md:text-4xl">
+            <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-4xl">
               {heading}
             </h2>
           ) : (

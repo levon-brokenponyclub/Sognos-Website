@@ -231,6 +231,13 @@
   --sognos-muted: #68706f;
   /* Lines */
   --sognos-line: #e2e8f0;
+
+  /* Brand tint. Sampled from the AI-in-Healthcare eBook and the company
+     brochure, where it is the dominant panel fill. Replaces bg-gray-50 on
+     light sections — same job, but it is actually a Sognos colour.
+     The rest of the family, for callouts later:
+       mint #ebfbe3 · ice #f4f8f9 · cream #f5f6ee · rose #f7edf3 */
+  --sognos-tint: #f0eff2;
   /* Product: SognosCare */
   --sognos-care-dark: #0f1936;
   --sognos-care-base: #3b6fe0;

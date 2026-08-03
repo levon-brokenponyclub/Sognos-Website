@@ -77,7 +77,7 @@ export default function SognoscareAdvantages({
 
   return (
     <section id="advantages" className="w-full bg-sognos-care-dark text-white">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Left — label col */}
           <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">

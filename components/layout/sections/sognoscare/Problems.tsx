@@ -74,17 +74,17 @@ export default function SognoscareProblems({
   return (
     <section id="problems" className="overflow-clip">
       {/* Dark half — Problem block + subNav */}
-      <div className="bg-sognos-care-dark pt-20 md:pt-28 pb-20 md:pb-28">
-        <div className="mx-auto max-w-7xl px-4">
+      <div className="bg-sognos-care-dark py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6">
           {/* Problem block */}
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
               {problemLabel}
             </p>
-            <h2 className="mt-4 font-heading text-3xl md:text-3xl font-normal tracking-tight leading-10 text-white/70 text-balance">
+            <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight md:text-4xl text-white/70 text-balance">
               <span className="text-white">{problemStatement}</span>{" "}
             </h2>
-            <p className="mt-6 max-w-5xl text-lg leading-relaxed text-white/60 text-pretty">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
               {problemDetail}
             </p>
           </div>
@@ -98,7 +98,7 @@ export default function SognoscareProblems({
 
       {/* Light half — Solution block on white */}
       <div className="bg-white py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
             {/* Left — rail (Advantages pattern, light theme) */}
             <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">

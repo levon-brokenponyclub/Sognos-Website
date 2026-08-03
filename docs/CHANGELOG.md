@@ -1,5 +1,100 @@
 # Changelog
 
+## 2026-08-03 — Consistency pass: homepage + all three product pages
+
+The sections were not badly built — they disagreed with each other. Five section
+rhythms, three container paddings, four heading treatments and two different
+greys across pages that are meant to read as one site. That disagreement is what
+made it feel templated, more than any individual section did.
+
+Six decisions, each taken from the value already most common in the codebase.
+Routable was used only to calibrate the rhythm; nothing was copied.
+
+| # | Decision | Value |
+|---|---|---|
+| 1 | Section rhythm | `py-20 md:py-28` |
+| 2 | Section H2 | `font-heading text-3xl font-medium tracking-tight md:text-4xl` |
+| 3 | Container | `mx-auto max-w-7xl px-6` |
+| 4 | Radius | `rounded-lg` surfaces · `rounded-full` **buttons only** |
+| 5 | Body measure | `max-w-2xl` body · `max-w-3xl` hero sub |
+| 6 | Light section bg | `bg-sognos-tint` |
+
+### Brand tint token
+
+`--sognos-tint: #f0eff2` — **sampled from the company's own collateral**, not
+invented. It is the dominant panel fill in the AI-in-Healthcare eBook and the
+brochure. Replaces `bg-gray-50` and `bg-gray-100` on the sections touched here,
+per the existing no-sweep rule.
+
+The rest of the family is recorded in `tokens.css` for callouts later:
+mint `#ebfbe3` · ice `#f4f8f9` · cream `#f5f6ee` · rose `#f7edf3`.
+
+### Homepage
+
+`HowSognosWorks`, `IndustrySection`, `HeadlineCTA`, `SolutionsSection`,
+`NewsInsightSection`. Was the worst offender: two different greys (`gray-50` and
+`gray-100`), `font-light` next to `font-normal`, and a `md:text-6xl` heading
+sitting beside `md:text-4xl` ones.
+
+Headings resolve to **two tiers** rather than four — 36px standard, 48px for the
+two statement sections (`HeadlineCTA`, `SolutionsSection`). `SolutionsSection`
+came down from `text-6xl`; that was the single largest outlier on the page.
+
+### Product pages
+
+`sognoscare/{Problems,Editions,Advantages}`, `sognosroster/{Problems,Advantages}`,
+`sognosgenogram/Problems`.
+
+`Problems` was carrying the most drift: `px-4` where everything else used `px-6`,
+a heading at `text-3xl md:text-3xl` that never stepped up, and body copy at
+`max-w-5xl` — roughly twice a readable measure.
+
+**Two shared components changed**, so Roster and Genogram inherit the fix without
+being edited directly:
+- `ProductFeaturesScroll` — `py-24` → the standard rhythm. Also used by the
+  edition sub-pages.
+- `ProductCustomerStories` — `py-12 md:py-24 lg:py-32` (three breakpoints) → the
+  standard rhythm, and its heading to `font-medium`.
+
+### Turbopack gotcha, recorded
+
+`bg-sognos-tint` compiled to nothing until `.next` was deleted entirely and the
+project rebuilt. Restarting the dev server and clearing `.next/cache` were both
+insufficient. **A new `@theme` key needs a full rebuild, not a restart.** Verified
+by grepping the built CSS rather than by eye:
+`.bg-sognos-tint{background-color:var(--sognos-tint)}`.
+
+### Notes
+
+- Hero `h1`s stay `font-normal` across all three products — a deliberate tier
+  above section headings, consistent between them.
+- `sognosroster/Proof.tsx` and `sognoscare/Integration.tsx` were **not** touched:
+  neither is rendered by a live product page.
+- Pre-existing lint in `sognosgenogram/Problems.tsx` (unescaped apostrophe,
+  line 22) left alone — outside this change.
+
+- **Files:** `app/tokens.css`, `app/globals.css`,
+  `sections/{HowSognosWorks,IndustrySection,HeadlineCTA,SolutionsSection,NewsInsightSection}.tsx`,
+  `sections/{ProductFeaturesScroll,ProductCustomerStories,ProductTrustStrip}.tsx`,
+  `sections/sognoscare/{Problems,Editions,Advantages}.tsx`,
+  `sections/sognosroster/{Problems,Advantages}.tsx`,
+  `sections/sognosgenogram/Problems.tsx`,
+  `app/(marketing)/products/sognoscare/page.tsx`, `docs/COMPONENT_INVENTORY.md`.
+
+## 2026-08-03 — Component inventory started
+
+`docs/COMPONENT_INVENTORY.md` — a record of what exists, mapped from source
+rather than memory. It exists to answer "does this pattern already exist?" before
+anything new is built, after a session in which new patterns were invented while
+the correct one sat a few lines away in the same file.
+
+SognosCare mapped first: seven sections, their wrappers, props and actual class
+strings, plus every shared component the product pages depend on. Seven
+inconsistencies were recorded at the time and are now resolved by the pass above.
+
+Still to map: Roster, Genogram, homepage, solutions, industries, Knowledge Hub,
+customer stories, `components/ui/*`.
+
 ## 2026-08-03 — Microsoft Copilot icon replaced (mirrored from production)
 
 Client supplied a replacement Copilot mark. Applied in production first, then

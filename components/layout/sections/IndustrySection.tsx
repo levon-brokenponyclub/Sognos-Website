@@ -82,10 +82,10 @@ export default function IndustrySection({
   if (!item) return null;
 
   return (
-    <section className="w-full bg-gray-100">
-      <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
+    <section className="w-full bg-sognos-tint">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         {/* Heading sits on the navy, outside the panel. */}
-        <h2 className="mb-10 max-w-3xl font-heading text-3xl font-normal leading-tight tracking-tight text-white text-balance md:text-4xl">
+        <h2 className="mb-10 max-w-3xl font-heading text-3xl font-medium leading-tight tracking-tight text-white text-balance md:text-4xl">
           {heading}
         </h2>
 

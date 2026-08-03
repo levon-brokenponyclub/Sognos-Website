@@ -119,12 +119,12 @@ export default function SolutionsSection({
     // are white on a light page, and white-on-white would be invisible.
     <section
       id="solutions"
-      className="w-full bg-gray-50 border-b border-sognos-line"
+      className="w-full bg-sognos-tint border-b border-sognos-line"
     >
-      <div className="max-w-7xl w-full mx-auto px-6 py-16 lg:py-24">
+      <div className="mx-auto w-full max-w-7xl px-6 py-20 md:py-28">
         {/* Heading left, arrows right */}
         <div className="flex w-full items-end justify-center gap-6 pb-10">
-          <h2 className="font-heading text-3xl md:text-6xl font-light tracking-tight text-sognos-heading max-w-4xl">
+          <h2 className="max-w-4xl font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-5xl">
             {heading}
           </h2>
           <div className="flex shrink-0 gap-3">

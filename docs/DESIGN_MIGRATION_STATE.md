@@ -68,6 +68,26 @@ Resolved items:
 
 ## 3. Conventions
 
+### Section system (locked 2026-08-03)
+
+Applied across the homepage and all three product pages. Each value is the one
+already most common in the codebase; Routable was used only to calibrate the
+vertical rhythm.
+
+| Concern | Value |
+|---|---|
+| Section rhythm | `py-20 md:py-28` |
+| Section `h2` | `font-heading text-3xl font-medium tracking-tight md:text-4xl` |
+| Statement `h2` | as above but `md:text-5xl` — `HeadlineCTA`, `SolutionsSection` only |
+| Hero `h1` | `font-normal`, one tier above section headings |
+| Container | `mx-auto max-w-7xl px-6` |
+| Radius | `rounded-lg` on surfaces · `rounded-full` on **buttons only** |
+| Body measure | `max-w-2xl` body · `max-w-3xl` hero sub |
+| Light section bg | `bg-sognos-tint` |
+
+Not yet applied to: solutions, industries, Knowledge Hub, customer stories,
+edition sub-pages.
+
 ### Tailwind v4 CSS-first
 
 - There is no `tailwind.config.js`.
@@ -77,6 +97,11 @@ Resolved items:
   utilities.
 - Dynamic class construction is avoided where Tailwind cannot statically detect
   the class.
+- **A new `@theme` key needs a full rebuild, not a dev-server restart.** Adding
+  `--color-sognos-tint` produced no utility until `.next` was deleted entirely
+  and the project rebuilt; restarting the server and clearing `.next/cache` both
+  failed. Verify by grepping the built CSS in `.next/static/chunks/*.css`, not
+  by eye.
 
 ### Layout target
 

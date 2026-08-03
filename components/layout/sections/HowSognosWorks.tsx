@@ -59,13 +59,13 @@ const CARDS: readonly TimerCard[] = BLOCKS.map((b, i) => ({
 
 export default function HowSognosWorks() {
   return (
-    <section className="w-full bg-gray-50 py-16 lg:py-24">
+    <section className="w-full bg-sognos-tint py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center flex flex-col gap-4">
           <AnimatedEyebrow className="justify-center">
             How Sognos works
           </AnimatedEyebrow>
-          <h2 className="mt-4 font-angellist text-3xl font-normal tracking-tight text-sognos-heading md:text-5xl">
+          <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-5xl">
             Healthcare First. Field Services Always. AI at the Centre.
           </h2>
           <p className="mx-auto max-w-2xl text-base leading-normal text-sognos-body md:text-lg">

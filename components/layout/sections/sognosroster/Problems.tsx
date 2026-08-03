@@ -80,7 +80,7 @@ export default function SognoscareRosterProblems() {
 
   return (
     <section id="problems" className="overflow-clip bg-sognos-roster-dark pb-20 md:pb-28">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60">
             {activeContent.eyebrow}

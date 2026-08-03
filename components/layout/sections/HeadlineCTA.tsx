@@ -52,7 +52,7 @@ export default function HeadlineCTA({
             }}
           />
 
-          <h2 className="font-heading text-3xl font-normal leading-tight tracking-tight whitespace-pre-line text-white md:text-5xl">
+          <h2 className="font-heading text-3xl font-medium leading-tight tracking-tight whitespace-pre-line text-white md:text-5xl">
             {headline}
           </h2>
         </div>

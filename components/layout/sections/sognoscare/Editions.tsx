@@ -22,7 +22,7 @@ export default function SognoscareEditions({
     editions && editions.length > 0 ? editions : SOGNOSCARE_EDITIONS;
 
   return (
-    <section id="editions" className="bg-gray-50 py-24">
+    <section id="editions" className="bg-sognos-tint py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center text-center">
           <AnimatedEyebrow className="justify-center">Editions</AnimatedEyebrow>

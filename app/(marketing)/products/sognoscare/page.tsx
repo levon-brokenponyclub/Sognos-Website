@@ -30,7 +30,6 @@ export default async function SognosCarePage() {
       <ScrollReveal>
         <ProductTrustStrip
           className="bg-sognos-care-dark"
-          fadeClass="from-sognos-care-dark"
           dark
         />
       </ScrollReveal>

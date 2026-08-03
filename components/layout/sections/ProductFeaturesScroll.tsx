@@ -79,7 +79,7 @@ export default function ProductFeaturesScroll({
 
   return (
     <section id="features" className="w-full bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-6 py-24">
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         <div className="flex gap-16 xl:gap-20 items-start">
           {/* Sticky scroll-spy rail */}
           <nav
