@@ -149,6 +149,91 @@ function FeaturedPromo({
   );
 }
 
+function IconDownload() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14" />
+    </svg>
+  );
+}
+
+// Same image-backed block as FeaturedPromo, but with two actions: the asset is
+// the reason the card is here, so it gets its own control rather than sitting a
+// click deep on the story page. Two actions rule out the wrapping <Link> the
+// promo uses, which is why this is a separate card and not a prop on that one.
+function FeaturedUseCase({
+  item,
+  onClose,
+}: {
+  item: FeaturedNavItem;
+  onClose: () => void;
+}) {
+  return (
+    <div className="relative flex min-h-[280px] w-[26rem] shrink-0 flex-col justify-end overflow-hidden rounded-lg bg-sognos-navy">
+      {item.image && (
+        <Image
+          src={item.image}
+          alt=""
+          fill
+          sizes="416px"
+          className="object-cover"
+        />
+      )}
+      {/* Heavier than the promo's scrim: this card stacks a label, a title, a
+          description and two controls over the image, not just a title. */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/20" />
+
+      <div className="relative z-10 p-5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
+          {item.label}
+        </p>
+        <p className="mt-2 font-heading text-lg font-medium leading-snug text-white">
+          {item.title}
+        </p>
+        {item.description && (
+          <p className="mt-1.5 text-sm leading-snug text-white/80">
+            {item.description}
+          </p>
+        )}
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Link
+            href={item.href}
+            onClick={onClose}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-medium text-sognos-navy transition-colors duration-200 hover:bg-white/85"
+          >
+            Read the story
+            <IconArrowUpRight />
+          </Link>
+          {item.downloadHref && (
+            // A new tab rather than a navigation: the menu is a detour, and a
+            // PDF replacing the current page is a dead end to back out of.
+            <a
+              href={item.downloadHref}
+              onClick={onClose}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/50 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/10"
+            >
+              Download PDF
+              <IconDownload />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FeaturedColumn({
   items,
   onClose,
@@ -206,37 +291,138 @@ function DropdownContent({
   // Groups absent from the map keep the gradient panel.
   const featuredGroup = featured[group.label];
   const featuredItems = featuredGroup?.items ?? [];
+  const trailingItems = featuredGroup?.trailingItems ?? [];
+  // Product and suite columns carry their own headings and copy, so a dropdown
+  // built from them is already full — no panel beside them.
+  const selfContained = linkCols.some(
+    (col) => col.variant === "product" || col.variant === "suite",
+  );
+
+  const panel =
+    featuredGroup?.variant === "useCase" && featuredItems[0] ? (
+      <FeaturedUseCase item={featuredItems[0]} onClose={onClose} />
+    ) : featuredGroup?.variant === "promo" && featuredItems[0] ? (
+      <FeaturedPromo item={featuredItems[0]} onClose={onClose} />
+    ) : featuredItems.length > 0 ? (
+      <FeaturedColumn items={featuredItems} onClose={onClose} />
+    ) : selfContained ? null : (
+      <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+    );
+
+  // The panel leads when the group asks for it — Knowledge Hub opens with its
+  // card and closes with featured posts; everything else just trails with one.
+  const leadsWithPanel = featuredGroup?.position === "start";
+  const trail = leadsWithPanel ? (
+    trailingItems.length > 0 ? (
+      <FeaturedColumn items={trailingItems} onClose={onClose} />
+    ) : null
+  ) : (
+    panel
+  );
+
   return (
     <div className="flex gap-12">
-      {linkCols.map((col, i) => (
-        <div key={i} className="w-52 shrink-0">
-          {col.heading && (
+      {leadsWithPanel && panel}
+      {linkCols.map((col, i) =>
+        col.variant === "suite" ? (
+          <div key={i} className="w-72 shrink-0">
             <h4 className="mb-4 text-xs font-normal uppercase tracking-widest text-sognos-muted">
               {col.heading}
             </h4>
-          )}
-          <ul>
-            {col.items.map((item) => (
-              <li key={item.href}>
+            <div className="flex flex-col gap-5">
+              {col.items.map((item) => (
                 <Link
+                  key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className="block py-2 text-base text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                  className="group/suite flex items-start gap-4"
                 >
-                  {item.name}
+                  <div
+                    className={`relative size-16 shrink-0 overflow-hidden rounded-lg ${item.tileClass ?? "bg-sognos-navy"}`}
+                  >
+                    {item.image && (
+                      // Inverted rather than swapped for a white asset: the
+                      // white variants are incomplete across the three products.
+                      <Image
+                        src={item.image}
+                        alt=""
+                        fill
+                        sizes="64px"
+                        className="object-contain p-3 brightness-0 invert"
+                      />
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-heading text-base font-medium leading-snug text-sognos-heading transition-colors duration-200 group-hover/suite:text-sognos-blue-accent">
+                      {item.name}
+                    </p>
+                    {item.description && (
+                      <p className="mt-1 text-sm leading-snug text-sognos-muted">
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-      {featuredGroup?.variant === "promo" && featuredItems[0] ? (
-        <FeaturedPromo item={featuredItems[0]} onClose={onClose} />
-      ) : featuredItems.length > 0 ? (
-        <FeaturedColumn items={featuredItems} onClose={onClose} />
-      ) : (
-        <div className="w-[26rem] shrink-0 min-h-[320px] rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]" />
+              ))}
+            </div>
+          </div>
+        ) : col.variant === "product" ? (
+          <div key={i} className="w-64 shrink-0">
+            <Link
+              href={col.href ?? "#"}
+              onClick={onClose}
+              className="group/prod block"
+            >
+              <p className="font-heading text-lg font-medium leading-snug text-sognos-heading transition-colors duration-200 group-hover/prod:text-sognos-blue-accent">
+                {col.heading}
+              </p>
+              <p className="mt-1 text-sm leading-snug text-sognos-muted">
+                {col.description}
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-sognos-blue-accent">
+                Learn more
+                <IconArrowUpRight />
+              </span>
+            </Link>
+            <hr className="my-5 border-sognos-line" />
+            <ul>
+              {col.items.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="block py-2 text-base text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div key={i} className="w-52 shrink-0">
+            {col.heading && (
+              <h4 className="mb-4 text-xs font-normal uppercase tracking-widest text-sognos-muted">
+                {col.heading}
+              </h4>
+            )}
+            <ul>
+              {col.items.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="block py-2 text-base text-gray-900 hover:text-sognos-blue-accent transition-colors duration-150"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
       )}
+      {trail}
     </div>
   );
 }
@@ -251,18 +437,42 @@ function MobileSubContent({
   onLinkClick: () => void;
 }) {
   const linkCols = getLinkCols(group);
-  const featuredItems = linkCols[0]?.items.slice(0, 2) ?? [];
+  // These columns already carry their own copy; borrowing two of their links as
+  // "featured" would just repeat the rows above.
+  const selfContained = linkCols.some(
+    (col) => col.variant === "product" || col.variant === "suite",
+  );
+  const featuredItems = selfContained
+    ? []
+    : (linkCols[0]?.items.slice(0, 2) ?? []);
 
   return (
     <>
       {linkCols.map((col, i) => (
         <div key={i}>
-          {col.heading && (
-            <div className="bg-gray-50 px-6 py-3">
-              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+          {col.variant === "product" ? (
+            // The product itself, not just a label — on desktop this is the
+            // column's heading block, and it has to stay reachable here too.
+            <Link
+              href={col.href ?? "#"}
+              onClick={onLinkClick}
+              className="block border-b border-gray-100 bg-gray-50 px-6 py-4"
+            >
+              <p className="font-heading text-lg font-medium leading-snug text-sognos-heading">
                 {col.heading}
               </p>
-            </div>
+              <p className="mt-0.5 text-sm leading-snug text-sognos-muted">
+                {col.description}
+              </p>
+            </Link>
+          ) : (
+            col.heading && (
+              <div className="bg-gray-50 px-6 py-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  {col.heading}
+                </p>
+              </div>
+            )
           )}
           {col.items.map((item) => (
             <div key={item.href} className="border-b border-gray-100">
@@ -473,7 +683,10 @@ export default function Navbar({
       ticking = false;
     };
     const onScroll = () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -664,7 +877,9 @@ export default function Navbar({
 
   return (
     <>
-      {!bannerDismissed && <div aria-hidden="true" className={BANNER_SPACE_CLASS} />}
+      {!bannerDismissed && (
+        <div aria-hidden="true" className={BANNER_SPACE_CLASS} />
+      )}
 
       {/* ── Announcement banner ─────────────────────────────────────────────── */}
       {!bannerDismissed && (
@@ -1096,10 +1311,7 @@ export default function Navbar({
                           ? { opacity: 0 }
                           : {
                               opacity: 0,
-                              x:
-                                slideDirection === "forward"
-                                  ? 200
-                                  : -200,
+                              x: slideDirection === "forward" ? 200 : -200,
                             }
                       }
                       animate={{ opacity: 1, x: 0 }}
@@ -1108,10 +1320,7 @@ export default function Navbar({
                           ? { opacity: 0 }
                           : {
                               opacity: 0,
-                              x:
-                                slideDirection === "forward"
-                                  ? -200
-                                  : 200,
+                              x: slideDirection === "forward" ? -200 : 200,
                             }
                       }
                       transition={

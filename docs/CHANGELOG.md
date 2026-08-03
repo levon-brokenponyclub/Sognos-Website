@@ -1,5 +1,94 @@
 # Changelog
 
+## 2026-08-03 — Knowledge Hub archive rebuilt on Routable; nav dropdowns restructured
+
+### Knowledge Hub archive
+
+- Rebuilt as an **anchored, tabbed archive** on the Routable reference. Four
+  sections — News, Insights, Events & Webinars, Milestones — all of which are
+  always rendered; the tabs scroll to a section rather than filter to it. That
+  is what Routable does, and it was the second attempt: the first built
+  show/hide and had to be thrown away.
+- `goTo()` scrolls with `window.scrollTo`, not `scrollIntoView`. The latter did
+  nothing under a sticky tab band; the offset is `NAVBAR_HEIGHT_PX` plus the
+  band's measured height, so a section never lands underneath it.
+- Section spy is an IntersectionObserver at `rootMargin: "-30% 0px -60% 0px"`,
+  which keeps exactly one tab lit through a scroll rather than flickering
+  between two at the boundaries.
+- **Customer stories are gone from the hub entirely** — they have their own
+  archive, and the page no longer fetches them.
+- Only *upcoming* events appear. Past events and webinars belong on `/events`,
+  which does not exist yet; `PastEventRow` and `getEventArchive()` are written
+  and exported, waiting for it. `isPast` is computed in GROQ
+  (`dateTime(coalesce(endDate, date)) < dateTime(now())`) because
+  `react-hooks/purity` rejects `Date.now()` in a render path, Server Component
+  or not.
+- Section titles carry an inline **View all**. The four targets
+  (`/knowledge-hub/news|insights|milestones`, `/events`) are all still to be
+  built, and the first three collide with `[slug]` — that needs resolving
+  before they ship.
+
+### Navigation dropdowns
+
+- **Products is now three columns, one per product**: name, tagline, "Learn
+  more", a rule, then that product's own section links. This replaces the
+  single `feature` column plus the hover-revealed `submenu` panes — the
+  submenu content is the same, just always visible instead of behind a hover.
+  `MegaColumn` gained `variant: "product"` with optional `description` and
+  `href` to carry the heading block.
+- A dropdown whose columns are self-contained gets **no gradient panel**: three
+  product columns already fill it, and the placeholder only made it lopsided.
+- **Knowledge Hub is promo card → four section links → the featured feed.** The
+  card leads via the existing `position: "start"`; the feed is a new
+  `trailingItems` on `FeaturedNavGroup`, always rendered after the links.
+- The featured feed is **restored, not reinvented**. It was a mixed,
+  type-labelled list — latest post, latest customer story, upcoming event — and
+  was lost when the promo card replaced it. It comes back as newest post, next
+  event, then more posts to fill three rows, so the column still fills when
+  there is nothing upcoming, the way the story used to drop out of it. Two
+  deliberate differences from the original: **no customer story**, since those
+  were removed from this dropdown along with their link, and the event comes
+  from Sanity rather than the hardcoded `UPCOMING_EVENT`. Event rows are
+  labelled with the event's own `format` — "Breakfast event", "Webinar" —
+  rather than flattened to "Event". `buildFeaturedNav()` now takes `events`, so
+  the marketing layout fetches `getUpcomingEvents()` alongside the posts.
+- Mobile mirrors both: a product's heading row is a link to the product page,
+  and the "featured" grid — which borrows the first column's first two items —
+  is suppressed for product groups, where it would have repeated the rows
+  directly above it.
+- **Solutions and Industries lose the gradient placeholder** — the last two
+  dropdowns still showing it. Solutions is `[Solutions ×7][Industries ×5]
+  [Featured use case]`; Industries is `[Industries ×5][Products ×3]`. The
+  cross-list runs one way only now: someone browsing capabilities often wants
+  to know whether their sector is served, the reverse much less so, and listing
+  both in both made the two dropdowns mirror images.
+- **New `suite` column variant** — an eyebrow heading over tile-and-copy rows,
+  after the reference. Industries ends in one listing the three products, which
+  is a better answer to "does this serve my sector" than a second featured card
+  would have been. `NavItem` gained `image` and `tileClass`.
+- The suite tiles use the **product wordmarks**, inverted to white against each
+  product's own dark token — the treatment the customer-story logos already
+  get, chosen because the white logo variants are incomplete across the three.
+  **No square product marks exist** (only `icon-sognos-care.svg`, a one-off), so
+  a wide wordmark is sitting in a 64px square. Purpose-made marks would fix it.
+- **New `useCase` featured variant** — the promo card with two actions, "Read
+  the story" and "Download PDF". Two actions rule out the single wrapping
+  `<Link>` `FeaturedPromo` is built on, hence a separate `FeaturedUseCase`
+  rather than a prop on that one.
+- Solutions features **Flourish Australia**, the only story with a downloadable
+  asset — which is the point of the placement, so the PDF gets its own control
+  instead of sitting a click deep on the story page. Copy comes from
+  `ALL_STORIES` so the menu and the story cannot drift. The file is the static
+  `public/customer-stories/Sognos_Flourish_Customer-Story.pdf`, not Sanity's
+  `downloadUrl`, which would mean fetching a story to build a nav card. Revisit
+  when a second story gets a PDF: this is a Health & Social Care story standing
+  in front of Solutions.
+
+- **Files:** `components/layout/sections/KnowledgeHubArchive.tsx`,
+  `app/(marketing)/knowledge-hub/page.tsx`, `app/(marketing)/layout.tsx`,
+  `components/layout/Navbar.tsx`, `lib/navigation.ts`, `lib/featuredNav.ts`,
+  `lib/sanity/queries.ts`.
+
 ## 2026-08-03 — Homepage section rebuild: hero, industries, customer stories, news
 
 A section-by-section pass against Middesk and Routable. Layout and structure

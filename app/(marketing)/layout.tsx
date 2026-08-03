@@ -7,8 +7,8 @@ import { BookDemoProvider } from "@/lib/BookDemoContext";
 import { CtaContentProvider } from "@/lib/CtaContentContext";
 import {
   getCtaSectionContent,
-  getCustomerStoryArchive,
   getKnowledgePostArchive,
+  getUpcomingEvents,
 } from "@/lib/sanity/queries";
 import { buildFeaturedNav } from "@/lib/featuredNav";
 
@@ -19,12 +19,12 @@ export default async function MarketingLayout({
 }) {
   // Navbar is a client component, so the Knowledge Hub dropdown's featured
   // column is resolved here and passed down.
-  const [ctaContent, posts, stories] = await Promise.all([
+  const [ctaContent, posts, events] = await Promise.all([
     getCtaSectionContent(),
     getKnowledgePostArchive(),
-    getCustomerStoryArchive(),
+    getUpcomingEvents(),
   ]);
-  const featuredNav = buildFeaturedNav(posts, stories);
+  const featuredNav = buildFeaturedNav(posts, events);
 
   return (
     <CtaContentProvider value={ctaContent}>

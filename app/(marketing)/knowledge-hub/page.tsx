@@ -1,10 +1,8 @@
 import KnowledgeHubArchive, {
   type Article,
-  type FeaturedStory,
   type UpcomingEvent,
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import {
-  getCustomerStoryArchive,
   getKnowledgePostArchive,
   getUpcomingEvents,
 } from "@/lib/sanity/queries";
@@ -34,22 +32,19 @@ const EVENT_TIME = new Intl.DateTimeFormat("en-AU", {
   minute: "2-digit",
   hour12: true,
 });
-const STORY_DATE = new Intl.DateTimeFormat("en-AU", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
-
 export default async function KnowledgeHubPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
-  const [posts, events, stories] = await Promise.all([
+  // Customer stories are deliberately not fetched: they have their own
+  // archive at /customer-stories and no longer appear in the Knowledge Hub.
+  // Upcoming only. Past events and webinars belong on the Events & Webinars
+  // archive, so there is no reason to fetch them here.
+  const [posts, events] = await Promise.all([
     getKnowledgePostArchive(),
     getUpcomingEvents(),
-    getCustomerStoryArchive(),
   ]);
 
   const articles: Article[] = posts.map((p) => ({
@@ -89,30 +84,10 @@ export default async function KnowledgeHubPage({
     };
   });
 
-  // Newest story — the archive query already orders by date descending.
-  const latest = stories[0];
-  const featuredStory: FeaturedStory | null = latest
-    ? {
-        slug: latest.slug,
-        company: latest.company,
-        title: latest.title,
-        excerpt: latest.description,
-        date: STORY_DATE.format(new Date(latest.date)),
-        readTime: latest.readTime ?? null,
-        image: latest.heroImage
-          ? urlFor(latest.heroImage).width(1200).auto("format").url()
-          : "",
-        logo: latest.companyLogo
-          ? urlFor(latest.companyLogo).width(360).auto("format").url()
-          : "",
-      }
-    : null;
-
   return (
     <KnowledgeHubArchive
       articles={articles}
       upcomingEvents={upcomingEvents}
-      featuredStory={featuredStory}
       initialCategory={category ?? null}
       title="Knowledge Hub"
       description="News, guides, case studies, and product updates - covering care operations, workforce scheduling, compliance, and the sectors we serve."

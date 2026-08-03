@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   KnowledgeHubSearchDialog,
@@ -22,21 +22,6 @@ export type Article = {
   readTime?: string | null;
   author?: string | null;
 };
-
-// `Events` and `Webinar` stay for now, deliberately. Both are becoming `event`
-// documents with a `format`, but until `/events` exists there is nowhere else
-// for a reader to find them, so the pills remain as a transition. Drop them to
-// `["Milestone", "News", "Insights"]` once the events archive ships and the two
-// posts still carrying those categories have been re-authored.
-const CATEGORIES = [
-  "Milestone",
-  "News",
-  "Events",
-  "Webinar",
-  "Insights",
-] as const;
-
-const INITIAL_ARTICLE_LIMIT = 4;
 
 /** One upcoming event row. Strings, already formatted — this is a Client
  *  Component, so the timezone-sensitive formatting happens on the server. */
@@ -65,29 +50,11 @@ export type FeaturedStory = {
   logo: string;
 };
 
-// Three-way pill state: "featured" (default) shows the featured block + intro
-// copy; "all" and each category filter the grid and swap the page title.
-type PillSelection = "featured" | "all" | (typeof CATEGORIES)[number];
-
-function resolveSelection(initial?: string | null): PillSelection {
-  if (initial === "featured") return "featured";
-  if (initial === "all") return "all";
-  if (initial && (CATEGORIES as readonly string[]).includes(initial)) {
-    return initial as (typeof CATEGORIES)[number];
-  }
-  return "featured";
-}
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function pillClass(isActive: boolean): string {
-  return [
-    "shrink-0 rounded px-2.5 py-1 text-sm font-normal transition-colors duration-150",
-    isActive
-      ? "bg-sognos-navy text-white"
-      : "bg-gray-100 text-sognos-body hover:bg-gray-200",
-  ].join(" ");
-}
+// `CATEGORIES`, `PillSelection`, `resolveSelection`, `pillClass` and
+// `INITIAL_ARTICLE_LIMIT` all belonged to the pill filter row and are gone with
+// it. They are in KnowledgeHubArchive.backup.tsx if the filtering comes back.
 
 const MONTHS = [
   "JAN",
@@ -164,424 +131,583 @@ export function ArticleCard({ article }: { article: Article }) {
   );
 }
 
-// Renders nothing when there is nothing upcoming — an "Upcoming Events" rail
-// over an empty column is worse than no section at all, and unlike the
-// hardcoded version this can now genuinely be empty.
-function EventsSection({ events }: { events: UpcomingEvent[] }) {
-  if (events.length === 0) return null;
+// ─── Archive ──────────────────────────────────────────────────────────────────
+
+// Anchored archive after routable.com/resources.
+//
+// Page shape, in order:
+//   1. Dark header — centred title, the lead post as a large card, then a
+//      three-up row beneath it. All on one dark surface, above the tabs.
+//   2. Sticky tab band, dotted rule beneath, current section marked by a
+//      bullet.
+//   3. News, Insights, Events & Webinars, Milestones. All always rendered.
+//
+// The tabs do **not** show and hide sections. Every section is always in the
+// document and a tab scrolls to it — the reference's behaviour, and the reason
+// the bullet needs a scroll-spy rather than click state: a reader can reach a
+// section by scrolling, and the tab has to follow.
+//
+// Sections come from `knowledgePost.category`, which is the existing content
+// model — News, Insights and Milestone are three of its five values. The other
+// two, Events and Webinar, are `event` documents instead and arrive as
+// `upcomingEvents`, split on `format`.
+//
+// **Customer stories are deliberately absent.** They have their own archive at
+// /customer-stories and no longer surface here, including in search.
+//
+// Each section has its own shape rather than one shared grid, because they
+// carry different things:
+//   News              lead left, three stacked right
+//   Insights          one row of three, capped
+//   Events & Webinars two label-rail blocks — the events one card-led, the
+//                     webinars one a row list after the careers job board
+//   Milestones        full-width stacked rows, image left
+//
+// Still scaffold for surfaces: no fill, radius or type scale. Structure final.
+//
+// The pill filter row and its `?category=` filtering are in
+// KnowledgeHubArchive.backup.tsx. `ArticleCard` above is untouched — both
+// article detail pages import it for their related rows.
+
+type SectionId = "news" | "insights" | "events" | "milestones";
+
+const TABS: readonly { id: SectionId; label: string }[] = [
+  { id: "news", label: "News" },
+  { id: "insights", label: "Insights" },
+  { id: "events", label: "Events & Webinars" },
+  { id: "milestones", label: "Milestones" },
+];
+
+const FEATURED_COUNT = 3;
+const INSIGHTS_LIMIT = 3;
+
+// Where each section's "View all" goes. **None of these routes exist yet** —
+// they are listed in one place so building them is a matter of creating the
+// pages, not hunting for links.
+//
+// The three under /knowledge-hub sit in the same segment as
+// /knowledge-hub/[slug], so each one is reachable only while no post claims
+// that slug. If that is a risk worth avoiding they should move to the top
+// level instead.
+const VIEW_ALL: Record<SectionId, string> = {
+  news: "/knowledge-hub/news",
+  insights: "/knowledge-hub/insights",
+  events: "/events",
+  milestones: "/knowledge-hub/milestones",
+};
+
+// The navbar is a fixed 80px at every breakpoint — see the note in CLAUDE.md.
+const NAVBAR_HEIGHT_PX = 80;
+
+function Tile({
+  href,
+  eyebrow,
+  title,
+  meta,
+  lead = false,
+}: {
+  href: string;
+  eyebrow?: string | null;
+  title: string;
+  meta?: string | null;
+  lead?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      // `border` is scaffold only — it exists so the tiles are visible while
+      // the structure is reviewed, and goes when the surfaces land.
+      className={`flex flex-col border border-sognos-line p-4 ${
+        lead ? "min-h-[420px]" : "min-h-[180px]"
+      }`}
+    >
+      <div
+        aria-hidden="true"
+        data-slot="thumb"
+        className={lead ? "flex-1" : ""}
+      />
+      <div className="mt-auto flex flex-col gap-1">
+        {eyebrow && <span data-slot="eyebrow">{eyebrow}</span>}
+        <h3>{title}</h3>
+        {meta && <p data-slot="meta">{meta}</p>}
+      </div>
+    </Link>
+  );
+}
+
+// Twelve-column split with a label rail, the shape Advantages, OpenRoles and
+// the product pages all use.
+function RailBlock({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+      <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
+          {label}
+        </p>
+      </div>
+      <div className="lg:col-[3/-1]">{children}</div>
+    </div>
+  );
+}
+
+/** A finished event or webinar as a single row, after the careers job board —
+ *  title and format left, date right, action revealing on hover.
+ *
+ *  Not used on this page: the Knowledge Hub shows upcoming items only. It is
+ *  exported for the Events & Webinars archive, which is where past ones belong
+ *  and which is the reason this is not deleted. Move it to a shared module if a
+ *  third caller appears. */
+export function PastEventRow({
+  href,
+  title,
+  format,
+  date,
+  action = "Watch",
+}: {
+  href: string;
+  title: string;
+  format: string;
+  date: string;
+  action?: string;
+}) {
+  return (
+    <li className="border-t border-sognos-line first:border-t-0">
+      <Link
+        href={href}
+        className="group grid gap-4 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-6"
+      >
+        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
+          <p>{title}</p>
+          <span data-slot="eyebrow">{format}</span>
+        </div>
+        <div className="flex items-center justify-between gap-5 sm:justify-end">
+          <p data-slot="meta">{date}</p>
+          <span className="shrink-0 sm:opacity-0 sm:group-hover:opacity-100">
+            {action}
+          </span>
+        </div>
+      </Link>
+    </li>
+  );
+}
+
+// Cards only. Anything past lives on the Events & Webinars archive, so there
+// is no row treatment to fall back to here — see `PastEventRow` above, which
+// that page will use.
+function EventRail({
+  items,
+  emptyLabel,
+}: {
+  items: UpcomingEvent[];
+  emptyLabel: string;
+}) {
+  if (items.length === 0) return <p data-slot="empty">{emptyLabel}</p>;
 
   return (
-    <section className="w-full border-b border-sognos-line bg-white py-16 lg:py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-          {/* Left — label rail */}
-          <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
-            <p className="inline-flex items-center gap-3 text-base font-medium text-sognos-muted">
-              <span
-                aria-hidden="true"
-                className="h-2.5 w-2.5 rounded-full bg-sognos-blue-accent"
-              />
-              Upcoming Events
-            </p>
-          </div>
+    <div className="flex flex-col gap-4">
+      {items.map((e) => (
+        <Tile
+          key={e.slug}
+          href={e.href}
+          eyebrow={e.format}
+          title={e.title}
+          meta={`${e.date} · ${e.location}`}
+          lead
+        />
+      ))}
+    </div>
+  );
+}
 
-          {/* Right — event rows */}
-          <div className="lg:col-[3/-1]">
-            <div className="divide-y divide-white">
-              {events.map((event) => (
-                <Link
-                  key={event.slug}
-                  href={event.href}
-                  className="group grid min-h-[400px] rounded overflow-hidden bg-gray-50 transition-colors duration-200 hover:bg-gray-100 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]"
-                >
-                  <div className="flex min-h-[360px] flex-col justify-between p-7 md:p-9 lg:p-10">
-                    <div>
-                      <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                        {event.format}
-                      </p>
-
-                      <h2 className="mt-5 max-w-4xl font-heading text-3xl font-normal tracking-tight leading-tight text-sognos-heading text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl">
-                        {event.title}
-                      </h2>
-                    </div>
-
-                    <dl className="border-t border-sognos-line text-xs font-semibold uppercase tracking-widest">
-                      <div className="grid grid-cols-[120px_1fr] gap-6 border-b border-sognos-line py-4">
-                        <dt className="text-sognos-muted">Date</dt>
-                        <dd className="text-right text-sognos-body">
-                          {event.date}
-                          <span className="mx-4 text-sognos-body">-</span>
-                          {event.time}
-                        </dd>
-                      </div>
-                      <div className="grid grid-cols-[120px_1fr] gap-6 py-4">
-                        <dt className="text-sognos-muted">Location</dt>
-                        <dd className="text-right font-medium text-sognos-body">
-                          {event.location}
-                        </dd>
-                      </div>
-                    </dl>
-                  </div>
-
-                  <div className="relative min-h-[260px] overflow-hidden lg:min-h-full">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+function SectionShell({
+  id,
+  heading,
+  viewAllHref,
+  children,
+}: {
+  id: SectionId;
+  heading: string;
+  /** Omit and no link renders — the heading simply sits alone. */
+  viewAllHref?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} data-kh-section={id} className="scroll-mt-32">
+      {/* `items-end` rather than `items-center`: the link sits on the
+          heading's baseline, which is where the reference puts it, and a
+          centred link floats above it once the heading is display size. */}
+      <div className="mb-8 flex items-end justify-between gap-6">
+        <h2>{heading}</h2>
+        {viewAllHref && (
+          <Link
+            href={viewAllHref}
+            data-slot="view-all"
+            className="group inline-flex shrink-0 items-center gap-2"
+          >
+            View all
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </Link>
+        )}
       </div>
+      {children}
     </section>
   );
 }
 
-// ─── Archive ──────────────────────────────────────────────────────────────────
-
 export default function KnowledgeHubArchive({
   articles,
   upcomingEvents = [],
-  featuredStory = null,
   initialCategory = null,
   title,
   description,
 }: {
   articles: Article[];
   upcomingEvents?: UpcomingEvent[];
-  featuredStory?: FeaturedStory | null;
+  /** Retained so `?category=` links land on a sensible section. The pill
+   *  filtering it used to drive is not rebuilt. */
   initialCategory?: string | null;
   title: string;
   description?: string;
 }) {
-  const [selection, setSelection] = useState<PillSelection>(() =>
-    resolveSelection(initialCategory),
-  );
-  const [showAllArticles, setShowAllArticles] = useState(false);
+  const [active, setActive] = useState<SectionId>("news");
 
-  const isFeatured = selection === "featured";
-  const featured = articles[0] ?? null;
+  // `window.scrollTo` rather than `scrollIntoView`. The latter did nothing
+  // here — it resolves against whatever scrolling box it decides owns the
+  // element, and on this page that is not the window. Computing the target
+  // from the element's own rect is unambiguous, and it lets the offset account
+  // for the navbar plus the sticky band instead of relying on `scroll-mt`
+  // matching them.
+  const goTo = (id: SectionId) => {
+    const el = document.querySelector<HTMLElement>(`[data-kh-section="${id}"]`);
+    if (!el) return;
+    const band = document.querySelector<HTMLElement>("[data-kh-band]");
+    const offset = NAVBAR_HEIGHT_PX + (band?.offsetHeight ?? 0);
+    window.scrollTo({
+      top: el.getBoundingClientRect().top + window.scrollY - offset,
+      behavior: "smooth",
+    });
+  };
 
-  // Featured: all-but-first, unfiltered. All: full array, unfiltered.
-  // Category: full array, filtered (no featured card takes a slot here).
-  const grid = isFeatured
-    ? articles.slice(1)
-    : selection === "all"
-      ? articles
-      : articles.filter((a) => a.category === selection);
-  const shouldLimitArticles = isFeatured && !showAllArticles;
-  const visibleGrid = shouldLimitArticles
-    ? grid.slice(0, INITIAL_ARTICLE_LIMIT)
-    : grid;
-  const hasMoreArticles = isFeatured && grid.length > visibleGrid.length;
+  // Scroll-spy. The tabs anchor rather than filter, so the bullet has to
+  // follow the reader — clicking is only one of the ways a section becomes
+  // current.
+  useEffect(() => {
+    const nodes = TABS.map((t) =>
+      document.querySelector<HTMLElement>(`[data-kh-section="${t.id}"]`),
+    ).filter((n): n is HTMLElement => Boolean(n));
+    if (nodes.length === 0) return;
 
-  // Header title tracks the pill: intro title in Featured, else the pill label.
-  const headerTitle = isFeatured
-    ? title
-    : selection === "all"
-      ? "All Articles"
-      : selection;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          )[0];
+        const id = visible?.target.getAttribute("data-kh-section");
+        if (id) setActive(id as SectionId);
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
 
-  const categoryCounts = CATEGORIES.reduce<Record<string, number>>(
-    (acc, cat) => {
-      acc[cat] = articles.filter((a) => a.category === cat).length;
-      return acc;
-    },
-    {},
-  );
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, []);
 
-  const articleSearchItems: KnowledgeHubSearchItem[] = articles.map(
-    (article) => ({
-      href: article.href,
-      title: article.title,
-      category: article.category,
-      meta: [
-        article.publishedAt ? formatDate(article.publishedAt) : null,
-        article.readTime,
-      ]
-        .filter(Boolean)
-        .join(" · "),
-      image: article.image,
-      keywords: [
-        article.excerpt,
-        article.industry,
-        article.useCase,
-        article.author,
-      ],
-    }),
-  );
+  useEffect(() => {
+    if (initialCategory !== "Events" && initialCategory !== "Webinar") return;
+    goTo("events");
+  }, [initialCategory]);
+
+  // Split on the post category. These are three of the five values
+  // `knowledgePost.category` allows; the other two are now `event` documents.
+  const news = articles.filter((a) => a.category === "News");
+  const insights = articles.filter((a) => a.category === "Insights");
+  const milestones = articles.filter((a) => a.category === "Milestone");
+
+  // `event` documents only, split on `format` — a webinar is an event with a
+  // date, the same document type, so the label is all that separates them.
+  //
+  // Upcoming only. Past events and webinars belong on the Events & Webinars
+  // archive rather than here: this page is what is coming up, and a finished
+  // event in that position reads as an invitation to something that has
+  // already happened. The legacy `knowledgePost`s carrying an `Events` or
+  // `Webinar` category are write-ups of past ones, so they are not surfaced
+  // here either.
+  const events = upcomingEvents.filter((e) => e.format !== "Webinar");
+  const webinars = upcomingEvents.filter((e) => e.format === "Webinar");
+
+  // The dark header's lead card and the three-up beneath it. The newest posts
+  // regardless of category; no customer story.
+  const [heroPost, ...restForFeatured] = articles;
+  const featuredPosts = restForFeatured.slice(0, FEATURED_COUNT);
+
+  const [newsLead, ...newsRest] = news;
+
+  // Search crosses the sections rather than searching within one. Customer
+  // stories are not indexed — they are not part of this archive.
+  const articleSearchItems: KnowledgeHubSearchItem[] = articles.map((a) => ({
+    href: a.href,
+    title: a.title,
+    category: a.category,
+    meta: [a.publishedAt ? formatDate(a.publishedAt) : null, a.readTime]
+      .filter(Boolean)
+      .join(" · "),
+    image: a.image,
+    keywords: [a.excerpt, a.industry, a.useCase, a.author],
+  }));
+
   const eventSearchItems: KnowledgeHubSearchItem[] = upcomingEvents.map(
-    (event) => ({
-      href: event.href,
-      title: event.title,
-      category: "Event",
-      meta: `${event.date} · ${event.location}`,
-      image: event.image,
-      keywords: [event.format, event.time],
+    (e) => ({
+      href: e.href,
+      title: e.title,
+      category: e.format,
+      meta: `${e.date} · ${e.location}`,
+      image: e.image,
+      keywords: [e.format, e.time],
     }),
   );
-  const customerStorySearchItem: KnowledgeHubSearchItem | null = featuredStory
-    ? {
-        href: `/customer-stories/${featuredStory.slug}`,
-        title: featuredStory.title,
-        category: "Customer Story",
-        meta: [featuredStory.date, featuredStory.readTime]
-          .filter(Boolean)
-          .join(" · "),
-        image: featuredStory.image,
-        keywords: [featuredStory.company, featuredStory.excerpt],
-      }
-    : null;
-  const searchItems = [
-    ...articleSearchItems,
-    ...eventSearchItems,
-    ...(customerStorySearchItem ? [customerStorySearchItem] : []),
-  ];
-  const recentSearchItems = [
-    articleSearchItems[0],
-    eventSearchItems[0],
-    customerStorySearchItem,
-  ].filter((item): item is KnowledgeHubSearchItem => Boolean(item));
+
+  const searchItems = [...articleSearchItems, ...eventSearchItems];
+  const recentSearchItems = [articleSearchItems[0], eventSearchItems[0]].filter(
+    (i): i is KnowledgeHubSearchItem => Boolean(i),
+  );
 
   return (
     <>
-      {/* Header — title/description, then category pills below */}
-      <section className="bg-white pt-32 pb-8 lg:pt-40">
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Title zone — fixed height so the pills below never shift between
-              states. Featured: title + intro copy, top-aligned. Non-featured:
-              eyebrow + title pushed to the bottom (title moves down, eyebrow
-              above it), description hidden. */}
-          <div
-            className={`flex flex-col lg:min-h-[160px] ${
-              isFeatured ? "" : "lg:justify-end"
-            }`}
-          >
-            {!isFeatured && (
-              <p className="mb-16 inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                Knowledge Hub
-              </p>
-            )}
-            <h1 className="font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
-              {headerTitle}
-            </h1>
-            {isFeatured && description && (
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
-                {description}
-              </p>
-            )}
-          </div>
-
-          {/* Category pills — below title/description. Mobile: horizontal scroll slider. md+: wrap. */}
-          <div className="mt-10 flex items-center gap-3 ">
-            <div className="scrollbar-hide -ml-6 flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto pl-6 md:ml-0 md:flex-wrap md:overflow-visible md:pl-0">
-              {/* Special pills — no count badge */}
-              <button
-                onClick={() => {
-                  setSelection("featured");
-                  setShowAllArticles(false);
-                }}
-                className={pillClass(selection === "featured")}
-              >
-                Featured
-              </button>
-              <button
-                onClick={() => {
-                  setSelection("all");
-                  setShowAllArticles(false);
-                }}
-                className={pillClass(selection === "all")}
-              >
-                All Articles
-              </button>
-              {/* Category pills — keep counts */}
-              {CATEGORIES.map((cat) => {
-                const count = categoryCounts[cat] ?? 0;
-                const isActive = selection === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => {
-                      setSelection(cat);
-                      setShowAllArticles(false);
-                    }}
-                    className={pillClass(isActive)}
-                  >
-                    {cat}
-                    {count > 0 && (
-                      <span
-                        className={`ml-1.5 text-xs ${
-                          isActive
-                            ? "text-white/70"
-                            : "text-sognos-blue-accent"
-                        }`}
-                      >
-                        {count}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-            <div className="shrink-0">
-              <KnowledgeHubSearchDialog
-                items={searchItems}
-                recentItems={recentSearchItems}
-              />
-            </div>
-          </div>
+      {/* 1 — dark header: title, hero card, featured three-up. */}
+      <section className="bg-sognos-navy-darkest text-white">
+        <div className="mx-auto max-w-7xl px-6 pt-32 pb-16 text-center lg:pt-40">
+          <h1>{title}</h1>
+          {description && <p>{description}</p>}
         </div>
-      </section>
 
-      {/* Featured article — two-up: image left, meta right (Featured state only) */}
-      {isFeatured && featured && (
-        <section className="bg-white p-10 border-b border-t border-sognos-line mb-12 lg:mb-16">
-          <div className="mx-auto max-w-7xl px-6">
+        {heroPost && (
+          <div className="mx-auto max-w-7xl px-6 pb-16">
             <Link
-              href={featured.href}
-              className="group grid items-start gap-8 lg:grid-cols-[920px_1fr] lg:gap-8"
+              href={heroPost.href}
+              className="flex flex-col border border-white/20 p-4"
             >
-              {/* Image */}
-              <div className="relative aspect-[16/8] w-full overflow-hidden rounded-lg">
-                {featured.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={featured.image}
-                    alt={featured.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="h-full w-full bg-gray-100" />
+              <div
+                aria-hidden="true"
+                data-slot="thumb"
+                className="min-h-[280px]"
+              />
+              <div className="mt-4 flex flex-col gap-1">
+                <span data-slot="eyebrow">{heroPost.category}</span>
+                <h2>{heroPost.title}</h2>
+                {heroPost.publishedAt && (
+                  <p data-slot="meta">{formatDate(heroPost.publishedAt)}</p>
                 )}
               </div>
-              {/* Meta — category/title/excerpt top, date/read-time bottom */}
-              <div className="flex h-full flex-col justify-between">
-                <div>
-                  <span className="inline-flex w-fit items-center rounded bg-gray-100 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-heading">
-                    {featured.category}
-                  </span>
-                  <h2 className="mt-4 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-pretty md:text-4xl">
-                    {featured.title}
-                  </h2>
-                  <p className="mt-4 line-clamp-3 text-base leading-relaxed text-sognos-body">
-                    {featured.excerpt}
-                  </p>
-                </div>
-                <ArticleMeta
-                  publishedAt={featured.publishedAt}
-                  readTime={featured.readTime}
-                />
-              </div>
             </Link>
-          </div>
-        </section>
-      )}
 
-      {/* All articles — 4-up grid */}
-      <section className="bg-white pb-12 lg:pb-16">
-        <div className="mx-auto max-w-7xl px-6">
-          {isFeatured && (
-            <p className="mb-8 font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">
-              Latest articles
-            </p>
-          )}
-          {grid.length > 0 ? (
-            <>
-              <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
-                {visibleGrid.map((article) => (
-                  <ArticleCard key={article.slug} article={article} />
+            {featuredPosts.length > 0 && (
+              <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+                {featuredPosts.map((a) => (
+                  <Link
+                    key={a.slug}
+                    href={a.href}
+                    className="flex flex-col gap-2 border-t border-dotted border-white/30 pt-6"
+                  >
+                    <h3>{a.title}</h3>
+                    {a.publishedAt && (
+                      <p data-slot="meta">{formatDate(a.publishedAt)}</p>
+                    )}
+                    <span data-slot="eyebrow">{a.category}</span>
+                  </Link>
                 ))}
               </div>
-              {hasMoreArticles && (
-                <div className="mt-12 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setShowAllArticles(true)}
-                    className="rounded bg-sognos-navy px-6 py-3 text-base font-medium text-white transition-opacity hover:opacity-90"
-                  >
-                    Load all articles
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="rounded-lg border border-(--sognos-line) bg-white px-8 py-16 text-center">
-              <p className="font-heading text-xl text-sognos-heading">
-                No articles match those filters
-              </p>
-              <p className="mt-2 text-sm text-sognos-muted">
-                Try removing a filter to see more results.
-              </p>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </section>
 
-      {/* Case Study — full-bleed dark band. The newest story from Sanity; this
-          was hardcoded to Gentari (Nov 2024) while the CMS held eight. */}
-      {featuredStory && (
-        <section className="bg-sognos-navy py-16 lg:py-16">
-          <div className="mx-auto max-w-7xl px-6">
-            <Link
-              href={`/customer-stories/${featuredStory.slug}`}
-              className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
-            >
-              {/* Left */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
-                  Customer Story
-                </p>
-                <h2 className="mt-6 font-heading text-3xl font-normal tracking-tight leading-tight text-white text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl ">
-                  {featuredStory.title}
-                </h2>
-                <p className="mt-5 max-w-2xl line-clamp-3 text-base leading-relaxed text-white/80 text-balance">
-                  {featuredStory.excerpt}
-                </p>
-                <div className="mt-10 flex items-center gap-3">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                    {featuredStory.date}
-                  </span>
-                  {featuredStory.readTime && (
-                    <>
-                      <span className="text-white/30">·</span>
-                      <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
-                        {featuredStory.readTime}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-              {/* Right — customer story cover image */}
-              <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={featuredStory.company}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  src={featuredStory.image}
-                />
-                {featuredStory.logo && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={featuredStory.company}
-                      className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
-                      src={featuredStory.logo}
-                    />
-                  </div>
-                )}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              </div>
-            </Link>
+      {/* 2 — tab band, sticky under the navbar. */}
+      <div
+        data-kh-band
+        className="sticky top-20 z-20 border-b border-dotted border-sognos-line bg-white"
+      >
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-6">
+          <div
+            role="tablist"
+            aria-label="Knowledge Hub"
+            className="scrollbar-hide flex min-w-0 flex-1 gap-6 overflow-x-auto"
+          >
+            {TABS.map((tab) => {
+              const isActive = tab.id === active;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={tab.id}
+                  onClick={() => goTo(tab.id)}
+                  className="flex shrink-0 items-center gap-2 py-4"
+                >
+                  {/* Bullet marks the current section. Always rendered so the
+                      label does not shift sideways as the selection moves. */}
+                  <span
+                    aria-hidden="true"
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      isActive ? "bg-sognos-blue-accent" : "bg-transparent"
+                    }`}
+                  />
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
-        </section>
-      )}
+          <div className="shrink-0">
+            <KnowledgeHubSearchDialog
+              items={searchItems}
+              recentItems={recentSearchItems}
+            />
+          </div>
+        </div>
+      </div>
 
-      <EventsSection events={upcomingEvents} />
+      {/* 3 — every section, always rendered, in tab order. */}
+      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-16 lg:gap-24 lg:py-24">
+        {/* News — lead left, three stacked right. Four items is the section;
+            the rest live behind "View all". */}
+        <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news}>
+          {newsLead ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+              <Tile
+                href={newsLead.href}
+                eyebrow={newsLead.category}
+                title={newsLead.title}
+                meta={
+                  newsLead.publishedAt ? formatDate(newsLead.publishedAt) : null
+                }
+                lead
+              />
+              <div className="flex flex-col gap-4">
+                {newsRest.slice(0, 3).map((a) => (
+                  <Tile
+                    key={a.slug}
+                    href={a.href}
+                    eyebrow={a.category}
+                    title={a.title}
+                    meta={a.publishedAt ? formatDate(a.publishedAt) : null}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p data-slot="empty">No news yet.</p>
+          )}
+        </SectionShell>
+
+        {/* Insights — one row of three. */}
+        <SectionShell
+          id="insights"
+          heading="Insights"
+          viewAllHref={VIEW_ALL.insights}
+        >
+          {insights.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {insights.slice(0, INSIGHTS_LIMIT).map((a) => (
+                <Tile
+                  key={a.slug}
+                  href={a.href}
+                  eyebrow={a.category}
+                  title={a.title}
+                  meta={a.publishedAt ? formatDate(a.publishedAt) : null}
+                />
+              ))}
+            </div>
+          ) : (
+            <p data-slot="empty">No insights yet.</p>
+          )}
+        </SectionShell>
+
+        {/* Events & Webinars — two label-rail blocks on one anchor, both
+            showing upcoming items only. */}
+        <SectionShell
+          id="events"
+          heading="Events & Webinars"
+          viewAllHref={VIEW_ALL.events}
+        >
+          <div className="flex flex-col gap-16">
+            <RailBlock label="Events">
+              <EventRail items={events} emptyLabel="No upcoming events." />
+            </RailBlock>
+            <RailBlock label="Webinars">
+              <EventRail items={webinars} emptyLabel="No upcoming webinars." />
+            </RailBlock>
+          </div>
+        </SectionShell>
+
+        {/* Milestones — full-width stacked rows, image left. Dotted rules
+            between rather than boxed cards, per the reference's post list. */}
+        <SectionShell
+          id="milestones"
+          heading="Milestones"
+          viewAllHref={VIEW_ALL.milestones}
+        >
+          {milestones.length > 0 ? (
+            <div className="grid gap-y-8">
+              <div
+                aria-hidden="true"
+                className="border-t border-dotted border-sognos-line"
+              />
+              {milestones.map((a) => (
+                <Link
+                  key={a.slug}
+                  href={a.href}
+                  className="group space-y-4 border-b border-dotted border-sognos-line pb-6 md:flex md:items-center md:space-x-6 md:space-y-0 md:pb-8 lg:space-x-[4.5rem]"
+                >
+                  {/* 9/5 and capped at 22.5rem — the reference's own. */}
+                  <div
+                    aria-hidden="true"
+                    data-slot="thumb"
+                    className="relative aspect-[9/5] w-full overflow-hidden border border-sognos-line md:max-w-[22.5rem] md:shrink-0"
+                  />
+                  <div className="max-w-[32.5rem] space-y-3 md:space-y-6">
+                    {/* Icon-led date above the title, then the chip and a
+                        second date below it — the reference carries both. */}
+                    {a.publishedAt && (
+                      <p className="inline-flex items-center gap-1">
+                        <span aria-hidden="true" data-slot="calendar-icon" />
+                        <span data-slot="meta">
+                          {formatDate(a.publishedAt)}
+                        </span>
+                      </p>
+                    )}
+                    <h3>{a.title}</h3>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span data-slot="eyebrow">{a.category}</span>
+                      {a.readTime && <span data-slot="meta">{a.readTime}</span>}
+                    </div>
+                  </div>
+                  {/* Arrow, pushed to the far edge and sliding on hover. */}
+                  <span
+                    aria-hidden="true"
+                    className="hidden h-9 w-9 shrink-0 transition-transform duration-500 ease-out group-hover:translate-x-3 md:block lg:ml-auto"
+                    data-slot="arrow"
+                  />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p data-slot="empty">No milestones yet.</p>
+          )}
+        </SectionShell>
+      </div>
     </>
   );
 }

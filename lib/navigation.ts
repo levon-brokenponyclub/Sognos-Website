@@ -2,11 +2,22 @@ export type NavItem = {
   name: string;
   href: string;
   description?: string;
+  /** `suite` columns only — the mark shown in the item's tile. */
+  image?: string;
+  /** `suite` columns only — the tile background, a product dark token. */
+  tileClass?: string;
 };
 
 export type MegaColumn = {
   heading: string;
-  variant?: "feature" | "simple"; // feature = large icon+desc cards; simple = compact link list
+  // feature = large icon+desc cards; simple = compact link list;
+  // product = heading, tagline, "Learn more", rule, then the section links;
+  // suite = eyebrow heading over tile + name + description rows.
+  variant?: "feature" | "simple" | "product" | "suite";
+  /** `product` only — the tagline under the heading. */
+  description?: string;
+  /** `product` only — where the heading and "Learn more" point. */
+  href?: string;
   items: NavItem[];
 };
 
@@ -24,6 +35,38 @@ export type NavGroup = {
 };
 
 // ─── Shared lists ─────────────────────────────────────────────────────────────
+
+// The three products as tile rows, for dropdowns that need to point at them
+// without giving each one a column. Descriptions are the taglines from
+// PRODUCTS in constants.ts, trimmed to one line.
+//
+// The marks are wordmarks, not square icons — no per-product icon set exists
+// (only `icon-sognos-care.svg`, which is a one-off). They are inverted to white
+// against the product's own dark token, the same treatment the customer-story
+// logos get. Purpose-made square marks would sit better here.
+const PRODUCT_SUITES: NavItem[] = [
+  {
+    name: "SognosCare",
+    href: "/products/sognoscare",
+    description: "Care operations & compliance",
+    image: "/logos/sognos-care-logo.svg",
+    tileClass: "bg-sognos-care-dark",
+  },
+  {
+    name: "SognosRoster",
+    href: "/products/sognosroster",
+    description: "Workforce scheduling & optimisation",
+    image: "/logos/sognos-roster-logo.svg",
+    tileClass: "bg-sognos-roster-dark",
+  },
+  {
+    name: "SognosGenogram",
+    href: "/products/sognosgenogram",
+    description: "Relationship & family context mapping",
+    image: "/logos/SognosGenogram-logo.svg",
+    tileClass: "bg-sognos-genogram-dark",
+  },
+];
 
 const SOLUTIONS: NavItem[] = [
   { name: "Frontline", href: "/solutions/frontline" },
@@ -140,30 +183,30 @@ export const nav: NavGroup[] = [
         description: "Relationship & family context mapping",
       },
     ],
+    // One column per product: name, tagline, "Learn more", a rule, then that
+    // product's own section links — the lists the hover submenu used to show.
     megaMenu: [
       {
-        heading: "Products",
-        variant: "feature",
-        items: [
-          {
-            name: "SognosCare",
-            href: "/products/sognoscare",
-            description: "Care operations & compliance",
-          },
-          {
-            name: "SognosRoster",
-            href: "/products/sognosroster",
-            description: "Workforce scheduling & optimisation",
-          },
-          {
-            name: "SognosGenogram",
-            href: "/products/sognosgenogram",
-            description: "Relationship & family context mapping",
-          },
-        ],
+        heading: "SognosCare",
+        variant: "product",
+        description: "Care operations & compliance",
+        href: "/products/sognoscare",
+        items: SOGNOSCARE_SECTIONS,
       },
-      { heading: "", items: [] },
-      { heading: "", items: [] },
+      {
+        heading: "SognosRoster",
+        variant: "product",
+        description: "Workforce scheduling & optimisation",
+        href: "/products/sognosroster",
+        items: SOGNOSROSTER_SECTIONS,
+      },
+      {
+        heading: "SognosGenogram",
+        variant: "product",
+        description: "Relationship & family context mapping",
+        href: "/products/sognosgenogram",
+        items: SOGNOSGENOGRAM_SECTIONS,
+      },
     ],
     submenu: {
       SognosCare: {
@@ -173,7 +216,7 @@ export const nav: NavGroup[] = [
       SognosRoster: {
         col2: { heading: "SognosRoster", items: SOGNOSROSTER_SECTIONS },
       },
-      "SognosGenogram": {
+      SognosGenogram: {
         col2: { heading: "SognosGenogram", items: SOGNOSGENOGRAM_SECTIONS },
       },
     },
@@ -192,9 +235,13 @@ export const nav: NavGroup[] = [
     label: "Industries",
     href: "/industries",
     items: INDUSTRIES,
+    // Sectors, then the products that serve them. Solutions cross-lists
+    // Industries because a reader browsing capabilities often wants to know
+    // whether their sector is served; the reverse is not true, and listing both
+    // in both dropdowns made them mirror images of each other.
     megaMenu: [
       { heading: "Industries", items: INDUSTRIES },
-      { heading: "Solutions", items: SOLUTIONS },
+      { heading: "Products", variant: "suite", items: PRODUCT_SUITES },
       { heading: "", items: [] },
     ],
   },
@@ -202,18 +249,22 @@ export const nav: NavGroup[] = [
     label: "Knowledge Hub",
     href: "/knowledge-hub",
     megaMenu: [
+      // Column 2. Column 1 is the image block and column 3 the featured
+      // posts, both supplied by lib/featuredNav.ts rather than declared here.
+      // The anchors point at the archive's sections; the per-section listing
+      // pages do not exist yet.
       {
         heading: "Knowledge Hub",
         items: [
-          { name: "Insights", href: "/knowledge-hub" },
-          { name: "News", href: "/knowledge-hub?category=News" },
-          { name: "Events", href: "/knowledge-hub?category=Events" },
-          { name: "Customer Stories", href: "/customer-stories" },
+          { name: "News", href: "/knowledge-hub#news" },
+          { name: "Insights", href: "/knowledge-hub#insights" },
+          { name: "Events & Webinars", href: "/knowledge-hub#events" },
+          { name: "Milestones", href: "/knowledge-hub#milestones" },
         ],
       },
-      // TEMP (menu-styling phase): Column 2 removed; restore after styling is complete.
+      // `megaMenu` is a fixed three-column tuple. Empty columns are filtered
+      // out before render, so these cost nothing.
       { heading: "", items: [] },
-      // TEMP (menu-styling phase): Column 3 removed; restore after styling is complete.
       { heading: "", items: [] },
     ],
   },

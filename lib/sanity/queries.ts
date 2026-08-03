@@ -6,10 +6,7 @@ import {
   type CtaSectionContent,
   type CtaStatVariant,
 } from "@/lib/content/ctaSection";
-import {
-  DEFAULT_LOGOS,
-  LOGO_STRIP_LOGO_LIMIT,
-} from "@/lib/content/logoStrip";
+import { DEFAULT_LOGOS, LOGO_STRIP_LOGO_LIMIT } from "@/lib/content/logoStrip";
 import {
   COMPANY_FOOTER_LINKS,
   DEFAULT_FOOTER_CONTENT,
@@ -35,9 +32,9 @@ export type LogoStripLogo = {
   image?: SanityImageSource;
 };
 
-export async function getLogoStripContent(): Promise<
-  { logos?: LogoStripLogo[] } | null
-> {
+export async function getLogoStripContent(): Promise<{
+  logos?: LogoStripLogo[];
+} | null> {
   return sanityFetch(LOGO_STRIP_QUERY, {}, { next: { revalidate: 60 } });
 }
 
@@ -166,7 +163,9 @@ const STORY_THEME_CLASSES = {
 function parseQuoteAuthor(raw?: string): { author: string; role: string } {
   if (!raw) return { author: "", role: "" };
   const m = raw.match(/^(.*?),\s*(.*)$/);
-  return m ? { author: m[1].trim(), role: m[2].trim() } : { author: raw.trim(), role: "" };
+  return m
+    ? { author: m[1].trim(), role: m[2].trim() }
+    : { author: raw.trim(), role: "" };
 }
 
 function sidebarValue(rows: RawSidebarRow[] | undefined, key: string): string {
@@ -181,7 +180,9 @@ function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
   const { author, role } = parseQuoteAuthor(raw.quoteAuthor);
   return {
     company: raw.company,
-    companySize: sidebarValue(raw.sidebar, "Size") || sidebarValue(raw.sidebar, "Company Size"),
+    companySize:
+      sidebarValue(raw.sidebar, "Size") ||
+      sidebarValue(raw.sidebar, "Company Size"),
     industry: sidebarValue(raw.sidebar, "Industry"),
     logo: raw.companyLogo
       ? urlFor(raw.companyLogo).width(280).auto("format").url()
@@ -199,7 +200,9 @@ function mapStory(raw: RawStoryRef | null | undefined): CaseStudy | null {
   };
 }
 
-function mapEdition(raw: RawEditionRef | null | undefined): EditionCardItem | null {
+function mapEdition(
+  raw: RawEditionRef | null | undefined,
+): EditionCardItem | null {
   if (!raw || !raw.slug || !raw.name) return null;
   return {
     name: raw.name,
@@ -264,11 +267,10 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
     }) ?? [];
 
   const featuredStories =
-    result.featuredStories
-      ?.flatMap((s) => {
-        const mapped = mapStory(s);
-        return mapped ? [mapped] : [];
-      }) ?? [];
+    result.featuredStories?.flatMap((s) => {
+      const mapped = mapStory(s);
+      return mapped ? [mapped] : [];
+    }) ?? [];
 
   const problems =
     result.problems?.flatMap((p) =>
@@ -302,7 +304,9 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
     ) ?? [];
 
   const advantages =
-    result.advantages?.filter((a): a is string => typeof a === "string" && a.length > 0) ?? [];
+    result.advantages?.filter(
+      (a): a is string => typeof a === "string" && a.length > 0,
+    ) ?? [];
 
   return {
     seo: {
@@ -317,10 +321,13 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
     productDrawer: {
       peekTitle: result.productDrawer?.peekTitle ?? d.productDrawer.peekTitle,
       peekDescription:
-        result.productDrawer?.peekDescription ?? d.productDrawer.peekDescription,
-      drawerTitle: result.productDrawer?.drawerTitle ?? d.productDrawer.drawerTitle,
+        result.productDrawer?.peekDescription ??
+        d.productDrawer.peekDescription,
+      drawerTitle:
+        result.productDrawer?.drawerTitle ?? d.productDrawer.drawerTitle,
       drawerDescription:
-        result.productDrawer?.drawerDescription ?? d.productDrawer.drawerDescription,
+        result.productDrawer?.drawerDescription ??
+        d.productDrawer.drawerDescription,
     },
     subNav: subNav.length > 0 ? subNav : d.subNav,
     problemsHeader: mergeHeader(result.problemsHeader, d.problemsHeader),
@@ -517,7 +524,9 @@ export async function getAllKnowledgePostSlugs(): Promise<{ slug: string }[]> {
   );
 }
 
-export async function getKnowledgePostArchive(): Promise<KnowledgePostArchive[]> {
+export async function getKnowledgePostArchive(): Promise<
+  KnowledgePostArchive[]
+> {
   return (
     (await sanityFetch<KnowledgePostArchive[]>(
       KNOWLEDGE_POST_ARCHIVE_QUERY,
@@ -731,7 +740,9 @@ function normalizeFooterLabel(label: string): string {
   return label === "Sognos Genogram" ? "SognosGenogram" : label;
 }
 
-function normalizeFooterColumns(columns: FooterContent["columns"]): FooterContent["columns"] {
+function normalizeFooterColumns(
+  columns: FooterContent["columns"],
+): FooterContent["columns"] {
   return columns.map((column) => {
     if (column.title === "Company") {
       return {
@@ -876,7 +887,8 @@ const EVENT_ARCHIVE_QUERY = `*[_type == "event"] | order(date desc){
   location,
   meta,
   heroImage,
-  registrationOpen
+  registrationOpen,
+  "isPast": dateTime(coalesce(endDate, date)) < dateTime(now())
 }`;
 
 const ALL_EVENT_SLUGS_QUERY = `*[_type == "event" && defined(slug.current)]{
@@ -897,6 +909,14 @@ export type EventListing = {
   meta?: string | null;
   heroImage?: SanityImageSource;
   registrationOpen: boolean;
+  /** Only projected by `getEventArchive()` — the upcoming query filters on the
+   *  same condition, so everything it returns is by definition not past.
+   *
+   *  Decided in GROQ rather than in a component: `Date.now()` in a render path
+   *  is an impure call, and comparing against the browser's clock would differ from
+   *  what the server rendered. `endDate` where there is one, so an event does
+   *  not become past halfway through itself. */
+  isPast?: boolean;
 };
 
 export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
