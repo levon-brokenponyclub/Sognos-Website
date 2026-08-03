@@ -192,6 +192,9 @@ const INSIGHTS_LIMIT = 3;
 const VIEW_ALL: Record<SectionId, string> = {
   news: "/knowledge-hub/news",
   insights: "/knowledge-hub/insights",
+  // No "View all" for events — they live in this section rather than a
+  // separate archive, so there is nowhere to send a reader. Kept in the map so
+  // the decision is visible rather than an omission.
   events: "/events",
   milestones: "/knowledge-hub/milestones",
 };
@@ -199,74 +202,71 @@ const VIEW_ALL: Record<SectionId, string> = {
 // The navbar is a fixed 80px at every breakpoint — see the note in CLAUDE.md.
 const NAVBAR_HEIGHT_PX = 80;
 
-// Card surfaces mapped from the reference to the house system.
+// Same card language as `ArticleCard` above — bordered, no fill, image over
+// chip over clamped title, with the date and read-time meta line pushed to the
+// bottom by `flex-1`. The tinted-fill treatment this replaced was a second card
+// language on the same page, which is the thing the pass is meant to remove.
 //
-//   reference                    here                      why
-//   radius 4px                   rounded-lg (8px)          house rule, no exceptions
-//   card bg #f3f4f2              opposite of the band      #f0eff2 is the same tone;
-//                                                          inverting keeps contrast on
-//                                                          both white and tinted bands
-//   lead padding 56px            p-14                      exact
-//   row padding 28px/32px        px-8 py-7                 exact
-//   image ratio 1.80             aspect-[16/9]             1.78, the nearest step
-//   lead title 24px/300          text-2xl font-normal      300 is not in the type scale
-//   row title 18px/400           text-lg font-normal       exact
-//   date 14px/400                text-sm                   exact
-//   eyebrow 12px on a chip       existing ArticleCard chip reused verbatim
+// `lead` changes exactly one value: the image loses `ArticleCard`'s `max-h-52`
+// cap so it can fill the taller column. Type stays standard — every title on
+// the page is `text-lg`, so the sizes can be judged once the whole page is in.
 function Tile({
   href,
   eyebrow,
   title,
   meta,
+  readTime,
   image,
   lead = false,
-  onTint = false,
 }: {
   href: string;
   eyebrow?: string | null;
   title: string;
+  /** Already formatted — the date line. */
   meta?: string | null;
+  readTime?: string | null;
   image?: string | null;
   lead?: boolean;
-  /** True when the tile sits on a tinted band, so the card goes white instead. */
-  onTint?: boolean;
 }) {
-  const surface = onTint ? "bg-white" : "bg-sognos-tint";
   return (
     <Link
       href={href}
-      className={`group flex flex-col overflow-hidden rounded-lg ${surface} transition-colors duration-200 ${
-        lead ? "p-14" : "px-8 py-7"
-      }`}
+      className="group flex flex-col border-b border-sognos-line pb-4"
     >
-      {lead && (
-        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden">
+      {(lead || image) && (
+        <div
+          className={`relative aspect-[16/10] w-full overflow-hidden rounded ${
+            lead ? "" : "max-h-52"
+          }`}
+        >
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image}
               alt=""
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="h-full w-full bg-sognos-line" />
+            <div className="h-full w-full bg-sognos-tint" />
           )}
         </div>
       )}
-      <div className="mt-auto flex flex-col items-start gap-3">
+      <div className="mt-4 flex flex-1 flex-col">
         {eyebrow && (
-          <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+          <span className="inline-flex h-6.5 w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {eyebrow}
           </span>
         )}
-        <h3
-          className={`font-heading font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent ${
-            lead ? "text-2xl" : "text-lg"
-          }`}
-        >
+        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
           {title}
         </h3>
-        {meta && <p className="text-sm text-sognos-muted">{meta}</p>}
+        {(meta || readTime) && (
+          <p className="mt-10 text-xs font-base tracking-wide uppercase text-sognos-heading">
+            {meta && <span className="text-sognos-muted">{meta}</span>}
+            {meta && readTime && " — "}
+            {readTime && readTime.toUpperCase()}
+          </p>
+        )}
       </div>
     </Link>
   );
@@ -320,17 +320,88 @@ export function PastEventRow({
         className="group grid gap-4 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-6"
       >
         <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
-          <p>{title}</p>
-          <span data-slot="eyebrow">{format}</span>
+          <p className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+            {title}
+          </p>
+          <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+            {format}
+          </span>
         </div>
         <div className="flex items-center justify-between gap-5 sm:justify-end">
-          <p data-slot="meta">{date}</p>
+          <p className="text-sm text-sognos-muted">{date}</p>
           <span className="shrink-0 sm:opacity-0 sm:group-hover:opacity-100">
             {action}
           </span>
         </div>
       </Link>
     </li>
+  );
+}
+
+// Two-column card — image beside the copy rather than above it. A deliberate
+// divergence from the reference, which stacks: an event carries a date, a time
+// and a place as well as a title, and stacked that reads as a long column of
+// small facts under a large image. Side by side it reads as one row.
+//
+// Every surface value is `Tile`'s, unchanged — fill inverted against the band,
+// `rounded-lg`, `p-14`, `text-2xl` title, `text-sm` meta. Only the arrangement
+// differs.
+export function EventCard({
+  href,
+  format,
+  title,
+  meta,
+  image,
+  onTint = false,
+}: {
+  href: string;
+  format: string;
+  title: string;
+  meta: string;
+  image?: string | null;
+  onTint?: boolean;
+}) {
+  const surface = onTint ? "bg-white" : "bg-sognos-tint";
+  return (
+    <Link
+      href={href}
+      // 0.6/1 rather than an even split: the image is atmosphere, the date and
+      // place are the decision. Copy gets the room.
+      className={`group grid overflow-hidden rounded-lg ${surface} md:grid-cols-[minmax(0,0.6fr)_minmax(0,1fr)]`}
+    >
+      {/* Two variants, decided by whether an image exists:
+          — with a usable image, the photo runs full bleed
+          — without one, a solid navy panel carrying the format, rather than an
+            empty grey box. A bad photo is worse than no photo, so the solid
+            variant has to stand on its own.
+          Square-ish on mobile where it sits above the copy; on md it stretches
+          to whatever height the copy sets, so the two columns stay level. */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-auto md:h-full">
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            alt=""
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-end bg-sognos-navy p-8">
+            <span className="font-heading text-lg font-normal leading-snug tracking-tight text-white/90">
+              {format}
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col items-start justify-center gap-3 p-8 lg:p-14">
+        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+          {format}
+        </span>
+        <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+          {title}
+        </h3>
+        <p className="text-sm text-sognos-muted">{meta}</p>
+      </div>
+    </Link>
   );
 }
 
@@ -344,19 +415,19 @@ function EventRail({
   items: UpcomingEvent[];
   emptyLabel: string;
 }) {
-  if (items.length === 0) return <p data-slot="empty">{emptyLabel}</p>;
+  if (items.length === 0)
+    return <p className="text-sognos-muted">{emptyLabel}</p>;
 
   return (
     <div className="flex flex-col gap-4">
       {items.map((e) => (
-        <Tile
+        <EventCard
           key={e.slug}
           href={e.href}
-          eyebrow={e.format}
+          format={e.format}
           title={e.title}
-          meta={`${e.date} · ${e.location}`}
+          meta={`${e.date} · ${e.time} · ${e.location}`}
           image={e.image}
-          lead
         />
       ))}
     </div>
@@ -652,6 +723,7 @@ export default function KnowledgeHubArchive({
                 meta={
                   newsLead.publishedAt ? formatDate(newsLead.publishedAt) : null
                 }
+                readTime={newsLead.readTime}
                 image={newsLead.image}
                 lead
               />
@@ -667,12 +739,13 @@ export default function KnowledgeHubArchive({
                     eyebrow={a.category}
                     title={a.title}
                     meta={a.publishedAt ? formatDate(a.publishedAt) : null}
+                    readTime={a.readTime}
                   />
                 ))}
               </div>
             </div>
           ) : (
-            <p data-slot="empty">No news yet.</p>
+            <p className="text-sognos-muted">No news yet.</p>
           )}
         </SectionShell>
 
@@ -683,21 +756,18 @@ export default function KnowledgeHubArchive({
           viewAllHref={VIEW_ALL.insights}
           tinted
         >
+          {/* `ArticleCard`, not `Tile` — it is the existing grid card, it
+              already carries image, chip, clamped title and the date and
+              read-time meta line, and both article detail pages render it.
+              Reusing it keeps the three surfaces identical. */}
           {insights.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {insights.slice(0, INSIGHTS_LIMIT).map((a) => (
-                <Tile
-                  key={a.slug}
-                  href={a.href}
-                  eyebrow={a.category}
-                  title={a.title}
-                  meta={a.publishedAt ? formatDate(a.publishedAt) : null}
-                  onTint
-                />
+                <ArticleCard key={a.slug} article={a} />
               ))}
             </div>
           ) : (
-            <p data-slot="empty">No insights yet.</p>
+            <p className="text-sognos-muted">No insights yet.</p>
           )}
         </SectionShell>
 
@@ -706,7 +776,6 @@ export default function KnowledgeHubArchive({
         <SectionShell
           id="events"
           heading="Events & Webinars"
-          viewAllHref={VIEW_ALL.events}
         >
           <div className="flex flex-col gap-16">
             <RailBlock label="Events">
@@ -755,17 +824,34 @@ export default function KnowledgeHubArchive({
                     {/* Icon-led date above the title, then the chip and a
                         second date below it — the reference carries both. */}
                     {a.publishedAt && (
-                      <p className="inline-flex items-center gap-1">
-                        <span aria-hidden="true" data-slot="calendar-icon" />
-                        <span data-slot="meta">
-                          {formatDate(a.publishedAt)}
-                        </span>
+                      <p className="inline-flex items-center gap-2 text-sm text-sognos-muted">
+                        <svg
+                          aria-hidden="true"
+                          className="h-4 w-4 shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.6}
+                          strokeLinecap="round"
+                        >
+                          <rect x="3" y="5" width="18" height="16" rx="2" />
+                          <path d="M8 3v4M16 3v4M3 11h18" />
+                        </svg>
+                        {formatDate(a.publishedAt)}
                       </p>
                     )}
-                    <h3>{a.title}</h3>
+                    <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+                      {a.title}
+                    </h3>
                     <div className="flex flex-wrap items-center gap-3">
-                      <span data-slot="eyebrow">{a.category}</span>
-                      {a.readTime && <span data-slot="meta">{a.readTime}</span>}
+                      <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                        {a.category}
+                      </span>
+                      {a.readTime && (
+                        <span className="text-sm text-sognos-muted">
+                          {a.readTime}
+                        </span>
+                      )}
                     </div>
                   </div>
                   {/* Arrow, pushed to the far edge and sliding on hover. */}
@@ -778,7 +864,7 @@ export default function KnowledgeHubArchive({
               ))}
             </div>
           ) : (
-            <p data-slot="empty">No milestones yet.</p>
+            <p className="text-sognos-muted">No milestones yet.</p>
           )}
         </SectionShell>
       </div>

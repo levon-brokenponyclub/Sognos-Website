@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-08-03 — Knowledge Hub cards land on one language
+
+Four sections were running two card languages. They now run one, taken from
+`ArticleCard` — the component that already existed and that both article detail
+pages render.
+
+- **Insights** renders `ArticleCard` directly rather than a lookalike.
+- **News** `Tile` rebuilt onto the same language: bordered, no fill,
+  `aspect-[16/10]` image, chip, `text-lg` title clamped to two lines, and the
+  `DATE — N MIN READ` meta line. The tinted-fill treatment it replaced was the
+  second language.
+- **Milestones** and **Events** titles brought to `text-lg` so every card title
+  on the page matches. Sizes stay standard until the whole page can be judged
+  at once.
+- `readTime` wired through everywhere it exists — available whether or not it
+  is shown.
+
+### EventCard
+
+Two-column rather than stacked: an event carries a date, a time and a place as
+well as a title, and stacked that reads as a column of small facts under a big
+image. `0.6fr / 1fr` — the image is atmosphere, the date is the decision.
+
+Two variants, decided by whether an image exists. With one, the photo runs full
+bleed. Without, a solid navy panel carries the format rather than an empty grey
+box — a bad photo is worse than no photo, so the solid variant has to stand on
+its own.
+
+### Events stay in the hub
+
+A `/events` archive was built and then removed. With one upcoming event and no
+past ones in Sanity, it would have shown a single card above an empty state.
+Events live in the hub section instead, and that section's "View all" is gone
+rather than pointing at a route that would undersell the work.
+
+### Milestone rows
+
+Real calendar icon in place of an empty slot, chip and read-time on the system,
+and the three empty states styled. `PastEventRow` styled too — nothing renders
+it yet, but `/events` will.
+
+Scaffold markers: 21 → 7. What remains is the dark header.
+
+- **Files:** `components/layout/sections/KnowledgeHubArchive.tsx`.
+
 ## 2026-08-03 — Site container narrowed to 1280px; Knowledge Hub cards land
 
 ### Container: 1380 → 1280
