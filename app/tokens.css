@@ -202,7 +202,11 @@
   --sognos-radius-full: 9999px;
 
   /* Layout */
-  --sognos-container-width: 1380px;
+  /* 1280px, after routable.com. The wider 1380 pushed body copy past a
+     comfortable measure and made section imagery read oversized; at 1280 the
+     lead card image lands at the reference's own 347px without being targeted.
+     Drives --container-7xl, so every `max-w-7xl` on the site follows. */
+  --sognos-container-width: 1280px;
   --sognos-section-padding: 88px;
   --sognos-card-padding: 24px;
   --sognos-nav-height: 64px;

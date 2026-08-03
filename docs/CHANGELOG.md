@@ -1,5 +1,63 @@
 # Changelog
 
+## 2026-08-03 — Site container narrowed to 1280px; Knowledge Hub cards land
+
+### Container: 1380 → 1280
+
+One token — `--sognos-container-width` — which drives `--container-7xl` and so
+every one of the **118 `max-w-7xl` uses across 65 files**.
+
+1380 pushed body copy past a comfortable measure and made section imagery read
+oversized. The proof was on the Knowledge Hub: the News lead image was 381px
+tall against the reference's 347px. After narrowing it landed at **347px
+exactly**, without being targeted. The container was the problem, not the image
+sizing.
+
+### Knowledge Hub — sections become bands
+
+Each of the four sections now owns a full-width surface rather than sharing one
+continuous white column with flex gaps. Backgrounds alternate white → tint →
+white → tint, which is how the reference separates its sections without rules.
+`SectionShell` gained a `tinted` prop; the outer wrapper lost its padding and gap.
+
+Section `h2`s and the dark header `h1` were **completely unstyled** — bare
+`<h2>{heading}</h2>`. Both are now on the system.
+
+### Knowledge Hub — card surfaces
+
+Mapped from the reference to the house system, with the reasoning recorded above
+`Tile` in the source:
+
+| reference | here | why |
+|---|---|---|
+| radius 4px | `rounded-lg` | house rule |
+| card bg `#f3f4f2` | opposite of the band | same tone; inverting keeps contrast on both |
+| lead padding 56px | `p-14` | exact |
+| row padding 28/32px | `px-8 py-7` | exact |
+| image ratio 1.80 | `aspect-[16/9]` | 1.78, nearest step |
+| lead title 24px/300 | `text-2xl font-normal` | 300 is not in the type scale |
+| row title 18px/400 | `text-lg font-normal` | exact |
+| eyebrow chip | reused from `ArticleCard` verbatim | it already existed |
+
+**Real images replaced placeholders** in the News lead, the event cards and the
+milestone rows — all three were `data-slot="thumb"` empties.
+
+### The column imbalance
+
+The News lead card was 659px tall while its three companions totalled 504px,
+leaving **155px of dead space**. The reference achieves balance with fixed 187px
+rows; here the right column uses `[&>a]:flex-1` so the cards divide the lead's
+height instead. Same result, and it survives a title wrapping to two lines.
+Measured after: **−1px**.
+
+### Still scaffold
+
+The dark header (hero post card + three-up row) and the Events & Webinars slots.
+17 `data-slot` markers remain, down from 21.
+
+- **Files:** `app/tokens.css`,
+  `components/layout/sections/KnowledgeHubArchive.tsx`.
+
 ## 2026-08-03 — Consistency pass extended to Solutions and Industries
 
 Same six values as the pass below, applied to all four remaining marketing

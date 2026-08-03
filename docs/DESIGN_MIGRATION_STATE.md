@@ -80,7 +80,7 @@ vertical rhythm.
 | Section `h2` | `font-heading text-3xl font-medium tracking-tight md:text-4xl` |
 | Statement `h2` | as above but `md:text-5xl` — `HeadlineCTA`, `SolutionsSection` only |
 | Hero `h1` | `font-normal`, one tier above section headings |
-| Container | `mx-auto max-w-7xl px-6` |
+| Container | `mx-auto max-w-7xl px-6` — **1280px** since 2026-08-03 |
 | Radius | `rounded-lg` on surfaces · `rounded-full` on **buttons only** |
 | Body measure | `max-w-2xl` body · `max-w-3xl` hero sub |
 | Light section bg | `bg-sognos-tint` |

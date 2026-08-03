@@ -112,7 +112,7 @@ export function ArticleCard({ article }: { article: Article }) {
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="h-full w-full bg-gray-200/70" />
+          <div className="h-full w-full bg-sognos-tint" />
         )}
       </div>
       <div className="mt-4 flex flex-col flex-1">
@@ -199,37 +199,74 @@ const VIEW_ALL: Record<SectionId, string> = {
 // The navbar is a fixed 80px at every breakpoint — see the note in CLAUDE.md.
 const NAVBAR_HEIGHT_PX = 80;
 
+// Card surfaces mapped from the reference to the house system.
+//
+//   reference                    here                      why
+//   radius 4px                   rounded-lg (8px)          house rule, no exceptions
+//   card bg #f3f4f2              opposite of the band      #f0eff2 is the same tone;
+//                                                          inverting keeps contrast on
+//                                                          both white and tinted bands
+//   lead padding 56px            p-14                      exact
+//   row padding 28px/32px        px-8 py-7                 exact
+//   image ratio 1.80             aspect-[16/9]             1.78, the nearest step
+//   lead title 24px/300          text-2xl font-normal      300 is not in the type scale
+//   row title 18px/400           text-lg font-normal       exact
+//   date 14px/400                text-sm                   exact
+//   eyebrow 12px on a chip       existing ArticleCard chip reused verbatim
 function Tile({
   href,
   eyebrow,
   title,
   meta,
+  image,
   lead = false,
+  onTint = false,
 }: {
   href: string;
   eyebrow?: string | null;
   title: string;
   meta?: string | null;
+  image?: string | null;
   lead?: boolean;
+  /** True when the tile sits on a tinted band, so the card goes white instead. */
+  onTint?: boolean;
 }) {
+  const surface = onTint ? "bg-white" : "bg-sognos-tint";
   return (
     <Link
       href={href}
-      // `border` is scaffold only — it exists so the tiles are visible while
-      // the structure is reviewed, and goes when the surfaces land.
-      className={`flex flex-col border border-sognos-line p-4 ${
-        lead ? "min-h-[420px]" : "min-h-[180px]"
+      className={`group flex flex-col overflow-hidden rounded-lg ${surface} transition-colors duration-200 ${
+        lead ? "p-14" : "px-8 py-7"
       }`}
     >
-      <div
-        aria-hidden="true"
-        data-slot="thumb"
-        className={lead ? "flex-1" : ""}
-      />
-      <div className="mt-auto flex flex-col gap-1">
-        {eyebrow && <span data-slot="eyebrow">{eyebrow}</span>}
-        <h3>{title}</h3>
-        {meta && <p data-slot="meta">{meta}</p>}
+      {lead && (
+        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden">
+          {image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={image}
+              alt=""
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="h-full w-full bg-sognos-line" />
+          )}
+        </div>
+      )}
+      <div className="mt-auto flex flex-col items-start gap-3">
+        {eyebrow && (
+          <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+            {eyebrow}
+          </span>
+        )}
+        <h3
+          className={`font-heading font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent ${
+            lead ? "text-2xl" : "text-lg"
+          }`}
+        >
+          {title}
+        </h3>
+        {meta && <p className="text-sm text-sognos-muted">{meta}</p>}
       </div>
     </Link>
   );
@@ -318,6 +355,7 @@ function EventRail({
           eyebrow={e.format}
           title={e.title}
           meta={`${e.date} · ${e.location}`}
+          image={e.image}
           lead
         />
       ))}
@@ -329,38 +367,51 @@ function SectionShell({
   id,
   heading,
   viewAllHref,
+  tinted = false,
   children,
 }: {
   id: SectionId;
   heading: string;
   /** Omit and no link renders — the heading simply sits alone. */
   viewAllHref?: string;
+  /** Alternating band background, after the reference. Each section owns a
+   *  full-width surface rather than sharing one continuous white column —
+   *  that banding is what separates the sections without needing rules. */
+  tinted?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} data-kh-section={id} className="scroll-mt-32">
-      {/* `items-end` rather than `items-center`: the link sits on the
-          heading's baseline, which is where the reference puts it, and a
-          centred link floats above it once the heading is display size. */}
-      <div className="mb-8 flex items-end justify-between gap-6">
-        <h2>{heading}</h2>
-        {viewAllHref && (
-          <Link
-            href={viewAllHref}
-            data-slot="view-all"
-            className="group inline-flex shrink-0 items-center gap-2"
-          >
-            View all
-            <span
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
+    <section
+      id={id}
+      data-kh-section={id}
+      className={`scroll-mt-32 ${tinted ? "bg-sognos-tint" : "bg-white"}`}
+    >
+      <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        {/* `items-end` rather than `items-center`: the link sits on the
+            heading's baseline, which is where the reference puts it, and a
+            centred link floats above it once the heading is display size. */}
+        <div className="mb-8 flex items-end justify-between gap-6">
+          <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+            {heading}
+          </h2>
+          {viewAllHref && (
+            <Link
+              href={viewAllHref}
+              data-slot="view-all"
+              className="group inline-flex shrink-0 items-center gap-2"
             >
-              &rarr;
-            </span>
-          </Link>
-        )}
+              View all
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                &rarr;
+              </span>
+            </Link>
+          )}
+        </div>
+        {children}
       </div>
-      {children}
     </section>
   );
 }
@@ -489,8 +540,14 @@ export default function KnowledgeHubArchive({
       {/* 1 — dark header: title, hero card, featured three-up. */}
       <section className="bg-sognos-navy-darkest text-white">
         <div className="mx-auto max-w-7xl px-6 pt-32 pb-16 text-center lg:pt-40">
-          <h1>{title}</h1>
-          {description && <p>{description}</p>}
+          <h1 className="mx-auto max-w-4xl font-heading text-4xl font-normal leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+            {title}
+          </h1>
+          {description && (
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
+              {description}
+            </p>
+          )}
         </div>
 
         {heroPost && (
@@ -580,7 +637,9 @@ export default function KnowledgeHubArchive({
       </div>
 
       {/* 3 — every section, always rendered, in tab order. */}
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-16 lg:gap-24 lg:py-24">
+      {/* 3 — every section is its own full-width band. Backgrounds alternate
+          so the sections read as separate surfaces, after the reference. */}
+      <div>
         {/* News — lead left, three stacked right. Four items is the section;
             the rest live behind "View all". */}
         <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news}>
@@ -593,9 +652,14 @@ export default function KnowledgeHubArchive({
                 meta={
                   newsLead.publishedAt ? formatDate(newsLead.publishedAt) : null
                 }
+                image={newsLead.image}
                 lead
               />
-              <div className="flex flex-col gap-4">
+              {/* `[&>a]:flex-1` — the three cards divide the lead card's
+                  height between them so both columns end level. The reference
+                  achieves this with fixed 187px rows; stretching is the same
+                  result and survives a title wrapping to two lines. */}
+              <div className="flex flex-col gap-4 [&>a]:flex-1">
                 {newsRest.slice(0, 3).map((a) => (
                   <Tile
                     key={a.slug}
@@ -617,6 +681,7 @@ export default function KnowledgeHubArchive({
           id="insights"
           heading="Insights"
           viewAllHref={VIEW_ALL.insights}
+          tinted
         >
           {insights.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -627,6 +692,7 @@ export default function KnowledgeHubArchive({
                   eyebrow={a.category}
                   title={a.title}
                   meta={a.publishedAt ? formatDate(a.publishedAt) : null}
+                  onTint
                 />
               ))}
             </div>
@@ -658,6 +724,7 @@ export default function KnowledgeHubArchive({
           id="milestones"
           heading="Milestones"
           viewAllHref={VIEW_ALL.milestones}
+          tinted
         >
           {milestones.length > 0 ? (
             <div className="grid gap-y-8">
@@ -672,11 +739,18 @@ export default function KnowledgeHubArchive({
                   className="group space-y-4 border-b border-dotted border-sognos-line pb-6 md:flex md:items-center md:space-x-6 md:space-y-0 md:pb-8 lg:space-x-[4.5rem]"
                 >
                   {/* 9/5 and capped at 22.5rem — the reference's own. */}
-                  <div
-                    aria-hidden="true"
-                    data-slot="thumb"
-                    className="relative aspect-[9/5] w-full overflow-hidden border border-sognos-line md:max-w-[22.5rem] md:shrink-0"
-                  />
+                  <div className="relative aspect-[9/5] w-full overflow-hidden rounded-lg bg-white md:max-w-[22.5rem] md:shrink-0">
+                    {a.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={a.image}
+                        alt=""
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-sognos-line" />
+                    )}
+                  </div>
                   <div className="max-w-[32.5rem] space-y-3 md:space-y-6">
                     {/* Icon-led date above the title, then the chip and a
                         second date below it — the reference carries both. */}
