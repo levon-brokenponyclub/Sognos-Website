@@ -1,5 +1,58 @@
 # Changelog
 
+## 2026-08-03 — Consistency pass extended to Solutions and Industries
+
+Same six values as the pass below, applied to all four remaining marketing
+templates. These had drifted furthest, because they predate the scaffold work.
+
+### Rule violations found and fixed
+
+`industries/page.tsx` was carrying three at once:
+- `rounded-2xl` on the sector cards → `rounded-lg`
+- `rounded-xl` on the footer band → `rounded-lg`
+- **`hover:shadow-md`** → replaced with a border-colour hover. The house rule is
+  no shadows, anywhere.
+
+### Rhythm
+
+Four different values across the four files — `py-24`, `py-16`,
+`py-24 lg:py-32`, `py-20 lg:py-28` — all now `py-20 md:py-28`.
+`solutions/[slug]` had the largest sections on the site at `py-32` (128px).
+
+### Backgrounds
+
+- `bg-gray-200/70` → `bg-sognos-tint` — solutions hub, and the inset panel on
+  `solutions/[slug]`
+- `bg-(--sognos-bg-sunken)` → `bg-sognos-tint` — industries hub
+
+`bg-gray-200/70` was the superseded grey value; it is now gone from these
+templates.
+
+### Left alone, deliberately
+
+- **`h1` at `font-normal`** on all four — the hero tier, consistent with the
+  product pages.
+- **Card titles at `text-xl font-normal`** — the third tier, also consistent.
+- The `py-14 lg:py-16` inside the `solutions/[slug]` tint panel — that is inner
+  panel padding, not section rhythm.
+
+### Still inconsistent — needs a decision, not a sweep
+
+The three hero scales disagree and this is a design call rather than a defect:
+
+| Template | `h1` scale |
+|---|---|
+| `solutions/page.tsx` | `text-3xl sm:text-5xl lg:text-5xl` |
+| `solutions/[slug]` | `text-3xl lg:text-6xl` |
+| `industries/[slug]` | `text-5xl md:text-6xl lg:text-7xl` |
+
+Left as found rather than picked unilaterally.
+
+- **Files:** `app/(marketing)/solutions/page.tsx`,
+  `app/(marketing)/solutions/[slug]/page.tsx`,
+  `app/(marketing)/industries/page.tsx`,
+  `app/(marketing)/industries/[slug]/page.tsx`.
+
 ## 2026-08-03 — Consistency pass: homepage + all three product pages
 
 The sections were not badly built — they disagreed with each other. Five section

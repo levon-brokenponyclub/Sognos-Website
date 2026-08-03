@@ -36,7 +36,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* Solutions grid */}
-      <section className="bg-gray-200/70 py-24">
+      <section className="bg-sognos-tint py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">

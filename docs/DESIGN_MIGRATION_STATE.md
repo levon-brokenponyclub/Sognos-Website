@@ -85,8 +85,15 @@ vertical rhythm.
 | Body measure | `max-w-2xl` body · `max-w-3xl` hero sub |
 | Light section bg | `bg-sognos-tint` |
 
-Not yet applied to: solutions, industries, Knowledge Hub, customer stories,
-edition sub-pages.
+Applied to: homepage, all three product pages, solutions hub + `[slug]`,
+industries hub + `[slug]`.
+
+Not yet applied to: Knowledge Hub, customer stories, edition sub-pages,
+company pages, contact.
+
+Known outstanding: the three `h1` hero scales disagree across
+`solutions/page.tsx`, `solutions/[slug]` and `industries/[slug]` — a design
+decision, deliberately not swept.
 
 ### Tailwind v4 CSS-first
 

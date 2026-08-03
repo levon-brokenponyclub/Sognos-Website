@@ -78,7 +78,7 @@ export default async function IndustryPage({
       </section>
 
       {/* ── 2. The Challenge — card grid ────────────────────────────────────── */}
-      <section className="bg-sognos-navy py-20 lg:py-28">
+      <section className="bg-sognos-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <IndustryChallengeStack
             challenges={content.challenges}
@@ -89,7 +89,7 @@ export default async function IndustryPage({
       </section>
 
       {/* ── 3. How Sognos helps — interactive tabs ───────────────────────────── */}
-      <section className="bg-sognos-navy py-20 lg:py-28">
+      <section className="bg-sognos-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <IndustryHowTabs
             items={content.howSognosHelps}
@@ -109,7 +109,7 @@ export default async function IndustryPage({
       <IndustryCustomerStories industryName={meta.name} />
 
       {/* ── 6. What we deploy — product and platform blocks ─────────────────── */}
-      <section className="bg-sognos-navy-dark py-20 lg:py-28">
+      <section className="bg-sognos-navy-dark py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <IndustryPlatformSection industryName={meta.name} />
         </div>

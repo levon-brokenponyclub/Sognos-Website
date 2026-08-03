@@ -40,7 +40,7 @@ export default function IndustriesPage() {
       </section>
 
       {/* Industries grid */}
-      <section className="bg-(--sognos-bg-sunken) py-24">
+      <section className="bg-sognos-tint py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
@@ -57,7 +57,7 @@ export default function IndustriesPage() {
               <Link
                 key={industry.slug}
                 href={industry.href}
-                className="group flex flex-col justify-between rounded-2xl border border-(--sognos-line) bg-white p-8 transition-shadow duration-200 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-lg border border-sognos-line bg-white p-8 transition-colors duration-200 hover:border-sognos-blue-accent"
               >
                 <div>
                   <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-sognos-navy/30 text-sognos-body font-medium mb-6">
@@ -99,9 +99,9 @@ export default function IndustriesPage() {
       </section>
 
       {/* Platform strip */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-center justify-between gap-6 rounded-xl border border-(--sognos-line) px-8 py-6">
+          <div className="flex flex-wrap items-center justify-between gap-6 rounded-lg border border-sognos-line px-8 py-6">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-sm text-sognos-muted">
                 All industries run on

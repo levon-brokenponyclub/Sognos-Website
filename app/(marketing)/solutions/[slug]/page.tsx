@@ -85,7 +85,7 @@ export default async function SolutionPage({
           All seven solutions define exactly three painPoints, so the grid is
           fixed rather than flowing; a fourth entry would wrap to a new row. */}
       <ScrollReveal>
-        <section className="py-24 lg:py-32 bg-sognos-navy">
+        <section className="bg-sognos-navy py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid gap-3 lg:gap-4 md:grid-cols-2">
               {/* Cell 1 — section copy, no card surface */}
@@ -138,9 +138,9 @@ export default async function SolutionPage({
 
       {/* Platform */}
       <ScrollReveal>
-        <section className="bg-white py-24 lg:py-32">
+        <section className="bg-white py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="rounded-lg bg-gray-200/70 px-10 py-14 lg:px-14 lg:py-16">
+            <div className="rounded-lg bg-sognos-tint px-10 py-14 lg:px-14 lg:py-16">
               <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
                 <div className="lg:max-w-sm">
                   <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-[-0.02em] text-sognos-heading">
@@ -175,7 +175,7 @@ export default async function SolutionPage({
       {/* Works with */}
       {showWorksWithPanel && (
         <ScrollReveal>
-          <section className="bg-white py-24 lg:py-32">
+          <section className="bg-white py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
               <div className="mb-10">
                 <p
@@ -239,7 +239,7 @@ export default async function SolutionPage({
       {/* Related Solutions */}
       {content.relatedSlugs.length > 0 && (
         <ScrollReveal>
-          <section className="bg-white py-24 lg:py-32">
+          <section className="bg-white py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
               <div className="mb-12">
                 <p
