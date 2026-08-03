@@ -20,7 +20,7 @@ export const DEFAULT_CTA_CONTENT: CtaSectionContent = {
   logoBlockHeading: "Powered by Microsoft",
   logos: [
     { src: "/logos/Dynamics365.svg", alt: "Dynamics 365" },
-    { src: "/logos/copilot-logo.png", alt: "Microsoft Copilot" },
+    { src: "/logos/copilot-logo.svg", alt: "Microsoft Copilot" },
     { src: "/logos/platform/PowerBI_scalable.svg", alt: "Power BI" },
     { src: "/logos/platform/PowerAutomate_scalable.svg", alt: "Power Automate" },
     { src: "/logos/platform/PowerApps_scalable.svg", alt: "Power Apps" },

@@ -785,8 +785,11 @@ export default function Navbar() {
                         };
                       }
 
-                      // Col 3: editions when "Editions" item is hovered in col 2 for SognosCare
-                      const showEditions = hoveredProduct === "SognosCare" && hoveredSubmenuItem === "Editions";
+                      // Col 3: editions, shown for the whole time SognosCare is the
+                      // active product. Previously this also required hovering the
+                      // "Editions" row in col 2, which meant the six editions were
+                      // effectively hidden behind a second hover nobody knew to make.
+                      const showEditions = hoveredProduct === "SognosCare";
                       if (showEditions && productSub?.col3) {
                         displayColumns[2] = {
                           heading: productSub.col3.heading,

@@ -82,12 +82,12 @@ function LogoStrip({ className }: { className?: string }) {
         alt="Microsoft Solutions Partner"
         className="h-8 w-auto"
       />
-      <div className="h-9 w-px bg-white/20" />
+      <div className="h-7 w-px bg-white/20" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/logos/copilot-logo.png"
+        src="/logos/copilot-logo.svg"
         alt="Microsoft Copilot"
-        className="h-9 w-auto"
+        className="h-7 w-auto"
       />
     </div>
   );

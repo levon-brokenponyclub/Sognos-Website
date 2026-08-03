@@ -95,12 +95,22 @@ export default function CTASection({
   const todayMonth = melbourneNow.getMonth();
   const todayYear = melbourneNow.getFullYear();
 
+  // Earliest bookable day. Same-day bookings are blocked so a demo always has
+  // preparation time behind it — 1 means "from tomorrow". Raise this to require
+  // more notice; everything below derives from it.
+  const LEAD_DAYS = 1;
+  const firstBookable = new Date(melbourneNow);
+  firstBookable.setDate(firstBookable.getDate() + LEAD_DAYS);
+  const firstDate = firstBookable.getDate();
+  const firstMonth = firstBookable.getMonth();
+  const firstYear = firstBookable.getFullYear();
+
   const [step, setStep] = useState(1);
-  const [calMonth, setCalMonth] = useState(todayMonth);
-  const [calYear, setCalYear] = useState(todayYear);
-  const [selectedDate, setSelectedDate] = useState<number | null>(todayDate);
-  const [selectedMonth, setSelectedMonth] = useState(todayMonth);
-  const [selectedYear, setSelectedYear] = useState(todayYear);
+  const [calMonth, setCalMonth] = useState(firstMonth);
+  const [calYear, setCalYear] = useState(firstYear);
+  const [selectedDate, setSelectedDate] = useState<number | null>(firstDate);
+  const [selectedMonth, setSelectedMonth] = useState(firstMonth);
+  const [selectedYear, setSelectedYear] = useState(firstYear);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -109,22 +119,30 @@ export default function CTASection({
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const times = [
-    "09:00 AM",
-    "09:30 AM",
-    "10:00 AM",
-    "11:30 AM",
-    "01:00 PM",
-    "02:30 PM",
-    "04:00 PM",
-  ];
+  // Every half hour across the business day, rather than the previous seven
+  // irregular slots. Generated so the window is changed in one place.
+  const SLOT_START_HOUR = 9;
+  const SLOT_END_HOUR = 17; // exclusive — last slot is 04:30 PM
+  const times = Array.from(
+    { length: (SLOT_END_HOUR - SLOT_START_HOUR) * 2 },
+    (_, i) => {
+      const h24 = SLOT_START_HOUR + Math.floor(i / 2);
+      const minute = i % 2 === 0 ? "00" : "30";
+      const meridiem = h24 < 12 ? "AM" : "PM";
+      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+      return `${String(h12).padStart(2, "0")}:${minute} ${meridiem}`;
+    },
+  );
 
   // Calendar helpers
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
   const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay();
-  const isCurrentMonth = calMonth === todayMonth && calYear === todayYear;
+  // Pinned to the first *bookable* month, not the current one: when the lead
+  // time pushes the first slot into next month, paging back would only show a
+  // month with every day disabled.
+  const isCurrentMonth = calMonth === firstMonth && calYear === firstYear;
   const isPastMonth =
-    calYear < todayYear || (calYear === todayYear && calMonth < todayMonth);
+    calYear < firstYear || (calYear === firstYear && calMonth < firstMonth);
 
   const prevMonth = () => {
     if (isPastMonth || isCurrentMonth) return;
@@ -264,7 +282,11 @@ export default function CTASection({
                             day === selectedDate &&
                             calMonth === selectedMonth &&
                             calYear === selectedYear;
-                          const isDayPast = isCurrentMonth && day < todayDate;
+                          // Blocks the past *and today* — booking opens from
+                          // the first bookable day, LEAD_DAYS ahead.
+                          const isDayPast =
+                            new Date(calYear, calMonth, day) <
+                            new Date(firstYear, firstMonth, firstDate);
                           return (
                             <button
                               key={day}
