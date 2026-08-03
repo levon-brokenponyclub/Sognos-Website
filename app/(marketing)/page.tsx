@@ -40,11 +40,13 @@ export default async function HomePage() {
   return (
     <>
       {/* Home framework — section order mapped from Cohere Home.html */}
-      <Hero /> {/* Hero · navy, text block only */}
-      <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) — peeks above fold */}
-      {/* <ScrollReveal y={40} duration={0.7}> */}
+      {/* Hero · navy. The trust strip is passed as a child so it renders
+          inside the hero section; `LogoStrip` is an async Server Component and
+          `Hero` is a Client Component, so it cannot be imported there. */}
+      <Hero>
+        <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) */}
         <LogoStrip /> {/* "Trusted by industry leaders and professionals worldwide" */}
-      {/* </ScrollReveal> */}
+      </Hero>
       <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
       <IndustrySection /> {/* "Powering progress across industries" */}
       <HeadlineCTA platformLogos={cta.logos} />{" "}

@@ -1,8 +1,36 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Clock } from "lucide-react";
+import Link from "next/link";
 import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
-import AnimatedDivider from "@/components/layout/sections/shared/AnimatedDivider";
+
+// SCAFFOLD — structure only. No surfaces, radius, type scale or icon
+// treatment yet.
+//
+// Bento grid after middesk.com's "Built for regulated industries" block.
+//
+//   ┌───────────────────────────────┬─────────────┐
+//   │  0  feature (picture behind)  │  1          │   row 1 — 70fr / 30fr
+//   ├───────────────────────────────┼─────────────┤
+//   │  2                            │  3          │   row 2 — 50 / 50
+//   └───────────────────────────────┴─────────────┘
+//
+// Two grids, not one twelve-column grid with spans. That is how the reference
+// does it — its first row is
+// `md:grid-cols-[var(--bento-left)_var(--bento-right)]` with the two tracks set
+// inline as `70fr` and `30fr`, and the second row is its own grid. Keeping the
+// split inline means the ratio is a value rather than a class, so it can be
+// retuned without touching the markup or hunting for the matching span.
+//
+// Both rows use the reference's `gap-4` and `min-h-[340px]`.
+//
+// The three-up card row this replaces — its `AnimatedDivider`, the mono meta
+// line and the `Read More` affordance — is preserved in
+// NewsInsightSection.backup.tsx.
+//
+// Two things the reference has that the data does not: every tile carries a
+// 104×104 icon, and the non-feature tiles carry a descriptive paragraph.
+// `NewsInsightArticle` has `category`, `date` and `readTime` and no excerpt, so
+// those slots are marked and left empty rather than filled with something that
+// only looks right.
 
 export type NewsInsightArticle = {
   slug?: string;
@@ -14,69 +42,56 @@ export type NewsInsightArticle = {
   readTime?: string;
 };
 
-// Matches the customer-stories archive card's format so the two read the same.
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
+const TILE_COUNT = 4;
 
-// Article card, matching `StoryCard` in the customer-stories archive: no card
-// surface — 16:9 image, mono meta row, title, Read More, sitting directly on
-// the section background.
-//
-// Two departures from that card, both because these are articles rather than
-// customer stories: there is no company logo to centre over the image, and so
-// no gradient scrim either — a scrim with nothing over it is decoration on a
-// card, which the card rules do not allow. The chip carries the article's own
-// category rather than a fixed "Customer Story".
-function ArticleCard({ article }: { article: NewsInsightArticle }) {
+function Tile({
+  article,
+  feature = false,
+}: {
+  article: NewsInsightArticle;
+  feature?: boolean;
+}) {
   return (
     <Link
       href={article.href}
-      // The divider rides the card's own leading edge, so the card is the
-      // positioning context and carries the inset that keeps content off it.
-      className="group relative flex flex-col pt-4 md:pt-0 md:pl-6"
+      // `border` is scaffold only — it exists so the tiles are visible while
+      // the layout is reviewed, and goes when the surfaces land. `min-h` is
+      // the reference's own.
+      className="relative flex min-h-[340px] flex-col overflow-hidden border border-sognos-line"
     >
-      <AnimatedDivider />
-
-      <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
-        <Image
-          src={article.image}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-
-      <div className="mt-5 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-sognos-muted">
-        <span className="border border-sognos-line px-2 py-1">
-          {article.category}
-        </span>
-        {article.date && <span>{formatDate(article.date)}</span>}
-        {article.readTime && (
-          <span className="ml-auto flex items-center gap-1.5">
-            <Clock size={12} aria-hidden="true" />
-            {article.readTime}
-          </span>
+      {/* The reference nests a padded flex wrapper inside the article rather
+          than padding the article itself, so the picture can fill the tile
+          edge to edge behind it. */}
+      <span className="relative flex flex-1 flex-col p-6">
+        {feature && article.image && (
+          <Image
+            src={article.image}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 70vw, 100vw"
+            className="object-cover"
+          />
         )}
-      </div>
 
-      <h3 className="mt-3 font-heading text-lg lg:text-xl lg:leading-snug font-normal leading-snug tracking-tight text-sognos-heading text-balance transition-colors duration-200 group-hover:text-sognos-blue-accent">
-        {article.title}
-      </h3>
+        {/* 8px accent square, inset by the tile's own padding. */}
+        <span aria-hidden="true" data-slot="accent" />
 
-      <span className="mt-4 text-sm font-medium text-sognos-body transition-colors duration-200 group-hover:text-sognos-blue-accent">
-        Read More{" "}
-        <span
-          aria-hidden="true"
-          className="inline-block transition-transform duration-200 group-hover:translate-x-0.5"
-        >
-          &rarr;
-        </span>
+        <div className="relative z-20 flex flex-1">
+          <div className="flex min-w-0 flex-1 flex-col">
+            {/* Icon slot — 104×104 in the reference. Nothing in the article
+                data fills it yet. */}
+            <div aria-hidden="true" data-slot="icon" />
+
+            {/* `mt-auto` pins the copy to the foot of the tile whatever height
+                it runs to — the reference's own arrangement. */}
+            <div className="mt-auto">
+              <h3>{article.title}</h3>
+              {/* Copy slot — empty until there is an excerpt to put in it. The
+                  feature tile has no paragraph in the reference either. */}
+              {!feature && <p data-slot="excerpt" />}
+            </div>
+          </div>
+        </div>
       </span>
     </Link>
   );
@@ -88,6 +103,9 @@ export default function NewsInsightSection({
   articles: NewsInsightArticle[];
 }) {
   if (articles.length === 0) return null;
+
+  const tiles = articles.slice(0, TILE_COUNT);
+  const [first, second, third, fourth] = tiles;
 
   return (
     <section className="w-full bg-white py-16 md:py-24">
@@ -103,14 +121,26 @@ export default function NewsInsightSection({
           />
         </div>
 
-        {/* Same track as the customer-stories archive grid. The column gap is
-            24px rather than that grid's 32px so it matches each card's 24px
-            leading inset — the divider then sits optically centred in the
-            channel between two cards instead of hugging the right-hand one. */}
-        <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3">
-          {articles.slice(0, 3).map((article) => (
-            <ArticleCard key={article.slug ?? article.href} article={article} />
-          ))}
+        <div className="flex flex-col gap-4">
+          {/* Row 1 — 70 / 30. Both rows collapse to one column below `md`. */}
+          <div
+            className="grid grid-cols-1 gap-4 md:grid-cols-[var(--bento-left)_var(--bento-right)]"
+            style={
+              {
+                "--bento-left": "70fr",
+                "--bento-right": "30fr",
+              } as React.CSSProperties
+            }
+          >
+            {first && <Tile article={first} feature />}
+            {second && <Tile article={second} />}
+          </div>
+
+          {/* Row 2 — 50 / 50 */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {third && <Tile article={third} />}
+            {fourth && <Tile article={fourth} />}
+          </div>
         </div>
 
         <SlideFillLink

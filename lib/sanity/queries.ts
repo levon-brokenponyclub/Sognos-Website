@@ -380,6 +380,7 @@ const STORY_ARCHIVE_QUERY = `*[_type == "customerStory"] | order(date desc){
   title,
   description,
   heroImage,
+  companyLogo,
   date,
   readTime
 }`;
@@ -430,6 +431,7 @@ export type CustomerStoryArchive = {
   title: string;
   description: string;
   heroImage?: SanityImageSource;
+  companyLogo?: SanityImageSource;
   date: string;
   readTime?: string | null;
 };
@@ -855,6 +857,7 @@ const UPCOMING_EVENTS_QUERY = `*[
   excerpt,
   format,
   date,
+  endDate,
   location,
   meta,
   heroImage,
@@ -869,6 +872,7 @@ const EVENT_ARCHIVE_QUERY = `*[_type == "event"] | order(date desc){
   excerpt,
   format,
   date,
+  endDate,
   location,
   meta,
   heroImage,
@@ -886,6 +890,8 @@ export type EventListing = {
   /** Display eyebrow — "Breakfast event", "Webinar", … Never a behaviour switch. */
   format: string;
   date: string;
+  /** Optional. When present, listings render a time range. */
+  endDate?: string | null;
   location?: string | null;
   /** Hand-written display line. Compose from date + location when absent. */
   meta?: string | null;

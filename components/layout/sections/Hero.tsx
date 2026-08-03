@@ -1,14 +1,26 @@
 "use client";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useBookDemo } from "@/lib/BookDemoContext";
+import ElegantDarkPattern from "@/components/layout/sections/shared/ElegantDarkPattern";
 
 type HeroProps = {
   headline?: React.ReactNode;
   subtext?: string;
   primaryCTA?: { name: string };
   secondaryCTA?: { name: string; href: string };
+  /** Rendered inside the hero section, below the CTAs — the trust strip.
+   *  Passed in rather than imported: this is a Client Component and the strip
+   *  is an async Server Component, so it has to arrive as a child from a
+   *  server parent instead of being rendered here. */
+  children?: React.ReactNode;
 };
 
 // Glow artwork anchored to the foot of the hero, back to front. Intrinsic
@@ -104,14 +116,46 @@ export default function Hero({
   subtext = "Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.",
   primaryCTA = { name: "Book a Demo" },
   secondaryCTA = { name: "Explore products", href: "/products" },
+  children,
 }: HeroProps) {
   const { openModal } = useBookDemo();
 
+  // Cinematic scroll, the same treatment sognoscare/Hero.tsx uses: the copy
+  // drifts down and fades as the block leaves. The ref is on the copy rather
+  // than the section, because the section now also holds the product cards and
+  // the trust strip — measuring the whole thing would stretch the progress
+  // range over content that is not supposed to move.
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: contentRef,
+    offset: ["start start", "end start"],
+  });
+  const prefersReducedMotion = useReducedMotion();
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 160],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.7],
+    prefersReducedMotion ? [1, 1] : [1, 0],
+  );
+
   return (
-    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-20">
+    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-0">
+      {/* Same background treatment as HeadlineCTA — streaks, grain, dot grid
+          and centre lift. Commented out, not removed: the import and the
+          shared component stay, so this is one line to bring back. HeadlineCTA
+          still uses it. */}
+      {/* <ElegantDarkPattern /> */}
       <HeroBlurLayers />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 text-left lg:text-center">
+      <motion.div
+        ref={contentRef}
+        style={{ y, opacity }}
+        className="relative z-10 mx-auto max-w-7xl px-6 text-left will-change-transform lg:text-center"
+      >
         <motion.h1
           custom={0}
           variants={fadeUp}
@@ -156,7 +200,13 @@ export default function Hero({
             <span aria-hidden="true">&#8599;</span>
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Trust strip, inside the hero rather than a sibling below it. Sits
+          outside the `max-w-7xl` block above because it brings its own
+          container, and above the blur layers' `z-10` gradient so it is not
+          washed out by it. */}
+      {children && <div className="relative z-10">{children}</div>}
     </section>
   );
 }

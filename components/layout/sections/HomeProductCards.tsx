@@ -39,24 +39,30 @@ const PRODUCTS = [
 
 function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
   return (
-    // AngelList column: top hairline → title → image card → description → bottom hairline
+    // AngelList column: image card → description → bottom hairline.
+    // The top hairline and the title above it are commented out, not deleted.
     <Link
       href={product.href}
-      className="group flex flex-col border-t border-b border-white/10 pt-4 pb-10 w-[82vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
+      className="group flex flex-col border-b border-white/25 pt-4 pb-10 w-[82vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
     >
       {/* Title above the image */}
-      <h3 className="font-heading text-2xl font-normal tracking-tight text-white md:text-lg">
+      {/* <h3 className="font-heading text-2xl font-normal tracking-tight text-white md:text-lg">
         {product.name}
-      </h3>
+      </h3> */}
 
-      {/* Image card */}
-      <div className="relative mt-4 aspect-[4/5] max-h-[430px] overflow-hidden rounded-lg">
-        <Image
+      {/* Image card. `aspect-[334/354]` is SolutionsSection's ratio, and the
+          track below now uses its `gap-2`, so the two card rows share one
+          proportion and one rhythm. The `max-h` cap is gone — it was there to
+          stop the 4/5 ratio running away, which 334/354 does not. */}
+      <div className="relative mt-4 aspect-[334/354] overflow-hidden rounded-lg">
+        {/* Background image — commented out, not deleted. `bgImage` stays on
+            each PRODUCTS entry, so uncommenting restores it as it was. */}
+        {/* <Image
           src={product.bgImage}
           alt=""
           fill
           className="scale-105 object-cover object-center opacity-80 transition-[scale,filter] duration-800 motion-safe:group-hover:scale-100 group-hover/solutions:brightness-[0.60] group-hover:brightness-100!"
-        />
+        /> */}
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-sognos-navy-dark/45 transition-colors duration-500 group-hover/cards:bg-sognos-navy-dark/70 group-hover:!bg-sognos-navy-dark/25" />
 
@@ -110,9 +116,12 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
 
 export default function HomeProductCards() {
   return (
-    <section className="bg-sognos-navy pb-2">
+    // No background of its own — it renders inside the hero, which already
+    // carries the navy and the blur artwork behind it. `pt-16` is the gap
+    // below the hero's CTAs.
+    <section className="pt-16 pb-2">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="group/cards flex items-start snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible lg:gap-6">
+        <div className="group/cards flex items-start snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible">
           {PRODUCTS.map((product) => (
             <ProductCard key={product.href} product={product} />
           ))}

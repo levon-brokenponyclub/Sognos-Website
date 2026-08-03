@@ -23,6 +23,11 @@ export type Article = {
   author?: string | null;
 };
 
+// `Events` and `Webinar` stay for now, deliberately. Both are becoming `event`
+// documents with a `format`, but until `/events` exists there is nowhere else
+// for a reader to find them, so the pills remain as a transition. Drop them to
+// `["Milestone", "News", "Insights"]` once the events archive ships and the two
+// posts still carrying those categories have been re-authored.
 const CATEGORIES = [
   "Milestone",
   "News",
@@ -33,30 +38,32 @@ const CATEGORIES = [
 
 const INITIAL_ARTICLE_LIMIT = 4;
 
-const EVENTS = [
-  {
-    category: "Breakfast event",
-    title: "Designing Services Around Real Lives, Not System Boundaries",
-    dateStart: "Sep 17, 2026",
-    dateEnd: "8.30 am - 10.30 am",
-    location: "Microsoft, North Sydney, AU",
-    href: "/events/nfp-real-care",
-    image: "/images/events/nfp-real-care/MSFT-header-img.png",
-  },
-] as const;
+/** One upcoming event row. Strings, already formatted — this is a Client
+ *  Component, so the timezone-sensitive formatting happens on the server. */
+export type UpcomingEvent = {
+  slug: string;
+  format: string;
+  title: string;
+  href: string;
+  /** e.g. "17 Sep 2026" */
+  date: string;
+  /** e.g. "8:30 am - 10:30 am", or just the start when the event has no end. */
+  time: string;
+  location: string;
+  image: string;
+};
 
-const LATEST_CUSTOMER_STORY = {
-  slug: "gentari",
-  company: "Gentari Solar Australia",
-  title:
-    "Gentari Solar Australia: End-to-End Asset Management with Microsoft Dynamics 365 Field Service",
-  excerpt:
-    "How Gentari connected field delivery, asset visibility, and service operations in one Microsoft Dynamics 365 Field Service workflow.",
-  date: "Nov 5, 2024",
-  readTime: "4 min read",
-  image: "/images/customers/gentari.webp",
-  logo: "/logos/gentari-logo-rect.webp",
-} as const;
+/** The most recent customer story, for the dark band. */
+export type FeaturedStory = {
+  slug: string;
+  company: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readTime: string | null;
+  image: string;
+  logo: string;
+};
 
 // Three-way pill state: "featured" (default) shows the featured block + intro
 // copy; "all" and each category filter the grid and swap the page title.
@@ -157,7 +164,12 @@ export function ArticleCard({ article }: { article: Article }) {
   );
 }
 
-function EventsSection() {
+// Renders nothing when there is nothing upcoming — an "Upcoming Events" rail
+// over an empty column is worse than no section at all, and unlike the
+// hardcoded version this can now genuinely be empty.
+function EventsSection({ events }: { events: UpcomingEvent[] }) {
+  if (events.length === 0) return null;
+
   return (
     <section className="w-full border-b border-sognos-line bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -176,16 +188,16 @@ function EventsSection() {
           {/* Right — event rows */}
           <div className="lg:col-[3/-1]">
             <div className="divide-y divide-white">
-              {EVENTS.map((event) => (
+              {events.map((event) => (
                 <Link
-                  key={event.href}
+                  key={event.slug}
                   href={event.href}
                   className="group grid min-h-[400px] rounded overflow-hidden bg-gray-50 transition-colors duration-200 hover:bg-gray-100 lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]"
                 >
                   <div className="flex min-h-[360px] flex-col justify-between p-7 md:p-9 lg:p-10">
                     <div>
                       <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                        {event.category}
+                        {event.format}
                       </p>
 
                       <h2 className="mt-5 max-w-4xl font-heading text-3xl font-normal tracking-tight leading-tight text-sognos-heading text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl">
@@ -197,9 +209,9 @@ function EventsSection() {
                       <div className="grid grid-cols-[120px_1fr] gap-6 border-b border-sognos-line py-4">
                         <dt className="text-sognos-muted">Date</dt>
                         <dd className="text-right text-sognos-body">
-                          {event.dateStart}
+                          {event.date}
                           <span className="mx-4 text-sognos-body">-</span>
-                          {event.dateEnd}
+                          {event.time}
                         </dd>
                       </div>
                       <div className="grid grid-cols-[120px_1fr] gap-6 py-4">
@@ -233,11 +245,15 @@ function EventsSection() {
 
 export default function KnowledgeHubArchive({
   articles,
+  upcomingEvents = [],
+  featuredStory = null,
   initialCategory = null,
   title,
   description,
 }: {
   articles: Article[];
+  upcomingEvents?: UpcomingEvent[];
+  featuredStory?: FeaturedStory | null;
   initialCategory?: string | null;
   title: string;
   description?: string;
@@ -298,29 +314,32 @@ export default function KnowledgeHubArchive({
       ],
     }),
   );
-  const eventSearchItems: KnowledgeHubSearchItem[] = EVENTS.map((event) => ({
-    href: event.href,
-    title: event.title,
-    category: "Event",
-    meta: `${event.dateStart} · ${event.location}`,
-    image: event.image,
-    keywords: [event.category, event.dateEnd],
-  }));
-  const customerStorySearchItem: KnowledgeHubSearchItem = {
-    href: `/customer-stories/${LATEST_CUSTOMER_STORY.slug}`,
-    title: LATEST_CUSTOMER_STORY.title,
-    category: "Customer Story",
-    meta: `${LATEST_CUSTOMER_STORY.date} · ${LATEST_CUSTOMER_STORY.readTime}`,
-    image: LATEST_CUSTOMER_STORY.image,
-    keywords: [
-      LATEST_CUSTOMER_STORY.company,
-      LATEST_CUSTOMER_STORY.excerpt,
-    ],
-  };
+  const eventSearchItems: KnowledgeHubSearchItem[] = upcomingEvents.map(
+    (event) => ({
+      href: event.href,
+      title: event.title,
+      category: "Event",
+      meta: `${event.date} · ${event.location}`,
+      image: event.image,
+      keywords: [event.format, event.time],
+    }),
+  );
+  const customerStorySearchItem: KnowledgeHubSearchItem | null = featuredStory
+    ? {
+        href: `/customer-stories/${featuredStory.slug}`,
+        title: featuredStory.title,
+        category: "Customer Story",
+        meta: [featuredStory.date, featuredStory.readTime]
+          .filter(Boolean)
+          .join(" · "),
+        image: featuredStory.image,
+        keywords: [featuredStory.company, featuredStory.excerpt],
+      }
+    : null;
   const searchItems = [
     ...articleSearchItems,
     ...eventSearchItems,
-    customerStorySearchItem,
+    ...(customerStorySearchItem ? [customerStorySearchItem] : []),
   ];
   const recentSearchItems = [
     articleSearchItems[0],
@@ -502,57 +521,67 @@ export default function KnowledgeHubArchive({
         </div>
       </section>
 
-      {/* Case Study — full-bleed dark band */}
-      <section className="bg-sognos-navy py-16 lg:py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          <Link
-            href={`/customer-stories/${LATEST_CUSTOMER_STORY.slug}`}
-            className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
-          >
-            {/* Left */}
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">Customer Story</p>
-              <h2 className="mt-6 font-heading text-3xl font-normal tracking-tight leading-tight text-white text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl ">
-                {LATEST_CUSTOMER_STORY.title}
-              </h2>
-              <p className="mt-5 max-w-2xl line-clamp-3 text-base leading-relaxed text-white/80 text-balance">
-                {LATEST_CUSTOMER_STORY.excerpt}
-              </p>
-              <div className="mt-10 flex items-center gap-3">
-                <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-                  {LATEST_CUSTOMER_STORY.date}
-                </span>
-                <span className="text-white/30">·</span>
-                <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
-                  {LATEST_CUSTOMER_STORY.readTime}
-                </span>
+      {/* Case Study — full-bleed dark band. The newest story from Sanity; this
+          was hardcoded to Gentari (Nov 2024) while the CMS held eight. */}
+      {featuredStory && (
+        <section className="bg-sognos-navy py-16 lg:py-16">
+          <div className="mx-auto max-w-7xl px-6">
+            <Link
+              href={`/customer-stories/${featuredStory.slug}`}
+              className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+            >
+              {/* Left */}
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
+                  Customer Story
+                </p>
+                <h2 className="mt-6 font-heading text-3xl font-normal tracking-tight leading-tight text-white text-balance group-hover:text-sognos-blue-accent md:text-4xl lg:text-4xl ">
+                  {featuredStory.title}
+                </h2>
+                <p className="mt-5 max-w-2xl line-clamp-3 text-base leading-relaxed text-white/80 text-balance">
+                  {featuredStory.excerpt}
+                </p>
+                <div className="mt-10 flex items-center gap-3">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
+                    {featuredStory.date}
+                  </span>
+                  {featuredStory.readTime && (
+                    <>
+                      <span className="text-white/30">·</span>
+                      <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
+                        {featuredStory.readTime}
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-            {/* Right — customer story cover image */}
-            <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={LATEST_CUSTOMER_STORY.company}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src={LATEST_CUSTOMER_STORY.image}
-              />
-              <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
+              {/* Right — customer story cover image */}
+              <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt={LATEST_CUSTOMER_STORY.company}
-                  className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
-                  src={LATEST_CUSTOMER_STORY.logo}
+                  alt={featuredStory.company}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src={featuredStory.image}
                 />
+                {featuredStory.logo && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center px-8">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt={featuredStory.company}
+                      className="h-14 w-auto max-w-[180px] object-contain brightness-0 invert"
+                      src={featuredStory.logo}
+                    />
+                  </div>
+                )}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </div>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-            </div>
-          </Link>
-        </div>
-      </section>
+            </Link>
+          </div>
+        </section>
+      )}
 
-      <EventsSection />
-
+      <EventsSection events={upcomingEvents} />
     </>
   );
 }

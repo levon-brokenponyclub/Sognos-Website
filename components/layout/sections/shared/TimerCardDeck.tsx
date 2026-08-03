@@ -345,7 +345,7 @@ export default function TimerCardDeck({
                     : `transform ${CONTENT_MS}ms ease-in-out`,
                 }}
               >
-                <p className="min-w-0 shrink-0 truncate font-heading text-xl font-normal text-sognos-body">
+                <p className="min-w-0 shrink-0 truncate font-heading text-xl tracking-tight font-normal text-sognos-heading">
                   {card.title}
                 </p>
                 <div
@@ -359,7 +359,7 @@ export default function TimerCardDeck({
                       : `opacity ${FADE_MS}ms ease-in-out`,
                   }}
                 >
-                  <p className="line-clamp-3 text-base leading-[1.4] text-gray-600">
+                  <p className="line-clamp-3 text-base leading-[1.4] text-sognos-body/80">
                     {card.description}
                   </p>
                   {card.href && (

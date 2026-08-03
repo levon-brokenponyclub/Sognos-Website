@@ -1,5 +1,148 @@
 # Changelog
 
+## 2026-08-03 — Homepage section rebuild: hero, industries, customer stories, news
+
+A section-by-section pass against Middesk and Routable. Layout and structure
+only — colours, sizing and spacing were left alone except where explicitly
+asked for.
+
+### Hero
+
+- **Trust strip moved inside the hero.** `LogoStrip` is passed as `children`
+  rather than imported: `Hero` is a Client Component and `LogoStrip` is an
+  async Server Component, so it has to arrive from a server parent. Product
+  cards sit inside the hero too, above the strip.
+- **`LogoStrip` restored to its pre-marquee state** from `fe815a7` — the static
+  row with `md:border-l` dividers — then given no background of its own, so the
+  hero's navy and blur artwork show through. Capped at **5 logos** via a local
+  `LOGO_LIMIT`: the shared `LOGO_STRIP_LOGO_LIMIT` is still 6 and also slices
+  CTASection's trust and drawer logos, so changing it would have cut those too.
+- **Cinematic scroll**, the same treatment `sognoscare/Hero.tsx` uses —
+  `useScroll` at `["start start", "end start"]`, `y 0 → 160`, `opacity 1 → 0`
+  across `[0, 0.7]`, all collapsed under `useReducedMotion`. The ref is on the
+  copy block rather than the section: the section now also holds the product
+  cards and the strip, and measuring the whole thing would stretch the progress
+  range across content that is not supposed to move.
+- **Product cards**: background image, title and top hairline commented out
+  rather than deleted; `aspect-[334/354]` and `gap-2` taken from
+  SolutionsSection so the two card rows share a proportion and a rhythm.
+
+### `ElegantDarkPattern` extracted
+
+The streaks, `feTurbulence` grain, dot grid and centre lift moved out of
+`HeadlineCTA` into `shared/ElegantDarkPattern`. The alternative was the same
+sixty lines of mask stop-lists in two files, drifting on the first tweak.
+Server Component — inert markup and inline style, nothing added to the client
+bundle. Briefly applied to the hero and then commented out there; the import is
+left in place so it is one line to bring back.
+
+### Industries
+
+Rebuilt three times against three references before landing on Middesk's
+Solutions section, and the history is worth keeping because each move was a
+correction:
+
+1. Cards, on `sognoscare/Features` — dropped: the copy sat at the foot of the
+   column, far from the tab that named it.
+2. Accordion, after routable.com — dropped: the panel reflowed as rows opened.
+3. **Tab showcase, after middesk.com** — the one that shipped.
+
+- Six-and-six on a twelve-column grid, tab list left and one picture right.
+  **`aspect-[676/496]`** on the picture, the reference's own — sizing by ratio
+  rather than a minimum height is what keeps the panel in proportion.
+- `md:pe-[20%]` on the open panel and a `max-w-[516px]` measure, so the copy
+  stops short of the column edge.
+- **8s autoplay** — the reference's pause button reads "Autoplay duration: 8s".
+  Driven by one rAF loop shared with the countdown ring, because two timers
+  would let the ring drift against the tab it describes.
+- Countdown ring is `TimerCardDeck`'s `ProgressButton`, shared rather than
+  reimplemented.
+- **Sticky stack removed.** Cards no longer pin at `top-20` and slide over each
+  other. The `bg-background` each wrapper carried existed only so stacked cards
+  did not show through each other, and went with it.
+
+### Customer stories
+
+Rebuilt twice. Both previous versions are in
+`ProductCustomerStories.backup.tsx`.
+
+1. Two-column single quote, after routable.com/features/compliance — client
+   mark and attribution in a narrow left rail, quote filling the right.
+2. **Testimonial track, after routable.com's "Leading teams scale payouts"** —
+   the one that shipped.
+
+- Equal-height cards, arrow-paged, on `ElegantDarkPattern`. Kept dark rather
+  than the reference's white, which translates cleanly because **its card has
+  no fill of its own**: it is white on a white section, defined only by the
+  dotted rules above and below. Here the same card is dotted `white/25` on
+  dark.
+- **Three alignment mechanisms, all required**: `items-stretch` on the track
+  makes every card the height of the tallest; `min-h-[40px] md:min-h-[60px]` on
+  the logo block makes the quotes start on one line despite different mark
+  heights; `flex-1` on the quote with `mt-auto` on the meta makes the
+  attributions land on the same line.
+  - `h-full` on the card **cancels** the first of those — `height: 100%`
+    against a parent with no resolved height computes to `auto` — which is what
+    left the meta rows at three different heights until it was removed.
+- **Per-word highlight.** A new optional `highlight` field holds a verbatim
+  substring of the quote; each word in it gets its own `inline-block` with a
+  `bg-white/20` layer behind. Per word rather than one panel across the phrase
+  because the phrase wraps, and a single panel would draw one rectangle across
+  the line break and swallow the gap between lines. A substring that is not
+  found renders the quote plain, so a typo degrades rather than breaks.
+- **Autoplay, countdown ring and the three indicator blocks are gone**, and
+  with them the `MAX_STORIES = 3` cap — the indicator row was what could not
+  read past three. All stories passed now render.
+- No avatars, per instruction. JSON-LD `Review` per story, which the reference
+  ships and this codebase did nowhere.
+
+### News
+
+- `NewsInsightSection` scaffolded on Middesk's bento — **two grids, not one
+  twelve-column grid with spans**: row 1 is
+  `md:grid-cols-[var(--bento-left)_var(--bento-right)]` with the tracks set
+  inline as `70fr`/`30fr`, row 2 is its own 50/50. Keeping the split inline
+  means the ratio is a value rather than a class.
+- Structure only — no surfaces, radius or type scale yet. The icon and excerpt
+  slots are marked and left empty: the reference gives every tile both, and
+  `NewsInsightArticle` has neither. An `excerpt` field would need adding
+  upstream.
+- Tile count went 3 → 4. The old three-up row is in
+  `NewsInsightSection.backup.tsx`.
+
+### Knowledge Hub
+
+- Events and the customer-story band now come from Sanity as props rather than
+  the hardcoded `EVENTS` and `LATEST_CUSTOMER_STORY` consts. The story band was
+  pinned to Gentari from Nov 2024 while the CMS held eight.
+- **`endDate` added to the event schema**, so listings can show a range again —
+  the hardcoded card had "8.30 am – 10.30 am" and the single-`date` model could
+  not express it. Both it and `format` are deployed to the Content Lake.
+- `Events` and `Webinar` stay in the category pills for now, deliberately:
+  until `/events` exists there is nowhere else for a reader to find them.
+- Event dates are formatted server-side in `Australia/Sydney`. The archive is a
+  Client Component, and formatting there would run against the viewer's
+  timezone — the 17 September breakfast would read as the 16th to anyone west
+  of Perth.
+
+### Notes
+
+- **`h-full` inside a flex row is a trap.** It silently cancels
+  `align-items: stretch` when the parent's height is not resolved. Cost an hour
+  of misaligned testimonial cards.
+- Column spans measured off a reference should be read as fractions of the
+  content width, not guessed — Middesk's bento is 8+4 then 6+6 on a twelve
+  grid, but the markup revealed it is actually two separate grids at 70/30 and
+  50/50.
+
+- **Files:** `components/layout/sections/Hero.tsx`, `LogoStrip.tsx`,
+  `HomeProductCards.tsx`, `IndustrySection.tsx`, `ProductCustomerStories.tsx`,
+  `NewsInsightSection.tsx`, `HowSognosWorks.tsx`, `HeadlineCTA.tsx`,
+  `KnowledgeHubArchive.tsx`, `shared/ElegantDarkPattern.tsx` (new),
+  `shared/TimerCardDeck.tsx`, `app/(marketing)/page.tsx`,
+  `app/(marketing)/knowledge-hub/page.tsx`, `lib/sanity/queries.ts`,
+  `sanity/schemas/event.ts`.
+
 ## 2026-08-03 — Events into Sanity; bento feed and grid; customer-story panel rebuilt
 
 ### Events become CMS content

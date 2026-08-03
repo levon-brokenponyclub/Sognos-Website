@@ -61,6 +61,17 @@ export const event = defineType({
       validation: (R) => R.required(),
     }),
     defineField({
+      name: "endDate",
+      title: "End time",
+      type: "datetime",
+      description:
+        "Optional. When set, listings show a range — “8:30 am – 10:30 am”. Leave empty for a start time only.",
+      validation: (R) =>
+        R.min(R.valueOfField("date")).warning(
+          "The end time is before the start time.",
+        ),
+    }),
+    defineField({
       name: "location",
       title: "Location",
       type: "string",

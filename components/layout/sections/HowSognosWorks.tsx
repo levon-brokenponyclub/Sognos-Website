@@ -46,7 +46,11 @@ const CARDS: readonly TimerCard[] = BLOCKS.map((b, i) => ({
   number: String(i + 1).padStart(2, "0"),
   title: b.title,
   description: b.copy,
-  href: b.href,
+  // No `href`, so no "Learn more". `TimerCardDeck` renders that link only when
+  // a card carries one, so dropping it here removes the CTA from these cards
+  // without touching the deck — which ProductCustomerStories and LottiePanel
+  // also use. `href` stays on BLOCKS, so this is one line to put back.
+  // href: b.href,
   // Alt is the step it illustrates — the panel is not decorative, it is the
   // slide's content.
   image: { src: b.image, alt: b.title },
@@ -57,14 +61,14 @@ export default function HowSognosWorks() {
   return (
     <section className="w-full bg-gray-50 py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-4xl text-center flex flex-col gap-4">
+        <div className="mx-auto max-w-2xl text-center flex flex-col gap-4">
           <AnimatedEyebrow className="justify-center">
             How Sognos works
           </AnimatedEyebrow>
-          <h2 className="font-angellist text-4xl font-normal tracking-tight text-sognos-heading lg:text-6xl">
+          <h2 className="mt-4 font-angellist text-3xl font-normal tracking-tight text-sognos-heading md:text-5xl">
             Healthcare First. Field Services Always. AI at the Centre.
           </h2>
-          <p className="mx-auto max-w-xl text-base leading-normal text-sognos-body">
+          <p className="mx-auto max-w-2xl text-base leading-normal text-sognos-body md:text-lg">
             One connected process takes service demand from first contact to
             coordinated delivery and measurable outcomes.
           </p>
@@ -75,7 +79,7 @@ export default function HowSognosWorks() {
                 alt="Microsoft Dynamics 365"
                 width={96}
                 height={96}
-                className="h-8 w-auto"
+                className="h-11 w-auto"
               />
               <div
                 aria-hidden="true"

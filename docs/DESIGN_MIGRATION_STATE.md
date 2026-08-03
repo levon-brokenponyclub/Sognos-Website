@@ -489,6 +489,26 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 
 ## 8. Recently Completed
 
+### 2026-08-03 (later)
+
+- Homepage section rebuild, layout and structure only. Hero now contains the
+  product cards and the trust strip; `LogoStrip` restored to its pre-marquee
+  static row, no background of its own, capped at 5 logos by a local constant.
+- `ElegantDarkPattern` extracted from `HeadlineCTA` into `shared/` and used by
+  the customer-story track. Applied to the hero and then commented out there.
+- `IndustrySection` rebuilt as a tab showcase after middesk.com — 6/6 grid,
+  `aspect-[676/496]` picture, 8s autoplay on a shared rAF clock with
+  `ProgressButton`. **The sticky card stack is gone.**
+- `ProductCustomerStories` rebuilt as an arrow-paged testimonial track after
+  routable.com, on the dark pattern. Autoplay, countdown ring, indicator blocks
+  and the `MAX_STORIES = 3` cap all removed. New optional `highlight` field for
+  the per-word emphasis. Two previous builds in `ProductCustomerStories.backup.tsx`.
+- `NewsInsightSection` scaffolded on Middesk's bento — two grids, 70/30 then
+  50/50. **Structure only, no styling yet**; icon and excerpt slots are empty
+  pending an `excerpt` field.
+- Knowledge Hub events and story band fed from Sanity; `endDate` added to the
+  event schema and deployed.
+
 ### 2026-08-03
 
 - Events became CMS content: `getUpcomingEvents()`, `getEventArchive()` and
