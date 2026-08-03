@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-03 — Microsoft Copilot icon replaced (mirrored from production)
+
+Client supplied a replacement Copilot mark. Applied in production first, then
+mirrored here under the standing rule that a correctness fix lands in both
+repos — otherwise the redesign keeps a known-wrong asset until someone
+rediscovers it.
+
+- `public/logos/copilot-logo.svg` **replaced**. This repo carried a *different*
+  Copilot icon (24×24 viewBox, `1em` intrinsic sizing) from production's. Both
+  are now the client's file. Its Icons8 export hardcoded `width="50px"
+  height="50px"`, which fights utility-class sizing — stripped, so the `viewBox`
+  alone drives the aspect.
+- `public/logos/copilot-logo.png` **deleted** — nothing referenced it here, and
+  the equivalent asset was removed from production and from the Sanity media
+  library in the same task.
+- **No code changes needed.** All four usages already pointed at `.svg`:
+  `HowSognosWorks.tsx`, `industries/IndustryPlatformSection.tsx`,
+  `lib/content/footer.ts`, `lib/constants.ts`. Both component usages are
+  `width/height 128` with `h-11 w-auto`, and the new asset is square, so nothing
+  distorts.
+
+**Note for later:** production's hero trust strip needed the icon dropped from
+`h-9` to `h-7` to sit level with Dynamics 365. This repo's equivalents are
+`h-11` in their own contexts and were left alone — flagging in case they read
+large once the new mark is in.
+
+- **Files:** `public/logos/copilot-logo.svg`, `public/logos/copilot-logo.png`.
+
 ## 2026-08-03 — Knowledge Hub archive rebuilt on Routable; nav dropdowns restructured
 
 ### Knowledge Hub archive
