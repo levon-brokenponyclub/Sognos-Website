@@ -112,16 +112,20 @@ export function ArticleCard({ article }: { article: Article }) {
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="h-full w-full bg-sognos-tint" />
+          <div className="h-full w-full bg-gray-100" />
         )}
       </div>
-      <div className="mt-4 flex flex-col flex-1">
-        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
-          {article.category}
-        </span>
+      {/* 32px, rising to 36px from lg — the reference's own image-to-content
+          gap (`space-y-8 lg:space-y-[2.25rem]` on routable.com/resources). The
+          16px this replaced was what made the cards read tight. */}
+      <div className="mt-8 flex flex-col flex-1 lg:mt-9">
+
         <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
           {article.title}
         </h3>
+        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
+          {article.category}
+        </span>
         <ArticleMeta
           publishedAt={article.publishedAt}
           readTime={article.readTime}
@@ -218,6 +222,7 @@ function Tile({
   readTime,
   image,
   lead = false,
+  filled = false,
 }: {
   href: string;
   eyebrow?: string | null;
@@ -227,13 +232,24 @@ function Tile({
   readTime?: string | null;
   image?: string | null;
   lead?: boolean;
+  filled?: boolean;
 }) {
+  // Two surfaces, after the reference's own two card types:
+  //   filled  — grey panel, everything inset. `p-6 md:p-8`, and `lg:p-14` on
+  //             the lead, matching routable.com's `p-6 md:p-8 lg:p-[3.5rem]`.
+  //   plain   — no fill, content flush, separated by a rule.
+  // Radius is `rounded` rather than the reference's 4px: house rule wins.
+  const surface = filled
+    ? `rounded bg-white p-6 md:p-8 ${lead ? "lg:p-14" : ""}`
+    : "border-b border-sognos-line pb-4";
+  const showImage = lead || !!image;
+  // 24px inside a filled panel — the reference's `mb-6`. The plain card keeps
+  // the wider 32/36px gap, which is what it uses with no padding to help it.
+  const contentGap = showImage ? (filled ? "mt-6" : "mt-8 lg:mt-9") : "";
+
   return (
-    <Link
-      href={href}
-      className="group flex flex-col border-b border-sognos-line pb-4"
-    >
-      {(lead || image) && (
+    <Link href={href} className={`group flex flex-col ${surface}`}>
+      {showImage && (
         <div
           className={`relative aspect-[16/10] w-full overflow-hidden rounded ${
             lead ? "" : "max-h-52"
@@ -251,7 +267,7 @@ function Tile({
           )}
         </div>
       )}
-      <div className="mt-4 flex flex-1 flex-col">
+      <div className={`${contentGap} flex flex-1 flex-col`}>
         {eyebrow && (
           <span className="inline-flex h-6.5 w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {eyebrow}
@@ -261,7 +277,15 @@ function Tile({
           {title}
         </h3>
         {(meta || readTime) && (
-          <p className="mt-10 text-xs font-base tracking-wide uppercase text-sognos-heading">
+          /* `mt-auto` in a filled panel: the meta line sits on the card's
+             bottom padding however tall the title runs, which is what keeps a
+             column of stacked panels aligned. The plain card has no floor to
+             sit on, so it keeps the fixed gap. */
+          <p
+            className={`text-xs font-base tracking-wide uppercase text-sognos-heading ${
+              filled ? "mt-auto pt-8" : "mt-10"
+            }`}
+          >
             {meta && <span className="text-sognos-muted">{meta}</span>}
             {meta && readTime && " — "}
             {readTime && readTime.toUpperCase()}
@@ -344,7 +368,7 @@ export function PastEventRow({
 // small facts under a large image. Side by side it reads as one row.
 //
 // Every surface value is `Tile`'s, unchanged — fill inverted against the band,
-// `rounded-lg`, `p-14`, `text-2xl` title, `text-sm` meta. Only the arrangement
+// `rounded`, `p-14`, `text-2xl` title, `text-sm` meta. Only the arrangement
 // differs.
 export function EventCard({
   href,
@@ -367,7 +391,7 @@ export function EventCard({
       href={href}
       // 0.6/1 rather than an even split: the image is atmosphere, the date and
       // place are the decision. Copy gets the room.
-      className={`group grid overflow-hidden rounded-lg ${surface} md:grid-cols-[minmax(0,0.6fr)_minmax(0,1fr)]`}
+      className={`group grid overflow-hidden rounded ${surface} md:grid-cols-[minmax(0,0.6fr)_minmax(0,1fr)]`}
     >
       {/* Two variants, decided by whether an image exists:
           — with a usable image, the photo runs full bleed
@@ -455,7 +479,7 @@ function SectionShell({
     <section
       id={id}
       data-kh-section={id}
-      className={`scroll-mt-32 ${tinted ? "bg-sognos-tint" : "bg-white"}`}
+      className={`scroll-mt-32 ${tinted ? "bg-gray-100" : "bg-white"}`}
     >
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         {/* `items-end` rather than `items-center`: the link sits on the
@@ -713,9 +737,9 @@ export default function KnowledgeHubArchive({
       <div>
         {/* News — lead left, three stacked right. Four items is the section;
             the rest live behind "View all". */}
-        <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news}>
+        <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news} tinted>
           {newsLead ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
               <Tile
                 href={newsLead.href}
                 eyebrow={newsLead.category}
@@ -726,6 +750,7 @@ export default function KnowledgeHubArchive({
                 readTime={newsLead.readTime}
                 image={newsLead.image}
                 lead
+                filled
               />
               {/* `[&>a]:flex-1` — the three cards divide the lead card's
                   height between them so both columns end level. The reference
@@ -740,6 +765,7 @@ export default function KnowledgeHubArchive({
                     title={a.title}
                     meta={a.publishedAt ? formatDate(a.publishedAt) : null}
                     readTime={a.readTime}
+                    filled
                   />
                 ))}
               </div>
@@ -754,7 +780,6 @@ export default function KnowledgeHubArchive({
           id="insights"
           heading="Insights"
           viewAllHref={VIEW_ALL.insights}
-          tinted
         >
           {/* `ArticleCard`, not `Tile` — it is the existing grid card, it
               already carries image, chip, clamped title and the date and
@@ -776,6 +801,7 @@ export default function KnowledgeHubArchive({
         <SectionShell
           id="events"
           heading="Events & Webinars"
+          tinted
         >
           <div className="flex flex-col gap-16">
             <RailBlock label="Events">
@@ -793,7 +819,6 @@ export default function KnowledgeHubArchive({
           id="milestones"
           heading="Milestones"
           viewAllHref={VIEW_ALL.milestones}
-          tinted
         >
           {milestones.length > 0 ? (
             <div className="grid gap-y-8">
@@ -808,7 +833,7 @@ export default function KnowledgeHubArchive({
                   className="group space-y-4 border-b border-dotted border-sognos-line pb-6 md:flex md:items-center md:space-x-6 md:space-y-0 md:pb-8 lg:space-x-[4.5rem]"
                 >
                   {/* 9/5 and capped at 22.5rem — the reference's own. */}
-                  <div className="relative aspect-[9/5] w-full overflow-hidden rounded-lg bg-white md:max-w-[22.5rem] md:shrink-0">
+                  <div className="relative aspect-[9/5] w-full overflow-hidden rounded bg-white md:max-w-[22.5rem] md:shrink-0">
                     {a.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img

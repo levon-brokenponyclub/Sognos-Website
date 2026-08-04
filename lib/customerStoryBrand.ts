@@ -30,3 +30,40 @@ export function brandPanelGradient(brandColor: string) {
 export const STORY_VIDEO: Record<string, string> = {
   "natural-power-solutions": "/videos/NPS-Customer-Story.mp4",
 };
+
+export type StoryStat = { value: string; label: string };
+
+// Closing stats, keyed by slug. Sanity carries no stat data for these stories,
+// so they live here until it does — delete a slug's entry the moment the CMS
+// can supply it and the block falls back to nothing rather than to stale copy.
+//
+// Every figure below is taken from the published story or its sidebar; none is
+// derived from a claim the source doesn't make. Where a client has no outcome
+// figure the cells carry verified scale instead, which is honest about what it
+// is — the alternative was inventing savings, and a fabricated percentage in
+// front of a client is worse than a modest true one.
+export const STORY_STATS: Record<string, StoryStat[]> = {
+  "flourish-australia": [
+    { value: "1,100+", label: "Users on a single platform" },
+    { value: "7", label: "Dynamics 365 applications deployed" },
+  ],
+  "auckland-airport": [
+    { value: "100%", label: "User adoption at go-live" },
+    { value: "On time", label: "Delivered on time and on budget" },
+  ],
+  gentari: [
+    { value: "10,000", label: "Assets under management" },
+    { value: "1", label: "Platform across the asset base" },
+  ],
+  neca: [
+    { value: "6,000", label: "Member businesses supported" },
+    { value: "1", label: "Single source of truth" },
+  ],
+};
+
+// A story with no entry renders no stat block at all. That is the Decent case
+// from the reference set: the section closes up rather than degrading, so an
+// empty row never reaches the page.
+export function storyStats(slug: string): StoryStat[] {
+  return STORY_STATS[slug] ?? [];
+}

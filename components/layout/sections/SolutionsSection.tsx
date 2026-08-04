@@ -86,8 +86,10 @@ const SOLUTIONS: Solution[] = [
 
 export default function SolutionsSection({
   heading = "Solutions",
+  description = "Supporting engagements that extend SognosCare and SognosRoster — from field service and CRM through to Power Platform and rapid deployment.",
 }: {
   heading?: string;
+  description?: string;
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -122,11 +124,22 @@ export default function SolutionsSection({
       className="w-full bg-sognos-tint border-b border-sognos-line"
     >
       <div className="mx-auto w-full max-w-7xl px-6 py-20 md:py-28">
-        {/* Heading left, arrows right */}
-        <div className="flex w-full items-end justify-center gap-6 pb-10">
-          <h2 className="max-w-4xl font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-5xl">
-            {heading}
-          </h2>
+        {/* Centred heading over subtext, arrows beneath — the same header
+            block IndustrySection uses, so the two homepage sections read as
+            one system. The arrows moved below the copy rather than beside it:
+            centred type with a control hanging off one side reads lopsided,
+            and the heading no longer has a fixed width to balance against. */}
+        <div className="flex w-full flex-col items-center gap-8 pb-10 text-center">
+          <div className="max-w-3xl">
+            <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-5xl">
+              {heading}
+            </h2>
+            {description && (
+              <p className="mt-4 text-lg leading-relaxed text-sognos-body text-balance">
+                {description}
+              </p>
+            )}
+          </div>
           <div className="flex shrink-0 gap-3">
             <ArrowButton
               dir="prev"

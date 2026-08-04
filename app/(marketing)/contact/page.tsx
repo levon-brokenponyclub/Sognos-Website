@@ -8,6 +8,12 @@ const CONTACT_BENEFITS = [
   "Leave with clear next steps for your team",
 ];
 
+export const metadata = {
+  title: "Contact Sognos",
+  description:
+    "Contact us to discuss how we can assist your organisation and foster a valuable partnership.",
+};
+
 export const revalidate = 60;
 
 export default async function ContactPage() {
@@ -25,7 +31,7 @@ export default async function ContactPage() {
             {/* Left — contact intro */}
             <div className="flex min-h-[520px] flex-col px-2 py-8 text-white lg:min-h-0 lg:self-start lg:px-0 lg:py-0">
               <div>
-                <h1 className="max-w-lg font-heading text-5xl font-normal leading-snug tracking-tight text-white text-balance lg:text-5xl">
+                <h1 className="max-w-lg font-heading text-5xl font-normal leading-snug tracking-tight text-white text-balance">
                   Get in touch
                 </h1>
                 <p className="mt-3 max-w-xl text-xl text-white">
@@ -68,8 +74,14 @@ export default async function ContactPage() {
                     {trustLogos.map((logo, i) => (
                       <div
                         key={`${logo.alt}-${i}`}
+                        /* Internal rules only. The right border is suppressed on
+                           the last cell as well as on every third one, so a
+                           partial final row doesn't trail a rule into an empty
+                           grid cell when Sanity returns fewer than six logos. */
                         className={`relative flex items-center justify-center border-white/10 p-3 sm:p-6 ${
-                          i % 3 !== 2 ? "border-r" : ""
+                          i % 3 !== 2 && i !== trustLogos.length - 1
+                            ? "border-r"
+                            : ""
                         } ${i < 3 ? "border-b" : ""}`}
                       >
                         <Image
@@ -87,14 +99,7 @@ export default async function ContactPage() {
             </div>
 
             {/* Right — contact form */}
-            <div className="flex w-full flex-col rounded-lg bg-white p-6 shadow-2xl shadow-black/25 lg:px-8 lg:py-8">
-              {/* <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-2xl">
-                Get in touch.
-              </h2>
-              <p className="mt-3 border-b border-gray-100 pb-5 text-base leading-relaxed text-gray-600">
-                Send us a message and we&apos;ll route your enquiry to the right
-                team.
-              </p> */}
+            <div className="flex w-full flex-col rounded-lg border border-sognos-line bg-white p-6 lg:px-8 lg:py-8">
               <div className="flex-1">
                 <ContactForm />
               </div>

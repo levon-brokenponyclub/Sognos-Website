@@ -101,7 +101,7 @@ function RadioRows({
           <label
             key={option.value}
             className={[
-              "flex cursor-pointer items-center justify-between gap-6 bg-white px-5 py-5 transition-colors duration-200 hover:bg-slate-50 has-[:checked]:bg-sognos-blue-accent/[0.055]",
+              "flex cursor-pointer items-center justify-between gap-6 bg-white px-5 py-5 transition-colors duration-200 hover:bg-gray-50 has-[:checked]:bg-sognos-blue-accent/[0.055]",
               index > 0 ? "border-t border-sognos-line" : "",
             ].join(" ")}
           >
@@ -206,7 +206,7 @@ export default function ContactForm() {
 
   if (success) {
     return (
-      <div className="rounded-xl bg-green-50 border border-green-200 px-6 py-8 text-center">
+      <div className="rounded-lg bg-green-50 border border-green-200 px-6 py-8 text-center">
         <p className="text-lg font-medium text-sognos-body">
           Message sent!
         </p>
@@ -404,7 +404,7 @@ export default function ContactForm() {
           <button
             type="button"
             onClick={goToPreviousStep}
-            className="inline-flex items-center justify-center gap-2 rounded border border-sognos-line bg-white px-5 py-3 text-base font-medium text-sognos-heading transition-colors duration-200 hover:border-sognos-navy/30 hover:bg-slate-50"
+            className="inline-flex items-center justify-center gap-2 rounded border border-sognos-line bg-white px-5 py-3 text-base font-medium text-sognos-heading transition-colors duration-200 hover:border-sognos-navy/30 hover:bg-gray-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
             Back
@@ -459,7 +459,7 @@ export default function ContactForm() {
           <button
             type="button"
             onClick={goToPreviousStep}
-            className="inline-flex items-center justify-center gap-2 rounded border border-sognos-line bg-white px-5 py-3 text-base font-medium text-sognos-heading transition-colors duration-200 hover:border-sognos-navy/30 hover:bg-slate-50"
+            className="inline-flex items-center justify-center gap-2 rounded border border-sognos-line bg-white px-5 py-3 text-base font-medium text-sognos-heading transition-colors duration-200 hover:border-sognos-navy/30 hover:bg-gray-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
             Back

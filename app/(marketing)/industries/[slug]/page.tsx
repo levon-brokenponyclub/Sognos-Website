@@ -100,8 +100,11 @@ export default async function IndustryPage({
       </section>
 
       {/* ── 4. Other industries — sticky card stack ─────────────────────────── */}
+      {/* No subtext here — the homepage default explains what the industries
+          layer is, which a reader already inside an industry page has had. */}
       <IndustrySection
         heading="Explore other industries"
+        description=""
         excludeSlug={slug}
       />
 

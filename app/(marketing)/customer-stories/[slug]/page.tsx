@@ -29,12 +29,14 @@ import {
   BRAND_FALLBACK,
   STORY_VIDEO,
   brandPanelGradient,
+  storyStats,
 } from "@/lib/customerStoryBrand";
 import PullQuote from "@/components/portable-text/PullQuote";
 import QuoteCallout from "@/components/portable-text/QuoteCallout";
 import StatRow from "@/components/portable-text/StatRow";
 import HeroScrollFade from "@/components/layout/sections/customer-stories/HeroScrollFade";
 import StoryHeroMedia from "@/components/layout/sections/customer-stories/StoryHeroMedia";
+import StoryResultStats from "@/components/layout/sections/customer-stories/StoryResultStats";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
@@ -218,6 +220,7 @@ export default async function CustomerStoryPage({
   const sizeValue = sidebarValue(story.sidebar, "Size");
   const productValue = sidebarValue(story.sidebar, "Product");
   const sections = extractHeadings(story.body);
+  const stats = storyStats(slug);
 
   const latest: Article[] = archive
     .filter((s) => s.slug !== slug)
@@ -412,6 +415,12 @@ export default async function CustomerStoryPage({
                   components={portableComponents}
                 />
               </div>
+
+              {/* Closing stats — the article's last beat before the CTA. Absent
+                  entirely for a story with no figures, so the page shortens
+                  rather than showing an empty row. */}
+              <StoryResultStats stats={stats} className={ARTICLE_PROSE_MAX_W} />
+
               <aside
                 className={`mt-16 bg-sognos-blue-accent p-6 text-white md:px-8 rounded md:py-8 ${ARTICLE_PROSE_MAX_W}`}
               >

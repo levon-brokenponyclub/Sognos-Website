@@ -35,11 +35,13 @@ const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 type IndustrySectionProps = {
   heading?: string;
+  description?: string;
   excludeSlug?: string;
 };
 
 export default function IndustrySection({
   heading = "Purpose-built for service-intensive sectors",
+  description = "Sectors where coordinating people, compliance and service delivery is the whole operational problem.",
   excludeSlug,
 }: IndustrySectionProps) {
   const industries = excludeSlug
@@ -84,10 +86,21 @@ export default function IndustrySection({
   return (
     <section className="w-full bg-sognos-tint">
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
-        {/* Heading sits on the navy, outside the panel. */}
-        <h2 className="mb-10 max-w-3xl font-heading text-3xl font-medium leading-tight tracking-tight text-white text-balance md:text-4xl">
-          {heading}
-        </h2>
+        {/* Centred heading over subtext, outside the panel — matches the
+            SolutionsSection header block.
+            The heading was `text-white` from when this section sat on navy.
+            The surface is `bg-sognos-tint` now, so white left it all but
+            invisible; it follows the surface. */}
+        <div className="mb-10 flex flex-col items-center text-center">
+          <h2 className="max-w-3xl font-heading text-3xl font-medium leading-tight tracking-tight text-sognos-heading text-balance md:text-5xl">
+            {heading}
+          </h2>
+          {description && (
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sognos-body text-balance">
+              {description}
+            </p>
+          )}
+        </div>
 
         <div className="rounded-lg bg-white p-6">
           <div className="grid w-full grid-cols-4 gap-2 md:grid-cols-12">
