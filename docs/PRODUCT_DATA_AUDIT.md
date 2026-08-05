@@ -307,7 +307,7 @@ Neither `sognoscarePage.ts` nor `sognosrosterPage.ts` defines a `logos` / `trust
 
 #### Unused / dead weight (would mislead asset surfacing)
 
-- **8 Cohere-scaffold logos** in `/logos/`: `aceternity-ui.png`, `asteroid-kit.png`, `gamity.png`, `granola.webp`, `hostit.png`, `openai.webp`, `oracle.webp`, `portola.webp` — all unreferenced.
+- **8 scaffold-placeholder logos** in `/logos/`: `aceternity-ui.png`, `asteroid-kit.png`, `gamity.png`, `granola.webp`, `hostit.png`, `openai.webp`, `oracle.webp`, `portola.webp` — all unreferenced.
 - 11 `client-XX.webp` files in `/logos/clients/` — unreferenced.
 - 4 partner logos in `/logos/partners/` — unreferenced (`Crayon.webp`, `One-Software.png`, `Resco.webp`, `digpacks_logo.png`, `mslogo.1419972748.png`).
 - `auckland-airport.webp`, `flourish.webp`, `gentari-logo.webp` in `/logos/clients/` — dupes of top-level versions; not referenced.

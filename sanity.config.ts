@@ -4,11 +4,24 @@ import { visionTool } from "@sanity/vision";
 import { colorInput } from "@sanity/color-input";
 import { schemas } from "./sanity/schemas";
 
+// import.meta.env only exists under Vite (the standalone `sanity dev`
+// server); Next's tsconfig has no ImportMetaEnv typing for it.
+const viteEnv = (import.meta as unknown as { env?: Record<string, string | undefined> })
+  .env;
+
 export default defineConfig({
   name: "sognos",
   title: "Sognos CMS",
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
+  // Shared by two bundlers: the embedded /studio route in the Next.js app
+  // (Turbopack, exposes NEXT_PUBLIC_* via process.env) and the standalone
+  // `sanity dev` Vite server (exposes SANITY_STUDIO_* via import.meta.env).
+  // Cast to unknown first — Next's tsconfig has no ImportMetaEnv typing.
+  projectId:
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? viteEnv?.SANITY_STUDIO_PROJECT_ID!,
+  dataset:
+    process.env.NEXT_PUBLIC_SANITY_DATASET ??
+    viteEnv?.SANITY_STUDIO_DATASET ??
+    "production",
   basePath: "/studio",
   plugins: [
     structureTool({

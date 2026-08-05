@@ -1,5 +1,103 @@
 # Changelog
 
+## 2026-08-05 — About-page rebuild, homepage feed, Sanity Studio + Supabase infra
+
+A batch across the About page, the homepage news feed, and two infrastructure
+fixes. All on `redesign` (Preview only); production untouched.
+
+### About page — Partners
+
+The dark two-column partners block (statement rail + hover-reveal navy cards)
+became a light section after `routable.com/partners`, then a **3-up drag +
+arrows slider** revealing the fourth card. New client component
+`AboutPartnersSlider.tsx` (native scroll-snap like `ProductCustomerStories`,
+**no loop / no autoplay** — a deliberate divergence from the shared slider
+defaults, called out in the file). Visible 3 / 2 / 1 across desktop / tablet /
+mobile, exact-fill card widths. Card face: partner **type** on top; on hover
+the type fades out, the logo lifts to the top-left and the description fades in;
+a persistent bottom-right pill swaps **Learn more → Visit Website**. SoftwareOne
+logo swapped to the black-on-transparent `One-Software.png` variant for the
+light card. Ingram Micro and Resco still ship white-on-solid-blue with no
+transparent asset, so they read as blue plates — outstanding.
+
+### About page — Accreditations sub-band
+
+A lighter band beneath the partners: eyebrow `Accreditations & Memberships`
+(heading dropped per review), then the three credential logos each on a bordered
+white plate, **greyscale until hover**. Not links. `ACCREDITATIONS` duplicated
+by hand from `Footer.tsx` — extraction to `lib/content` is a candidate.
+
+### About page — Leadership → Routable
+
+`TeamSection` cards rebuilt to the reference: portrait → name → role → a
+**dashed-bounded action row** with `Read Bio →` (opens the profile) and a
+LinkedIn box. The centred modal became a **right-side slide-in drawer**
+(`max-w-md`, springs in from the right, dim backdrop, close X): portrait → name
+→ role with LinkedIn on one row → dashed divider → bio. The shared-layout image
+morph (`layoutId` / `LayoutGroup`) was dropped — a far-right drawer shouldn't
+morph from a grid card, and the reference just slides.
+
+### About page — Careers band
+
+The navy benefits block became a light inset `rounded-lg bg-sognos-tint` panel
+after `routable.com/about`: copy + `View open roles →` link left, the four
+benefit **titles only** as a square-marker stacked list right. Copy-only, no
+image.
+
+### About page — Social Responsibility
+
+The dead-tab three-pillar block (`activeSR` hard-pinned to `0`, two pillars
+permanently unreachable) was replaced with all **six** pillars in a **3×2**
+grid on the navy: centred eyebrow / title / description, then cards of title →
+dashed rule → `line-clamp-3` body → `Read more →`, each linking to
+`/company/social-responsibility`. Now a Server Component (no hooks). Pillar copy
+duplicated by hand from that page's `PILLARS` array. The dead-tab reconciliation
+flag is resolved.
+
+### Homepage — News/Insights feed
+
+`page.tsx` now curates one tile per type into `NewsInsightSection`: latest
+**Insights** (feature), soonest **upcoming event**, latest **News**, latest
+**Milestone** — missing types drop out rather than backfill. Event tiles carry
+the real `format` as the pill, a composed `date · time · location` line and the
+excerpt; post tiles match `ArticleCard` (pill above title, clamped title,
+excerpt, `DATE — N MIN READ`). New shared helpers `lib/eventFormat.ts`
+(Sydney-pinned event date/time/meta, extracted from `knowledge-hub/page.tsx`)
+and `lib/formatDate.ts` (extracted from `KnowledgeHubArchive.tsx`). `ArticleCard`
+pill moved above the title to match.
+
+### Sanity Studio env fix
+
+`sanity.config.ts` read only `process.env.NEXT_PUBLIC_SANITY_*`, which is
+`undefined` in the standalone `sanity dev` Vite bundle — Studio crashed with
+"Configuration must contain `projectId`". Now falls back
+`process.env.NEXT_PUBLIC_*` → `import.meta.env?.SANITY_STUDIO_*` (cast through
+`unknown`, since Next's tsconfig has no `ImportMetaEnv` typing), satisfying both
+the embedded `/studio` route (Turbopack) and standalone Studio (Vite).
+`SANITY_STUDIO_*` added to `.env.local`.
+
+### Supabase keep-alive
+
+New `app/api/ping/route.ts` (secret-header auth, touches the DB) and
+`.github/workflows/supabase-keepalive.yml` (cron every 3 days + manual
+dispatch) so the free-tier project never pauses. Uses the same
+`SUPABASE_SECRET_KEY` env the event-registration action already expects, not a
+second service-role key; runs on the Node runtime, not Edge. Requires
+`PING_SECRET`, `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SECRET_KEY` (Vercel) and
+`PING_SECRET`, `SITE_URL` (GitHub) to be set.
+
+- **Files:** `app/(marketing)/company/about/page.tsx`,
+  `app/(marketing)/page.tsx`, `app/(marketing)/knowledge-hub/page.tsx`,
+  `app/api/ping/route.ts`, `.github/workflows/supabase-keepalive.yml`,
+  `sanity.config.ts`, `.env.local`,
+  `components/layout/sections/AboutPartnersSlider.tsx` (new),
+  `components/layout/sections/TeamSection.tsx`,
+  `components/layout/sections/SocialResponsibilitySection.tsx`,
+  `components/layout/sections/NewsInsightSection.tsx`,
+  `components/layout/sections/KnowledgeHubArchive.tsx`,
+  `lib/eventFormat.ts` (new), `lib/formatDate.ts` (new),
+  `.claude/launch.json` (autoPort).
+
 ## 2026-08-03 — Knowledge Hub cards land on one language
 
 Four sections were running two card languages. They now run one, taken from

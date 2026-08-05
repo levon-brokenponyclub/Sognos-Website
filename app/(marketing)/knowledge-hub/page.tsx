@@ -7,6 +7,7 @@ import {
   getUpcomingEvents,
 } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
+import { formatEventDate, formatEventTime } from "@/lib/eventFormat";
 
 export const metadata = {
   title: "Knowledge Hub - Sognos",
@@ -16,22 +17,6 @@ export const metadata = {
 
 export const revalidate = 60;
 
-// Events are stored as a UTC instant, and the audience is Australian, so both
-// parts of the display are pinned to Sydney rather than left to the viewer's
-// locale. Without the timezone the 17 September breakfast reads as the 16th to
-// anyone west of Perth.
-const EVENT_DATE = new Intl.DateTimeFormat("en-AU", {
-  timeZone: "Australia/Sydney",
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
-const EVENT_TIME = new Intl.DateTimeFormat("en-AU", {
-  timeZone: "Australia/Sydney",
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true,
-});
 export default async function KnowledgeHubPage({
   searchParams,
 }: {
@@ -65,24 +50,18 @@ export default async function KnowledgeHubPage({
 
   // Formatted here rather than in the archive: that is a Client Component, and
   // date formatting done there would run against the viewer's timezone.
-  const upcomingEvents: UpcomingEvent[] = events.map((e) => {
-    const start = EVENT_TIME.format(new Date(e.date));
-    const end = e.endDate ? EVENT_TIME.format(new Date(e.endDate)) : null;
-    return {
-      slug: e.slug,
-      format: e.format,
-      title: e.title,
-      href: `/events/${e.slug}`,
-      date: EVENT_DATE.format(new Date(e.date)),
-      // A range only when there is an end to range to. Composed here rather
-      // than in the card so the card never has to reason about the absence.
-      time: end ? `${start} - ${end}` : start,
-      location: e.location ?? e.meta ?? "",
-      image: e.heroImage
-        ? urlFor(e.heroImage).width(1200).auto("format").url()
-        : "",
-    };
-  });
+  const upcomingEvents: UpcomingEvent[] = events.map((e) => ({
+    slug: e.slug,
+    format: e.format,
+    title: e.title,
+    href: `/events/${e.slug}`,
+    date: formatEventDate(e.date),
+    time: formatEventTime(e.date, e.endDate),
+    location: e.location ?? e.meta ?? "",
+    image: e.heroImage
+      ? urlFor(e.heroImage).width(1200).auto("format").url()
+      : "",
+  }));
 
   return (
     <KnowledgeHubArchive

@@ -1,6 +1,6 @@
 # Sognos Design Migration - State of Record
 
-> **Last reconciled:** 2026-07-30 against the live `redesign` worktree and
+> **Last reconciled:** 2026-08-05 against the live `redesign` worktree and
 > [`CHANGELOG.md`](./CHANGELOG.md).
 >
 > This is the current implementation record. Historical implementation detail
@@ -37,8 +37,7 @@ These are current discrepancies, incomplete migrations, or operational risks.
 | Priority | Flag                                           | Current reality                                                                                                                                                                                                                                  |
 | -------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | High     | Design hard rules are not fully enforced       | Live marketing/UI files still contain `rounded-xl`, `rounded-2xl`, `bg-gray-100`, and shadow utilities. Treat the rules below as the target for new work, not a claim that migration is complete. The About page's Partners / Social Responsibility / Careers sections were swept on 2026-08-02 and are clean; the rest of the page and site are not audited. Two invalid classes (`text`, `text-md`) turned up in that sweep — worth grepping for elsewhere, since they fail silently. |
-| High     | Partner logo assets have opaque backgrounds    | All four files in `public/logos/partners/` carry a baked-in background rather than transparency — Microsoft `#FFFFFF`, SoftwareOne `#000000`, Ingram Micro `#1570EF`, Resco `#0066CC`. The About page partner cards now show **the logo alone, centred on navy**, as their resting state, so each one reads as a coloured rectangle floating on the card. Needs transparent PNG/SVG replacements, or a deliberate per-logo plate. Inverting does not help: inverting an opaque image inverts the whole rectangle. The Ingram file is additionally cropped at its own edges. |
-| Medium   | Social Responsibility pillar tabs are dead UI  | `SocialResponsibilitySection.tsx` renders its three-pillar tab row inside a container carrying `hidden`. `setActiveSR` is only called from there, so `activeSR` is permanently `0`: two of the three pillars are unreachable and the component is a Client Component whose state can never change. Decide whether to restore the tabs, show all pillars statically, or delete the tab markup and make it a Server Component. |
+| High     | Ingram Micro + Resco logos have opaque backgrounds | The partner cards are now a **light** section (2026-08-05). Microsoft (`mslogo.webp`) and SoftwareOne (`One-Software.png`, swapped from the white-on-black `-dark` file) read cleanly. **Ingram Micro (`ingram-micro.png`) and Resco (`Resco.webp` / `resco-blue-bg.png`) are white-on-solid-blue with no transparent variant in the repo**, so they render as blue plates. Needs transparent PNG/SVG replacements. Inverting does not help — it inverts the whole rectangle. |
 | High     | Old edition tokens remain live                 | `--sognos-edition-green` is still used by product, industry, solution, and integration surfaces. The legacy `orange`, `coral`, and `purple` definitions also remain in `app/tokens.css`. Do not purge these tokens until all references migrate. |
 | Medium   | Workhorse tokens remain                        | `app/globals.css` still exposes temporary `--color-wh-*`, `--radius-wh-*`, and `--shadow-wh-*` tokens. Their consumers must be audited before removal.                                                                                           |
 | Medium   | Product feature visuals are mixed              | Several feature/flow components remain placeholders or scaffolds. `PlaceholderBox`, hard-coded green values, and visual prototypes still exist alongside production content.                                                                     |
@@ -48,6 +47,14 @@ These are current discrepancies, incomplete migrations, or operational risks.
 
 Resolved items:
 
+- The About page's Social Responsibility dead-tab UI (`activeSR` pinned to `0`,
+  two of three pillars unreachable). Replaced 2026-08-05 with all six pillars in
+  a static 3×2 grid; now a Server Component.
+- Sanity Studio crashed standalone (`sanity dev`) with "Configuration must
+  contain `projectId`" — `sanity.config.ts` read only `NEXT_PUBLIC_*`
+  (`process.env`), which the Vite bundle does not expose. It now also falls back
+  to `import.meta.env.SANITY_STUDIO_*`, so both the embedded `/studio` route and
+  standalone Studio resolve.
 - Article routes rendering as a blank white page on first click. `PageTransition`
   gated the Navbar and the whole page behind a Framer `AnimatePresence
   mode="wait"` enter animation, which raced the router commit on the slowest
@@ -299,7 +306,9 @@ The Tailwind `--text-*` values are still default values and remain provisional.
 | `ArticleProgressLine.tsx`                          | Production                  | Read-progress line for the middle column of the article body grid. Full-height track, fill in a viewport-tall sticky box scaled from its top edge; `top` prop (default 144) aligns it with the rail beside it. Shared by Knowledge Hub and customer stories.                                                                                                                              |
 | `scroll-progress.tsx`                              | Production                  | Fixed blue page-progress bar with spring-smoothed scroll motion, used by both dynamic article families.                                                                                                                                                                                                                                                                                   |
 | `StoryMetaRail.tsx` / `ShareIcons`                 | Production                  | Customer-story metadata rail; exported share controls provide copy-link feedback plus an X, LinkedIn, and Facebook dropdown for the shared article footer.                                                                                                                                                                                                                                |
-| `TeamSection.tsx`                                  | Production                  | Responsive leadership card grid with expanded modal profiles, Escape dismissal, focus management, and LinkedIn actions.                                                                                                                                                                                                                                                                   |
+| `TeamSection.tsx`                                  | Production                  | Leadership card grid after `routable.com/about`: portrait → name → role → a dashed-bounded `Read Bio →` / LinkedIn row. `Read Bio` opens `ExpandedProfile`, now a **right-side slide-in drawer** (`max-w-md`, springs from the right, dim backdrop, Escape/backdrop close, focus-to-close). The shared-layout image morph was dropped — a far-right drawer does not morph from a grid card. |
+| `AboutPartnersSlider.tsx`                          | Production                  | About-page partner slider (client). Native scroll-snap, **drag + arrows, no loop, no autoplay** (deliberate divergence from `SLIDER_PATTERN.md` defaults). 3 / 2 / 1 cards across desktop / tablet / mobile, exact-fill widths. Card: partner type on top; on hover the logo lifts top-left and the description crosses in; bottom-right pill swaps `Learn more → Visit Website`.           |
+| `SocialResponsibilitySection.tsx`                  | Production                  | About-page six-pillar grid after `routable.com/about`: centred eyebrow/title/description, then a 3×2 grid of cards (title → dashed rule → `line-clamp-3` body → `Read more →` to `/company/social-responsibility`). Server Component. Replaced the dead-tab three-pillar version. Pillar copy hand-duplicated from the SR page's `PILLARS`.                                                    |
 | `SolutionHeroDemoButton.tsx`                       | Production                  | Shared client-side Book Demo modal trigger with configurable label and class overrides for solution heroes and article conversion panels.                                                                                                                                                                                                                                                 |
 | `PullQuote.tsx`, `QuoteCallout.tsx`, `StatRow.tsx` | Ready                       | Portable Text content blocks registered for articles and customer stories; authoring adoption remains content-dependent.                                                                                                                                                                                                                                                                  |
 
@@ -482,8 +491,11 @@ All tracked product-facing labels use **SognosGenogram** without a space.
 ### Company and legal
 
 - `/company/about`: white image-led hero, tightened story/stats composition,
-  consolidated navy Mission/Vision/Beliefs band, modal leadership grid, partner
-  grid, social-responsibility content, and shared animated section eyebrows.
+  consolidated navy Mission/Vision/Beliefs band, leadership grid with the
+  right-drawer profile (`TeamSection`), a light partner **slider**
+  (`AboutPartnersSlider`) over an accreditations sub-band, a six-pillar
+  Social Responsibility grid, and a light copy-only Careers band. All after
+  `routable.com`. Shared animated section eyebrows throughout.
 - `/company/careers`: About-style hero, benefits, Life at Sognos bento
   testimonials, and open-position rows with an inset hover/focus transition and
   responsive Apply action.
@@ -520,6 +532,19 @@ All tracked product-facing labels use **SognosGenogram** without a space.
   typography, weights, radii, shadows, layout metrics, and common actions.
 
 ## 8. Recently Completed
+
+### 2026-08-05
+
+- About page rebuilt after `routable.com`: partners → light 3-up drag+arrows
+  slider (`AboutPartnersSlider`) over an accreditations sub-band; leadership →
+  Routable card + right-drawer profile; Careers → light copy-only band; Social
+  Responsibility → six-pillar 3×2 grid (dead-tab bug resolved).
+- Homepage news feed curates one tile per type (Insights / upcoming event /
+  News / Milestone); event tiles show real event detail, post tiles match
+  `ArticleCard`. Shared `lib/eventFormat.ts` and `lib/formatDate.ts` extracted.
+- Sanity Studio env fix (`import.meta.env.SANITY_STUDIO_*` fallback) and a
+  Supabase keep-alive route + GitHub Actions cron.
+- Full detail in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ### 2026-08-03 (later)
 

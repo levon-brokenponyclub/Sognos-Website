@@ -316,9 +316,13 @@ Cloning each page section-by-section from Cohere exports (`docs/Cohere/`) + live
 - Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
 - Always ask instead of guessing — if unsure about anything (file path, intent, scope), ask for clarification
 - Before starting a task, suggest which model to use (Opus for complex/architectural work, Sonnet for straightforward edits, Haiku for simple lookups)
-- Do not add features, abstractions, or complexity beyond what the task requires — keep it minimal
 
 ## Source of truth & session loop
-- `docs/DESIGN_MIGRATION_STATE.md` is the authoritative state of record. Read it at the START of every task.
-- At the END of every task: update DESIGN_MIGRATION_STATE.md to reflect reality, and append one entry to `docs/CHANGELOG.md` (date · what changed · files · why).
-- `docs/FEATURE_LOG.md` is the granular backlog. `docs/archive/` holds superseded audits/plans — historical only, never current.
+- `docs/PROJECT_STATE.md` is the authoritative state of record. Read it at the START of every task. (`DESIGN_MIGRATION_STATE.md` was retired to `docs/archive/`.)
+- `docs/ROLLOUT_PROCESS.md` is the per-page redesign loop (scaffold → approve → refine → roll out). Current design reference: **Routable**.
+- At the END of every task: update `docs/PROJECT_STATE.md` to reflect reality, and append one entry to `docs/CHANGELOG.md` (date · what changed · files · why).
+- The granular backlog now lives in `docs/PROJECT_STATE.md` §5 (the old `docs/FEATURE_LOG.md` was archived). `docs/archive/` holds superseded audits/plans — historical only, never current.
+
+> Note: §2/§4/§8/§9 below still describe the old Cohere scaffold phases and are
+> stale — pending the CLAUDE.md trim (PROJECT_STATE §5, step 8). Treat
+> `PROJECT_STATE.md` as authoritative where they disagree.

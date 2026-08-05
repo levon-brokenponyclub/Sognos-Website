@@ -6,6 +6,7 @@ import SocialResponsibilitySection from "@/components/layout/sections/SocialResp
 import AboutValues from "@/components/layout/sections/AboutValues";
 import AboutStats from "@/components/layout/sections/AboutStats";
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
+import AboutPartnersSlider from "@/components/layout/sections/AboutPartnersSlider";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 export const metadata: Metadata = {
@@ -29,7 +30,9 @@ const PARTNERS = [
   },
   {
     name: "SoftwareOne",
-    logo: "/logos/partners/One-Software-dark.png",
+    // Black-on-transparent variant, for the light card. The `-dark` file is
+    // white-on-black and only worked on the old navy surface.
+    logo: "/logos/partners/One-Software.png",
     type: "Software & Licensing",
     href: "https://www.softwareone.com",
     description:
@@ -53,24 +56,30 @@ const PARTNERS = [
   },
 ];
 
-// Inlined rather than imported from Navbar.tsx, where the same mark lives as a
-// non-exported local inside a "use client" module.
-function IconArrowUpRight() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M7 17 17 7M8 7h9v9" />
-    </svg>
-  );
-}
+// Government prequalification and industry memberships — the same three assets
+// the footer carries. Intrinsic sizes are the artwork's own; height is capped
+// in the markup, so these only set the aspect ratio Next needs. (Kept in step
+// with `ACCREDITATIONS` in components/layout/Footer.tsx by hand for now.)
+const ACCREDITATIONS = [
+  {
+    alt: "NSW Government Approved Supplier - SCM0020 Prequalification Scheme: ICT Services",
+    src: "/logos/accreditations/nsw-ict-services.png",
+    width: 1024,
+    height: 299,
+  },
+  {
+    alt: "Australasian Institute of Digital Health - Organisational Member",
+    src: "/logos/accreditations/aidh.png",
+    width: 200,
+    height: 100,
+  },
+  {
+    alt: "Talking HealthTech partner",
+    src: "/logos/accreditations/talking-health-tech.png",
+    width: 200,
+    height: 200,
+  },
+];
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
@@ -177,162 +186,101 @@ export default function AboutPage() {
 
       <TeamSection />
 
-      {/* Partners — dark section with navy cards one step lighter than the
-          surface. Borderless by design: the cards separate on that tonal step
-          alone, which is a narrow 1.12:1, so do not lighten the section or
-          darken the cards without re-checking that they still read. */}
-      <section className="w-full bg-sognos-navy-dark">
+      {/* Partners — light section. A 3-up drag+arrows slider (revealing the
+          fourth card) sits above an accreditations & memberships sub-band. The
+          old dark two-column layout, and the interim static 4-col grid, are in
+          git history if either needs to come back. */}
+      <section className="w-full bg-white">
         <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
-          {/* Two-column split after mintlify.com/customers: statement on the
-              left at a third of the width, card grid on the right. The left
-              column is not sticky — it would slide against a static grid. */}
-          {/* No horizontal padding on either column: the statement's left edge
-              and the grid's right edge sit flush against the container, so the
-              section lines up with everything else on the page. Separation
-              between the two columns is the flex gap, which does not inset
-              those outer edges the way padding did. */}
-          <div className="flex flex-col lg:flex-row lg:gap-10">
-            {/* Left column - statement */}
-            <div className="flex flex-col justify-start py-7 lg:w-1/3 lg:shrink-0">
-              <AnimatedEyebrow className="mb-4" textClassName="text-white/50">
-                Our Partners
-              </AnimatedEyebrow>
-              <h2 className="mb-6 font-heading text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-left">
-                Let&apos;s build. Together.
-              </h2>
-              <p className="max-w-md text-lg leading-relaxed text-white/70">
-                We&apos;ve partnered with some of the best innovators in the
-                industry to bring you new and exciting possibilities - enhanced
-                and integrated business solutions to your most complex problems.
-              </p>
-            </div>
+          <AboutPartnersSlider partners={PARTNERS} />
 
-            {/* Right column - card grid.
-                Resting state is the logo alone, centred. Detail crosses in on
-                hover: the logo lifts and fades out while the type / name /
-                description fade up behind it. Both layers are absolutely
-                positioned in the same box, so neither reserves height and the
-                card keeps its aspect ratio in either state.
-
-                The reference's `rounded-[6px]` is `rounded-lg` here — the
-                radius rule allows no arbitrary values. The card surface stays
-                `bg-sognos-navy` rather than the reference's near-transparent
-                tint. */}
-            <div className="min-w-0 flex-1">
-              <div className="grid grid-cols-2 gap-3 py-3 lg:gap-4">
-                {PARTNERS.map((partner) => (
-                  <a
-                    key={partner.name}
-                    href={partner.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={partner.name}
-                    className="group/partner relative isolate flex aspect-[163/104] items-center justify-center overflow-hidden rounded-lg bg-sognos-navy focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sognos-blue-accent lg:aspect-[160/155]"
-                  >
-                    {/* Resting layer — logo only */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 flex items-center justify-center p-8 transition-[translate,opacity] duration-500 ease-[cubic-bezier(0,0,0,1)] group-hover/partner:-translate-y-2 group-hover/partner:opacity-0 motion-reduce:transition-none"
-                    >
-                      <span className="relative h-10 w-36">
-                        <Image
-                          src={partner.logo}
-                          alt=""
-                          fill
-                          sizes="144px"
-                          className="object-contain"
-                        />
-                      </span>
-                    </span>
-
-                    {/* Hover layer — detail */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 flex translate-y-2 flex-col justify-end p-5 pr-12 opacity-0 transition-[translate,opacity] duration-500 ease-[cubic-bezier(0,0,0,1)] group-hover/partner:translate-y-0 group-hover/partner:opacity-100 motion-reduce:transition-none"
-                    >
-                      <span className="block text-xs font-semibold uppercase tracking-widest text-white/60">
-                        {partner.type}
-                      </span>
-                      <span className="mt-1.5 block font-heading text-lg font-medium leading-snug text-white">
-                        {partner.name}
-                      </span>
-                      <span className="mt-1.5 block text-sm leading-snug text-white/80">
-                        {partner.description}
-                      </span>
-                    </span>
-
-                    {/* Arrow — fades in with the detail */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute bottom-3 right-3 flex size-9 items-center justify-center rounded-lg bg-white text-sognos-navy opacity-0 transition-opacity duration-150 ease-out group-hover/partner:opacity-100"
-                    >
-                      <IconArrowUpRight />
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
+          {/* Accreditations & memberships — a lighter sub-band under the
+              partners. Logos are greyscale until hover, each on a bordered
+              white plate, since the artwork already assumes a white field.
+              Not links: these are credentials, not destinations. */}
+          <div className="mt-16 border-t border-sognos-line pt-12 lg:mt-24 lg:pt-16">
+            <AnimatedEyebrow className="mb-8" textClassName="text-sognos-muted">
+              Accreditations &amp; Memberships
+            </AnimatedEyebrow>
+            <ul className="flex flex-wrap gap-3 lg:gap-4">
+              {ACCREDITATIONS.map((item) => (
+                <li
+                  key={item.src}
+                  className="group flex h-24 w-44 items-center justify-center rounded-lg border border-sognos-line bg-white p-5"
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    className="max-h-12 w-auto max-w-full object-contain opacity-80 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
       <SocialResponsibilitySection />
 
-      {/* Careers overview */}
-      <section className="w-full bg-sognos-navy">
+      {/* Careers — light copy-only band after routable.com/about. A rounded
+          tint panel sits inset on white: copy + CTA left, the benefit titles
+          as a stacked list right. */}
+      <section className="w-full bg-white">
         <div className="max-w-7xl w-full mx-auto px-6 py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <AnimatedEyebrow className="mb-4" textClassName="text-white/50">
-                Careers
-              </AnimatedEyebrow>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight">
-                Join Sognos to drive innovation together.
-              </h2>
-              <p className="mt-6 text-white/70 leading-relaxed">
-                We&apos;re a community of passionate individuals committed to
-                driving innovation and creating positive change. If you thrive
-                in a collaborative, high-trust environment and want your work to
-                matter, Sognos is built for you.
-              </p>
-              <Link
-                href="/company/careers"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-sognos-navy transition-opacity hover:opacity-90"
-              >
-                View open roles
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4">
-              {[
-                {
-                  label: "Collaborative culture",
-                  body: "High-trust teams that share knowledge freely across disciplines.",
-                },
-                {
-                  label: "Continuous learning",
-                  body: "Grow your Microsoft Dynamics 365 expertise with real, complex engagements.",
-                },
-                {
-                  label: "Work-life balance",
-                  body: "Flexibility to do your best work while still making time for what matters.",
-                },
-                {
-                  label: "Equal opportunity",
-                  body: "We welcome people of all backgrounds, identities, and abilities.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-lg border border-white/10 bg-white/5 p-6"
+          <div className="rounded-lg bg-sognos-tint p-8 lg:p-14">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <AnimatedEyebrow className="mb-4" textClassName="text-sognos-muted">
+                  Careers
+                </AnimatedEyebrow>
+                <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+                  Join Sognos to drive innovation together.
+                </h2>
+                <p className="mt-6 leading-relaxed text-sognos-body">
+                  We&apos;re a community of passionate individuals committed to
+                  driving innovation and creating positive change. If you thrive
+                  in a collaborative, high-trust environment and want your work
+                  to matter, Sognos is built for you.
+                </p>
+                <Link
+                  href="/company/careers"
+                  className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-sognos-heading transition-colors hover:text-sognos-blue-accent"
                 >
-                  <p className="font-heading text-sm font-semibold text-white">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-sm text-white/60 leading-relaxed">
-                    {item.body}
-                  </p>
-                </div>
-              ))}
+                  View open roles
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                  >
+                    &rarr;
+                  </span>
+                </Link>
+              </div>
+
+              {/* Benefit titles only, stacked. Square marker is the brand's
+                  recurring motif. */}
+              <ul className="flex flex-col gap-4">
+                {[
+                  "Collaborative culture",
+                  "Continuous learning",
+                  "Work-life balance",
+                  "Equal opportunity",
+                ].map((label) => (
+                  <li
+                    key={label}
+                    className="flex items-center gap-3 border-b border-sognos-line pb-4 last:border-b-0 last:pb-0"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="size-1.5 shrink-0 bg-sognos-blue-accent"
+                    />
+                    <span className="font-heading text-lg font-medium tracking-tight text-sognos-heading">
+                      {label}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

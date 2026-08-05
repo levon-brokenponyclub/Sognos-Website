@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { Plus, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 type TeamMember = {
@@ -71,31 +71,23 @@ function LinkedInIcon() {
 function TeamCard({
   member,
   index,
-  isExpanded,
   onOpen,
 }: {
   member: TeamMember;
   index: number;
-  isExpanded: boolean;
   onOpen: (member: TeamMember) => void;
 }) {
   return (
-    <motion.article
-      layoutId={`team-card-${member.name}`}
-      transition={TRANSITION}
-      className="group"
-    >
+    <article className="group flex flex-col">
+      {/* Portrait opens the profile too — the whole image is the primary
+          target, after the reference. */}
       <button
         type="button"
         onClick={() => onOpen(member)}
-        aria-label={`Open ${member.name}'s full profile`}
+        aria-label={`Read ${member.name}'s bio`}
         className="block w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
       >
-        <motion.div
-          layoutId={`team-image-frame-${member.name}`}
-          transition={TRANSITION}
-          className="relative aspect-[0.78] w-full overflow-hidden rounded-lg bg-gray-100"
-        >
+        <div className="relative aspect-[0.82] w-full overflow-hidden rounded-lg bg-gray-100">
           <Image
             src={member.image}
             alt={member.name}
@@ -104,32 +96,45 @@ function TeamCard({
             sizes="(max-width: 768px) 100vw, 33vw"
             priority={index < 3}
           />
-        </motion.div>
-
-        <div className="py-6 px-5 flex rounded-xl items-start justify-between gap-5 bg-white">
-          <div className="">
-            <h3 className="font-heading text-xl font-medium tracking-tight text-heading lg:text-2xl">
-              {member.name}
-            </h3>
-            <p className="mt-2 text-base leading-tight text-sognos-muted md:text-xs lg:text-xs">
-              {member.role} {/* <span className="px-2 text-sognos-muted/70">|</span>{" "}
-              {member.location} */}
-            </p>
-          </div>
-          <div>
-            <motion.span
-              aria-hidden="true"
-              animate={{ rotate: isExpanded ? 45 : 0 }}
-              transition={FADE_TRANSITION}
-              className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-gray-200 text-sognos-heading transition-colors group-hover:bg-sognos-navy-dark group-hover:text-white"
-            >
-              <Plus className="size-5" />
-            </motion.span>
-          </div>
-
         </div>
       </button>
-    </motion.article>
+
+      <div className="mt-6">
+        <h3 className="font-heading text-2xl font-medium tracking-tight text-sognos-heading lg:text-3xl">
+          {member.name}
+        </h3>
+        <p className="mt-2 text-base leading-tight text-sognos-muted">
+          {member.role}
+        </p>
+      </div>
+
+      {/* Action row bounded by dashed rules, after the reference: Read Bio
+          (opens the profile) left, LinkedIn right. */}
+      <div className="mt-5 flex items-center justify-between gap-4 border-y border-dashed border-sognos-line py-3">
+        <button
+          type="button"
+          onClick={() => onOpen(member)}
+          className="group/bio inline-flex items-center gap-2 text-sm font-medium text-sognos-heading transition-colors hover:text-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+        >
+          Read Bio
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover/bio:translate-x-0.5"
+          >
+            &rarr;
+          </span>
+        </button>
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${member.name} on LinkedIn`}
+          className="flex size-8 items-center justify-center rounded bg-gray-200 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+        >
+          <LinkedInIcon />
+        </a>
+      </div>
+    </article>
   );
 }
 
@@ -161,19 +166,15 @@ function ExpandedProfile({
 
   return (
     <motion.div
-      className="fixed inset-0 z-100 flex items-center justify-center px-4 py-6 sm:px-6"
+      className="fixed inset-0 z-100 flex justify-end"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={FADE_TRANSITION}
     >
       <motion.button
         type="button"
         aria-label="Close profile"
-        className="absolute inset-0 bg-sognos-navy-dark/72 backdrop-blur-sm"
+        className="absolute inset-0 bg-sognos-navy-dark/60 backdrop-blur-sm"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -181,37 +182,40 @@ function ExpandedProfile({
         transition={FADE_TRANSITION}
       />
 
-      <motion.article
-        layoutId={`team-card-${member.name}`}
+      {/* Right slide-in panel, after routable.com/about. */}
+      <motion.aside
+        className="relative ml-auto flex h-full w-full max-w-md flex-col overflow-y-auto bg-white"
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
         transition={TRANSITION}
-        initial={{ opacity: 0.96, scale: 0.985 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0.96, scale: 0.985 }}
-        className="relative flex max-h-[88vh] w-full max-w-6xl flex-col overflow-hidden rounded-lg bg-white shadow-2xl shadow-sognos-navy-dark/30 md:h-[88vh] md:flex-row"
       >
-        <motion.div
-          layoutId={`team-image-frame-${member.name}`}
-          transition={TRANSITION}
-          className="relative h-72 shrink-0 bg-gray-100 md:h-full md:w-[42%]"
-        >
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, 45vw"
-            priority
-          />
-        </motion.div>
+        <div className="p-6 sm:p-8">
+          <div className="flex justify-end">
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close profile"
+              className="flex size-9 items-center justify-center rounded-full bg-gray-100 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+            >
+              <X className="size-5" aria-hidden="true" />
+            </button>
+          </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-7 sm:px-8 md:px-10 md:py-10">
-          <motion.div
-            className="flex items-start justify-between gap-5"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ ...FADE_TRANSITION, delay: 0.08 }}
-          >
+          <div className="relative mt-2 aspect-[0.92] w-full overflow-hidden rounded-lg bg-gray-100">
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 28rem"
+              priority
+            />
+          </div>
+
+          {/* Name left, LinkedIn right on one row — the reference's header. */}
+          <div className="mt-6 flex items-start justify-between gap-4">
             <div>
               <h3
                 id={titleId}
@@ -219,54 +223,28 @@ function ExpandedProfile({
               >
                 {member.name}
               </h3>
-              <p className="mt-2 max-w-2xl text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                {member.role}
-                <span className="px-2 text-sognos-muted/60">|</span>
-                {member.location}
-              </p>
+              <p className="mt-2 text-base text-sognos-muted">{member.role}</p>
             </div>
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={onClose}
-              aria-label="Close profile"
-              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
-            >
-              <X className="size-5" aria-hidden="true" />
-            </button>
-          </motion.div>
-
-          <motion.div
-            className="mt-8  pb-9 flex flex-wrap items-center gap-3 border-b border-sognos-line"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ ...FADE_TRANSITION, delay: 0.12 }}
-          >
             <a
               href={member.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gray-200/90 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+              aria-label={`${member.name} on LinkedIn`}
+              className="mt-1 flex size-9 shrink-0 items-center justify-center rounded bg-gray-100 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
             >
               <LinkedInIcon />
-              LinkedIn
             </a>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="mt-10 space-y-5 text-base leading-relaxed text-sognos-body"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ ...FADE_TRANSITION, delay: 0.16 }}
-          >
+          <div className="my-6 border-t border-dashed border-sognos-line" />
+
+          <div className="space-y-5 text-base leading-relaxed text-sognos-body">
             {member.bio.split("\n\n").map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.article>
+      </motion.aside>
     </motion.div>
   );
 }
@@ -276,7 +254,7 @@ export default function TeamSection() {
 
   return (
     <section className="w-full bg-gray-100 py-20 lg:py-28">
-      <LayoutGroup>
+      <div>
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
@@ -298,7 +276,6 @@ export default function TeamSection() {
                     key={member.name}
                     member={member}
                     index={index}
-                    isExpanded={selectedMember?.name === member.name}
                     onOpen={setSelectedMember}
                   />
                 ))}
@@ -316,7 +293,7 @@ export default function TeamSection() {
             />
           ) : null}
         </AnimatePresence>
-      </LayoutGroup>
+      </div>
     </section>
   );
 }

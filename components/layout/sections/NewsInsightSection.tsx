@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
+import { formatDate } from "@/lib/formatDate";
 
-// SCAFFOLD — structure only. No surfaces, radius, type scale or icon
-// treatment yet.
+// SCAFFOLD — structure only for icon treatment; post/event content now
+// matches KnowledgeHubArchive's ArticleCard/EventCard.
 //
 // Bento grid after middesk.com's "Built for regulated industries" block.
 //
@@ -26,20 +27,29 @@ import SlideFillLink from "@/components/layout/sections/shared/SlideFillLink";
 // line and the `Read More` affordance — is preserved in
 // NewsInsightSection.backup.tsx.
 //
-// Two things the reference has that the data does not: every tile carries a
-// 104×104 icon, and the non-feature tiles carry a descriptive paragraph.
-// `NewsInsightArticle` has `category`, `date` and `readTime` and no excerpt, so
-// those slots are marked and left empty rather than filled with something that
-// only looks right.
+// One thing the reference has that the data does not: every tile carries a
+// 104×104 icon. Nothing fills that slot yet.
+//
+// Post tiles reuse ArticleCard's pill/title/meta classes exactly (same
+// KnowledgeHubArchive component), but pill sits above the title here rather
+// than below it, and an excerpt line is added — a deliberate divergence, not
+// an oversight.
 
 export type NewsInsightArticle = {
   slug?: string;
+  /** Which card body to render: pill/title/excerpt/date+readTime for a post,
+   *  the same shape plus a composed date/time/location line for an event. */
+  kind?: "post" | "event";
   category: string;
   title: string;
   href: string;
   image: string;
   date?: string;
   readTime?: string;
+  /** Event only — the composed "17 Sep 2026 · 8:30 am - 10:30 am · Microsoft,
+   *  North Sydney" line from `formatEventMeta()`. */
+  meta?: string;
+  excerpt?: string;
 };
 
 const TILE_COUNT = 4;
@@ -51,6 +61,8 @@ function Tile({
   article: NewsInsightArticle;
   feature?: boolean;
 }) {
+  const isEvent = article.kind === "event";
+
   return (
     <Link
       href={article.href}
@@ -85,10 +97,39 @@ function Tile({
             {/* `mt-auto` pins the copy to the foot of the tile whatever height
                 it runs to — the reference's own arrangement. */}
             <div className="mt-auto">
-              <h3>{article.title}</h3>
-              {/* Copy slot — empty until there is an excerpt to put in it. The
-                  feature tile has no paragraph in the reference either. */}
-              {!feature && <p data-slot="excerpt" />}
+              {/* Pill above title in both branches — EventCard/ArticleCard
+                  in KnowledgeHubArchive.tsx put the pill below the title;
+                  here it leads, on purpose. */}
+              <div className="flex flex-col items-start gap-3">
+                <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                  {article.category}
+                </span>
+                <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors duration-200 group-hover:text-sognos-blue-accent">
+                  {article.title}
+                </h3>
+                {article.excerpt && (
+                  <p className="line-clamp-3 text-sm leading-relaxed text-sognos-body">
+                    {article.excerpt}
+                  </p>
+                )}
+                {isEvent
+                  ? article.meta && (
+                      <p className="text-sm text-sognos-muted">
+                        {article.meta}
+                      </p>
+                    )
+                  : (article.date || article.readTime) && (
+                      <p className="text-xs font-base tracking-wide text-sognos-heading uppercase">
+                        {article.date && (
+                          <span className="text-sognos-muted">
+                            {formatDate(article.date)}
+                          </span>
+                        )}
+                        {article.date && article.readTime && " — "}
+                        {article.readTime && article.readTime.toUpperCase()}
+                      </p>
+                    )}
+              </div>
             </div>
           </div>
         </div>
@@ -99,8 +140,12 @@ function Tile({
 
 export default function NewsInsightSection({
   articles,
+  heading = "The latest from Sognos",
+  description = "News, insights and milestones from across care operations, workforce scheduling and the sectors we serve.",
 }: {
   articles: NewsInsightArticle[];
+  heading?: string;
+  description?: string;
 }) {
   if (articles.length === 0) return null;
 
@@ -110,10 +155,20 @@ export default function NewsInsightSection({
   return (
     <section className="w-full bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-10 flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start lg:mb-12">
-          <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-4xl">
-            The latest from Sognos
-          </h2>
+        {/* Same centred header block as SolutionsSection and IndustrySection —
+            heading over subtext, the section's own control beneath. Was left
+            heading / right link at md:text-4xl, which matched neither. */}
+        <div className="mb-10 flex w-full flex-col items-center gap-8 text-center lg:mb-12">
+          <div className="max-w-3xl">
+            <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading text-balance md:text-5xl">
+              {heading}
+            </h2>
+            {description && (
+              <p className="mt-4 text-lg leading-relaxed text-sognos-body text-balance">
+                {description}
+              </p>
+            )}
+          </div>
           <SlideFillLink
             href="/knowledge-hub"
             label="View more resources"

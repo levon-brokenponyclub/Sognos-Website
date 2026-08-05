@@ -6,6 +6,7 @@ import {
   KnowledgeHubSearchDialog,
   type KnowledgeHubSearchItem,
 } from "@/components/ui/knowledge-hub-search-dialog";
+import { formatDate } from "@/lib/formatDate";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -56,26 +57,6 @@ export type FeaturedStory = {
 // `INITIAL_ARTICLE_LIMIT` all belonged to the pill filter row and are gone with
 // it. They are in KnowledgeHubArchive.backup.tsx if the filtering comes back.
 
-const MONTHS = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-] as const;
-
-function formatDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  return `${MONTHS[(month ?? 1) - 1]} ${day}, ${year}`;
-}
-
 function ArticleMeta({
   publishedAt,
   readTime,
@@ -119,13 +100,12 @@ export function ArticleCard({ article }: { article: Article }) {
           gap (`space-y-8 lg:space-y-[2.25rem]` on routable.com/resources). The
           16px this replaced was what made the cards read tight. */}
       <div className="mt-8 flex flex-col flex-1 lg:mt-9">
-
-        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
-          {article.title}
-        </h3>
         <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
           {article.category}
         </span>
+        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
+          {article.title}
+        </h3>
         <ArticleMeta
           publishedAt={article.publishedAt}
           readTime={article.readTime}

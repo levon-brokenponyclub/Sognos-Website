@@ -1,4 +1,4 @@
-> Granular feature backlog. High-level status lives in DESIGN_MIGRATION_STATE.md.
+> Granular feature backlog. High-level status lives in PROJECT_STATE.md.
 
 # Sognos React — Feature Log
 
@@ -8,7 +8,7 @@ Running list of features to build, revisit, or decide on. Add as you go. No prio
 
 ## Navbar / Header
 
-- [x] **Full Cohere-style rewrite** — desktop mega-menu with `AnimatePresence mode="popLayout"` cross-fade, hover intent (100ms open / 150ms close grace), `grid grid-cols-[1fr_auto_1fr]` centred layout, mobile accordion with Framer Motion height animation + orange dot. (`Navbar.tsx`)
+- [x] **Full mega-menu rewrite** — desktop mega-menu with `AnimatePresence mode="popLayout"` cross-fade, hover intent (100ms open / 150ms close grace), `grid grid-cols-[1fr_auto_1fr]` centred layout, mobile accordion with Framer Motion height animation + orange dot. (`Navbar.tsx`)
 - [x] **Three-state scroll behavior** — `top` (transparent) → `hidden` (slides up on scroll down past 80px, DELTA_MIN=6) → `peek` (white bar on scroll up). rAF-throttled. (`Navbar.tsx`)
 - [x] **Backdrop blur overlay** — desktop: `hidden lg:block z-40`, fades with `openMenu`; mobile: `lg:hidden z-40`, fades with `mobileOpen`, 72% mask (extends further down). (`Navbar.tsx`)
 - [x] **Nav transitions overhaul** — all transitions unified at `duration-300 ease-in-out`; logo `transition-[filter]`; `pt-3` bridge kills dead hover gap; `mode="popLayout"` + `position: "absolute"` exit kills blank-frame cross-fade.
@@ -43,7 +43,7 @@ Running list of features to build, revisit, or decide on. Add as you go. No prio
 
 ## Solutions Pages
 
-- [ ] **Cohere scaffold port** — `app/(marketing)/solutions/[slug]/page.tsx` (7 routes) still uses pre-scaffold `rounded-xl` / `shadow-md` / `bg-white py-24`. Need section-by-section Cohere mapping before refactoring — ask, don't guess.
+- [ ] **Routable refine** — `app/(marketing)/solutions/[slug]/page.tsx` (7 routes) still uses pre-scaffold `rounded-xl` / `shadow-md` / `bg-white py-24`. Needs a section-by-section Routable mapping before refactoring — ask, don't guess.
 
 ---
 
