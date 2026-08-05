@@ -2,9 +2,9 @@
 
 > **Current source of truth (2026-08-06).** Where the project actually is and
 > what comes next. `DESIGN_MIGRATION_STATE.md` has been retired to
-> `docs/archive/`; this doc replaces it. `CLAUDE.md` still carries stale
-> phase/scaffold content to be trimmed (see §5, step 8). `docs/CHANGELOG.md`
-> remains the append-only history.
+> `docs/archive/`; this doc replaces it. `CLAUDE.md` has been trimmed to
+> execution rules only (2026-08-06) and defers to this doc.
+> `docs/CHANGELOG.md` remains the append-only history.
 
 ---
 
@@ -123,11 +123,9 @@ migration; Workhorse token (`--color-wh-*` etc.) removal.
    legacy edition/Workhorse tokens remain in `app/tokens.css`/`globals.css`.
 7. **Build `/customers` hub + `[slug]`, and a real `/events` index.** *Why:* the
    only fully unbuilt routes. *Done:* both route families render from their data.
-8. **Trim `CLAUDE.md`.** *What:* `DESIGN_MIGRATION_STATE.md` is already retired
-   to `docs/archive/`; `CLAUDE.md` still carries stale phase/scaffold/reference
-   content (its §2/§4/§8/§9) and a pointer to the retired doc. Strip that and
-   repoint its source-of-truth line at `PROJECT_STATE.md`. *Done:* no
-   stale-reference or duplicate-plan content remains in any live doc.
+8. **Trim `CLAUDE.md`.** *Done 2026-08-06.* File reduced to execution rules
+   only (project understanding, design rules, technical gotchas, hard rules,
+   source-of-truth pointers). State/plan/roadmap moved here.
 
 ## 6. Open decisions
 
