@@ -342,26 +342,30 @@ export function PastEventRow({
   );
 }
 
-// Two-column card — image beside the copy rather than above it. A deliberate
-// divergence from the reference, which stacks: an event carries a date, a time
-// and a place as well as a title, and stacked that reads as a long column of
-// small facts under a large image. Side by side it reads as one row.
-//
-// Every surface value is `Tile`'s, unchanged — fill inverted against the band,
-// `rounded`, `p-14`, `text-2xl` title, `text-sm` meta. Only the arrangement
-// differs.
+// Two-column card after the reference: copy on the left, image on the right,
+// an even 1fr/1fr split. The meta is a label:value list — "Date" and
+// "Location" rows, each with a hairline rule above it and its value
+// right-aligned — rather than a single run-on line. Time folds into the Date
+// row's value. Format keeps the site's filled-chip pattern (shared with
+// `PastEventRow` above) rather than the reference's icon+plain-text eyebrow.
 export function EventCard({
   href,
   format,
   title,
-  meta,
+  date,
+  time,
+  location,
   image,
   onTint = false,
 }: {
   href: string;
   format: string;
   title: string;
-  meta: string;
+  /** e.g. "17 Sep 2026" */
+  date: string;
+  /** e.g. "8:30 am - 10:30 am" — folded into the Date row's value. */
+  time?: string | null;
+  location?: string | null;
   image?: string | null;
   onTint?: boolean;
 }) {
@@ -369,17 +373,49 @@ export function EventCard({
   return (
     <Link
       href={href}
-      // 0.6/1 rather than an even split: the image is atmosphere, the date and
-      // place are the decision. Copy gets the room.
-      className={`group grid overflow-hidden rounded ${surface} md:grid-cols-[minmax(0,0.6fr)_minmax(0,1fr)]`}
+      // Content wider than the image (1 / 0.85) — the date and place are the
+      // decision; the photo is atmosphere.
+      className={`group grid overflow-hidden rounded ${surface} md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]`}
     >
-      {/* Two variants, decided by whether an image exists:
+      {/* Copy left. `justify-between` pins the pill+title group to the top and
+          the Date/Location list to the bottom; `gap-8` is the minimum gap so
+          they never collide when the copy runs long. Global card padding. */}
+      <div className="flex flex-col justify-between gap-8 p-6 lg:p-8">
+        <div>
+          <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+            {format}
+          </span>
+          <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+            {title}
+          </h3>
+        </div>
+        <div className="w-full">
+          <div className="flex items-baseline justify-between gap-4 border-t border-sognos-line py-4">
+            <span className="shrink-0 text-sm text-sognos-muted">Date</span>
+            <span className="text-right text-sm text-sognos-heading">
+              {time ? `${date} · ${time}` : date}
+            </span>
+          </div>
+          {location ? (
+            <div className="flex items-baseline justify-between gap-4 border-t border-sognos-line py-4">
+              <span className="shrink-0 text-sm text-sognos-muted">
+                Location
+              </span>
+              <span className="text-right text-sm text-sognos-heading">
+                {location}
+              </span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Image right. Two variants, decided by whether an image exists:
           — with a usable image, the photo runs full bleed
           — without one, a solid navy panel carrying the format, rather than an
             empty grey box. A bad photo is worse than no photo, so the solid
             variant has to stand on its own.
-          Square-ish on mobile where it sits above the copy; on md it stretches
-          to whatever height the copy sets, so the two columns stay level. */}
+          16/9 on mobile where it sits below the copy; on md it stretches to
+          whatever height the copy sets, so the two columns stay level. */}
       <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-auto md:h-full">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -395,15 +431,6 @@ export function EventCard({
             </span>
           </div>
         )}
-      </div>
-      <div className="flex flex-col items-start justify-center gap-3 p-8 lg:p-14">
-        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
-          {format}
-        </span>
-        <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
-          {title}
-        </h3>
-        <p className="text-sm text-sognos-muted">{meta}</p>
       </div>
     </Link>
   );
@@ -430,7 +457,9 @@ function EventRail({
           href={e.href}
           format={e.format}
           title={e.title}
-          meta={`${e.date} · ${e.time} · ${e.location}`}
+          date={e.date}
+          time={e.time}
+          location={e.location}
           image={e.image}
         />
       ))}

@@ -1,5 +1,63 @@
 # Changelog
 
+## 2026-08-06 — Rollout tooling; global-defaults extraction; About Pass (Leadership); event card
+
+Docs, one shared-component fix, and a section-by-section Pass on the About page.
+
+### Rollout process — Global Layout Defaults extracted from the live codebase
+
+Scanned five page families (homepage, products/SognosCare, solutions `[slug]`,
+industries `[slug]`, contact — 28 files) and rewrote `ROLLOUT_PROCESS.md`'s
+**Global Layout Defaults** to only values verified across 2+ families. Conflicts
+and absences are stated inline rather than guessed into a clean answer:
+`gap-3 lg:gap-4` verified once in-scope (kept, flagged); a new
+`gap-12 lg:gap-10` hero/intro gap found; industries H2 `font-normal` and the
+`AnimatedEyebrow` weight surfaced as conflicts; `bg-white` added as a valid
+light surface alongside `bg-sognos-tint`; stat-block and card-padding patterns
+marked "not present in scanned scope". Also appended two standing rules — **Pass
+is a design discussion, not a token checklist**, and installed a reusable
+`/match-adjust` command (`.claude/commands/match-adjust.md`).
+
+### AnimatedEyebrow default weight — resolved sitewide
+
+`components/ui/AnimatedEyebrow.tsx` default `font-normal` → **`font-semibold`**,
+matching the extracted global eyebrow standard
+(`text-xs font-semibold uppercase tracking-widest`). Every eyebrow rendered
+through the shared component (homepage, products, About, industries Platform)
+was under-weighted; this fixes them all at the source. Resolves the flagged
+conflict.
+
+### About page — Pass (partial)
+
+- Hero H1 `text-5xl md:text-6xl lg:text-7xl` → `text-5xl lg:text-6xl`
+  (About-only override; the shared Hero H1 rule is untouched) — the `7xl`
+  ceiling read oversized on this page.
+- **Leadership (`TeamSection`) — Pass complete.** H2 `text-2xl` → `text-3xl`
+  (base-step fix). Card name flattened to `text-2xl font-medium` (no `lg`
+  step-up — matches Routable's real flat sizing); role →
+  `text-base leading-normal text-sognos-body md:text-lg`; "Read Bio" `text-sm`
+  → `text-base`; grid gap → `gap-3 lg:gap-4` (global default); portrait
+  `aspect-[0.82]` → `aspect-[365/370]`. Drawer name flattened to `text-2xl` to
+  match the card. Action-row spacing/icon and role spacing were matched to
+  Routable's own DevTools values.
+
+### Event card — Match + Adjust to Routable
+
+`EventCard` in `KnowledgeHubArchive.tsx`: columns mirrored (copy left / image
+right), `md:grid-cols-[1fr_0.85fr]` (content wider); single-line meta replaced
+with a two-row **Date / Location** label:value list with hairline dividers
+(time folds into the Date value); `justify-between` pins pill+title top and the
+detail list bottom; content padding `p-8 lg:p-14` → global `p-6 lg:p-8`. Prop
+signature `meta: string` → structured `date`/`time`/`location`; the single
+`EventRail` call site migrated. Format chip kept (consistent with
+`PastEventRow`); serif title and icon-eyebrow not adopted (AngelList-only).
+
+- **Files:** `docs/ROLLOUT_PROCESS.md`, `docs/PROJECT_STATE.md`,
+  `.claude/commands/match-adjust.md` (new), `components/ui/AnimatedEyebrow.tsx`,
+  `app/(marketing)/company/about/page.tsx`,
+  `components/layout/sections/TeamSection.tsx`,
+  `components/layout/sections/KnowledgeHubArchive.tsx`.
+
 ## 2026-08-05 — About-page rebuild, homepage feed, Sanity Studio + Supabase infra
 
 A batch across the About page, the homepage news feed, and two infrastructure

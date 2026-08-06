@@ -129,20 +129,20 @@ migration; Workhorse token (`--color-wh-*` etc.) removal.
 
 ## 6. Open decisions
 
-- **Grey background:** confirm `bg-sognos-tint` is the single answer for light
-  sections (recorded as such in §2; supersedes `bg-gray-50` and
-  `bg-gray-200/70`).
+- **Grey background — RESOLVED 2026-08-06.** `bg-sognos-tint` is the single
+  answer for light sections. Supersedes `bg-gray-50` and `bg-gray-200/70` for
+  new and edited sections. See §2.
+- **Bento — RESOLVED 2026-08-06.** The homepage bento is complete — it is the
+  `NewsInsightSection`'s 70/30 + 50/50 tile grid, curating one tile per content
+  type. The standalone `BentoGrid.tsx` component is separate and still renders
+  only at `/dev/bento-preview`; treat it as a preview-only prototype (a
+  keep-or-drop call belongs with the orphan cleanup, next-step #4).
 - **Orphan/backup deletion:** approve deleting the 11 orphaned components + 4
   `.backup.tsx` files, or keep any as intended WIP.
 - **Embla:** keep the dependency for future sliders, or drop it since the live
   sliders are native scroll-snap.
-- **Bento:** wire `BentoGrid` into the homepage or drop it (and `/dev/bento-preview`).
 - **Duplicated content arrays:** extract SR pillars (SR page ↔ About section) and
   accreditations (Footer ↔ About) into `lib/content`, or keep hand-synced.
 - **Partner logo assets:** Ingram Micro and Resco ship white-on-solid-blue with
   no transparent variant, so they read as blue plates on the light card — who
   provides transparent PNG/SVG replacements.
-- **Doc ownership:** `PROJECT_STATE.md` is now the canonical plan and
-  `DESIGN_MIGRATION_STATE.md` is retired to `docs/archive/`. Remaining call:
-  reduce `CLAUDE.md` to execution rules only (step 8), or leave its planning
-  content in place.

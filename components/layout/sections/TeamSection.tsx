@@ -87,7 +87,7 @@ function TeamCard({
         aria-label={`Read ${member.name}'s bio`}
         className="block w-full text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
       >
-        <div className="relative aspect-[0.82] w-full overflow-hidden rounded-lg bg-gray-100">
+        <div className="relative aspect-[365/370] w-full overflow-hidden rounded-lg bg-sognos-tint">
           <Image
             src={member.image}
             alt={member.name}
@@ -100,21 +100,24 @@ function TeamCard({
       </button>
 
       <div className="mt-6">
-        <h3 className="font-heading text-2xl font-medium tracking-tight text-sognos-heading lg:text-3xl">
+        <h3 className="font-heading text-2xl font-medium tracking-tight text-sognos-heading">
           {member.name}
         </h3>
-        <p className="mt-2 text-base leading-tight text-sognos-muted">
+        <p className="mt-1 text-base leading-normal text-sognos-body sm:mt-2 md:text-lg">
           {member.role}
         </p>
       </div>
 
-      {/* Action row bounded by dashed rules, after the reference: Read Bio
-          (opens the profile) left, LinkedIn right. */}
-      <div className="mt-5 flex items-center justify-between gap-4 border-y border-dashed border-sognos-line py-3">
+      {/* Action row bounded by dashed rules — spacing matched from Routable's
+          own DevTools (routable.com/about): `mt-3.5 ... gap-x-6
+          border-y border-dashed ... py-2 sm:py-2.5`, LinkedIn chip
+          `h-7 w-7 rounded bg-grey`. Read Bio (opens the profile) left,
+          LinkedIn right. */}
+      <div className="mt-3.5 flex items-center justify-between gap-x-6 border-y border-dashed border-sognos-line py-2 sm:py-2.5">
         <button
           type="button"
           onClick={() => onOpen(member)}
-          className="group/bio inline-flex items-center gap-2 text-sm font-medium text-sognos-heading transition-colors hover:text-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+          className="group/bio inline-flex items-center gap-2 text-base font-medium text-sognos-heading transition-colors hover:text-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
         >
           Read Bio
           <span
@@ -129,7 +132,7 @@ function TeamCard({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${member.name} on LinkedIn`}
-          className="flex size-8 items-center justify-center rounded bg-gray-200 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+          className="flex size-7 items-center justify-center rounded bg-sognos-tint text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
         >
           <LinkedInIcon />
         </a>
@@ -197,13 +200,13 @@ function ExpandedProfile({
               type="button"
               onClick={onClose}
               aria-label="Close profile"
-              className="flex size-9 items-center justify-center rounded-full bg-gray-100 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+              className="flex size-9 items-center justify-center rounded-full bg-sognos-tint text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
             >
               <X className="size-5" aria-hidden="true" />
             </button>
           </div>
 
-          <div className="relative mt-2 aspect-[0.92] w-full overflow-hidden rounded-lg bg-gray-100">
+          <div className="relative mt-2 aspect-[0.92] w-full overflow-hidden rounded-lg bg-sognos-tint">
             <Image
               src={member.image}
               alt={member.name}
@@ -219,7 +222,7 @@ function ExpandedProfile({
             <div>
               <h3
                 id={titleId}
-                className="font-heading text-3xl font-medium leading-snug tracking-tight text-sognos-heading"
+                className="font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading"
               >
                 {member.name}
               </h3>
@@ -230,7 +233,7 @@ function ExpandedProfile({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${member.name} on LinkedIn`}
-              className="mt-1 flex size-9 shrink-0 items-center justify-center rounded bg-gray-100 text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+              className="mt-1 flex size-7 shrink-0 items-center justify-center rounded bg-sognos-tint text-sognos-heading transition-colors hover:bg-sognos-navy-dark hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
             >
               <LinkedInIcon />
             </a>
@@ -253,7 +256,7 @@ export default function TeamSection() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   return (
-    <section className="w-full bg-gray-100 py-20 lg:py-28">
+    <section className="w-full bg-sognos-tint py-20 md:py-28">
       <div>
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
@@ -266,11 +269,11 @@ export default function TeamSection() {
             </div>
 
             <div className="min-w-0 lg:col-[3/-1]">
-              <h2 className="max-w-5xl font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
+              <h2 className="max-w-5xl font-heading text-3xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
                 Meet our senior leadership team
               </h2>
 
-              <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-14 md:grid-cols-3">
+              <div className="mt-10 grid grid-cols-1 gap-3 lg:gap-4 md:grid-cols-3">
                 {TEAM.map((member, index) => (
                   <TeamCard
                     key={member.name}

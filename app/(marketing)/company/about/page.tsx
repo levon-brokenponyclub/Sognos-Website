@@ -87,7 +87,7 @@ export default function AboutPage() {
   return (
     <main className="w-full bg-white">
       {/* ── Hero — white, eyebrow + heading + CTA (matches solutions/[slug]) ─── */}
-      <section className="bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
+      <section className="bg-white pt-32 pb-20 md:pb-28 lg:pt-40">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
             {/* Left — eyebrow + heading + intro */}
@@ -95,10 +95,10 @@ export default function AboutPage() {
               <AnimatedEyebrow textClassName="text-sognos-muted">
                 About Sognos
               </AnimatedEyebrow>
-              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
                 Smarter automation for modern teams
               </h1>
-              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-sognos-body">
                 Built to serve the organisations that serve others. Since 2016,
                 Sognos has helped service organisations work smarter - replacing
                 disconnected tools with a single intelligent platform built
@@ -122,14 +122,15 @@ export default function AboutPage() {
       <AboutHeroImage />
 
       {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
-      <section className="bg-white py-20 pt-0 lg:pb-24">
+      <section className="bg-white py-20 pt-0 md:pb-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-3 gap-4 lg:grid-cols-3 lg:gap-10">
-            {/* Column 1 — eyebrow + title. `mt-12` matches the lead paragraph's
-                own `mt-12` in column 2, so the eyebrow starts level with the
-                right column's first line instead of floating above it. Change
-                one and change the other. */}
-            <div className="col-span-1 mt-12">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
+            {/* Column 1 — eyebrow + title. On `lg`+, `mt-12` matches the lead
+                paragraph's own `mt-12` in column 2, so the eyebrow starts level
+                with the right column's first line instead of floating above it.
+                Change one and change the other. On mobile the layout stacks and
+                the offset isn't needed. */}
+            <div className="lg:col-span-1 lg:mt-12">
               {/* `flex w-fit` rather than the component's default `inline-flex`:
                   as an inline box it sat in the column's 24px line box and
                   picked up 5px of leading above it, so the eyebrow hung below
@@ -140,15 +141,15 @@ export default function AboutPage() {
               >
                 Our Story
               </AnimatedEyebrow>
-              <h2 className="mt-4 max-w-5xl font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
+              <h2 className="mt-4 max-w-5xl font-heading text-3xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
                 Healthcare First. Field Service Always. AI at the Centre.
               </h2>
             </div>
             {/* Column 2 — body paragraphs + stats */}
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               {/* Body paragraphs */}
               <div className="max-w-2xl space-y-5 text-lg leading-relaxed text-sognos-body">
-                <p className="mt-12 text-2xl font-medium">
+                <p className="text-2xl font-medium lg:mt-12">
                   For over a decade, Sognos has been helping organisations
                   simplify complex frontline operations through connected,
                   intelligent business solutions built around real work.
@@ -191,7 +192,7 @@ export default function AboutPage() {
           old dark two-column layout, and the interim static 4-col grid, are in
           git history if either needs to come back. */}
       <section className="w-full bg-white">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">
+        <div className="max-w-7xl w-full mx-auto px-6 py-20 md:py-28">
           <AboutPartnersSlider partners={PARTNERS} />
 
           {/* Accreditations & memberships — a lighter sub-band under the
@@ -228,7 +229,7 @@ export default function AboutPage() {
           tint panel sits inset on white: copy + CTA left, the benefit titles
           as a stacked list right. */}
       <section className="w-full bg-white">
-        <div className="max-w-7xl w-full mx-auto px-6 py-24">
+        <div className="max-w-7xl w-full mx-auto px-6 py-20 md:py-28">
           <div className="rounded-lg bg-sognos-tint p-8 lg:p-14">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
