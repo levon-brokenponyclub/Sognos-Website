@@ -226,14 +226,14 @@ export default function ProductSubNav({
                     download
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-brand bg-white border border-brand rounded-lg hover:bg-[#1D96FC] hover:text-white transition-colors duration-200"
                   >
                     {s.label}
                   </a>
                 ))}
               <button
                 onClick={() => openModal()}
-                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand rounded-lg hover:bg-brand/90 transition-colors duration-200"
+                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand border border-brand rounded-lg hover:bg-brand/90 transition-colors duration-200"
               >
                 Book a Demo
               </button>
