@@ -78,6 +78,13 @@ export async function registerForEvent(
     });
 
     if (error) {
+      if (error.code === "23505") {
+        return {
+          ok: false,
+          error:
+            "This email address is already registered for this event. Please contact us if you need to make changes.",
+        };
+      }
       return { ok: false, error: error.message ?? "Registration failed." };
     }
 
