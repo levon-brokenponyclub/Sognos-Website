@@ -10,6 +10,7 @@ export interface SubNavSection {
   label: string;
   id: string;
   href?: string;
+  download?: boolean;
 }
 
 interface ProductSubNavProps {
@@ -184,38 +185,59 @@ export default function ProductSubNav({
               className="flex flex-1 items-center gap-0 overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-visible"
               aria-label={`${productName} sections`}
             >
-              {sections.map(({ label, id, href }) => {
+              {sections
+                .filter((s) => !s.download)
+                .map(({ label, id, href }) => {
                 const isActive = activeId === id;
+                const cls = `relative px-4 h-18 flex items-center text-sm whitespace-nowrap shrink-0 transition-colors duration-200 ${
+                  isActive
+                    ? "text-brand font-medium"
+                    : "text-gray-500 hover:text-gray-900"
+                }`;
+                const indicator = isActive && (
+                  <motion.span
+                    layoutId="subnav-indicator"
+                    className="absolute bottom-0 inset-x-4 h-0.5 bg-brand rounded-full"
+                  />
+                );
+
                 return (
                   <Link
                     key={id}
                     href={href ?? `#${id}`}
                     data-section-id={id}
-                    className={`relative px-4 h-18 flex items-center text-sm whitespace-nowrap shrink-0 transition-colors duration-200 ${
-                      isActive
-                        ? "text-brand font-medium"
-                        : "text-gray-500 hover:text-gray-900"
-                    }`}
+                    className={cls}
                   >
                     {label}
-                    {isActive && (
-                      <motion.span
-                        layoutId="subnav-indicator"
-                        className="absolute bottom-0 inset-x-4 h-0.5 bg-brand rounded-full"
-                      />
-                    )}
+                    {indicator}
                   </Link>
                 );
               })}
             </nav>
 
-            {/* Book a Demo button */}
-            <button
-              onClick={() => openModal()}
-              className="ml-auto hidden lg:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand rounded-lg hover:bg-brand/90 transition-colors duration-200 shrink-0"
-            >
-              Book a Demo
-            </button>
+            {/* Action buttons */}
+            <div className="ml-auto hidden lg:flex items-center gap-3 shrink-0">
+              {sections
+                .filter((s) => s.download && s.href)
+                .map((s) => (
+                  <a
+                    key={s.id}
+                    href={s.href!}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              <button
+                onClick={() => openModal()}
+                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand rounded-lg hover:bg-brand/90 transition-colors duration-200"
+              >
+                Book a Demo
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>

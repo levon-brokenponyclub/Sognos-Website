@@ -5,6 +5,7 @@ import GenogramFeatures from "@/components/sections/sognosgenogram/Features";
 import GenogramStories from "@/components/sections/sognosgenogram/Stories";
 import CTASection from "@/components/sections/CTASection";
 import ProductSubNav from "@/components/ui/ProductSubNav";
+import { getGenogramDatasheetUrl } from "@/lib/sanity/queries";
 
 export const metadata = {
   title: "SognosGenogram - Relationship & Family Context Platform | Sognos",
@@ -12,14 +13,16 @@ export const metadata = {
     "Map family structures, support networks, and relationship histories directly into case records. SognosGenogram gives every worker the relational context they need.",
 };
 
-const SECTIONS = [
-  { label: "What it solves", id: "problems" },
-  { label: "Features", id: "features" },
-  { label: "Customer Stories", id: "stories" },
-  { label: "Schedule a Call", id: "calendar", href: "/contact" },
-];
+export default async function SognosGenogramPage() {
+  const datasheetUrl = await getGenogramDatasheetUrl();
 
-export default function SognosGenogramPage() {
+  const SECTIONS = [
+    { label: "What it solves", id: "problems" },
+    { label: "Features", id: "features" },
+    { label: "Customer Stories", id: "stories" },
+    { label: "Download Datasheet", id: "datasheet", href: datasheetUrl ?? "/datasheets/SognosGenogram-datasheet.pdf", download: true },
+    { label: "Schedule a Call", id: "calendar", href: "/contact" },
+  ];
   return (
     <>
       <GenogramHero />

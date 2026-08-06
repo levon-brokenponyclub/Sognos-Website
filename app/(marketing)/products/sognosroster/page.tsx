@@ -18,6 +18,7 @@ const SECTIONS = [
   { label: "Features", id: "features" },
   { label: "Key Advantages", id: "advantages" },
   { label: "Customer Stories", id: "stories" },
+  { label: "Download Datasheet", id: "datasheet", href: "/datasheets/SognosRoster-datasheet.pdf", download: true },
   { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 

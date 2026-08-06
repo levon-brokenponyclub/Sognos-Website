@@ -81,6 +81,14 @@ export default defineConfig({
                           .schemaType("sognosrosterPage")
                           .documentId("sognosrosterPage"),
                       ),
+                    S.listItem()
+                      .title("SognosGenogram")
+                      .id("sognosgenogramPage")
+                      .child(
+                        S.document()
+                          .schemaType("sognosgenogramPage")
+                          .documentId("sognosgenogramPage"),
+                      ),
                     S.divider(),
                     S.listItem()
                       .title("Editions")

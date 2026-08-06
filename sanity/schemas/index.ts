@@ -7,10 +7,12 @@ import { legalPage } from "./legalPage";
 import { logoStrip } from "./logoStrip";
 import { siteSettings } from "./siteSettings";
 import { sognoscarePage } from "./sognoscarePage";
+import { sognosgenogramPage } from "./sognosgenogramPage";
 import { sognosrosterPage } from "./sognosrosterPage";
 
 export const schemas = [
   sognoscarePage,
+  sognosgenogramPage,
   sognosrosterPage,
   edition,
   customerStory,
