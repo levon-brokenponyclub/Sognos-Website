@@ -1,5 +1,61 @@
 # Changelog
 
+## 2026-08-06 (later) — Event cards, bento tile surfaces, customer-story Pass, rollout skill
+
+- **KH category page** finished scaffolding (dark hero): navbar now loads in
+  dark-hero mode over it (`/knowledge-hub/category/` added to
+  `DARK_HERO_PATH_PREFIXES`), and the hero carries the shared `ElegantDarkPattern`
+  treatment.
+- **EventCard** (KH Events & Webinars): surface `bg-sognos-tint` → `bg-white`
+  (dropped the unused `onTint` prop); title `text-xl` → `text-2xl`;
+  Date/Location meta `text-sm` → `text-base`; **excerpt now reveals on hover**
+  below the title (fade-up, reserved space so no reflow). Excerpt threaded
+  through `UpcomingEvent` + `EventRail` + the archive page mapping
+  (`EventListing.excerpt`).
+- **NewsInsightSection** (homepage bento): event tile rebuilt to EventCard's
+  content layout — pill + title top, two-row Date/Location meta bottom
+  (`justify-between`); structured `time`/`location` threaded via `eventToArticle`
+  (dropped the composed `meta` string). Per-tile **surfaces**: event tile
+  `bg-white`, bottom-left `bg-sognos-navy`, bottom-right `bg-sognos-blue-accent`,
+  with a `dark` flag that inverts pill/title/meta colours. Fixed an orphaned
+  `group-hover` (the tile `<Link>` was missing its `group` class).
+- **Customer-stories `[slug]` Pass** (vs `routable.com/customers/postal-sendoso`):
+  `bg-gray-50` → `bg-sognos-tint`; CTA card `rounded` → `rounded-lg`; CTA button
+  `rounded` → `rounded-full`. Dark navy hero kept (deliberate divergence).
+- **ProductCustomerStories**: heading restyled to the statement scale
+  (`text-3xl md:text-5xl`, `max-w-3xl`, `text-white`); default heading set so the
+  row renders. Note: default now shows on all callers unless overridden.
+- **Rollout skill** (`.claude/skills/sognos-rollout/`) committed — `SKILL.md`
+  plus the scaffold / approve / pass / refine reference files.
+- **Files:** `app/(marketing)/knowledge-hub/category/[category]/page.tsx` (new),
+  `components/layout/Navbar.tsx`,
+  `components/layout/sections/{KnowledgeHubArchive,NewsInsightSection,ProductCustomerStories}.tsx`,
+  `app/(marketing)/{page,knowledge-hub/page,customer-stories/[slug]/page}.tsx`.
+
+## 2026-08-06 (later) — Scaffold: Knowledge Hub category pages
+
+New route **`/knowledge-hub/category/[category]`** — a dynamic per-category
+archive page, scaffolded after `routable.com/resources/category/articles`.
+Serves the three post-based categories (`news`, `insights`, `milestones`);
+`generateStaticParams` pre-renders all three.
+
+- **Routing:** placed under a dedicated `category` segment (not directly under
+  `/knowledge-hub`) so it never collides with `/knowledge-hub/[slug]` (post
+  detail). `VIEW_ALL` links in `KnowledgeHubArchive` updated
+  `/knowledge-hub/news|insights|milestones` → `/knowledge-hub/category/…`.
+- **Composition:** dark masthead (category name, left-aligned, hero H1 tokens)
+  → sticky dotted tab band in **link mode** (tabs navigate to sibling category
+  pages; Events & Webinars → `/knowledge-hub#events`) with the reused
+  `KnowledgeHubSearchDialog` → "All topics" filter as a **disabled placeholder**
+  (no topic/tag field in the content model yet) → `ArticleCard` grid
+  (`gap-x-6 gap-y-10 md:grid-cols-3`) of the category's posts.
+- **Reuse:** `ArticleCard`, `KnowledgeHubSearchDialog`, `getKnowledgePostArchive`,
+  the archive's Article mapping. Masthead + tab band are duplicated for now —
+  extraction into shared components is flagged for Refine.
+- Server Component; Insights approved first, pattern rolls to the others.
+- **Files:** `app/(marketing)/knowledge-hub/category/[category]/page.tsx` (new),
+  `components/layout/sections/KnowledgeHubArchive.tsx` (VIEW_ALL).
+
 ## 2026-08-06 (later) — Knowledge Hub Pass: section shell + News / Insights / Milestone cards
 
 Section-by-section Pass on the Knowledge Hub archive, matched to

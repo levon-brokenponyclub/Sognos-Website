@@ -422,7 +422,7 @@ export default async function CustomerStoryPage({
               <StoryResultStats stats={stats} className={ARTICLE_PROSE_MAX_W} />
 
               <aside
-                className={`mt-16 bg-sognos-blue-accent p-6 text-white md:px-8 rounded md:py-8 ${ARTICLE_PROSE_MAX_W}`}
+                className={`mt-16 bg-sognos-blue-accent p-6 text-white md:px-8 rounded-lg md:py-8 ${ARTICLE_PROSE_MAX_W}`}
               >
                 <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-3xl">
                   Book a demo today
@@ -435,7 +435,7 @@ export default async function CustomerStoryPage({
                 <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                   <SolutionHeroDemoButton
                     label="Book a demo"
-                    className="rounded bg-white text-sognos-navy"
+                    className="rounded-full bg-white text-sognos-navy"
                   />
                   <Link
                     href="/contact"
@@ -460,7 +460,7 @@ export default async function CustomerStoryPage({
 
       {/* ── "What to read next" 3-up ── */}
       {latest.length > 0 && (
-        <section className="bg-gray-50">
+        <section className="bg-sognos-tint">
           <div className="mx-auto w-full max-w-7xl px-6 pt-16 pb-14 lg:pt-24">
             <div className="flex items-end justify-between gap-x-6 gap-y-6 max-sm:flex-col max-sm:items-start">
               <h2 className="font-heading text-3xl font-normal tracking-tight text-sognos-heading text-balance md:text-4xl">

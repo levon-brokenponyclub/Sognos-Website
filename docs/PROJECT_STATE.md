@@ -95,6 +95,12 @@ the old doc but rendered by no page). Plus 4 `.backup.tsx` files
 `/customers` hub + `/customers/[slug]`; a real `/events` index; edition-token
 migration; Workhorse token (`--color-wh-*` etc.) removal.
 
+### Recently scaffolded (awaiting Approve/Pass)
+`/knowledge-hub/category/[category]` (2026-08-06) — dynamic per-category archive
+(news / insights / milestones), after `routable.com/resources/category/…`.
+Scaffold only: masthead + tab band duplicated from `KnowledgeHubArchive` (extract
+in Refine); "All topics" filter is a disabled placeholder (no topic field yet).
+
 ## 5. Next steps (priority order)
 
 1. **Refine Solutions `[slug]` on Routable.** *What:* the 7-route template still

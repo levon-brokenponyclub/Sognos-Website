@@ -37,6 +37,7 @@ export type UpcomingEvent = {
   time: string;
   location: string;
   image: string;
+  excerpt?: string | null;
 };
 
 /** The most recent customer story, for the dark band. */
@@ -63,7 +64,7 @@ export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex flex-col pb-4 border-b border-sognos-line"
+      className="group flex flex-col pb-6 border-b border-sognos-line"
     >
       <div className="relative max-h-52 aspect-[16/10] w-full overflow-hidden rounded">
         {article.image ? (
@@ -80,12 +81,12 @@ export function ArticleCard({ article }: { article: Article }) {
       {/* 32px, rising to 36px from lg — the reference's own image-to-content
           gap (`space-y-8 lg:space-y-[2.25rem]` on routable.com/resources). The
           16px this replaced was what made the cards read tight. */}
-      <div className="mt-8 flex flex-col flex-1 lg:mt-9">
+      <div className="mt-4 flex flex-col flex-1 lg:mt-6">
         <h3 className="font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
           {article.title}
         </h3>
         {/* Pill + date · read time, together at the bottom-left. */}
-        <div className="mt-auto flex flex-wrap items-center gap-3 pt-8">
+        <div className="mt-auto flex flex-wrap items-center gap-3 pt-5">
           <span className="inline-flex h-6.5 w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {article.category}
           </span>
@@ -165,13 +166,13 @@ const INSIGHTS_LIMIT = 3;
 // that slug. If that is a risk worth avoiding they should move to the top
 // level instead.
 const VIEW_ALL: Record<SectionId, string> = {
-  news: "/knowledge-hub/news",
-  insights: "/knowledge-hub/insights",
+  news: "/knowledge-hub/category/news",
+  insights: "/knowledge-hub/category/insights",
   // No "View all" for events — they live in this section rather than a
   // separate archive, so there is nowhere to send a reader. Kept in the map so
   // the decision is visible rather than an omission.
   events: "/events",
-  milestones: "/knowledge-hub/milestones",
+  milestones: "/knowledge-hub/category/milestones",
 };
 
 // The navbar is a fixed 80px at every breakpoint — see the note in CLAUDE.md.
@@ -212,7 +213,7 @@ function Tile({
   // Radius is `rounded` rather than the reference's 4px: house rule wins.
   const surface = filled
     ? `rounded bg-white p-6 md:p-8 ${lead ? "lg:p-14" : ""}`
-    : "border-b border-sognos-line pb-4";
+    : "border-b border-sognos-line pb-1";
   const showImage = lead || !!image;
   // 24px inside a filled panel — the reference's `mb-6`. The plain card keeps
   // the wider 32/36px gap, which is what it uses with no padding to help it.
@@ -347,30 +348,30 @@ export function EventCard({
   href,
   format,
   title,
+  excerpt,
   date,
   time,
   location,
   image,
-  onTint = false,
 }: {
   href: string;
   format: string;
   title: string;
+  /** Revealed on hover, below the title. */
+  excerpt?: string | null;
   /** e.g. "17 Sep 2026" */
   date: string;
   /** e.g. "8:30 am - 10:30 am" — folded into the Date row's value. */
   time?: string | null;
   location?: string | null;
   image?: string | null;
-  onTint?: boolean;
 }) {
-  const surface = onTint ? "bg-white" : "bg-sognos-tint";
   return (
     <Link
       href={href}
       // Content wider than the image (1 / 0.85) — the date and place are the
       // decision; the photo is atmosphere.
-      className={`group grid overflow-hidden rounded ${surface} md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]`}
+      className="group grid overflow-hidden rounded bg-white md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]"
     >
       {/* Copy left. `justify-between` pins the pill+title group to the top and
           the Date/Location list to the bottom; `gap-8` is the minimum gap so
@@ -380,23 +381,31 @@ export function EventCard({
           <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {format}
           </span>
-          <h3 className="mt-4 font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+          <h3 className="mt-4 font-heading text-2xl font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
             {title}
           </h3>
+          {/* Excerpt reveals on hover — fades up into view below the title. It
+              reserves its space (the justify-between gap absorbs it), so there
+              is no reflow. Reduced motion shows it outright. */}
+          {excerpt && (
+            <p className="mt-3 line-clamp-3 translate-y-1 text-base leading-relaxed text-sognos-body opacity-0 transition duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none">
+              {excerpt}
+            </p>
+          )}
         </div>
         <div className="w-full">
           <div className="flex items-baseline justify-between gap-4 border-t border-sognos-line py-4">
-            <span className="shrink-0 text-sm text-sognos-muted">Date</span>
-            <span className="text-right text-sm text-sognos-heading">
+            <span className="shrink-0 text-base text-sognos-muted">Date</span>
+            <span className="text-right text-base text-sognos-heading">
               {time ? `${date} · ${time}` : date}
             </span>
           </div>
           {location ? (
             <div className="flex items-baseline justify-between gap-4 border-t border-sognos-line py-4">
-              <span className="shrink-0 text-sm text-sognos-muted">
+              <span className="shrink-0 text-base text-sognos-muted">
                 Location
               </span>
-              <span className="text-right text-sm text-sognos-heading">
+              <span className="text-right text-base text-sognos-heading">
                 {location}
               </span>
             </div>
@@ -452,6 +461,7 @@ function EventRail({
           href={e.href}
           format={e.format}
           title={e.title}
+          excerpt={e.excerpt}
           date={e.date}
           time={e.time}
           location={e.location}
@@ -790,7 +800,7 @@ export default function KnowledgeHubArchive({
               read-time meta line, and both article detail pages render it.
               Reusing it keeps the three surfaces identical. */}
           {insights.length > 0 ? (
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-3">
               {insights.slice(0, INSIGHTS_LIMIT).map((a) => (
                 <ArticleCard key={a.slug} article={a} />
               ))}

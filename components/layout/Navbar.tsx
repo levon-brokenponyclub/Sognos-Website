@@ -26,7 +26,10 @@ const DARK_HERO_PATHS = new Set([
   "/products/sognosgenogram",
 ]);
 // Dynamic-route prefixes whose pages always render a dark hero.
-const DARK_HERO_PATH_PREFIXES = ["/customer-stories/"];
+const DARK_HERO_PATH_PREFIXES = [
+  "/customer-stories/",
+  "/knowledge-hub/category/",
+];
 
 // Lives in a plain module so the server-side layout can read it too — see
 // lib/upcomingEvent.ts.

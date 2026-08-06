@@ -38,17 +38,20 @@ import { formatDate } from "@/lib/formatDate";
 export type NewsInsightArticle = {
   slug?: string;
   /** Which card body to render: pill/title/excerpt/date+readTime for a post,
-   *  the same shape plus a composed date/time/location line for an event. */
+   *  or EventCard's top pill+title / bottom two-row Date+Location meta for an
+   *  event. */
   kind?: "post" | "event";
   category: string;
   title: string;
   href: string;
   image: string;
+  /** Post: raw ISO (formatted in-tile). Event: pre-formatted display date. */
   date?: string;
   readTime?: string;
-  /** Event only — the composed "17 Sep 2026 · 8:30 am - 10:30 am · Microsoft,
-   *  North Sydney" line from `formatEventMeta()`. */
-  meta?: string;
+  /** Event only — pre-formatted time, folded into the Date row's value. */
+  time?: string;
+  /** Event only — the Location row value. */
+  location?: string;
   excerpt?: string;
 };
 
@@ -57,19 +60,34 @@ const TILE_COUNT = 4;
 function Tile({
   article,
   feature = false,
+  surface = "border border-sognos-line",
+  dark = false,
 }: {
   article: NewsInsightArticle;
   feature?: boolean;
+  /** Tile background (+ border) classes. */
+  surface?: string;
+  /** Invert the copy colours for a dark/coloured surface. */
+  dark?: boolean;
 }) {
   const isEvent = article.kind === "event";
+
+  // Copy colours swap with the surface so the same tile works on white, navy
+  // or the accent.
+  const pillClass = dark
+    ? "bg-white/15 text-white"
+    : "bg-sognos-muted/15 text-sognos-body";
+  const titleClass = dark
+    ? "text-white group-hover:text-white/70"
+    : "text-sognos-heading group-hover:text-sognos-blue-accent";
+  const metaLabel = dark ? "text-white/60" : "text-sognos-muted";
+  const metaValue = dark ? "text-white" : "text-sognos-heading";
+  const metaRule = dark ? "border-white/25" : "border-sognos-line";
 
   return (
     <Link
       href={article.href}
-      // `border` is scaffold only — it exists so the tiles are visible while
-      // the layout is reviewed, and goes when the surfaces land. `min-h` is
-      // the reference's own.
-      className="relative flex min-h-[340px] flex-col overflow-hidden border border-sognos-line"
+      className={`group relative flex min-h-[340px] flex-col overflow-hidden rounded-lg ${surface}`}
     >
       {/* The reference nests a padded flex wrapper inside the article rather
           than padding the article itself, so the picture can fill the tile
@@ -94,43 +112,82 @@ function Tile({
                 data fills it yet. */}
             <div aria-hidden="true" data-slot="icon" />
 
-            {/* `mt-auto` pins the copy to the foot of the tile whatever height
-                it runs to — the reference's own arrangement. */}
-            <div className="mt-auto">
-              {/* Pill above title in both branches — EventCard/ArticleCard
-                  in KnowledgeHubArchive.tsx put the pill below the title;
-                  here it leads, on purpose. */}
-              <div className="flex flex-col items-start gap-3">
-                <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
-                  {article.category}
-                </span>
-                <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors duration-200 group-hover:text-sognos-blue-accent">
-                  {article.title}
-                </h3>
-                {article.excerpt && (
-                  <p className="line-clamp-3 text-sm leading-relaxed text-sognos-body">
-                    {article.excerpt}
-                  </p>
-                )}
-                {isEvent
-                  ? article.meta && (
-                      <p className="text-sm text-sognos-muted">
-                        {article.meta}
-                      </p>
-                    )
-                  : (article.date || article.readTime) && (
-                      <p className="text-xs font-base tracking-wide text-sognos-heading uppercase">
-                        {article.date && (
-                          <span className="text-sognos-muted">
-                            {formatDate(article.date)}
-                          </span>
-                        )}
-                        {article.date && article.readTime && " — "}
-                        {article.readTime && article.readTime.toUpperCase()}
-                      </p>
-                    )}
+            {isEvent ? (
+              /* Event tile — EventCard's content layout: pill + title pinned
+                 to the top, a two-row Date / Location meta pinned to the
+                 bottom (`justify-between`). */
+              <div className="flex flex-1 flex-col justify-between gap-6">
+                <div className="flex flex-col items-start gap-3">
+                  <span
+                    className={`inline-flex w-fit items-center rounded px-2.5 py-1 text-xs font-normal ${pillClass}`}
+                  >
+                    {article.category}
+                  </span>
+                  <h3
+                    className={`font-heading text-lg font-normal leading-snug tracking-tight line-clamp-2 transition-colors duration-200 ${titleClass}`}
+                  >
+                    {article.title}
+                  </h3>
+                </div>
+                <div className="w-full">
+                  {(article.date || article.time) && (
+                    <div
+                      className={`flex items-baseline justify-between gap-4 border-t py-3 ${metaRule}`}
+                    >
+                      <span className={`shrink-0 text-base ${metaLabel}`}>
+                        Date
+                      </span>
+                      <span className={`text-right text-base ${metaValue}`}>
+                        {article.time
+                          ? `${article.date} · ${article.time}`
+                          : article.date}
+                      </span>
+                    </div>
+                  )}
+                  {article.location && (
+                    <div
+                      className={`flex items-baseline justify-between gap-4 border-t py-3 ${metaRule}`}
+                    >
+                      <span className={`shrink-0 text-base ${metaLabel}`}>
+                        Location
+                      </span>
+                      <span className={`text-right text-base ${metaValue}`}>
+                        {article.location}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              /* Post tile — pill / title / excerpt / date, pinned to the foot. */
+              <div className="mt-auto">
+                <div className="flex flex-col items-start gap-3">
+                  <span
+                    className={`inline-flex w-fit items-center rounded px-2.5 py-1 text-xs font-normal ${pillClass}`}
+                  >
+                    {article.category}
+                  </span>
+                  <h3
+                    className={`font-heading text-2xl font-medium leading-snug tracking-tight line-clamp-2 transition-colors duration-200 ${titleClass}`}
+                  >
+                    {article.title}
+                  </h3>
+                  {(article.date || article.readTime) && (
+                    <p
+                      className={`text-xs font-base tracking-wide uppercase ${metaValue}`}
+                    >
+                      {article.date && (
+                        <span className={metaLabel}>
+                          {formatDate(article.date)}
+                        </span>
+                      )}
+                      {article.date && article.readTime && " — "}
+                      {article.readTime && article.readTime.toUpperCase()}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </span>
@@ -153,7 +210,7 @@ export default function NewsInsightSection({
   const [first, second, third, fourth] = tiles;
 
   return (
-    <section className="w-full bg-white py-20 md:py-28">
+    <section className="w-full bg-sognos-tint py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         {/* Same centred header block as SolutionsSection and IndustrySection —
             heading over subtext, the section's own control beneath. Was left
@@ -188,13 +245,23 @@ export default function NewsInsightSection({
             }
           >
             {first && <Tile article={first} feature />}
-            {second && <Tile article={second} />}
+            {/* Top-right (the event) — white. */}
+            {second && (
+              <Tile
+                article={second}
+                surface="border border-sognos-line bg-white"
+              />
+            )}
           </div>
 
           {/* Row 2 — 50 / 50 */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {third && <Tile article={third} />}
-            {fourth && <Tile article={fourth} />}
+            {/* Bottom-left — navy, light copy. */}
+            {third && <Tile article={third} surface="bg-sognos-navy" dark />}
+            {/* Bottom-right — accent, light copy. */}
+            {fourth && (
+              <Tile article={fourth} surface="bg-sognos-blue-accent" dark />
+            )}
           </div>
         </div>
 

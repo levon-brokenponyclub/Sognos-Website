@@ -18,7 +18,7 @@ import {
   type KnowledgePostArchive,
 } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
-import { formatEventMeta } from "@/lib/eventFormat";
+import { formatEventDate, formatEventTime } from "@/lib/eventFormat";
 
 export const revalidate = 60;
 
@@ -47,8 +47,11 @@ function eventToArticle(e: EventListing): NewsInsightArticle {
     category: e.format,
     title: e.title,
     href: `/events/${e.slug}`,
-    date: e.date,
-    meta: formatEventMeta(e),
+    // Pre-formatted here (Server Component), timezone-pinned — the two-row
+    // Date/Location meta the event tile renders, matching EventCard.
+    date: formatEventDate(e.date),
+    time: formatEventTime(e.date, e.endDate),
+    location: e.location ?? undefined,
     excerpt: e.excerpt ?? undefined,
     image: e.heroImage
       ? urlFor(e.heroImage).width(720).auto("format").url()

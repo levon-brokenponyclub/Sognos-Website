@@ -61,6 +61,7 @@ export default async function KnowledgeHubPage({
     image: e.heroImage
       ? urlFor(e.heroImage).width(1200).auto("format").url()
       : "",
+    excerpt: e.excerpt ?? null,
   }));
 
   return (
