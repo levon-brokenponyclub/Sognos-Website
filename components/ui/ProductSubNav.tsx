@@ -226,7 +226,7 @@ export default function ProductSubNav({
                     download
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-brand bg-white border border-brand rounded-lg hover:bg-[#1D96FC] hover:text-white transition-colors duration-200"
+                    className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-brand bg-white border border-brand rounded-lg hover:bg-[#1D96FC] hover:border-[#1D96FC] hover:text-white transition-colors duration-200"
                   >
                     {s.label}
                   </a>
