@@ -2,6 +2,41 @@ import Link from "next/link";
 import Image from "next/image";
 import { getFooterContent } from "@/lib/sanity/queries";
 
+// Government prequalification and industry memberships. Intrinsic sizes are the
+// supplied artwork's own — height is capped in the markup, so these only set the
+// aspect ratio Next needs.
+type Accreditation = {
+  alt: string;
+  src: string;
+  width: number;
+  height: number;
+  href?: string;
+  title?: string;
+};
+
+const ACCREDITATIONS: Accreditation[] = [
+  {
+    alt: "NSW Government Approved Supplier - SCM0020 Prequalification Scheme: ICT Services",
+    src: "/logos/accreditations/nsw-ict-services.png",
+    width: 1024,
+    height: 299,
+  },
+  {
+    alt: "Australasian Institute of Digital Health - Organisational Member",
+    src: "/logos/accreditations/aidh.png",
+    width: 200,
+    height: 100,
+  },
+  {
+    alt: "Talking HealthTech partner",
+    src: "/logos/accreditations/talking-healthtech-logo.png",
+    width: 200,
+    height: 200,
+    href: "https://www.talkinghealthtech.com/sognos-solutions?from=badge",
+    title: "Find me on Talking HealthTech",
+  },
+];
+
 export default async function Footer() {
   const content = await getFooterContent();
   const year = new Date().getFullYear();
@@ -61,9 +96,54 @@ export default async function Footer() {
           ))}
         </div>
 
+        {/* Accreditations & memberships.
+            White tiles rather than bare logos on the navy: only AIDH ships a
+            reversed version, and the NSW and THT marks are dark-on-light, so
+            they would be unreadable directly on the footer. Tiling all three
+            keeps the row consistent instead of one bare logo beside two chips.
+            Static rather than CMS-driven — these change rarely, and it avoids a
+            schema deploy. Promote to Sanity if they need to be editable. */}
+        <div className="mt-12 border-t border-white/15 pt-10">
+          <p className="text-sm text-center font-semibold uppercase mb-3 tracking-widest text-white/80">
+            Accreditations &amp; memberships
+          </p>
+          <ul className="mt-5 flex flex-wrap justify-center items-stretch gap-3 lg:gap-4">
+            {ACCREDITATIONS.map((item) => {
+              const mark = (
+                <span className="flex h-22 items-center justify-center rounded-lg bg-white/100 px-5">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    className="h-20 w-auto object-contain"
+                  />
+                </span>
+              );
+              return (
+                <li key={item.alt}>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener"
+                      title={item.title ?? item.alt}
+                      className="block transition-opacity duration-200 hover:opacity-80"
+                    >
+                      {mark}
+                    </a>
+                  ) : (
+                    mark
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         {/* Acknowledgement of Country */}
         {content.acknowledgement && (
-          <div className="mt-12 border-t border-white/15 pt-8">
+          <div className="mt-8 border-t border-white/15 pt-10">
             <p className="text-xs leading-relaxed text-white/60 max-w-4xl">
               {content.acknowledgement}
             </p>
