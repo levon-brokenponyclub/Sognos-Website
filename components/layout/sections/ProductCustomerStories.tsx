@@ -23,6 +23,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import ElegantDarkPattern from "@/components/layout/sections/shared/ElegantDarkPattern";
 
 export type CaseStudy = {
@@ -144,6 +145,7 @@ export function SeeMoreLink({
 // panel across the phrase because the phrase wraps — a single panel would draw
 // one rectangle across the line break and swallow the gap between lines.
 function Quote({ quote, highlight }: { quote: string; highlight?: string }) {
+  const prefersReducedMotion = useReducedMotion();
   const at = highlight ? quote.indexOf(highlight) : -1;
 
   if (at === -1) return <>{quote}</>;
@@ -154,7 +156,21 @@ function Quote({ quote, highlight }: { quote: string; highlight?: string }) {
       <span className="relative inline">
         {highlight!.split(" ").map((word, i) => (
           <span key={`${word}-${i}`} className="relative inline-block">
-            <span aria-hidden="true" className="absolute inset-0 bg-white/20" />
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-0 bg-sognos-blue-accent"
+              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: 0.8,
+                      delay: i * 0.08,
+                      ease: [0.22, 1, 0.36, 1],
+                    }
+              }
+            />
             <span className="relative z-[2] inline-block">{word}&nbsp;</span>
           </span>
         ))}
@@ -177,7 +193,7 @@ function StoryCard({ study }: { study: CaseStudy }) {
     // heights.
     <article
       data-card
-      className="flex w-[85vw] shrink-0 snap-start flex-col border-y border-dotted border-white/25 py-7 pr-6 sm:w-[440px] md:py-8 lg:w-[505px]"
+      className="flex w-[85vw] shrink-0 snap-start flex-col border-y border-dotted border-white/25 py-7 pr-6 sm:w-[440px] md:py-8 lg:w-[calc(50%-20px)]"
     >
       {/* Logo at the head of the card. The fixed minimum is what makes the
           quotes below start on one line across the row — the client marks are
@@ -251,14 +267,13 @@ function ArrowButton({
 
 interface ProductCustomerStoriesProps {
   stories?: CaseStudy[];
-  /** Optional — most callers wrap this section with their own heading, so the
-   *  arrows sit alone on the row when it is omitted. */
+  /** Default below. Pass a per-caller heading to override it. */
   heading?: string;
 }
 
 export default function ProductCustomerStories({
   stories = ALL_STORIES,
-  heading,
+  heading = "What our eco-supply clients say",
 }: ProductCustomerStoriesProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -294,7 +309,7 @@ export default function ProductCustomerStories({
       <div className="relative z-10 py-20 md:py-28">
         <div className="mx-auto mb-8 flex max-w-7xl items-end justify-between gap-2 px-6 md:mb-12 md:items-center lg:mb-20">
           {heading ? (
-            <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-4xl">
+            <h2 className="max-w-3xl font-heading text-3xl font-medium leading-tight tracking-tight text-white text-balance md:text-5xl">
               {heading}
             </h2>
           ) : (
@@ -329,12 +344,6 @@ export default function ProductCustomerStories({
             ))}
           </div>
 
-          {/* Sits inside the container's right padding, so it fades the last
-              visible card rather than the page edge. */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-6 hidden w-24 bg-gradient-to-l from-sognos-navy-darkest to-transparent xl:block"
-          />
         </div>
 
         {/* Structured data — the reference ships one `Review` per testimonial,
