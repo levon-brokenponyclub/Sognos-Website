@@ -159,7 +159,7 @@ export default function ProductSubNav({
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="sticky inset-x-0 z-50 bg-white border-b border-gray-200 pointer-events-auto"
+        className="sticky inset-x-0 z-40 bg-white border-b border-gray-200 pointer-events-auto"
         style={{ top: 0 }}
         data-product-subnav
       >
