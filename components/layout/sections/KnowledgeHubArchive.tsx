@@ -57,32 +57,13 @@ export type FeaturedStory = {
 // `INITIAL_ARTICLE_LIMIT` all belonged to the pill filter row and are gone with
 // it. They are in KnowledgeHubArchive.backup.tsx if the filtering comes back.
 
-function ArticleMeta({
-  publishedAt,
-  readTime,
-}: {
-  publishedAt?: string | null;
-  readTime?: string | null;
-}) {
-  if (!publishedAt && !readTime) return null;
-  return (
-    <p className="mt-10 text-xs font-base tracking-wide text-sognos-heading uppercase">
-      {publishedAt && (
-        <span className="text-sognos-muted">{formatDate(publishedAt)}</span>
-      )}
-      {publishedAt && readTime && " — "}
-      {readTime && readTime.toUpperCase()}
-    </p>
-  );
-}
-
 // ─── Grid card ────────────────────────────────────────────────────────────────
 
 export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex flex-col pb-4 border-b border-gray-200"
+      className="group flex flex-col pb-4 border-b border-sognos-line"
     >
       <div className="relative max-h-52 aspect-[16/10] w-full overflow-hidden rounded">
         {article.image ? (
@@ -93,23 +74,33 @@ export function ArticleCard({ article }: { article: Article }) {
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="h-full w-full bg-gray-100" />
+          <div className="h-full w-full bg-sognos-tint" />
         )}
       </div>
       {/* 32px, rising to 36px from lg — the reference's own image-to-content
           gap (`space-y-8 lg:space-y-[2.25rem]` on routable.com/resources). The
           16px this replaced was what made the cards read tight. */}
       <div className="mt-8 flex flex-col flex-1 lg:mt-9">
-        <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 h-6.5 py-1 text-xs font-normal text-sognos-body">
-          {article.category}
-        </span>
-        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
+        <h3 className="font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
           {article.title}
         </h3>
-        <ArticleMeta
-          publishedAt={article.publishedAt}
-          readTime={article.readTime}
-        />
+        {/* Pill + date · read time, together at the bottom-left. */}
+        <div className="mt-auto flex flex-wrap items-center gap-3 pt-8">
+          <span className="inline-flex h-6.5 w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+            {article.category}
+          </span>
+          {(article.publishedAt || article.readTime) && (
+            <span className="text-xs font-base uppercase tracking-wide text-sognos-heading">
+              {article.publishedAt && (
+                <span className="text-sognos-muted">
+                  {formatDate(article.publishedAt)}
+                </span>
+              )}
+              {article.publishedAt && article.readTime && " — "}
+              {article.readTime && article.readTime.toUpperCase()}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );
@@ -253,7 +244,11 @@ function Tile({
             {eyebrow}
           </span>
         )}
-        <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent">
+        <h3
+          className={`mt-4 font-heading font-normal leading-snug tracking-tight text-sognos-heading line-clamp-2 transition-colors group-hover:text-sognos-blue-accent ${
+            lead ? "text-xl" : "text-lg"
+          }`}
+        >
           {title}
         </h3>
         {(meta || readTime) && (
@@ -385,7 +380,7 @@ export function EventCard({
           <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {format}
           </span>
-          <h3 className="mt-4 font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+          <h3 className="mt-4 font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
             {title}
           </h3>
         </div>
@@ -488,14 +483,14 @@ function SectionShell({
     <section
       id={id}
       data-kh-section={id}
-      className={`scroll-mt-32 ${tinted ? "bg-gray-100" : "bg-white"}`}
+      className={`scroll-mt-32 ${tinted ? "bg-sognos-tint" : "bg-white"}`}
     >
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
         {/* `items-end` rather than `items-center`: the link sits on the
             heading's baseline, which is where the reference puts it, and a
             centred link floats above it once the heading is display size. */}
         <div className="mb-8 flex items-end justify-between gap-6">
-          <h2 className="font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-4xl">
+          <h2 className="font-heading text-3xl font-normal tracking-tight text-balance text-sognos-heading md:text-4xl">
             {heading}
           </h2>
           {viewAllHref && (
@@ -795,7 +790,7 @@ export default function KnowledgeHubArchive({
               read-time meta line, and both article detail pages render it.
               Reusing it keeps the three surfaces identical. */}
           {insights.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-3">
               {insights.slice(0, INSIGHTS_LIMIT).map((a) => (
                 <ArticleCard key={a.slug} article={a} />
               ))}
@@ -882,7 +877,7 @@ export default function KnowledgeHubArchive({
                         {a.category}
                       </span>
                       {a.readTime && (
-                        <span className="text-sm text-sognos-muted">
+                        <span className="text-sm text-sognos-heading">
                           {a.readTime}
                         </span>
                       )}

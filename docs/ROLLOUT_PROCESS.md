@@ -153,7 +153,7 @@ No fixed default — column count is correctly content-driven (3-up for 3 produc
 | Product | ✅ done | ✅ done | ✅ done | in progress | |
 | Solutions `[slug]` | ✅ done | ✅ done | ⚠️ outstanding | ⚠️ outstanding | Pre-scaffold `rounded-xl`/`shadow-md` still present; Pass required before Refine. |
 | About | ✅ done | ✅ done | 🔄 in progress | — | Section-by-section Pass underway. Done: Hero H1, Leadership (`TeamSection`), event card. Remaining: Our Story, AboutValues, Partners, Accreditations, Social Responsibility, Careers. |
-| Knowledge Hub | in progress | — | — | — | |
+| Knowledge Hub | ✅ done | ✅ done | 🔄 in progress | — | Pass underway, matched to routable.com/resources: SectionShell (tint + H2), Insights `ArticleCard` restructure, News lead + Events/Webinars title bumps, meta colour hierarchy. Remaining: masthead, tab band, News/Milestone card review. |
 | Customer Stories | in progress | — | — | — | |
 | Industries `[slug]` | in progress | — | — | — | |
 

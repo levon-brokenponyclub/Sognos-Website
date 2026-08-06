@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-06 (later) — Knowledge Hub Pass: section shell + News / Insights / Milestone cards
+
+Section-by-section Pass on the Knowledge Hub archive, matched to
+`routable.com/resources`. All in `components/layout/sections/KnowledgeHubArchive.tsx`.
+
+- **SectionShell:** tinted background `bg-gray-100` → `bg-sognos-tint` (global
+  surface token); section H2 `font-medium` → `font-normal` + `text-balance`
+  (kept the `text-3xl md:text-4xl` scale — did not adopt the reference's 40px
+  serif). Rhythm kept at global `py-20 md:py-28` (reference's `py-36` would
+  break the global default).
+- **ArticleCard (Insights + shared with both article-detail related rows):**
+  restructured — title now sits directly under the image at `text-xl`; pill +
+  `DATE — N MIN READ` sit together bottom-left, pinned via `mt-auto`. Removed
+  the old top pill row, the "Read more" affordance, and the `ArticleMeta`
+  helper (inlined). Card bottom border `border-gray-200` → `border-sognos-line`;
+  no-image placeholder `bg-gray-100` → `bg-sognos-tint`.
+- **Insights grid gap:** `gap-4` → `gap-x-6 gap-y-10`.
+- **Title sizes bumped to `text-xl`:** Insights (ArticleCard), the News **lead**
+  card (lead variant only — stacked News cards stay `text-lg`), and the Events &
+  Webinars cards (`EventCard`).
+- **Meta colour hierarchy unified to the News pattern** across Insights and
+  Milestone cards: date `text-sognos-muted`, read time `text-sognos-heading`
+  (was both muted).
+
 ## 2026-08-06 — Rollout tooling; global-defaults extraction; About Pass (Leadership); event card
 
 Docs, one shared-component fix, and a section-by-section Pass on the About page.
