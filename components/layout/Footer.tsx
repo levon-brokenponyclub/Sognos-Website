@@ -143,8 +143,8 @@ export default async function Footer() {
 
         {/* Acknowledgement of Country */}
         {content.acknowledgement && (
-          <div className="mt-8 border-t border-white/15 pt-10">
-            <p className="text-xs leading-relaxed text-white/60 max-w-4xl">
+          <div className="mt-8 border-t border-white/35 pt-10">
+            <p className="text-xs leading-relaxed text-center text-white/60 max-w-4xl">
               {content.acknowledgement}
             </p>
           </div>

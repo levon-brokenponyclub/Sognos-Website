@@ -58,3 +58,8 @@ certificates/data/
 # Sanity build artifacts
 dist/
 schema.json
+.sanity/
+
+# Non-source directories (excluded from file watchers)
+Project Docs/
+certificates/

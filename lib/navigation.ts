@@ -215,6 +215,6 @@ export const nav: NavGroup[] = [
 ];
 
 export const navCTA = {
-  secondary: { name: "Contact Sales", href: "/contact" },
+  secondary: { name: "Contact Us", href: "/contact" },
   primary: { name: "Book a Demo", href: "/contact" },
 };

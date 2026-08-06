@@ -65,7 +65,7 @@ export default async function ContactPage() {
                 <div className="rounded-2xl border border-sognos-border-subtle bg-white overflow-hidden">
                   {offices.map((office, i) => (
                     <div
-                      key={office.region}
+                      key={`${office.region}-${i}`}
                       className={`p-8 ${i > 0 ? "border-t border-sognos-border-subtle" : ""}`}
                     >
                       <div className="flex items-center gap-2 mb-3">
