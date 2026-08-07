@@ -1,5 +1,110 @@
 # Changelog
 
+## 2026-08-07 — Docs consolidation: 10 → 4 canonical, contradictions resolved
+
+Read-only audit → resolved two live rule contradictions → merged everything
+authoritative into `PROJECT_STATE.md`, trimmed `CLAUDE.md` to execution +
+gotchas, trimmed `ROLLOUT_PROCESS.md` to workflow only, archived 6 files
+with `git mv` (history preserved). Zero code changes.
+
+### Contradictions resolved
+
+- **Light section surfaces:** `bg-white` AND `bg-sognos-tint` are both
+  valid, distinct tones. Fixed the misleading "supersedes" wording that
+  read as if tint replaced white — the actual rule is tint + white are
+  distinct light options, and `bg-gray-50` / `bg-gray-200/70` are what
+  get replaced (→ either white or tint).
+- **Workflow stages** left as-is: project keeps 5-stage
+  (Scaffold → Approve → Pass → Refine → Roll out) in
+  `ROLLOUT_PROCESS.md`; personal 3-stage memory stays separate.
+
+### `docs/PROJECT_STATE.md` — single source of truth
+
+9 sections: design reference · **design rules (full authoritative table,
+absorbed from retired `CLAUDE_DESIGN_SYSTEM.md` LIVE items)** · stack ·
+**per-page application status (merged from design-system §19 + rollout
+"Where applied")** · next steps (14 items — audit gaps extracted) ·
+open decisions (17 items — audit decisions extracted) · **SognosCare
+sandbox scope (consolidated from scattered notes)** · preview routes ·
+related docs pointer.
+
+Absorbed rules that had drifted into the retired design-system doc but
+never made it into the "authoritative" rule tables:
+- Dark-surface text alpha ladder (`white / 75 / 50`, dividers `white/20`,
+  no `white/65`).
+- Sub-section H3 scale (`text-xl md:text-2xl font-medium`).
+- White-plate rule for third-party logos on tinted surfaces (from About
+  audit — Ingram Micro / Resco baked-in blue backgrounds).
+- Five signature editorial patterns: numbered enumerable-list marker ·
+  type-first columns · signature pull-quote · notched-rule motif ·
+  beacon pulse.
+- Sector tint tokens — five sectors documented (Energy & Utilities
+  sage still needs a real token added; carried over as open decision).
+
+### `CLAUDE.md` — trimmed to execution + gotchas
+
+§2 now a fast-pointer summary + "read `PROJECT_STATE.md` §2" for anything
+non-trivial. Preserved the full technical gotchas (Navbar model, drawer
+scroll isolation, Next.js 16 async `params`, etc.). Added the broken
+Roster GROQ query as a live known-bug pointer.
+
+### `docs/ROLLOUT_PROCESS.md` — trimmed to the loop
+
+Dropped the Global Layout Defaults table (duplicated `PROJECT_STATE.md`
+§2) and the "Where this has been applied" table (moved to
+`PROJECT_STATE.md` §4). Kept the five-stage loop, the "Rules that hold
+across every step" section, and the "Standing rule — Pass is a design
+discussion" section. 187 lines → ~110.
+
+### Archived — `git mv` → `docs/archive/`
+
+Six files moved with history preserved. Findings and un-applied rule
+proposals extracted into `PROJECT_STATE.md` before the move.
+
+| File | Lines | What was extracted |
+|---|---|---|
+| `CLAUDE_DESIGN_SYSTEM.md` | 594 | LIVE rules → §2; application status → §4; sandbox scope → §7 |
+| `COMPONENT_INVENTORY.md` | 160 | Only 1/10 pages mapped, stale (HomeProductCards still listed as live) — archived as failed experiment |
+| `ABOUT_PAGE_AUDIT.md` | 589 | 4 proposed rules → §2 (sub-H3 · alpha ladder · logo plates · notched-rule); priority items → §5 |
+| `BRAND_MATERIALS_AUDIT.md` | 323 | Sector-tint mapping · print palette · "First in Field Service" tagline · icon library · photography direction → §6 |
+| `PRODUCT_DATA_AUDIT.md` | 480 | Broken Roster GROQ query · ProductTrustStrip wiring · story→product schema · Genogram proof decision → §5 / §6 |
+| `CONTENT_AUDIT.md` | 152 | ProductSpotlight · `calloutBlock` parity · `ImageWithCaption` · CS `heroImage` decision → §5 |
+
+### Stale entries fixed while I was in there
+
+- `HomeProductCards` no longer listed as "in use and done" (archived
+  2026-08-07 last session).
+- Broken cross-reference `HOMEPAGE_INDUSTRIES_SOLUTIONS_AUDIT.md` (file
+  never existed) removed from all pointers.
+- Broken Roster GROQ query surfaced in both `PROJECT_STATE.md` §5 and
+  `CLAUDE.md` §3 gotchas.
+
+### `CLAUDE.md` §6 — new session-start / session-end protocol
+
+Added to make the "brief overview at start, changelog + session ID at end"
+loop a hard rule instead of tacit habit:
+
+- **Start:** read `PROJECT_STATE.md` + last 2–3 `CHANGELOG.md` entries,
+  then give a three-line confirmation (`Where we were` · `Style we're
+  going for` · `Consistency check`) — no question list.
+- **End:** append `CHANGELOG.md` entry with datestamp · scope · file
+  subsections · **Session ID** (from `~/.claude/projects/*/<uuid>.jsonl`)
+  · **Ended at** (where work stopped + what's next).
+
+### Net effect
+
+- 10 active docs → 4 canonical (`CLAUDE.md`, `PROJECT_STATE.md`,
+  `ROLLOUT_PROCESS.md`, `CHANGELOG.md`).
+- ~5,316 lines of active docs → ~3,200 (mostly `CHANGELOG.md`).
+- Zero "who's authoritative" cross-doc contradictions.
+- Every LIVE design rule now lives in one place.
+- Session start/end protocol codified in `CLAUDE.md` §6.
+
+**Session ID:** `2e32c6fd-65ed-47de-9819-f92d969795c9`
+**Ended at:** Docs consolidation committed. Next up — dev server back up + advance Home Products / Solutions / Industries from Scaffold → Pass (`PROJECT_STATE.md` §4.1 + §5 item 2).
+
+---
+
 ## 2026-08-07 — Interim design system, brand audits, SognosCare sandbox
 
 Long session covering design-system exploration, print-collateral audits,
@@ -1336,7 +1441,8 @@ Motion lifted from `21st.dev/@jatin-yadav05/components/split-testimonial`. The r
 
 - **`SolutionsSection.tsx`** brought onto `middesk.com/platform`'s Platform Overview card metrics. Background images kept as-is.
   - **Between cards: 8px.** The stack moved from `space-y-8 lg:space-y-12` to `flex flex-col gap-2`. The reference uses flex + gap for this rather than a space-y stack, and `space-y-2` also produced no margin here — the switch is both more faithful and works.
-  - **Within a card: 48px** between the visual and the copy, matching the reference's icon-to-text gap. **16px** between title and copy, with a **16px** right inset on the text group.
+  - **Within a card: 48px** 
+  - etween the visual and the copy, matching the reference's icon-to-text gap. **16px** between title and copy, with a **16px** right inset on the text group.
   - **Fixed card height removed.** `md:min-h-[380px] lg:min-h-[450px]` is gone — the reference lets cards size to content and stretch to the tallest in the row. Rows now measure 260px (set by the image's own `min-h-[260px]`) except one at 288px where the copy runs longer.
   - **Font weights: both heading and copy are `font-normal`.** The reference has no weight step between them; the `h3` was `font-medium`.
 

@@ -1,10 +1,11 @@
 # Claude Execution Control — Sognos React
 
-> **Execution rules only.** Project state, plan, roadmap and progress live in
-> `docs/PROJECT_STATE.md`. The redesign loop lives in
-> `docs/ROLLOUT_PROCESS.md`. Read those at the start of every task. This file
-> is the discipline that governs *how* work happens; those two are the *what*
-> and the *why*.
+> **Execution rules + gotchas only.** Design rules, state, roadmap, and
+> per-page status live in **`docs/PROJECT_STATE.md`** — read it at the start
+> of every task. The redesign loop lives in `docs/ROLLOUT_PROCESS.md`.
+> Session history lives in `docs/CHANGELOG.md`. This file is the discipline
+> that governs *how* work happens; those three are the *what*, *how*, and
+> *when*.
 
 ---
 
@@ -36,43 +37,41 @@ and can be implemented independently or together.
 
 ---
 
-## 2. Design rules (authoritative)
+## 2. Design rules — see `docs/PROJECT_STATE.md` §2
 
-The current design reference is **Routable** (<https://www.routable.com>).
-Only structure and mechanic are taken from the reference — Sognos copy and
-assets always ship. Full context in [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md).
+The full rules table (layout, radius, shadow, surfaces, typography,
+dark-alpha ladder, stat blocks, signature patterns, phased-out items) lives
+in `docs/PROJECT_STATE.md` §2. **That is authoritative.** Read it before
+touching any UI.
 
-| Concern | Rule |
-|---|---|
-| Typeface | Local **AngelList** variable font on both body and heading (`--font-sans`, `--font-heading`). |
-| Container | `max-w-7xl` = **1280px** via `--sognos-container-width`, `px-6`. |
-| Radius | **`rounded`** (4px) is the base and standard for all surfaces, cards, images, and pills. `rounded-md` or `rounded-lg` only when a specific treatment demands it — **ask and confirm before using**. `rounded-full` on **buttons only**. Never `xl` / `2xl` / `3xl` / `rounded-[Xrem]`. |
-| Shadows | **None, ever.** Separate with borders and tonal steps. |
-| Light section surface | **`bg-sognos-tint`**. Supersedes `bg-gray-50` and `bg-gray-200/70` on new or edited sections only — **do not sweep existing greys.** Legacy `bg-gray-50` / `bg-gray-200/70` stay in place unless the section is being worked on for another reason. |
-| Dark surface default | `bg-sognos-navy`. `-dark` / `-darkest` only when specified. |
-| Gap | `gap-3 lg:gap-4` standard. |
-| Section rhythm | `py-20 md:py-28`. |
-| Section H2 | `font-heading text-3xl font-medium tracking-tight md:text-4xl`; statement H2 (`HeadlineCTA`, `SolutionsSection`) `md:text-5xl`. |
-| Hero H1 | `font-normal`, `text-5xl md:text-6xl lg:text-7xl`. |
-| Eyebrow | `text-xs font-semibold uppercase tracking-widest` (`AnimatedEyebrow`, square dot). |
-| Body measure | `max-w-2xl` body, `max-w-3xl` hero sub, `max-w-[46rem]` article prose (`ARTICLE_PROSE_MAX_W`). |
-| Gradients | Hero and deliberate highlight surfaces only — never on standard cards or subcards. |
-| Stat blocks | Match `CTASection.tsx` exactly: grid `grid-cols-2 gap-3 lg:gap-4`; cell `relative flex flex-col justify-between h-full p-6 lg:p-8 rounded-lg overflow-hidden {bg}`; number `font-heading text-4xl lg:text-5xl font-medium tracking-tight leading-none`; label `text-xs font-semibold uppercase tracking-widest`. |
-| Primary CTA label | **"Book a Demo"** everywhere. |
-| Components | Server Components by default; `"use client"` only where interaction/motion demands it. |
+Fast pointers only, so this file stands alone for the gotchas below:
 
-If these ever conflict with `docs/PROJECT_STATE.md` §2, **PROJECT_STATE wins.**
+- **Design reference:** Routable. Structure + mechanic only; Sognos copy +
+  assets always ship.
+- **Typeface:** local **AngelList** variable font (`--font-sans`,
+  `--font-heading`).
+- **Radius:** `rounded` (4px) is the base for surfaces / cards / images /
+  pills; `rounded-full` is buttons only; never `xl` / `2xl` / `3xl` /
+  `rounded-[Xrem]`.
+- **No shadows, ever.** Separate with borders and tonal steps.
+- **Light section surfaces:** `bg-white` OR `bg-sognos-tint` — both valid,
+  different tones.
+- **Primary CTA label:** **"Book a Demo"** everywhere.
+- **Server Components by default.**
+
+Anything else — check `docs/PROJECT_STATE.md` §2. Don't guess.
 
 ---
 
 ## 3. Technical gotchas
 
-- **Linter strips code between saves** — always re-read a file before multi-step
-  edits; the bento overlay was silently removed twice by the formatter.
+- **Linter strips code between saves** — always re-read a file before
+  multi-step edits; the bento overlay was silently removed twice by the
+  formatter.
 - **Card backgrounds** — never `style={{ background: "" }}`; use `bg-white`.
   Empty string = transparent card = orbs invisible.
-- **FlyonUI is NOT installed** — translate any pasted FlyonUI snippet to React
-  state + Tailwind + Framer Motion.
+- **FlyonUI is NOT installed** — translate any pasted FlyonUI snippet to
+  React state + Tailwind + Framer Motion.
 - **Interactive sections** — any section using `useState`/hooks needs
   `"use client"` at the top.
 - **`@property --shine-angle`** — requires Chrome 85+ / Safari 15.4+. See
@@ -113,6 +112,9 @@ If these ever conflict with `docs/PROJECT_STATE.md` §2, **PROJECT_STATE wins.**
 - **`ProductSubNav` sections prop** — shape is
   `{ label: string; id: string; href?: string }[]` (matches `SubNavSection`
   exported from `ProductSubNav.tsx`); `href` defaults to `#${id}` if omitted.
+- **Sanity Roster stories query is broken** — `getSognosrosterPageContent()`
+  selects `stories`; schema field is `featuredStories`. Roster Sanity stories
+  never reach the page. One-line GROQ fix in `lib/sanity/queries.ts`.
 
 ---
 
@@ -139,15 +141,51 @@ If these ever conflict with `docs/PROJECT_STATE.md` §2, **PROJECT_STATE wins.**
 
 ## 5. Source of truth & session loop
 
-- **`docs/PROJECT_STATE.md`** is the authoritative state of record — reference,
-  design rules, stack, component status, next steps, open decisions. Read at
-  the **start** of every task; update at the **end** of every task.
-- **`docs/ROLLOUT_PROCESS.md`** is the per-page redesign loop
-  (scaffold → approve → refine → roll out). Follow it for any new page.
-- **`docs/CHANGELOG.md`** is append-only history — one entry per task
+- **`docs/PROJECT_STATE.md`** — authoritative for design rules (§2), stack
+  (§3), per-page application status (§4), next steps (§5), open decisions
+  (§6), the SognosCare sandbox scope (§7), preview routes (§8). Read at the
+  **start** of every task; update at the **end** of every task.
+- **`docs/ROLLOUT_PROCESS.md`** — the per-page redesign loop
+  (Scaffold → Approve → Pass → Refine → Roll out). Follow it for any new
+  page.
+- **`docs/CHANGELOG.md`** — append-only history — one entry per task
   (date · what changed · files · why).
-- **`docs/COMPONENT_INVENTORY.md`** answers "does this pattern already exist?"
-  — read before building anything new (reuse before invent).
-- **`docs/archive/`** holds superseded audits/plans (including the retired
-  `DESIGN_MIGRATION_STATE.md`, `FEATURE_LOG.md`, `SLIDER_PATTERN.md`, and the
-  Cohere-era mapping docs) — **historical only, never current.**
+- **`docs/archive/`** — retired: `CLAUDE_DESIGN_SYSTEM.md`,
+  `COMPONENT_INVENTORY.md`, `ABOUT_PAGE_AUDIT.md`,
+  `BRAND_MATERIALS_AUDIT.md`, `PRODUCT_DATA_AUDIT.md`, `CONTENT_AUDIT.md`,
+  plus earlier docs (`DESIGN_MIGRATION_STATE.md`, `SLIDER_PATTERN.md`,
+  `FEATURE_LOG.md`, Cohere-era mapping docs). **Historical only, never
+  current.** Live state lives in `PROJECT_STATE.md`.
+
+---
+
+## 6. Session start + session end
+
+### Start of every session
+
+Read `docs/PROJECT_STATE.md` (state · rules · status) and skim the last
+2–3 entries of `docs/CHANGELOG.md`. Confirm with the user in a brief
+overview — **no question list**, no "here's what I need to know before I
+start." Three lines, one topic each:
+
+> **Where we were:** [last session's outcome + any in-progress work]
+> **Style we're going for:** [active design posture — Routable, sandbox scope, current phase]
+> **Consistency check:** [any live rule shift, open decision, or blocker that matters right now]
+
+Then proceed with the user's ask. Only ask a clarifying question if the
+docs genuinely don't answer it.
+
+### End of every session
+
+Append a `docs/CHANGELOG.md` entry with this shape:
+
+- `## YYYY-MM-DD — <short scope title>`
+- One-line intro (why this session mattered — outcome, not activity).
+- Subsections per work chunk (`### Subsection` — files · what changed · why).
+- `**Session ID:** <uuid>` — from the transcript filename at
+  `~/.claude/projects/-<escaped-cwd>/<uuid>.jsonl`. Run
+  `ls -t ~/.claude/projects/*/*.jsonl | head -1` if not visible.
+- `**Ended at:** <one line>` — where the work stopped + what comes next.
+
+Keep it dense. One section per work chunk, no filler. Match the existing
+changelog voice.
