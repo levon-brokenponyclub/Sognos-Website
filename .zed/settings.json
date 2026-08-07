@@ -1,5 +1,22 @@
 {// Folder-specific settings
 //
 // For a full list of overridable settings, and general information on folder-specific settings,//zed.dev/docs/configuring-zed#settings-files
+  "terminal": {
+    "shell": {
+      "with_arguments": {
+        "program": "sh",
+        "args": []
+      }
+    }
+  },
+  "languages": {
+    "CSS": {
+      "hard_tabs": true
+    }
+  },
+  "always_treat_brackets_as_autoclosed": false,
+  "indent_guides": {
+    "background_coloring": "disabled"
+  },
   "project_name": "Sognos"
 }

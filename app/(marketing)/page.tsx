@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Hero from "@/components/layout/sections/Hero";
-import HomeProductCards from "@/components/layout/sections/HomeProductCards";
 import LogoStrip from "@/components/layout/sections/LogoStrip";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import HowSognosWorks from "@/components/layout/sections/HowSognosWorks";
+// import ProductsSection from "@/components/layout/sections/ProductsSection"; // parked — coming back after Solutions Pass
 import IndustrySection from "@/components/layout/sections/IndustrySection";
 import HeadlineCTA from "@/components/layout/sections/HeadlineCTA";
 import SolutionsSection from "@/components/layout/sections/SolutionsSection";
@@ -91,15 +92,31 @@ export default async function HomePage() {
       {/* Hero · navy. The trust strip is passed as a child so it renders
           inside the hero section; `LogoStrip` is an async Server Component and
           `Hero` is a Client Component, so it cannot be imported there. */}
-      <Hero>
-        <HomeProductCards /> {/* 3-product AngelList cards (Care / Roster / Genogram) */}
-        <LogoStrip /> {/* "Trusted by industry leaders and professionals worldwide" */}
+      <Hero
+        centerpiece={
+          // PLACEHOLDER motion image — Routable payouts UI visual, cropped by
+          // the 2.4:1 panel. Swap for the real Sognos motion asset.
+          <Image
+            src="/dev/Instant-Payouts-Visual-Static.avif"
+            alt=""
+            fill
+            priority
+            className="object-cover object-top"
+          />
+        }
+      >
+        <LogoStrip showTitle={false} />
       </Hero>
-      <HowSognosWorks /> {/* "Safe. Flexible. Independent." — 3 blocks */}
-      <IndustrySection /> {/* "Powering progress across industries" */}
+      <ScrollReveal>
+        {/* Merged narrative section: HIW header states the thesis, product
+            cards answer "with what", timer deck answers "how it flows". */}
+        <HowSognosWorks />
+      </ScrollReveal>
+      {/* <ProductsSection /> — parked pending review, coming back after Solutions Pass */}
+      <SolutionsSection /> {/* What extends those products — 7 stacked FeatureRows */}
       <HeadlineCTA platformLogos={cta.logos} />{" "}
       {/* Navy statement CTA — platform orbit + per-word blur reveal */}
-      <SolutionsSection /> {/* "Our models. Your business." */}
+      <IndustrySection /> {/* Where those solutions apply — 5-card sector rail */}
       <CustomerStories /> {/* Embla gutter-inset slider, product-dark palette */}
       <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
     </>

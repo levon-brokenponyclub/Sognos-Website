@@ -30,9 +30,21 @@ import ElegantDarkPattern from "@/components/layout/sections/shared/ElegantDarkP
 
 // slug → { label shown, `knowledgePost.category` value to match }
 const CATEGORIES = {
-  news: { label: "News", category: "News" },
-  insights: { label: "Insights", category: "Insights" },
-  milestones: { label: "Milestones", category: "Milestone" },
+  news: {
+    label: "News",
+    category: "News",
+    description: "Company updates, partnership announcements, and the latest from the Sognos team.",
+  },
+  insights: {
+    label: "Insights",
+    category: "Insights",
+    description: "Deep dives into care operations, workforce scheduling, and the technology shaping field service.",
+  },
+  milestones: {
+    label: "Milestones",
+    category: "Milestone",
+    description: "Key moments in the Sognos journey — product launches, team growth, and the wins worth celebrating.",
+  },
 } as const;
 type CategorySlug = keyof typeof CATEGORIES;
 
@@ -116,24 +128,25 @@ export default async function KnowledgeHubCategoryPage({
 
   return (
     <>
-      {/* 1 — dark masthead: the category name, left-aligned after the
-          reference, over the shared elegant-dark background. */}
-      <section className="relative overflow-hidden bg-sognos-navy-darkest pb-12 pt-10 text-dark md:pb-32 md:pt-12">
+      {/* 1 — dark masthead with category description and article count. */}
+      <section className="relative overflow-hidden bg-sognos-navy-darkest pb-16 pt-32 lg:pt-40 md:pb-20">
         <ElegantDarkPattern />
         <div className="relative z-10 mx-auto max-w-7xl px-6">
-          <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-7">
-              <AnimatedEyebrow
-                dotClassName="bg-sognos-blue-accent"
-                textClassName="text-sognos-muted"
-              >
-                Knowledge Hub
-              </AnimatedEyebrow>
-              <h1 className="mt-5 font-heading font-normal text-white text-5xl tracking-tight text-balance lg:text-6xl">
-                {cfg.label}
-              </h1>
-            </div>
-          </div>
+          <AnimatedEyebrow
+            dotClassName="bg-sognos-blue-accent"
+            textClassName="text-white/70"
+          >
+            Knowledge Hub
+          </AnimatedEyebrow>
+          <h1 className="mt-5 font-heading font-normal text-white text-5xl tracking-tight text-balance md:text-6xl lg:text-7xl">
+            {cfg.label}
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
+            {cfg.description}
+          </p>
+          <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-white/30">
+            {articles.length} {articles.length === 1 ? "article" : "articles"}
+          </p>
         </div>
       </section>
 
@@ -174,33 +187,60 @@ export default async function KnowledgeHubCategoryPage({
         </div>
       </div>
 
-      {/* 3 — filter + grid. */}
+      {/* 3 — lead feature + grid. */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          {/* "All topics" — disabled placeholder. No topic/tag field exists in
-              the content model yet, so there is nothing to filter by. Kept for
-              structural parity with the reference; wire it up when a topic
-              field lands. */}
-          <div className="mb-10 md:mb-12">
-            <label htmlFor="topic-filter" className="sr-only">
-              Filter by topic
-            </label>
-            <select
-              id="topic-filter"
-              defaultValue="all"
-              disabled
-              className="w-fit border-0 border-b-2 border-sognos-line bg-transparent pr-8 pb-1 text-base text-sognos-heading disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <option value="all">All topics</option>
-            </select>
-          </div>
-
           {articles.length > 0 ? (
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-3">
-              {articles.map((a) => (
-                <ArticleCard key={a.slug} article={a} />
-              ))}
-            </div>
+            <>
+              {/* Lead article — wide card with image */}
+              {articles[0] && (
+                <Link
+                  href={articles[0].href}
+                  className="group mb-14 grid grid-cols-1 gap-6 border-b border-sognos-line pb-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-10"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded bg-sognos-tint">
+                    {articles[0].image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={articles[0].image}
+                        alt=""
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-sognos-tint" />
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                      {articles[0].category}
+                    </span>
+                    <h2 className="mt-4 font-heading text-2xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent md:text-3xl">
+                      {articles[0].title}
+                    </h2>
+                    {articles[0].excerpt && (
+                      <p className="mt-3 line-clamp-3 text-base leading-relaxed text-sognos-body">
+                        {articles[0].excerpt}
+                      </p>
+                    )}
+                    {articles[0].publishedAt && (
+                      <p className="mt-6 text-xs uppercase tracking-wide text-sognos-muted">
+                        {formatDate(articles[0].publishedAt)}
+                        {articles[0].readTime && ` · ${articles[0].readTime}`}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              )}
+
+              {/* Remaining articles */}
+              {articles.length > 1 && (
+                <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-3">
+                  {articles.slice(1).map((a) => (
+                    <ArticleCard key={a.slug} article={a} />
+                  ))}
+                </div>
+              )}
+            </>
           ) : (
             <p className="text-sognos-muted">Nothing here yet.</p>
           )}

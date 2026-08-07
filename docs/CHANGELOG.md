@@ -1,5 +1,155 @@
 # Changelog
 
+## 2026-08-08 — Reference research: Ripplix cross-reference + hero asset direction
+
+Research-only session (no code changes) feeding the Pass/Refine stages of the
+homepage restructure — sourcing product-detail interface imagery ("abstracted
+UI" panels, feature callouts, motion loops) to replace the Routable
+placeholder AVIFs in `public/dev/`.
+
+### Ripplix directory cross-reference
+
+Extracted the full ripplix.com/all-apps directory (1,093 apps, 25 categories)
+via browser JS and matched against Sognos's product shape. Shortlist by group:
+
+- **Case/intake (SognosCare):** August Health (closest product on the entire
+  directory — senior-living care ops: records, intake, compliance), Deputy,
+  Front, Zendesk/Intercom, Process Street, Healthy Together.
+- **Dispatch/rostering (SognosRoster):** Deputy (only true rostering product
+  listed), Rootly (on-call assignment = same "right person, right now" shape),
+  Aircall; Doordash/Gojek/Waze for map/ETA motion language only.
+- **CRM record surface:** Attio (best-in-class), HubSpot CRM, Pipedrive, Clay,
+  Planhat, Basedash/Retool/Airtable.
+- **Genogram/network mapping:** WEAK — nothing purpose-built on Ripplix.
+  Nearest: Miro/Whimsical/Mural node canvases, Clay people-graph. Needs an
+  off-directory source.
+- **Dashboards:** PostHog, Mixpanel, Mode, Lattice, Checkly.
+- **Automation canvas (Power Automate analog):** Tines (best capture), Zapier,
+  Typebot, Buddy/Drone CI.
+- **Marketing tone/IA:** Mercury, Attio, Plaid, Spendesk, Pleo, Railway,
+  Resend — same product-UI-forward family as Routable.
+- Missing entirely: field-service verticals (ServiceTitan/Jobber class),
+  compliance SaaS (Vanta/Drata class), gov-sector products.
+
+### Hero asset direction
+
+- Terminology locked for sourcing: "abstracted UI" / "stylised product UI" /
+  "SaaS hero mockup" / "floating UI cards" / "feature callout cards".
+- Two exemplars reviewed live: **Attio** (hero = the interface doing its job —
+  record assembles, statuses tick) vs **Mercury** (dashboard at keynote
+  fidelity — one element moves at a time, restraint as the language).
+- Honest gap named: our hero *mechanic* (drift + scale) is already right;
+  the missing piece is the **asset** — a layered abstracted-UI panel of the
+  Sognos interface (Figma vector composition, fake data), animatable per
+  layer with Framer Motion or exported as a loop. Design task, not dev.
+- Decision parked to §6 of PROJECT_STATE: Attio "product working" vs Mercury
+  "product presiding" posture. Deep-dives on capture pages deferred until we
+  reach the relevant sections — jumping ahead was called off.
+
+**Session ID:** 2e32c6fd-65ed-47de-9819-f92d969795c9
+**Ended at:** Reference shortlist logged; next session resumes with the
+merged-section width Pass (deck `max-w-7xl` vs cards `max-w-6xl`), then
+section-by-section Pass with references pulled per section as we reach them.
+
+## 2026-08-07 — Home restructure: hero motion + merged narrative section
+
+Homepage rebuilt around a readable What/How/Why/Where journey. Hero slimmed
+to message + motion + trust; Products merged into the How-it-works narrative;
+Solutions + Industries rescaffolded as direct Routable copies. Scaffold
+stage throughout — Pass pending.
+
+### Hero — Routable payouts-hero structure (`Hero.tsx`, `LogoStrip.tsx`)
+
+- Order: eyebrow ("The Sognos Platform", product-hero label style) → H1 →
+  intro → CTAs → motion-image panel → trust logos (title hidden via new
+  `LogoStrip showTitle` prop).
+- Motion-image panel: `aspect-[16/10]` `rounded-lg` at `max-w-6xl` — tall
+  enough to run off the fold at load. Drifts DOWN 80px slower than scroll +
+  scales 0.97→1.04 (product-hero mechanic: following content tracks up
+  faster and overtakes the card). Placeholder asset:
+  `/dev/Instant-Payouts-Visual-Static.avif`, `object-cover object-top`.
+- Background: continuous drift loop on the three blur layers (18–30s
+  periods, reduced-motion guarded) — placeholder for the Routable-style
+  fluid texture video. Technique extracted from the saved Routable page:
+  one looping muted texture video at z-0 + `from-dark` gradient edge masks
+  (left/right 15%, top 200px) + content at z-10. Real upgrade = one seamless
+  fluid loop asset.
+- Copy-block scroll parallax (y/opacity drift) disabled pending hierarchy
+  decisions — transforms still computed, one line to re-attach.
+
+### Merged narrative section (`HowSognosWorks.tsx`, `HomeProductCards.tsx`)
+
+Header states the thesis, product cards answer "with what", timer blocks
+answer "how it flows":
+
+- HIW header (eyebrow + H2 + intro + Microsoft logos pill) unchanged, on
+  the existing `bg-sognos-tint` section.
+- `HomeProductCards` un-archived (git mv back) and merged in below the
+  header. Light re-skin: white panels + `border-sognos-line` hairlines +
+  color product logos (`sognos-*-logo-color.svg`, invert dropped), dark
+  text, arrow buttons keep per-product accent hover fill. Own
+  section/padding wrapper removed — parent supplies rhythm.
+- Timer deck: panel images removed (deck auto-skips the panel when cards
+  carry no `image`) — the three text blocks sit directly under the product
+  cards. One-line restore in CARDS.
+- AI pipeline (`SognosPipeline`) hidden (commented) pending final home;
+  was briefly the hero centerpiece, then HIW top block.
+
+### SolutionsSection — rescaffold (Routable global-payouts pattern)
+
+Direct copy of the sticky-gutter stacked-rows section: centered header
+(H2 + body + "Explore all Solutions →") capped 39.25rem, then 4 rows
+(Frontline, CRM, Customer Insights, Customer Experience — first 4 of 7 per
+2026-08-07 call) with sticky gutter label (`lg:sticky lg:top-24 lg:w-48`),
+image left / text right (`sm:grid-cols-2`, text col `23.625rem`), every row
+carries its explore link. Section on global `py-20 md:py-28`. Placeholder
+images: the three `*-Payouts-Visual-Static.avif` files cycling. Hardcoded
+reference values documented in the file header for Refine.
+
+### IndustrySection + FeatureRail — rescaffold (Routable swiper pattern)
+
+Direct copy of the "Scale your payment operations" swiper: header block
+(42.5rem cap, H2 628px lg cap, body 520px at 80% opacity), rail of
+`w-72 md:w-[628px]` cards at `gap-6`, panel `aspect-[628/420] rounded` with
+per-sector pastel tints (inline hex pending tokens), label → panel `mt-4
+lg:mt-5`, panel → body `mt-4 lg:mt-7`, dark explore links with arrow
+translate hover. Added `p-8 lg:p-12` panel padding (placeholder SVGs need
+breathing room — remove when real mocks land).
+
+### ProductsSection — parked
+
+Commented out of the page (import + render) pending review. The PartnerCard
+grid + logo strip scaffold survives in the file.
+
+### Process/memory updates
+
+- New Pass rules saved to memory: findings as 2-line problem+fix; Pass =
+  visual sticker-match of the reference using our tokens (not role/tag
+  driven); scaffold copies reference values verbatim, hardcoded values
+  allowed + tracked for Refine.
+- `feedback-design-system-rules` memory refreshed post-consolidation
+  (was: rounded-lg / bg-gray-200/70 era — superseded).
+- FeatureRow Pass applied earlier in the stretch: body font stepping, gap
+  `gap-12 lg:gap-10`, new "Row / Feature H3" rule added to PROJECT_STATE §2.
+
+### Known issues — next Pass
+
+- **Widths scrambled in the merged section:** timer deck runs the section's
+  `max-w-7xl` while product cards cap at `max-w-6xl` — deck blocks render
+  wider than the cards above them. Normalize in the section Pass.
+- Merged section is tall — watch mobile.
+- Hero placeholder assets ×2 (panel image + background motion) awaiting
+  real Sognos visuals.
+- `public/dev/` duplicate downloads (`* (1).avif`, `* (2).avif`) — delete
+  in cleanup.
+
+**Session ID:** `2e32c6fd-65ed-47de-9819-f92d969795c9`
+**Ended at:** Break after home restructure. Next: Pass on the merged
+HIW+Products section (width normalization first), then remaining home
+sections; the What/How/Why/Where journey balance is the open design thread.
+
+---
+
 ## 2026-08-07 — Docs consolidation: 10 → 4 canonical, contradictions resolved
 
 Read-only audit → resolved two live rule contradictions → merged everything

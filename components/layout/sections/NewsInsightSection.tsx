@@ -87,7 +87,7 @@ function Tile({
   return (
     <Link
       href={article.href}
-      className={`group relative flex min-h-[340px] flex-col overflow-hidden rounded-lg ${surface}`}
+      className={`group relative flex min-h-[340px] flex-col overflow-hidden rounded ${surface}`}
     >
       {/* The reference nests a padded flex wrapper inside the article rather
           than padding the article itself, so the picture can fill the tile
@@ -174,7 +174,7 @@ function Tile({
                   </h3>
                   {(article.date || article.readTime) && (
                     <p
-                      className={`text-xs font-base tracking-wide uppercase ${metaValue}`}
+                      className={`text-xs font-normal tracking-wide uppercase ${metaValue}`}
                     >
                       {article.date && (
                         <span className={metaLabel}>

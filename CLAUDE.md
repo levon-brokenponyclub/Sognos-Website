@@ -177,6 +177,17 @@ docs genuinely don't answer it.
 
 ### End of every session
 
+Before closing out:
+
+1. **Kill all local dev servers** — Next.js ports + any ad-hoc servers
+   started during the session
+   (`lsof -ti:3000,3001,3002 | xargs kill; pkill -f "next dev"`).
+2. **Provide the session chat name** for the user to apply, format:
+   `Sognos — <scope> · YYYY-MM-DD HH:MM` (date/time = end of session).
+   Claude has no rename tool — output the name clearly so the user can
+   set it in the session picker.
+3. **Append the changelog entry** (below).
+
 Append a `docs/CHANGELOG.md` entry with this shape:
 
 - `## YYYY-MM-DD — <short scope title>`

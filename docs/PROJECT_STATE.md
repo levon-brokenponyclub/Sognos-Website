@@ -55,6 +55,7 @@ The one rules table. If any other doc drifts, this doc wins.
 | Section H2 (standard) | `font-heading text-3xl font-medium tracking-tight md:text-4xl`. |
 | Statement H2 (`HeadlineCTA`, `SolutionsSection`, `IndustrySection`) | `font-heading text-3xl font-medium tracking-tight md:text-5xl`. |
 | Sub-section H3 | `font-heading text-xl md:text-2xl font-medium tracking-tight text-sognos-heading`. One step below section H2. Use inside sections for sub-bands (Accreditations under Partners, etc.). |
+| Row / Feature H3 | `font-heading text-2xl md:text-3xl font-medium leading-tight tracking-tight text-sognos-heading`. One step above sub-section H3. Use inside repeating `FeatureRow` / feature-row shapes where each row headline is a display moment (e.g. `SolutionsSection` rows, product feature rows). |
 | Body | `text-base md:text-lg leading-relaxed text-sognos-body`. |
 | Body measure | `max-w-2xl` body, `max-w-3xl` hero sub, `max-w-[46rem]` article prose (`ARTICLE_PROSE_MAX_W`). |
 | Eyebrow | `text-xs font-semibold uppercase tracking-widest` + 9px square dot. Use `AnimatedEyebrow` — its default is `font-semibold`. Eyebrows sit above headings; don't use them as an orphaned title. |
@@ -188,16 +189,16 @@ Per-page snapshot of what's actually on the site. **Update this table
 whenever a pattern is applied.** Don't overpromise: if a section is
 untouched, mark ❌.
 
-### 4.1 Homepage
+### 4.1 Homepage (restructured 2026-08-07 — see CHANGELOG "Home restructure")
 
 | Section | Status | Notes |
 |---|---|---|
-| Hero | ✅ live | Sandbox reverted 2026-08-07; kept `rounded-sm` → `rounded-full` button fix (§2.8 compliance). Centrepiece now `SognosPipeline` (2026-08-07 — HomeProductCards archived). |
-| LogoStrip | ✅ live | Trust marquee, Sanity-backed. |
-| HowSognosWorks | ✅ live | Pipeline addition proposal parked. |
-| ProductsSection | 🟡 scaffold | Reuses `PartnerCard` verbatim on `bg-sognos-tint` + dashed-border static logo strip. Awaiting Pass. |
-| SolutionsSection | 🟡 scaffold | 7 stacked `FeatureRow`s. Awaiting Pass. |
-| IndustrySection | 🟡 scaffold | 5-card `FeatureRail` with per-sector inline hex tints. Awaiting Pass + sector token migration. |
+| Hero | 🟡 scaffold | Routable payouts-hero structure: eyebrow → H1 → intro → CTAs → tall motion-image panel (`aspect-[16/10]`, down-drift + grow on scroll) → trust logos (no title). Two placeholder assets pending (panel image + background fluid loop). Copy parallax disabled. |
+| LogoStrip | ✅ live | Trust marquee, Sanity-backed. New `showTitle` prop (hero passes `false`). |
+| HowSognosWorks (merged narrative) | 🟡 scaffold | HIW header + `HomeProductCards` (light re-skin) + timer deck (panel images removed). **Pass needed: deck `max-w-7xl` vs cards `max-w-6xl` width mismatch.** Pipeline hidden in file. |
+| ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
+| SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. Awaiting Pass. |
+| IndustrySection | 🟡 scaffold | Routable swiper rescaffold: 628px cards, per-sector inline hex tints. Awaiting Pass + sector token migration. |
 | HeadlineCTA | ⚠️ pending fix | `rounded-sm` button violation flagged, not fixed. |
 | CustomerStories | ✅ live | Embla gutter-inset slider, product-dark palette. |
 | NewsInsightSection | ⚠️ structure only | Styling pending; feature-tile scrim bug flagged, not fixed. |
@@ -334,6 +335,14 @@ Design + code work, ordered by impact.
 
 ## 6. Open decisions
 
+- **Hero motion asset — posture + production.** Mechanic (drift + scale) is
+  built; missing piece is a layered abstracted-UI panel of the Sognos
+  interface (Figma vector composition, fake data, animatable per layer).
+  Posture choice pending: Attio "product working" (record assembles, statuses
+  tick) vs Mercury "product presiding" (keynote-still dashboard, one element
+  moving at a time). Reference shortlist per product group lives in the
+  2026-08-08 changelog entry (Ripplix cross-reference). Genogram has no
+  Ripplix reference — needs an off-directory source.
 - **Sector-tinted `IndustrySection` treatment** — brochure already codes the
   five sectors with pastel tints + line icons. Live section treats all five
   identically. Biggest ROI opportunity in the audits. Needs approval on

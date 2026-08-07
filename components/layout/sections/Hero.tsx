@@ -12,6 +12,7 @@ import { useBookDemo } from "@/lib/BookDemoContext";
 import ElegantDarkPattern from "@/components/layout/sections/shared/ElegantDarkPattern";
 
 type HeroProps = {
+  eyebrow?: string;
   headline?: React.ReactNode;
   subtext?: string;
   primaryCTA?: { name: string };
@@ -21,6 +22,12 @@ type HeroProps = {
    *  is an async Server Component, so it has to arrive as a child from a
    *  server parent instead of being rendered here. */
   children?: React.ReactNode;
+  /** Optional centered showpiece below the CTAs — matches the product hero
+   *  pattern (Care/Roster/Genogram each carry an aspect-ratio panel with the
+   *  product logo/pipeline centered inside). On home this holds the AI
+   *  pipeline infographic. Rendered inside the scroll-parallax motion.div so
+   *  it drifts and fades with the copy. */
+  centerpiece?: React.ReactNode;
 };
 
 // Glow artwork anchored to the foot of the hero, back to front. Intrinsic
@@ -79,22 +86,42 @@ function HeroBlurLayers() {
             ease: [0.22, 1, 0.36, 1],
           }}
         >
-          {/* `unoptimized`: these are already AVIF at 12–34KB, so there is
-              nothing for the optimizer to win — and two things to lose. It
-              re-encodes to JPEG for any client that does not advertise AVIF or
-              WebP, and these glows carry an alpha channel, so that fallback
-              would flatten them to a solid box. Re-encoding a 1335×612 AVIF is
-              also slow enough on a cold cache to stall the hero's first paint.
-              Serving the file as authored avoids both. */}
-          <Image
-            src={layer.src}
-            alt=""
-            width={layer.width}
-            height={layer.height}
-            draggable={false}
-            unoptimized
-            className="h-auto w-full"
-          />
+          {/* Continuous drift loop — PLACEHOLDER for the fluid background
+              motion (reference: routable.com payouts hero). Each layer
+              breathes on its own period so the stack reads organic, not
+              synchronized. Swap for the real motion asset when it lands. */}
+          <motion.div
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    y: [0, -14, 0, 10, 0],
+                    scale: [1, 1.05, 1.02, 1.06, 1],
+                  }
+            }
+            transition={{
+              duration: 18 + i * 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            {/* `unoptimized`: these are already AVIF at 12–34KB, so there is
+                nothing for the optimizer to win — and two things to lose. It
+                re-encodes to JPEG for any client that does not advertise AVIF or
+                WebP, and these glows carry an alpha channel, so that fallback
+                would flatten them to a solid box. Re-encoding a 1335×612 AVIF is
+                also slow enough on a cold cache to stall the hero's first paint.
+                Serving the file as authored avoids both. */}
+            <Image
+              src={layer.src}
+              alt=""
+              width={layer.width}
+              height={layer.height}
+              draggable={false}
+              unoptimized
+              className="h-auto w-full"
+            />
+          </motion.div>
         </motion.div>
       ))}
 
@@ -106,6 +133,7 @@ function HeroBlurLayers() {
 }
 
 export default function Hero({
+  eyebrow = "The Sognos Platform",
   headline = (
     <>
       Your entire service operation,
@@ -117,6 +145,7 @@ export default function Hero({
   primaryCTA = { name: "Book a Demo" },
   secondaryCTA = { name: "Explore products", href: "/products" },
   children,
+  centerpiece,
 }: HeroProps) {
   const { openModal } = useBookDemo();
 
@@ -141,6 +170,19 @@ export default function Hero({
     [0, 0.7],
     prefersReducedMotion ? [1, 1] : [1, 0],
   );
+  // Motion-image drift: product-hero mechanic — the panel drifts DOWN slower
+  // than scroll (the following content tracks up faster and overtakes it)
+  // while scaling up slightly, so it reads as growing into the screen.
+  const panelY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 80],
+  );
+  const panelScale = useTransform(
+    scrollYProgress,
+    [0, 0.5],
+    prefersReducedMotion ? [1, 1] : [0.97, 1.04],
+  );
 
   return (
     <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-0">
@@ -155,22 +197,34 @@ export default function Hero({
           experiment): fixes CLAUDE.md §15 PHASED OUT violation
           (`rounded-sm on buttons`). Not part of the sandbox weight
           ladder — this is a standalone bug fix. */}
+      {/* Scroll parallax (y/opacity drift) disabled 2026-08-07 until section
+          nesting + hierarchy is decided — transforms still computed above,
+          re-attach via style={{ y, opacity }} to restore. */}
       <motion.div
         ref={contentRef}
-        style={{ y, opacity }}
-        className="relative z-10 mx-auto max-w-7xl px-6 text-left will-change-transform lg:text-center"
+        className="relative z-10 mx-auto max-w-7xl px-6 text-left lg:text-center"
       >
-        <motion.h1
+        {/* Eyebrow — matches the product hero label (see sognosroster/Hero.tsx) */}
+        <motion.p
           custom={0}
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-5xl tracking-tight text-balance lg:text-6xl"
+          className="text-xs font-semibold uppercase tracking-[0.08em] text-white/60"
+        >
+          {eyebrow}
+        </motion.p>
+        <motion.h1
+          custom={1}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          className="mx-auto mt-4 max-w-[1128px] font-heading font-normal text-white text-5xl tracking-tight text-balance lg:text-6xl"
         >
           {headline}
         </motion.h1>
         <motion.p
-          custom={1}
+          custom={2}
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -179,7 +233,7 @@ export default function Hero({
           {subtext}
         </motion.p>
         <motion.div
-          custom={2}
+          custom={3}
           variants={fadeUp}
           initial="hidden"
           animate="show"
@@ -204,6 +258,23 @@ export default function Hero({
             <span aria-hidden="true">&#8599;</span>
           </Link>
         </motion.div>
+
+        {/* Motion image — taller panel that runs off the fold at load, then
+            drifts down slower than scroll + scales up as the user scrolls
+            (product-hero mechanic: following content tracks up faster than
+            the card). aspect-[16/10] makes it tall enough to be cut by the
+            viewport bottom on desktop. Placeholder asset until the real
+            motion visual lands. */}
+        {centerpiece && (
+          <motion.div
+            style={{ y: panelY, scale: panelScale }}
+            className="mx-auto mt-16 w-full max-w-6xl will-change-transform"
+          >
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-sognos-navy-dark">
+              {centerpiece}
+            </div>
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Trust strip, inside the hero rather than a sibling below it. Sits

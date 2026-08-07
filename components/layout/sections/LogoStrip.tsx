@@ -22,7 +22,11 @@ function resolveLogoSrc(logo: Logo) {
     : logo.src;
 }
 
-export default async function LogoStrip() {
+export default async function LogoStrip({
+  showTitle = true,
+}: {
+  showTitle?: boolean;
+}) {
   const content = await getLogoStripContent();
   const logos: Logo[] = (
     content?.logos?.length
@@ -36,9 +40,11 @@ export default async function LogoStrip() {
     // cover those layers.
     <section aria-label="Trusted organisations" className="w-full">
       <div className="mx-auto max-w-5xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
-        <h3 className="mb-8 font-heading text-3xl tracking-tight text-white">
-          {LOGO_STRIP_TITLE}
-        </h3>
+        {showTitle && (
+          <h3 className="mb-8 font-heading text-3xl tracking-tight text-white">
+            {LOGO_STRIP_TITLE}
+          </h3>
+        )}
         <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:flex-nowrap md:justify-between md:gap-x-0">
           {logos.map((logo, index) => {
             const src = resolveLogoSrc(logo);

@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ProgressButton } from "@/components/layout/sections/shared/TimerCardDeck";
 import {
   KnowledgeHubSearchDialog,
   type KnowledgeHubSearchItem,
 } from "@/components/ui/knowledge-hub-search-dialog";
 import { formatDate } from "@/lib/formatDate";
+
+const HERO_AUTOPLAY_MS = 8000;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -64,7 +68,7 @@ export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
-      className="group flex flex-col pb-6 border-b border-sognos-line"
+      className="group flex flex-col pb-6 border-b border-sognos-line text-sognos-heading"
     >
       <div className="relative max-h-52 aspect-[16/10] w-full overflow-hidden rounded">
         {article.image ? (
@@ -91,7 +95,7 @@ export function ArticleCard({ article }: { article: Article }) {
             {article.category}
           </span>
           {(article.publishedAt || article.readTime) && (
-            <span className="text-xs font-base uppercase tracking-wide text-sognos-heading">
+            <span className="text-xs font-normal uppercase tracking-wide text-sognos-heading">
               {article.publishedAt && (
                 <span className="text-sognos-muted">
                   {formatDate(article.publishedAt)}
@@ -104,6 +108,172 @@ export function ArticleCard({ article }: { article: Article }) {
         </div>
       </div>
     </Link>
+  );
+}
+
+// ─── Hero selector ──────────────────────────────────────────────────────────
+
+function HeroSelector({ articles }: { articles: Article[] }) {
+  const total = articles.length;
+  const prefersReducedMotion = useReducedMotion();
+  const autoplay = total > 1 && !prefersReducedMotion;
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const activeIndex = Math.min(selectedIndex, total - 1);
+  const active = articles[activeIndex];
+
+  useEffect(() => {
+    if (!autoplay || paused) return;
+    let frame = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      if (elapsed >= HERO_AUTOPLAY_MS) {
+        setProgress(0);
+        setSelectedIndex((i) => (i + 1) % total);
+        return;
+      }
+      setProgress(elapsed / HERO_AUTOPLAY_MS);
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [autoplay, paused, selectedIndex, total]);
+
+  const select = useCallback((i: number) => {
+    setProgress(0);
+    setSelectedIndex(i);
+  }, []);
+
+  if (total === 0) return null;
+
+  return (
+    <div
+      className="mx-auto max-w-7xl px-6 pb-20"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="relative grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+        {/* Left — article selector */}
+        <div className="flex flex-col">
+          {articles.map((a, i) => {
+            const isActive = i === activeIndex;
+            return (
+              <button
+                key={a.slug}
+                type="button"
+                onClick={() => select(i)}
+                className={`group relative flex flex-col gap-2 border-t border-white/10 px-5 py-5 text-left transition-colors duration-300 first:border-t-0 ${
+                  isActive ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
+                }`}
+              >
+                {/* Active accent bar */}
+                <span
+                  className={`absolute left-0 top-0 h-full w-0.5 transition-colors duration-300 ${
+                    isActive ? "bg-sognos-blue-accent" : "bg-transparent"
+                  }`}
+                />
+                <span className="text-xs font-semibold uppercase tracking-widest text-white/40">
+                  {a.category}
+                </span>
+                <span
+                  className={`font-heading text-lg font-normal leading-snug tracking-tight line-clamp-2 transition-colors duration-200 ${
+                    isActive
+                      ? "text-white"
+                      : "text-white/50 group-hover:text-white/80"
+                  }`}
+                >
+                  {a.title}
+                </span>
+                {a.publishedAt && (
+                  <span className="text-xs text-white/30">
+                    {formatDate(a.publishedAt)}
+                    {a.readTime && ` · ${a.readTime}`}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right — image panel with crossfade */}
+        <Link
+          href={active.href}
+          className="group relative block aspect-[4/3] overflow-hidden rounded md:aspect-auto md:min-h-[420px]"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={active.slug}
+              initial={prefersReducedMotion ? {} : { opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={prefersReducedMotion ? {} : { opacity: 0 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+              }
+              className="absolute inset-0"
+            >
+              {active.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={active.image}
+                  alt=""
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+              ) : (
+                <div className="h-full w-full bg-white/5" />
+              )}
+            </motion.div>
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+          {/* Overlay copy pinned to bottom */}
+          <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={active.slug}
+                initial={prefersReducedMotion ? {} : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={prefersReducedMotion ? {} : { opacity: 0, y: -8 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }
+                }
+              >
+                <h2 className="max-w-lg font-heading text-xl font-medium leading-snug tracking-tight text-white md:text-2xl">
+                  {active.title}
+                </h2>
+                {active.excerpt && (
+                  <p className="mt-2 max-w-md line-clamp-2 text-sm leading-relaxed text-white/60">
+                    {active.excerpt}
+                  </p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Countdown ring */}
+          {autoplay && (
+            <div className="absolute right-4 top-4">
+              <ProgressButton
+                paused={paused}
+                progress={progress}
+                autoplayMs={HERO_AUTOPLAY_MS}
+                onToggle={(e) => {
+                  e.preventDefault();
+                  setPaused((p) => !p);
+                }}
+              />
+            </div>
+          )}
+        </Link>
+      </div>
+    </div>
   );
 }
 
@@ -220,7 +390,7 @@ function Tile({
   const contentGap = showImage ? (filled ? "mt-6" : "mt-8 lg:mt-9") : "";
 
   return (
-    <Link href={href} className={`group flex flex-col ${surface}`}>
+    <Link href={href} className={`group flex flex-col text-sognos-heading ${surface}`}>
       {showImage && (
         <div
           className={`relative aspect-[16/10] w-full overflow-hidden rounded ${
@@ -258,7 +428,7 @@ function Tile({
              column of stacked panels aligned. The plain card has no floor to
              sit on, so it keeps the fixed gap. */
           <p
-            className={`text-xs font-base tracking-wide uppercase text-sognos-heading ${
+            className={`text-xs font-normal tracking-wide uppercase text-sognos-heading ${
               filled ? "mt-auto pt-8" : "mt-10"
             }`}
           >
@@ -317,7 +487,7 @@ export function PastEventRow({
     <li className="border-t border-sognos-line first:border-t-0">
       <Link
         href={href}
-        className="group grid gap-4 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-6"
+        className="group grid gap-4 py-4 text-sognos-heading sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:py-6"
       >
         <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
           <p className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
@@ -371,7 +541,7 @@ export function EventCard({
       href={href}
       // Content wider than the image (1 / 0.85) — the date and place are the
       // decision; the photo is atmosphere.
-      className="group grid overflow-hidden rounded bg-white md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]"
+      className="group grid overflow-hidden rounded bg-white text-sognos-heading md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]"
     >
       {/* Copy left. `justify-between` pins the pill+title group to the top and
           the Date/Location list to the bottom; `gap-8` is the minimum gap so
@@ -500,7 +670,7 @@ function SectionShell({
             heading's baseline, which is where the reference puts it, and a
             centred link floats above it once the heading is display size. */}
         <div className="mb-8 flex items-end justify-between gap-6">
-          <h2 className="font-heading text-3xl font-normal tracking-tight text-balance text-sognos-heading md:text-4xl">
+          <h2 className="font-heading text-3xl font-medium tracking-tight text-balance text-sognos-heading md:text-4xl">
             {heading}
           </h2>
           {viewAllHref && (
@@ -646,57 +816,23 @@ export default function KnowledgeHubArchive({
 
   return (
     <>
-      {/* 1 — dark header: title, hero card, featured three-up. */}
-      <section className="bg-sognos-navy-darkest text-white">
-        <div className="mx-auto max-w-7xl px-6 pt-32 pb-16 text-center lg:pt-40">
-          <h1 className="mx-auto max-w-4xl font-heading text-4xl font-normal leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
+      {/* 1 — dark header: sidebar selector + image panel, autoplay. */}
+      <section className="relative bg-sognos-navy-darkest text-white">
+        <div className="mx-auto max-w-7xl px-6 pt-32 pb-10 lg:pt-40">
+          <h1 className="max-w-3xl font-heading text-4xl font-normal leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
             {title}
           </h1>
           {description && (
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
               {description}
             </p>
           )}
         </div>
 
         {heroPost && (
-          <div className="mx-auto max-w-7xl px-6 pb-16">
-            <Link
-              href={heroPost.href}
-              className="flex flex-col border border-white/20 p-4"
-            >
-              <div
-                aria-hidden="true"
-                data-slot="thumb"
-                className="min-h-[280px]"
-              />
-              <div className="mt-4 flex flex-col gap-1">
-                <span data-slot="eyebrow">{heroPost.category}</span>
-                <h2>{heroPost.title}</h2>
-                {heroPost.publishedAt && (
-                  <p data-slot="meta">{formatDate(heroPost.publishedAt)}</p>
-                )}
-              </div>
-            </Link>
-
-            {featuredPosts.length > 0 && (
-              <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-                {featuredPosts.map((a) => (
-                  <Link
-                    key={a.slug}
-                    href={a.href}
-                    className="flex flex-col gap-2 border-t border-dotted border-white/30 pt-6"
-                  >
-                    <h3>{a.title}</h3>
-                    {a.publishedAt && (
-                      <p data-slot="meta">{formatDate(a.publishedAt)}</p>
-                    )}
-                    <span data-slot="eyebrow">{a.category}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+          <HeroSelector
+            articles={[heroPost, ...featuredPosts]}
+          />
         )}
       </section>
 
@@ -753,36 +889,60 @@ export default function KnowledgeHubArchive({
             the rest live behind "View all". */}
         <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news} tinted>
           {newsLead ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-              <Tile
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:grid-rows-3 md:gap-x-4">
+              {/* Lead — 7/12, spans all 3 rows. Image + title + pill + meta. */}
+              <Link
                 href={newsLead.href}
-                eyebrow={newsLead.category}
-                title={newsLead.title}
-                meta={
-                  newsLead.publishedAt ? formatDate(newsLead.publishedAt) : null
-                }
-                readTime={newsLead.readTime}
-                image={newsLead.image}
-                lead
-                filled
-              />
-              {/* `[&>a]:flex-1` — the three cards divide the lead card's
-                  height between them so both columns end level. The reference
-                  achieves this with fixed 187px rows; stretching is the same
-                  result and survives a title wrapping to two lines. */}
-              <div className="flex flex-col gap-4 [&>a]:flex-1">
-                {newsRest.slice(0, 3).map((a) => (
-                  <Tile
-                    key={a.slug}
-                    href={a.href}
-                    eyebrow={a.category}
-                    title={a.title}
-                    meta={a.publishedAt ? formatDate(a.publishedAt) : null}
-                    readTime={a.readTime}
-                    filled
-                  />
-                ))}
-              </div>
+                className="group flex flex-col overflow-hidden rounded bg-white p-6 md:col-span-7 md:row-span-3 md:p-8 lg:p-14"
+              >
+                <div className="relative mb-6 aspect-[3/2] w-full overflow-hidden rounded">
+                  {newsLead.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={newsLead.image}
+                      alt=""
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-sognos-tint" />
+                  )}
+                </div>
+                <h3 className="max-w-[28rem] font-heading text-xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors duration-300 group-hover:text-sognos-blue-accent lg:text-2xl">
+                  {newsLead.title}
+                </h3>
+                <div className="mt-auto flex flex-wrap items-center gap-3 pt-6">
+                  <span className="inline-flex items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                    {newsLead.category}
+                  </span>
+                  {newsLead.publishedAt && (
+                    <span className="text-xs uppercase tracking-wide text-sognos-muted">
+                      {formatDate(newsLead.publishedAt)}
+                    </span>
+                  )}
+                </div>
+              </Link>
+              {/* Stacked — 5/12, one per row. Text-only, meta pinned to bottom. */}
+              {newsRest.slice(0, 3).map((a) => (
+                <Link
+                  key={a.slug}
+                  href={a.href}
+                  className="group flex flex-col overflow-hidden rounded bg-white px-6 py-5 md:col-span-5 md:row-span-1 lg:px-8 lg:py-7"
+                >
+                  <h3 className="max-w-[25rem] font-heading text-base font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-300 group-hover:text-sognos-blue-accent">
+                    {a.title}
+                  </h3>
+                  <div className="mt-auto flex flex-wrap items-center gap-3 pt-4">
+                    <span className="inline-flex items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                      {a.category}
+                    </span>
+                    {a.publishedAt && (
+                      <span className="text-xs uppercase tracking-wide text-sognos-muted">
+                        {formatDate(a.publishedAt)}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
           ) : (
             <p className="text-sognos-muted">No news yet.</p>
@@ -835,33 +995,26 @@ export default function KnowledgeHubArchive({
           viewAllHref={VIEW_ALL.milestones}
         >
           {milestones.length > 0 ? (
-            <div className="grid gap-y-8">
-              <div
-                aria-hidden="true"
-                className="border-t border-dotted border-sognos-line"
-              />
+            <div className="flex flex-col">
               {milestones.map((a) => (
                 <Link
                   key={a.slug}
                   href={a.href}
-                  className="group space-y-4 border-b border-dotted border-sognos-line pb-6 md:flex md:items-center md:space-x-6 md:space-y-0 md:pb-8 lg:space-x-[4.5rem]"
+                  className="group grid grid-cols-1 items-center gap-6 border-t border-dotted border-sognos-line py-8 text-sognos-heading md:grid-cols-[20rem_minmax(0,1fr)_auto] lg:gap-10 lg:py-10"
                 >
-                  {/* 9/5 and capped at 22.5rem — the reference's own. */}
-                  <div className="relative aspect-[9/5] w-full overflow-hidden rounded bg-white md:max-w-[22.5rem] md:shrink-0">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded">
                     {a.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={a.image}
                         alt=""
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     ) : (
-                      <div className="h-full w-full bg-sognos-line" />
+                      <div className="h-full w-full bg-sognos-tint" />
                     )}
                   </div>
-                  <div className="max-w-[32.5rem] space-y-3 md:space-y-6">
-                    {/* Icon-led date above the title, then the chip and a
-                        second date below it — the reference carries both. */}
+                  <div className="flex flex-col gap-3">
                     {a.publishedAt && (
                       <p className="inline-flex items-center gap-2 text-sm text-sognos-muted">
                         <svg
@@ -879,26 +1032,28 @@ export default function KnowledgeHubArchive({
                         {formatDate(a.publishedAt)}
                       </p>
                     )}
-                    <h3 className="font-heading text-lg font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+                    <h3 className="font-heading text-xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
                       {a.title}
                     </h3>
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+                      <span className="inline-flex items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
                         {a.category}
                       </span>
                       {a.readTime && (
-                        <span className="text-sm text-sognos-heading">
+                        <span className="text-sm text-sognos-muted">
                           {a.readTime}
                         </span>
                       )}
                     </div>
                   </div>
-                  {/* Arrow, pushed to the far edge and sliding on hover. */}
                   <span
                     aria-hidden="true"
-                    className="hidden h-9 w-9 shrink-0 transition-transform duration-500 ease-out group-hover:translate-x-3 md:block lg:ml-auto"
-                    data-slot="arrow"
-                  />
+                    className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-sognos-line text-sognos-muted transition-all duration-300 group-hover:border-sognos-blue-accent group-hover:text-sognos-blue-accent md:flex"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
                 </Link>
               ))}
             </div>
