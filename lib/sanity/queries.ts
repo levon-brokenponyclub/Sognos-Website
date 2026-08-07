@@ -69,6 +69,7 @@ const SOGNOSCARE_PAGE_QUERY = `*[_type == "sognoscarePage"][0]{
   hero,
   productDrawer,
   subNav[]{ label, id, href },
+  "datasheetUrl": datasheet.asset->url,
   problemsHeader,
   problems[]{ number, problem, problemDetail, solution, iconPath },
   featuresHeader,
@@ -134,6 +135,7 @@ type RawSognoscarePage = {
   hero?: RawHero;
   productDrawer?: RawProductDrawer;
   subNav?: RawSubNav[];
+  datasheetUrl?: string;
   problemsHeader?: RawSectionHeader;
   problems?: RawProblem[];
   featuresHeader?: RawSectionHeader;
@@ -253,12 +255,29 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
     ? urlFor(result.hero.logo).auto("format").url()
     : d.hero.logoSrc;
 
-  const subNav =
+  const DATASHEET_ENTRY = {
+    label: "Download Datasheet",
+    id: "datasheet",
+    href: result.datasheetUrl ?? "/datasheets/SognosCare-datasheet.pdf",
+    download: true as const,
+  };
+
+  const rawSubNav =
     result.subNav?.flatMap((s) =>
       s.label && s.id
         ? [{ label: s.label, id: s.id, href: s.href ?? undefined }]
         : [],
     ) ?? [];
+
+  const scheduleIdx = rawSubNav.findIndex((s) => s.id === "calendar");
+  const subNav =
+    rawSubNav.length > 0
+      ? [
+          ...rawSubNav.slice(0, scheduleIdx >= 0 ? scheduleIdx : rawSubNav.length),
+          DATASHEET_ENTRY,
+          ...rawSubNav.slice(scheduleIdx >= 0 ? scheduleIdx : rawSubNav.length),
+        ]
+      : [];
 
   const editions =
     result.editions?.flatMap((e) => {

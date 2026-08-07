@@ -8,6 +8,7 @@ export interface SubNavSection {
   label: string;
   id: string;
   href?: string;
+  download?: boolean;
 }
 
 interface ProductSubNavProps {
@@ -55,16 +56,20 @@ export default function ProductSubNav({ productName, sections }: ProductSubNavPr
       className="mx-auto flex w-fit max-w-full items-center gap-1 overflow-x-auto overscroll-x-contain scroll-smooth rounded-full bg-white/10 p-1.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-visible"
       aria-label={`${productName} sections`}
     >
-      {sections.map(({ label, id, href }) => {
+      {sections
+        .filter((s) => !s.download)
+        .map(({ label, id, href }) => {
         const isActive = activeId === id;
+        const className = `relative shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-base transition-colors duration-200 ${
+          isActive ? "text-[#03112f] font-medium" : "text-white"
+        }`;
+
         return (
           <Link
             key={id}
             href={href ?? `#${id}`}
             data-section-id={id}
-            className={`relative shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-base transition-colors duration-200 ${
-              isActive ? "text-[#03112f] font-medium" : "text-white"
-            }`}
+            className={className}
           >
             {isActive && (
               <motion.span
@@ -77,6 +82,20 @@ export default function ProductSubNav({ productName, sections }: ProductSubNavPr
           </Link>
         );
       })}
+      {sections
+        .filter((s) => s.download && s.href)
+        .map((s) => (
+          <a
+            key={s.id}
+            href={s.href!}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 whitespace-nowrap rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-base text-white transition-colors duration-200 hover:bg-white/20"
+          >
+            {s.label}
+          </a>
+        ))}
     </nav>
   );
 }

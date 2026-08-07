@@ -1,6 +1,42 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getFooterContent } from "@/lib/sanity/queries";
 import FooterColumns from "@/components/layout/FooterColumns";
+
+type Accreditation = {
+  alt: string;
+  src: string;
+  width: number;
+  height: number;
+  href?: string;
+  title?: string;
+};
+
+// Government prequalification and industry memberships. Intrinsic sizes are the
+// supplied artwork's own — height is capped in the markup, so these only set the
+// aspect ratio Next needs.
+const ACCREDITATIONS: Accreditation[] = [
+  {
+    alt: "NSW Government Approved Supplier - SCM0020 Prequalification Scheme: ICT Services",
+    src: "/logos/accreditations/nsw-ict-services.png",
+    width: 1024,
+    height: 299,
+  },
+  {
+    alt: "Australasian Institute of Digital Health - Organisational Member",
+    src: "/logos/accreditations/aidh.png",
+    width: 200,
+    height: 100,
+  },
+  {
+    alt: "Talking HealthTech partner",
+    src: "/logos/accreditations/talking-health-tech.png",
+    width: 200,
+    height: 200,
+    href: "https://www.talkinghealthtech.com/sognos-solutions?from=badge",
+    title: "Find me on Talking HealthTech",
+  },
+];
 
 const ACKNOWLEDGEMENT_BREAK_AFTER =
   "We respect and honour Aboriginal and Torres Strait Islander Elders past, present, and future.";
@@ -44,18 +80,64 @@ export default async function Footer() {
         </div>
       </div>
 
-      {/* Bottom row 1 — acknowledgement */}
+      {/* Bottom row 1 — accreditations & memberships.
+          White tiles rather than bare logos on the navy: only AIDH ships a
+          reversed version, and the NSW and THT marks are dark-on-light, so they
+          would be unreadable directly on the footer. Tiling all three keeps the
+          row consistent instead of one bare logo beside two chips. Static rather
+          than CMS-driven — these change rarely. */}
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center gap-4 border-t border-white/10 py-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">
+            Accreditations &amp; memberships
+          </p>
+          <ul className="flex flex-wrap items-stretch justify-center gap-3 lg:gap-4">
+            {ACCREDITATIONS.map((item) => {
+              const mark = (
+                <span className="flex h-16 items-center justify-center rounded-lg bg-white px-5">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    className="h-9 w-auto object-contain"
+                  />
+                </span>
+              );
+              return (
+                <li key={item.alt}>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener"
+                      title={item.title ?? item.alt}
+                      className="block transition-opacity duration-200 hover:opacity-80"
+                    >
+                      {mark}
+                    </a>
+                  ) : (
+                    mark
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+
+      {/* Bottom row 2 — acknowledgement */}
       {content.acknowledgement && (
         <div className="mx-auto max-w-7xl px-6">
           <div className="border-t border-white/10 py-8">
-            <p className="max-w-7xl text-center text-xs leading-relaxed text-white/80">
+            <p className="text-xs leading-relaxed text-white/80 text-center mx-auto max-w-4xl">
               <AcknowledgementText text={content.acknowledgement} />
             </p>
           </div>
         </div>
       )}
 
-      {/* Bottom row 2 — copyright left, legal links right */}
+      {/* Bottom row 3 — copyright left, legal links right */}
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-start gap-4 border-t border-white/10 py-8 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p className="text-sm text-white">

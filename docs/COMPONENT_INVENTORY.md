@@ -30,7 +30,10 @@
 | 7 | `SognoscareStories` | `sections/sognoscare/Stories.tsx` | yes |
 
 `ProductSubNav` is passed into `Problems` as a `subNav` slot — it is not a sibling
-section.
+section. Download items (`download: true` in sections array) are filtered out of
+the nav links and rendered as styled buttons (brand border, blue hover) left of
+Book a Demo. Datasheet URLs resolve from Sanity (`datasheet.asset->url`) with
+static fallback to `public/datasheets/`.
 
 ### Section-by-section
 

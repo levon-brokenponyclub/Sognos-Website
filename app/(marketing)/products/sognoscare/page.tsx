@@ -22,6 +22,18 @@ export default async function SognosCarePage() {
 
   return (
     <>
+      {/* Sofia Pro via Adobe Typekit — page-scoped resource load for
+          the print-weight-ladder application on SognosCare. React 19
+          hoists this into <head> via `precedence`. If Sofia Pro fails
+          to render, check the Adobe Fonts domain whitelist for
+          localhost:3000 (and prod). */}
+      {/* eslint-disable-next-line @next/next/no-css-tags */}
+      <link
+        rel="stylesheet"
+        href="https://use.typekit.net/aoi4bxt.css"
+        // @ts-expect-error React 19 resource hoisting prop, valid at runtime
+        precedence="default"
+      />
       <SognoscareHero
         logoSrc={content.hero.logoSrc}
         headline={content.hero.headline}

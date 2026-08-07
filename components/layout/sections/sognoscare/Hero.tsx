@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   motion,
   useScroll,
@@ -10,51 +10,6 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
-
-const PANEL_HLS_SRC =
-  "https://stream.mux.com/jQkiowhjcNANEVOdEj02JRdSnvM5TaFudLXF9BmyAVms.m3u8?max_resolution=1080p";
-
-function PanelBackgroundVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Safari + iOS play HLS natively — just point the video at the URL.
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = PANEL_HLS_SRC;
-      return;
-    }
-
-    // Everywhere else: lazy-load hls.js so it doesn't ship in the initial bundle.
-    let hls: import("hls.js").default | null = null;
-    let cancelled = false;
-    import("hls.js").then(({ default: Hls }) => {
-      if (cancelled || !Hls.isSupported()) return;
-      hls = new Hls({ enableWorker: true });
-      hls.loadSource(PANEL_HLS_SRC);
-      hls.attachMedia(video);
-    });
-
-    return () => {
-      cancelled = true;
-      hls?.destroy();
-    };
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      autoPlay
-      muted
-      loop
-      playsInline
-      aria-hidden="true"
-      className="absolute inset-0 h-full w-full object-cover"
-    />
-  );
-}
 
 interface SognoscareHeroProps {
   // logoSrc kept optional for caller compatibility; no longer rendered.
@@ -73,7 +28,7 @@ export default function SognoscareHero({
   headline = DEFAULTS.headline,
   subtext = DEFAULTS.subtext,
 }: SognoscareHeroProps = {}) {
-  const heroRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -94,10 +49,14 @@ export default function SognoscareHero({
     <section
       ref={heroRef}
       data-header-dark
-      className="relative overflow-hidden pb-0 md:pb-0 bg-sognos-care-dark"
+      className="relative overflow-hidden pb-20 md:pb-28 bg-sognos-care-dark"
+      style={{ fontFamily: "sofia-pro, sans-serif" }}
     >
       {/* Single animated wrapper — all hero content fades/translates as one unit
-          over the static dark section background. AngelList pattern. */}
+          over the static dark section background. AngelList pattern.
+          Weight ladder applied per CLAUDE_DESIGN_SYSTEM.md §8.2:
+            • Hero H1: font-bold (print-aligned)
+            • Body: font-light + text-white/85 (bumped alpha for Light on dark) */}
       <motion.div style={{ y, opacity }} className="will-change-transform">
         <div className="mx-auto max-w-7xl px-6 pt-40 pb-0 text-center">
           {/* Eyebrow */}
@@ -105,16 +64,14 @@ export default function SognoscareHero({
             SognosCare
           </AnimatedEyebrow>
 
-          {/* Headline */}
-          <h1 className="mx-auto mt-4 font-heading font-normal text-white leading-14 text-5xl tracking-tight text-balance lg:text-6xl lg:leading-20">
+          {/* Headline — SofiaPro Bold (700) at display scale */}
+          <h1 className="mx-auto mt-4 font-heading font-bold text-white leading-14 text-5xl tracking-tight text-balance lg:text-6xl lg:leading-20">
             {headline}
           </h1>
 
-          {/* Subtext */}
-          <p
-            className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/80"
-            style={{ color: "rgba(255,255,255,0.7)" }}
-          >
+          {/* Subtext — SofiaPro Light (300) with bumped alpha (white/85)
+              to hold contrast against sognos-care-dark navy */}
+          <p className="mx-auto mt-6 max-w-3xl text-lg font-light leading-relaxed text-white/85">
             {subtext}
           </p>
 
@@ -137,12 +94,14 @@ export default function SognoscareHero({
           </div>
         </div>
 
-        {/* Placeholder visual — plain child inside the animated wrapper.
-            Swap the gradient div for a real <Image> when the asset is ready. */}
+        {/* Hero panel — logo-only for now. Video treatment is documented
+            in CLAUDE_DESIGN_SYSTEM.md §14 "Hero panel · video + logo
+            crossfade" (canonical reference: sognosroster/Hero.tsx) but
+            not applied here until the Care video asset is finalised.
+            Panel width matches Roster hero (max-w-6xl). */}
         <div className="mx-auto mt-16 max-w-6xl px-6">
           <div className="relative aspect-[2.4/1] w-full overflow-hidden rounded-lg bg-sognos-care-gradient">
-            <PanelBackgroundVideo />
-            <div className="relative flex h-full w-full items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src="/logos/sognos-care-logo.svg"
                 alt="SognosCare"

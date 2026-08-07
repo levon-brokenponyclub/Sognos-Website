@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 import Link from "next/link";
 import Image from "next/image";
 import SolutionUseCases from "@/components/layout/sections/SolutionUseCases";
@@ -49,16 +50,22 @@ export default async function SolutionPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
-              <Link
-                href="/solutions"
-                className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted hover:text-sognos-blue-accent transition-colors duration-200"
+              <AnimatedEyebrow
+                dotClassName="bg-sognos-blue-accent"
+                textClassName="text-sognos-muted"
               >
-                {meta.name}
-              </Link>
-              <h1 className="mt-4 font-heading text-3xl font-normal leading-16 tracking-tight text-sognos-heading text-balance lg:text-6xl">
+                <Link
+                  href="/solutions"
+                  className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted hover:text-sognos-blue-accent transition-colors duration-200"
+                >
+                  {meta.name}
+                </Link>
+              </AnimatedEyebrow>
+              
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
                 {content.hero.headline}
               </h1>
-              <p className="mt-5 max-w-[600px] text-lg leading-relaxed text-sognos-body">
+              <p className="mt-6 max-w-xl text-base leading-normal text-sognos-body md:text-lg">
                 {content.hero.subtext}
               </p>
               <div className="mt-10">

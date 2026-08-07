@@ -123,6 +123,14 @@ export const sognosrosterPage = defineType({
       of: [{ type: "object", fields: subNavSectionFields, preview: { select: { title: "label", subtitle: "id" } } }],
     }),
     defineField({
+      name: "datasheet",
+      title: "Datasheet PDF",
+      type: "file",
+      group: "meta",
+      options: { accept: "application/pdf" },
+      description: "Upload the product datasheet. This powers the Datasheet download button in the sub-nav.",
+    }),
+    defineField({
       name: "problemsHeader",
       title: "Problems — section header",
       type: "object",

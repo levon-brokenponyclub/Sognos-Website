@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 import Image from "next/image";
 import { INDUSTRIES } from "@/lib/constants";
 import { getIndustryContent, getIndustryMeta } from "@/lib/industries-content";
@@ -45,16 +46,21 @@ export default async function IndustryPage({
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
-              <Link
-                href="/industries"
-                className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted transition-colors duration-200 hover:text-sognos-heading"
+              <AnimatedEyebrow
+                dotClassName="bg-sognos-blue-accent"
+                textClassName="text-sognos-muted"
               >
-                {meta.name}
-              </Link>
-              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+                <Link
+                  href="/solutions"
+                  className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted hover:text-sognos-blue-accent transition-colors duration-200"
+                >
+                  {meta.name}
+                </Link>
+              </AnimatedEyebrow>
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
                 {content.hero.headline}
               </h1>
-              <p className="mt-6 max-w-[600px] text-lg leading-relaxed text-gray-600">
+              <p className="mt-6 max-w-xl text-base leading-normal text-sognos-body md:text-lg">
                 {content.hero.subtext}
               </p>
               <div className="mt-9">

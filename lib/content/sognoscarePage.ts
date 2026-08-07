@@ -7,6 +7,7 @@ export type SubNavSection = {
   label: string;
   id: string;
   href?: string;
+  download?: boolean;
 };
 
 export type SectionHeader = {
@@ -92,6 +93,7 @@ export const DEFAULT_SOGNOSCARE_PAGE_CONTENT: SognoscarePageContent = {
     { label: "Editions", id: "editions" },
     { label: "Key Advantages", id: "advantages" },
     { label: "Customer Stories", id: "stories" },
+    { label: "Download Datasheet", id: "datasheet", href: "/datasheets/SognosCare-datasheet.pdf", download: true },
     { label: "Schedule a Call", id: "calendar", href: "/contact" },
   ],
   problemsHeader: {

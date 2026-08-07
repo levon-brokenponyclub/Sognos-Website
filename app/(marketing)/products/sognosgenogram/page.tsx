@@ -16,6 +16,7 @@ const SECTIONS = [
   { label: "What it solves", id: "problems" },
   { label: "Features", id: "features" },
   { label: "Customer Stories", id: "stories" },
+  { label: "Download Datasheet", id: "datasheet", href: "/datasheets/SognosGenogram-datasheet.pdf", download: true },
   { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 

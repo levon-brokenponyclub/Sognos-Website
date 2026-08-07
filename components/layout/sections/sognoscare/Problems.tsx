@@ -72,19 +72,27 @@ export default function SognoscareProblems({
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section id="problems" className="overflow-clip">
-      {/* Dark half — Problem block + subNav */}
+    <section
+      id="problems"
+      className="overflow-clip"
+      style={{ fontFamily: "sofia-pro, sans-serif" }}
+    >
+      {/* Dark half — Problem block + subNav
+          Weight ladder + alpha ladder applied per CLAUDE_DESIGN_SYSTEM.md
+          §1 + §8.2:
+            • Section H2 pitch: font-semibold
+            • Body: font-light + text-white/85 (bumped alpha for dark) */}
       <div className="bg-sognos-care-dark py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           {/* Problem block */}
           <div className="mx-auto max-w-4xl text-center">
-            <p className="text-xs font-normal uppercase tracking-[0.08em] text-sognos-blue-accent">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-blue-accent">
               {problemLabel}
             </p>
-            <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight md:text-4xl text-white/70 text-balance">
-              <span className="text-white">{problemStatement}</span>{" "}
+            <h2 className="mt-4 font-heading text-3xl font-semibold leading-tight tracking-tight md:text-4xl text-white text-balance">
+              {problemStatement}
             </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60 text-pretty">
+            <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-white/85 text-pretty">
               {problemDetail}
             </p>
           </div>
@@ -96,7 +104,12 @@ export default function SognoscareProblems({
         </div>
       </div>
 
-      {/* Light half — Solution block on white */}
+      {/* Light half — Solution block on white.
+          Body text stays at font-normal here — font-light on white is
+          fine for prose but the small capability descriptions read too
+          thin at font-light. Tokenised text-gray-600 → text-sognos-body
+          per CLAUDE.md hard rules. rounded-xl → rounded (4px) per §6
+          radius rules. */}
       <div className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
@@ -110,10 +123,10 @@ export default function SognoscareProblems({
             {/* Right — statement + detail + 5 blocks */}
             <div className="lg:col-[3/-1]">
               <div className="max-w-[720px]">
-                <h2 className="font-heading text-3xl md:text-4xl font-medium tracking-tight text-sognos-body text-balance">
+                <h2 className="font-heading text-3xl md:text-4xl font-semibold tracking-tight text-sognos-heading text-balance">
                   {solutionStatement}
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-gray-600 text-pretty">
+                <p className="mt-4 text-base leading-relaxed text-sognos-body text-pretty">
                   {solutionDetail}
                 </p>
               </div>
@@ -124,15 +137,15 @@ export default function SognoscareProblems({
                   // from outside the block.
                   <div
                     key={cap.number}
-                    className="relative flex flex-col bg-white rounded-xl overflow-hidden px-5 py-6 pb-10"
+                    className="relative flex flex-col bg-white rounded overflow-hidden px-5 py-6 pb-10"
                   >
                     <span className="font-mono text-xs text-sognos-muted">
                       {cap.number}
                     </span>
-                    <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-sognos-body">
+                    <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-sognos-heading">
                       {cap.title}
                     </h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600">
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-body">
                       {cap.description}
                     </p>
                     {/* Accent bar slides in from the left and fades as its

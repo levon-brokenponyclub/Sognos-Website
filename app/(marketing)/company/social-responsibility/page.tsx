@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
+import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 export const metadata: Metadata = {
   title: "Social Responsibility | Sognos",
@@ -53,13 +54,16 @@ export default function SocialResponsibilityPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
-              <p className="inline-block text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                Social Responsibility
-              </p>
-              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl md:text-6xl lg:text-7xl tracking-tight text-balance">
+              <AnimatedEyebrow
+                dotClassName="bg-sognos-blue-accent"
+                textClassName="text-sognos-muted"
+              >
+                Social Responibility
+              </AnimatedEyebrow>
+              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
                 Our commitment to community and planet.
               </h1>
-              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-gray-600">
+              <p className="mt-6 max-w-5xl text-base leading-normal text-sognos-body md:text-lg">
                 At Sognos we understand that our impact extends far beyond the
                 services we provide. Social responsibility is at the core of our
                 values - we are committed to making a difference where we live,

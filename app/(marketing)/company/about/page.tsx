@@ -4,7 +4,7 @@ import Image from "next/image";
 import TeamSection from "@/components/layout/sections/TeamSection";
 import SocialResponsibilitySection from "@/components/layout/sections/SocialResponsibilitySection";
 import AboutValues from "@/components/layout/sections/AboutValues";
-import AboutStats from "@/components/layout/sections/AboutStats";
+import AboutStoryTimeline from "@/components/layout/sections/AboutStoryTimeline";
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 import AboutPartnersSlider from "@/components/layout/sections/AboutPartnersSlider";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
@@ -121,68 +121,13 @@ export default function AboutPage() {
       {/* Scroll-shrink hero image */}
       <AboutHeroImage />
 
-      {/* ── About Sognos — light, eyebrow + statement + 4 stats ───────────────── */}
-      <section className="bg-white py-20 pt-0 md:pb-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-            {/* Column 1 — eyebrow + title. On `lg`+, `mt-12` matches the lead
-                paragraph's own `mt-12` in column 2, so the eyebrow starts level
-                with the right column's first line instead of floating above it.
-                Change one and change the other. On mobile the layout stacks and
-                the offset isn't needed. */}
-            <div className="lg:col-span-1 lg:mt-12">
-              {/* `flex w-fit` rather than the component's default `inline-flex`:
-                  as an inline box it sat in the column's 24px line box and
-                  picked up 5px of leading above it, so the eyebrow hung below
-                  the right column's first line. `w-fit` keeps it shrink-to-fit. */}
-              <AnimatedEyebrow
-                className="flex w-fit"
-                textClassName="text-sognos-muted"
-              >
-                Our Story
-              </AnimatedEyebrow>
-              <h2 className="mt-4 max-w-5xl font-heading text-3xl font-medium leading-snug tracking-tight text-sognos-heading text-balance md:text-4xl">
-                Healthcare First. Field Service Always. AI at the Centre.
-              </h2>
-            </div>
-            {/* Column 2 — body paragraphs + stats */}
-            <div className="lg:col-span-2">
-              {/* Body paragraphs */}
-              <div className="max-w-2xl space-y-5 text-lg leading-relaxed text-sognos-body">
-                <p className="text-2xl font-medium lg:mt-12">
-                  For over a decade, Sognos has been helping organisations
-                  simplify complex frontline operations through connected,
-                  intelligent business solutions built around real work.
-                </p>
-                <p>
-                  Since 2016, we&apos;ve partnered with organisations across
-                  healthcare, social care, government and essential services to
-                  modernise the way teams deliver care, services and community
-                  support every day. From frontline healthcare providers to
-                  mobile operational teams, we help organisations stay
-                  connected, responsive and ready for change.
-                </p>
-                <p>
-                  Our clients rely on Sognos to deliver highly usable,
-                  integrated systems that improve visibility, reduce
-                  administrative burden and support better experiences for both
-                  teams and the people they serve.
-                </p>
-                <p>
-                  As a specialist Microsoft Dynamics 365 partner, we combine
-                  deep operational understanding with modern business
-                  applications to help organisations transform complex service
-                  delivery into smarter, more connected operations.
-                </p>
-              </div>
-              {/* 3-stat row with count-up animation (border-r dividers) */}
-              <AboutStats />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── Our Story — four-waypoint editorial timeline closing on the
+          AboutStats tally. Replaces the previous four-paragraph copy
+          column (2026-08-06). Content is placeholder pending real dates
+          and events from Kunal / Rick. */}
+      <AboutStoryTimeline />
 
-      {/* ── Our Values — stacking sticky cards (Mission + Vision) ─────────────── */}
+      {/* ── Our Values — Mission / Vision / Beliefs on navy ───────────────────── */}
       <AboutValues />
 
       <TeamSection />

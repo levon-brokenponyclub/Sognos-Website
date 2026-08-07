@@ -1,10 +1,16 @@
 # Project State — Sognos Marketing Site
 
-> **Current source of truth (2026-08-06).** Where the project actually is and
+> **Current source of truth (2026-08-07).** Where the project actually is and
 > what comes next. `DESIGN_MIGRATION_STATE.md` has been retired to
 > `docs/archive/`; this doc replaces it. `CLAUDE.md` has been trimmed to
 > execution rules only (2026-08-06) and defers to this doc.
 > `docs/CHANGELOG.md` remains the append-only history.
+>
+> **Interim design system (2026-08-07):** a print-aligned experiment
+> (Sofia Pro + weight ladder + alpha ladder) is being validated on
+> **SognosCare only**. All other pages run the original live design
+> system. Full reference: `docs/CLAUDE_DESIGN_SYSTEM.md` — §19
+> "Application status" is the per-page truth table.
 
 ---
 
@@ -27,7 +33,7 @@ Contradictions resolved in favour of the most recent decision.
 | Concern | Rule |
 |---|---|
 | Container | `max-w-7xl` = **1280px** (via `--sognos-container-width` in `app/tokens.css`), `px-6`. |
-| Radius | `rounded-lg` on surfaces; `rounded-full` on **buttons only**. Never `xl`/`2xl`/`3xl` or `rounded-[Xrem]`. |
+| Radius | **`rounded`** (4px) is the base for all surfaces, cards, images, and pills. `rounded-md`/`rounded-lg` only when a specific treatment demands it — ask and confirm first. `rounded-full` on **buttons only**. Never `xl`/`2xl`/`3xl` or `rounded-[Xrem]`. |
 | Shadows | **None, ever.** Separate with borders and tonal steps. |
 | Light section surface | **`bg-sognos-tint`**. (Resolves the old `bg-gray-50` / `bg-gray-200/70` variants — both superseded for new/edited work.) |
 | Dark surface default | `bg-sognos-navy`. Use `-dark` / `-darkest` only when specified. |
@@ -53,7 +59,11 @@ Contradictions resolved in favour of the most recent decision.
 - **CMS:** Sanity (`next-sanity`, `@sanity/vision`, `@sanity/color-input`,
   `@sanity/image-url`). Studio runs both embedded at `/studio` (reads
   `NEXT_PUBLIC_SANITY_*`) and standalone via `sanity dev` (reads
-  `SANITY_STUDIO_*`); `sanity.config.ts` resolves both.
+  `SANITY_STUDIO_*`); `sanity.config.ts` resolves both. Production Studio:
+  `sognos.com.au/studio/`. Sanity project `vg117fxr`.
+- **Product datasheets:** managed via Sanity file fields (`datasheet` on each
+  product page schema). GROQ resolves `datasheet.asset->url`; static fallback
+  in `public/datasheets/`. Download button rendered by `ProductSubNav`.
 - **Backend:** Supabase + Resend power the event-registration flow; a keep-alive
   route (`app/api/ping`) + GitHub Actions cron keeps the free-tier DB awake.
 - **Structure:** routes under `app/(marketing)/…`; global chrome (Navbar,
@@ -70,12 +80,16 @@ Contradictions resolved in favour of the most recent decision.
 Navbar, Footer/FooterColumns, CTABand, CTASection (variant flow), BookDemoModal,
 CookieBanner, Hero, HomeProductCards, LogoStrip, HowSognosWorks, HeadlineCTA,
 SolutionsSection, KnowledgeHubArchive (+ search dialog), LegalPageRenderer,
-AboutHeroImage, AboutStats, AboutValues, **AboutPartnersSlider**,
-**SocialResponsibilitySection** (six-pillar), **TeamSection** (Routable card +
-right drawer), LifeAtSognos, OpenRoles, SolutionUseCases, SolutionHeroDemoButton,
-ProductTrustStrip, ProductFeaturesScroll, EditionCards, AnimatedEyebrow,
-ArticleScrollNav, ArticleProseFooter, ShareIcons/StoryMetaRail, scroll-progress,
-PullQuote/QuoteCallout/StatRow, product-page sections (Care/Roster/Genogram).
+AboutHeroImage, AboutStats, **AboutStoryTimeline** (2026-08-06 — folds
+AboutStats as closing tally), **AboutValues** (refreshed 2026-08-06 —
+Mission/Vision display statements + Beliefs type-first three-column
+composition), **AboutPartnersSlider**, **SocialResponsibilitySection**
+(six-pillar), **TeamSection** (Routable card + right drawer), LifeAtSognos,
+OpenRoles, SolutionUseCases, SolutionHeroDemoButton, ProductTrustStrip,
+ProductFeaturesScroll, EditionCards, AnimatedEyebrow, ArticleScrollNav,
+ArticleProseFooter, ShareIcons/StoryMetaRail, scroll-progress,
+PullQuote/QuoteCallout/StatRow, product-page sections (Care/Roster/Genogram),
+**ProductSubNav** (download button + Sanity datasheet integration).
 
 ### In use, but built in an earlier pass — not yet aligned to Routable
 - `IndustrySection` — tab showcase.
@@ -100,6 +114,13 @@ migration; Workhorse token (`--color-wh-*` etc.) removal.
 (news / insights / milestones), after `routable.com/resources/category/…`.
 Scaffold only: masthead + tab band duplicated from `KnowledgeHubArchive` (extract
 in Refine); "All topics" filter is a disabled placeholder (no topic field yet).
+
+`AboutLeadershipEditorial` (2026-08-06) — editorial-spread alternative to the
+current three-card `TeamSection`. Alternating portrait/text rows, huge muted
+index numeral per leader, display-face signature line hung off a blue accent
+bar, meta chips, existing dashed-bounded action-row language. Parked at
+`/dev/story-timeline` for review; not wired into the live About page. Decision:
+approve for Pass (would replace `TeamSection`) or retire the scaffold.
 
 ## 5. Next steps (priority order)
 

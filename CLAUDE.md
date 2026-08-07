@@ -46,9 +46,9 @@ assets always ship. Full context in [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE
 |---|---|
 | Typeface | Local **AngelList** variable font on both body and heading (`--font-sans`, `--font-heading`). |
 | Container | `max-w-7xl` = **1280px** via `--sognos-container-width`, `px-6`. |
-| Radius | `rounded-lg` on surfaces; `rounded-full` on **buttons only**. Never `xl` / `2xl` / `3xl` / `rounded-[Xrem]`. |
+| Radius | **`rounded`** (4px) is the base and standard for all surfaces, cards, images, and pills. `rounded-md` or `rounded-lg` only when a specific treatment demands it — **ask and confirm before using**. `rounded-full` on **buttons only**. Never `xl` / `2xl` / `3xl` / `rounded-[Xrem]`. |
 | Shadows | **None, ever.** Separate with borders and tonal steps. |
-| Light section surface | **`bg-sognos-tint`**. Supersedes `bg-gray-50` and `bg-gray-200/70` for new/edited sections. |
+| Light section surface | **`bg-sognos-tint`**. Supersedes `bg-gray-50` and `bg-gray-200/70` on new or edited sections only — **do not sweep existing greys.** Legacy `bg-gray-50` / `bg-gray-200/70` stay in place unless the section is being worked on for another reason. |
 | Dark surface default | `bg-sognos-navy`. `-dark` / `-darkest` only when specified. |
 | Gap | `gap-3 lg:gap-4` standard. |
 | Section rhythm | `py-20 md:py-28`. |

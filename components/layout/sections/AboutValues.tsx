@@ -1,81 +1,192 @@
+"use client";
+
+// Mission / Vision / Beliefs — three rows on the dark navy surface. The
+// three-row structure is deliberate (client wants each rail visible; not
+// stacked or hidden). Enhancements within the layout:
+//
+//   • Section rhythm brought onto the house `py-20 md:py-28`.
+//   • Dark-surface alpha ladder applied (white / white/75 / white/50 with
+//     dividers at white/20) — no more one-off white/65.
+//   • Mission and Vision statements bumped to display face at
+//     `text-2xl md:text-3xl font-normal` so the AngelList personality
+//     carries the copy without a font-medium weight muddying it.
+//   • Beliefs redesigned as a type-first three-column composition — no
+//     cards, no boxes. Hairline dividers between columns; numbered marker
+//     (01/02/03) + accent tag + display-face title + always-visible body.
+//     The pattern matches the "not in a box" direction validated on
+//     Leadership.
+//   • Row-level reveal on scroll (fade + 20px lift) with per-column
+//     stagger on the beliefs row.
+//
+// Reduced motion respected on every layer.
+
+import { useRef } from "react";
+import type { ReactNode } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
-const BELIEFS = [
+type Belief = {
+  tag: string;
+  title: string;
+  body: string;
+};
+
+const BELIEFS: Belief[] = [
   {
-    title: "Respect for the individual",
-    body: "Every person - client, partner, or team member - is treated with dignity and care.",
+    tag: "Respect",
+    title: "Every person is treated with dignity and care.",
+    body: "Client, partner, team member — the standard doesn't shift. We hire and grow people who assume the best of others, and we protect that culture without exception.",
   },
   {
-    title: "Value to our customers",
-    body: "Outcomes over activity. We measure success by the impact we deliver, not the hours we bill.",
+    tag: "Value",
+    title: "Outcomes over activity. Impact over hours billed.",
+    body: "We measure success by what actually changes for the customer, not how busy the team looked getting there.",
   },
   {
-    title: "Excellence in all that we do",
-    body: "We hold ourselves to the highest standards of delivery, ethics, and continuous improvement.",
+    tag: "Excellence",
+    title: "The highest standard, held on every deployment.",
+    body: "Delivery, ethics, continuous improvement. Every rollout teaches us how to build the next one better — that habit is the discipline.",
   },
-] as const;
+];
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+function ValueRow({
+  eyebrow,
+  children,
+}: {
+  eyebrow: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const prefersReducedMotion = useReducedMotion();
+  const shown = inView || !!prefersReducedMotion;
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{
+        opacity: prefersReducedMotion ? 1 : 0,
+        y: prefersReducedMotion ? 0 : 20,
+      }}
+      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.6, ease: EASE_OUT }}
+      className="grid grid-cols-1 gap-8 py-12 lg:grid-cols-12 lg:gap-16 lg:py-16"
+    >
+      <div className="lg:col-span-2">
+        <AnimatedEyebrow textClassName="text-white/80">
+          {eyebrow}
+        </AnimatedEyebrow>
+      </div>
+      <div className="min-w-0 lg:col-[3/-1]">{children}</div>
+    </motion.div>
+  );
+}
+
+function BeliefColumn({
+  belief,
+  index,
+  isFirst,
+  isLast,
+}: {
+  belief: Belief;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const prefersReducedMotion = useReducedMotion();
+  const shown = inView || !!prefersReducedMotion;
+
+  // Uniform per-column padding + hairline dividers on non-first columns.
+  // Overrides drop outer padding at the row's edges.
+  const spacing = isFirst
+    ? "md:pr-8 lg:pr-10"
+    : isLast
+      ? "md:border-l md:border-white/20 md:pl-8 lg:pl-10"
+      : "md:border-l md:border-white/20 md:px-8 lg:px-10";
+
+  return (
+    <motion.article
+      ref={ref}
+      initial={{
+        opacity: prefersReducedMotion ? 1 : 0,
+        y: prefersReducedMotion ? 0 : 16,
+      }}
+      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{
+        duration: 0.55,
+        ease: EASE_OUT,
+        delay: prefersReducedMotion ? 0 : index * 0.08,
+      }}
+      className={`flex flex-col ${spacing}`}
+    >
+      {/* Numeral marker + accent tag — the enumerable-list signature. */}
+      <div className="flex items-baseline gap-3">
+        <span
+          aria-hidden="true"
+          className="font-heading text-5xl font-light leading-none tabular-nums text-white/25 md:text-6xl"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
+          {belief.tag}
+        </span>
+      </div>
+
+      {/* Title — display face at pull-quote scale. */}
+      <h3 className="mt-6 max-w-xs font-heading text-xl font-normal leading-snug tracking-tight text-white text-balance md:text-2xl">
+        {belief.title}
+      </h3>
+
+      {/* Body — always visible per client note. */}
+      <p className="mt-4 max-w-xs text-base leading-relaxed text-white/75">
+        {belief.body}
+      </p>
+    </motion.article>
+  );
+}
 
 export default function AboutValues() {
   return (
-    <section className="bg-sognos-navy py-20 lg:py-0">
+    <section className="bg-sognos-navy py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="divide-y divide-white/20 border-b border-white/20">
-          <div className="grid grid-cols-1 gap-6 py-10 lg:grid-cols-12 lg:gap-16 lg:py-14">
-            <div className="lg:col-span-2">
-              <AnimatedEyebrow textClassName="text-white/80">
-                Our Mission
-              </AnimatedEyebrow>
-            </div>
-            <div className="min-w-0 lg:col-[3/-1]">
-              <p className="max-w-3xl font-heading text-2xl font-medium leading-snug tracking-tight text-white text-balance md:text-2xl">
-                Built to support the people delivering care, services and
-                frontline operations every day - simplifying the complexity of
-                healthcare through modern business applications designed for
-                real-world service delivery.
-              </p>
-            </div>
-          </div>
+        <div className="divide-y divide-white/20 border-y border-white/20">
+          <ValueRow eyebrow="Our Mission">
+            <p className="max-w-3xl font-heading text-2xl font-normal leading-snug tracking-tight text-white text-balance md:text-3xl">
+              Built to support the people delivering care, services and
+              frontline operations every day &mdash; simplifying the
+              complexity of healthcare through modern business applications
+              designed for real-world service delivery.
+            </p>
+          </ValueRow>
 
-          <div className="grid grid-cols-1 gap-6 py-10 lg:grid-cols-12 lg:gap-16 lg:py-14">
-            <div className="lg:col-span-2">
-              <AnimatedEyebrow textClassName="text-white/80">
-                Our Vision
-              </AnimatedEyebrow>
-            </div>
-            <div className="min-w-0 lg:col-[3/-1]">
-              <p className="max-w-4xl font-heading text-2xl font-medium leading-snug tracking-tight text-white text-balance md:text-2xl">
-                A future where healthcare and frontline teams are empowered by
-                connected, intelligent systems that make work simpler and create
-                better experiences for patients, clients and the communities
-                they support.
-              </p>
-            </div>
-          </div>
+          <ValueRow eyebrow="Our Vision">
+            <p className="max-w-3xl font-heading text-2xl font-normal leading-snug tracking-tight text-white text-balance md:text-3xl">
+              A future where healthcare and frontline teams are empowered by
+              connected, intelligent systems that make work simpler and
+              create better experiences for patients, clients and the
+              communities they support.
+            </p>
+          </ValueRow>
 
-          <div className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-12 lg:gap-16 lg:py-14">
-            <div className="lg:col-span-2">
-              <AnimatedEyebrow textClassName="text-white/80">
-                Our Beliefs
-              </AnimatedEyebrow>
+          <ValueRow eyebrow="Our Beliefs">
+            {/* Type-first three-column composition. Hairline dividers
+                between columns; no cards, no boxes. */}
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-0">
+              {BELIEFS.map((belief, i) => (
+                <BeliefColumn
+                  key={belief.tag}
+                  belief={belief}
+                  index={i}
+                  isFirst={i === 0}
+                  isLast={i === BELIEFS.length - 1}
+                />
+              ))}
             </div>
-            <div className="max-w-5xl lg:col-[3/-1]">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:gap-6">
-                {BELIEFS.map((belief) => (
-                  <article
-                    key={belief.title}
-                    className="flex min-h-30 flex-col justify-between border-r border-white/20 bg-white/0 px-8 last:border-r-0 first:pl-0"
-                  >
-                    <h3 className="max-w-md font-heading text-sm font-normal leading-snug tracking-tight text-white md:text-base">
-                      {belief.title}
-                    </h3>
-                    <p className="mt-8 text-lg leading-relaxed text-white">
-                      {belief.body}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
+          </ValueRow>
         </div>
       </div>
     </section>

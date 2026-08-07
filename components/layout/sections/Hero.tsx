@@ -151,6 +151,10 @@ export default function Hero({
       {/* <ElegantDarkPattern /> */}
       <HeroBlurLayers />
 
+      {/* Button `rounded-sm` → `rounded-full` (kept from design-system
+          experiment): fixes CLAUDE.md §15 PHASED OUT violation
+          (`rounded-sm on buttons`). Not part of the sandbox weight
+          ladder — this is a standalone bug fix. */}
       <motion.div
         ref={contentRef}
         style={{ y, opacity }}
@@ -181,11 +185,11 @@ export default function Hero({
           animate="show"
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          {/* Book a Demo — matches SognosCare hero pill */}
+          {/* Book a Demo — matches SognosCare hero pill (rounded-full) */}
           <button
             type="button"
             onClick={() => openModal()}
-            className="group/demo relative overflow-hidden rounded-sm bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-colors duration-300"
+            className="group/demo relative overflow-hidden rounded-full bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-colors duration-300"
           >
             <span className="absolute bottom-0 left-0 h-40 w-full origin-bottom translate-y-full rounded-[50px] bg-sognos-blue-accent transition-transform duration-300 ease-out group-hover/demo:translate-y-12" />
             <span className="relative z-10 transition-colors duration-300 group-hover/demo:text-white">

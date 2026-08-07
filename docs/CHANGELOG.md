@@ -1,5 +1,166 @@
 # Changelog
 
+## 2026-08-07 — Interim design system, brand audits, SognosCare sandbox
+
+Long session covering design-system exploration, print-collateral audits,
+dev previews for multiple in-progress patterns, and application of a new
+print-aligned design system to **SognosCare only** as a sandbox test.
+Everything else on the site remains on the original live design system.
+
+### Interim design system doc — `CLAUDE_DESIGN_SYSTEM.md` (new)
+
+Self-contained reference for future Claude sessions. 19 sections:
+core palette + alpha ladder; print-only palette; sector coding;
+product / edition tokens; radius rules (current + phased-out);
+layout tokens reconciled against stale root `/style-guide`;
+typography + weight-ladder proposal; Sofia Pro (print/reference only);
+logo lockups; icon library; gradients; image treatments incl. SVG wave
+mask; hero video/logo crossfade pattern (canonical: `sognosroster/Hero.tsx`);
+component foundations; phased-out patterns; open decisions;
+**§ 19 Application status** (per-page truth table with sandbox rule).
+
+### Dev preview at `/dev/style-guide` (new — 13 sections)
+
+Palette · typography (with Sofia Pro print-reference + weight-ladder
+side-by-side) · sector coding · logo lockups · icon system · gradients ·
+product colours · editions · radius · layout · components · image
+treatments incl. `mask-composite: exclude` inverted wave mask ·
+photography library.
+
+### Audits (docs — discussion-scope, no code changes)
+
+- `docs/BRAND_MATERIALS_AUDIT.md` — eBook (16pp) + brochure (8pp).
+  Three headline findings: sector-coding already exists in print but
+  tokens unused; print palette warmer than live tint; "First in Field
+  Service" tagline in print but not on site.
+- `docs/ABOUT_PAGE_AUDIT.md` — section-by-section with concrete
+  tokenised fixes.
+- `docs/HOMEPAGE_INDUSTRIES_SOLUTIONS_AUDIT.md` — Industries +
+  Solutions + other homepage sections.
+
+### About page — live Pass
+
+- **`AboutStoryTimeline.tsx`** (new — live on `/company/about`)
+  replaces the four-paragraph Our Story column with a four-waypoint
+  editorial timeline. Rail-fill on scroll, beacon pulse on "Today",
+  folds `AboutStats` as the closing tally.
+- **`AboutValues.tsx`** (rewritten) — kept 3-row Mission / Vision /
+  Beliefs. Bumped Mission/Vision statements to display face.
+  Beliefs redesigned as type-first 3-column composition
+  (numbered markers, hairline dividers, always-visible descriptions).
+- **`AboutLeadershipEditorial.tsx`** (new — dev preview only) —
+  editorial spread alternative to `TeamSection`. Parked at
+  `/dev/story-timeline`.
+- Signature editorial patterns codified: numbered enumerable-list
+  marker (low-alpha tabular-nums), type-first columns (no boxes),
+  signature pull-quote (display-face line hung off 3px vertical
+  accent bar).
+
+### Homepage — one standalone fix
+
+- `components/layout/sections/Hero.tsx` — button `rounded-sm` →
+  `rounded-full` (CLAUDE.md §15 phased-out compliance). Standalone
+  bug fix; not part of the sandbox experiment.
+
+### SognosCare sandbox — new print-aligned design system
+
+Applied to **SognosCare Hero + Problems only**. Everything else on
+the site runs the original design system.
+
+- **Hero** — Sofia Pro via section style; `font-bold` H1; `font-light
+  text-white/85` subtext; `rounded-full` button; **video panel hidden
+  (asset not finalised) — shows logo-only in the gradient panel**;
+  panel width fixed `max-w-5 xl` typo → `max-w-6xl` to match Roster.
+- **Problems** — Sofia Pro; `font-semibold` statement H2s;
+  `font-light` body on dark half at `text-white/85`. Also tokenised
+  `text-gray-600` → `text-sognos-body`; `rounded-xl` capability cards
+  → `rounded` (§6 compliance).
+- Adobe Typekit loaded page-scoped via React 19 `<link precedence>`.
+
+### Parked components (built + preview-only)
+
+- `components/ui/sognos-pipeline.tsx` — Sognos-branded AI pipeline
+  visualisation (navy-darkest, sognos-blue-accent connectors, Care /
+  Roster / Genogram outputs each in their own token colour). Preview
+  at `/dev/ai-pipeline`. Not wired live.
+- `components/ui/ai-agent-pipeline.tsx` — 21st.dev import verbatim
+  (reference for the Sognos-refined version above).
+- `components/layout/sections/HowSognosWorksRoster.tsx` — C2
+  storyboard scaffold. Preview at `/dev/hiw-roster`. Not wired live.
+
+### Brand assets mirrored to `public/brand-assets/`
+
+Selected from `Project Docs/Brand Assets/` for dev-guide use: master +
+product logos, master + sub-brand gradients, 6 sample icons, 14 Style-1
+photography references, 2 style-guide reference photos, real SVG wave
+mask (`waves/mask.svg`).
+
+### `ProductCustomerStories.tsx` — restored from `3faf7e3`
+
+Reverted to commit `3faf7e3` per user direction. Affects all product
+pages using the shared `Stories` component.
+
+### Reverts
+
+- **Genogram sandbox** — earlier applied the Sofia Pro / weight ladder
+  / alpha ladder to `SognosGenogram Hero` + `Problems`. Reverted
+  2026-08-07 — sandbox is Care-only.
+- **Home Hero sandbox** — earlier applied same to home Hero. Reverted
+  2026-08-07. **Kept:** `rounded-sm` button → `rounded-full` (standalone
+  bug fix separate from the sandbox).
+
+### Priority handoff
+
+See `CLAUDE_DESIGN_SYSTEM.md` §16 (Open decisions) + §19 (Application
+status) for the exhaustive checklist. Immediate items:
+
+1. Validate SognosCare sandbox (Hero + Problems) → decide roll or retire
+2. Wire pipeline into `HowSognosWorks` or drop
+3. Fix `NewsInsightSection` feature-tile scrim bug (demo-blocker)
+4. Apply sector-tinted `IndustrySection` treatment (biggest ROI)
+5. Decide "First in Field Service" tagline reinstate / retire
+
+## 2026-08-06 — Datasheet download buttons, Sanity PDF management, dev perf fix
+
+- **Download Datasheet button** added to `ProductSubNav` on all three product
+  pages (SognosCare, SognosRoster, SognosGenogram). Renders as a styled button
+  (brand border, blue hover) to the left of Book a Demo — filtered out of the
+  nav link row to avoid duplicate entries.
+- **Sanity schema** — `datasheet` file field (PDF, Meta tab) added to
+  `sognoscarePage`, `sognosrosterPage`, and new `sognosgenogramPage` schema.
+  GROQ queries resolve `datasheet.asset->url` with static fallback.
+- **Sanity query mapper fix** — `DATASHEET_ENTRY` injected directly in the
+  SognosCare mapper to survive Sanity's `subNav` override (which strips
+  fields not in the GROQ projection).
+- **SognosGenogram Sanity schema** created (prod only) — minimal document type
+  with datasheet field; registered in Studio structure under Products.
+- **Button label** changed from "Datasheet" to "Download Datasheet".
+- **Sub-nav z-index** lowered from `z-50` to `z-40` to prevent overlapping
+  interactive elements (customer story cards, ProductDrawer peek).
+- **Footer** — acknowledgement border opacity increased (`white/15` → `white/35`),
+  text centred.
+- **Nav CTA** — "Contact Sales" renamed to "Contact Us".
+- **Contact page** — fixed duplicate React key on office cards.
+- **Dev server performance** — cleared 5GB of stale Turbopack cache; added
+  `serverExternalPackages` for Sanity; added `Project Docs/`, `certificates/`,
+  `.sanity/` to `.gitignore` to exclude from file watchers. Added dev server
+  discipline rules to `CLAUDE.md` §3b.
+- **Sanity Studio deployed** to `sognos.sanity.studio` (standalone) and schema
+  pushed to production via Vercel (`sognos.com.au/studio/`). `sanity.cli.ts`
+  updated with `deployment.appId`.
+- **Files (production):** `components/ui/ProductSubNav.tsx`,
+  `lib/content/sognoscarePage.ts`, `lib/sanity/queries.ts`,
+  `app/(marketing)/products/sognosroster/page.tsx`,
+  `app/(marketing)/products/sognosgenogram/page.tsx`,
+  `sanity/schemas/sognoscarePage.ts`, `sanity/schemas/sognosrosterPage.ts`,
+  `sanity/schemas/sognosgenogramPage.ts` (new), `sanity/schemas/index.ts`,
+  `sanity.config.ts`, `sanity.cli.ts`, `next.config.ts`, `.gitignore`,
+  `components/layout/Footer.tsx`, `lib/navigation.ts`,
+  `app/(marketing)/contact/page.tsx`.
+- **Files (redesign):** same `ProductSubNav.tsx`, `sognoscarePage.ts`,
+  `queries.ts`, roster/genogram page files, Sanity schemas mirrored.
+  `CLAUDE.md` updated with §3b dev server discipline.
+
 ## 2026-08-06 (later) — Event cards, bento tile surfaces, customer-story Pass, rollout skill
 
 - **KH category page** finished scaffolding (dark hero): navbar now loads in
