@@ -20,6 +20,15 @@ const stats = [
   },
 ];
 
+const audience = [
+  "Health services & hospitals",
+  "Aged care & support at home",
+  "Disability & community services",
+  "Mental health & wellbeing teams",
+  "Government & not-for-profits",
+  "IT, Digital, Risk, Quality, People leaders",
+];
+
 const whyReasons = [
   "NHS and healthcare experience you can build on",
   "Solutions built on Microsoft Power Platform, with Copilot and AI",
@@ -68,7 +77,7 @@ export default function DigPacksPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px_360px] gap-10 lg:gap-12 items-start">
             {/* Headline + body + CTAs */}
             <div>
               <h1 className="font-heading text-4xl lg:text-5xl font-normal leading-heading tracking-heading text-white max-w-2xl">
@@ -126,6 +135,17 @@ export default function DigPacksPage() {
                   </svg>
                 </a>
               </div>
+            </div>
+
+            {/* Nurse image */}
+            <div className="hidden lg:block relative rounded-lg overflow-hidden aspect-[3/4]">
+              <Image
+                src="/images/events/digpacks/nurse.png"
+                alt="Healthcare worker using a tablet"
+                fill
+                sizes="260px"
+                className="object-cover"
+              />
             </div>
 
             {/* Stats card */}
@@ -207,6 +227,36 @@ export default function DigPacksPage() {
               </p>
             </div>
           </div>
+
+          {/* Microsoft Solutions Partner accreditation */}
+          <div className="mt-10 pt-8 border-t border-sognos-border-subtle flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Image
+              src="/images/events/digpacks/microsoft-solutions-partner.png"
+              alt="Microsoft Solutions Partner"
+              width={200}
+              height={80}
+              className="h-12 w-auto"
+            />
+            <p className="text-xs font-semibold uppercase tracking-widest text-sognos-text-muted text-center sm:text-left">
+              Both accredited Microsoft Solutions Partners
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ACCELERATOR CALLOUT */}
+      <section className="py-10 lg:py-12 bg-gray-200/70">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6">
+            <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#1D96FC]/10 text-[#1D96FC] text-xs font-semibold uppercase tracking-widest px-3 py-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1D96FC]" aria-hidden />
+              Accelerator solutions
+            </span>
+            <p className="font-heading text-lg lg:text-xl font-medium text-prussian-blue-800 tracking-heading leading-snug">
+              Start faster, adapt easily and integrate with what you already
+              have through DigPacks accelerator solutions.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -251,11 +301,25 @@ export default function DigPacksPage() {
               </ul>
             </div>
 
-            {/* Centre panel — placeholder for partnership photo */}
-            <div className="rounded-lg bg-gray-200/70 overflow-hidden min-h-64 flex items-center justify-center">
-              <p className="text-xs font-semibold uppercase tracking-widest text-sognos-text-muted px-6 text-center">
-                Partnership in action
-              </p>
+            {/* Who should start the conversation */}
+            <div className="rounded-lg bg-gray-200/70 p-8 lg:p-10">
+              <h2 className="font-heading text-xl lg:text-2xl font-medium text-prussian-blue-800 tracking-heading mb-6">
+                Who should start the conversation?
+              </h2>
+              <ul className="space-y-4">
+                {audience.map((a) => (
+                  <li key={a} className="flex items-start gap-3">
+                    <CheckCircle2
+                      size={18}
+                      className="text-[#1D96FC] shrink-0 mt-0.5"
+                      aria-hidden
+                    />
+                    <span className="text-sm text-sognos-text-body leading-snug">
+                      {a}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Localisation */}
