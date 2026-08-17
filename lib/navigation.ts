@@ -137,6 +137,11 @@ export const nav: NavGroup[] = [
         href: "/products/sognosgenogram",
         description: "Relationship & family context mapping",
       },
+      {
+        name: "DigPacks",
+        href: "/products/digpacks",
+        description: "Partnership accelerator solutions",
+      },
     ],
     megaMenu: [
       {
@@ -157,6 +162,11 @@ export const nav: NavGroup[] = [
             name: "SognosGenogram",
             href: "/products/sognosgenogram",
             description: "Relationship & family context mapping",
+          },
+          {
+            name: "DigPacks",
+            href: "/products/digpacks",
+            description: "Partnership accelerator solutions",
           },
         ],
       },

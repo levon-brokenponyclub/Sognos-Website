@@ -17,6 +17,7 @@ const PRODUCTS_LIST = [
   { label: "SognosCare", value: "sognoscare" },
   { label: "SognosRoster", value: "sognosroster" },
   { label: "SognosGenogram", value: "sognosgenogram" },
+  { label: "DigPacks", value: "digpacks" },
   { label: "Not sure yet", value: "unsure" },
 ];
 

@@ -473,6 +473,7 @@ export default function CTASection({
                           <option value="sognosgenogram">
                             SognosGenogram
                           </option>
+                          <option value="digpacks">DigPacks</option>
                           <option value="not-sure">Not sure yet</option>
                         </select>
                       </div>

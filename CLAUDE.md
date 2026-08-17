@@ -70,6 +70,8 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
         page.tsx                   ✅
       /sognosgenogram
         page.tsx                   ✅
+      /digpacks
+        page.tsx                   ✅ (partnership landing, redirect from /products/digpacks-contact)
 
     /solutions
       page.tsx                     ✅ Solutions Hub
@@ -162,6 +164,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /products/sognoscare/editions/child-and-family-services  ✅
 /products/sognosroster                               ✅
 /products/sognosgenogram                             ✅
+/products/digpacks                                   ✅
 /solutions                                           ✅
 /solutions/frontline                                 ✅
 /solutions/customer-relationship-management          ✅
