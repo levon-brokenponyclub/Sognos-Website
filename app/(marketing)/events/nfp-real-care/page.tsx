@@ -13,8 +13,6 @@ import {
   Workflow,
   Navigation,
 } from "lucide-react";
-import { EventRegistrationProvider } from "@/lib/EventRegistrationContext";
-import EventRegistrationModal from "@/components/sections/events/nfp-real-care/EventRegistrationModal";
 import RegisterButton from "@/components/sections/events/nfp-real-care/RegisterButton";
 
 export const metadata = {
@@ -87,8 +85,7 @@ const attendeeRoles = [
 
 export default function NfpRealCarePage() {
   return (
-    <EventRegistrationProvider>
-      <main className="bg-white">
+    <main className="bg-white">
         {/* HERO */}
         <section className="bg-gradient-hero pt-28 pb-16 lg:pt-40 lg:pb-20">
           <div className="max-w-7xl mx-auto px-6">
@@ -557,8 +554,6 @@ export default function NfpRealCarePage() {
           </div>
         </section>
 
-        <EventRegistrationModal />
-      </main>
-    </EventRegistrationProvider>
+    </main>
   );
 }

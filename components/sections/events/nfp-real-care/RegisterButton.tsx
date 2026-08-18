@@ -1,7 +1,4 @@
-"use client";
-
 import { ArrowRight } from "lucide-react";
-import { useEventRegistration } from "@/lib/EventRegistrationContext";
 
 type Variant = "primary" | "card" | "ghost-on-dark";
 
@@ -10,6 +7,9 @@ interface RegisterButtonProps {
   label?: string;
   className?: string;
 }
+
+const EVENTBRITE_URL =
+  "https://www.eventbrite.com.au/e/designing-services-around-real-lives-not-system-boundaries-tickets-1998319066120";
 
 const variants: Record<Variant, string> = {
   primary:
@@ -24,15 +24,15 @@ export default function RegisterButton({
   label = "Register now",
   className = "",
 }: RegisterButtonProps) {
-  const { openModal } = useEventRegistration();
   return (
-    <button
-      type="button"
-      onClick={openModal}
+    <a
+      href={EVENTBRITE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`${variants[variant]} ${className}`.trim()}
     >
       <span>{label}</span>
       <ArrowRight size={18} aria-hidden />
-    </button>
+    </a>
   );
 }
