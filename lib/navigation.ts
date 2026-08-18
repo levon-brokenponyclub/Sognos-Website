@@ -215,6 +215,7 @@ export const nav: NavGroup[] = [
         items: [
           { name: "Insights", href: "/knowledge-hub" },
           { name: "News", href: "/knowledge-hub?category=News" },
+          { name: "Events", href: "/knowledge-hub?category=Events" },
           // { name: "Customer Stories", href: "/customer-stories" },
         ],
       },

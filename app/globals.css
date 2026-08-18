@@ -304,6 +304,20 @@
   }
 }
 
+/* Announcement banner marquee — mobile only. Content is duplicated in the
+   markup so the shared 0 → -50% keyframe loops seamlessly. */
+.banner-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: trust-marquee-scroll 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-marquee-track {
+    animation: none;
+  }
+}
+
 /* CTA logo marquee */
 .cta-logo-track {
   display: flex;

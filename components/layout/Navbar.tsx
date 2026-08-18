@@ -3,10 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
+import {
+  BANNER_STORAGE_KEY,
+  BANNER_DISMISS_EVENT,
+} from "@/lib/upcomingEvent";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
@@ -382,6 +392,28 @@ export default function Navbar() {
 
   const logoSrc = "/logos/sognos-logo.svg";
 
+  // Banner is a sibling in layout.tsx; Navbar just needs to know whether to
+  // sit under it (top-11) or against the viewport top (top-0). Reads the same
+  // localStorage key EventBanner writes to.
+  const bannerDismissed = useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === "undefined") return () => {};
+      const handleChange = () => onStoreChange();
+      window.addEventListener("storage", handleChange);
+      window.addEventListener(BANNER_DISMISS_EVENT, handleChange);
+      return () => {
+        window.removeEventListener("storage", handleChange);
+        window.removeEventListener(BANNER_DISMISS_EVENT, handleChange);
+      };
+    },
+    () => {
+      if (typeof window === "undefined") return false;
+      return window.localStorage.getItem(BANNER_STORAGE_KEY) === "true";
+    },
+    () => false,
+  );
+  const bannerVisible = !bannerDismissed && !scrolled;
+
   // Click-outside closes desktop menu
   useEffect(() => {
     if (!openMenu) return;
@@ -581,7 +613,7 @@ export default function Navbar() {
     <header
       ref={headerRef}
       data-site-header
-      className={`fixed top-0 left-0 w-full z-99 bg-transparent transition-transform duration-300 ease-out ${
+      className={`fixed ${bannerVisible ? "top-11" : "top-0"} left-0 w-full z-99 bg-transparent transition-[top,transform] duration-300 ease-out ${
         mobileOpen ? "pointer-events-auto" : "pointer-events-none will-change-transform"
       }`}
       style={{

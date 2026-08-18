@@ -19,7 +19,7 @@ export default async function KnowledgeHubPage({
 }) {
   const { category } = await searchParams;
   const posts = await getKnowledgePostArchive();
-  const articles: Article[] = posts.map((p) => ({
+  const sanityArticles: Article[] = posts.map((p) => ({
     slug: p.slug,
     category: p.category,
     title: p.title,
@@ -31,6 +31,22 @@ export default async function KnowledgeHubPage({
     industry: p.industry ?? null,
     useCase: p.useCase ?? null,
   }));
+
+  const staticArticles: Article[] = [
+    {
+      slug: "nfp-real-care",
+      category: "Events",
+      title: "NFP Real Care — Designing Services Around Real Lives",
+      excerpt:
+        "Breakfast event for NFP leaders in health, social and community care. Thursday 17 September, Microsoft, North Sydney. Places limited to 35 attendees.",
+      href: "/events/nfp-real-care",
+      image: "/images/events/nfp-real-care/MSFT-header-img.png",
+      industry: "Health & Social Care",
+      useCase: null,
+    },
+  ];
+
+  const articles: Article[] = [...staticArticles, ...sanityArticles];
 
   return (
     <>
