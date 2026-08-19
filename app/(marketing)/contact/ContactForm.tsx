@@ -10,6 +10,10 @@ const REASONS = [
   { label: "Implementation enquiry", value: "implementation" },
   { label: "Support", value: "support" },
   { label: "Partnership", value: "partnership" },
+  { label: "Custom solutions", value: "custom-solutions" },
+  { label: "IP services (ISV)", value: "ip-services-isv" },
+  { label: "Integration Licencing", value: "integration-licencing" },
+  { label: "Project services", value: "project-services" },
   { label: "Other", value: "other" },
 ];
 
@@ -18,6 +22,10 @@ const PRODUCTS_LIST = [
   { label: "SognosRoster", value: "sognosroster" },
   { label: "SognosGenogram", value: "sognosgenogram" },
   { label: "DigPacks", value: "digpacks" },
+  { label: "Copilot Solutions", value: "copilot-solutions" },
+  { label: "Dynamics 365 CE", value: "dynamics-365-ce" },
+  { label: "Dynamics 365 F&O", value: "dynamics-365-fo" },
+  { label: "Power Platform Solutions", value: "power-platform-solutions" },
   { label: "Not sure yet", value: "unsure" },
 ];
 

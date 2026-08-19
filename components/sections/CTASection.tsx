@@ -46,7 +46,16 @@ function AnimatedCounter({ value }: { value: number }) {
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
-type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram" | "not-sure";
+type ProductKey =
+  | "sognoscare"
+  | "sognosroster"
+  | "sognosgenogram"
+  | "digpacks"
+  | "copilot-solutions"
+  | "dynamics-365-ce"
+  | "dynamics-365-fo"
+  | "power-platform-solutions"
+  | "not-sure";
 
 type CTASectionProps = {
   headline?: string;
@@ -474,6 +483,18 @@ export default function CTASection({
                             SognosGenogram
                           </option>
                           <option value="digpacks">DigPacks</option>
+                          <option value="copilot-solutions">
+                            Copilot Solutions
+                          </option>
+                          <option value="dynamics-365-ce">
+                            Dynamics 365 CE
+                          </option>
+                          <option value="dynamics-365-fo">
+                            Dynamics 365 F&amp;O
+                          </option>
+                          <option value="power-platform-solutions">
+                            Power Platform Solutions
+                          </option>
                           <option value="not-sure">Not sure yet</option>
                         </select>
                       </div>

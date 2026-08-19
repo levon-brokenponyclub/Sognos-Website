@@ -21,6 +21,10 @@ const PRODUCT_LABELS: Record<string, string> = {
   sognosroster: "SognosRoster",
   sognosgenogram: "SognosGenogram",
   digpacks: "DigPacks",
+  "copilot-solutions": "Copilot Solutions",
+  "dynamics-365-ce": "Dynamics 365 CE",
+  "dynamics-365-fo": "Dynamics 365 F&O",
+  "power-platform-solutions": "Power Platform Solutions",
   "not-sure": "Not sure yet",
 };
 
