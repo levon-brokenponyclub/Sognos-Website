@@ -139,7 +139,7 @@ export const nav: NavGroup[] = [
       },
       {
         name: "DigPacks",
-        href: "/products/digpacks",
+        href: "/digpacks",
         description: "Partnership accelerator solutions",
       },
     ],
@@ -165,7 +165,7 @@ export const nav: NavGroup[] = [
           },
           {
             name: "DigPacks",
-            href: "/products/digpacks",
+            href: "/digpacks",
             description: "Partnership accelerator solutions",
           },
         ],
@@ -216,7 +216,7 @@ export const nav: NavGroup[] = [
           { name: "Insights", href: "/knowledge-hub" },
           { name: "News", href: "/knowledge-hub?category=News" },
           { name: "Events", href: "/knowledge-hub?category=Events" },
-          // { name: "Customer Stories", href: "/customer-stories" },
+          { name: "Customer Stories", href: "/customer-stories" },
         ],
       },
       { heading: "", items: [] },

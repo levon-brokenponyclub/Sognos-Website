@@ -43,7 +43,8 @@ const nextConfig: NextConfig = {
       // Products — restructured
       { source: "/sognoscare", destination: "/products/sognoscare", permanent: true },
       { source: "/sognos-genogram", destination: "/products/sognosgenogram", permanent: true },
-      { source: "/products/digpacks-contact", destination: "/products/digpacks", permanent: true },
+      { source: "/products/digpacks", destination: "/digpacks", permanent: true },
+      { source: "/products/digpacks-contact", destination: "/digpacks", permanent: true },
 
       // Old landing page
       { source: "/first-in-field-service", destination: "/", permanent: true },
