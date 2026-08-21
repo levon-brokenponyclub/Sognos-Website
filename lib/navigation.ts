@@ -33,6 +33,7 @@ const SOLUTIONS: NavItem[] = [
   { name: "Customer Service", href: "/solutions/customer-service" },
   { name: "Power Platform", href: "/solutions/power-platform" },
   { name: "Quick Start", href: "/solutions/quick-start" },
+  { name: "Finance & Operations", href: "/solutions/finance-operations" },
 ];
 
 const INDUSTRIES: NavItem[] = [

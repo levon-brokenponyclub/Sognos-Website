@@ -80,6 +80,13 @@ export const SOLUTIONS = [
     href: "/solutions/quick-start",
     description: "Get up and running with Sognos in weeks - not months.",
   },
+  {
+    name: "Finance & Operations",
+    slug: "finance-operations",
+    href: "/solutions/finance-operations",
+    description:
+      "Run financial management, procurement, supply chain and operational processes on Microsoft Dynamics 365.",
+  },
 ] as const;
 
 export const INDUSTRIES = [

@@ -57,7 +57,7 @@ export default async function SolutionPage({
               {meta.name}
             </span>
           </div>
-          <div className="max-w-5xl text-center">
+          <div className="max-w-4xl text-center">
             <h1 className="mb-6 font-heading text-3xl font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
               {content.hero.headline}
             </h1>
@@ -138,6 +138,39 @@ export default async function SolutionPage({
         </div>
       </section>
 
+      {/* Experience — optional; renders when content.experience is present */}
+      {content.experience && (
+        <section className="bg-[#1D96FC] py-24">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-10">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-white/30 text-white font-medium mb-6">
+                <span className="w-2 h-2 bg-white rounded-full"></span>
+                Experience
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight mb-6">
+                {meta.name} delivery in complex organisations
+              </h2>
+              <p className="max-w-2xl text-base leading-relaxed text-white/80">
+                {content.experience.intro}
+              </p>
+            </div>
+            <ul className="mb-10 grid gap-3 sm:grid-cols-3">
+              {content.experience.customers.map((name) => (
+                <li
+                  key={name}
+                  className="rounded-lg border border-white/20 bg-white/10 px-5 py-4 text-sm font-medium text-white"
+                >
+                  {name}
+                </li>
+              ))}
+            </ul>
+            <p className="max-w-3xl text-base leading-relaxed text-white/80">
+              {content.experience.outro}
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Platform */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
@@ -155,6 +188,38 @@ export default async function SolutionPage({
           </div>
         </div>
       </section>
+
+      {/* Microsoft ecosystem — optional; renders when content.microsoftEcosystem is present */}
+      {content.microsoftEcosystem && (
+        <section className="bg-(--sognos-bg-sunken) py-24">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-12">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1 text-sm border-prussian-blue-800/30 text-prussian-blue-800 font-medium mb-6">
+                <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
+                Microsoft ecosystem
+              </div>
+              <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
+                {content.microsoftEcosystem.heading}
+              </h2>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              {content.microsoftEcosystem.items.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-lg border border-(--sognos-card-border) bg-white p-8"
+                >
+                  <h3 className="mb-3 font-heading text-lg font-normal text-sognos-text-heading">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-sognos-text-body">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Works with */}
       {showWorksWithPanel && (
@@ -214,8 +279,11 @@ export default async function SolutionPage({
       )}
 
       <CTASection
-        headline={`Ready to explore ${meta.name}?`}
-        subtext="Our team works with service providers across sectors. Book a call and we'll walk you through how this solution fits your operation."
+        headline={content.cta?.headline ?? `Ready to explore ${meta.name}?`}
+        subtext={
+          content.cta?.subtext ??
+          "Our team works with service providers across sectors. Book a call and we'll walk you through how this solution fits your operation."
+        }
         primaryCTA={{ label: "Book a Demo", href: "/contact" }}
         secondaryCTA={{ label: "Contact Sales", href: "/contact" }}
       />

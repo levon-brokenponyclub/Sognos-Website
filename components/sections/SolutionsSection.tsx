@@ -16,6 +16,7 @@ import {
   ChatCircleText,
   FlowArrow,
   Lightning,
+  Coins,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 
@@ -78,6 +79,14 @@ const SOLUTIONS = [
     copy: "Sognos Quick Start delivers a production-ready deployment in four weeks - pre-built configuration, training, and go-live support included.",
     accentBg: "#ffe5e6",
   },
+  {
+    id: "finance-operations",
+    label: "Finance & Operations",
+    href: "/solutions/finance-operations",
+    title: "Finance and operations on one connected platform",
+    copy: "Run financial management, procurement, supply chain and operational processes on Microsoft Dynamics 365 - with the visibility to manage complexity as you grow.",
+    accentBg: "#fff8e0",
+  },
 ] as const;
 
 // Doubled for seamless infinite loop
@@ -103,6 +112,7 @@ const ICONS: Record<
   "customer-service": ChatCircleText,
   "power-platform": FlowArrow,
   "quick-start": Lightning,
+  "finance-operations": Coins,
 };
 
 // ─── Illustrations ─────────────────────────────────────────────────────────────
@@ -263,6 +273,42 @@ function CardIllustration({ id }: { id: SolutionId }) {
         <line x1="140" y1="30" x2="140" y2="15" />
         <line x1="128" y1="38" x2="134" y2="32" />
         <line x1="152" y1="38" x2="146" y2="32" />
+      </svg>
+    );
+
+  if (id === "finance-operations")
+    return (
+      <svg
+        viewBox="0 0 280 100"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={base}
+        aria-hidden="true"
+      >
+        {/* Coin stack (left) */}
+        <ellipse cx="50" cy="82" rx="26" ry="7" />
+        <line x1="24" y1="82" x2="24" y2="66" />
+        <line x1="76" y1="82" x2="76" y2="66" />
+        <ellipse cx="50" cy="66" rx="26" ry="7" />
+        <line x1="24" y1="66" x2="24" y2="50" />
+        <line x1="76" y1="66" x2="76" y2="50" />
+        <ellipse cx="50" cy="50" rx="26" ry="7" />
+        <line x1="46" y1="46" x2="46" y2="54" />
+        <line x1="54" y1="46" x2="54" y2="54" />
+        {/* Connecting flow arrow */}
+        <path d="M86 60 L130 60" strokeDasharray="4 3" />
+        <path d="M124 55 L132 60 L124 65" />
+        {/* Rising bars (right) — operations performance */}
+        <line x1="146" y1="90" x2="266" y2="90" />
+        <rect x="152" y="70" width="18" height="20" />
+        <rect x="180" y="55" width="18" height="35" />
+        <rect x="208" y="38" width="18" height="52" />
+        <rect x="236" y="22" width="18" height="68" />
+        <polyline points="161,70 189,55 217,38 245,22" />
+        <circle cx="245" cy="22" r="3.5" fill="currentColor" stroke="none" />
       </svg>
     );
 

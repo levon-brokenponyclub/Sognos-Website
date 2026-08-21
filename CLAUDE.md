@@ -76,7 +76,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 
     /solutions
       page.tsx                     ✅ Solutions Hub
-      /[slug]/page.tsx             ✅ (7 static routes — frontline, crm, insights, experience, service, power-platform, quick-start)
+      /[slug]/page.tsx             ✅ (8 static routes — frontline, crm, insights, experience, service, power-platform, quick-start, finance-operations)
 
     /industries
       page.tsx                     ✅ Industries Hub
@@ -174,6 +174,7 @@ Transform Sognos from a Microsoft partner / consulting website into a **product-
 /solutions/customer-service                          ✅
 /solutions/power-platform                            ✅
 /solutions/quick-start                               ✅
+/solutions/finance-operations                        ✅
 /industries                                          ✅
 /industries/health-social-care                       ✅
 /industries/facilities-management                    ✅
