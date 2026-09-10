@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import SolutionsGrid from "./SolutionsGrid";
+import AssetBooker from "./AssetBooker";
 
 export const metadata = {
   title:
@@ -348,6 +349,9 @@ export default function DigPacksPage() {
           </div>
         </div>
       </section>
+
+      {/* ASSET BOOKER */}
+      <AssetBooker />
 
       {/* FOOTER CTA */}
       <section className="pb-16 lg:pb-24">
