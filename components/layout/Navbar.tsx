@@ -98,7 +98,7 @@ function itemTransition(
 
 // ─── Icon meta (keyed by product name) ─────────────────────────────────────────
 
-type ProductMeta = { bg: string; path: string; color: string };
+type ProductMeta = { bg: string; path?: string; color: string; image?: string };
 
 const PRODUCT_META: Record<string, ProductMeta> = {
   SognosCare: {
@@ -115,6 +115,11 @@ const PRODUCT_META: Record<string, ProductMeta> = {
     bg: "bg-violet-50",
     color: "text-violet-500",
     path: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
+  },
+  DigPacks: {
+    bg: "bg-teal-50",
+    color: "text-teal-600",
+    image: "/images/Digpacks/digpacks-icon.png",
   },
   "AI Agents": {
     bg: "bg-violet-50",
@@ -230,9 +235,18 @@ function FeatureItems({
               className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors duration-200"
             >
               {meta && (
-                <div
-                  className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
-                >
+              <div
+                className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
+              >
+                {meta.image ? (
+                  <Image
+                    src={meta.image}
+                    alt={item.name}
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 object-contain"
+                  />
+                ) : (
                   <svg
                     className={`w-4 h-4 ${meta.color}`}
                     fill="none"
@@ -243,10 +257,11 @@ function FeatureItems({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d={meta.path}
+                      d={meta.path!}
                     />
                   </svg>
-                </div>
+                )}
+              </div>
               )}
               <div>
                 <div className="text-sm font-semibold text-gray-900 group-hover:text-brand transition-colors duration-200">
@@ -982,19 +997,29 @@ export default function Navbar() {
                                     <div
                                       className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center shrink-0`}
                                     >
-                                      <svg
-                                        className={`w-4 h-4 ${meta.color}`}
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d={meta.path}
+                                      {meta.image ? (
+                                        <Image
+                                          src={meta.image}
+                                          alt={item.name}
+                                          width={20}
+                                          height={20}
+                                          className="w-5 h-5 object-contain"
                                         />
-                                      </svg>
+                                      ) : (
+                                        <svg
+                                          className={`w-4 h-4 ${meta.color}`}
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d={meta.path!}
+                                          />
+                                        </svg>
+                                      )}
                                     </div>
                                   )}
                                   <div>
