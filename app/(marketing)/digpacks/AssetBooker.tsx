@@ -6,7 +6,7 @@ import { ChevronDown, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const FORM_URL =
-  "https://forms.cloud.microsoft/pages/responsepage.aspx?id=zIacJ9kc00WXQ1urUsPpDulf4UJd2PdFji36B-5lP_pURVRWMEVTMkdOMlZWSzZFUEtRSU9JUUg1US4u";
+  "https://forms.cloud.microsoft/pages/responsepage.aspx?id=dIv2xQ42w0yPgwCF_6izmX_i53x-rohEmvUHAV32Ee5UNEZXVEpVQVZLWkVaUTJCSk5GMTg1Q1pESy4u&route=shorturl";
 const DIGPACKS_URL = "https://www.digpacks.co.uk/knowledge-base/asset-booker/";
 
 const ASSET_BOOKER_ALT = "Asset Booker resource booking interface";
