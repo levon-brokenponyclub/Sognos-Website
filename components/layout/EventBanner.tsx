@@ -48,6 +48,12 @@ export default function EventBanner() {
     () => false,
   );
 
+  const eventPast = useSyncExternalStore(
+    () => () => {},
+    () => Date.now() > new Date(UPCOMING_EVENT.endDate).getTime(),
+    () => false,
+  );
+
   // Scroll + dark-hero detection — mirrors Navbar's probe so the banner
   // theme flips with the surface it sits over.
   useEffect(() => {
@@ -83,7 +89,7 @@ export default function EventBanner() {
     window.dispatchEvent(new Event(BANNER_DISMISS_EVENT));
   };
 
-  if (bannerDismissed) return null;
+  if (bannerDismissed || eventPast) return null;
 
   // Over a dark hero the banner is white; over a light hero it's navy —
   // the opposite of the surface underneath so it always separates visually.

@@ -1,7 +1,7 @@
 import KnowledgeHubArchive, {
   type Article,
 } from "@/components/sections/KnowledgeHubArchive";
-import { getKnowledgePostArchive } from "@/lib/sanity/queries";
+import { getKnowledgePostArchive, getEventArchive } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
 
 export const metadata = {
@@ -18,8 +18,23 @@ export default async function KnowledgeHubPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
-  const posts = await getKnowledgePostArchive();
-  const sanityArticles: Article[] = posts.map((p) => ({
+  const [posts, events] = await Promise.all([
+    getKnowledgePostArchive(),
+    getEventArchive(),
+  ]);
+
+  const eventArticles: Article[] = events.map((e) => ({
+    slug: e.slug,
+    category: "Events",
+    title: e.title,
+    excerpt: e.excerpt,
+    href: `/events/${e.slug}`,
+    image: e.imageUrl,
+    industry: null,
+    useCase: null,
+  }));
+
+  const postArticles: Article[] = posts.map((p) => ({
     slug: p.slug,
     category: p.category,
     title: p.title,
@@ -32,21 +47,7 @@ export default async function KnowledgeHubPage({
     useCase: p.useCase ?? null,
   }));
 
-  const staticArticles: Article[] = [
-    {
-      slug: "nfp-real-care",
-      category: "Events",
-      title: "NFP Real Care — Designing Services Around Real Lives",
-      excerpt:
-        "Breakfast event for NFP leaders in health, social and community care. Thursday 17 September, Microsoft, North Sydney. Places limited to 35 attendees.",
-      href: "/events/nfp-real-care",
-      image: "/images/events/nfp-real-care/MSFT-header-img.png",
-      industry: "Health & Social Care",
-      useCase: null,
-    },
-  ];
-
-  const articles: Article[] = [...staticArticles, ...sanityArticles];
+  const articles: Article[] = [...eventArticles, ...postArticles];
 
   return (
     <>

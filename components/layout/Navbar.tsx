@@ -14,6 +14,7 @@ import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 import {
+  UPCOMING_EVENT,
   BANNER_STORAGE_KEY,
   BANNER_DISMISS_EVENT,
 } from "@/lib/upcomingEvent";
@@ -427,7 +428,14 @@ export default function Navbar() {
     },
     () => false,
   );
-  const bannerVisible = !bannerDismissed && !scrolled;
+
+  const eventPast = useSyncExternalStore(
+    () => () => {},
+    () => Date.now() > new Date(UPCOMING_EVENT.endDate).getTime(),
+    () => false,
+  );
+
+  const bannerVisible = !bannerDismissed && !eventPast && !scrolled;
 
   // Click-outside closes desktop menu
   useEffect(() => {

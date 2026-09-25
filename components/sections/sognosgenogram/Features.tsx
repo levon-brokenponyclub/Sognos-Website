@@ -1,4 +1,6 @@
-const FEATURES = [
+import type { GenogramFeature } from "@/lib/sanity/queries";
+
+const FEATURES: GenogramFeature[] = [
   {
     title: "Interactive genogram builder",
     body: "Create structured family and relationship maps directly within a case record using standard clinical genogram notation - without leaving the platform.",
@@ -25,7 +27,13 @@ const FEATURES = [
   },
 ];
 
-export default function GenogramFeatures() {
+interface FeaturesProps {
+  header?: { eyebrow?: string; heading?: string; intro?: string };
+  features?: GenogramFeature[];
+}
+
+export default function GenogramFeatures({ header, features }: FeaturesProps) {
+  const items = features && features.length > 0 ? features : FEATURES;
   return (
     <section id="features" className="bg-(--sognos-bg-sunken) py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -49,15 +57,15 @@ export default function GenogramFeatures() {
               }
             />
             <span className="w-2 h-2 bg-[#1D96FC] rounded-full"></span>
-            Features
+            {header?.eyebrow ?? "Features"}
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
-            Everything you need to map relationships that matter
+            {header?.heading ?? "Everything you need to map relationships that matter"}
           </h2>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature, i) => (
+          {items.map((feature, i) => (
             <div
               key={i}
               className="rounded-xl border border-(--sognos-card-border) bg-white p-8"

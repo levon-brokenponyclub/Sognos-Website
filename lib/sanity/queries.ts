@@ -361,16 +361,145 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
 // ─── SognosRoster ─────────────────────────────────────────────────────────────
 
 const SOGNOSROSTER_PAGE_QUERY = `*[_type == "sognosrosterPage"][0]{
-  hero,
-  problems,
-  features,
-  stats,
-  testimonials,
-  stories
+  seo,
+  hero{ headline, subtext, logo },
+  "datasheetUrl": datasheet.asset->url,
+  productDrawer{ peekTitle, peekDescription, drawerTitle, drawerDescription },
+  subNav[]{ label, id, href },
+  problemsHeader{ eyebrow, heading, intro },
+  problems[]{ number, problem, problemDetail, solution, iconPath },
+  featuresHeader{ eyebrow, heading, intro },
+  features[]{ id, name, tagline, description, capabilities },
+  advantagesHeader{ eyebrow, heading, intro },
+  advantages,
+  storiesHeader{ eyebrow, heading, intro },
+  "featuredStories": featuredStories[]->{
+    "slug": slug.current,
+    company,
+    quote,
+    quoteAuthor,
+    sidebar,
+    heroImage,
+    companyLogo
+  },
+  cta{ headline, subtext, primaryCTA{ label, href }, secondaryCTA{ label, href } }
 }`;
 
-export async function getSognosrosterPageContent() {
-  return client.fetch(SOGNOSROSTER_PAGE_QUERY, {}, { next: { revalidate: 60 } });
+export type RosterSectionHeader = {
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+};
+
+export type RosterProblem = {
+  number: string;
+  problem: string;
+  problemDetail: string;
+  solution: string;
+  iconPath: string;
+};
+
+export type RosterFeature = {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  capabilities: string[];
+};
+
+export type SognosrosterPageData = {
+  seo: { title?: string; description?: string };
+  hero: { headline?: string; subtext?: string; logoSrc?: string };
+  datasheetUrl?: string;
+  productDrawer: { peekTitle?: string; peekDescription?: string; drawerTitle?: string; drawerDescription?: string };
+  subNav: { label: string; id: string; href?: string }[];
+  problemsHeader: RosterSectionHeader;
+  problems: RosterProblem[];
+  featuresHeader: RosterSectionHeader;
+  features: RosterFeature[];
+  advantagesHeader: RosterSectionHeader;
+  advantages: string[];
+  storiesHeader: RosterSectionHeader;
+  featuredStories: CaseStudy[];
+  cta: { headline?: string; subtext?: string; primaryCTA?: { label: string; href: string }; secondaryCTA?: { label: string; href: string } };
+};
+
+type RawRosterProblem = { number?: string; problem?: string; problemDetail?: string; solution?: string; iconPath?: string };
+type RawRosterFeature = { id?: string; name?: string; tagline?: string; description?: string; capabilities?: string[] };
+type RawRosterSubNavItem = { label?: string; id?: string; href?: string };
+type RawRosterPage = {
+  seo?: { title?: string; description?: string };
+  hero?: { headline?: string; subtext?: string; logo?: SanityImageSource };
+  datasheetUrl?: string;
+  productDrawer?: { peekTitle?: string; peekDescription?: string; drawerTitle?: string; drawerDescription?: string };
+  subNav?: RawRosterSubNavItem[];
+  problemsHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  problems?: RawRosterProblem[];
+  featuresHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  features?: RawRosterFeature[];
+  advantagesHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  advantages?: string[];
+  storiesHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  featuredStories?: (RawStoryRef | null)[];
+  cta?: { headline?: string; subtext?: string; primaryCTA?: { label?: string; href?: string }; secondaryCTA?: { label?: string; href?: string } };
+};
+
+export async function getSognosrosterPageContent(): Promise<SognosrosterPageData | null> {
+  const raw = await client
+    .fetch<RawRosterPage | null>(SOGNOSROSTER_PAGE_QUERY, {}, { next: { revalidate: 60 } })
+    .catch(() => null);
+
+  if (!raw) return null;
+
+  const problems: RosterProblem[] = (raw.problems ?? []).flatMap((p) =>
+    p.number && p.problem && p.problemDetail && p.solution && p.iconPath
+      ? [{ number: p.number, problem: p.problem, problemDetail: p.problemDetail, solution: p.solution, iconPath: p.iconPath }]
+      : [],
+  );
+
+  const features: RosterFeature[] = (raw.features ?? []).flatMap((f) =>
+    f.id && f.name && f.tagline && f.description
+      ? [{ id: f.id, name: f.name, tagline: f.tagline, description: f.description, capabilities: f.capabilities?.filter(Boolean) ?? [] }]
+      : [],
+  );
+
+  const featuredStories: CaseStudy[] = (raw.featuredStories ?? []).flatMap((s) => {
+    const mapped = mapStory(s);
+    return mapped ? [mapped] : [];
+  });
+
+  return {
+    seo: { title: raw.seo?.title, description: raw.seo?.description },
+    hero: {
+      headline: raw.hero?.headline,
+      subtext: raw.hero?.subtext,
+      logoSrc: raw.hero?.logo ? urlFor(raw.hero.logo).height(52).auto("format").url() : undefined,
+    },
+    datasheetUrl: raw.datasheetUrl,
+    productDrawer: {
+      peekTitle: raw.productDrawer?.peekTitle,
+      peekDescription: raw.productDrawer?.peekDescription,
+      drawerTitle: raw.productDrawer?.drawerTitle,
+      drawerDescription: raw.productDrawer?.drawerDescription,
+    },
+    subNav: (raw.subNav ?? []).flatMap((s) =>
+      s.label && s.id ? [{ label: s.label, id: s.id, href: s.href }] : [],
+    ),
+    problemsHeader: { eyebrow: raw.problemsHeader?.eyebrow, heading: raw.problemsHeader?.heading, intro: raw.problemsHeader?.intro },
+    problems,
+    featuresHeader: { eyebrow: raw.featuresHeader?.eyebrow, heading: raw.featuresHeader?.heading, intro: raw.featuresHeader?.intro },
+    features,
+    advantagesHeader: { eyebrow: raw.advantagesHeader?.eyebrow, heading: raw.advantagesHeader?.heading, intro: raw.advantagesHeader?.intro },
+    advantages: raw.advantages?.filter(Boolean) ?? [],
+    storiesHeader: { eyebrow: raw.storiesHeader?.eyebrow, heading: raw.storiesHeader?.heading, intro: raw.storiesHeader?.intro },
+    featuredStories,
+    cta: {
+      headline: raw.cta?.headline,
+      subtext: raw.cta?.subtext,
+      primaryCTA: raw.cta?.primaryCTA?.label && raw.cta.primaryCTA.href ? { label: raw.cta.primaryCTA.label, href: raw.cta.primaryCTA.href } : undefined,
+      secondaryCTA: raw.cta?.secondaryCTA?.label && raw.cta.secondaryCTA.href ? { label: raw.cta.secondaryCTA.label, href: raw.cta.secondaryCTA.href } : undefined,
+    },
+  };
 }
 
 // ─── Customer Stories ─────────────────────────────────────────────────────────
@@ -718,6 +847,338 @@ export async function getFooterContent(): Promise<FooterContent> {
   };
 }
 
+// ─── Events ───────────────────────────────────────────────────────────────────
+
+const ALL_EVENT_SLUGS_QUERY = `*[_type == "event" && defined(slug.current)]{
+  "slug": slug.current
+}`;
+
+const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
+  title,
+  excerpt,
+  format,
+  date,
+  endDate,
+  location,
+  meta,
+  registrationOpen,
+  heroImage,
+  seo,
+  hero{ heading, subtitle, description },
+  partners[]{ name, logo, label },
+  eventMeta{ date, time, venueName, venueAddress, capacity, registerUrl, mapsEmbedUrl, mapsDirectionsUrl },
+  challenge{ intro, callout, bullets[]{ icon, text }, closing },
+  whyAttend{ heading, intro, items[]{ icon, title }, closing },
+  speaker{ name, credentials, role, headshot, bio },
+  agenda{ timeRange, items[]{ time, item } },
+  whoShouldAttend{ heading, roles, description },
+  directions{ heading, paragraphs },
+  footerCta{ heading, description }
+}`;
+
+export type EventPartner = {
+  name: string;
+  logoUrl: string;
+  label?: string;
+};
+
+export type EventBulletItem = { icon: string; text: string };
+export type EventAttendReason = { icon: string; title: string };
+export type EventAgendaItem = { time: string; item: string };
+
+export type EventPageData = {
+  title: string;
+  excerpt?: string;
+  format?: string;
+  location?: string;
+  meta?: string;
+  registrationOpen: boolean;
+  seo: { title?: string; description?: string };
+  hero: {
+    heading?: string;
+    subtitle?: string;
+    description?: string;
+    imageUrl?: string;
+  };
+  partners: EventPartner[];
+  eventMeta: {
+    date?: string;
+    time?: string;
+    venueName?: string;
+    venueAddress: string[];
+    capacity?: string;
+    registerUrl?: string;
+    mapsEmbedUrl?: string;
+    mapsDirectionsUrl?: string;
+  };
+  challenge: {
+    intro?: string;
+    callout?: string;
+    bullets: EventBulletItem[];
+    closing?: string;
+  };
+  whyAttend: {
+    heading?: string;
+    intro?: string;
+    items: EventAttendReason[];
+    closing?: string;
+  };
+  speaker: {
+    name?: string;
+    credentials?: string;
+    role?: string;
+    headshotUrl?: string;
+    bio: string[];
+  };
+  agenda: {
+    timeRange?: string;
+    items: EventAgendaItem[];
+  };
+  whoShouldAttend: {
+    heading?: string;
+    roles: string[];
+    description?: string;
+  };
+  directions: {
+    heading?: string;
+    paragraphs: string[];
+  };
+  footerCta: {
+    heading?: string;
+    description?: string;
+  };
+};
+
+type RawEventPartner = {
+  name?: string;
+  logo?: SanityImageSource;
+  label?: string;
+};
+
+type RawEventBullet = { icon?: string; text?: string };
+type RawEventAttendItem = { icon?: string; title?: string };
+type RawEventAgendaItem = { time?: string; item?: string };
+
+type RawEvent = {
+  title?: string;
+  excerpt?: string;
+  format?: string;
+  date?: string;
+  endDate?: string;
+  location?: string;
+  meta?: string;
+  registrationOpen?: boolean;
+  heroImage?: SanityImageSource;
+  seo?: { title?: string; description?: string };
+  hero?: {
+    heading?: string;
+    subtitle?: string;
+    description?: string;
+  };
+  partners?: RawEventPartner[];
+  eventMeta?: {
+    date?: string;
+    time?: string;
+    venueName?: string;
+    venueAddress?: string[];
+    capacity?: string;
+    registerUrl?: string;
+    mapsEmbedUrl?: string;
+    mapsDirectionsUrl?: string;
+  };
+  challenge?: {
+    intro?: string;
+    callout?: string;
+    bullets?: RawEventBullet[];
+    closing?: string;
+  };
+  whyAttend?: {
+    heading?: string;
+    intro?: string;
+    items?: RawEventAttendItem[];
+    closing?: string;
+  };
+  speaker?: {
+    name?: string;
+    credentials?: string;
+    role?: string;
+    headshot?: SanityImageSource;
+    bio?: string[];
+  };
+  agenda?: {
+    timeRange?: string;
+    items?: RawEventAgendaItem[];
+  };
+  whoShouldAttend?: {
+    heading?: string;
+    roles?: string[];
+    description?: string;
+  };
+  directions?: {
+    heading?: string;
+    paragraphs?: string[];
+  };
+  footerCta?: { heading?: string; description?: string };
+};
+
+const EVENT_ARCHIVE_QUERY = `*[_type == "event" && defined(slug.current)] | order(date desc){
+  "slug": slug.current,
+  title,
+  excerpt,
+  heroImage,
+  date
+}`;
+
+type RawEventArchiveItem = {
+  slug?: string;
+  title?: string;
+  excerpt?: string;
+  heroImage?: SanityImageSource;
+  date?: string;
+};
+
+export async function getEventArchive(): Promise<
+  { slug: string; title: string; excerpt: string; imageUrl: string; date?: string }[]
+> {
+  const rows = await client
+    .fetch<RawEventArchiveItem[]>(
+      EVENT_ARCHIVE_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => [] as RawEventArchiveItem[]);
+
+  return rows.flatMap((r) => {
+    if (!r.slug || !r.title) return [];
+    return [
+      {
+        slug: r.slug,
+        title: r.title,
+        excerpt: r.excerpt ?? "",
+        imageUrl: r.heroImage
+          ? urlFor(r.heroImage).width(720).auto("format").url()
+          : "",
+        date: r.date,
+      },
+    ];
+  });
+}
+
+export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
+  return client.fetch(ALL_EVENT_SLUGS_QUERY, {}, { next: { revalidate: 60 } });
+}
+
+export async function getEventBySlug(
+  slug: string,
+): Promise<EventPageData | null> {
+  const raw = await client
+    .fetch<RawEvent | null>(
+      EVENT_BY_SLUG_QUERY,
+      { slug },
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => null);
+
+  if (!raw) return null;
+
+  const partners: EventPartner[] = (raw.partners ?? []).flatMap((p) => {
+    if (!p.name) return [];
+    return [
+      {
+        name: p.name,
+        logoUrl: p.logo ? urlFor(p.logo).width(320).auto("format").url() : "",
+        label: p.label,
+      },
+    ];
+  });
+
+  const bullets: EventBulletItem[] = (raw.challenge?.bullets ?? []).flatMap(
+    (b) => (b.text ? [{ icon: b.icon ?? "Users", text: b.text }] : []),
+  );
+
+  const whyAttendItems: EventAttendReason[] = (
+    raw.whyAttend?.items ?? []
+  ).flatMap((i) =>
+    i.title ? [{ icon: i.icon ?? "Users", title: i.title }] : [],
+  );
+
+  const agendaItems: EventAgendaItem[] = (raw.agenda?.items ?? []).flatMap(
+    (i) => (i.time && i.item ? [{ time: i.time, item: i.item }] : []),
+  );
+
+  const heroImageUrl = raw.heroImage
+    ? urlFor(raw.heroImage).width(1280).auto("format").url()
+    : undefined;
+
+  return {
+    title: raw.title ?? "",
+    excerpt: raw.excerpt,
+    format: raw.format,
+    location: raw.location,
+    meta: raw.meta,
+    registrationOpen: raw.registrationOpen ?? true,
+    seo: {
+      title: raw.seo?.title,
+      description: raw.seo?.description ?? raw.excerpt,
+    },
+    hero: {
+      heading: raw.hero?.heading,
+      subtitle: raw.hero?.subtitle,
+      description: raw.hero?.description,
+      imageUrl: heroImageUrl,
+    },
+    partners,
+    eventMeta: {
+      date: raw.eventMeta?.date,
+      time: raw.eventMeta?.time,
+      venueName: raw.eventMeta?.venueName,
+      venueAddress: raw.eventMeta?.venueAddress ?? [],
+      capacity: raw.eventMeta?.capacity,
+      registerUrl: raw.eventMeta?.registerUrl,
+      mapsEmbedUrl: raw.eventMeta?.mapsEmbedUrl,
+      mapsDirectionsUrl: raw.eventMeta?.mapsDirectionsUrl,
+    },
+    challenge: {
+      intro: raw.challenge?.intro,
+      callout: raw.challenge?.callout,
+      bullets,
+      closing: raw.challenge?.closing,
+    },
+    whyAttend: {
+      heading: raw.whyAttend?.heading,
+      intro: raw.whyAttend?.intro,
+      items: whyAttendItems,
+      closing: raw.whyAttend?.closing,
+    },
+    speaker: {
+      name: raw.speaker?.name,
+      credentials: raw.speaker?.credentials,
+      role: raw.speaker?.role,
+      headshotUrl: raw.speaker?.headshot
+        ? urlFor(raw.speaker.headshot).width(224).auto("format").url()
+        : undefined,
+      bio: raw.speaker?.bio?.filter(Boolean) ?? [],
+    },
+    agenda: {
+      timeRange: raw.agenda?.timeRange,
+      items: agendaItems,
+    },
+    whoShouldAttend: {
+      heading: raw.whoShouldAttend?.heading,
+      roles: raw.whoShouldAttend?.roles?.filter(Boolean) ?? [],
+      description: raw.whoShouldAttend?.description,
+    },
+    directions: {
+      heading: raw.directions?.heading,
+      paragraphs: raw.directions?.paragraphs?.filter(Boolean) ?? [],
+    },
+    footerCta: {
+      heading: raw.footerCta?.heading,
+      description: raw.footerCta?.description,
+    },
+  };
+}
+
 // ─── Legal Pages ──────────────────────────────────────────────────────────────
 
 const ALL_LEGAL_PAGE_SLUGS_QUERY = `*[_type == "legalPage" && defined(slug.current)]{
@@ -754,16 +1215,108 @@ export async function getLegalPageBySlug(slug: string) {
 // ─── SognosGenogram ──────────────────────────────────────────────────────────
 
 const SOGNOSGENOGRAM_PAGE_QUERY = `*[_type == "sognosgenogramPage"][0]{
-  "datasheetUrl": datasheet.asset->url
+  seo,
+  hero{ headline, subtext, logo },
+  "datasheetUrl": datasheet.asset->url,
+  productDrawer{ peekTitle, peekDescription, drawerTitle, drawerDescription },
+  subNav[]{ label, id, href },
+  problemsHeader{ eyebrow, heading, intro },
+  problems[]{ title, body },
+  featuresHeader{ eyebrow, heading, intro },
+  features[]{ title, body },
+  storiesHeader{ eyebrow, heading, intro },
+  "featuredStories": featuredStories[]->{
+    "slug": slug.current,
+    company,
+    quote,
+    quoteAuthor,
+    sidebar,
+    heroImage,
+    companyLogo
+  },
+  cta{ headline, subtext, primaryCTA{ label, href }, secondaryCTA{ label, href } }
 }`;
 
-export async function getGenogramDatasheetUrl(): Promise<string | null> {
-  const result = await client
-    .fetch<{ datasheetUrl?: string } | null>(
-      SOGNOSGENOGRAM_PAGE_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    )
+export type GenogramPainPoint = { title: string; body: string };
+export type GenogramFeature = { title: string; body: string };
+
+export type SognosgenogramPageData = {
+  seo: { title?: string; description?: string };
+  hero: { headline?: string; subtext?: string; logoSrc?: string };
+  datasheetUrl?: string;
+  productDrawer: { peekTitle?: string; peekDescription?: string; drawerTitle?: string; drawerDescription?: string };
+  subNav: { label: string; id: string; href?: string }[];
+  problemsHeader: { eyebrow?: string; heading?: string; intro?: string };
+  problems: GenogramPainPoint[];
+  featuresHeader: { eyebrow?: string; heading?: string; intro?: string };
+  features: GenogramFeature[];
+  storiesHeader: { eyebrow?: string; heading?: string; intro?: string };
+  featuredStories: CaseStudy[];
+  cta: { headline?: string; subtext?: string; primaryCTA?: { label: string; href: string }; secondaryCTA?: { label: string; href: string } };
+};
+
+type RawGenogramPage = {
+  seo?: { title?: string; description?: string };
+  hero?: { headline?: string; subtext?: string; logo?: SanityImageSource };
+  datasheetUrl?: string;
+  productDrawer?: { peekTitle?: string; peekDescription?: string; drawerTitle?: string; drawerDescription?: string };
+  subNav?: { label?: string; id?: string; href?: string }[];
+  problemsHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  problems?: { title?: string; body?: string }[];
+  featuresHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  features?: { title?: string; body?: string }[];
+  storiesHeader?: { eyebrow?: string; heading?: string; intro?: string };
+  featuredStories?: (RawStoryRef | null)[];
+  cta?: { headline?: string; subtext?: string; primaryCTA?: { label?: string; href?: string }; secondaryCTA?: { label?: string; href?: string } };
+};
+
+export async function getGenogramPageContent(): Promise<SognosgenogramPageData | null> {
+  const raw = await client
+    .fetch<RawGenogramPage | null>(SOGNOSGENOGRAM_PAGE_QUERY, {}, { next: { revalidate: 60 } })
     .catch(() => null);
-  return result?.datasheetUrl ?? null;
+
+  if (!raw) return null;
+
+  return {
+    seo: { title: raw.seo?.title, description: raw.seo?.description },
+    hero: {
+      headline: raw.hero?.headline,
+      subtext: raw.hero?.subtext,
+      logoSrc: raw.hero?.logo ? urlFor(raw.hero.logo).height(52).auto("format").url() : undefined,
+    },
+    datasheetUrl: raw.datasheetUrl,
+    productDrawer: {
+      peekTitle: raw.productDrawer?.peekTitle,
+      peekDescription: raw.productDrawer?.peekDescription,
+      drawerTitle: raw.productDrawer?.drawerTitle,
+      drawerDescription: raw.productDrawer?.drawerDescription,
+    },
+    subNav: (raw.subNav ?? []).flatMap((s) =>
+      s.label && s.id ? [{ label: s.label, id: s.id, href: s.href }] : [],
+    ),
+    problemsHeader: { eyebrow: raw.problemsHeader?.eyebrow, heading: raw.problemsHeader?.heading, intro: raw.problemsHeader?.intro },
+    problems: (raw.problems ?? []).flatMap((p) =>
+      p.title && p.body ? [{ title: p.title, body: p.body }] : [],
+    ),
+    featuresHeader: { eyebrow: raw.featuresHeader?.eyebrow, heading: raw.featuresHeader?.heading, intro: raw.featuresHeader?.intro },
+    features: (raw.features ?? []).flatMap((f) =>
+      f.title && f.body ? [{ title: f.title, body: f.body }] : [],
+    ),
+    storiesHeader: { eyebrow: raw.storiesHeader?.eyebrow, heading: raw.storiesHeader?.heading, intro: raw.storiesHeader?.intro },
+    featuredStories: (raw.featuredStories ?? []).flatMap((s) => {
+      const mapped = mapStory(s);
+      return mapped ? [mapped] : [];
+    }),
+    cta: {
+      headline: raw.cta?.headline,
+      subtext: raw.cta?.subtext,
+      primaryCTA: raw.cta?.primaryCTA?.label && raw.cta.primaryCTA.href ? { label: raw.cta.primaryCTA.label, href: raw.cta.primaryCTA.href } : undefined,
+      secondaryCTA: raw.cta?.secondaryCTA?.label && raw.cta.secondaryCTA.href ? { label: raw.cta.secondaryCTA.label, href: raw.cta.secondaryCTA.href } : undefined,
+    },
+  };
+}
+
+export async function getGenogramDatasheetUrl(): Promise<string | null> {
+  const data = await getGenogramPageContent();
+  return data?.datasheetUrl ?? null;
 }

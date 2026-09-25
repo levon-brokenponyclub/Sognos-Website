@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import type { RosterFeature, RosterSectionHeader } from "@/lib/sanity/queries";
 
 const FEATURES = [
   {
@@ -83,7 +84,7 @@ const FEATURES = [
       "Anomaly detection for coverage risks and compliance gaps",
     ],
   },
-] as const;
+];
 
 // ─── Feature visuals ──────────────────────────────────────────────────────────
 
@@ -338,9 +339,15 @@ function FeatureVisual({ id }: { id: string }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function SognoscareRosterFeatures() {
+interface FeaturesProps {
+  header?: RosterSectionHeader;
+  features?: RosterFeature[];
+}
+
+export default function SognoscareRosterFeatures({ header, features }: FeaturesProps) {
+  const items: RosterFeature[] = features && features.length > 0 ? features : FEATURES;
   const [activeIndex, setActiveIndex] = useState(0);
-  const active = FEATURES[activeIndex];
+  const active = items[Math.min(activeIndex, items.length - 1)];
 
   return (
     <section
@@ -355,13 +362,13 @@ export default function SognoscareRosterFeatures() {
             Features
           </div>
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-white tracking-tight text-center">
-            Built for the full scheduling lifecycle
+            {header?.heading ?? "Built for the full scheduling lifecycle"}
           </h2>
         </div>
 
         {/* Mobile - stacked cards */}
         <div className="lg:hidden mt-10 flex flex-col gap-6">
-          {FEATURES.map((feat) => (
+          {items.map((feat) => (
             <div
               key={feat.id}
               className="bg-white rounded-lg p-2 flex flex-col gap-3"
@@ -407,7 +414,7 @@ export default function SognoscareRosterFeatures() {
         <div className="hidden lg:flex gap-4 h-[580px] mt-10">
           {/* Left column - vertical tab list */}
           <div className="w-[360px] shrink-0 flex flex-col justify-center">
-            {FEATURES.map((feat, i) => (
+            {items.map((feat, i) => (
               <button
                 key={feat.id}
                 onClick={() => setActiveIndex(i)}

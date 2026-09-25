@@ -11,6 +11,7 @@ export const UPCOMING_EVENT = {
   title: "Designing Services Around Real Lives, Not System Boundaries",
   meta: "Thu 17 Sep • North Sydney",
   image: "/images/events/nfp-real-care/MSFT-header-img.png",
+  endDate: "2026-09-17T01:00:00.000Z", // 11:00 AM AEST Sep 17
 } as const;
 
 // Shared between EventBanner (source of truth for dismiss) and Navbar

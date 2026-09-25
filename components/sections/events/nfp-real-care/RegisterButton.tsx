@@ -6,9 +6,10 @@ interface RegisterButtonProps {
   variant?: Variant;
   label?: string;
   className?: string;
+  href?: string;
 }
 
-const EVENTBRITE_URL =
+const FALLBACK_URL =
   "https://www.eventbrite.com.au/e/designing-services-around-real-lives-not-system-boundaries-tickets-1998319066120";
 
 const variants: Record<Variant, string> = {
@@ -23,10 +24,11 @@ export default function RegisterButton({
   variant = "primary",
   label = "Register now",
   className = "",
+  href = FALLBACK_URL,
 }: RegisterButtonProps) {
   return (
     <a
-      href={EVENTBRITE_URL}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={`${variants[variant]} ${className}`.trim()}

@@ -1,4 +1,4 @@
-const ADVANTAGES = [
+const DEFAULT_ADVANTAGES = [
   "Designed for complex, real-world rostering",
   "Reduces manual effort and admin burden",
   "Improves utilisation and coverage confidence",
@@ -21,7 +21,12 @@ const GRID: Cell[] = [
   { type: "white", idx: 5 },
 ];
 
-export default function SognoscareRosterAdvantages() {
+export default function SognoscareRosterAdvantages({
+  advantages,
+}: {
+  advantages?: string[];
+}) {
+  const ADVANTAGES = advantages && advantages.length > 0 ? advantages : DEFAULT_ADVANTAGES;
   return (
     <section id="advantages" className="w-full bg-gray-200/90">
       <div className="max-w-7xl w-full mx-auto px-6 py-24 lg:py-32">

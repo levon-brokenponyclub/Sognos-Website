@@ -125,6 +125,17 @@ export default defineConfig({
               ),
             S.divider(),
             S.listItem()
+              .title("Events")
+              .id("events")
+              .child(
+                S.documentTypeList("event")
+                  .title("Events")
+                  .defaultOrdering([
+                    { field: "_createdAt", direction: "desc" },
+                  ]),
+              ),
+            S.divider(),
+            S.listItem()
               .title("Posts")
               .id("posts")
               .child(

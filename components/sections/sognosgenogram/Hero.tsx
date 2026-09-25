@@ -3,7 +3,17 @@ import Link from "next/link";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import FlowCanvas from "@/components/ui/FlowCanvas";
 
-export default function GenogramHero() {
+interface HeroProps {
+  headline?: string;
+  subtext?: string;
+  logoSrc?: string;
+}
+
+export default function GenogramHero({
+  headline = "Family context. Built into every record.",
+  subtext = "Map family structures, understand kinship networks, track relationship changes, and make better informed care decisions — in one connected view built for frontline practice.",
+  logoSrc = "/logos/SognosGenogram-logo.svg",
+}: HeroProps) {
   return (
     <section
       data-header-dark
@@ -31,7 +41,7 @@ export default function GenogramHero() {
           <div className="flex flex-1 items-center justify-center">
             <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center px-2 lg:px-0">
               <Image
-                src="/logos/SognosGenogram-logo.svg"
+                src={logoSrc}
                 alt="SognosGenogram"
                 width={220}
                 height={48}
@@ -39,12 +49,10 @@ export default function GenogramHero() {
                 className="mb-14 h-12 w-auto lg:h-13"
               />
               <h1 className="text-3xl font-heading font-normal leading-heading tracking-heading text-white sm:text-5xl lg:text-5xl">
-                Family context. Built into every record.
+                {headline}
               </h1>
               <p className="mt-6 max-w-5xl text-balance text-lg text-white/80 lg:text-[22px]">
-                Map family structures, understand kinship networks, track
-                relationship changes, and make better informed care decisions —
-                in one connected view built for frontline practice.
+                {subtext}
               </p>
             </div>
           </div>

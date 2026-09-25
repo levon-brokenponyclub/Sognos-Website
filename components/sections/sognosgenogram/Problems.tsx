@@ -1,4 +1,6 @@
-const PAIN_POINTS = [
+import type { GenogramPainPoint } from "@/lib/sanity/queries";
+
+const PAIN_POINTS: GenogramPainPoint[] = [
   {
     title: "Missing relationship context",
     body: "Workers arrive with case facts but no understanding of who is in the client's life, who provides support, and who creates risk. That gap affects every decision they make.",
@@ -13,23 +15,27 @@ const PAIN_POINTS = [
   },
 ];
 
-export default function GenogramProblems() {
+interface ProblemsProps {
+  header?: { eyebrow?: string; heading?: string; intro?: string };
+  problems?: GenogramPainPoint[];
+}
+
+export default function GenogramProblems({ header, problems }: ProblemsProps) {
+  const items = problems && problems.length > 0 ? problems : PAIN_POINTS;
   return (
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-center gap-4 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight">
-            Case records have facts. They're missing people.
+            {header?.heading ?? "Case records have facts. They're missing people."}
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-sognos-text-body">
-            Standard case management captures what happened. SognosGenogram
-            captures who is involved - and what those relationships mean for
-            service delivery.
+            {header?.intro ?? "Standard case management captures what happened. SognosGenogram captures who is involved - and what those relationships mean for service delivery."}
           </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-3">
-          {PAIN_POINTS.map((point, i) => (
+          {items.map((point, i) => (
             <div
               key={i}
               className="rounded-xl border border-(--sognos-card-border) bg-(--sognos-bg-sunken) p-8"

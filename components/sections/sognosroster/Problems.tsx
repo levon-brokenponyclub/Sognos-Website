@@ -1,4 +1,6 @@
-const PROBLEMS = [
+import type { RosterProblem, RosterSectionHeader } from "@/lib/sanity/queries";
+
+const PROBLEMS: RosterProblem[] = [
   {
     number: "01",
     problem: "Manual rostering consumes weeks every month",
@@ -41,25 +43,32 @@ const PROBLEMS = [
   },
 ];
 
-export default function SognoscareRosterProblems() {
+interface ProblemsProps {
+  header?: RosterSectionHeader;
+  problems?: RosterProblem[];
+}
+
+export default function SognoscareRosterProblems({
+  header,
+  problems = PROBLEMS,
+}: ProblemsProps) {
+  const items = problems.length > 0 ? problems : PROBLEMS;
   return (
     <section id="problems" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="mb-16 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-medium text-sognos-text-heading tracking-tight mb-6">
-            Workforce scheduling shouldn't work like this
+            {header?.heading ?? "Workforce scheduling shouldn't work like this"}
           </h2>
           <p className="text-lg text-sognos-text-body">
-            Manual rostering, compliance risks, and disconnected data are the
-            default for most service operations. SognosRoster fixes the root
-            causes, not the symptoms.
+            {header?.intro ?? "Manual rostering, compliance risks, and disconnected data are the default for most service operations. SognosRoster fixes the root causes, not the symptoms."}
           </p>
         </div>
 
         {/* Problem/solution rows */}
         <div className="flex flex-col gap-4">
-          {PROBLEMS.map((item, i) => {
+          {items.map((item, i) => {
             const isEven = i % 2 === 1;
             return (
               <div

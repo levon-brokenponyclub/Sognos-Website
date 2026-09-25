@@ -7,7 +7,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { LinkedInInsight } from "@/components/LinkedInInsight";
 import CookieBanner from "@/components/ui/CookieBanner";
 import { getSiteSettings } from "@/lib/sanity/queries";
-import "./globals.css";
+import "./globals.css"; 
 
 const inter = Inter({
   variable: "--font-inter",
