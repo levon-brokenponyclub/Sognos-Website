@@ -577,7 +577,8 @@ const KNOWLEDGE_POST_BY_SLUG_QUERY = `*[_type == "knowledgePost" && slug.current
   heroImage,
   industry,
   useCase,
-  body
+  body,
+  newsletterHtml
 }`;
 
 const KNOWLEDGE_POST_NAV_QUERY = `*[_type == "knowledgePost"] | order(date desc){

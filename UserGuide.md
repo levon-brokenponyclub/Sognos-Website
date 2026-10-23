@@ -239,3 +239,18 @@ Changing these updates every component that uses `text-brand`, `bg-brand`, `text
 | Product logos | `/public/logos/` | SVG. `sognos-care-logo.svg`, `sognos-roster-logo.svg` |
 | Microsoft logos | `/public/logos/` | `Dynamics365.svg`, `copilot-logo.png`, `Sognos-Solutions-Solutions-Partner.webp` |
 | Hero background | Controlled via CSS class `bg-gradient-hero` in `app/tokens.css` | |
+
+---
+
+## 12. Publishing a Newsletter (Knowledge Hub)
+
+Newsletters are Knowledge Hub posts with the **Newsletter** category. They appear in the archive filter and under Knowledge Hub → Newsletters in the nav (`/knowledge-hub?category=Newsletter`).
+
+1. In Studio, go to **Posts → Newsletters** and click **+**. The category is set to Newsletter automatically and the Category field is hidden (Newsletter is not selectable on regular Knowledge Hub posts).
+2. In the **Content** tab, the Body field is hidden and **Newsletter HTML** appears.
+3. Either paste the full email HTML into the field, or use **Upload .html file** (this overwrites whatever is in the field).
+4. Fill in title, slug, date, excerpt and **hero image** (required — used on archive cards).
+
+On the post page the email renders in a sandboxed iframe, so its styles don't affect the site. At render time scripts, unfilled Dynamics merge tokens (`{{PreferenceCenter}}` etc.) and `_msdynmkt` tracking fragments are stripped, and links open in a new tab. The stored HTML is unchanged.
+
+Images in Dynamics-exported emails stay hosted on `assets-oce.mkt.dynamics.com` — if they are removed there, they disappear from the newsletter.

@@ -23,6 +23,7 @@ const CATEGORIES = [
   "Events",
   "Webinar",
   "Insights",
+  "Newsletter",
 ] as const;
 
 const INDUSTRIES = [
@@ -39,6 +40,7 @@ const BADGE_STYLES: Record<string, string> = {
   Events: "bg-amber-50 text-amber-700 border-amber-100",
   Webinar: "bg-emerald-50 text-emerald-700 border-emerald-100",
   Insights: "bg-violet-50 text-violet-700 border-violet-100",
+  Newsletter: "bg-sky-50 text-sky-700 border-sky-100",
 };
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
@@ -47,6 +49,10 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
+      {...(article.category === "Newsletter" && {
+        target: "_blank",
+        rel: "noopener noreferrer",
+      })}
       className="group flex flex-col overflow-hidden rounded-lg bg-white p-2"
     >
       <div className="relative h-44 w-full shrink-0 overflow-hidden rounded-lg">

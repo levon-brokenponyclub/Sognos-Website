@@ -25,15 +25,25 @@ export const event = defineType({
   name: "event",
   title: "Event",
   type: "document",
+  groups: [
+    { name: "details", title: "Details", default: true },
+    { name: "settings", title: "Settings" },
+    { name: "hero", title: "Hero" },
+    { name: "content", title: "Content" },
+    { name: "cta", title: "CTA" },
+    { name: "seo", title: "SEO" },
+  ],
   fields: [
     defineField({
       name: "title",
+      group: "details",
       title: "Title (Studio label)",
       type: "string",
       validation: (R) => R.required(),
     }),
     defineField({
       name: "slug",
+      group: "details",
       title: "Slug",
       type: "slug",
       options: { source: "title", maxLength: 96 },
@@ -41,6 +51,7 @@ export const event = defineType({
     }),
     defineField({
       name: "excerpt",
+      group: "details",
       title: "Excerpt",
       description: "Short summary for listing cards and meta",
       type: "text",
@@ -48,6 +59,7 @@ export const event = defineType({
     }),
     defineField({
       name: "format",
+      group: "details",
       title: "Format",
       type: "string",
       options: {
@@ -64,34 +76,40 @@ export const event = defineType({
     }),
     defineField({
       name: "date",
+      group: "details",
       title: "Start date / time",
       type: "datetime",
     }),
     defineField({
       name: "endDate",
+      group: "details",
       title: "End date / time",
       type: "datetime",
     }),
     defineField({
       name: "location",
+      group: "details",
       title: "Location (short display string)",
       type: "string",
       placeholder: "Microsoft, North Sydney",
     }),
     defineField({
       name: "meta",
+      group: "details",
       title: "Meta (one-line display string)",
       type: "string",
       placeholder: "Thu 17 Sep • North Sydney",
     }),
     defineField({
       name: "registrationOpen",
+      group: "settings",
       title: "Registration open",
       type: "boolean",
       initialValue: true,
     }),
     defineField({
       name: "showInBanner",
+      group: "settings",
       title: "Show in header announcement banner",
       description:
         "Displays this event in the site-wide banner until its end date. If several are on, the latest by start date wins.",
@@ -100,12 +118,14 @@ export const event = defineType({
     }),
     defineField({
       name: "heroImage",
+      group: "details",
       title: "Hero image",
       type: "image",
       options: { hotspot: true },
     }),
     defineField({
       name: "seo",
+      group: "seo",
       title: "SEO",
       type: "object",
       fields: [
@@ -120,6 +140,7 @@ export const event = defineType({
     }),
     defineField({
       name: "hero",
+      group: "hero",
       title: "Hero",
       type: "object",
       fields: [
@@ -140,6 +161,7 @@ export const event = defineType({
     }),
     defineField({
       name: "partners",
+      group: "hero",
       title: "Partners / Co-hosts",
       type: "array",
       of: [
@@ -170,6 +192,7 @@ export const event = defineType({
     }),
     defineField({
       name: "eventMeta",
+      group: "hero",
       title: "Event Details",
       type: "object",
       fields: [
@@ -221,6 +244,7 @@ export const event = defineType({
     }),
     defineField({
       name: "challenge",
+      group: "content",
       title: "Challenge Section",
       type: "object",
       fields: [
@@ -270,6 +294,7 @@ export const event = defineType({
     }),
     defineField({
       name: "whyAttend",
+      group: "content",
       title: "Why Attend Section",
       type: "object",
       fields: [
@@ -319,6 +344,7 @@ export const event = defineType({
     }),
     defineField({
       name: "speaker",
+      group: "content",
       title: "Guest Speaker",
       type: "object",
       fields: [
@@ -350,6 +376,7 @@ export const event = defineType({
     }),
     defineField({
       name: "agenda",
+      group: "content",
       title: "Agenda",
       type: "object",
       fields: [
@@ -388,6 +415,7 @@ export const event = defineType({
     }),
     defineField({
       name: "whoShouldAttend",
+      group: "content",
       title: "Who Should Attend",
       type: "object",
       fields: [
@@ -408,6 +436,7 @@ export const event = defineType({
     }),
     defineField({
       name: "directions",
+      group: "content",
       title: "Getting There",
       type: "object",
       fields: [
@@ -426,6 +455,7 @@ export const event = defineType({
     }),
     defineField({
       name: "footerCta",
+      group: "cta",
       title: "Footer CTA Banner",
       type: "object",
       fields: [

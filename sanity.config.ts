@@ -158,6 +158,25 @@ export default defineConfig({
                       .child(
                         S.documentTypeList("knowledgePost")
                           .title("Knowledge Hub")
+                          .filter(
+                            '_type == "knowledgePost" && category != "Newsletter"',
+                          )
+                          .defaultOrdering([
+                            { field: "date", direction: "desc" },
+                          ]),
+                      ),
+                    S.listItem()
+                      .title("Newsletters")
+                      .id("newsletters")
+                      .child(
+                        S.documentTypeList("knowledgePost")
+                          .title("Newsletters")
+                          .filter(
+                            '_type == "knowledgePost" && category == "Newsletter"',
+                          )
+                          .initialValueTemplates([
+                            S.initialValueTemplateItem("knowledgePost-newsletter"),
+                          ])
                           .defaultOrdering([
                             { field: "date", direction: "desc" },
                           ]),
@@ -170,5 +189,14 @@ export default defineConfig({
   ],
   schema: {
     types: schemas,
+    templates: (prev) => [
+      ...prev,
+      {
+        id: "knowledgePost-newsletter",
+        title: "Newsletter",
+        schemaType: "knowledgePost",
+        value: { category: "Newsletter" },
+      },
+    ],
   },
 });

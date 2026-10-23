@@ -9,6 +9,7 @@ import {
   getKnowledgePostNav,
 } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
+import NewsletterFrame from "@/components/sections/NewsletterFrame";
 
 export const revalidate = 60;
 
@@ -20,6 +21,7 @@ const BADGE_STYLES: Record<string, string> = {
   Events: "bg-amber-50 text-amber-700 border-amber-100",
   Webinar: "bg-emerald-50 text-emerald-700 border-emerald-100",
   Insights: "bg-violet-50 text-violet-700 border-violet-100",
+  Newsletter: "bg-sky-50 text-sky-700 border-sky-100",
 };
 
 // ─── Shared styles ──────────────────────────────────────────────────────────
@@ -68,11 +70,80 @@ function formatDate(dateStr: string): string {
   return `${day}${suffix} ${d.toLocaleDateString("en-AU", { month: "long" })} ${d.getFullYear()}`;
 }
 
+// Strips scripts, unfilled Dynamics merge tokens and tracking fragments from
+// exported email HTML, and makes every link open in a new tab.
+function cleanNewsletterHtml(html: string): string {
+  const cleaned = html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/\{\{[^}]*\}\}/g, "")
+    .replace(/#_msdynmkt_[^"']*/g, "");
+  const base = '<base target="_blank">';
+  return /<head[^>]*>/i.test(cleaned)
+    ? cleaned.replace(/<head[^>]*>/i, (m) => `${m}${base}`)
+    : `${base}${cleaned}`;
+}
+
 // ─── PortableText components ──────────────────────────────────────────────────
+
+type BodyImage = {
+  asset?: unknown;
+  alt?: string;
+  caption?: string;
+  link?: string;
+};
+
+function BodyFigure({
+  image,
+  src,
+  width,
+  height,
+  imageClassName,
+  sizes,
+}: {
+  image: BodyImage;
+  src: string;
+  width: number;
+  height: number;
+  imageClassName: string;
+  sizes: string;
+}) {
+  const img = (
+    <Image
+      src={src}
+      alt={image.alt ?? ""}
+      width={width}
+      height={height}
+      sizes={sizes}
+      className={imageClassName}
+    />
+  );
+  return (
+    <figure>
+      {image.link ? (
+        <a href={image.link} target="_blank" rel="noopener noreferrer">
+          {img}
+        </a>
+      ) : (
+        img
+      )}
+      {image.caption && (
+        <figcaption className="mt-2 text-sm text-sognos-text-body/70">
+          {image.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
 
 const portableComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mb-4">{children}</p>,
+    small: ({ children }) => <p className="mb-4 text-sm">{children}</p>,
+    large: ({ children }) => (
+      <p className="mb-6 text-xl leading-relaxed text-prussian-blue-800">
+        {children}
+      </p>
+    ),
     h2: ({ children }) => <h2 className={H2}>{children}</h2>,
     blockquote: ({ children }) => (
       <blockquote className="my-6 border-l-4 border-prussian-blue-800/20 pl-4 italic text-prussian-blue-800/80">
@@ -111,17 +182,47 @@ const portableComponents: PortableTextComponents = {
     ),
   },
   types: {
-    inlineImage: ({ value }) => {
+    inlineImage: ({ value }: { value: BodyImage }) => {
       if (!value?.asset) return null;
-      const url = urlFor(value).width(1400).auto("format").url();
       return (
-        <Image
-          src={url}
-          alt={value.alt ?? ""}
-          width={1400}
-          height={787}
-          className="my-8 w-full rounded-lg object-cover"
-        />
+        <div className="my-8">
+          <BodyFigure
+            image={value}
+            src={urlFor(value).width(1400).auto("format").url()}
+            width={1400}
+            height={787}
+            sizes="(min-width: 768px) 720px, 100vw"
+            imageClassName="w-full rounded-lg object-cover"
+          />
+        </div>
+      );
+    },
+    imageRow: ({ value }: { value: { images?: BodyImage[] } }) => {
+      const images = (value?.images ?? []).filter((i) => i.asset);
+      if (images.length === 0) return null;
+      return (
+        <div
+          className={`my-8 grid grid-cols-1 gap-3 lg:gap-4 ${
+            images.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+          }`}
+        >
+          {images.map((image, i) => (
+            <BodyFigure
+              key={i}
+              image={image}
+              src={urlFor(image)
+                .width(900)
+                .height(1200)
+                .fit("crop")
+                .auto("format")
+                .url()}
+              width={900}
+              height={1200}
+              sizes="(min-width: 640px) 360px, 100vw"
+              imageClassName="aspect-3/4 w-full rounded-lg object-cover"
+            />
+          ))}
+        </div>
       );
     },
   },
@@ -154,150 +255,163 @@ export default async function KnowledgeHubPost({
   const currentIdx = nav.findIndex((n) => n.slug === slug);
   const prev = currentIdx > 0 ? nav[currentIdx - 1] : null;
   const next =
-    currentIdx >= 0 && currentIdx < nav.length - 1
-      ? nav[currentIdx + 1]
-      : null;
+    currentIdx >= 0 && currentIdx < nav.length - 1 ? nav[currentIdx + 1] : null;
+
+  const isNewsletter = post.category === "Newsletter" && !!post.newsletterHtml;
 
   return (
     <main className="bg-white">
-      {/* ── Hero ── */}
-      <section className="bg-gray-100 pb-12 pt-36 md:pb-18 md:pt-40">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
-            {/* Left */}
-            <div className="lg:w-1/2 lg:max-w-[32.5rem]">
-              <Link
-                href="/knowledge-hub"
-                className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
-              >
-                <ArrowLeft
-                  size={14}
-                  className="transition-transform duration-200 group-hover:-translate-x-0.5"
-                />
-                Back to Knowledge Hub
-              </Link>
-
-              <div className="mb-5 flex items-center gap-3">
-                <span
-                  className={`inline-flex items-center rounded border px-2 py-1 text-xs font-medium ${badge}`}
+      {/* ── Hero ── (newsletters render their own masthead) */}
+      {!isNewsletter && (
+        <section className="bg-gray-100 pb-12 pt-36 md:pb-18 md:pt-40">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
+              {/* Left */}
+              <div className="lg:w-1/2 lg:max-w-[32.5rem]">
+                <Link
+                  href="/knowledge-hub"
+                  className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-prussian-blue-800/60 transition-colors hover:text-prussian-blue-800"
                 >
-                  {post.category}
-                </span>
-                <span className="text-sm text-prussian-blue-800/60">
-                  {formatDate(post.date)}
-                </span>
-              </div>
+                  <ArrowLeft
+                    size={14}
+                    className="transition-transform duration-200 group-hover:-translate-x-0.5"
+                  />
+                  Back to Knowledge Hub
+                </Link>
 
-              <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
-                {post.title}
-              </h1>
-
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 lg:mt-14">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-prussian-blue-800/10">
-                    <span className="text-xs font-semibold text-prussian-blue-800">
-                      {author.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-xs text-prussian-blue-800/60">
-                      Written by
-                    </span>
-                    <span className="text-sm font-medium leading-none text-prussian-blue-800">
-                      {author}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-prussian-blue-800/60">
-                    Share
+                <div className="mb-5 flex items-center gap-3">
+                  <span
+                    className={`inline-flex items-center rounded border px-2 py-1 text-xs font-medium ${badge}`}
+                  >
+                    {post.category}
                   </span>
-                  <a
-                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
-                    aria-label="Share on LinkedIn"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 25 24"
-                      fill="none"
-                      className="h-4 w-4"
-                    >
-                      <path
-                        d="M7.44 5C7.44 5.81 6.95 6.55 6.19 6.85 5.44 7.16 4.57 6.98 4.01 6.39 3.44 5.81 3.28 4.94 3.61 4.19 3.94 3.45 4.69 2.98 5.5 3c1.08.03 1.94.92 1.94 2ZM7.5 8.48H3.5V21h4V8.48Zm6.32 0H9.84V21h3.82v-6.57c0-3.66 4.77-3.96 4.77 0V21H22.5v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href={`https://twitter.com/intent/tweet?url=${postUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
-                    aria-label="Share on X"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                      className="h-4 w-4"
-                    >
-                      <path
-                        d="M15.67 1.875H18.43L12.4 8.758l7.09 9.367h-5.55L9.6 12.444l-4.97 5.681H1.87l6.44-7.363L1.51 1.875H7.2l3.93 5.192 4.54-5.192Zm-.97 15.6h1.53L6.37 3.438H4.73l10.97 14.037Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
-                    aria-label="Share on Facebook"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="h-4 w-4"
-                    >
-                      <path
-                        d="M14 13.5h2.5l1-4H14V7.5c0-1.03 0-2 2-2H17.5V2.14C17.17 2.1 15.94 2 14.64 2 11.93 2 10 3.66 10 6.7V9.5H7v4h3V22h4v-8.5Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </a>
+                  <span className="text-sm text-prussian-blue-800/60">
+                    {formatDate(post.date)}
+                  </span>
                 </div>
+
+                <h1 className="font-heading text-2xl font-medium leading-tight tracking-tight text-prussian-blue-800 lg:text-4xl xl:text-4xl">
+                  {post.title}
+                </h1>
+
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 lg:mt-14">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-prussian-blue-800/10">
+                      <span className="text-xs font-semibold text-prussian-blue-800">
+                        {author.charAt(0)}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-xs text-prussian-blue-800/60">
+                        Written by
+                      </span>
+                      <span className="text-sm font-medium leading-none text-prussian-blue-800">
+                        {author}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-prussian-blue-800/60">
+                      Share
+                    </span>
+                    <a
+                      href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                      aria-label="Share on LinkedIn"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 25 24"
+                        fill="none"
+                        className="h-4 w-4"
+                      >
+                        <path
+                          d="M7.44 5C7.44 5.81 6.95 6.55 6.19 6.85 5.44 7.16 4.57 6.98 4.01 6.39 3.44 5.81 3.28 4.94 3.61 4.19 3.94 3.45 4.69 2.98 5.5 3c1.08.03 1.94.92 1.94 2ZM7.5 8.48H3.5V21h4V8.48Zm6.32 0H9.84V21h3.82v-6.57c0-3.66 4.77-3.96 4.77 0V21H22.5v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </a>
+                    <a
+                      href={`https://twitter.com/intent/tweet?url=${postUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                      aria-label="Share on X"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 21 20"
+                        fill="none"
+                        className="h-4 w-4"
+                      >
+                        <path
+                          d="M15.67 1.875H18.43L12.4 8.758l7.09 9.367h-5.55L9.6 12.444l-4.97 5.681H1.87l6.44-7.363L1.51 1.875H7.2l3.93 5.192 4.54-5.192Zm-.97 15.6h1.53L6.37 3.438H4.73l10.97 14.037Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </a>
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded bg-prussian-blue-800/5 p-2 transition-colors hover:bg-prussian-blue-800/20"
+                      aria-label="Share on Facebook"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="h-4 w-4"
+                      >
+                        <path
+                          d="M14 13.5h2.5l1-4H14V7.5c0-1.03 0-2 2-2H17.5V2.14C17.17 2.1 15.94 2 14.64 2 11.93 2 10 3.66 10 6.7V9.5H7v4h3V22h4v-8.5Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
               </div>
 
-              <div className="mt-5 border-t border-dashed border-prussian-blue-800/20" />
-            </div>
-
-            {/* Right - image */}
-            <div className="overflow-hidden rounded-lg h-80 max-h-80 lg:w-1/2 lg:max-w-[41rem] lg:min-h-[380px] lg:max-h-[380px] relative">
-              {heroUrl && (
-                <Image
-                  src={heroUrl}
-                  alt={post.title}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                />
-              )}
+              {/* Right - image */}
+              <div className="overflow-hidden rounded-lg h-80 max-h-80 lg:w-1/2 lg:max-w-[41rem] lg:min-h-[380px] lg:max-h-[380px] relative">
+                {heroUrl && (
+                  <Image
+                    src={heroUrl}
+                    alt={post.title}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── Body ── */}
-      <div className="mx-auto max-w-3xl px-6 py-12 lg:py-16">
-        <div className={PROSE}>
-          <PortableText value={post.body} components={portableComponents} />
-        </div>
+      <div
+        className={`mx-auto max-w-3xl px-6 pb-12 lg:pb-16 ${
+          isNewsletter ? "pt-36 md:pt-40" : "pt-12 lg:pt-16"
+        }`}
+      >
+        {isNewsletter ? (
+          <NewsletterFrame
+            html={cleanNewsletterHtml(post.newsletterHtml!)}
+            title={post.title}
+          />
+        ) : (
+          <div className={PROSE}>
+            <PortableText value={post.body} components={portableComponents} />
+          </div>
+        )}
       </div>
 
       {/* ── Prev / Next ── */}
