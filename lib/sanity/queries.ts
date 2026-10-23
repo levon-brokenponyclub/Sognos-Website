@@ -15,6 +15,7 @@ import {
   type SognoscarePageContent,
 } from "@/lib/content/sognoscarePage";
 import type { CaseStudy } from "@/components/sections/ProductCustomerStories";
+import type { BannerEvent } from "@/lib/upcomingEvent";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 
@@ -1062,6 +1063,40 @@ export async function getEventArchive(): Promise<
       },
     ];
   });
+}
+
+const BANNER_EVENT_QUERY = `*[_type == "event" && showInBanner == true && defined(slug.current)] | order(date desc)[0]{
+  "slug": slug.current,
+  title,
+  "heading": hero.heading,
+  date,
+  endDate
+}`;
+
+type RawBannerEvent = {
+  slug?: string;
+  title?: string;
+  heading?: string;
+  date?: string;
+  endDate?: string;
+};
+
+export async function getBannerEvent(): Promise<BannerEvent | null> {
+  const raw = await client
+    .fetch<RawBannerEvent | null>(
+      BANNER_EVENT_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    )
+    .catch(() => null);
+
+  const title = raw?.heading ?? raw?.title;
+  if (!raw?.slug || !title) return null;
+  return {
+    href: `/events/${raw.slug}`,
+    title,
+    endDate: raw.endDate ?? raw.date ?? null,
+  };
 }
 
 export async function getAllEventSlugs(): Promise<{ slug: string }[]> {

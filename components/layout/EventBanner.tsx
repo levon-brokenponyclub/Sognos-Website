@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import {
-  UPCOMING_EVENT,
-  BANNER_STORAGE_KEY,
+  bannerStorageKey,
+  isBannerEventPast,
   BANNER_DISMISS_EVENT,
+  type BannerEvent,
 } from "@/lib/upcomingEvent";
+
+const BANNER_LABEL = "Upcoming event";
 
 function IconClose() {
   return (
@@ -26,7 +29,8 @@ function IconClose() {
   );
 }
 
-export default function EventBanner() {
+export default function EventBanner({ event }: { event: BannerEvent }) {
+  const storageKey = bannerStorageKey(event);
   const [scrolled, setScrolled] = useState(false);
   const [colorMode, setColorMode] = useState<"dark" | "light">("dark");
 
@@ -43,14 +47,14 @@ export default function EventBanner() {
     },
     () => {
       if (typeof window === "undefined") return false;
-      return window.localStorage.getItem(BANNER_STORAGE_KEY) === "true";
+      return window.localStorage.getItem(storageKey) === "true";
     },
     () => false,
   );
 
   const eventPast = useSyncExternalStore(
     () => () => {},
-    () => Date.now() > new Date(UPCOMING_EVENT.endDate).getTime(),
+    () => isBannerEventPast(event),
     () => false,
   );
 
@@ -85,7 +89,7 @@ export default function EventBanner() {
   }, []);
 
   const dismiss = () => {
-    window.localStorage.setItem(BANNER_STORAGE_KEY, "true");
+    window.localStorage.setItem(storageKey, "true");
     window.dispatchEvent(new Event(BANNER_DISMISS_EVENT));
   };
 
@@ -119,25 +123,25 @@ export default function EventBanner() {
       <div className="max-w-7xl mx-auto relative flex h-11 w-full items-center px-2">
         {/* Mobile — chip + marquee title */}
         <Link
-          href={UPCOMING_EVENT.href}
+          href={event.href}
           onClick={dismiss}
           className={`flex min-w-0 flex-1 items-center gap-2 self-stretch md:hidden ${theme.text}`}
         >
           <span
             className={`shrink-0 inline-flex border ${theme.chipBorder} rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wider align-middle`}
           >
-            {UPCOMING_EVENT.label}
+            {BANNER_LABEL}
           </span>
           <div className="min-w-0 flex-1 overflow-hidden">
             <div className="banner-marquee-track" aria-hidden="true">
               <span className="whitespace-nowrap pr-10 text-xs font-medium">
-                {UPCOMING_EVENT.title}
+                {event.title}
               </span>
               <span className="whitespace-nowrap pr-10 text-xs font-medium">
-                {UPCOMING_EVENT.title}
+                {event.title}
               </span>
             </div>
-            <span className="sr-only">{UPCOMING_EVENT.title}</span>
+            <span className="sr-only">{event.title}</span>
           </div>
         </Link>
 
@@ -146,13 +150,13 @@ export default function EventBanner() {
           <span
             className={`shrink-0 inline-flex border ${theme.chipBorder} rounded px-2.5 py-1 text-sm font-normal uppercase tracking-wider align-middle md:text-xs`}
           >
-            {UPCOMING_EVENT.label}
+            {BANNER_LABEL}
           </span>
           <span className="truncate text-sm font-medium">
-            {UPCOMING_EVENT.title}
+            {event.title}
           </span>
           <Link
-            href={UPCOMING_EVENT.href}
+            href={event.href}
             onClick={dismiss}
             className="group/cta flex shrink-0 items-center gap-1.5 text-sm font-medium underline decoration-dotted transition-colors duration-200 hover:opacity-70"
           >

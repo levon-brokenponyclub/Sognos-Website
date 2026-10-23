@@ -4,20 +4,23 @@ import EventBanner from "@/components/layout/EventBanner";
 import BookDemoModal from "@/components/ui/BookDemoModal";
 import { BookDemoProvider } from "@/lib/BookDemoContext";
 import { CtaContentProvider } from "@/lib/CtaContentContext";
-import { getCtaSectionContent } from "@/lib/sanity/queries";
+import { getBannerEvent, getCtaSectionContent } from "@/lib/sanity/queries";
 
 export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const ctaContent = await getCtaSectionContent();
+  const [ctaContent, bannerEvent] = await Promise.all([
+    getCtaSectionContent(),
+    getBannerEvent(),
+  ]);
 
   return (
     <CtaContentProvider value={ctaContent}>
       <BookDemoProvider>
-        <EventBanner />
-        <Navbar />
+        {bannerEvent && <EventBanner event={bannerEvent} />}
+        <Navbar bannerEvent={bannerEvent} />
         <main className="flex-1">{children}</main>
         <Footer />
         <BookDemoModal />

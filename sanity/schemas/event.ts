@@ -91,6 +91,14 @@ export const event = defineType({
       initialValue: true,
     }),
     defineField({
+      name: "showInBanner",
+      title: "Show in header announcement banner",
+      description:
+        "Displays this event in the site-wide banner until its end date. If several are on, the latest by start date wins.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
       name: "heroImage",
       title: "Hero image",
       type: "image",

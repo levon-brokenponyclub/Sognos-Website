@@ -14,9 +14,10 @@ import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { nav, navCTA, type MegaColumn, type NavItem } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
 import {
-  UPCOMING_EVENT,
-  BANNER_STORAGE_KEY,
+  bannerStorageKey,
+  isBannerEventPast,
   BANNER_DISMISS_EVENT,
+  type BannerEvent,
 } from "@/lib/upcomingEvent";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
@@ -388,7 +389,11 @@ function getMobilePanelId(label: string) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function Navbar() {
+export default function Navbar({
+  bannerEvent,
+}: {
+  bannerEvent: BannerEvent | null;
+}) {
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>("ltr");
@@ -424,18 +429,19 @@ export default function Navbar() {
     },
     () => {
       if (typeof window === "undefined") return false;
-      return window.localStorage.getItem(BANNER_STORAGE_KEY) === "true";
+      return window.localStorage.getItem(bannerStorageKey(bannerEvent)) === "true";
     },
     () => false,
   );
 
   const eventPast = useSyncExternalStore(
     () => () => {},
-    () => Date.now() > new Date(UPCOMING_EVENT.endDate).getTime(),
+    () => isBannerEventPast(bannerEvent),
     () => false,
   );
 
-  const bannerVisible = !bannerDismissed && !eventPast && !scrolled;
+  const bannerVisible =
+    !!bannerEvent && !bannerDismissed && !eventPast && !scrolled;
 
   // Click-outside closes desktop menu
   useEffect(() => {
