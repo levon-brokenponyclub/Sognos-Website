@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-10-24 — Sanity v6 (redesign) + Presentation tool for events
+
+- **Upgrade (redesign only):** sanity 5.28 → 6.20, @sanity/vision 6.20,
+  next-sanity 13.4, @sanity/color-input 6.1.8, @sanity/preview-url-secret
+  4.1.5. Node 24.x (Vercel) / 24.11 local. Studio search now defaults to
+  `groq2024`; React strict mode on in Studio dev. Prod stays on v5.
+- **Presentation tool:** previews the site beside the editor via the events
+  draft-mode routes; event ↔ `/events/<slug>` resolution
+  (`sanity/presentation/resolve.ts`). Click-to-edit overlays
+  (`VisualEditing`) load in the marketing layout only in draft mode.
+- **Stega:** `previewClient` encodes field references for overlays; keys
+  used as values (slug, mode, format, timezone, dates, URLs, icons, images)
+  are skipped. Public pages never use stega.
+- **Events Preview action + draft mode** (previous commit) unchanged; needs
+  `SANITY_API_READ_TOKEN` (.env.local, Vercel Preview: redesign).
+
 ## 2026-10-23 — Events: /events/[slug] + /events index, KH events/webinars, prod ports
 
 ### Event pages

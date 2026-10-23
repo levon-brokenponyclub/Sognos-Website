@@ -1,3 +1,5 @@
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/layout/PageTransition";
@@ -27,6 +29,8 @@ export default async function MarketingLayout({
     getBannerEvent(),
   ]);
   const featuredNav = buildFeaturedNav(posts, events);
+  // Presentation / Preview: overlays only load while draft mode is on.
+  const { isEnabled: preview } = await draftMode();
 
   return (
     <CtaContentProvider value={ctaContent}>
@@ -41,6 +45,7 @@ export default async function MarketingLayout({
         <CTABand />
         <Footer />
         <BookDemoModal />
+        {preview && <VisualEditing />}
       </BookDemoProvider>
     </CtaContentProvider>
   );

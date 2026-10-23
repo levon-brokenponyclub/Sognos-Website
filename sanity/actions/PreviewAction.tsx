@@ -33,7 +33,9 @@ export const PreviewAction: DocumentActionComponent = (props) => {
       try {
         const origin = window.location.origin;
         const { secret } = await createPreviewSecret(
-          client,
+          // Studio v6 ships @sanity/client v8; the helper's types resolve the
+          // v7 copy next-sanity uses. Same runtime API (peer: ^7.26 || ^8).
+          client as unknown as Parameters<typeof createPreviewSecret>[0],
           "sognos-studio-preview-action",
           `${origin}/studio`,
           user?.id,

@@ -24,6 +24,25 @@ const baseClient = createClient({
 
 export const client = baseClient;
 
+// Keys used for logic, dates, URLs or icon lookups — never stega-encoded.
+const STEGA_SKIP_KEYS = new Set([
+  "slug",
+  "mode",
+  "format",
+  "timezone",
+  "date",
+  "endDate",
+  "registerUrl",
+  "mapsEmbedUrl",
+  "mapsDirectionsUrl",
+  "recordingSlug",
+  "heroImage",
+  "logo",
+  "headshot",
+  "icon",
+  "time",
+]);
+
 /**
  * Draft-mode client: reads drafts with the server-only Viewer token. Only used
  * when Next.js draft mode is on (Studio → Preview). Never cached.
@@ -32,6 +51,17 @@ export const previewClient = baseClient.withConfig({
   token: process.env.SANITY_API_READ_TOKEN,
   perspective: "drafts",
   useCdn: false,
+  // Invisible field references for Presentation's click-to-edit overlays.
+  // Fields the code reads as values (not displayed text) stay clean.
+  stega: {
+    enabled: true,
+    studioUrl: "/studio",
+    filter: (props) => {
+      const key = props.sourcePath.at(-1);
+      if (typeof key === "string" && STEGA_SKIP_KEYS.has(key)) return false;
+      return props.filterDefault(props);
+    },
+  },
 });
 
 const shouldLogSanityIssues = process.env.NODE_ENV !== "production";

@@ -1,6 +1,8 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { presentationTool } from "sanity/presentation";
+import { presentationResolve } from "./sanity/presentation/resolve";
 import { colorInput } from "@sanity/color-input";
 import { schemas } from "./sanity/schemas";
 import { PreviewAction } from "./sanity/actions/PreviewAction";
@@ -194,6 +196,17 @@ export default defineConfig({
           ]),
     }),
     colorInput(),
+    presentationTool({
+      // Same origin as the embedded Studio; reuses the events draft-mode routes.
+      previewUrl: {
+        initial: "/events",
+        previewMode: {
+          enable: "/api/draft-mode/enable",
+          disable: "/api/draft-mode/disable",
+        },
+      },
+      resolve: presentationResolve,
+    }),
     visionTool(),
   ],
   document: {
