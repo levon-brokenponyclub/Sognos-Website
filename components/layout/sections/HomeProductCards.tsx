@@ -12,7 +12,7 @@ const PRODUCTS = [
     rest: " with intake, plans, compliance and outcomes connected in one workflow.",
     accent: "#1d96fc",
     href: "/products/sognoscare",
-    logo: "/logos/sognos-care-logo-color.svg",
+    logo: "/logos/sognos-care-logo.svg",
     bgImage:
       "https://plus.unsplash.com/premium_photo-1663089870095-c231a534ac31?q=80&w=1702&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -22,7 +22,7 @@ const PRODUCTS = [
     rest: " with skills, location, availability and compliance factored in automatically.",
     accent: "#59bbf7",
     href: "/products/sognosroster",
-    logo: "/logos/sognos-roster-logo-color.svg",
+    logo: "/logos/sognos-roster-logo.svg",
     bgImage: "/images/home/industries/industrial-services.jpg",
   },
   {
@@ -31,7 +31,7 @@ const PRODUCTS = [
     rest: " so every worker has the context they need to deliver better outcomes.",
     accent: "#91278c",
     href: "/products/sognosgenogram",
-    logo: "/logos/sognos-genogram-logo-color.svg",
+    logo: "/logos/SognosGenogram-logo.svg",
     bgImage:
       "https://images.unsplash.com/photo-1674629358478-bff878ed9727?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // FLAG: placeholder — swap when Genogram bg image available
   },
@@ -43,7 +43,7 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
     // The top hairline and the title above it are commented out, not deleted.
     <Link
       href={product.href}
-      className="group flex flex-col border-b border-sognos-line pt-4 pb-10 w-[82vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
+      className="group flex flex-col border-b border-white/25 pt-4 pb-10 w-[82vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
     >
       {/* Title above the image */}
       {/* <h3 className="font-heading text-2xl font-normal tracking-tight text-white md:text-lg">
@@ -54,10 +54,7 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
           track below now uses its `gap-2`, so the two card rows share one
           proportion and one rhythm. The `max-h` cap is gone — it was there to
           stop the 4/5 ratio running away, which 334/354 does not. */}
-      {/* Light re-skin 2026-08-07 (moved onto the tint section): white panel
-          + hairline + color logo. Navy overlay + white-invert logo variant is
-          in git history if the dark treatment returns. */}
-      <div className="relative mt-4 aspect-[334/354] overflow-hidden rounded-lg border border-sognos-line bg-white">
+      <div className="relative mt-4 aspect-[334/354] overflow-hidden rounded-lg">
         {/* Background image — commented out, not deleted. `bgImage` stays on
             each PRODUCTS entry, so uncommenting restores it as it was. */}
         {/* <Image
@@ -66,6 +63,8 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
           fill
           className="scale-105 object-cover object-center opacity-80 transition-[scale,filter] duration-800 motion-safe:group-hover:scale-100 group-hover/solutions:brightness-[0.60] group-hover:brightness-100!"
         /> */}
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-sognos-navy-dark/45 transition-colors duration-500 group-hover/cards:bg-sognos-navy-dark/70 group-hover:!bg-sognos-navy-dark/25" />
 
         {/* Product logo — centered */}
         <div className="absolute inset-0 flex items-center justify-center">
@@ -74,13 +73,13 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
             alt={product.name}
             width={140}
             height={32}
-            className="h-10 w-auto object-contain"
+            className="h-10 w-auto object-contain brightness-0 invert"
           />
         </div>
 
         {/* Arrow button — bottom-right. Hover: accent fill slides up. Arrow stays white. */}
         <div className="absolute bottom-6 right-6">
-          <div className="relative isolate flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-sognos-line">
+          <div className="relative isolate flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30">
             <div
               aria-hidden="true"
               className="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"
@@ -92,7 +91,7 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
               viewBox="0 0 14 14"
               fill="none"
               aria-hidden="true"
-              className="relative text-sognos-heading transition-colors duration-300 group-hover:text-white"
+              className="relative text-white"
             >
               <path
                 d="M3 7h8M7 3l4 4-4 4"
@@ -107,8 +106,8 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
       </div>
 
       {/* Description below the image — always visible */}
-      <p className="mt-5 text-base tracking-tight leading-normal text-sognos-body">
-        <span className="text-sognos-heading">{product.lead}</span>
+      <p className="mt-5 text-base tracking-tight leading-normal text-white/70">
+        <span className="text-white">{product.lead}</span>
         {product.rest}
       </p>
     </Link>
@@ -117,15 +116,17 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
 
 export default function HomeProductCards() {
   return (
-    // No background/padding of its own — renders inside HowSognosWorks
-    // (2026-08-07 merge), which supplies the tint section, container, and
-    // vertical rhythm.
-    <div className="mx-auto max-w-6xl">
-      <div className="group/cards flex items-start snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible">
-        {PRODUCTS.map((product) => (
-          <ProductCard key={product.href} product={product} />
-        ))}
+    // No background of its own — it renders inside the hero, which already
+    // carries the navy and the blur artwork behind it. `pt-16` is the gap
+    // below the hero's CTAs.
+    <section className="pt-16 pb-2">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="group/cards flex items-start snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible">
+          {PRODUCTS.map((product) => (
+            <ProductCard key={product.href} product={product} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -2,8 +2,6 @@
 // interactive part left is TimerCardDeck, which owns its own client boundary.
 import Image from "next/image";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
-import HomeProductCards from "@/components/layout/sections/HomeProductCards";
-// import SognosPipeline from "@/components/ui/sognos-pipeline"; // hidden with the pipeline block below
 import TimerCardDeck, {
   type TimerCard,
 } from "@/components/layout/sections/shared/TimerCardDeck";
@@ -53,10 +51,10 @@ const CARDS: readonly TimerCard[] = BLOCKS.map((b, i) => ({
   // without touching the deck — which ProductCustomerStories and LottiePanel
   // also use. `href` stays on BLOCKS, so this is one line to put back.
   // href: b.href,
-  // Panel images removed 2026-08-07 — the deck renders text blocks only,
-  // sitting directly under the product cards. Restore by re-adding:
-  // image: { src: b.image, alt: b.title },
-  // animation: "animation" in b ? { src: b.animation } : undefined,
+  // Alt is the step it illustrates — the panel is not decorative, it is the
+  // slide's content.
+  image: { src: b.image, alt: b.title },
+  animation: "animation" in b ? { src: b.animation } : undefined,
 }));
 
 export default function HowSognosWorks() {
@@ -107,20 +105,6 @@ export default function HowSognosWorks() {
               />
             </div>
           </div>
-        </div>
-
-        {/* AI pipeline — HIDDEN 2026-08-07 pending section nesting/hierarchy
-            decision. Uncomment to restore as the section's top visual block.
-        <div className="mx-auto mt-10 flex w-full max-w-6xl items-center justify-center md:mt-12">
-          <SognosPipeline />
-        </div>
-        */}
-
-        {/* Product cards — merged in 2026-08-07: the products tell the story
-            of what the process above is solved WITH. Light re-skin lives in
-            HomeProductCards itself. */}
-        <div className="mt-10 md:mt-12 lg:mt-16">
-          <HomeProductCards />
         </div>
 
         {/* Auto-advancing deck after middesk.com. The deck owns its own timing
