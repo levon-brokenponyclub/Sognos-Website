@@ -15,6 +15,8 @@ export type CaseStudy = {
   panelImage: string;
   panelVideo?: string;
   quote: string;
+  /** Short story summary from Sanity; optional — not every consumer shows it. */
+  description?: string;
   author: string;
   role: string;
   href: string;

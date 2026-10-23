@@ -31,7 +31,6 @@ export default async function SognosCarePage() {
       <link
         rel="stylesheet"
         href="https://use.typekit.net/aoi4bxt.css"
-        // @ts-expect-error React 19 resource hoisting prop, valid at runtime
         precedence="default"
       />
       <SognoscareHero
