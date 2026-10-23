@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
+import { ArrowRight, CalendarDays, MapPin, MonitorPlay } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ProgressButton } from "@/components/layout/sections/shared/TimerCardDeck";
 import {
@@ -46,6 +46,8 @@ export type UpcomingEvent = {
   excerpt?: string | null;
   /** External registration form; only set while registration is open. */
   registerUrl?: string | null;
+  /** Event type — drives the Online / In person pill. */
+  online?: boolean;
 };
 
 /** The most recent customer story, for the dark band. */
@@ -466,14 +468,11 @@ function Tile({
 export function RailBlock({
   id,
   label,
-  viewAllHref,
   children,
 }: {
   /** Optional anchor, e.g. /events#webinars. */
   id?: string;
   label: string;
-  /** Optional "View all" link under the label. */
-  viewAllHref?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -481,24 +480,10 @@ export function RailBlock({
       id={id}
       className="grid scroll-mt-28 grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
     >
-      <div className="flex items-baseline justify-between gap-4 lg:col-span-2 lg:sticky lg:top-[100px] lg:block lg:self-start">
+      <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
           {label}
         </p>
-        {viewAllHref && (
-          <Link
-            href={viewAllHref}
-            className="group inline-flex shrink-0 items-center gap-1.5 text-sm lg:mt-3"
-          >
-            View all
-            <span
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              &rarr;
-            </span>
-          </Link>
-        )}
       </div>
       <div className="lg:col-[3/-1]">{children}</div>
     </div>
@@ -550,6 +535,17 @@ export function PastEventRow({
   );
 }
 
+// Online / In person — the event type, shown beside the format on event cards.
+function EventTypePill({ online }: { online: boolean }) {
+  const Icon = online ? MonitorPlay : MapPin;
+  return (
+    <span className="inline-flex w-fit items-center gap-1.5 rounded border border-sognos-line px-2.5 py-1 text-xs font-normal text-sognos-body">
+      <Icon aria-hidden="true" className="h-3.5 w-3.5 text-sognos-muted" />
+      {online ? "Online" : "In person"}
+    </span>
+  );
+}
+
 // Two-column card after the reference: copy on the left, image on the right,
 // an even 1fr/1fr split. The meta is a label:value list — "Date" and
 // "Location" rows, each with a hairline rule above it and its value
@@ -569,6 +565,7 @@ export function EventCard({
   location,
   image,
   registerUrl,
+  online,
 }: {
   href: string;
   format: string;
@@ -582,6 +579,8 @@ export function EventCard({
   image?: string | null;
   /** Shown as a Register button when present. */
   registerUrl?: string | null;
+  /** Event type pill; omitted when unknown. */
+  online?: boolean;
 }) {
   return (
     // Content wider than the image (1 / 0.85) — the date and place are the
@@ -591,9 +590,12 @@ export function EventCard({
           the meta + actions to the bottom. Global card padding. */}
       <div className="flex flex-col justify-between gap-8 p-6 lg:p-8">
         <div>
-          <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
-            {format}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
+              {format}
+            </span>
+            {online !== undefined && <EventTypePill online={online} />}
+          </div>
           <h3 className="mt-4 font-heading text-2xl font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
             <Link href={href} className="after:absolute after:inset-0">
               {title}
@@ -672,10 +674,9 @@ export function EventCard({
 // Shared by the Events and Webinars rails. Client-side only: both lists are
 // already on the page, so a tab just picks which one renders.
 
-type StatusTab = "all" | "upcoming" | "past";
+type StatusTab = "upcoming" | "past";
 
 const STATUS_TABS: readonly { id: StatusTab; label: string }[] = [
-  { id: "all", label: "All" },
   { id: "upcoming", label: "Upcoming" },
   { id: "past", label: "Past" },
 ];
@@ -697,40 +698,38 @@ function StatusTabsRail<T>({
   getKey: (item: T) => string;
   render: (item: T) => React.ReactNode;
 }) {
-  const [tab, setTab] = useState<StatusTab>("all");
-  const items =
-    tab === "upcoming"
-      ? upcoming
-      : tab === "past"
-        ? past
-        : [...upcoming, ...past];
-  const empty =
-    tab === "upcoming"
-      ? `No upcoming ${noun}.`
-      : tab === "past"
-        ? `No past ${noun} yet.`
-        : `No ${noun} yet.`;
+  // Only tabs with items show; Upcoming is the default when it has any.
+  const tabs = STATUS_TABS.filter((t) =>
+    t.id === "upcoming" ? upcoming.length > 0 : past.length > 0,
+  );
+  const [selected, setSelected] = useState<StatusTab | null>(null);
+  const tab = tabs.some((t) => t.id === selected) ? selected : tabs[0]?.id;
+  const setTab = setSelected;
+  const items = tab === "upcoming" ? upcoming : tab === "past" ? past : [];
+  const empty = `No ${noun} yet.`;
 
   return (
     <div>
-      <div role="tablist" aria-label={label} className="mb-6 flex gap-2">
-        {STATUS_TABS.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === t.id}
-            onClick={() => setTab(t.id)}
-            className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
-              tab === t.id
-                ? "border-sognos-navy bg-sognos-navy text-white"
-                : "border-sognos-line bg-white text-sognos-body hover:border-sognos-navy/40"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      {tabs.length > 0 && (
+        <div role="tablist" aria-label={label} className="mb-6 flex gap-2">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={tab === t.id}
+              onClick={() => setTab(t.id)}
+              className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+                tab === t.id
+                  ? "border-sognos-navy bg-sognos-navy text-white"
+                  : "border-sognos-line bg-white text-sognos-body hover:border-sognos-navy/40"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )}
       {items.length === 0 ? (
         <p className="text-sognos-muted">{empty}</p>
       ) : (
@@ -751,26 +750,40 @@ export function EventRail({
   upcoming: UpcomingEvent[];
   past: UpcomingEvent[];
 }) {
+  // Past events use the webinar card's text-only layout: no image, the
+  // format as the tag, and "View event".
+  const pastItems: WebinarItem[] = past.map((e) => ({
+    ...e,
+    status: "past",
+    tag: null,
+    cta: "View event",
+    hideImage: true,
+  }));
   return (
-    <StatusTabsRail
+    <StatusTabsRail<UpcomingEvent | WebinarItem>
       label="Events"
       noun="events"
       upcoming={upcoming}
-      past={past}
+      past={pastItems}
       getKey={(e) => e.slug}
-      render={(e) => (
-        <EventCard
-          href={e.href}
-          format={e.format}
-          title={e.title}
-          excerpt={e.excerpt}
-          date={e.date}
-          time={e.time}
-          location={e.location}
-          image={e.image}
-          registerUrl={e.registerUrl}
-        />
-      )}
+      render={(e) =>
+        "status" in e ? (
+          <WebinarCard item={e} />
+        ) : (
+          <EventCard
+            href={e.href}
+            format={e.format}
+            title={e.title}
+            excerpt={e.excerpt}
+            date={e.date}
+            time={e.time}
+            location={e.location}
+            image={e.image}
+            registerUrl={e.registerUrl}
+            online={e.online}
+          />
+        )
+      }
     />
   );
 }
@@ -783,6 +796,10 @@ export type WebinarItem = UpcomingEvent & {
   status: WebinarStatus;
   /** Optional pill under the description — the post's industry. */
   tag?: string | null;
+  /** Action label override, e.g. "View event" for past events. */
+  cta?: string;
+  /** Text-only card — past events drop the image. */
+  hideImage?: boolean;
 };
 
 // Three tracks after the reference: image with a status ribbon, title and
@@ -790,37 +807,42 @@ export type WebinarItem = UpcomingEvent & {
 // that order below md.
 function WebinarCard({ item }: { item: WebinarItem }) {
   const upcoming = item.status === "upcoming";
+  const grid = item.hideImage
+    ? "md:grid-cols-[minmax(0,1fr)_minmax(0,13rem)_auto] md:items-center"
+    : "md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,13rem)]";
   return (
     <Link
       href={item.href}
-      className="group grid grid-cols-1 gap-6 rounded bg-white p-4 text-sognos-heading md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] md:p-5 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,13rem)] lg:gap-8"
+      className={`group grid grid-cols-1 gap-6 rounded bg-white p-4 text-sognos-heading md:p-5 lg:gap-8 ${grid}`}
     >
       {/* Image + ribbon */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded">
-        {item.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={item.image}
-            alt=""
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-end bg-sognos-navy p-5">
-            <span className="font-heading text-lg tracking-tight text-white/90">
-              Webinar
-            </span>
-          </div>
-        )}
-        <span
-          className={`absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-medium ${
-            upcoming
-              ? "bg-amber-300 text-sognos-heading"
-              : "bg-white text-sognos-heading"
-          }`}
-        >
-          {upcoming ? "Upcoming" : "On demand"}
-        </span>
-      </div>
+      {!item.hideImage && (
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded">
+          {item.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={item.image}
+              alt=""
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-end bg-sognos-navy p-5">
+              <span className="font-heading text-lg tracking-tight text-white/90">
+                Webinar
+              </span>
+            </div>
+          )}
+          <span
+            className={`absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-medium ${
+              upcoming
+                ? "bg-amber-300 text-sognos-heading"
+                : "bg-white text-sognos-heading"
+            }`}
+          >
+            {upcoming ? "Upcoming" : "On demand"}
+          </span>
+        </div>
+      )}
 
       {/* Title + description */}
       <div className="flex min-w-0 flex-col">
@@ -839,8 +861,15 @@ function WebinarCard({ item }: { item: WebinarItem }) {
         )}
       </div>
 
-      {/* Details + action */}
-      <div className="flex flex-col justify-between gap-6 md:col-start-2 lg:col-start-3">
+      {/* Details + action. Text-only cards render this wrapper as
+          `contents`, so the action becomes its own third column. */}
+      <div
+        className={
+          item.hideImage
+            ? "contents"
+            : "flex flex-col justify-between gap-6 md:col-start-2 lg:col-start-3"
+        }
+      >
         <dl className="flex flex-col gap-4 text-sm text-sognos-body">
           <div className="flex items-start gap-3">
             <dt className="sr-only">Date</dt>
@@ -863,9 +892,17 @@ function WebinarCard({ item }: { item: WebinarItem }) {
               <dd>{item.location}</dd>
             </div>
           )}
+          {item.hideImage && item.online !== undefined && (
+            <div>
+              <dt className="sr-only">Type</dt>
+              <dd>
+                <EventTypePill online={item.online} />
+              </dd>
+            </div>
+          )}
         </dl>
         <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sognos-blue-accent">
-          {upcoming ? "Explore event" : "Watch on demand"}
+          {item.cta ?? (upcoming ? "Explore event" : "Watch on demand")}
           <ArrowRight
             aria-hidden="true"
             className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
@@ -1263,13 +1300,10 @@ export default function KnowledgeHubArchive({
           tinted
         >
           <div className="flex flex-col gap-16">
-            <RailBlock label="Events" viewAllHref={VIEW_ALL.events}>
+            <RailBlock label="Events">
               <EventRail upcoming={events} past={pastEvents} />
             </RailBlock>
-            <RailBlock
-              label="Webinars"
-              viewAllHref={`${VIEW_ALL.events}#webinars`}
-            >
+            <RailBlock label="Webinars">
               <WebinarRail upcoming={upcomingWebinars} past={pastWebinars} />
             </RailBlock>
           </div>

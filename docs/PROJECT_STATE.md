@@ -348,6 +348,15 @@ Design + code work, ordered by impact.
     `production`. **Decision:** approve Sanity + Vercel changes; check the
     plan's dataset limit. Re-seed from production as needed (one-way only).
 
+18. **Event schema divergence (redesign ≠ prod) — migrate before cutover.**
+    Added 2026-10-24. The redesign event schema moved fields that prod still
+    reads; `development` was migrated, `production` was not:
+    `hero.description` → `overview`; `eventMeta.date|time|venueName` →
+    `displayDate|displayTime|displayVenueName`. Hero heading/subtitle are now
+    optional overrides (fallback: title / excerpt) and event cards show
+    `coalesce(hero.heading, title)`. When the redesign replaces prod, run the
+    same copy + unset on `production` in the same release.
+
 17. **Single event page (`/events/[slug]`) — port + standardise.** **Built
     2026-10-23** (option C, see CHANGELOG). Remaining: populate `mode`,
     `speakers[]`, `recording` on existing events; decide whether to retire the

@@ -888,9 +888,10 @@ const UPCOMING_EVENTS_QUERY = `*[
   && dateTime(date) >= dateTime(now())
 ] | order(date asc){
   "slug": slug.current,
-  title,
+  "title": coalesce(hero.heading, title),
   excerpt,
   format,
+  mode,
   date,
   endDate,
   timezone,
@@ -905,9 +906,10 @@ const UPCOMING_EVENTS_QUERY = `*[
 // it does not filter — the split is the caller's to make from `date`.
 const EVENT_ARCHIVE_QUERY = `*[_type == "event"] | order(date desc){
   "slug": slug.current,
-  title,
+  "title": coalesce(hero.heading, title),
   excerpt,
   format,
+  mode,
   date,
   endDate,
   timezone,
@@ -934,6 +936,8 @@ export type EventListing = {
   endDate?: string | null;
   /** IANA timezone the event's times display in; Sydney when unset. */
   timezone?: string | null;
+  /** "in-person" | "online"; unset → Webinars online, else in person. */
+  mode?: string | null;
   location?: string | null;
   /** Hand-written display line. Compose from date + location when absent. */
   meta?: string | null;
@@ -989,12 +993,15 @@ export type EventPageData = {
   /** Slug of the Knowledge Hub recording post, when linked. */
   recordingSlug?: string;
   seo?: { title?: string; description?: string };
-  hero?: { heading?: string; subtitle?: string; description?: string };
+  hero?: { heading?: string; subtitle?: string };
   partners?: { name: string; label?: string; logo?: string }[];
+  /** Intro paragraph (Content tab). */
+  overview?: string;
+  /** Display Overrides tab — each replaces the generated value when set. */
+  displayDate?: string;
+  displayTime?: string;
+  displayVenueName?: string;
   eventMeta?: {
-    date?: string;
-    time?: string;
-    venueName?: string;
     venueAddress?: string[];
     capacity?: string;
     registerUrl?: string;
@@ -1028,7 +1035,8 @@ export type EventPageData = {
 const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   title,
   "slug": slug.current,
-  format, mode, excerpt, date, endDate, timezone, location, registrationOpen,
+  format, mode, excerpt, overview, date, endDate, timezone, location, registrationOpen,
+  displayDate, displayTime, displayVenueName,
   "isPast": dateTime(coalesce(endDate, date)) < dateTime(now()),
   "heroImage": heroImage.asset->url,
   "recordingSlug": recording->slug.current,

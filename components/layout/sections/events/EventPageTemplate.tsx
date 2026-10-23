@@ -125,20 +125,20 @@ export default function EventPageTemplate({ event }: { event: EventPageData }) {
   // Date and time come from the structured `date` / `endDate` fields (Sydney
   // time); the Event Details display strings override them when filled in.
   const dateText =
-    meta.date ??
+    event.displayDate ??
     (event.date ? formatEventDateLong(event.date, event.timezone) : undefined);
   const timeText =
-    meta.time ??
+    event.displayTime ??
     (event.date
       ? `${formatEventTime(event.date, event.endDate, event.timezone)} ${formatEventTimeZone(event.date, event.timezone)}`.trim()
       : event.agenda?.timeRange);
   const details = [
     dateText && { icon: CalendarDays, label: "Date", value: dateText },
     timeText && { icon: Clock, label: "Time", value: timeText },
-    (meta.venueName || event.location) && {
+    (event.displayVenueName || event.location) && {
       icon: online ? MonitorPlay : MapPin,
       label: online ? "Where" : "Venue",
-      value: meta.venueName ?? event.location,
+      value: event.displayVenueName ?? event.location,
     },
     meta.capacity?.trim() && {
       icon: Users,
@@ -166,9 +166,10 @@ export default function EventPageTemplate({ event }: { event: EventPageData }) {
               <h1 className="mt-5 font-heading text-4xl font-normal leading-tight tracking-tight text-white md:text-5xl">
                 {event.hero?.heading ?? event.title}
               </h1>
-              {event.hero?.subtitle && (
+              {/* Display Overrides heading/subtitle, else Title/Excerpt. */}
+              {(event.hero?.subtitle ?? event.excerpt) && (
                 <p className="mt-5 text-lg leading-relaxed text-white/80">
-                  {event.hero.subtitle}
+                  {event.hero?.subtitle ?? event.excerpt}
                 </p>
               )}
               <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-white/20 pt-6 sm:grid-cols-2">
@@ -258,11 +259,10 @@ export default function EventPageTemplate({ event }: { event: EventPageData }) {
           </aside>
 
           <div className="min-w-0 lg:col-span-8 lg:row-start-1">
-            {/* Intro — the hero description, moved out of the hero to keep it
-                compact. Falls back to the listing excerpt when unset. */}
-            {(event.hero?.description ?? event.excerpt) && (
+            {/* Overview — the intro paragraph (Content tab). */}
+            {event.overview && (
               <p className="text-lg leading-relaxed text-sognos-heading md:text-xl">
-                {event.hero?.description ?? event.excerpt}
+                {event.overview}
               </p>
             )}
 
@@ -454,9 +454,9 @@ export default function EventPageTemplate({ event }: { event: EventPageData }) {
                   className={`grid gap-6 rounded border border-sognos-line p-6 ${meta.mapsEmbedUrl ? "md:grid-cols-2" : ""}`}
                 >
                   <div>
-                    {!online && meta.venueName && (
+                    {!online && event.displayVenueName && (
                       <p className="font-medium text-sognos-heading">
-                        {meta.venueName}
+                        {event.displayVenueName}
                       </p>
                     )}
                     {meta.venueAddress?.map((l) => (

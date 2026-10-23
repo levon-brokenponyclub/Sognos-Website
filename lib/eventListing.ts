@@ -18,6 +18,7 @@ export function toUpcomingEvent(e: EventListing): UpcomingEvent {
       ? urlFor(e.heroImage).width(1200).auto("format").url()
       : "",
     excerpt: e.excerpt ?? null,
+    online: e.mode ? e.mode === "online" : e.format === "Webinar",
     registerUrl:
       e.registrationOpen && !e.isPast ? (e.registerUrl ?? null) : null,
   };

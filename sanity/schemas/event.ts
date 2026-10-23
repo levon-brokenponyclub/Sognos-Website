@@ -47,9 +47,9 @@ export const event = defineType({
   groups: [
     { name: "post", title: "Post Details", default: true },
     { name: "event", title: "Event Details" },
-    { name: "hero", title: "Hero" },
     { name: "content", title: "Content" },
     { name: "speakers", title: "Speakers" },
+    { name: "overrides", title: "Display Overrides" },
     { name: "cta", title: "CTA" },
     { name: "seo", title: "SEO" },
   ],
@@ -107,14 +107,6 @@ export const event = defineType({
       description:
         "Hero image on the event page and the image on listing cards.",
       options: { hotspot: true },
-    }),
-    defineField({
-      name: "meta",
-      group: "post",
-      title: "Display meta",
-      type: "string",
-      description:
-        'Short line shown in the announcement banner and listings, e.g. "Thu 17 Sep • North Sydney". Leave empty to compose it from date and location.',
     }),
     defineField({
       name: "date",
@@ -262,13 +254,6 @@ export const event = defineType({
       type: "object",
       // Rendered flat (no box) so these read as part of the Event Details tab.
       components: { field: (props) => props.children, input: EventVenueInput },
-      fieldsets: [
-        {
-          name: "overrides",
-          title: "Display overrides",
-          options: { collapsible: true, collapsed: true },
-        },
-      ],
       fields: [
         defineField({
           name: "venueAddress",
@@ -308,52 +293,15 @@ export const event = defineType({
               "Add the registration URL",
             ),
         }),
-        defineField({
-          name: "venueName",
-          title: "Venue name override",
-          description: "Optional. Leave empty to show Location.",
-          fieldset: "overrides",
-          hidden: ({ document }) => isOnline(document),
-          type: "string",
-        }),
-        defineField({
-          name: "date",
-          title: "Date display override",
-          description:
-            "Optional. Leave empty to show Event date, e.g. “Thursday 17 September 2026”.",
-          fieldset: "overrides",
-          type: "string",
-        }),
-        defineField({
-          name: "time",
-          title: "Time display override",
-          description:
-            "Optional. Leave empty to show Event date → End time in Sydney time, e.g. “8:30 am - 10:30 am AEST”.",
-          fieldset: "overrides",
-          type: "string",
-        }),
       ],
     }),
     defineField({
-      name: "hero",
-      group: "hero",
-      title: "Hero",
-      type: "object",
-      fields: [
-        defineField({
-          name: "heading",
-          title: "Heading",
-          type: "string",
-          validation: (R) => R.required(),
-        }),
-        defineField({ name: "subtitle", title: "Subtitle", type: "string" }),
-        defineField({
-          name: "description",
-          title: "Description paragraph",
-          type: "text",
-          rows: 4,
-        }),
-      ],
+      name: "overview",
+      group: "content",
+      title: "Overview",
+      description: "Intro paragraph at the top of the event page.",
+      type: "text",
+      rows: 4,
     }),
     defineField({
       name: "challenge",
@@ -610,6 +558,61 @@ export const event = defineType({
           of: [{ type: "text" }],
         }),
       ],
+    }),
+    defineField({
+      name: "hero",
+      group: "overrides",
+      title: "Hero",
+      type: "object",
+      // Rendered flat so the fields read as part of the tab.
+      components: { field: (props) => props.children },
+      fields: [
+        defineField({
+          name: "heading",
+          title: "Hero heading",
+          description:
+            "Optional. Replaces the title in the event hero and on event cards. Leave empty to use Title.",
+          type: "string",
+        }),
+        defineField({
+          name: "subtitle",
+          title: "Hero subtitle",
+          description: "Optional. Leave empty to use Excerpt.",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
+      name: "displayDate",
+      group: "overrides",
+      title: "Date display override",
+      description:
+        "Optional. Leave empty to show Event date, e.g. “Thursday 17 September 2026”.",
+      type: "string",
+    }),
+    defineField({
+      name: "displayTime",
+      group: "overrides",
+      title: "Time display override",
+      description:
+        "Optional. Leave empty to show Event date → End time in the event's timezone, e.g. “8:30 am - 10:30 am AEST”.",
+      type: "string",
+    }),
+    defineField({
+      name: "displayVenueName",
+      group: "overrides",
+      title: "Venue name override",
+      description: "Optional. Leave empty to show Location.",
+      hidden: ({ document }) => isOnline(document),
+      type: "string",
+    }),
+    defineField({
+      name: "meta",
+      group: "overrides",
+      title: "Display meta",
+      type: "string",
+      description:
+        'Short line shown in the announcement banner and listings, e.g. "Thu 17 Sep • North Sydney". Leave empty to compose it from date and location.',
     }),
     defineField({
       name: "footerCta",
