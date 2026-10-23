@@ -24,6 +24,16 @@ const baseClient = createClient({
 
 export const client = baseClient;
 
+/**
+ * Draft-mode client: reads drafts with the server-only Viewer token. Only used
+ * when Next.js draft mode is on (Studio → Preview). Never cached.
+ */
+export const previewClient = baseClient.withConfig({
+  token: process.env.SANITY_API_READ_TOKEN,
+  perspective: "drafts",
+  useCdn: false,
+});
+
 const shouldLogSanityIssues = process.env.NODE_ENV !== "production";
 
 /**

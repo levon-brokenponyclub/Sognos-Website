@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import EventPageTemplate from "@/components/layout/sections/events/EventPageTemplate";
+import PreviewBar from "@/components/layout/sections/events/PreviewBar";
 import { getAllEventSlugs, getEventBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
@@ -30,7 +32,17 @@ export default async function EventPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = await getEventBySlug(slug);
+  const { isEnabled: preview } = await draftMode();
+  const event = await getEventBySlug(slug, { preview });
   if (!event) notFound();
-  return <EventPageTemplate event={event} />;
+  return (
+    <>
+      <EventPageTemplate event={event} />
+      {preview && (
+        <PreviewBar
+          exitHref={`/api/draft-mode/disable?redirect=/events/${slug}`}
+        />
+      )}
+    </>
+  );
 }

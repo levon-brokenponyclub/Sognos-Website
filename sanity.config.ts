@@ -3,11 +3,13 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { colorInput } from "@sanity/color-input";
 import { schemas } from "./sanity/schemas";
+import { PreviewAction } from "./sanity/actions/PreviewAction";
 
 // import.meta.env only exists under Vite (the standalone `sanity dev`
 // server); Next's tsconfig has no ImportMetaEnv typing for it.
-const viteEnv = (import.meta as unknown as { env?: Record<string, string | undefined> })
-  .env;
+const viteEnv = (
+  import.meta as unknown as { env?: Record<string, string | undefined> }
+).env;
 
 export default defineConfig({
   name: "sognos",
@@ -17,7 +19,8 @@ export default defineConfig({
   // `sanity dev` Vite server (exposes SANITY_STUDIO_* via import.meta.env).
   // Cast to unknown first — Next's tsconfig has no ImportMetaEnv typing.
   projectId:
-    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? viteEnv?.SANITY_STUDIO_PROJECT_ID!,
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ??
+    viteEnv?.SANITY_STUDIO_PROJECT_ID!,
   dataset:
     process.env.NEXT_PUBLIC_SANITY_DATASET ??
     viteEnv?.SANITY_STUDIO_DATASET ??
@@ -65,9 +68,7 @@ export default defineConfig({
                       .title("Footer")
                       .id("footer")
                       .child(
-                        S.document()
-                          .schemaType("footer")
-                          .documentId("footer"),
+                        S.document().schemaType("footer").documentId("footer"),
                       ),
                   ]),
               ),
@@ -170,7 +171,9 @@ export default defineConfig({
                             '_type == "knowledgePost" && category == "Newsletter"',
                           )
                           .initialValueTemplates([
-                            S.initialValueTemplateItem("knowledgePost-newsletter"),
+                            S.initialValueTemplateItem(
+                              "knowledgePost-newsletter",
+                            ),
                           ])
                           .defaultOrdering([
                             { field: "date", direction: "desc" },
@@ -193,6 +196,11 @@ export default defineConfig({
     colorInput(),
     visionTool(),
   ],
+  document: {
+    // Events get a Preview action (draft mode) next to Publish.
+    actions: (prev, context) =>
+      context.schemaType === "event" ? [...prev, PreviewAction] : prev,
+  },
   schema: {
     types: schemas,
     templates: (prev) => [

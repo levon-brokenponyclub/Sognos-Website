@@ -1,4 +1,4 @@
-import { sanityFetch } from "./client";
+import { previewClient, sanityFetch } from "./client";
 import { urlFor } from "./image";
 import type { SanityImageSource } from "@sanity/image-url";
 import {
@@ -1051,7 +1051,20 @@ const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
 
 export async function getEventBySlug(
   slug: string,
+  { preview = false }: { preview?: boolean } = {},
 ): Promise<EventPageData | null> {
+  // Draft mode (Studio → Preview): read the draft, uncached.
+  if (preview) {
+    return previewClient
+      .fetch<EventPageData | null>(
+        EVENT_BY_SLUG_QUERY,
+        { slug },
+        {
+          cache: "no-store",
+        },
+      )
+      .catch(() => null);
+  }
   return sanityFetch<EventPageData>(
     EVENT_BY_SLUG_QUERY,
     { slug },
