@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { HtmlFileInput } from "../components/HtmlFileInput";
 import { BlockquoteStyle } from "../components/BlockquoteStyle";
+import { CategoryInput } from "../components/CategoryInput";
 
 const CATEGORY_OPTIONS = [
   "Milestone",
@@ -8,6 +9,7 @@ const CATEGORY_OPTIONS = [
   "Events",
   "Webinar",
   "Insights",
+  "Newsletter", // hidden from the radio by CategoryInput; set by the Newsletters template
 ] as const;
 
 
@@ -74,6 +76,7 @@ export const knowledgePost = defineType({
       // Newsletters keep category "Newsletter" (set by the Studio template)
       // but it is not a selectable option, so the field is hidden on them.
       hidden: ({ document }) => document?.category === "Newsletter",
+      components: { input: CategoryInput },
       validation: (R) => R.required(),
     }),
     defineField({
