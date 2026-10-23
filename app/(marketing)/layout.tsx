@@ -6,6 +6,7 @@ import BookDemoModal from "@/components/ui/BookDemoModal";
 import { BookDemoProvider } from "@/lib/BookDemoContext";
 import { CtaContentProvider } from "@/lib/CtaContentContext";
 import {
+  getBannerEvent,
   getCtaSectionContent,
   getKnowledgePostArchive,
   getUpcomingEvents,
@@ -19,10 +20,11 @@ export default async function MarketingLayout({
 }) {
   // Navbar is a client component, so the Knowledge Hub dropdown's featured
   // column is resolved here and passed down.
-  const [ctaContent, posts, events] = await Promise.all([
+  const [ctaContent, posts, events, bannerEvent] = await Promise.all([
     getCtaSectionContent(),
     getKnowledgePostArchive(),
     getUpcomingEvents(),
+    getBannerEvent(),
   ]);
   const featuredNav = buildFeaturedNav(posts, events);
 
@@ -32,7 +34,7 @@ export default async function MarketingLayout({
         {/* Navbar sits outside the transition: it is persistent chrome, and
             keeping it out means a navigation no longer remounts it and the
             fade cannot take the whole site with it. */}
-        <Navbar featured={featuredNav} />
+        <Navbar featured={featuredNav} bannerEvent={bannerEvent} />
         <PageTransition>
           <main className="flex-1">{children}</main>
         </PageTransition>

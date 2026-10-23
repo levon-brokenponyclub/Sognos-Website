@@ -50,8 +50,8 @@ function eventToArticle(e: EventListing): NewsInsightArticle {
     href: `/events/${e.slug}`,
     // Pre-formatted here (Server Component), timezone-pinned — the two-row
     // Date/Location meta the event tile renders, matching EventCard.
-    date: formatEventDate(e.date),
-    time: formatEventTime(e.date, e.endDate),
+    date: formatEventDate(e.date, e.timezone),
+    time: formatEventTime(e.date, e.endDate, e.timezone),
     location: e.location ?? undefined,
     excerpt: e.excerpt ?? undefined,
     image: e.heroImage
@@ -84,7 +84,9 @@ export default async function HomePage() {
     .filter((item): item is KnowledgePostArchive | EventListing =>
       Boolean(item),
     )
-    .map((item) => ("format" in item ? eventToArticle(item) : postToArticle(item)));
+    .map((item) =>
+      "format" in item ? eventToArticle(item) : postToArticle(item),
+    );
 
   return (
     <>
@@ -113,11 +115,14 @@ export default async function HomePage() {
         <HowSognosWorks />
       </ScrollReveal>
       {/* <ProductsSection /> — parked pending review, coming back after Solutions Pass */}
-      <SolutionsSection /> {/* What extends those products — 7 stacked FeatureRows */}
+      <SolutionsSection />{" "}
+      {/* What extends those products — 7 stacked FeatureRows */}
       <HeadlineCTA platformLogos={cta.logos} />{" "}
       {/* Navy statement CTA — platform orbit + per-word blur reveal */}
-      <IndustrySection /> {/* Where those solutions apply — 5-card sector rail */}
-      <CustomerStories /> {/* Embla gutter-inset slider, product-dark palette */}
+      <IndustrySection />{" "}
+      {/* Where those solutions apply — 5-card sector rail */}
+      <CustomerStories />{" "}
+      {/* Embla gutter-inset slider, product-dark palette */}
       <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
     </>
   );

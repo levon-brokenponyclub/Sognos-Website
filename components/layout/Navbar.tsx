@@ -14,7 +14,12 @@ import {
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { nav, navCTA, type NavGroup } from "@/lib/navigation";
 import { useBookDemo } from "@/lib/BookDemoContext";
-import { UPCOMING_EVENT } from "@/lib/upcomingEvent";
+import {
+  bannerStorageKey,
+  isBannerEventPast,
+  BANNER_DISMISS_EVENT,
+  type BannerEvent,
+} from "@/lib/upcomingEvent";
 import type { FeaturedNavItem, FeaturedNavMap } from "@/lib/featuredNav";
 
 // ── Transparent-over-hero: paths whose first section is a dark hero ────────────
@@ -31,11 +36,11 @@ const DARK_HERO_PATH_PREFIXES = [
   "/knowledge-hub/category/",
 ];
 
-// Lives in a plain module so the server-side layout can read it too — see
-// lib/upcomingEvent.ts.
+// The bannered event comes from Sanity (`event.showInBanner`) via the
+// marketing layout — see lib/upcomingEvent.ts.
 
 const BANNER_HEIGHT_CLASS = "top-11 md:top-11";
-const BANNER_STORAGE_KEY = `navbar-banner-dismissed:${UPCOMING_EVENT.href}:${UPCOMING_EVENT.meta}`;
+const BANNER_LABEL = "Upcoming event";
 const BANNER_SPACE_CLASS = "h-11";
 
 // ── Light / dark theme seam ────────────────────────────────────────────────────
@@ -592,11 +597,14 @@ export default function Navbar({
   variant = "light",
   transparentOverHero,
   featured = {},
+  bannerEvent = null,
 }: {
   variant?: NavVariant;
   transparentOverHero?: boolean;
   /** Keyed by nav group label; resolved server-side — see lib/featuredNav.ts. */
   featured?: FeaturedNavMap;
+  /** Event toggled on for the announcement banner; null hides it. */
+  bannerEvent?: BannerEvent | null;
 }) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
@@ -850,42 +858,51 @@ export default function Navbar({
       const handleChange = () => onStoreChange();
 
       window.addEventListener("storage", handleChange);
-      window.addEventListener("navbar-banner-dismissed", handleChange);
+      window.addEventListener(BANNER_DISMISS_EVENT, handleChange);
 
       return () => {
         window.removeEventListener("storage", handleChange);
-        window.removeEventListener("navbar-banner-dismissed", handleChange);
+        window.removeEventListener(BANNER_DISMISS_EVENT, handleChange);
       };
     },
     () => {
       if (typeof window === "undefined") {
         return false;
       }
-      return window.localStorage.getItem(BANNER_STORAGE_KEY) === "true";
+      return (
+        window.localStorage.getItem(bannerStorageKey(bannerEvent)) === "true"
+      );
     },
     () => false,
   );
 
+  const eventPast = useSyncExternalStore(
+    () => () => {},
+    () => isBannerEventPast(bannerEvent),
+    () => false,
+  );
+  const bannerHidden = !bannerEvent || bannerDismissed || eventPast;
+
   const activePillLabel = hovered ?? openMenu;
   // Banner hides on scroll (translate-y) and navbar shifts up to top-0
-  const bannerScrolledAway = bannerDismissed || scrolled;
+  const bannerScrolledAway = bannerHidden || scrolled;
   const bannerOffsetClass = bannerScrolledAway ? "top-0" : BANNER_HEIGHT_CLASS;
 
   const dismissBanner = () => {
-    window.localStorage.setItem(BANNER_STORAGE_KEY, "true");
-    window.dispatchEvent(new Event("navbar-banner-dismissed"));
+    window.localStorage.setItem(bannerStorageKey(bannerEvent), "true");
+    window.dispatchEvent(new Event(BANNER_DISMISS_EVENT));
   };
 
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
     <>
-      {!bannerDismissed && (
+      {!bannerHidden && (
         <div aria-hidden="true" className={BANNER_SPACE_CLASS} />
       )}
 
       {/* ── Announcement banner ─────────────────────────────────────────────── */}
-      {!bannerDismissed && (
+      {!bannerHidden && bannerEvent && (
         <div
           className={[
             "fixed inset-x-0 top-0 z-[60] border-b",
@@ -897,15 +914,14 @@ export default function Navbar({
         >
           {/* One centred group: label, event name, then the CTA. The segmented
               panels (border-r / border-l dividers and the tinted backings) are
-              gone, as is UPCOMING_EVENT.meta — the constant is still read by
-              BANNER_STORAGE_KEY, so nothing is orphaned by hiding it here. */}
+              gone, as is the event's meta line. */}
           <div className="max-w-7xl mx-auto relative flex h-11 w-full items-center px-2">
             {/* Mobile — chip plus a right-to-left marquee of the title. The
                 title is duplicated for a seamless loop, so the visible copies
                 are hidden from assistive tech and a single sr-only copy carries
                 the text. */}
             <Link
-              href={UPCOMING_EVENT.href}
+              href={bannerEvent.href}
               onClick={dismissBanner}
               // bannerTheme.text is repeated here because the base layer styles
               // every `a` as text-sognos-blue-accent; without it the banner
@@ -915,19 +931,19 @@ export default function Navbar({
               <span
                 className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wider align-middle`}
               >
-                {UPCOMING_EVENT.label}
+                {BANNER_LABEL}
               </span>
 
               <div className="min-w-0 flex-1 overflow-hidden">
                 <div className="banner-marquee-track" aria-hidden="true">
                   <span className="whitespace-nowrap pr-10 text-xs font-medium">
-                    {UPCOMING_EVENT.title}
+                    {bannerEvent.title}
                   </span>
                   <span className="whitespace-nowrap pr-10 text-xs font-medium">
-                    {UPCOMING_EVENT.title}
+                    {bannerEvent.title}
                   </span>
                 </div>
-                <span className="sr-only">{UPCOMING_EVENT.title}</span>
+                <span className="sr-only">{bannerEvent.title}</span>
               </div>
             </Link>
 
@@ -936,15 +952,15 @@ export default function Navbar({
               <span
                 className={`shrink-0 inline-flex border ${bannerTheme.chipBorder} rounded px-2.5 py-1 text-sm font-normal uppercase tracking-wider align-middle md:text-xs`}
               >
-                {UPCOMING_EVENT.label}
+                {BANNER_LABEL}
               </span>
 
               <span className="truncate text-sm font-medium">
-                {UPCOMING_EVENT.title}
+                {bannerEvent.title}
               </span>
 
               <Link
-                href={UPCOMING_EVENT.href}
+                href={bannerEvent.href}
                 onClick={dismissBanner}
                 className="group/cta flex shrink-0 items-center gap-1.5 text-sm font-medium underline decoration-dotted transition-colors duration-200 hover:text-sognos-blue-accent"
               >

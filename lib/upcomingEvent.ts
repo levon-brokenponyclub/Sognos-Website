@@ -1,17 +1,24 @@
-// The single upcoming event, shared by the announcement banner and the
-// Knowledge Hub dropdown's featured column.
-//
-// Kept in a plain module rather than inside Navbar.tsx: Navbar is "use client",
-// and importing a value from a client file into a Server Component yields a
-// client reference rather than the object. The marketing layout reads this
-// server-side to build the featured list. Same reasoning as customerStoryBrand.ts.
-//
-// There is no `event` type in Sanity yet — one upcoming event at a time is the
-// current reality. If events become CMS-managed this is the thing to replace.
-export const UPCOMING_EVENT = {
-  href: "/events/nfp-real-care",
-  label: "Upcoming event",
-  title: "Designing Services Around Real Lives, Not System Boundaries",
-  meta: "Thu 17 Sep • North Sydney",
-  image: "/images/events/nfp-real-care/MSFT-header-img.png",
-} as const;
+// The event shown in the header announcement banner. Sourced from Sanity
+// (`event.showInBanner`) via getBannerEvent() in the marketing layout and
+// passed to EventBanner + Navbar as a prop. Kept as a plain module so both
+// Server and Client Components can import it.
+export type BannerEvent = {
+  href: string;
+  title: string;
+  // ISO string; banner auto-hides once passed. Null = no auto-hide.
+  endDate: string | null;
+};
+
+// Shared between EventBanner (source of truth for dismiss) and Navbar
+// (reads dismiss state to decide whether to sit under a 44px banner).
+// Keyed per event so a newly bannered event reappears for prior dismissers.
+export function bannerStorageKey(event: BannerEvent | null) {
+  return event
+    ? `navbar-banner-dismissed:${event.href}:${event.endDate ?? ""}`
+    : "";
+}
+export const BANNER_DISMISS_EVENT = "navbar-banner-dismissed";
+
+export function isBannerEventPast(event: BannerEvent | null) {
+  return !!event?.endDate && Date.now() > new Date(event.endDate).getTime();
+}

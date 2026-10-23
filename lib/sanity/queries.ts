@@ -17,6 +17,7 @@ import {
   type SognoscarePageContent,
 } from "@/lib/content/sognoscarePage";
 import type { CaseStudy } from "@/components/layout/sections/ProductCustomerStories";
+import type { BannerEvent } from "@/lib/upcomingEvent";
 
 // ─── Logo Strip ───────────────────────────────────────────────────────────────
 
@@ -273,7 +274,10 @@ export async function getSognoscarePageContent(): Promise<SognoscarePageRendered
   const subNav =
     rawSubNav.length > 0
       ? [
-          ...rawSubNav.slice(0, scheduleIdx >= 0 ? scheduleIdx : rawSubNav.length),
+          ...rawSubNav.slice(
+            0,
+            scheduleIdx >= 0 ? scheduleIdx : rawSubNav.length,
+          ),
           DATASHEET_ENTRY,
           ...rawSubNav.slice(scheduleIdx >= 0 ? scheduleIdx : rawSubNav.length),
         ]
@@ -512,7 +516,8 @@ const KNOWLEDGE_POST_BY_SLUG_QUERY = `*[_type == "knowledgePost" && slug.current
   heroImage,
   industry,
   useCase,
-  body
+  body,
+  newsletterHtml
 }`;
 
 const KNOWLEDGE_POST_NAV_QUERY = `*[_type == "knowledgePost"] | order(date desc){
@@ -888,10 +893,12 @@ const UPCOMING_EVENTS_QUERY = `*[
   format,
   date,
   endDate,
+  timezone,
   location,
   meta,
   heroImage,
-  registrationOpen
+  registrationOpen,
+  "registerUrl": eventMeta.registerUrl
 }`;
 
 // Everything, newest first. The archive shows past and upcoming together, so
@@ -903,10 +910,12 @@ const EVENT_ARCHIVE_QUERY = `*[_type == "event"] | order(date desc){
   format,
   date,
   endDate,
+  timezone,
   location,
   meta,
   heroImage,
   registrationOpen,
+  "registerUrl": eventMeta.registerUrl,
   "isPast": dateTime(coalesce(endDate, date)) < dateTime(now())
 }`;
 
@@ -923,11 +932,15 @@ export type EventListing = {
   date: string;
   /** Optional. When present, listings render a time range. */
   endDate?: string | null;
+  /** IANA timezone the event's times display in; Sydney when unset. */
+  timezone?: string | null;
   location?: string | null;
   /** Hand-written display line. Compose from date + location when absent. */
   meta?: string | null;
   heroImage?: SanityImageSource;
   registrationOpen: boolean;
+  /** External registration form (`eventMeta.registerUrl`, set in the prod Studio). */
+  registerUrl?: string | null;
   /** Only projected by `getEventArchive()` — the upcoming query filters on the
    *  same condition, so everything it returns is by definition not past.
    *
@@ -946,6 +959,124 @@ export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
       { next: { revalidate: 60 } },
     )) ?? []
   );
+}
+
+// ─── Single event page ────────────────────────────────────────────────────────
+
+export type EventSpeaker = {
+  name?: string;
+  credentials?: string;
+  role?: string;
+  headshot?: string;
+  bio?: string[];
+};
+
+export type EventPageData = {
+  title: string;
+  slug: string;
+  format?: string;
+  mode?: "in-person" | "online";
+  excerpt?: string;
+  date?: string;
+  endDate?: string;
+  /** IANA timezone the event's times display in; Sydney when unset. */
+  timezone?: string;
+  location?: string;
+  registrationOpen?: boolean;
+  /** Decided in GROQ — `Date.now()` in render is impure. */
+  isPast?: boolean;
+  heroImage?: string;
+  /** Slug of the Knowledge Hub recording post, when linked. */
+  recordingSlug?: string;
+  seo?: { title?: string; description?: string };
+  hero?: { heading?: string; subtitle?: string; description?: string };
+  partners?: { name: string; label?: string; logo?: string }[];
+  eventMeta?: {
+    date?: string;
+    time?: string;
+    venueName?: string;
+    venueAddress?: string[];
+    capacity?: string;
+    registerUrl?: string;
+    mapsEmbedUrl?: string;
+    mapsDirectionsUrl?: string;
+  };
+  challenge?: {
+    intro?: string;
+    callout?: string;
+    bullets?: { icon?: string; text: string }[];
+    closing?: string;
+  };
+  whyAttend?: {
+    heading?: string;
+    intro?: string;
+    items?: { icon?: string; title: string }[];
+    closing?: string;
+  };
+  /** `speakers[]`, falling back to the legacy single `speaker`. */
+  speakers: EventSpeaker[];
+  agenda?: { timeRange?: string; items?: { time: string; item: string }[] };
+  whoShouldAttend?: {
+    heading?: string;
+    roles?: string[];
+    description?: string;
+  };
+  directions?: { heading?: string; paragraphs?: string[] };
+  footerCta?: { heading?: string; description?: string };
+};
+
+const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
+  title,
+  "slug": slug.current,
+  format, mode, excerpt, date, endDate, timezone, location, registrationOpen,
+  "isPast": dateTime(coalesce(endDate, date)) < dateTime(now()),
+  "heroImage": heroImage.asset->url,
+  "recordingSlug": recording->slug.current,
+  seo, hero, eventMeta, challenge, whyAttend, agenda, whoShouldAttend, directions, footerCta,
+  partners[]{ name, label, "logo": logo.asset->url },
+  "speakers": select(
+    count(speakers) > 0 => speakers[]{ name, credentials, role, bio, "headshot": headshot.asset->url },
+    defined(speaker.name) => [speaker{ name, credentials, role, bio, "headshot": headshot.asset->url }],
+    []
+  )
+}`;
+
+export async function getEventBySlug(
+  slug: string,
+): Promise<EventPageData | null> {
+  return sanityFetch<EventPageData>(
+    EVENT_BY_SLUG_QUERY,
+    { slug },
+    { next: { revalidate: 60 } },
+  );
+}
+
+// The single event toggled on for the header announcement banner. Title
+// prefers `hero.heading` (set on events edited in the production Studio).
+const BANNER_EVENT_QUERY = `*[_type == "event" && showInBanner == true && defined(slug.current)] | order(date desc)[0]{
+  "slug": slug.current,
+  title,
+  "heading": hero.heading,
+  date,
+  endDate
+}`;
+
+export async function getBannerEvent(): Promise<BannerEvent | null> {
+  const raw = await sanityFetch<{
+    slug?: string;
+    title?: string;
+    heading?: string;
+    date?: string;
+    endDate?: string;
+  } | null>(BANNER_EVENT_QUERY, {}, { next: { revalidate: 60 } });
+
+  const title = raw?.heading ?? raw?.title;
+  if (!raw?.slug || !title) return null;
+  return {
+    href: `/events/${raw.slug}`,
+    title,
+    endDate: raw.endDate ?? raw.date ?? null,
+  };
 }
 
 export async function getUpcomingEvents(): Promise<EventListing[]> {

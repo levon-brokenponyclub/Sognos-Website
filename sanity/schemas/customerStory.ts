@@ -4,15 +4,22 @@ export const customerStory = defineType({
   name: "customerStory",
   title: "Customer Story",
   type: "document",
+  groups: [
+    { name: "details", title: "Details", default: true },
+    { name: "media", title: "Media" },
+    { name: "content", title: "Content" },
+  ],
   fields: [
     defineField({
       name: "company",
+      group: "details",
       title: "Company name",
       type: "string",
       validation: (R) => R.required(),
     }),
     defineField({
       name: "slug",
+      group: "details",
       title: "Slug",
       type: "slug",
       options: { source: "company", maxLength: 96 },
@@ -20,12 +27,14 @@ export const customerStory = defineType({
     }),
     defineField({
       name: "title",
+      group: "details",
       title: "Story title",
       type: "string",
       validation: (R) => R.required(),
     }),
     defineField({
       name: "description",
+      group: "details",
       title: "Short description",
       type: "text",
       rows: 3,
@@ -33,23 +42,27 @@ export const customerStory = defineType({
     }),
     defineField({
       name: "date",
+      group: "details",
       title: "Publish date",
       type: "date",
       validation: (R) => R.required(),
     }),
     defineField({
       name: "readTime",
+      group: "details",
       title: "Read time (e.g. '4 min read')",
       type: "string",
     }),
     defineField({
       name: "order",
+      group: "details",
       title: "Display order (lower = earlier in prev/next)",
       type: "number",
       validation: (R) => R.required().integer(),
     }),
     defineField({
       name: "heroImage",
+      group: "media",
       title: "Hero image",
       type: "image",
       options: { hotspot: true },
@@ -57,16 +70,19 @@ export const customerStory = defineType({
     }),
     defineField({
       name: "companyLogo",
+      group: "media",
       title: "Company logo (white/inverted preferred)",
       type: "image",
     }),
     defineField({
       name: "productLogo",
+      group: "media",
       title: "Product logo (SognosCare / SognosRoster)",
       type: "image",
     }),
     defineField({
       name: "brandColor",
+      group: "media",
       title: "Brand colour",
       description:
         "Client brand colour used as the background for the customer-story card and pull-quote. Leave empty to fall back to the default product tone.",
@@ -75,17 +91,20 @@ export const customerStory = defineType({
     }),
     defineField({
       name: "quote",
+      group: "content",
       title: "Pull quote",
       type: "text",
       rows: 3,
     }),
     defineField({
       name: "quoteAuthor",
+      group: "content",
       title: "Quote author (Name, Role - Company)",
       type: "string",
     }),
     defineField({
       name: "sidebar",
+      group: "content",
       title: "Sidebar fields",
       type: "array",
       of: [
@@ -103,12 +122,14 @@ export const customerStory = defineType({
     }),
     defineField({
       name: "downloadFile",
+      group: "media",
       title: "Downloadable PDF",
       type: "file",
       options: { accept: ".pdf" },
     }),
     defineField({
       name: "body",
+      group: "content",
       title: "Body",
       type: "array",
       of: [

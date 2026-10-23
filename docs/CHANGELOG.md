@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-10-23 — Events: /events/[slug] + /events index, KH events/webinars, prod ports
+
+### Event pages
+- **`/events/[slug]`** (`components/layout/sections/events/EventPageTemplate.tsx`):
+  hero (pills, heading, subtitle, details, primary action left; image right),
+  sticky section menu (`EventSectionNav`, KH band pattern, sections with
+  Sanity content only), content column + sticky event card (details,
+  speakers, action, share, partners). Every Sanity field renders; long
+  content behind `ShowMore` (bio, roles). States: upcoming/open → Register,
+  closed → Registration closed, past online → Watch recording (via
+  `recording`) or Browse recordings, past in-person → View upcoming events.
+- **`/events`**: Events + Webinars rails (All / Upcoming / Past), uncapped.
+- **Event schema**: ported prod's structured fields (hero, partners,
+  eventMeta, challenge, whyAttend, agenda, whoShouldAttend, directions,
+  footerCta, seo); added `mode`, `speakers[]` (legacy `speaker` kept — prod
+  still reads it), `recording` → knowledgePost. Removed unused `body`.
+- `lib/eventListing.ts` (event → card) and `lib/webinarRecording.ts`
+  (Webinar post → past webinar card) shared by KH and /events.
+
+### Knowledge Hub
+- Events & Webinars: All / Upcoming / Past tabs on both rails, `WebinarCard`
+  (image + status ribbon, title/description/tag, details + action),
+  EventCard View event / Register buttons, description always visible,
+  View all links (→ /events).
+- Newsletters section + tab; newsletter cards open in a new tab.
+
+### Ported from prod (sognos-react, 2026-10-23)
+- Header banner driven by `event.showInBanner` (replaces `UPCOMING_EVENT`).
+- KH post body: Small/Large styles, image caption + link, image row, blockquote
+  editor fix; newsletters (HTML field, Studio list, iframe page, hidden
+  category); Studio tabs on event / customerStory / knowledgePost.
+
+### Known issues
+- Shared `production` dataset: localhost Studio edits land in prod
+  (PROJECT_STATE §5 #16).
+- Static `/events/nfp-real-care` still shadows the dynamic route for that slug.
+
 ## 2026-08-08 — Reference research: Ripplix cross-reference + hero asset direction
 
 Research-only session (no code changes) feeding the Pass/Refine stages of the

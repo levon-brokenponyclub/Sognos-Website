@@ -29,6 +29,7 @@ import StatRow from "@/components/portable-text/StatRow";
 import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories";
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import NewsletterFrame from "@/components/layout/sections/shared/NewsletterFrame";
 
 export const revalidate = 60;
 
@@ -74,11 +75,80 @@ function formatMetaDate(dateStr: string): string {
   });
 }
 
+// Strips scripts, unfilled Dynamics merge tokens and tracking fragments from
+// exported email HTML, and makes every link open in a new tab.
+function cleanNewsletterHtml(html: string): string {
+  const cleaned = html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/\{\{[^}]*\}\}/g, "")
+    .replace(/#_msdynmkt_[^"']*/g, "");
+  const base = '<base target="_blank">';
+  return /<head[^>]*>/i.test(cleaned)
+    ? cleaned.replace(/<head[^>]*>/i, (m) => `${m}${base}`)
+    : `${base}${cleaned}`;
+}
+
 // ─── PortableText components ──────────────────────────────────────────────────
+
+type BodyImage = {
+  asset?: unknown;
+  alt?: string;
+  caption?: string;
+  link?: string;
+};
+
+function BodyFigure({
+  image,
+  src,
+  width,
+  height,
+  imageClassName,
+  sizes,
+}: {
+  image: BodyImage;
+  src: string;
+  width: number;
+  height: number;
+  imageClassName: string;
+  sizes: string;
+}) {
+  const img = (
+    <Image
+      src={src}
+      alt={image.alt ?? ""}
+      width={width}
+      height={height}
+      sizes={sizes}
+      className={imageClassName}
+    />
+  );
+  return (
+    <figure>
+      {image.link ? (
+        <a href={image.link} target="_blank" rel="noopener noreferrer">
+          {img}
+        </a>
+      ) : (
+        img
+      )}
+      {image.caption && (
+        <figcaption className="mt-2 text-sm text-sognos-text-body/70">
+          {image.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
 
 const portableComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mb-5">{children}</p>,
+    small: ({ children }) => <p className="mb-5 text-sm">{children}</p>,
+    large: ({ children }) => (
+      <p className="mb-6 text-xl leading-relaxed text-sognos-heading">
+        {children}
+      </p>
+    ),
     h2: ({ children, value }) => (
       <h2 id={slugify(blockPlainText(value as PortableBlock))} className={H2}>
         {children}
@@ -127,17 +197,47 @@ const portableComponents: PortableTextComponents = {
     ),
   },
   types: {
-    inlineImage: ({ value }) => {
+    inlineImage: ({ value }: { value: BodyImage }) => {
       if (!value?.asset) return null;
-      const url = urlFor(value).width(1400).auto("format").url();
       return (
-        <Image
-          src={url}
-          alt={value.alt ?? ""}
-          width={1400}
-          height={787}
-          className="my-8 w-full rounded-lg object-cover"
-        />
+        <div className="my-8">
+          <BodyFigure
+            image={value}
+            src={urlFor(value).width(1400).auto("format").url()}
+            width={1400}
+            height={787}
+            sizes="(min-width: 768px) 720px, 100vw"
+            imageClassName="w-full rounded-lg object-cover"
+          />
+        </div>
+      );
+    },
+    imageRow: ({ value }: { value: { images?: BodyImage[] } }) => {
+      const images = (value?.images ?? []).filter((i) => i.asset);
+      if (images.length === 0) return null;
+      return (
+        <div
+          className={`my-8 grid grid-cols-1 gap-3 lg:gap-4 ${
+            images.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+          }`}
+        >
+          {images.map((image, i) => (
+            <BodyFigure
+              key={i}
+              image={image}
+              src={urlFor(image)
+                .width(900)
+                .height(1200)
+                .fit("crop")
+                .auto("format")
+                .url()}
+              width={900}
+              height={1200}
+              sizes="(min-width: 640px) 360px, 100vw"
+              imageClassName="aspect-3/4 w-full rounded-lg object-cover"
+            />
+          ))}
+        </div>
       );
     },
     pullQuote: ({ value }) => <PullQuote {...value} />,
@@ -165,7 +265,8 @@ export default async function KnowledgeHubPost({
   const heroUrl = post.heroImage
     ? urlFor(post.heroImage).width(1400).auto("format").url()
     : null;
-  const sections = extractHeadings(post.body);
+  const isNewsletter = post.category === "Newsletter" && !!post.newsletterHtml;
+  const sections = isNewsletter ? [] : extractHeadings(post.body);
   // Body meta rail. Category was a pill in the dark hero; on the white body it
   // reads as a plain value like the other rows. Rows with no value drop out.
   const postMeta = [
@@ -197,51 +298,65 @@ export default async function KnowledgeHubPost({
     <main className="bg-white">
       <ScrollProgress />
 
-      {/* ── Hero — dark, Pallet-style: meta → title → image ── */}
-      <section className="bg-sognos-navy pt-32 pb-16 lg:pt-40 lg:pb-20">
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Back link */}
-          <Link
-            href="/knowledge-hub"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-white/40 transition-colors hover:text-white/70"
-          >
-            <ArrowLeft
-              size={14}
-              className="transition-transform duration-200 group-hover:-translate-x-0.5"
+      {/* ── Newsletter — no hero; the email renders its own masthead ── */}
+      {isNewsletter && (
+        <section className="bg-white pt-32 pb-16 lg:pt-40 lg:pb-24">
+          <div className="mx-auto max-w-3xl px-6">
+            <NewsletterFrame
+              html={cleanNewsletterHtml(post.newsletterHtml)}
+              title={post.title}
             />
-            Knowledge Hub
-          </Link>
+          </div>
+        </section>
+      )}
 
-          {/* Title + image. Category / Published / Read Time used to sit in a
+      {!isNewsletter && (
+        <>
+          {/* ── Hero — dark, Pallet-style: meta → title → image ── */}
+          <section className="bg-sognos-navy pt-32 pb-16 lg:pt-40 lg:pb-20">
+            <div className="mx-auto max-w-7xl px-6">
+              {/* Back link */}
+              <Link
+                href="/knowledge-hub"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-white/40 transition-colors hover:text-white/70"
+              >
+                <ArrowLeft
+                  size={14}
+                  className="transition-transform duration-200 group-hover:-translate-x-0.5"
+                />
+                Knowledge Hub
+              </Link>
+
+              {/* Title + image. Category / Published / Read Time used to sit in a
               left column here; they are now rows in the body meta rail, the
               same place the customer story template keeps its metadata. The
               border-l rail went with them — it existed to bind the two hero
               columns together. */}
-          <div className="mx-auto mt-10 max-w-3xl lg:mt-14">
-            <h1 className="font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
-              {post.title}
-            </h1>
+              <div className="mx-auto mt-10 max-w-3xl lg:mt-14">
+                <h1 className="font-heading text-3xl font-normal leading-tight tracking-tight text-white lg:text-8xl">
+                  {post.title}
+                </h1>
 
-            {heroUrl && (
-              <div className="mt-12 lg:mt-16">
-                <div className="relative aspect-[16/8] overflow-hidden rounded-lg">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={heroUrl}
-                    alt=""
-                    className="h-full w-full object-cover object-top"
-                  />
-                </div>
+                {heroUrl && (
+                  <div className="mt-12 lg:mt-16">
+                    <div className="relative aspect-[16/8] overflow-hidden rounded-lg">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={heroUrl}
+                        alt=""
+                        className="h-full w-full object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* ── Body — meta | prose | TOC ── */}
-      <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Same three tracks as the customer story template — the two article
+          {/* ── Body — meta | prose | TOC ── */}
+          <section className="bg-white pt-12 pb-16 lg:pt-16 lg:pb-24">
+            <div className="mx-auto max-w-7xl px-6">
+              {/* Same three tracks as the customer story template — the two article
               families share one body layout again.
 
               The two side tracks are the SAME width on purpose: equal side
@@ -255,95 +370,97 @@ export default async function KnowledgeHubPost({
               sits above the article, but it belongs in the last column.
 
               Falls back to two columns when the article has no h2 headings. */}
-          <div
-            className={
-              sections.length > 0
-                ? "lg:grid lg:grid-cols-[260px_1fr_260px] lg:gap-x-10"
-                : "lg:grid lg:grid-cols-[260px_1fr] lg:gap-x-10"
-            }
-          >
-            {sections.length > 0 && (
-              /* Article scroll-spy nav — right column from lg.
+              <div
+                className={
+                  sections.length > 0
+                    ? "lg:grid lg:grid-cols-[260px_1fr_260px] lg:gap-x-10"
+                    : "lg:grid lg:grid-cols-[260px_1fr] lg:gap-x-10"
+                }
+              >
+                {sections.length > 0 && (
+                  /* Article scroll-spy nav — right column from lg.
                  `contents` below lg so this wrapper creates no box: the nav's
                  own sticky mobile dropdown is then bounded by the full-height
                  body grid rather than this self-sized column, so it tracks the
                  whole article. */
-              <div className="contents lg:sticky lg:top-36 lg:col-start-3 lg:row-start-1 lg:block lg:self-start">
-                <ArticleScrollNav sections={sections} showTrack={false} />
+                  <div className="contents lg:sticky lg:top-36 lg:col-start-3 lg:row-start-1 lg:block lg:self-start">
+                    <ArticleScrollNav sections={sections} showTrack={false} />
 
-                {/* Copy link + share. Desktop only — below lg the wrapper is
+                    {/* Copy link + share. Desktop only — below lg the wrapper is
                     `contents` and the nav is a sticky bar, so there is no
                     column to sit under. */}
-                <div className="mt-8 hidden lg:block">
-                  <ShareIcons postUrl={postUrl} />
-                </div>
-              </div>
-            )}
+                    <div className="mt-8 hidden lg:block">
+                      <ShareIcons postUrl={postUrl} />
+                    </div>
+                  </div>
+                )}
 
-            {/* Meta rail — column 1, sticky. Row treatment matches
+                {/* Meta rail — column 1, sticky. Row treatment matches
                 StoryMetaRail so both article families read the same. Kept
                 inline rather than shared: it is three rows of static markup and
                 a second component for it would be abstraction for its own
                 sake. */}
-            <aside className="mb-12 lg:sticky lg:top-36 lg:col-start-1 lg:row-start-1 lg:mb-0 lg:self-start">
-              <div className="flex flex-col gap-6">
-                {postMeta.map((m) => (
-                  <div key={m.label}>
-                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
-                      {m.label}
-                    </p>
-                    <p className="text-sm font-medium text-sognos-body">
-                      {m.value}
-                    </p>
+                <aside className="mb-12 lg:sticky lg:top-36 lg:col-start-1 lg:row-start-1 lg:mb-0 lg:self-start">
+                  <div className="flex flex-col gap-6">
+                    {postMeta.map((m) => (
+                      <div key={m.label}>
+                        <p className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+                          {m.label}
+                        </p>
+                        <p className="text-sm font-medium text-sognos-body">
+                          {m.value}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </aside>
+                </aside>
 
-            {/* Prose — column 2 */}
-            <div className="min-w-0 lg:col-start-2 lg:row-start-1">
-              <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
-                <PortableText
-                  value={post.body}
-                  components={portableComponents}
-                />
-              </div>
-              <aside
-                className={`mt-16 rounded bg-sognos-blue-accent p-6 text-white md:px-8 md:py-8 ${ARTICLE_PROSE_MAX_W}`}
-              >
-                <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-3xl">
-                  Book a demo today
-                </h2>
-                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
-                  Discover how one intelligent platform helps you simplify
-                  operations, empower your workforce, and make faster,
-                  data-driven decisions.
-                </p>
-                <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                  <SolutionHeroDemoButton
-                    label="Book a demo"
-                    className="rounded bg-white text-sognos-navy"
-                  />
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-70"
+                {/* Prose — column 2 */}
+                <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+                  <div className={`${PROSE} ${ARTICLE_PROSE_MAX_W}`}>
+                    <PortableText
+                      value={post.body}
+                      components={portableComponents}
+                    />
+                  </div>
+                  <aside
+                    className={`mt-16 rounded bg-sognos-blue-accent p-6 text-white md:px-8 md:py-8 ${ARTICLE_PROSE_MAX_W}`}
                   >
-                    Talk to Sales
-                    <span aria-hidden="true">&#8599;</span>
-                  </Link>
+                    <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-3xl">
+                      Book a demo today
+                    </h2>
+                    <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
+                      Discover how one intelligent platform helps you simplify
+                      operations, empower your workforce, and make faster,
+                      data-driven decisions.
+                    </p>
+                    <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                      <SolutionHeroDemoButton
+                        label="Book a demo"
+                        className="rounded bg-white text-sognos-navy"
+                      />
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-70"
+                      >
+                        Talk to Sales
+                        <span aria-hidden="true">&#8599;</span>
+                      </Link>
+                    </div>
+                  </aside>
+                  <ArticleProseFooter
+                    backHref="/knowledge-hub"
+                    backLabel="Knowledge Hub"
+                    postUrl={postUrl}
+                    className={ARTICLE_PROSE_MAX_W}
+                    showShare={sections.length === 0}
+                  />
                 </div>
-              </aside>
-              <ArticleProseFooter
-                backHref="/knowledge-hub"
-                backLabel="Knowledge Hub"
-                postUrl={postUrl}
-                className={ARTICLE_PROSE_MAX_W}
-                showShare={sections.length === 0}
-              />
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </>
+      )}
 
       {/* ── Latest articles ── */}
       {latest.length > 0 && (

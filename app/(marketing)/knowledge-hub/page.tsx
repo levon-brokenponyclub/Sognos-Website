@@ -1,13 +1,13 @@
 import KnowledgeHubArchive, {
   type Article,
-  type UpcomingEvent,
 } from "@/components/layout/sections/KnowledgeHubArchive";
 import {
+  getEventArchive,
   getKnowledgePostArchive,
   getUpcomingEvents,
 } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
-import { formatEventDate, formatEventTime } from "@/lib/eventFormat";
+import { toUpcomingEvent } from "@/lib/eventListing";
 
 export const metadata = {
   title: "Knowledge Hub - Sognos",
@@ -17,6 +17,8 @@ export const metadata = {
 
 export const revalidate = 60;
 
+const PAST_EVENTS_LIMIT = 3;
+
 export default async function KnowledgeHubPage({
   searchParams,
 }: {
@@ -25,11 +27,12 @@ export default async function KnowledgeHubPage({
   const { category } = await searchParams;
   // Customer stories are deliberately not fetched: they have their own
   // archive at /customer-stories and no longer appear in the Knowledge Hub.
-  // Upcoming only. Past events and webinars belong on the Events & Webinars
-  // archive, so there is no reason to fetch them here.
-  const [posts, events] = await Promise.all([
+  // Upcoming events, plus the newest past (non-webinar) events for the Events
+  // rail's Past tab. Past webinars are the Webinar recording posts instead.
+  const [posts, events, eventArchive] = await Promise.all([
     getKnowledgePostArchive(),
     getUpcomingEvents(),
+    getEventArchive(),
   ]);
 
   const articles: Article[] = posts.map((p) => ({
@@ -48,26 +51,17 @@ export default async function KnowledgeHubPage({
     author: p.author ?? null,
   }));
 
-  // Formatted here rather than in the archive: that is a Client Component, and
-  // date formatting done there would run against the viewer's timezone.
-  const upcomingEvents: UpcomingEvent[] = events.map((e) => ({
-    slug: e.slug,
-    format: e.format,
-    title: e.title,
-    href: `/events/${e.slug}`,
-    date: formatEventDate(e.date),
-    time: formatEventTime(e.date, e.endDate),
-    location: e.location ?? e.meta ?? "",
-    image: e.heroImage
-      ? urlFor(e.heroImage).width(1200).auto("format").url()
-      : "",
-    excerpt: e.excerpt ?? null,
-  }));
+  const upcomingEvents = events.map(toUpcomingEvent);
+  const pastEvents = eventArchive
+    .filter((e) => e.isPast && e.format !== "Webinar")
+    .slice(0, PAST_EVENTS_LIMIT)
+    .map((e) => ({ ...toUpcomingEvent(e), registerUrl: null }));
 
   return (
     <KnowledgeHubArchive
       articles={articles}
       upcomingEvents={upcomingEvents}
+      pastEvents={pastEvents}
       initialCategory={category ?? null}
       title="Knowledge Hub"
       description="News, guides, case studies, and product updates - covering care operations, workforce scheduling, compliance, and the sectors we serve."

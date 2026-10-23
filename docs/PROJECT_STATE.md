@@ -331,6 +331,29 @@ Design + code work, ordered by impact.
     rules + gotchas; design rules moved here (§2). Consolidation absorbed
     `CLAUDE_DESIGN_SYSTEM.md`, `COMPONENT_INVENTORY.md`, four audit docs.
 
+16. **Separate Sanity dataset for the redesign.** **Done 2026-10-24** —
+    `development` dataset (public) seeded from `production` (57 docs, 170
+    assets); redesign `.env.local` and Vercel **Preview** scope point at it;
+    Production scope unchanged. Re-seed one-way only (production →
+    development) with `sanity dataset export` / `import --replace`.
+    Original note, added 2026-10-23: Prod
+    and the redesign Studio both write to `vg117fxr/production` (the only
+    dataset), so test content created on localhost (e.g. the "Morbi
+    sodales…" event) lands in production and shows in the prod Studio.
+    Plan: create a `development` dataset (public ACL), seed it with
+    `sanity dataset export production` → `import … development`, point the
+    redesign `.env.local` (`NEXT_PUBLIC_SANITY_DATASET`,
+    `SANITY_STUDIO_DATASET`) and Vercel **Preview** scope at it; Production
+    scope untouched. Then unpublish/delete the localhost test event in
+    `production`. **Decision:** approve Sanity + Vercel changes; check the
+    plan's dataset limit. Re-seed from production as needed (one-way only).
+
+17. **Single event page (`/events/[slug]`) — port + standardise.** **Built
+    2026-10-23** (option C, see CHANGELOG). Remaining: populate `mode`,
+    `speakers[]`, `recording` on existing events; decide whether to retire the
+    static `/events/nfp-real-care` page; Add to calendar / Share are visual
+    only.
+
 ---
 
 ## 6. Open decisions

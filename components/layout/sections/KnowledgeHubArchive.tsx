@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ProgressButton } from "@/components/layout/sections/shared/TimerCardDeck";
 import {
@@ -9,6 +10,7 @@ import {
   type KnowledgeHubSearchItem,
 } from "@/components/ui/knowledge-hub-search-dialog";
 import { formatDate } from "@/lib/formatDate";
+import { toWebinarRecording } from "@/lib/webinarRecording";
 
 const HERO_AUTOPLAY_MS = 8000;
 
@@ -42,6 +44,8 @@ export type UpcomingEvent = {
   location: string;
   image: string;
   excerpt?: string | null;
+  /** External registration form; only set while registration is open. */
+  registerUrl?: string | null;
 };
 
 /** The most recent customer story, for the dark band. */
@@ -62,12 +66,20 @@ export type FeaturedStory = {
 // `INITIAL_ARTICLE_LIMIT` all belonged to the pill filter row and are gone with
 // it. They are in KnowledgeHubArchive.backup.tsx if the filtering comes back.
 
+// Newsletters are full email HTML pages, so they open in a new tab.
+function newsletterLinkProps(category: string) {
+  return category === "Newsletter"
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+}
+
 // ─── Grid card ────────────────────────────────────────────────────────────────
 
 export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={article.href}
+      {...newsletterLinkProps(article.category)}
       className="group flex flex-col pb-6 border-b border-sognos-line text-sognos-heading"
     >
       <div className="relative max-h-52 aspect-[16/10] w-full overflow-hidden rounded">
@@ -202,6 +214,7 @@ function HeroSelector({ articles }: { articles: Article[] }) {
         {/* Right — image panel with crossfade */}
         <Link
           href={active.href}
+          {...newsletterLinkProps(active.category)}
           className="group relative block aspect-[4/3] overflow-hidden rounded md:aspect-auto md:min-h-[420px]"
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -286,7 +299,8 @@ function HeroSelector({ articles }: { articles: Article[] }) {
 //      three-up row beneath it. All on one dark surface, above the tabs.
 //   2. Sticky tab band, dotted rule beneath, current section marked by a
 //      bullet.
-//   3. News, Insights, Events & Webinars, Milestones. All always rendered.
+//   3. News, Insights, Newsletters, Events & Webinars, Milestones. All always
+//      rendered.
 //
 // The tabs do **not** show and hide sections. Every section is always in the
 // document and a tab scrolls to it — the reference's behaviour, and the reason
@@ -294,9 +308,10 @@ function HeroSelector({ articles }: { articles: Article[] }) {
 // section by scrolling, and the tab has to follow.
 //
 // Sections come from `knowledgePost.category`, which is the existing content
-// model — News, Insights and Milestone are three of its five values. The other
-// two, Events and Webinar, are `event` documents instead and arrive as
-// `upcomingEvents`, split on `format`.
+// model — News, Insights and Milestone are three of its five values. Events and
+// Webinars come from `event` documents, arriving as `upcomingEvents` split on
+// `format`. The Webinars rail also lists the newest `Webinar` posts (on-demand
+// recordings) after any upcoming webinar events.
 //
 // **Customer stories are deliberately absent.** They have their own archive at
 // /customer-stories and no longer surface here, including in search.
@@ -315,17 +330,19 @@ function HeroSelector({ articles }: { articles: Article[] }) {
 // KnowledgeHubArchive.backup.tsx. `ArticleCard` above is untouched — both
 // article detail pages import it for their related rows.
 
-type SectionId = "news" | "insights" | "events" | "milestones";
+type SectionId = "news" | "insights" | "newsletters" | "events" | "milestones";
 
 const TABS: readonly { id: SectionId; label: string }[] = [
   { id: "news", label: "News" },
   { id: "insights", label: "Insights" },
+  { id: "newsletters", label: "Newsletters" },
   { id: "events", label: "Events & Webinars" },
   { id: "milestones", label: "Milestones" },
 ];
 
 const FEATURED_COUNT = 3;
 const INSIGHTS_LIMIT = 3;
+const WEBINAR_POSTS_LIMIT = 3;
 
 // Where each section's "View all" goes. **None of these routes exist yet** —
 // they are listed in one place so building them is a matter of creating the
@@ -338,9 +355,8 @@ const INSIGHTS_LIMIT = 3;
 const VIEW_ALL: Record<SectionId, string> = {
   news: "/knowledge-hub/category/news",
   insights: "/knowledge-hub/category/insights",
-  // No "View all" for events — they live in this section rather than a
-  // separate archive, so there is nowhere to send a reader. Kept in the map so
-  // the decision is visible rather than an omission.
+  newsletters: "/knowledge-hub/category/newsletters",
+  // Placeholder: /events has no index page yet (only /events/nfp-real-care).
   events: "/events",
   milestones: "/knowledge-hub/category/milestones",
 };
@@ -390,7 +406,10 @@ function Tile({
   const contentGap = showImage ? (filled ? "mt-6" : "mt-8 lg:mt-9") : "";
 
   return (
-    <Link href={href} className={`group flex flex-col text-sognos-heading ${surface}`}>
+    <Link
+      href={href}
+      className={`group flex flex-col text-sognos-heading ${surface}`}
+    >
       {showImage && (
         <div
           className={`relative aspect-[16/10] w-full overflow-hidden rounded ${
@@ -444,19 +463,42 @@ function Tile({
 
 // Twelve-column split with a label rail, the shape Advantages, OpenRoles and
 // the product pages all use.
-function RailBlock({
+export function RailBlock({
+  id,
   label,
+  viewAllHref,
   children,
 }: {
+  /** Optional anchor, e.g. /events#webinars. */
+  id?: string;
   label: string;
+  /** Optional "View all" link under the label. */
+  viewAllHref?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-      <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
+    <div
+      id={id}
+      className="grid scroll-mt-28 grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
+    >
+      <div className="flex items-baseline justify-between gap-4 lg:col-span-2 lg:sticky lg:top-[100px] lg:block lg:self-start">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
           {label}
         </p>
+        {viewAllHref && (
+          <Link
+            href={viewAllHref}
+            className="group inline-flex shrink-0 items-center gap-1.5 text-sm lg:mt-3"
+          >
+            View all
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </Link>
+        )}
       </div>
       <div className="lg:col-[3/-1]">{children}</div>
     </div>
@@ -514,6 +556,9 @@ export function PastEventRow({
 // right-aligned — rather than a single run-on line. Time folds into the Date
 // row's value. Format keeps the site's filled-chip pattern (shared with
 // `PastEventRow` above) rather than the reference's icon+plain-text eyebrow.
+//
+// The card is a stretched link (the title's `after:` covers the card) so the
+// Register button can be its own external link without nesting anchors.
 export function EventCard({
   href,
   format,
@@ -523,11 +568,11 @@ export function EventCard({
   time,
   location,
   image,
+  registerUrl,
 }: {
   href: string;
   format: string;
   title: string;
-  /** Revealed on hover, below the title. */
   excerpt?: string | null;
   /** e.g. "17 Sep 2026" */
   date: string;
@@ -535,30 +580,27 @@ export function EventCard({
   time?: string | null;
   location?: string | null;
   image?: string | null;
+  /** Shown as a Register button when present. */
+  registerUrl?: string | null;
 }) {
   return (
-    <Link
-      href={href}
-      // Content wider than the image (1 / 0.85) — the date and place are the
-      // decision; the photo is atmosphere.
-      className="group grid overflow-hidden rounded bg-white text-sognos-heading md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]"
-    >
+    // Content wider than the image (1 / 0.85) — the date and place are the
+    // decision; the photo is atmosphere.
+    <div className="group relative grid overflow-hidden rounded bg-white text-sognos-heading md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
       {/* Copy left. `justify-between` pins the pill+title group to the top and
-          the Date/Location list to the bottom; `gap-8` is the minimum gap so
-          they never collide when the copy runs long. Global card padding. */}
+          the meta + actions to the bottom. Global card padding. */}
       <div className="flex flex-col justify-between gap-8 p-6 lg:p-8">
         <div>
           <span className="inline-flex w-fit items-center rounded bg-sognos-muted/15 px-2.5 py-1 text-xs font-normal text-sognos-body">
             {format}
           </span>
           <h3 className="mt-4 font-heading text-2xl font-normal leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
-            {title}
+            <Link href={href} className="after:absolute after:inset-0">
+              {title}
+            </Link>
           </h3>
-          {/* Excerpt reveals on hover — fades up into view below the title. It
-              reserves its space (the justify-between gap absorbs it), so there
-              is no reflow. Reduced motion shows it outright. */}
           {excerpt && (
-            <p className="mt-3 line-clamp-3 translate-y-1 text-base leading-relaxed text-sognos-body opacity-0 transition duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none">
+            <p className="mt-3 line-clamp-3 text-base leading-relaxed text-sognos-body">
               {excerpt}
             </p>
           )}
@@ -580,16 +622,32 @@ export function EventCard({
               </span>
             </div>
           ) : null}
+          <div className="flex flex-wrap items-center gap-3 border-t border-sognos-line pt-5">
+            <span
+              aria-hidden="true"
+              className="inline-flex items-center gap-1.5 rounded-full border border-sognos-navy px-4 py-2 text-sm font-medium text-sognos-navy"
+            >
+              View event
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </span>
+            {registerUrl && (
+              <a
+                href={registerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-10 inline-flex items-center gap-1.5 rounded-full bg-sognos-navy px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sognos-blue-accent"
+              >
+                Register
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Image right. Two variants, decided by whether an image exists:
-          — with a usable image, the photo runs full bleed
-          — without one, a solid navy panel carrying the format, rather than an
-            empty grey box. A bad photo is worse than no photo, so the solid
-            variant has to stand on its own.
-          16/9 on mobile where it sits below the copy; on md it stretches to
-          whatever height the copy sets, so the two columns stay level. */}
+      {/* Image right. With a usable image, the photo runs full bleed; without
+          one, a solid navy panel carrying the format. 16/9 on mobile where it
+          sits below the copy; on md it stretches to the copy's height. */}
       <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-auto md:h-full">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -606,28 +664,102 @@ export function EventCard({
           </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
 
-// Cards only. Anything past lives on the Events & Webinars archive, so there
-// is no row treatment to fall back to here — see `PastEventRow` above, which
-// that page will use.
-function EventRail({
-  items,
-  emptyLabel,
+// ─── All / Upcoming / Past tabs ───────────────────────────────────────────────
+// Shared by the Events and Webinars rails. Client-side only: both lists are
+// already on the page, so a tab just picks which one renders.
+
+type StatusTab = "all" | "upcoming" | "past";
+
+const STATUS_TABS: readonly { id: StatusTab; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "upcoming", label: "Upcoming" },
+  { id: "past", label: "Past" },
+];
+
+function StatusTabsRail<T>({
+  label,
+  noun,
+  upcoming,
+  past,
+  getKey,
+  render,
 }: {
-  items: UpcomingEvent[];
-  emptyLabel: string;
+  /** Accessible name for the tab list, e.g. "Events". */
+  label: string;
+  /** Plural noun for the empty states, e.g. "events". */
+  noun: string;
+  upcoming: T[];
+  past: T[];
+  getKey: (item: T) => string;
+  render: (item: T) => React.ReactNode;
 }) {
-  if (items.length === 0)
-    return <p className="text-sognos-muted">{emptyLabel}</p>;
+  const [tab, setTab] = useState<StatusTab>("all");
+  const items =
+    tab === "upcoming"
+      ? upcoming
+      : tab === "past"
+        ? past
+        : [...upcoming, ...past];
+  const empty =
+    tab === "upcoming"
+      ? `No upcoming ${noun}.`
+      : tab === "past"
+        ? `No past ${noun} yet.`
+        : `No ${noun} yet.`;
 
   return (
-    <div className="flex flex-col gap-4">
-      {items.map((e) => (
+    <div>
+      <div role="tablist" aria-label={label} className="mb-6 flex gap-2">
+        {STATUS_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
+            className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+              tab === t.id
+                ? "border-sognos-navy bg-sognos-navy text-white"
+                : "border-sognos-line bg-white text-sognos-body hover:border-sognos-navy/40"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {items.length === 0 ? (
+        <p className="text-sognos-muted">{empty}</p>
+      ) : (
+        <div className="flex flex-col gap-3 lg:gap-4">
+          {items.map((item) => (
+            <div key={getKey(item)}>{render(item)}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function EventRail({
+  upcoming,
+  past,
+}: {
+  upcoming: UpcomingEvent[];
+  past: UpcomingEvent[];
+}) {
+  return (
+    <StatusTabsRail
+      label="Events"
+      noun="events"
+      upcoming={upcoming}
+      past={past}
+      getKey={(e) => e.slug}
+      render={(e) => (
         <EventCard
-          key={e.slug}
           href={e.href}
           format={e.format}
           title={e.title}
@@ -636,9 +768,130 @@ function EventRail({
           time={e.time}
           location={e.location}
           image={e.image}
+          registerUrl={e.registerUrl}
         />
-      ))}
-    </div>
+      )}
+    />
+  );
+}
+
+// ─── Webinars ──────────────────────────────────────────────────────────────────
+
+type WebinarStatus = "upcoming" | "past";
+
+export type WebinarItem = UpcomingEvent & {
+  status: WebinarStatus;
+  /** Optional pill under the description — the post's industry. */
+  tag?: string | null;
+};
+
+// Three tracks after the reference: image with a status ribbon, title and
+// description, then the details with the action pinned beneath. Stacks in
+// that order below md.
+function WebinarCard({ item }: { item: WebinarItem }) {
+  const upcoming = item.status === "upcoming";
+  return (
+    <Link
+      href={item.href}
+      className="group grid grid-cols-1 gap-6 rounded bg-white p-4 text-sognos-heading md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] md:p-5 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,13rem)] lg:gap-8"
+    >
+      {/* Image + ribbon */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded">
+        {item.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.image}
+            alt=""
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-end bg-sognos-navy p-5">
+            <span className="font-heading text-lg tracking-tight text-white/90">
+              Webinar
+            </span>
+          </div>
+        )}
+        <span
+          className={`absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-medium ${
+            upcoming
+              ? "bg-amber-300 text-sognos-heading"
+              : "bg-white text-sognos-heading"
+          }`}
+        >
+          {upcoming ? "Upcoming" : "On demand"}
+        </span>
+      </div>
+
+      {/* Title + description */}
+      <div className="flex min-w-0 flex-col">
+        <h3 className="font-heading text-xl font-medium leading-snug tracking-tight text-sognos-heading transition-colors duration-200 group-hover:text-sognos-blue-accent">
+          {item.title}
+        </h3>
+        {item.excerpt && (
+          <p className="mt-3 line-clamp-3 text-base leading-relaxed text-sognos-body">
+            {item.excerpt}
+          </p>
+        )}
+        {item.tag && (
+          <span className="mt-5 inline-flex w-fit items-center rounded border border-sognos-blue-accent px-2.5 py-1 text-xs text-sognos-blue-accent">
+            {item.tag}
+          </span>
+        )}
+      </div>
+
+      {/* Details + action */}
+      <div className="flex flex-col justify-between gap-6 md:col-start-2 lg:col-start-3">
+        <dl className="flex flex-col gap-4 text-sm text-sognos-body">
+          <div className="flex items-start gap-3">
+            <dt className="sr-only">Date</dt>
+            <CalendarDays
+              aria-hidden="true"
+              className="mt-0.5 h-4 w-4 shrink-0 text-sognos-muted"
+            />
+            <dd>
+              {item.date}
+              {item.time && <span className="block">{item.time}</span>}
+            </dd>
+          </div>
+          {item.location && (
+            <div className="flex items-start gap-3">
+              <dt className="sr-only">Location</dt>
+              <MapPin
+                aria-hidden="true"
+                className="mt-0.5 h-4 w-4 shrink-0 text-sognos-muted"
+              />
+              <dd>{item.location}</dd>
+            </div>
+          )}
+        </dl>
+        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sognos-blue-accent">
+          {upcoming ? "Explore event" : "Watch on demand"}
+          <ArrowRight
+            aria-hidden="true"
+            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+          />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+export function WebinarRail({
+  upcoming,
+  past,
+}: {
+  upcoming: WebinarItem[];
+  past: WebinarItem[];
+}) {
+  return (
+    <StatusTabsRail
+      label="Webinars"
+      noun="webinars"
+      upcoming={upcoming}
+      past={past}
+      getKey={(item) => `${item.status}-${item.slug}`}
+      render={(item) => <WebinarCard item={item} />}
+    />
   );
 }
 
@@ -698,12 +951,15 @@ function SectionShell({
 export default function KnowledgeHubArchive({
   articles,
   upcomingEvents = [],
+  pastEvents = [],
   initialCategory = null,
   title,
   description,
 }: {
   articles: Article[];
   upcomingEvents?: UpcomingEvent[];
+  /** Newest past non-webinar events, for the Events rail's Past tab. */
+  pastEvents?: UpcomingEvent[];
   /** Retained so `?category=` links land on a sensible section. The pill
    *  filtering it used to drive is not rebuilt. */
   initialCategory?: string | null;
@@ -764,6 +1020,7 @@ export default function KnowledgeHubArchive({
   // `knowledgePost.category` allows; the other two are now `event` documents.
   const news = articles.filter((a) => a.category === "News");
   const insights = articles.filter((a) => a.category === "Insights");
+  const newsletters = articles.filter((a) => a.category === "Newsletter");
   const milestones = articles.filter((a) => a.category === "Milestone");
 
   // `event` documents only, split on `format` — a webinar is an event with a
@@ -772,11 +1029,19 @@ export default function KnowledgeHubArchive({
   // Upcoming only. Past events and webinars belong on the Events & Webinars
   // archive rather than here: this page is what is coming up, and a finished
   // event in that position reads as an invitation to something that has
-  // already happened. The legacy `knowledgePost`s carrying an `Events` or
-  // `Webinar` category are write-ups of past ones, so they are not surfaced
-  // here either.
+  // already happened. `Events`-category posts are write-ups of past events and
+  // are not surfaced here; `Webinar` posts are recordings and are (below).
   const events = upcomingEvents.filter((e) => e.format !== "Webinar");
-  const webinars = upcomingEvents.filter((e) => e.format === "Webinar");
+  // Upcoming webinar events first, then the newest Webinar posts — recordings
+  // stay discoverable after the live session has passed. `articles` is
+  // already newest-first.
+  const upcomingWebinars: WebinarItem[] = upcomingEvents
+    .filter((e) => e.format === "Webinar")
+    .map((e) => ({ ...e, status: "upcoming" }));
+  const pastWebinars: WebinarItem[] = articles
+    .filter((a) => a.category === "Webinar")
+    .slice(0, WEBINAR_POSTS_LIMIT)
+    .map(toWebinarRecording);
 
   // The dark header's lead card and the three-up beneath it. The newest posts
   // regardless of category; no customer story.
@@ -829,11 +1094,7 @@ export default function KnowledgeHubArchive({
           )}
         </div>
 
-        {heroPost && (
-          <HeroSelector
-            articles={[heroPost, ...featuredPosts]}
-          />
-        )}
+        {heroPost && <HeroSelector articles={[heroPost, ...featuredPosts]} />}
       </section>
 
       {/* 2 — tab band, sticky under the navbar. */}
@@ -887,7 +1148,12 @@ export default function KnowledgeHubArchive({
       <div>
         {/* News — lead left, three stacked right. Four items is the section;
             the rest live behind "View all". */}
-        <SectionShell id="news" heading="News" viewAllHref={VIEW_ALL.news} tinted>
+        <SectionShell
+          id="news"
+          heading="News"
+          viewAllHref={VIEW_ALL.news}
+          tinted
+        >
           {newsLead ? (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:grid-rows-3 md:gap-x-4">
               {/* Lead — 7/12, spans all 3 rows. Image + title + pill + meta. */}
@@ -970,19 +1236,41 @@ export default function KnowledgeHubArchive({
           )}
         </SectionShell>
 
+        {/* Newsletters — one row of three, same card as Insights. Cards open
+            the email page in a new tab. */}
+        <SectionShell
+          id="newsletters"
+          heading="Newsletters"
+          viewAllHref={VIEW_ALL.newsletters}
+        >
+          {newsletters.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-3">
+              {newsletters.slice(0, INSIGHTS_LIMIT).map((a) => (
+                <ArticleCard key={a.slug} article={a} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sognos-muted">No newsletters yet.</p>
+          )}
+        </SectionShell>
+
         {/* Events & Webinars — two label-rail blocks on one anchor, both
             showing upcoming items only. */}
         <SectionShell
           id="events"
           heading="Events & Webinars"
+          viewAllHref={VIEW_ALL.events}
           tinted
         >
           <div className="flex flex-col gap-16">
-            <RailBlock label="Events">
-              <EventRail items={events} emptyLabel="No upcoming events." />
+            <RailBlock label="Events" viewAllHref={VIEW_ALL.events}>
+              <EventRail upcoming={events} past={pastEvents} />
             </RailBlock>
-            <RailBlock label="Webinars">
-              <EventRail items={webinars} emptyLabel="No upcoming webinars." />
+            <RailBlock
+              label="Webinars"
+              viewAllHref={`${VIEW_ALL.events}#webinars`}
+            >
+              <WebinarRail upcoming={upcomingWebinars} past={pastWebinars} />
             </RailBlock>
           </div>
         </SectionShell>
@@ -1051,7 +1339,13 @@ export default function KnowledgeHubArchive({
                     className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-sognos-line text-sognos-muted transition-all duration-300 group-hover:border-sognos-blue-accent group-hover:text-sognos-blue-accent md:flex"
                   >
                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                      <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path
+                        d="M4 10h12M12 6l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </span>
                 </Link>
