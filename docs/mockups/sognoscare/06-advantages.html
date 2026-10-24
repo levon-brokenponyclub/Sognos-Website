@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 06 - Advantages</title>
+<!--
+2026-10-24 pass: heading on the shared H2, list rows 16/18px, numerals 14px accent, header->list gap matches every section.
+Audit: A1, A2 (hairline rows replace stripes), A3, G3. Heading is the live Sanity value "Key Advantages" (see S4).
+Maps to: components/layout/sections/sognoscare/Advantages.tsx (page-local).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<section id="advantages" class="bg-care-dark py-20 md:py-28 text-white">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80 lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Advantages</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4">
+          <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-white">Key Advantages</h2>
+        </div>
+        <ul class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 border-t border-white/20 md:grid-cols-2 md:gap-x-8 lg:gap-x-16 [&>li:last-child]:border-b-0">
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">01</span><span class="text-base leading-relaxed text-white">Purpose-built for Australian care compliance - not adapted from generic CRM</span></li>
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">02</span><span class="text-base leading-relaxed text-white">Reduces documentation time with AI-assisted clinical notes</span></li>
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">03</span><span class="text-base leading-relaxed text-white">Keeps you audit-ready with continuous compliance tracking</span></li>
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">04</span><span class="text-base leading-relaxed text-white">Integrates with Microsoft 365, Teams, and Dynamics 365 out of the box</span></li>
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">05</span><span class="text-base leading-relaxed text-white">Connects care management, workforce rostering, and billing in one system</span></li>
+          <li class="flex items-baseline gap-4 border-b border-white/20 py-5 md:[&:nth-last-child(-n+2)]:border-b-0"><span class="text-sm leading-normal tabular-nums text-accent">06</span><span class="text-base leading-relaxed text-white">Scales from community care to residential aged care without re-implementation</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

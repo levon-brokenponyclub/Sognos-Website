@@ -1,13 +1,8 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-
-// Capability accent bar travel, after lumosdata.com. The reference slides
-// 150px on a 674px bar (~22%); these bars are roughly a quarter of that width,
-// so a literal 150px would start well outside the block and read as a flash
-// rather than a slide. 60px is the same gesture at this scale.
-const BAR_TRAVEL_PX = 60;
+import SectionLabel from "@/components/ui/SectionLabel";
+import { LAYOUT, TYPE } from "./typeScale";
 
 type Capability = {
   number: string;
@@ -23,7 +18,6 @@ interface SognoscareProblemsProps {
   solutionStatement?: string;
   solutionDetail?: string;
   capabilities?: readonly Capability[];
-  subNav?: ReactNode;
 }
 
 const DEFAULT_CAPABILITIES: readonly Capability[] = [
@@ -51,13 +45,9 @@ const DEFAULT_CAPABILITIES: readonly Capability[] = [
     description:
       "Operational, workforce, compliance and funding reports generated continuously, not manually assembled.",
   },
-  {
-    number: "05",
-    title: "Copilot-Powered Workflows",
-    description:
-      "AI-assisted documentation, anomaly detection and operational insights surfaced inside Dynamics 365.",
-  },
 ];
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export default function SognoscareProblems({
   problemLabel = "The Problem",
@@ -67,115 +57,78 @@ export default function SognoscareProblems({
   solutionStatement = "Sognos unifies demand, workforce and outcomes on a single operational platform.",
   solutionDetail = "Built on Microsoft Dynamics 365 and Copilot, Sognos connects intake, care planning, workforce coordination, compliance and reporting into one continuous workflow.",
   capabilities = DEFAULT_CAPABILITIES,
-  subNav,
 }: SognoscareProblemsProps = {}) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section
-      id="problems"
-      className="overflow-clip"
-      style={{ fontFamily: "sofia-pro, sans-serif" }}
-    >
-      {/* Dark half — Problem block + subNav
-          Weight ladder + alpha ladder applied per CLAUDE_DESIGN_SYSTEM.md
-          §1 + §8.2:
-            • Section H2 pitch: font-semibold
-            • Body: font-light + text-white/85 (bumped alpha for dark) */}
-      <div className="bg-sognos-care-dark py-20 md:py-28">
+    <section id="problems" className={`overflow-clip ${LAYOUT.anchor}`}>
+      {/* Dark half — centred statement band. Navy, a tonal step off the
+          care-dark hero above it. */}
+      <div className={`bg-sognos-navy ${LAYOUT.section}`}>
         <div className="mx-auto max-w-7xl px-6">
-          {/* Problem block */}
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-blue-accent">
-              {problemLabel}
-            </p>
-            <h2 className="mt-4 font-heading text-3xl font-semibold leading-tight tracking-tight md:text-4xl text-white text-balance">
-              {problemStatement}
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-white/85 text-pretty">
-              {problemDetail}
-            </p>
+          <div className="mx-auto flex max-w-[770px] flex-col items-center gap-4 text-center">
+            <SectionLabel tone="dark">{problemLabel}</SectionLabel>
+            <h2 className={`${TYPE.h2} text-white`}>{problemStatement}</h2>
+            <p className={`${TYPE.lede} text-white/75`}>{problemDetail}</p>
           </div>
-
-          {/* subNav — centred, sits at bottom of dark half */}
-          {subNav && (
-            <div className="mt-24 flex justify-center md:mt-32">{subNav}</div>
-          )}
         </div>
       </div>
 
-      {/* Light half — Solution block on white.
-          Body text stays at font-normal here — font-light on white is
-          fine for prose but the small capability descriptions read too
-          thin at font-light. Tokenised text-gray-600 → text-sognos-body
-          per CLAUDE.md hard rules. rounded-xl → rounded (4px) per §6
-          radius rules. */}
-      <div className="bg-white py-20 md:py-28">
+      {/* Tint half (white Features follows) — solution on the rail, then the capabilities as numbered
+          hairline columns (after angellist.com scout-funds "How it works"). */}
+      <div className={`bg-sognos-tint ${LAYOUT.section}`}>
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-            {/* Left — rail (Advantages pattern, light theme) */}
-            <div className="lg:col-span-2 lg:sticky lg:top-[100px] lg:self-start">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted">
-                {solutionLabel}
-              </p>
+          <div className={LAYOUT.rail}>
+            <div className={LAYOUT.railLabel}>
+              <SectionLabel sticky>{solutionLabel}</SectionLabel>
             </div>
 
-            {/* Right — statement + detail + 5 blocks */}
-            <div className="lg:col-[3/-1]">
-              <div className="max-w-[720px]">
-                <h2 className="font-heading text-3xl md:text-4xl font-semibold tracking-tight text-sognos-heading text-balance">
+            <div className={LAYOUT.content}>
+              <div className={LAYOUT.head}>
+                <h2 className={`${TYPE.h2} text-sognos-heading`}>
                   {solutionStatement}
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-sognos-body text-pretty">
+                <p className={`${TYPE.lede} text-sognos-body`}>
                   {solutionDetail}
                 </p>
               </div>
 
-              <div className="mt-16 gap-1 md:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+              <ol
+                className={`${LAYOUT.gap} grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4`}
+              >
                 {capabilities.map((cap, i) => (
-                  // overflow-hidden clips the accent bar while it slides in
-                  // from outside the block.
-                  <div
+                  <motion.li
                     key={cap.number}
-                    className="relative flex flex-col bg-white rounded overflow-hidden px-5 py-6 pb-10"
+                    initial={
+                      prefersReducedMotion
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 16 }
+                    }
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{
+                      duration: 0.55,
+                      ease: EASE_OUT,
+                      delay: prefersReducedMotion ? 0 : i * 0.08,
+                    }}
+                    className="flex flex-col gap-1 border-l border-sognos-line px-4 md:pl-8"
                   >
-                    <span className="font-mono text-xs text-sognos-muted">
-                      {cap.number}
+                    {/* "01" → "1": large single digits, as the benchmark. */}
+                    <span
+                      aria-hidden="true"
+                      className={`block ${TYPE.numeral} text-sognos-blue-accent`}
+                    >
+                      {Number(cap.number)}
                     </span>
-                    <h3 className="mt-3 font-heading text-base md:text-lg font-medium text-sognos-heading">
+                    <h3 className={`mt-1 ${TYPE.h3Step} text-sognos-heading`}>
                       {cap.title}
                     </h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-sognos-body">
+                    <p className={`${TYPE.small} text-sognos-body`}>
                       {cap.description}
                     </p>
-                    {/* Accent bar slides in from the left and fades as its
-                        block enters view, then resets when it leaves.
-                        Deliberately NOT `once: true`: every other reveal on
-                        this site latches, but the reference replays on each
-                        entry. Add `once: true` to fall back in line. */}
-                    <motion.div
-                      aria-hidden="true"
-                      className="absolute bottom-0 left-5 right-5 h-[2px] bg-sognos-blue-accent"
-                      initial={
-                        prefersReducedMotion
-                          ? { x: 0, opacity: 1 }
-                          : { x: -BAR_TRAVEL_PX, opacity: 0 }
-                      }
-                      whileInView={{ x: 0, opacity: 1 }}
-                      viewport={{ amount: 0.6 }}
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0 }
-                          : {
-                              duration: 0.8,
-                              delay: i * 0.08,
-                              ease: [0.22, 1, 0.36, 1],
-                            }
-                      }
-                    />
-                  </div>
+                  </motion.li>
                 ))}
-              </div>
+              </ol>
             </div>
           </div>
         </div>

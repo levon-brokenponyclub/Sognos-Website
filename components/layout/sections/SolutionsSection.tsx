@@ -23,8 +23,12 @@
 //
 // Row headline italics (Routable italicizes one word per H2) skipped in
 // scaffold — Refine decision per headline.
-import Image from "next/image";
 import Link from "next/link";
+import SolutionVisual, {
+  SolutionsBackgroundProvider,
+  SolutionsBackgroundToggle,
+} from "@/components/layout/sections/home/SolutionVisuals";
+import { getSolutionContent } from "@/lib/solutions-content";
 
 type SolutionRow = {
   id: string;
@@ -32,7 +36,6 @@ type SolutionRow = {
   href: string;
   headline: string;
   body: string;
-  image: string;
 };
 
 // First 4 solutions only (2026-08-07 call). Remaining 3 (Customer Service,
@@ -44,7 +47,6 @@ const SOLUTIONS: SolutionRow[] = [
     href: "/solutions/frontline",
     headline: "End-to-end field service management",
     body: "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
-    image: "/dev/Instant-Payouts-Visual-Static.avif",
   },
   {
     id: "crm",
@@ -52,7 +54,6 @@ const SOLUTIONS: SolutionRow[] = [
     href: "/solutions/customer-relationship-management",
     headline: "A complete client relationship record",
     body: "Centralise every client interaction, service history, and communication in one place — giving every team member the context they need.",
-    image: "/dev/International-Payouts-Visual-Static.avif",
   },
   {
     id: "customer-insights",
@@ -60,7 +61,6 @@ const SOLUTIONS: SolutionRow[] = [
     href: "/solutions/customer-insights",
     headline: "Turn service data into operational intelligence",
     body: "Unified data from care records, rostering, and field operations — surfaced as live dashboards that show what's working and where to act.",
-    image: "/dev/Domestic-Payouts-Visual-Static.avif",
   },
   {
     id: "customer-experience",
@@ -68,7 +68,6 @@ const SOLUTIONS: SolutionRow[] = [
     href: "/solutions/customer-experience",
     headline: "Consistent service quality at every touchpoint",
     body: "From first contact through ongoing delivery, every interaction is tracked, measured, and optimised for consistent service quality.",
-    image: "/dev/Instant-Payouts-Visual-Static.avif",
   },
 ];
 
@@ -97,6 +96,7 @@ export default function SolutionsSection({
       id="solutions"
       className="overflow-hidden bg-white py-20 md:py-28"
     >
+      <SolutionsBackgroundProvider>
       <div className="mx-auto max-w-7xl space-y-[3.875rem] px-6 md:space-y-16 lg:space-y-32">
         {/* Header — H2 + body + section-level explore link, centered. Block
             capped at 39.25rem per reference. */}
@@ -120,12 +120,15 @@ export default function SolutionsSection({
                 </div>
               </div>
             </div>
+            {/* Review-only: switches the row visuals between panel colour and
+                each solution's hero photo. Hidden on production. */}
+            <SolutionsBackgroundToggle />
           </div>
         </div>
 
         {/* Stacked rows — sticky gutter label left, image + text grid right */}
         <div>
-          {SOLUTIONS.map((s) => (
+          {SOLUTIONS.map((s, i) => (
             <div
               key={s.id}
               className="relative flex flex-col items-start justify-between gap-4 pb-12 last:pb-0 md:gap-6 md:pb-24 lg:flex-row lg:gap-8"
@@ -141,17 +144,13 @@ export default function SolutionsSection({
 
               {/* Image + text pair */}
               <div className="grid flex-1 items-center gap-6 sm:max-w-[66.25rem] sm:grid-cols-2 xl:pr-8">
-                <div className="relative overflow-hidden rounded bg-transparent">
-                  <div className="relative z-10 w-full">
-                    <Image
-                      src={s.image}
-                      alt=""
-                      width={1554}
-                      height={1320}
-                      className="h-full w-full"
-                    />
-                  </div>
-                </div>
+                {/* Motion graphic (replaces the /public/dev/ placeholder art).
+                    The photo option uses the solution page's hero image. */}
+                <SolutionVisual
+                  id={s.id}
+                  index={i}
+                  photo={getSolutionContent(s.href.split("/").pop() ?? "")?.hero.image}
+                />
 
                 <div className="w-full justify-self-end sm:max-w-[23.625rem]">
                   <div className="space-y-5 lg:space-y-9">
@@ -173,6 +172,7 @@ export default function SolutionsSection({
           ))}
         </div>
       </div>
+      </SolutionsBackgroundProvider>
     </section>
   );
 }

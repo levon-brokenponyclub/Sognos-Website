@@ -145,6 +145,74 @@ function ProductCard({
   );
 }
 
+// ─── Partner solution ─────────────────────────────────────────────────────────
+
+// DigPacks is a partner offering, not a fourth Sognos product, so it sits below
+// the product grid as one wide card rather than joining it.
+const DIGPACKS_SOLUTIONS = [
+  "Risk Management",
+  "Safety Lens",
+  "People & HR Management",
+  "Vaccination Hub",
+  "Privacy Impact Assessment",
+  "IT Service Management",
+];
+
+function PartnerCard() {
+  return (
+    <div className="mt-6 grid overflow-hidden rounded-lg border border-(--sognos-line) bg-white lg:grid-cols-[2fr_3fr]">
+      <div className="flex flex-col justify-between gap-8 bg-sognos-digpacks-dark px-8 py-8">
+        <Image
+          src="/images/digpacks/digpacks-logo-white.webp"
+          alt={PRODUCTS.digpacks.name}
+          width={1470}
+          height={353}
+          className="h-9 w-auto self-start object-contain"
+        />
+        <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
+          Partner solution
+        </p>
+      </div>
+      <div className="flex flex-col gap-8 px-8 py-8">
+        <div>
+          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-sognos-muted">
+            {PRODUCTS.digpacks.name}
+          </p>
+          <h2 className="font-heading text-2xl font-normal text-sognos-heading">
+            {PRODUCTS.digpacks.description}
+          </h2>
+        </div>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {DIGPACKS_SOLUTIONS.map((name) => (
+            <li key={name} className="flex items-start gap-3">
+              <svg
+                className="mt-0.5 h-4 w-4 shrink-0 text-sognos-digpacks-base"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="text-sm text-sognos-body">{name}</span>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <AnimatedButton href={PRODUCTS.digpacks.href} variant="brand">
+            Explore {PRODUCTS.digpacks.name}
+          </AnimatedButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Better Together ──────────────────────────────────────────────────────────
 
 function BetterTogether() {
@@ -304,6 +372,8 @@ export default function ProductsPage() {
               <ProductCard key={key} {...rest} />
             ))}
           </div>
+
+          <PartnerCard />
 
           {/* Platform callout */}
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-(--sognos-line) bg-white px-6 py-5">

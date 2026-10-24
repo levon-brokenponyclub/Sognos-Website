@@ -1,6 +1,6 @@
 import { SOGNOSCARE_EDITIONS } from "@/lib/constants";
-import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 import EditionCards from "./EditionCards";
+import { LAYOUT, TYPE } from "./typeScale";
 
 type EditionCardItem = {
   name?: string;
@@ -21,15 +21,19 @@ export default function SognoscareEditions({
   const cards =
     editions && editions.length > 0 ? editions : SOGNOSCARE_EDITIONS;
 
+  // No left rail — the slider needs the full container width. Slider arrows
+  // ride up into the header row from md (bottom-aligned with the lede).
   return (
-    <section id="editions" className="bg-sognos-tint py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center text-center">
-          <AnimatedEyebrow className="justify-center">Editions</AnimatedEyebrow>
-          <h2 className="mt-4 max-w-5xl text-balance font-heading text-3xl font-medium tracking-tight leading-tight text-sognos-navy md:text-4xl">
+    <section
+      id="editions"
+      className={`bg-sognos-tint ${LAYOUT.section} ${LAYOUT.anchor}`}
+    >
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className={`${LAYOUT.head} md:pr-32`}>
+          <h2 className={`${TYPE.h2} text-sognos-heading`}>
             Choose the Right SognosCare Edition for Your Service
           </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sognos-body">
+          <p className={`${TYPE.lede} text-sognos-body`}>
             SognosCare offers six tailored editions, each pre-configured for its
             funding model, compliance framework, and operational workflows.
           </p>
@@ -38,7 +42,8 @@ export default function SognoscareEditions({
         <EditionCards
           editions={cards}
           showSliderButtons
-          containerClassName="w-full"
+          containerClassName={`w-full ${LAYOUT.gap}`}
+          controlsClassName="mb-5 flex justify-end gap-2 md:absolute md:right-0 md:bottom-full md:mb-16 xl:mb-20"
         />
       </div>
     </section>

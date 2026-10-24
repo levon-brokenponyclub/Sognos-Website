@@ -3,7 +3,7 @@ import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
 
 // The six pillars, kept in step with the dedicated
 // /company/social-responsibility page's own PILLARS array. Full bodies here;
-// the card clamps them and links through for the rest.
+// the list clamps them and one link goes through to the full page.
 const PILLARS = [
   {
     title: "Community Engagement",
@@ -33,50 +33,66 @@ const PILLARS = [
 
 export default function SocialResponsibilitySection() {
   return (
-    <section className="w-full bg-sognos-navy py-24 lg:py-32">
+    <section className="w-full bg-sognos-navy py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Centred header — eyebrow over title over description. */}
-        <div className="mx-auto max-w-3xl text-center">
-          <AnimatedEyebrow className="mb-5" textClassName="text-white/50">
-            Social Responsibility
-          </AnimatedEyebrow>
-          <h2 className="font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-4xl">
-            Our commitment to community and planet.
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">
-            Social responsibility is at the core of our values - we are committed
-            to making a difference where we live, work, and do business.
-          </p>
-        </div>
+        {/* Left label rail + heading, the same frame as AboutValues and
+            TeamSection so the page reads as one left-aligned rhythm. */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-2">
+            <AnimatedEyebrow textClassName="text-white/80">
+              Social Responsibility
+            </AnimatedEyebrow>
+          </div>
 
-        {/* Six pillars, three across / two down. Card after
-            routable.com/about's "featured" grid: title, dashed rule, clamped
-            description, Read more. The whole card links to the full page. */}
-        <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3 lg:gap-x-16 lg:gap-y-14">
-          {PILLARS.map((pillar) => (
-            <Link
-              key={pillar.title}
-              href="/company/social-responsibility"
-              className="group flex flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
-            >
-              <h3 className="font-heading text-xl font-medium leading-snug tracking-tight text-white lg:text-2xl">
-                {pillar.title}
-              </h3>
-              <div className="my-5 border-t border-dashed border-white/20" />
-              <p className="text-base leading-relaxed text-white/65 line-clamp-3">
-                {pillar.body}
-              </p>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white transition-colors group-hover:text-sognos-blue-accent">
-                Read more
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+          <div className="min-w-0 lg:col-[3/-1]">
+            <h2 className="max-w-3xl font-heading text-3xl font-medium tracking-tight text-white text-balance md:text-4xl">
+              Our commitment to community and planet.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
+              Social responsibility is at the core of our values - we are
+              committed to making a difference where we live, work, and do
+              business.
+            </p>
+
+            {/* Six pillars, type-first — numeral marker + title + clamped
+                body over a hairline, no cards (the AboutValues beliefs
+                pattern). One link to the full page below, rather than six
+                identical "Read more" destinations. */}
+            <ol className="mt-14 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-y-12">
+              {PILLARS.map((pillar, i) => (
+                <li
+                  key={pillar.title}
+                  className="flex flex-col border-t border-white/20 pt-6"
                 >
-                  &rarr;
-                </span>
+                  <span
+                    aria-hidden="true"
+                    className="font-heading text-3xl font-light leading-none tabular-nums text-white/25"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-5 font-heading text-xl font-medium leading-snug tracking-tight text-white">
+                    {pillar.title}
+                  </h3>
+                  <p className="mt-3 text-base leading-relaxed text-white/75 line-clamp-3">
+                    {pillar.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+
+            <Link
+              href="/company/social-responsibility"
+              className="group mt-12 inline-flex items-center gap-2 text-base font-medium text-white transition-colors hover:text-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
+            >
+              Read our commitment
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                &rarr;
               </span>
             </Link>
-          ))}
+          </div>
         </div>
       </div>
     </section>

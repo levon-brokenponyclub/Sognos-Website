@@ -5,12 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { bookDemo, type BookDemoInput } from "@/app/actions/book-demo";
 
-type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram" | "not-sure";
+type ProductKey =
+  | "sognoscare"
+  | "sognosroster"
+  | "sognosgenogram"
+  | "digpacks"
+  | "not-sure";
 
 const PRODUCTS: { key: ProductKey; label: string }[] = [
   { key: "sognoscare", label: "SognosCare" },
   { key: "sognosroster", label: "SognosRoster" },
   { key: "sognosgenogram", label: "SognosGenogram" },
+  { key: "digpacks", label: "DigPacks" },
   { key: "not-sure", label: "Not sure yet" },
 ];
 

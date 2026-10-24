@@ -55,6 +55,11 @@ const PRODUCTS_LIST = [
     description: "Bring family and relationship context into every record",
   },
   {
+    label: "DigPacks",
+    value: "digpacks",
+    description: "Localise UK-proven Microsoft accelerator solutions",
+  },
+  {
     label: "Not sure yet",
     value: "unsure",
     description: "Let our team help identify the right product or solution",

@@ -1,8 +1,9 @@
 "use client";
 
-// Mission / Vision / Beliefs — three rows on the dark navy surface. The
-// three-row structure is deliberate (client wants each rail visible; not
-// stacked or hidden). Enhancements within the layout:
+// Mission / Vision / Beliefs on the dark navy surface. Layout (2026-10-24,
+// from the /dev/about-mockup pass): Mission 2/3 + Vision 1/3 side by side,
+// then the three beliefs across the full width, each block labelled in place
+// rather than from a left rail. All three stay visible. Enhancements:
 //
 //   • Section rhythm brought onto the house `py-20 md:py-28`.
 //   • Dark-surface alpha ladder applied (white / white/75 / white/50 with
@@ -51,11 +52,13 @@ const BELIEFS: Belief[] = [
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
-function ValueRow({
+function ValueCell({
   eyebrow,
+  className = "",
   children,
 }: {
   eyebrow: string;
+  className?: string;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -72,14 +75,10 @@ function ValueRow({
       }}
       animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.6, ease: EASE_OUT }}
-      className="grid grid-cols-1 gap-8 py-12 lg:grid-cols-12 lg:gap-16 lg:py-16"
+      className={`min-w-0 py-10 lg:py-14 ${className}`}
     >
-      <div className="lg:col-span-2">
-        <AnimatedEyebrow textClassName="text-white/80">
-          {eyebrow}
-        </AnimatedEyebrow>
-      </div>
-      <div className="min-w-0 lg:col-[3/-1]">{children}</div>
+      <AnimatedEyebrow textClassName="text-white/80">{eyebrow}</AnimatedEyebrow>
+      <div className="mt-6">{children}</div>
     </motion.div>
   );
 }
@@ -137,12 +136,12 @@ function BeliefColumn({
       </div>
 
       {/* Title — display face at pull-quote scale. */}
-      <h3 className="mt-6 max-w-xs font-heading text-xl font-normal leading-snug tracking-tight text-white text-balance md:text-2xl">
+      <h3 className="mt-6 max-w-sm font-heading text-xl font-normal leading-snug tracking-tight text-white text-balance md:text-2xl">
         {belief.title}
       </h3>
 
       {/* Body — always visible per client note. */}
-      <p className="mt-4 max-w-xs text-base leading-relaxed text-white/75">
+      <p className="mt-4 max-w-sm text-base leading-relaxed text-white/75">
         {belief.body}
       </p>
     </motion.article>
@@ -153,28 +152,38 @@ export default function AboutValues() {
   return (
     <section className="bg-sognos-navy py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="divide-y divide-white/20 border-y border-white/20">
-          <ValueRow eyebrow="Our Mission">
-            <p className="max-w-3xl font-heading text-2xl font-normal leading-snug tracking-tight text-white text-balance md:text-3xl">
-              Built to support the people delivering care, services and
-              frontline operations every day &mdash; simplifying the
-              complexity of healthcare through modern business applications
-              designed for real-world service delivery.
-            </p>
-          </ValueRow>
+        <div className="border-y border-white/20">
+          {/* Row 1 — asymmetric 2 : 1. Mission is the display statement,
+              Vision the supporting column, split by a hairline. */}
+          <div className="grid grid-cols-1 border-b border-white/20 md:grid-cols-3">
+            <ValueCell
+              eyebrow="Our Mission"
+              className="md:col-span-2 md:border-r md:border-white/20 md:pr-12"
+            >
+              <p className="font-heading text-2xl font-normal leading-snug tracking-tight text-white text-balance md:text-3xl lg:text-4xl">
+                Built to support the people delivering care, services and
+                frontline operations every day &mdash; simplifying the
+                complexity of healthcare through modern business applications
+                designed for real-world service delivery.
+              </p>
+            </ValueCell>
 
-          <ValueRow eyebrow="Our Vision">
-            <p className="max-w-3xl font-heading text-2xl font-normal leading-snug tracking-tight text-white text-balance md:text-3xl">
-              A future where healthcare and frontline teams are empowered by
-              connected, intelligent systems that make work simpler and
-              create better experiences for patients, clients and the
-              communities they support.
-            </p>
-          </ValueRow>
+            <ValueCell
+              eyebrow="Our Vision"
+              className="border-t border-white/20 md:border-t-0 md:pl-12"
+            >
+              <p className="text-lg leading-relaxed text-white">
+                A future where healthcare and frontline teams are empowered by
+                connected, intelligent systems that make work simpler and
+                create better experiences for patients, clients and the
+                communities they support.
+              </p>
+            </ValueCell>
+          </div>
 
-          <ValueRow eyebrow="Our Beliefs">
-            {/* Type-first three-column composition. Hairline dividers
-                between columns; no cards, no boxes. */}
+          {/* Row 2 — beliefs across the full width. Type-first columns with
+              hairline dividers; no cards, no boxes. */}
+          <ValueCell eyebrow="Our Beliefs">
             <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-0">
               {BELIEFS.map((belief, i) => (
                 <BeliefColumn
@@ -186,7 +195,7 @@ export default function AboutValues() {
                 />
               ))}
             </div>
-          </ValueRow>
+          </ValueCell>
         </div>
       </div>
     </section>

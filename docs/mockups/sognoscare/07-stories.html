@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 07 - Customer Stories</title>
+<!--
+2026-10-24 pass: H2, quote (20/24px 400), attribution and CTA on the shared scale; header->cards gap matches every section.
+Audit: S1 (py-20 md:py-28), S2 (rounded-full button), S3 (one H2 weight), S4 (rail label).
+Maps to: components/layout/sections/ProductCustomerStories.tsx (shared x9 - page-local props; S2 global).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<section id="stories" class="bg-white py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Customer Stories</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex items-end justify-between gap-6">
+          <div class="flex max-w-[770px] flex-col gap-4">
+            <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Customer Stories</h2>
+          </div>
+          <a href="#" class="hidden shrink-0 items-center gap-1.5 text-base leading-relaxed font-medium text-heading hover:text-accent focus-visible:outline-2 focus-visible:outline-accent sm:inline-flex">See more customer stories <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 gap-3 md:grid-cols-2 lg:gap-4">
+          <article class="flex min-h-[360px] flex-col rounded-lg bg-care-dark p-6 lg:min-h-[420px] lg:p-10">
+            <div class="flex items-center justify-between gap-4">
+              <img src="../../../public/logos/flourish-australia-logo.png" alt="Flourish Australia" class="h-8 w-auto max-w-[160px] object-contain brightness-0 invert" />
+              <a href="#" class="inline-flex min-h-11 items-center rounded-full border border-white px-5 text-sm leading-normal font-medium text-white transition-colors hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Read full story</a>
+            </div>
+            <blockquote class="mt-auto pt-10">
+              <p class="font-heading text-xl font-normal leading-[1.35] tracking-[-0.01em] md:text-2xl text-white">Congratulations and WELL DONE to everyone that has been a part of this magnificent success! You should all be very proud of the quality of work you produce. You make us very proud - THANK YOU!</p>
+              <footer class="mt-4 text-sm leading-normal text-white/75">Susan McCarthy, Chief Operating Officer - Flourish Australia</footer>
+            </blockquote>
+          </article>
+          <article class="flex min-h-[360px] flex-col rounded-lg bg-navy p-6 lg:min-h-[420px] lg:p-10">
+            <div class="flex items-center justify-between gap-4">
+              <img src="../../../public/logos/auckland-airport-logo.png" alt="Auckland Airport" class="h-8 w-auto max-w-[160px] object-contain brightness-0 invert" />
+              <a href="#" class="inline-flex min-h-11 items-center rounded-full border border-white px-5 text-sm leading-normal font-medium text-white transition-colors hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Read full story</a>
+            </div>
+            <blockquote class="mt-auto pt-10">
+              <p class="font-heading text-xl font-normal leading-[1.35] tracking-[-0.01em] md:text-2xl text-white">Thank you to the Sognos team - hoping to see you and thank you in person for such a successful implementation. Looking forward to a continued successful partnership with Sognos as our Field Service support partners!</p>
+              <footer class="mt-4 text-sm leading-normal text-white/75">Anthony Hart, Operations Delivery Lead - Auckland Airport</footer>
+            </blockquote>
+          </article>
+        </div>
+        <a href="#" class="mt-8 inline-flex items-center gap-1.5 text-base leading-relaxed font-medium text-heading hover:text-accent sm:hidden">See more customer stories <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

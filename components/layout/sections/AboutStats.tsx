@@ -134,7 +134,7 @@ export default function AboutStats() {
   return (
     <div
       ref={ref}
-      className="mt-16 flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-3 lg:gap-4"
+      className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-3 lg:gap-4"
     >
       {STATS.map(({ value, suffix, label }) => (
         <RollingStat

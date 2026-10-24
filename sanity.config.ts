@@ -5,7 +5,7 @@ import { presentationTool } from "sanity/presentation";
 import { presentationResolve } from "./sanity/presentation/resolve";
 import { colorInput } from "@sanity/color-input";
 import { schemas } from "./sanity/schemas";
-import { PreviewAction } from "./sanity/actions/PreviewAction";
+import { PREVIEW_PATHS, PreviewAction } from "./sanity/actions/PreviewAction";
 
 // import.meta.env only exists under Vite (the standalone `sanity dev`
 // server); Next's tsconfig has no ImportMetaEnv typing for it.
@@ -210,9 +210,10 @@ export default defineConfig({
     visionTool(),
   ],
   document: {
-    // Events get a Preview action (draft mode) next to Publish.
+    // Events and Knowledge Hub posts get a Preview action (draft mode) next
+    // to Publish.
     actions: (prev, context) =>
-      context.schemaType === "event" ? [...prev, PreviewAction] : prev,
+      context.schemaType in PREVIEW_PATHS ? [...prev, PreviewAction] : prev,
   },
   schema: {
     types: schemas,

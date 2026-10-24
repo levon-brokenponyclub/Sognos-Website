@@ -1,4 +1,7 @@
-import FeaturePlaceholderImage from "@/components/layout/sections/FeaturePlaceholderImage";
+import CareFeatureVisual, {
+  CarePalettePicker,
+  CareVisualsProvider,
+} from "@/components/layout/sections/sognoscare/FeatureVisuals";
 import ProductFeaturesScroll, {
   type ScrollFeature,
 } from "@/components/layout/sections/ProductFeaturesScroll";
@@ -118,16 +121,22 @@ export default function SognoscareFeatures({
     tagline: f.tagline,
     description: f.description,
     capabilities: [...f.capabilities],
-    visual: <FeaturePlaceholderImage index={i} />,
+    visual: <CareFeatureVisual id={f.id} index={i} />,
   }));
 
   return (
-    <ProductFeaturesScroll
-      header={header}
-      features={scrollFeatures}
-      accentBorderClass="border-sognos-blue-accent"
-      accentTextClass="text-sognos-blue-accent"
-      enableVisuals
-    />
+    <CareVisualsProvider>
+      <ProductFeaturesScroll
+        header={header}
+        features={scrollFeatures}
+        accentBorderClass="border-sognos-blue-accent"
+        accentTextClass="text-sognos-blue-accent"
+        enableVisuals
+        variant="cards"
+        taglineClass="text-[#0b6fc4]"
+        headerAside={<CarePalettePicker />}
+        stickyOffset="sectionBar"
+      />
+    </CareVisualsProvider>
   );
 }

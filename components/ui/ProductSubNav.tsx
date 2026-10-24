@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
 export interface SubNavSection {
@@ -14,13 +15,14 @@ export interface SubNavSection {
 interface ProductSubNavProps {
   productName: string;
   sections: SubNavSection[];
+  /** `pill` (default) renders in place; `bar` portals into the Navbar's
+   *  section-bar slot, after routable.com/product/payouts. */
+  variant?: "pill" | "bar";
 }
 
-export default function ProductSubNav({ productName, sections }: ProductSubNavProps) {
+// scroll-spy: the section crossing the middle band of the viewport is active.
+function useActiveSection(sections: SubNavSection[]) {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const navRef = useRef<HTMLElement>(null);
-
-  // scroll-spy active highlight
   useEffect(() => {
     const targets = sections
       .map(({ id }) => document.getElementById(id))
@@ -36,6 +38,145 @@ export default function ProductSubNav({ productName, sections }: ProductSubNavPr
     targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, [sections]);
+  return activeId;
+}
+
+export default function ProductSubNav({
+  productName,
+  sections,
+  variant = "pill",
+}: ProductSubNavProps) {
+  return variant === "bar" ? (
+    <SectionBar productName={productName} sections={sections} />
+  ) : (
+    <PillNav productName={productName} sections={sections} />
+  );
+}
+
+// ── Bar ─────────────────────────────────────────────────────────────────────
+// Full-width secondary bar hung under the fixed header: dashed hairlines,
+// product name left, plain 14px section links right. Takes the header's
+// colour state via `group/header` + `data-scrolled` — transparent over the
+// dark hero, navy once scrolled. Dark-header pages only for now (SognosCare).
+// Below lg it collapses to a disclosure.
+
+const NAVBAR_SLOT_ID = "navbar-subnav";
+const noopSubscribe = () => () => {};
+
+function SectionBar({
+  productName,
+  sections,
+}: Omit<ProductSubNavProps, "variant">) {
+  const activeId = useActiveSection(sections);
+  // The slot lives in the Navbar (layout); resolve it after hydration.
+  const slot = useSyncExternalStore(
+    noopSubscribe,
+    () => document.getElementById(NAVBAR_SLOT_ID),
+    () => null,
+  );
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  if (!slot) return null;
+
+  const links = sections.filter((s) => !s.download);
+  const downloads = sections.filter((s) => s.download && s.href);
+  const closeDisclosure = () => detailsRef.current?.removeAttribute("open");
+
+  return createPortal(
+    <nav
+      aria-label={`${productName} sections`}
+      className="text-white transition-colors duration-300 group-data-[scrolled=true]/header:bg-sognos-navy-dark"
+    >
+      {/* Desktop */}
+      <div className="border-y border-dashed border-white/10 max-lg:hidden">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-x-12 px-6 py-3 text-sm leading-normal">
+          <a href="#top" className="font-medium hover:text-sognos-blue-accent">
+            {productName}
+          </a>
+          <ul className="flex items-center gap-x-3 xl:gap-x-6">
+            {links.map(({ label, id, href }) => (
+              <li key={id}>
+                <Link
+                  href={href ?? `#${id}`}
+                  aria-current={activeId === id ? "true" : undefined}
+                  className="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-sognos-blue-accent"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+            {downloads.map(({ label, id, href }) => (
+              <li key={id}>
+                <a
+                  href={href}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-sognos-blue-accent"
+                >
+                  {label}
+                  <span aria-hidden="true">&darr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Mobile disclosure */}
+      <details
+        ref={detailsRef}
+        className="group/disclosure border-y border-dashed border-white/10 open:bg-sognos-navy-dark lg:hidden"
+      >
+        <summary className="mx-auto flex min-h-11 max-w-7xl cursor-pointer list-none items-center justify-between px-6 text-sm font-medium [&::-webkit-details-marker]:hidden">
+          {productName}
+          <span
+            aria-hidden="true"
+            className="transition-transform group-open/disclosure:rotate-180"
+          >
+            &#9662;
+          </span>
+        </summary>
+        <ul className="mx-auto max-w-7xl px-6 pb-3">
+          {links.map(({ label, id, href }) => (
+            <li key={id}>
+              <Link
+                href={href ?? `#${id}`}
+                onClick={closeDisclosure}
+                aria-current={activeId === id ? "true" : undefined}
+                className="block py-2.5 text-base text-white/75 aria-[current=true]:text-sognos-blue-accent"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+          {downloads.map(({ label, id, href }) => (
+            <li key={id}>
+              <a
+                href={href}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block py-2.5 text-base font-medium"
+              >
+                {label} <span aria-hidden="true">&darr;</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    </nav>,
+    slot,
+  );
+}
+
+// ── Pill (default) ──────────────────────────────────────────────────────────
+
+function PillNav({
+  productName,
+  sections,
+}: Omit<ProductSubNavProps, "variant">) {
+  const activeId = useActiveSection(sections);
+  const navRef = useRef<HTMLElement>(null);
 
   // keep active link in view on mobile
   useEffect(() => {

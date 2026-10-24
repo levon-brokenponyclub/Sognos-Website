@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 04 - Features</title>
+<!--
+2026-10-24 pass: capability bullet lists removed; rail items never wrap (whitespace-nowrap); card H3 / tagline / body on the shared scale.
+Audit: F2 (phased-out gray-100/50 -> tint / bordered white), F3 (aria-current links), F4 (token colours), F5 (rail in the 2/10 grid).
+Benchmark: Key features - header, stacked cards p-8 alternating near-white surfaces, text/visual columns, jump list in the left gutter.
+Maps to: components/layout/sections/ProductFeaturesScroll.tsx (shared x5, per Q2) + sognoscare/Features.tsx.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  .fv { --ease: cubic-bezier(.22,1,.36,1); }
+  .fv [data-in] { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .fv.is-in [data-in] { opacity: 1; transform: none; }
+  .fv.is-in [data-in="2"] { transition-delay: .12s; } .fv.is-in [data-in="3"] { transition-delay: .24s; } .fv.is-in [data-in="4"] { transition-delay: .36s; }
+  .fv .bar { transform: scaleY(0); transform-origin: bottom; transition: transform .9s var(--ease); }
+  .fv.is-in .bar { transform: scaleY(1); }
+  .fv .spark { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.6s var(--ease) .3s; }
+  .fv.is-in .spark { stroke-dashoffset: 0; }
+  @keyframes fv-dash { to { stroke-dashoffset: -24; } }
+  .fv.is-in .flow { stroke-dasharray: 6 6; animation: fv-dash 1s linear infinite; }
+  @keyframes fv-pulse { 0%,100% { opacity: .6; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .fv .pulse { animation: fv-pulse 2.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .fv [data-in], .fv .bar { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .fv .spark { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .flow, .fv .pulse { animation: none !important; }
+  }
+</style><section id="features" class="bg-white py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="hidden lg:col-span-3 lg:block">
+        <div class="sticky top-36">
+          <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Features</p>
+          <ul class="mt-6 space-y-1">
+            <li><a href="#case-management" aria-current="true" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-accent focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-accent"></span>Case Management</a></li>
+            <li><a href="#service-delivery" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-muted hover:text-heading focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-line group-hover:bg-muted"></span>Service Delivery Tracking</a></li>
+            <li><a href="#compliance" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-muted hover:text-heading focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-line group-hover:bg-muted"></span>Compliance & Audit Trail</a></li>
+            <li><a href="#reporting" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-muted hover:text-heading focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-line group-hover:bg-muted"></span>Reporting & Analytics</a></li>
+            <li><a href="#copilot" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-muted hover:text-heading focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-line group-hover:bg-muted"></span>Microsoft Copilot AI</a></li>
+            <li><a href="#automation" class="group flex min-h-10 items-center gap-2.5 whitespace-nowrap py-2 text-sm leading-normal font-medium text-muted hover:text-heading focus-visible:outline-2 focus-visible:outline-accent"><span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-line group-hover:bg-muted"></span>Power Platform Automation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="min-w-0 lg:col-[4/-1]">
+        <div class="lg:hidden"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Features</p></div>
+        <div class="flex max-w-[770px] flex-col gap-4 mt-6 lg:mt-0">
+          <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Everything a care operation needs</h2>
+        </div>
+        <div class="mt-10 md:mt-16 xl:mt-20 space-y-4 lg:space-y-6">
+          <article id="case-management" data-card-i="0" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">Full lifecycle, one place</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Case Management</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">Manage every stage of a participant's journey - from initial referral and intake through assessment, goal setting, service delivery, review, and case closure. Every touchpoint recorded, every team member aligned.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="0" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 8%, white)" data-loop="journey">
+              <div class="w-full max-w-md space-y-3 text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white flex items-center gap-4 p-4">
+                  <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-care-dark text-sm font-medium text-white">MT</span>
+                  <div class="min-w-0 flex-1"><p class="text-sm font-medium text-heading">M. Turner</p><p class="text-xs text-muted">Support at Home &middot; Level 3</p></div>
+                  <div class="flex -space-x-2"><span class="flex size-7 items-center justify-center rounded-full border-2 border-white text-[10px] font-medium text-white" style="background:#3b6fe0">PS</span><span class="flex size-7 items-center justify-center rounded-full border-2 border-white text-[10px] font-medium text-white" style="background:#00a98f">JK</span><span class="flex size-7 items-center justify-center rounded-full border-2 border-white text-[10px] font-medium text-white" style="background:#ff7dbc">AL</span></div>
+                </div>
+                <div data-in="2" class="rounded-lg border border-line bg-white p-4">
+                  <p class="text-xs text-muted">Participant journey</p>
+                  <ol class="mt-3 grid grid-cols-6 gap-1.5">
+                    <li data-stage class="group/s flex flex-col gap-2" data-state="done"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Referral</span></li><li data-stage class="group/s flex flex-col gap-2" data-state="done"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Intake</span></li><li data-stage class="group/s flex flex-col gap-2" data-state="now"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Assessment</span></li><li data-stage class="group/s flex flex-col gap-2" data-state="next"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Goals</span></li><li data-stage class="group/s flex flex-col gap-2" data-state="next"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Delivery</span></li><li data-stage class="group/s flex flex-col gap-2" data-state="next"><span class="h-1.5 rounded-full bg-line transition-colors duration-500 group-data-[state=done]/s:bg-care-dark group-data-[state=now]/s:bg-accent"></span><span class="truncate text-[10px] text-muted transition-colors group-data-[state=now]/s:font-medium group-data-[state=now]/s:text-heading">Review</span></li>
+                  </ol>
+                </div>
+                <div data-in="3" class="rounded-lg border border-line bg-white flex items-center justify-between p-4 text-sm"><span class="text-body">Next review</span><span class="font-medium text-heading">12 Dec &middot; Care plan</span></div>
+              </div>
+            </div></div>
+          </article>
+          <article id="service-delivery" data-card-i="1" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint/50">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">Real-time visibility</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Service Delivery Tracking</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">Know exactly what services were scheduled, what was delivered, and what was missed - in real time. Field workers record visits on mobile, coordinators see variance instantly, and nothing falls through the gaps.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="1" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 14%, white)">
+              <div class="relative w-full max-w-md text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white p-5">
+                  <div class="flex items-center justify-between"><p class="text-sm font-medium text-heading">Scheduled vs delivered</p><span class="flex items-center gap-3 text-[10px] text-muted"><span class="flex items-center gap-1"><span class="size-2 rounded-sm bg-line"></span>Scheduled</span><span class="flex items-center gap-1"><span class="size-2 rounded-sm bg-care-dark"></span>Delivered</span></span></div>
+                  <div class="mt-4 flex h-36 items-end gap-3">
+                    <div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:72%;transition-delay:0ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:70%;transition-delay:120ms"></span></div><span class="text-[10px] text-muted">M</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:80%;transition-delay:60ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:78%;transition-delay:180ms"></span></div><span class="text-[10px] text-muted">T</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:64%;transition-delay:120ms"></span><span class="bar w-1/2 rounded-t-sm bg-[#ff8e90]" style="height:52%;transition-delay:240ms"></span></div><span class="text-[10px] text-muted">W</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:88%;transition-delay:180ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:88%;transition-delay:300ms"></span></div><span class="text-[10px] text-muted">T</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:76%;transition-delay:240ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:74%;transition-delay:360ms"></span></div><span class="text-[10px] text-muted">F</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:40%;transition-delay:300ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:40%;transition-delay:420ms"></span></div><span class="text-[10px] text-muted">S</span></div><div class="flex flex-1 flex-col items-center gap-1.5"><div class="relative flex h-full w-full items-end justify-center gap-1"><span class="bar w-1/2 rounded-t-sm bg-line" style="height:32%;transition-delay:360ms"></span><span class="bar w-1/2 rounded-t-sm bg-care-dark" style="height:30%;transition-delay:480ms"></span></div><span class="text-[10px] text-muted">S</span></div>
+                  </div>
+                  <p class="mt-3 flex items-center gap-2 text-xs text-body"><span class="relative flex size-2"><span class="pulse absolute inset-0 rounded-full bg-[#ff8e90]"></span><span class="relative size-2 rounded-full bg-[#ff8e90]"></span></span>Wednesday: 12 visits short &mdash; coordinator notified</p>
+                </div>
+                <div data-in="3" class="rounded-lg border border-line bg-white absolute -bottom-4 -right-2 w-48 p-3 sm:-right-6">
+                  <p class="text-xs text-muted">Field check-in</p>
+                  <p class="mt-1 text-sm font-medium text-heading">9:02 am &middot; GPS verified</p>
+                  <p class="mt-1 flex items-center gap-1.5 text-xs text-emerald-700"><span aria-hidden="true">&#10003;</span> On time</p>
+                </div>
+              </div>
+            </div></div>
+          </article>
+          <article id="compliance" data-card-i="2" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">Audit-ready by default</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Compliance & Audit Trail</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">Every action timestamped. Every document versioned. Every funding rule enforced at the point of care, not retrospectively. SognosCare treats compliance as infrastructure - not a reporting exercise.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="2" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 8%, white)" data-loop="audit">
+              <div class="relative w-full max-w-md text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white overflow-hidden">
+                  <div class="flex items-center justify-between border-b border-line px-4 py-3"><p class="text-sm font-medium text-heading">Audit trail</p><span class="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted">&#128274; Immutable</span></div>
+                  <ul data-pool='[["Care plan v4 approved", "Coordinator \u00b7 10:14:02"], ["Funding rule applied", "Support at Home cap \u00b7 10:14:09"], ["Incident report filed", "Worker app \u00b7 10:15:31"], ["Progress note signed", "P. Shah \u00b7 10:16:05"], ["Document versioned", "Service agreement v2 \u00b7 10:16:40"]]' class="min-h-[13rem]">
+                    <li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Care plan v4 approved</p><p data-b class="text-xs tabular-nums text-muted">Coordinator &middot; 10:14:02</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Funding rule applied</p><p data-b class="text-xs tabular-nums text-muted">Support at Home cap &middot; 10:14:09</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Incident report filed</p><p data-b class="text-xs tabular-nums text-muted">Worker app &middot; 10:15:31</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Progress note signed</p><p data-b class="text-xs tabular-nums text-muted">P. Shah &middot; 10:16:05</p></div></li>
+                  </ul>
+                </div>
+                <div data-in="3" class="absolute -right-2 -top-4 flex items-center gap-2 rounded-full bg-care-dark px-4 py-2 text-xs font-medium text-white sm:-right-6">&#10003; Audit-ready</div>
+              </div>
+            </div></div>
+          </article>
+          <article id="reporting" data-card-i="3" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint/50">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">Generated, not assembled</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Reporting & Analytics</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">Funding-body reports, operational dashboards, and participant outcome summaries generated automatically from live data. No more month-end spreadsheet marathons.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="3" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 14%, white)" data-loop="count">
+              <div class="relative w-full max-w-md space-y-3 text-left">
+                <div class="grid grid-cols-3 gap-3">
+                  <div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Participants</p><p class="mt-1 font-heading text-2xl text-heading" data-count="1284" data-suffix="">0</p></div><div data-in="2" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Hours delivered</p><p class="mt-1 font-heading text-2xl text-heading" data-count="9640" data-suffix="">0</p></div><div data-in="3" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">On budget</p><p class="mt-1 font-heading text-2xl text-heading" data-count="96" data-suffix="%">0%</p></div>
+                </div>
+                <div data-in="2" class="rounded-lg border border-line bg-white p-4">
+                  <p class="text-xs text-muted">Outcome goals met &middot; last 12 months</p>
+                  <svg viewBox="0 0 300 80" class="mt-2 h-20 w-full" fill="none" aria-hidden="true"><path class="spark" d="M0 64 L27 60 L54 62 L81 50 L108 54 L135 42 L162 44 L189 32 L216 36 L243 24 L270 20 L300 12" stroke="#1d96fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div data-in="4" class="rounded-lg border border-line bg-white flex items-center gap-3 p-3"><span class="flex size-9 items-center justify-center rounded bg-tint text-xs font-medium text-heading">PDF</span><div class="min-w-0 flex-1"><p class="truncate text-sm text-heading">Monthly funding report</p><p class="text-xs text-muted">Generated from live data &middot; just now</p></div><span class="text-xs text-emerald-700">&#10003;</span></div>
+              </div>
+            </div></div>
+          </article>
+          <article id="copilot" data-card-i="4" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">AI where staff already work</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Microsoft Copilot AI</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">AI-assisted documentation, anomaly detection, and operational insights - surfaced inside Dynamics 365, not in a separate tool. Staff don't change their workflow to access AI.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="4" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 8%, white)" data-loop="type">
+              <div class="relative w-full max-w-md text-left">
+                <div data-in="1" class="overflow-hidden rounded-lg border border-white/10 bg-care-dark">
+                  <div class="flex items-center justify-between border-b border-white/10 px-4 py-3"><p class="text-sm text-white">Progress note &middot; M. Turner</p><span class="text-xs text-white/50">Dynamics 365</span></div>
+                  <div class="p-4">
+                    <p class="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-accent"><span aria-hidden="true">&#10022;</span> Copilot draft</p>
+                    <p class="mt-3 min-h-[6rem] font-mono text-[13px] leading-relaxed text-white/85"><span data-type="Client settled after morning routine. Assisted with shower and breakfast; medication taken 9:15. Mood bright, mobility steady. No concerns raised."></span><span aria-hidden="true" class="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 bg-accent align-middle"></span></p>
+                    <div class="mt-4 flex gap-2"><span class="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-heading">Accept</span><span class="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/80">Edit</span></div>
+                  </div>
+                </div>
+                <div data-in="3" class="rounded-lg border border-line bg-white absolute -bottom-5 -right-2 w-56 p-3 sm:-right-6">
+                  <p class="flex items-center gap-2 text-xs font-medium text-heading"><span class="relative flex size-2"><span class="pulse absolute inset-0 rounded-full bg-[#ffad6e]"></span><span class="relative size-2 rounded-full bg-[#ffad6e]"></span></span>Anomaly detected</p>
+                  <p class="mt-1 text-xs text-body">3 missed visits for A. Nguyen this week</p>
+                </div>
+              </div>
+            </div></div>
+          </article>
+          <article id="automation" data-card-i="5" class="grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:gap-8 md:p-8 lg:p-10 bg-tint/50">
+            <div class="flex flex-col justify-between gap-8 md:col-span-6">
+              <div class="flex flex-col gap-2">
+                <p class="text-sm leading-normal font-medium text-accent-strong">Workflows your way</p>
+                <h3 class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-heading text-balance">Power Platform Automation</h3>
+              </div>
+              <p class="max-w-[46ch] border-l-2 border-accent pl-4 text-base leading-[1.65] text-body text-pretty">Configurable low-code automation for approvals, escalations, and notifications - built to match your organisation's specific processes without requiring a developer.</p>
+            </div>
+            <div class="md:col-span-6"><div data-fv="5" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #3b6fe0 14%, white)" data-loop="run">
+              <div class="relative w-full max-w-md text-left">
+                <div aria-hidden="true" class="absolute bottom-[3.25rem] left-[21px] top-[2.75rem] w-0.5 border-l-2 border-dashed border-accent/40">
+                  <div data-progress class="absolute -left-0.5 top-0 w-0.5 bg-accent transition-[height] duration-700 ease-out" style="height:0%"></div>
+                </div>
+                <ol class="relative space-y-4">
+                  <li data-in="1" data-step data-state="next" class="group/st flex items-center gap-4"><span class="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xs font-medium text-heading transition-colors duration-300 group-data-[state=done]/st:border-care-dark group-data-[state=done]/st:bg-care-dark group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent group-data-[state=now]/st:bg-accent group-data-[state=now]/st:text-white"><span class="pulse absolute inset-0 hidden rounded-full bg-accent group-data-[state=now]/st:block"></span><span class="relative">1</span></span><div class="flex-1 rounded-lg border border-line bg-white p-3 transition-colors duration-300 group-data-[state=now]/st:border-accent"><p class="text-[10px] uppercase tracking-widest text-muted">Trigger</p><p class="mt-0.5 text-sm font-medium text-heading">Care plan change</p></div></li><li data-in="2" data-step data-state="next" class="group/st flex items-center gap-4"><span class="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xs font-medium text-heading transition-colors duration-300 group-data-[state=done]/st:border-care-dark group-data-[state=done]/st:bg-care-dark group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent group-data-[state=now]/st:bg-accent group-data-[state=now]/st:text-white"><span class="pulse absolute inset-0 hidden rounded-full bg-accent group-data-[state=now]/st:block"></span><span class="relative">2</span></span><div class="flex-1 rounded-lg border border-line bg-white p-3 transition-colors duration-300 group-data-[state=now]/st:border-accent"><p class="text-[10px] uppercase tracking-widest text-muted">Approval</p><p class="mt-0.5 text-sm font-medium text-heading">Manager approval</p></div></li><li data-in="3" data-step data-state="next" class="group/st flex items-center gap-4"><span class="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xs font-medium text-heading transition-colors duration-300 group-data-[state=done]/st:border-care-dark group-data-[state=done]/st:bg-care-dark group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent group-data-[state=now]/st:bg-accent group-data-[state=now]/st:text-white"><span class="pulse absolute inset-0 hidden rounded-full bg-accent group-data-[state=now]/st:block"></span><span class="relative">3</span></span><div class="flex-1 rounded-lg border border-line bg-white p-3 transition-colors duration-300 group-data-[state=now]/st:border-accent"><p class="text-[10px] uppercase tracking-widest text-muted">Microsoft Teams</p><p class="mt-0.5 text-sm font-medium text-heading">Notify team</p></div></li><li data-in="4" data-step data-state="next" class="group/st flex items-center gap-4"><span class="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xs font-medium text-heading transition-colors duration-300 group-data-[state=done]/st:border-care-dark group-data-[state=done]/st:bg-care-dark group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent group-data-[state=now]/st:bg-accent group-data-[state=now]/st:text-white"><span class="pulse absolute inset-0 hidden rounded-full bg-accent group-data-[state=now]/st:block"></span><span class="relative">4</span></span><div class="flex-1 rounded-lg border border-line bg-white p-3 transition-colors duration-300 group-data-[state=now]/st:border-accent"><p class="text-[10px] uppercase tracking-widest text-muted">Teams &middot; Care coordination</p><p class="mt-0.5 text-sm font-medium text-heading">Care plan v4 for M. Turner approved &mdash; roster updated.</p></div></li>
+                </ol>
+              </div>
+            </div></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loops = {
+      // Case: the active journey stage walks along the track.
+      journey(el) { const s = [...el.querySelectorAll("[data-stage]")]; let i = 2; return () => { s.forEach((x, j) => { x.dataset.state = j < i ? "done" : j === i ? "now" : "next"; }); i = (i + 1) % s.length; }; },
+      // Compliance: newest audit entry slides in, oldest drops.
+      audit(el) { const ul = el.querySelector("ul"); const pool = JSON.parse(ul.dataset.pool); let n = 0; return () => { const [a, b] = pool[n++ % pool.length]; const li = ul.firstElementChild.cloneNode(true); li.querySelector("[data-a]").textContent = a; li.querySelector("[data-b]").textContent = b; li.animate([{ opacity: 0, transform: "translateY(-10px)" }, { opacity: 1, transform: "none" }], { duration: 500, easing: "cubic-bezier(.22,1,.36,1)" }); ul.prepend(li); if (ul.children.length > 4) ul.lastElementChild.remove(); }; },
+      // Reporting: KPI counts up once.
+      count(el) { el.querySelectorAll("[data-count]").forEach((c) => { const to = +c.dataset.count, suf = c.dataset.suffix || ""; let t0; const step = (t) => { t0 ??= t; const p = Math.min(1, (t - t0) / 1200); c.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString() + suf; if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); return null; },
+      // Automation: run the workflow step by step, hold on the last, restart.
+      run(el) { const st = [...el.querySelectorAll("[data-step]")]; const bar = el.querySelector("[data-progress]"); let i = 0; return () => { const k = i % (st.length + 2); st.forEach((x, j) => { x.dataset.state = j < k ? "done" : j === k ? "now" : "next"; }); bar.style.height = `${Math.min(k, st.length - 1) / (st.length - 1) * 100}%`; i++; }; },
+      // Copilot: the draft types itself, then repeats.
+      type(el) { const t = el.querySelector("[data-type]"); const text = t.dataset.type; let i = 0; return () => { t.textContent = text.slice(0, i); i = i > text.length + 40 ? 0 : i + 1; }; },
+    };
+    const RATE = { journey: 1500, audit: 2600, type: 45, run: 1200 };
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target; el.classList.add("is-in"); io.unobserve(el);
+      const kind = el.dataset.loop; if (!kind) return;
+      if (reduce) {
+        if (kind === "type") { const t = el.querySelector("[data-type]"); t.textContent = t.dataset.type; }
+        if (kind === "run") { el.querySelectorAll("[data-step]").forEach((x) => x.dataset.state = "done"); el.querySelector("[data-progress]").style.height = "100%"; }
+        return;
+      }
+      const fn = loops[kind](el); if (fn) { fn(); setInterval(fn, RATE[kind]); }
+    }), { threshold: 0.35 });
+    document.querySelectorAll(".fv").forEach((el) => io.observe(el));
+  })();
+</script>
+</body>
+</html>

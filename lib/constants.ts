@@ -29,6 +29,14 @@ export const PRODUCTS = {
     description:
       "Map family structures, support networks, and relationship histories directly into case records - so every worker has the context they need.",
   },
+  digpacks: {
+    name: "DigPacks",
+    slug: "digpacks",
+    href: "/products/digpacks",
+    tagline: "Partnership accelerator solutions",
+    description:
+      "Microsoft-based applications, automation and AI capabilities proven in the NHS, localised for Australia and New Zealand.",
+  },
 } as const;
 
 export const SOLUTIONS = [

@@ -20,6 +20,7 @@ const PRODUCT_LABELS: Record<string, string> = {
   sognoscare: "SognosCare",
   sognosroster: "SognosRoster",
   sognosgenogram: "SognosGenogram",
+  digpacks: "DigPacks",
   "not-sure": "Not sure yet",
 };
 

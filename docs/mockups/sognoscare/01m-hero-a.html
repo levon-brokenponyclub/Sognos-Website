@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare hero A - three options</title>
+<!--
+OPTION 1 · Visit verified: Live copy. One image block (560px) with every element inside it: SognosCare badge (logo + progress ring + sync status), Visit card stepping Scheduled > En route > Checked in > Note signed, Copilot note that types, is accepted and added to the record - one 12s timeline.
+OPTION 2 · Care network: Copy suggestion. Aria /saas flow: SognosCare tile centre, four connected outcomes light up in turn (dash flows to the active node).
+OPTION 3 · Day in motion: Copy suggestion. Photo + Support at Home budget card (count-up + bar) + notification stack that cycles.
+Stage height 560px (sm+). Stripe block removed.
+Switcher (bottom centre) is review-only. Card data is illustrative demo content - not real clients.
+Maps to: sognoscare/Hero.tsx (cards -> Framer Motion; option 1 timeline -> one client state machine).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  @keyframes m-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes m-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes m-drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+  @keyframes m-pulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .m-rise { animation: m-rise .8s cubic-bezier(.22,1,.36,1) both; }
+  .m-float { animation: m-float 6s ease-in-out infinite; }
+  .m-drift { background-size: 220% 220%; animation: m-drift 9s ease-in-out infinite alternate; }
+  .m-pulse { animation: m-pulse 2.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .m-rise, .m-float, .m-drift, .m-pulse { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style><style>
+  @keyframes hero-dash { to { stroke-dashoffset: -16; } }
+  .hero-stage .flow { animation: hero-dash .8s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .hero-stage .flow { animation: none; } }
+</style><div id="site-header" data-scrolled="false" class="group/header fixed inset-x-0 top-0 z-50">
+  <header class="border-b border-transparent transition-[background-color,border-color] duration-300 group-data-[scrolled=true]/header:border-navy group-data-[scrolled=true]/header:bg-care-dark">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <a href="#hero" class="justify-self-start"><img src="../../../public/logos/sognos-logo.svg" alt="Sognos" class="h-7 w-auto brightness-0 invert" /></a>
+      <nav aria-label="Main" class="hidden h-14 items-center gap-0.5 justify-self-center rounded-full bg-white/5 p-2 lg:flex"><ul class="flex items-center gap-0.5"><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Why Sognos<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Products<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Solutions<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Industries<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Knowledge Hub<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li></ul></nav>
+      <div class="flex items-center gap-x-2 justify-self-end">
+        <a href="#" class="hidden h-12 items-center justify-center rounded-sm bg-white px-4 text-base font-normal tracking-tight text-heading transition-colors duration-200 hover:bg-accent hover:text-white lg:inline-flex">Book a Demo</a>
+        <a href="#" class="hidden h-14 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-heading sm:inline-flex lg:hidden">Book a Demo</a>
+        <button type="button" aria-label="Open menu" class="flex size-11 items-center justify-center text-white/80 hover:text-white lg:hidden"><svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <menu id="subnav" aria-label="SognosCare sections" class="m-0 p-0 text-white transition-colors duration-300 group-data-[scrolled=true]/header:bg-care-dark">
+  <div class="relative w-full border-y border-dashed border-white/10 max-lg:hidden">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-x-12 px-6 py-3 text-sm leading-normal">
+      <a href="#hero" class="font-medium">SognosCare</a>
+      <ul class="flex items-center gap-x-3 xl:gap-x-6">
+          <li><a href="#problems" data-spy="problems" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">What it solves</a></li>
+          <li><a href="#features" data-spy="features" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Features</a></li>
+          <li><a href="#editions" data-spy="editions" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Editions</a></li>
+          <li><a href="#advantages" data-spy="advantages" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Key Advantages</a></li>
+          <li><a href="#stories" data-spy="stories" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Customer Stories</a></li>
+          <li><a href="#" class="transition-colors duration-200 hover:text-accent">Schedule a Call</a></li>
+          <li><a href="#" class="inline-flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-accent">Download Datasheet <span aria-hidden="true">&darr;</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <details class="border-y border-dashed border-white/10 open:bg-care-dark lg:hidden">
+    <summary class="mx-auto flex max-w-7xl cursor-pointer list-none items-center justify-between px-6 py-3 text-sm leading-normal font-medium [&::-webkit-details-marker]:hidden">SognosCare <span aria-hidden="true">&#9662;</span></summary>
+    <ul class="mx-auto max-w-7xl px-6 pb-3">
+          <li><a href="#problems" class="block py-2 text-base">What it solves</a></li>
+          <li><a href="#features" class="block py-2 text-base">Features</a></li>
+          <li><a href="#editions" class="block py-2 text-base">Editions</a></li>
+          <li><a href="#advantages" class="block py-2 text-base">Key Advantages</a></li>
+          <li><a href="#stories" class="block py-2 text-base">Customer Stories</a></li>
+          <li><a href="#" class="block py-2 text-base">Schedule a Call</a></li>
+          <li><a href="#" class="block py-2 text-base">Download Datasheet</a></li>
+    </ul>
+  </details>
+  </menu>
+</div>
+<script>
+  // Header colour state + scroll-spy (stand-ins for the Navbar's `scrolled`
+  // flag and ProductSubNav's IntersectionObserver).
+  (() => {
+    const head = document.getElementById("site-header");
+    const bar = document.getElementById("subnav");
+    const onScroll = () => head.dataset.scrolled = String(window.scrollY > 8);
+    addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    const links = [...bar.querySelectorAll("[data-spy]")];
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((l) => l.setAttribute("aria-current", String(l.dataset.spy === e.target.id)));
+    }), { rootMargin: "-40% 0px -55% 0px" });
+    links.forEach((l) => { const t = document.getElementById(l.dataset.spy); if (t) io.observe(t); });
+  })();
+</script><div data-hero-opt="1"><style>
+  @keyframes care-marquee { to { transform: translateX(-50%); } }
+  .care-marquee { animation: care-marquee 28s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .care-marquee { animation: none; } }
+</style>
+<section id="hero" class="relative overflow-hidden bg-care-dark pt-44 pb-12 text-white md:pt-52 md:pb-20">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0" style="background: radial-gradient(70% 60% at 20% 30%, rgba(59,111,224,.35), transparent 70%), radial-gradient(60% 50% at 85% 70%, rgba(32,62,113,.6), transparent 70%), #0f1936"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 hidden w-[15%] bg-gradient-to-r from-care-dark to-transparent md:block"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 hidden w-[15%] bg-gradient-to-l from-care-dark to-transparent md:block"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl space-y-10 px-6 md:space-y-20">
+    <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+      <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>SognosCare</p>
+      <h1 class="mt-4 font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"><span class="block">One platform.</span><span class="block">From intake to outcome.</span></h1>
+      <p class="mt-4 max-w-[35rem] text-lg leading-relaxed text-white/80 text-pretty md:mt-5">Manage cases, track service delivery, meet compliance obligations, and report with confidence - in one platform built end-to-end for care.</p>
+      <div class="mt-6 flex flex-col items-center gap-4 sm:flex-row md:mt-8">
+        <button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-care-dark transition-colors hover:bg-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button>
+        <a href="#problems" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Learn More <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>
+
+    <div class="hero-stage relative mx-auto w-full max-w-[1112px] h-[420px] sm:h-[560px]">
+      <div class="m-rise relative size-full overflow-hidden rounded-lg" style="animation-delay:.2s">
+        <img src="../../../public/product/sognos-care-hero-img.png" alt="An older couple sharing a laugh at home" class="absolute inset-0 size-full object-cover" />
+        <div aria-hidden="true" class="absolute inset-0" style="background: linear-gradient(90deg, rgba(15,25,54,.55), rgba(15,25,54,0) 45%), linear-gradient(0deg, rgba(15,25,54,.45), rgba(15,25,54,0) 40%)"></div>
+
+        <div class="absolute left-4 top-4 z-20 sm:left-6 sm:top-6">
+          <div class="m-rise flex items-center gap-3 rounded-full border border-white/15 bg-care-dark/70 py-1.5 pl-1.5 pr-4 backdrop-blur" style="animation-delay:.4s">
+            <span class="relative flex size-10 items-center justify-center">
+              <svg viewBox="0 0 40 40" class="absolute inset-0 size-full -rotate-90" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="2"/><circle data-ring cx="20" cy="20" r="18" fill="none" stroke="#59bbf7" stroke-width="2" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="113.1" style="transition: stroke-dashoffset .9s cubic-bezier(.22,1,.36,1)"/></svg>
+              <span class="m-drift flex size-8 items-center justify-center rounded-full" style="background-image: linear-gradient(135deg, #59bbf7, #3b6fe0, #a5b4fc, #59bbf7)"><img src="../../../public/logos/icon-sognos-care.svg" alt="" class="size-4 brightness-0 invert" /></span>
+            </span>
+            <span class="flex flex-col">
+              <img src="../../../public/logos/sognos-care-logo.svg" alt="SognosCare" class="h-4 w-auto self-start brightness-0 invert" />
+              <span data-sync class="mt-0.5 text-[11px] text-white/75">Waiting for visit</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="absolute right-4 top-4 z-20 hidden w-[300px] sm:right-6 sm:top-6 sm:block">
+          <div class="m-rise rounded-lg border border-line bg-white p-4 text-left" style="animation-delay:.55s">
+            <div class="flex items-center justify-between">
+              <p class="font-heading text-lg text-heading">Visit &middot; M. Turner</p>
+              <span data-vchip class="rounded-full bg-tint px-2.5 py-1 text-xs font-medium text-body transition-colors duration-300">Scheduled</span>
+            </div>
+            <div class="mt-3 grid grid-cols-4 gap-1"><span data-vseg class="h-1 rounded-full bg-line transition-colors duration-500"></span><span data-vseg class="h-1 rounded-full bg-line transition-colors duration-500"></span><span data-vseg class="h-1 rounded-full bg-line transition-colors duration-500"></span><span data-vseg class="h-1 rounded-full bg-line transition-colors duration-500"></span></div>
+            <ol class="mt-3 space-y-2.5 text-sm"><li data-vstep class="group/v flex items-center gap-3" data-state="next"><span class="flex size-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-transparent transition-colors duration-300 group-data-[state=done]/v:border-emerald-600 group-data-[state=done]/v:bg-emerald-600 group-data-[state=done]/v:text-white group-data-[state=now]/v:border-accent group-data-[state=now]/v:bg-accent/15">&#10003;</span><div class="min-w-0"><p class="text-heading transition-colors group-data-[state=next]/v:text-muted">Scheduled</p><p class="truncate text-xs text-muted">9:00 am &middot; Personal care</p></div></li><li data-vstep class="group/v flex items-center gap-3" data-state="next"><span class="flex size-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-transparent transition-colors duration-300 group-data-[state=done]/v:border-emerald-600 group-data-[state=done]/v:bg-emerald-600 group-data-[state=done]/v:text-white group-data-[state=now]/v:border-accent group-data-[state=now]/v:bg-accent/15">&#10003;</span><div class="min-w-0"><p class="text-heading transition-colors group-data-[state=next]/v:text-muted">En route</p><p class="truncate text-xs text-muted">P. Shah &middot; ETA 6 min</p></div></li><li data-vstep class="group/v flex items-center gap-3" data-state="next"><span class="flex size-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-transparent transition-colors duration-300 group-data-[state=done]/v:border-emerald-600 group-data-[state=done]/v:bg-emerald-600 group-data-[state=done]/v:text-white group-data-[state=now]/v:border-accent group-data-[state=now]/v:bg-accent/15">&#10003;</span><div class="min-w-0"><p class="text-heading transition-colors group-data-[state=next]/v:text-muted">Checked in</p><p class="truncate text-xs text-muted">9:02 am &middot; GPS verified</p></div></li><li data-vstep class="group/v flex items-center gap-3" data-state="next"><span class="flex size-5 shrink-0 items-center justify-center rounded-full border border-line text-[10px] text-transparent transition-colors duration-300 group-data-[state=done]/v:border-emerald-600 group-data-[state=done]/v:bg-emerald-600 group-data-[state=done]/v:text-white group-data-[state=now]/v:border-accent group-data-[state=now]/v:bg-accent/15">&#10003;</span><div class="min-w-0"><p class="text-heading transition-colors group-data-[state=next]/v:text-muted">Note signed</p><p class="truncate text-xs text-muted">Progress note added to record</p></div></li></ol>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 right-4 z-20 sm:bottom-6 sm:left-6 sm:right-auto sm:w-[380px]">
+          <div class="m-rise overflow-hidden rounded-lg border border-white/10 bg-care-dark/90 text-left backdrop-blur" style="animation-delay:.7s">
+            <div class="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+              <p class="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-accent"><span aria-hidden="true">&#10022;</span> Copilot draft</p>
+              <span class="text-xs text-white/50">Progress note</span>
+            </div>
+            <div class="p-4">
+              <p class="min-h-[4.5rem] font-mono text-[13px] leading-relaxed text-white/85"><span data-opt1-type="Client settled after morning routine. Assisted with shower and breakfast; medication taken 9:15. Mood bright, mobility steady."></span><span aria-hidden="true" class="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 bg-accent align-middle"></span></p>
+              <div class="mt-3 flex items-center gap-2">
+                <span data-accept class="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-heading transition-all duration-300">Accept</span>
+                <span class="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/80">Edit</span>
+                <span data-added class="ml-auto text-xs text-emerald-300 opacity-0 transition-opacity duration-300">&#10003; Added to record</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ul aria-label="Trusted by" class="mx-auto hidden max-w-[1112px] grid-cols-4 md:grid">
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li>
+      </ul>
+      <div class="relative -mx-6 overflow-hidden md:hidden">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-care-dark to-transparent"></div>
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-care-dark to-transparent"></div>
+        <ul aria-label="Trusted by" class="care-marquee flex w-max"><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li></ul>
+      </div>
+    </div>
+  </div>
+</section></div><div data-hero-opt="2" hidden><style>
+  @keyframes care-marquee { to { transform: translateX(-50%); } }
+  .care-marquee { animation: care-marquee 28s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .care-marquee { animation: none; } }
+</style>
+<section id="hero" class="relative overflow-hidden bg-care-dark pt-44 pb-12 text-white md:pt-52 md:pb-20">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0" style="background: radial-gradient(70% 60% at 20% 30%, rgba(59,111,224,.35), transparent 70%), radial-gradient(60% 50% at 85% 70%, rgba(32,62,113,.6), transparent 70%), #0f1936"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 hidden w-[15%] bg-gradient-to-r from-care-dark to-transparent md:block"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 hidden w-[15%] bg-gradient-to-l from-care-dark to-transparent md:block"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl space-y-10 px-6 md:space-y-20">
+    <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+      <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>SognosCare</p>
+      <h1 class="mt-4 font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"><span class="block">Every service,</span><span class="block">connected.</span></h1>
+      <p class="mt-4 max-w-[35rem] text-lg leading-relaxed text-white/80 text-pretty md:mt-5">Referrals, rostering, funding and families meet in one SognosCare record on Dynamics 365 - so coordinators see the whole picture and act on it.</p>
+      <div class="mt-6 flex flex-col items-center gap-4 sm:flex-row md:mt-8">
+        <button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-care-dark transition-colors hover:bg-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button>
+        <a href="#problems" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Learn More <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>
+
+    <div class="hero-stage relative mx-auto w-full max-w-[1280px] h-[520px] sm:h-[560px]">
+      <div class="absolute inset-0 rounded-lg" style="background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))"></div>
+      <svg aria-hidden="true" viewBox="0 0 1000 560" preserveAspectRatio="none" class="absolute inset-0 z-10 size-full" fill="none">
+        <path data-wire="0" d="M330 115 H420 V230 H470" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" class="transition-[stroke] duration-500"/><path data-wire="1" d="M670 115 H580 V230 H530" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" class="transition-[stroke] duration-500"/><path data-wire="2" d="M350 455 H420 V330 H470" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" class="transition-[stroke] duration-500"/><path data-wire="3" d="M650 455 H580 V330 H530" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" class="transition-[stroke] duration-500"/>
+      </svg>
+      <div class="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
+        <div class="m-rise" style="animation-delay:.25s"><div class="rounded-2xl p-[2px]" style="background: linear-gradient(135deg, #c4b5fd, #59bbf7, #7ee8c4)"><div class="rounded-[14px] bg-care-dark p-2.5">
+          <div class="m-drift flex size-24 items-center justify-center rounded-xl sm:size-32" style="background-image: linear-gradient(135deg, #59bbf7, #3b6fe0, #a5b4fc, #59bbf7)">
+            <img src="../../../public/logos/icon-sognos-care.svg" alt="" class="size-12 brightness-0 invert sm:size-16" />
+          </div>
+        </div></div></div>
+      </div>
+      <div data-node="0" class="group/n absolute left-[1%] top-[10%] z-20 w-[44%] sm:w-[31%]">
+          <div class="m-rise" style="animation-delay:0.40s"><div class="rounded-lg border border-line bg-white text-left transition-colors duration-500 group-data-[on=true]/n:border-accent">
+            <div class="flex items-center gap-3 p-3 sm:p-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded bg-care-dark sm:size-11"><svg viewBox="0 0 24 24" class="size-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z M8 9h8 M8 13h5"/></svg></span>
+              <p class="text-sm text-heading sm:text-base">Referral received</p>
+              <span class="ml-auto hidden size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white group-data-[on=true]/n:flex">&#10003;</span>
+            </div>
+            <p class="hidden border-t border-line px-4 py-2.5 text-xs text-muted sm:block">Intake &middot; M. Turner</p>
+          </div></div>
+        </div><div data-node="1" class="group/n absolute right-[1%] top-[10%] z-20 w-[44%] sm:w-[31%]">
+          <div class="m-rise" style="animation-delay:0.52s"><div class="rounded-lg border border-line bg-white text-left transition-colors duration-500 group-data-[on=true]/n:border-accent">
+            <div class="flex items-center gap-3 p-3 sm:p-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded bg-care-dark sm:size-11"><svg viewBox="0 0 24 24" class="size-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16 M4 12h16 M4 18h10"/></svg></span>
+              <p class="text-sm text-heading sm:text-base">Worker matched</p>
+              <span class="ml-auto hidden size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white group-data-[on=true]/n:flex">&#10003;</span>
+            </div>
+            <p class="hidden border-t border-line px-4 py-2.5 text-xs text-muted sm:block">SognosRoster &middot; P. Shah</p>
+          </div></div>
+        </div><div data-node="2" class="group/n absolute left-[6%] bottom-[8%] z-20 w-[44%] sm:w-[31%]">
+          <div class="m-rise" style="animation-delay:0.64s"><div class="rounded-lg border border-line bg-white text-left transition-colors duration-500 group-data-[on=true]/n:border-accent">
+            <div class="flex items-center gap-3 p-3 sm:p-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded bg-care-dark sm:size-11"><svg viewBox="0 0 24 24" class="size-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v10H3z M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg></span>
+              <p class="text-sm text-heading sm:text-base">Claim submitted</p>
+              <span class="ml-auto hidden size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white group-data-[on=true]/n:flex">&#10003;</span>
+            </div>
+            <p class="hidden border-t border-line px-4 py-2.5 text-xs text-muted sm:block">Support at Home &middot; $184.20</p>
+          </div></div>
+        </div><div data-node="3" class="group/n absolute right-[6%] bottom-[8%] z-20 w-[44%] sm:w-[31%]">
+          <div class="m-rise" style="animation-delay:0.76s"><div class="rounded-lg border border-line bg-white text-left transition-colors duration-500 group-data-[on=true]/n:border-accent">
+            <div class="flex items-center gap-3 p-3 sm:p-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded bg-care-dark sm:size-11"><svg viewBox="0 0 24 24" class="size-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0 M16 8m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0 M3 20c0-3 3-5 5-5s5 2 5 5 M11 20c0-3 3-5 5-5s5 2 5 5"/></svg></span>
+              <p class="text-sm text-heading sm:text-base">Family notified</p>
+              <span class="ml-auto hidden size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white group-data-[on=true]/n:flex">&#10003;</span>
+            </div>
+            <p class="hidden border-t border-line px-4 py-2.5 text-xs text-muted sm:block">SognosGenogram &middot; 2 contacts</p>
+          </div></div>
+        </div>
+    </div>
+
+    <div>
+      <ul aria-label="Trusted by" class="mx-auto hidden max-w-[1112px] grid-cols-4 md:grid">
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li>
+      </ul>
+      <div class="relative -mx-6 overflow-hidden md:hidden">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-care-dark to-transparent"></div>
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-care-dark to-transparent"></div>
+        <ul aria-label="Trusted by" class="care-marquee flex w-max"><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li></ul>
+      </div>
+    </div>
+  </div>
+</section></div><div data-hero-opt="3" hidden><style>
+  @keyframes care-marquee { to { transform: translateX(-50%); } }
+  .care-marquee { animation: care-marquee 28s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .care-marquee { animation: none; } }
+</style>
+<section id="hero" class="relative overflow-hidden bg-care-dark pt-44 pb-12 text-white md:pt-52 md:pb-20">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0" style="background: radial-gradient(70% 60% at 20% 30%, rgba(59,111,224,.35), transparent 70%), radial-gradient(60% 50% at 85% 70%, rgba(32,62,113,.6), transparent 70%), #0f1936"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 hidden w-[15%] bg-gradient-to-r from-care-dark to-transparent md:block"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 hidden w-[15%] bg-gradient-to-l from-care-dark to-transparent md:block"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl space-y-10 px-6 md:space-y-20">
+    <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+      <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>SognosCare</p>
+      <h1 class="mt-4 font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"><span class="block">Care delivered.</span><span class="block">Compliance proven.</span></h1>
+      <p class="mt-4 max-w-[35rem] text-lg leading-relaxed text-white/80 text-pretty md:mt-5">Every visit, note and claim is captured as it happens - so your funding reporting is ready before anyone asks for it.</p>
+      <div class="mt-6 flex flex-col items-center gap-4 sm:flex-row md:mt-8">
+        <button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-care-dark transition-colors hover:bg-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button>
+        <a href="#problems" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Learn More <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>
+
+    <div class="hero-stage relative mx-auto w-full max-w-[1280px] h-[420px] sm:h-[560px]">
+      <div class="absolute inset-x-0 inset-y-[7%] z-10 flex justify-center">
+        <div class="m-rise h-full w-full max-w-[78%] overflow-hidden rounded-lg bg-white/5" style="animation-delay:.2s">
+          <img src="../../../public/product/sognos-care-hero-img.png" alt="An older couple sharing a laugh at home" class="size-full object-cover" />
+        </div>
+      </div>
+      <div data-speed="0.5" class="absolute right-0 top-[3%] z-20 hidden w-[300px] sm:block lg:w-[24%] lg:min-w-[300px]">
+        <div class="m-rise" style="animation-delay:.5s"><div class="m-float rounded-lg border border-line bg-white p-5 text-left">
+          <p class="font-heading text-lg text-heading">Support at Home</p>
+          <p class="text-xs text-muted">M. Turner &middot; Level 3 &middot; this quarter</p>
+          <p class="mt-4 font-heading text-3xl tabular-nums text-heading">$<span data-count="8412">0</span><span class="text-base text-muted"> / $12,000</span></p>
+          <div class="mt-3 h-2 overflow-hidden rounded-full bg-tint"><span data-bar class="block h-full w-0 rounded-full bg-accent transition-[width] duration-[1600ms] ease-out" style="--to:70%"></span></div>
+          <dl class="mt-4 divide-y divide-line text-sm">
+            <div class="flex justify-between py-2.5"><dt class="text-muted">Visits delivered</dt><dd class="text-heading">46</dd></div>
+            <div class="flex justify-between py-2.5"><dt class="text-muted">Claims</dt><dd class="font-medium text-emerald-700">&#10003; All lodged</dd></div>
+          </dl>
+        </div></div>
+      </div>
+      <div data-speed="0.9" class="absolute bottom-[3%] left-0 z-20 w-[290px] sm:w-[340px]">
+        <div class="m-rise" style="animation-delay:.7s"><ul id="toast-stack" data-pool='[["Visit completed", "Personal care &middot; R. Okafor", "bg-emerald-500"], ["Claim lodged", "Support at Home &middot; $184.20", "bg-accent"], ["Progress note signed", "Copilot draft approved", "bg-[#a5b4fc]"], ["Incident closed", "Coordinator review &middot; 10:40", "bg-[#ffad6e]"]]' class="relative h-[168px]">
+          <li class="toast absolute inset-x-0 flex items-center gap-3 rounded-lg border border-line bg-white p-3.5 text-left transition-all duration-700" style="bottom:0px;transform:scale(1.0);opacity:1.0;z-index:3"><span class="size-2.5 shrink-0 rounded-full bg-emerald-500"></span><div class="min-w-0"><p class="text-sm font-medium text-heading">Visit completed</p><p class="truncate text-xs text-muted">Personal care &middot; R. Okafor</p></div><span class="ml-auto text-xs text-muted">now</span></li><li class="toast absolute inset-x-0 flex items-center gap-3 rounded-lg border border-line bg-white p-3.5 text-left transition-all duration-700" style="bottom:14px;transform:scale(0.95);opacity:0.7;z-index:2"><span class="size-2.5 shrink-0 rounded-full bg-accent"></span><div class="min-w-0"><p class="text-sm font-medium text-heading">Claim lodged</p><p class="truncate text-xs text-muted">Support at Home &middot; $184.20</p></div><span class="ml-auto text-xs text-muted">now</span></li><li class="toast absolute inset-x-0 flex items-center gap-3 rounded-lg border border-line bg-white p-3.5 text-left transition-all duration-700" style="bottom:28px;transform:scale(0.9);opacity:0.4;z-index:1"><span class="size-2.5 shrink-0 rounded-full bg-[#a5b4fc]"></span><div class="min-w-0"><p class="text-sm font-medium text-heading">Progress note signed</p><p class="truncate text-xs text-muted">Copilot draft approved</p></div><span class="ml-auto text-xs text-muted">now</span></li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div>
+      <ul aria-label="Trusted by" class="mx-auto hidden max-w-[1112px] grid-cols-4 md:grid">
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex h-20 items-center justify-center px-8 lg:px-12 border-l border-white/10"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li>
+      </ul>
+      <div class="relative -mx-6 overflow-hidden md:hidden">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-care-dark to-transparent"></div>
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-care-dark to-transparent"></div>
+        <ul aria-label="Trusted by" class="care-marquee flex w-max"><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li><li aria-hidden="true" class="flex h-16 w-44 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-full w-auto w-auto max-w-full object-contain opacity-80 brightness-0 invert" /></li></ul>
+      </div>
+    </div>
+  </div>
+</section></div><div class="fixed bottom-5 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full border border-white/15 bg-care-dark/90 p-1 text-xs text-white backdrop-blur">
+  <button type="button" data-opt-pick="1" aria-pressed="true" class="rounded-full px-3.5 py-2 transition-colors hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">1 &middot; Visit verified</button><button type="button" data-opt-pick="2" aria-pressed="false" class="rounded-full px-3.5 py-2 transition-colors hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">2 &middot; Care network</button><button type="button" data-opt-pick="3" aria-pressed="false" class="rounded-full px-3.5 py-2 transition-colors hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">3 &middot; Day in motion</button>
+</div>
+<script>
+  (() => {
+    const pick = (k) => {
+      document.querySelectorAll("[data-hero-opt]").forEach((el) => (el.hidden = el.dataset.heroOpt !== k));
+      document.querySelectorAll("[data-opt-pick]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.optPick === k)));
+      dispatchEvent(new Event("resize")); try { localStorage.setItem("care-hero-opt", k); } catch {}
+    };
+    document.querySelectorAll("[data-opt-pick]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.optPick)));
+    let s = null; try { s = localStorage.getItem("care-hero-opt"); } catch {}
+    if (s) pick(s);
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Scroll parallax: [data-speed] layers drift at their own rate.
+    const layers = [...document.querySelectorAll("[data-speed]")];
+    if (!reduce && layers.length) {
+      const stage = document.getElementById("hero-stage") || document.querySelector(".hero-stage");
+      const tick = () => {
+        layers.forEach((l) => {
+          const r = (l.closest(".hero-stage") || stage).getBoundingClientRect();
+          const p = Math.max(-1, Math.min(1, r.top / innerHeight));
+          l.style.transform = `translate3d(0, ${(p * l.dataset.speed * 60).toFixed(1)}px, 0)`;
+        });
+      };
+      addEventListener("scroll", tick, { passive: true }); tick();
+    }
+    // Typed Copilot note.
+    document.querySelectorAll(".hero-stage [data-type]").forEach((typed) => {
+      const text = typed.dataset.type;
+      if (reduce) typed.textContent = text;
+      else { let i = 0; const go = () => { typed.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(go, 28); else setTimeout(() => { i = 0; go(); }, 4000); }; setTimeout(go, 1400); }
+    });
+    // Status chips cycle Scheduled -> In progress -> Completed.
+    const chips = [...document.querySelectorAll("[data-cycle]")];
+    const STATES = [["Scheduled", "bg-tint text-body"], ["In progress", "bg-accent/15 text-heading"], ["Completed", "bg-emerald-100 text-emerald-800"]];
+    if (chips.length && !reduce) {
+      let step = 0;
+      setInterval(() => {
+        const chip = chips[step % chips.length];
+        const next = (Number(chip.dataset.cycle) + 1) % STATES.length;
+        chip.dataset.cycle = next; chip.textContent = STATES[next][0];
+        chip.className = "rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-300 " + STATES[next][1];
+        step++;
+      }, 1600);
+    }
+    // Event feed: newest slides in at the top, oldest drops off.
+    const feed = document.getElementById("event-feed");
+    if (feed && !reduce) {
+      const pool = JSON.parse(feed.dataset.pool); let n = 0;
+      setInterval(() => {
+        const [title, meta] = pool[n++ % pool.length];
+        const li = document.createElement("li");
+        li.className = "m-rise flex items-start gap-3 border-b border-line px-4 py-3 last:border-b-0";
+        li.innerHTML = `<span class="mt-1.5 size-2 shrink-0 rounded-full bg-accent"></span><div><p class="text-sm font-medium text-heading">${title}</p><p class="text-xs text-muted">${meta}</p></div>`;
+        feed.prepend(li); if (feed.children.length > 3) feed.lastElementChild.remove();
+      }, 2800);
+    }
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const nodes = [...document.querySelectorAll("[data-node]")], wires = [...document.querySelectorAll("[data-wire]")];
+    if (!nodes.length) return;
+    const set = (k) => nodes.forEach((n, i) => {
+      n.dataset.on = String(i <= k);
+      wires[i].setAttribute("stroke", i === k ? "#59bbf7" : i < k ? "rgba(89,187,247,.6)" : "rgba(255,255,255,.35)");
+      wires[i].classList.toggle("flow", i === k);
+    });
+    if (reduce) { set(nodes.length - 1); return; }
+    let k = -1; setInterval(() => { k = (k + 1) % (nodes.length + 1); set(k === nodes.length ? -1 : k); }, 1500);
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const card = document.querySelector("[data-count]"), bar = document.querySelector("[data-bar]");
+    if (card) {
+      const to = +card.dataset.count;
+      if (reduce) { card.textContent = to.toLocaleString(); bar.style.width = bar.style.getPropertyValue("--to"); }
+      else setTimeout(() => {
+        bar.style.width = bar.style.getPropertyValue("--to"); let t0;
+        const step = (t) => { t0 ??= t; const p = Math.min(1, (t - t0) / 1600); card.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString(); if (p < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      }, 900);
+    }
+    const stack = document.getElementById("toast-stack");
+    if (stack && !reduce) {
+      const pool = JSON.parse(stack.dataset.pool); let n = 3;
+      const lay = () => [...stack.children].forEach((li, k) => { li.style.bottom = k * 14 + "px"; li.style.transform = `scale(${1 - k * .05})`; li.style.opacity = k > 2 ? 0 : 1 - k * .3; li.style.zIndex = 3 - k; });
+      setInterval(() => {
+        const [a, b, c] = pool[n++ % pool.length];
+        const li = stack.firstElementChild.cloneNode(true);
+        li.querySelector("span").className = "size-2.5 shrink-0 rounded-full " + c;
+        li.querySelector("p").innerHTML = a; li.querySelectorAll("p")[1].innerHTML = b;
+        li.style.transform = "translateY(24px) scale(1)"; li.style.opacity = 0;
+        stack.prepend(li); requestAnimationFrame(() => requestAnimationFrame(lay));
+        setTimeout(() => { if (stack.children.length > 4) stack.lastElementChild.remove(); }, 800);
+      }, 2600);
+    }
+  })();
+</script><script>
+  (() => {
+    const root = document.querySelector('[data-hero-opt="1"]'); if (!root) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const steps = [...root.querySelectorAll("[data-vstep]")], segs = [...root.querySelectorAll("[data-vseg]")];
+    const chip = root.querySelector("[data-vchip]"), ring = root.querySelector("[data-ring]"), sync = root.querySelector("[data-sync]");
+    const typed = root.querySelector("[data-opt1-type]"), accept = root.querySelector("[data-accept]"), added = root.querySelector("[data-added]");
+    const CHIPS = [["Scheduled", "bg-tint text-body"], ["En route", "bg-accent/15 text-heading"], ["Checked in", "bg-accent/15 text-heading"], ["Signed", "bg-emerald-100 text-emerald-800"]];
+    const RING = 113.1;
+    const visit = (k) => {
+      steps.forEach((s, i) => (s.dataset.state = i < k ? "done" : i === k ? "now" : "next"));
+      segs.forEach((s, i) => (s.className = "h-1 rounded-full transition-colors duration-500 " + (i <= k ? (k === 3 ? "bg-emerald-600" : "bg-accent") : "bg-line")));
+      const [t, c] = CHIPS[Math.max(0, k)]; chip.textContent = t; chip.className = "rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-300 " + c;
+      ring.style.strokeDashoffset = RING * (1 - Math.max(0, k + 1) / 5);
+    };
+    const finish = () => { visit(3); steps[3].dataset.state = "done"; ring.style.strokeDashoffset = 0; sync.textContent = "Record up to date"; typed.textContent = typed.dataset.opt1Type; added.style.opacity = 1; accept.className = "rounded-full bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white transition-all duration-300"; };
+    if (reduce) { finish(); return; }
+    const timers = []; const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+    const run = () => {
+      timers.splice(0).forEach(clearTimeout);
+      typed.textContent = ""; added.style.opacity = 0; accept.className = "rounded-full bg-white px-3 py-1.5 text-xs font-medium text-heading transition-all duration-300";
+      visit(0); sync.textContent = "Visit scheduled";
+      at(1600, () => { visit(1); sync.textContent = "Worker en route"; });
+      at(3200, () => { visit(2); sync.textContent = "Syncing check-in…"; });
+      const text = typed.dataset.opt1Type;
+      for (let i = 1; i <= text.length; i++) at(4400 + i * 28, () => (typed.textContent = text.slice(0, i)));
+      const end = 4400 + text.length * 28;
+      at(end + 500, () => (accept.className = "scale-95 rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-white transition-all duration-300"));
+      at(end + 900, () => { finish(); });
+      at(end + 4200, run);
+    };
+    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { run(); o.disconnect(); } }).observe(root.querySelector(".hero-stage"));
+  })();
+</script>
+</body>
+</html>

@@ -47,7 +47,7 @@ export default function PartnerCard({
   pillLabels = { resting: "Learn more", hover: "Visit Website" },
 }: Props) {
   const commonClasses =
-    "group relative flex min-h-[160px] shrink-0 snap-start basis-full flex-col overflow-hidden rounded-lg border border-sognos-line bg-sognos-tint p-5 transition-colors duration-300 hover:border-sognos-blue-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sognos-blue-accent sm:basis-[calc((100%-12px)/2)] md:min-h-[244px] lg:basis-[calc((100%-32px)/3)] lg:p-7";
+    "group relative flex min-h-[160px] shrink-0 snap-start basis-full flex-col overflow-hidden rounded border border-sognos-line bg-sognos-tint p-5 transition-colors duration-300 hover:border-sognos-blue-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sognos-blue-accent sm:basis-[calc((100%-12px)/2)] md:min-h-[244px] lg:basis-[calc((100%-32px)/3)] lg:p-7";
 
   const inner = (
     <>

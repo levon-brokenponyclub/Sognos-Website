@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 05 - Editions</title>
+<!--
+2026-10-24 pass: no left rail - header and cards span the full container (the slider needs the width); header, lede, card title and body on the shared scale.
+Audit: E1 (one title + description per card), E2 (description visible at rest below lg), E3 (white card on tint), E4 (rail header), E5, 44px arrows.
+Maps to: sognoscare/Editions.tsx + sognoscare/EditionCards.tsx (shared with EditionPageTemplate).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<section id="editions" class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="flex max-w-[770px] flex-col gap-4">
+        <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Choose the Right SognosCare Edition for Your Service</h2>
+        <p class="max-w-2xl text-base leading-relaxed text-pretty text-body">SognosCare offers six tailored editions, each pre-configured for its funding model, compliance framework, and operational workflows.</p>
+      </div>
+      <div class="flex shrink-0 gap-2">
+        <button type="button" aria-label="Previous editions" disabled class="flex size-11 items-center justify-center rounded-full border border-line text-heading disabled:opacity-30">&larr;</button>
+        <button type="button" aria-label="Next editions" class="flex size-11 items-center justify-center rounded-full border border-line text-heading transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-accent">&rarr;</button>
+      </div>
+    </div>
+    <ul class="mt-10 md:mt-16 xl:mt-20 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] lg:gap-4">
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-dmh"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/sognoscare-edition-dmh.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">Plan around participant goals, manage incidents, and streamline progress notes - with NDIS funding rules and Quality & Safeguards requirements enforced at every step.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Disability & Mental Health</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-dmh group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-ahc"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/sognoscare-edition-ahc.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">Manage referrals, coordinate therapy schedules, and record multi-disciplinary notes in one place - with mobile-first access designed for practitioners who work across multiple sites.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Allied Health</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-ahc group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-hith"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/SognosCare-HITH-Logo.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">Manage home-based treatment, mobile clinical teams, patient visits, and care documentation while maintaining visibility across Hospital in the Home delivery.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Hospital in the Home</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-hith group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-sah"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/sognoscare-edition-sah.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">Manage client services, budgets, and care workers while staying ahead of the Support at Home program - with funding model changes tracked and compliance pre-configured.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Support at Home</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-sah group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-rac"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/sognoscare-edition-rac.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">From care planning to staff coordination and resident reporting - built for residential providers demonstrating quality against Aged Care Quality Standards.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Residential Aged Care</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-rac group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+          <li class="w-[82vw] shrink-0 snap-start sm:w-[calc((100%-12px)/2)] lg:w-[calc((100%-32px)/3)]">
+            <a href="#" class="group relative flex h-full min-h-[385px] flex-col justify-between overflow-hidden rounded border border-line bg-white p-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-ed-cfs"></span>
+              <div class="flex flex-col gap-6">
+                <img src="../../../public/logos/SognosCare-C&amp;FS-Logo.svg" alt="" class="h-14 w-auto self-start" />
+                <p class="max-w-[45ch] text-base leading-relaxed text-body">Manage casework, family relationships, referrals, safety planning, and frontline service delivery with a connected platform built for child and family services.</p>
+              </div>
+              <div class="flex items-center justify-between gap-4 border-t border-line pt-5">
+                <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading text-balance">Child & Family Services</h3>
+                <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-tint text-heading transition-colors group-hover:bg-ed-cfs group-hover:text-white">&rarr;</span>
+              </div>
+            </a>
+          </li>
+    </ul>
+  </div>
+</section>
+</body>
+</html>

@@ -2,7 +2,12 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram" | "not-sure";
+type ProductKey =
+  | "sognoscare"
+  | "sognosroster"
+  | "sognosgenogram"
+  | "digpacks"
+  | "not-sure";
 
 interface BookDemoContextType {
   isOpen: boolean;

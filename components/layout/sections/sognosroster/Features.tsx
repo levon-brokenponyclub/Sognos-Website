@@ -1,4 +1,7 @@
-import FeaturePlaceholderImage from "@/components/layout/sections/FeaturePlaceholderImage";
+import RosterFeatureVisual, {
+  RosterPalettePicker,
+  RosterVisualsProvider,
+} from "@/components/layout/sections/sognosroster/FeatureVisuals";
 import ProductFeaturesScroll, {
   type ScrollFeature,
 } from "@/components/layout/sections/ProductFeaturesScroll";
@@ -95,19 +98,24 @@ export default function SognoscareRosterFeatures() {
     tagline: f.tagline,
     description: f.description,
     capabilities: [...f.capabilities],
-    visual: <FeaturePlaceholderImage index={i} />,
+    visual: <RosterFeatureVisual id={f.id} index={i} />,
   }));
 
   return (
-    <ProductFeaturesScroll
-      header={{
-        eyebrow: "Features",
-        heading: "Built for the full scheduling lifecycle",
-      }}
-      features={scrollFeatures}
-      accentBorderClass="border-sognos-roster-base"
-      accentTextClass="text-sognos-roster-base"
-      enableVisuals
-    />
+    <RosterVisualsProvider>
+      <ProductFeaturesScroll
+        header={{
+          eyebrow: "Features",
+          heading: "Built for the full scheduling lifecycle",
+        }}
+        features={scrollFeatures}
+        accentBorderClass="border-sognos-roster-base"
+        accentTextClass="text-sognos-roster-base"
+        enableVisuals
+        variant="cards"
+        taglineClass="text-[#104b90]"
+        headerAside={<RosterPalettePicker />}
+      />
+    </RosterVisualsProvider>
   );
 }

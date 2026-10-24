@@ -218,7 +218,7 @@ const CORE_PALETTE = [
   { name: "sognos-navy-darkest", hex: "#060e28", token: true },
   { name: "sognos-navy", hex: "#152248", token: true },
   { name: "sognos-blue-accent", hex: "#1d96fc", token: true },
-  { name: "sognos-tint", hex: "#f0eff2", token: true },
+  { name: "sognos-tint", hex: "#f9fafe", token: true },
   { name: "sognos-heading", hex: "#0f1936", token: true },
   { name: "sognos-muted", hex: "#68706f", token: true },
 ];

@@ -560,7 +560,16 @@ export async function getKnowledgePostArchive(): Promise<
   );
 }
 
-export async function getKnowledgePostBySlug(slug: string) {
+export async function getKnowledgePostBySlug(
+  slug: string,
+  { preview = false }: { preview?: boolean } = {},
+) {
+  // Draft mode (Studio → Presentation): read the draft, uncached.
+  if (preview) {
+    return previewClient
+      .fetch(KNOWLEDGE_POST_BY_SLUG_QUERY, { slug }, { cache: "no-store" })
+      .catch(() => null);
+  }
   return sanityFetch(
     KNOWLEDGE_POST_BY_SLUG_QUERY,
     { slug },

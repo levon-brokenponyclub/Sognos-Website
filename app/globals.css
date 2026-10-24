@@ -217,10 +217,13 @@
   --color-sognos-roster-dark: var(--sognos-roster-dark);
   --color-sognos-genogram-base: var(--sognos-genogram-base);
   --color-sognos-genogram-dark: var(--sognos-genogram-dark);
+  --color-sognos-digpacks-base: var(--sognos-digpacks-base);
+  --color-sognos-digpacks-dark: var(--sognos-digpacks-dark);
 
   --background-image-sognos-care-gradient: var(--sognos-care-gradient);
   --background-image-sognos-roster-gradient: var(--sognos-roster-gradient);
   --background-image-sognos-genogram-gradient: var(--sognos-genogram-gradient);
+  --background-image-sognos-digpacks-gradient: var(--sognos-digpacks-gradient);
 
   --color-sognos-edition-aged-care: var(--sognos-edition-aged-care);
   --color-sognos-edition-allied-health: var(--sognos-edition-allied-health);

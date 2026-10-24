@@ -241,7 +241,7 @@
      light sections — same job, but it is actually a Sognos colour.
      The rest of the family, for callouts later:
        mint #ebfbe3 · ice #f4f8f9 · cream #f5f6ee · rose #f7edf3 */
-  --sognos-tint: #f0eff2;
+  --sognos-tint: #f9fafe;
   /* Product: SognosCare */
   --sognos-care-dark: #0f1936;
   --sognos-care-base: #3b6fe0;
@@ -268,6 +268,15 @@
     #7b3fa8,
     #4a1670,
     #1a0224
+  );
+  /* Partner: DigPacks (brand magenta from the DigPacks mark) */
+  --sognos-digpacks-dark: #2a0517;
+  --sognos-digpacks-base: #b6065a;
+  --sognos-digpacks-gradient: linear-gradient(
+    to bottom right,
+    #b6065a,
+    #6b0436,
+    #1f0112
   );
   /* Editions (SognosCare sector identity) */
   --sognos-edition-aged-care: #caa4ff;

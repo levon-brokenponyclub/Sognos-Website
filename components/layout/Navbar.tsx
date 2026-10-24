@@ -29,6 +29,7 @@ const DARK_HERO_PATHS = new Set([
   "/products/sognoscare",
   "/products/sognosroster",
   "/products/sognosgenogram",
+  "/products/digpacks",
 ]);
 // Dynamic-route prefixes whose pages always render a dark hero.
 const DARK_HERO_PATH_PREFIXES = [
@@ -1012,8 +1013,9 @@ export default function Navbar({
       {/* ── Header — hides on scroll-down, peeks on scroll-up ─────────────────── */}
       <header
         ref={headerRef}
+        data-scrolled={scrolled}
         className={[
-          "fixed inset-x-0 z-50",
+          "group/header fixed inset-x-0 z-50",
           bannerOffsetClass,
           "transition-[top,background-color,border-color] duration-300 ease-in-out",
           "border-b",
@@ -1360,6 +1362,11 @@ export default function Navbar({
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Section-bar slot — a page's ProductSubNav (variant="bar") portals
+            here so it rides under the 80px bar with the same banner offset
+            and scroll state. Empty on every other page. */}
+        <div id="navbar-subnav" className="absolute inset-x-0 top-full z-40" />
       </header>
 
       {/* ── Mobile full-screen overlay (two-level slide) ─────────────────────── */}

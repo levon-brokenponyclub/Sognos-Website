@@ -28,32 +28,40 @@ const LOGO_NAMES = [
 
 type Logo = { alt: string; image: SanityImageSource };
 
+/** The named product-page logo set, resolved from the CMS — shared with heroes
+ *  that carry the logos inline (SognosCare). */
+export async function getProductTrustLogos(): Promise<Logo[]> {
+  const content = await getLogoStripContent();
+  const byAlt = new Map(
+    (content?.logos ?? []).map((logo) => [logo.alt, logo as Logo]),
+  );
+  return LOGO_NAMES.map((name) => byAlt.get(name)).filter(
+    (logo): logo is Logo => Boolean(logo?.image),
+  );
+}
+
 export default async function ProductTrustStrip({
   title = DEFAULT_TITLE,
   dark = false,
   className = "bg-white",
 }: ProductTrustStripProps = {}) {
-  const content = await getLogoStripContent();
-  const byAlt = new Map(
-    (content?.logos ?? []).map((logo) => [logo.alt, logo as Logo]),
-  );
-  const logos = LOGO_NAMES.map((name) => byAlt.get(name)).filter(
-    (logo): logo is Logo => Boolean(logo?.image),
-  );
+  const logos = await getProductTrustLogos();
 
   if (logos.length === 0) return null;
 
   return (
     <section aria-label="Trusted organisations" className={`w-full ${className}`}>
-      <div className="mx-auto max-w-5xl px-6 pt-16 pb-16 text-center md:pt-20 md:pb-20">
-        <h3
-          className={`mb-8 font-heading text-3xl tracking-tight ${
+      <div className="mx-auto max-w-5xl px-6 py-16 text-center md:py-20">
+        {/* A caption, not a section heading — a <p> keeps the outline from
+            jumping H1 → H3 straight after the hero. */}
+        <p
+          className={`font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] ${
             dark ? "text-white" : "text-sognos-heading"
           }`}
         >
           {title}
-        </h3>
-        <div className="mt-15 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 md:flex-nowrap md:justify-between md:gap-x-0">
+        </p>
+        <div className="mt-10 flex md:mt-12 flex-wrap items-center justify-center gap-x-12 gap-y-4 md:flex-nowrap md:justify-between md:gap-x-0">
           {logos.map((logo, index) => (
             <div
               key={logo.alt + index}

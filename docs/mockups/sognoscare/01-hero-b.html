@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 01 - Hero B: centred, captioned logo grid</title>
+<!--
+OPTION B: centred column, caption + hairline-divided logo grid (the current strip folded into the hero).
+Hero options 2026-10-24: logo block removed; trust logos move into the hero and the separate ProductTrustStrip section is dropped.
+Background: care-dark with two soft care-gradient glows (atmospheric, after routable.com/manufacturing) - existing colour values only.
+Copy unchanged; logos are the live strip's five (Sanity) - local files stand in, Sandvik as a wordmark.
+Maps to: sognoscare/Hero.tsx (+ remove <ProductTrustStrip> from sognoscare/page.tsx; logos via getLogoStripContent).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<div id="site-header" data-scrolled="false" class="group/header fixed inset-x-0 top-0 z-50">
+  <header class="border-b border-transparent transition-[background-color,border-color] duration-300 group-data-[scrolled=true]/header:border-navy group-data-[scrolled=true]/header:bg-care-dark">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <a href="#hero" class="justify-self-start"><img src="../../../public/logos/sognos-logo.svg" alt="Sognos" class="h-7 w-auto brightness-0 invert" /></a>
+      <nav aria-label="Main" class="hidden h-14 items-center gap-0.5 justify-self-center rounded-full bg-white/5 p-2 lg:flex"><ul class="flex items-center gap-0.5"><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Why Sognos<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Products<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Solutions<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Industries<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight text-white transition-colors duration-200 hover:bg-white hover:text-heading focus-visible:outline-2 focus-visible:outline-white">Knowledge Hub<svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li></ul></nav>
+      <div class="flex items-center gap-x-2 justify-self-end">
+        <a href="#" class="hidden h-12 items-center justify-center rounded-sm bg-white px-4 text-base font-normal tracking-tight text-heading transition-colors duration-200 hover:bg-accent hover:text-white lg:inline-flex">Book a Demo</a>
+        <a href="#" class="hidden h-14 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-heading sm:inline-flex lg:hidden">Book a Demo</a>
+        <button type="button" aria-label="Open menu" class="flex size-11 items-center justify-center text-white/80 hover:text-white lg:hidden"><svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <menu id="subnav" aria-label="SognosCare sections" class="m-0 p-0 text-white transition-colors duration-300 group-data-[scrolled=true]/header:bg-care-dark">
+  <div class="relative w-full border-y border-dashed border-white/10 max-lg:hidden">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-x-12 px-6 py-3 text-sm leading-normal">
+      <a href="#hero" class="font-medium">SognosCare</a>
+      <ul class="flex items-center gap-x-3 xl:gap-x-6">
+          <li><a href="#problems" data-spy="problems" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">What it solves</a></li>
+          <li><a href="#features" data-spy="features" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Features</a></li>
+          <li><a href="#editions" data-spy="editions" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Editions</a></li>
+          <li><a href="#advantages" data-spy="advantages" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Key Advantages</a></li>
+          <li><a href="#stories" data-spy="stories" class="text-white/75 transition-colors duration-200 hover:text-white aria-[current=true]:text-accent">Customer Stories</a></li>
+          <li><a href="#" class="transition-colors duration-200 hover:text-accent">Schedule a Call</a></li>
+          <li><a href="#" class="inline-flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-accent">Download Datasheet <span aria-hidden="true">&darr;</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <details class="border-y border-dashed border-white/10 open:bg-care-dark lg:hidden">
+    <summary class="mx-auto flex max-w-7xl cursor-pointer list-none items-center justify-between px-6 py-3 text-sm leading-normal font-medium [&::-webkit-details-marker]:hidden">SognosCare <span aria-hidden="true">&#9662;</span></summary>
+    <ul class="mx-auto max-w-7xl px-6 pb-3">
+          <li><a href="#problems" class="block py-2 text-base">What it solves</a></li>
+          <li><a href="#features" class="block py-2 text-base">Features</a></li>
+          <li><a href="#editions" class="block py-2 text-base">Editions</a></li>
+          <li><a href="#advantages" class="block py-2 text-base">Key Advantages</a></li>
+          <li><a href="#stories" class="block py-2 text-base">Customer Stories</a></li>
+          <li><a href="#" class="block py-2 text-base">Schedule a Call</a></li>
+          <li><a href="#" class="block py-2 text-base">Download Datasheet</a></li>
+    </ul>
+  </details>
+  </menu>
+</div>
+<script>
+  // Header colour state + scroll-spy (stand-ins for the Navbar's `scrolled`
+  // flag and ProductSubNav's IntersectionObserver).
+  (() => {
+    const head = document.getElementById("site-header");
+    const bar = document.getElementById("subnav");
+    const onScroll = () => head.dataset.scrolled = String(window.scrollY > 8);
+    addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    const links = [...bar.querySelectorAll("[data-spy]")];
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((l) => l.setAttribute("aria-current", String(l.dataset.spy === e.target.id)));
+    }), { rootMargin: "-40% 0px -55% 0px" });
+    links.forEach((l) => { const t = document.getElementById(l.dataset.spy); if (t) io.observe(t); });
+  })();
+</script><section id="hero" class="relative flex min-h-[88vh] flex-col justify-between overflow-hidden" style="background: radial-gradient(70% 60% at 20% 30%, rgba(59,111,224,.35), transparent 70%), radial-gradient(60% 50% at 85% 70%, rgba(32,62,113,.6), transparent 70%), #0f1936">
+  <div class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 pt-44 pb-20 text-center md:pt-52 md:pb-24">
+    <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>SognosCare</p>
+    <h1 class="font-heading text-5xl font-normal leading-[1.05] tracking-[-0.02em] text-balance md:text-6xl lg:text-7xl text-white">One platform. From intake to outcome.</h1>
+    <p class="max-w-2xl text-lg leading-relaxed text-pretty text-white/75">Manage cases, track service delivery, meet compliance obligations, and report with confidence - in one platform built end-to-end for care.</p>
+    <div class="mt-4 flex flex-col items-center gap-4 sm:flex-row">
+      <button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-care-dark transition-colors hover:bg-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button>
+        <a href="#problems" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Learn More <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+  <div class="relative mx-auto w-full max-w-5xl px-6 pb-16 md:pb-20">
+    <p class="text-center text-sm leading-normal text-white/60">Trusted by industry leaders and professionals worldwide</p>
+    <ul class="mt-8 grid grid-cols-2 gap-y-6 border-t border-white/10 pt-8 sm:grid-cols-3 md:grid-cols-5 md:gap-y-0 md:[&>li:not(:first-child)]:border-l md:[&>li]:border-white/10">
+        <li class="flex items-center justify-center"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-8 md:h-9 w-auto max-w-[140px] object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex items-center justify-center"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-8 md:h-9 w-auto max-w-[140px] object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex items-center justify-center"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-8 md:h-9 w-auto max-w-[140px] object-contain opacity-80 brightness-0 invert" /></li>
+        <li class="flex items-center justify-center"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white/80">Sandvik</span></li>
+        <li class="flex items-center justify-center"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-8 md:h-9 w-auto max-w-[140px] object-contain opacity-80 brightness-0 invert" /></li>
+    </ul>
+  </div>
+</section>
+</body>
+</html>

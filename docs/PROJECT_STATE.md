@@ -112,6 +112,7 @@ Reserve for deliberate signature moments — About page + editorial spreads.
 - SognosCare: `--sognos-care-dark #0f1936`, `--sognos-care-base #3b6fe0`, `--sognos-care-gradient`.
 - SognosRoster: `--sognos-roster-dark #1d96fc`, `--sognos-roster-base #59bbf7`, `--sognos-roster-gradient`.
 - SognosGenogram: `--sognos-genogram-dark #250438`, `--sognos-genogram-base #91278c`, `--sognos-genogram-gradient`.
+- DigPacks (partner): `--sognos-digpacks-dark #2a0517`, `--sognos-digpacks-base #b6065a`, `--sognos-digpacks-gradient`. Base doubles as text/CTA colour, so it stays dark enough for white text and for text on white.
 
 **Editions — SognosCare (live in `app/tokens.css`):** six sector-identity
 pairs — Aged Care, Allied Health, Support at Home, Hospital in the Home,
@@ -207,7 +208,7 @@ untouched, mark ❌.
 | LogoStrip | ✅ live | Trust marquee with title ("Trusted by industry leaders…"), Sanity-backed. `showTitle` prop removed with the restore. |
 | HowSognosWorks | ✅ restored | `f2776ef` version: "Healthcare First. Field Services Always. AI at the Centre." + platform logos + timer deck (Manage demand / Coordinate workforce / Track outcomes). No `ScrollReveal` wrapper. |
 | ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
-| SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. Awaiting Pass. |
+| SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. 2026-10-24: /dev/ payout art replaced by Sognos motion graphics (`home/SolutionVisuals.tsx`); review toggle Panel colour / Hero photo + palettes A–F (hidden on production). Awaiting Pass. |
 | IndustrySection | 🟡 scaffold | Routable swiper rescaffold: 628px cards, per-sector inline hex tints. Awaiting Pass + sector token migration. |
 | HeadlineCTA | ⚠️ pending fix | `rounded-sm` button violation flagged, not fixed. |
 | CustomerStories | ✅ live | Embla gutter-inset slider, product-dark palette. |
@@ -217,26 +218,26 @@ untouched, mark ❌.
 
 | Page | Sofia Pro | Weight ladder | Alpha ladder | Video panel | Notes |
 |---|---|---|---|---|---|
-| **SognosCare Hero** | ✅ | ✅ `font-bold` H1 | ✅ `text-white/85` | ❌ hidden — logo-only in gradient panel | **Sandbox.** Video pattern documented; Care asset not finalised. |
-| **SognosCare Problems** | ✅ | ✅ `font-semibold` H2, `font-light` body (dark half) | ✅ `text-white/85` dark half | — | **Sandbox.** Tokenised `text-gray-600` → `text-sognos-body`, `rounded-xl` → `rounded`. |
-| SognosCare Features / Editions / Advantages / Stories | ❌ | ❌ | ❌ | — | Untouched. |
+| **SognosCare Hero / Sub-nav / Problems / Editions / Advantages** | ❌ retired | — | ✅ `/75` | ❌ no panel — trust logos in the hero (option A, 2026-10-24); separate trust strip removed | **Polish pass 2026-10-24** (`docs/audits/sognoscare-polish-audit.md`). AngelList throughout; page-local type scale `sognoscare/typeScale.ts` (H2 400 / 30→36px, ledes 16px); `SectionLabel`; Routable sub-nav bar (`ProductSubNav variant="bar"` → Navbar slot); 4 solution steps; edition cards rebuilt. Hero motion stage = option 3 "Day in motion" (`sognoscare/HeroStage.tsx`, 560px; budget card + notification stack; demo data). |
+| SognosCare Features / Stories | ❌ | ❌ | ❌ | — | Excluded from the polish pass. Features rail/jump offsets clear the section bar via `stickyOffset="sectionBar"` (2026-10-24). |
 | SognosRoster Hero | ❌ | ❌ | ❌ | ✅ live (canonical) | Reference implementation for the video/logo crossfade pattern. |
 | SognosRoster other sections | ❌ | ❌ | ❌ | — | Untouched. Broken Sanity `stories` query (§5). |
 | SognosGenogram (all sections) | ❌ | ❌ | ❌ | ❌ N/A | Sandbox experiment reverted 2026-08-07 — restored to original design system. No `sognosgenogramPage` Sanity schema exists. |
+| DigPacks (`/products/digpacks`, all sections) | ❌ | ❌ | ❌ | ❌ N/A | Added 2026-10-24. Partner page on the product template (Hero, Partnership, sub-nav, Outcomes, Solutions via `ProductFeaturesScroll`, Why, Asset Booker). Copy ported verbatim from prod `/digpacks`. Static — no Sanity schema. Listed in the Products mega menu (4th column) and as a partner card under the `/products` grid. `/digpacks` + `/products/digpacks-contact` 308 → `/products/digpacks`. |
 
 ### 4.3 About page
 
 | Section | Status | Notes |
 |---|---|---|
-| Hero (H1) | ✅ Pass done | Copy rewritten. About-only H1 override kept (`text-5xl lg:text-6xl`). |
-| AboutHeroImage | ⚠️ open | Mobile `pt-[100vw]` + global-scrollY parallax bug — fix drafted in archived audit. |
-| AboutStoryTimeline | ✅ live | Wired in — replaces old Our Story block. |
+| Hero (H1) | ✅ Pass done | About-only H1 override kept (`text-5xl lg:text-6xl`). Intro measure `max-w-3xl` (2026-10-24). Copy + Careers-only CTA are an open content decision. |
+| AboutHeroImage | ✅ fixed 2026-10-24 | Element-relative `useScroll`, 16:10 mobile crop, radius capped at 8px, alt text. |
+| AboutStoryTimeline | ✅ live | Headline is the `h3`, year a visual marker; double stats margin removed (2026-10-24). Milestone copy still placeholder. |
 | AboutValues | ✅ Refresh + numbered beliefs | Applied 2026-08-06. |
 | TeamSection | ✅ Pass done | Live 3-card grid — untouched. |
 | AboutLeadershipEditorial | 📦 scaffold at `/dev/story-timeline` | Not wired live. Decision: promote to replace `TeamSection`, or retire. |
 | AboutStats | ⚠️ payload | Current 3 stats have redundancy (Founded 2016 / 10+ Years / 3 Countries); needs real numbers. |
-| Partners + Accreditations | ✅ Pass done | Ingram / Resco baked-in blue logos remain — needs transparent replacements or white-plate treatment (§6). |
-| SocialResponsibility | ⚠️ open | Audit findings not applied: `py-24 lg:py-32` (off-system), centred H2 (isolates from left-aligned rhythm), `text-white/65` (off-ladder), six identical link destinations. |
+| Partners + Accreditations | ✅ Pass done | 2026-10-24: transparent logos (Microsoft keyed, Ingram + Resco as blue positives), `PartnerCard` → `rounded`, arrows `rounded-full`. Accreditations read the shared `lib/content/accreditations.ts` (with Footer; adds ISO 27001). |
+| SocialResponsibility | ✅ Pass done 2026-10-24 | `py-20 md:py-28`, left label rail, `text-white/75`, type-first numbered pillars (no cards), one "Read our commitment" link. |
 | Careers band (bottom) | ✅ Pass done | Duplication with Hero resolved. |
 
 ### 4.4 Solutions / Industries / Knowledge Hub / Customer Stories
@@ -257,6 +258,8 @@ Built but imported nowhere: `AboutBeliefs`, `AboutHeroGrid`, `ComingSoonHero`,
 Plus 4 `.backup.tsx` files (`KnowledgeHubArchive`, `NewsInsightSection`,
 `ProductCustomerStories`, `LogoStrip`). `BentoGrid` renders only at the
 throwaway `/dev/bento-preview`.
+
+`FeaturePlaceholderImage` is a neutral panel since 2026-10-24 (the old `public/product/feature-0X.webp` were third-party UI — removed). Care and Roster Features now use gallery motion graphics (`sognoscare/FeatureVisuals.tsx`, `sognosroster/FeatureVisuals.tsx`, shared `components/ui/visuals/primitives.tsx`) with a review-only panel palette picker (hidden on production; Care default C · Care blues, Roster default A · Roster tints). Genogram still on the placeholder.
 
 Orphan stat components with unsourced placeholder %s that would mislead a
 grep: `ProofSection.tsx`, `sognoscare/Proof.tsx` (`99% / 75% / 60% / 12,000+`),
@@ -313,16 +316,14 @@ Design + code work, ordered by impact.
 10. **Build `/customers` hub + `[slug]`, and a real `/events` index.** Only
     fully unbuilt routes.
 
-11. **Fix `AboutHeroImage`** — element-relative `useScroll` + saner mobile
-    aspect than `pt-[100vw]`. Draft in archived About audit.
+11. **Fix `AboutHeroImage`** — **Done 2026-10-24.**
 
 12. **`AboutStats` payload rewrite** — three stats currently duplicate
     ("Founded 2016" + "10+ Years" = same fact). Needs real numbers from
     founders. Decision: 3 or 4 stats.
 
-13. **SocialResponsibility fixes** — `py-20 md:py-28`, left-align header,
-    alpha ladder (`text-white/75` not `/65`), fragment-target links per
-    pillar instead of six identical destinations.
+13. **SocialResponsibility fixes** — **Done 2026-10-24** (single link
+    rather than per-pillar fragments).
 
 14. **Content-model additions (Sanity):**
     - Extract `ProductSpotlight` from industries page → wire to Customer
@@ -400,10 +401,9 @@ Design + code work, ordered by impact.
   (`#002040`), `--sognos-cream` (`#e0e0c0`-family), `--sognos-warm-coral`
   (`#c08040`) to `tokens.css`. Site currently reads all-cool; print is
   warmer.
-- **Retone `bg-sognos-tint`?** Currently `#f0eff2` (cool grey-pink); print
-  cream is `#e0e0c0` (warmer green-cream). Alternative: keep current tint for
-  UI, introduce `--sognos-cream` only for editorial contexts (pull-quotes,
-  testimonials, long-form KH posts).
+- **`bg-sognos-tint` retoned** to `#f9fafe` (2026-10-24, from `#f0eff2`) to
+  match the approved visuals gallery. Print cream (`#e0e0c0`) remains an
+  open option as a separate `--sognos-cream` for editorial contexts.
 - **Weight ladder rollout** — hard-coded on SognosCare as sandbox (§7). Roll
   to other products, or retire if it doesn't hold.
 - **Icon library integration** — 78-icon two-tone library ships in brand
@@ -416,10 +416,9 @@ Design + code work, ordered by impact.
   `docs/PHOTOGRAPHY_DIRECTION.md`, or fold into a section here?
 - **Sofia Pro on retained print materials?** — AngelList is the current web
   face. Any surviving material still using Sofia Pro, or full replacement?
-- **Ingram Micro + Resco partner logos** — baked-in blue backgrounds on
-  `bg-sognos-tint` cards. Get transparent PNG/SVG replacements from
-  vendors, or ship interim white-plate treatment (§2.1 already codified as
-  a rule).
+- **Ingram Micro + Resco partner logos** — *Resolved 2026-10-24:* blue
+  positives generated from the supplied white-on-blue files. Swap for vendor
+  originals if they arrive.
 - **Industries H2 conflict** — currently uses `font-normal` with inconsistent
   responsive stepping. Matches neither standard H2 (`font-medium ... md:text-4xl`)
   nor statement H2 (`font-medium ... md:text-5xl`). Bring into line, or is
@@ -428,9 +427,9 @@ Design + code work, ordered by impact.
   components + 4 `.backup.tsx` files, or keep any as intended WIP.
 - **Embla** — keep the dependency for future sliders, or drop it since the
   live sliders are native scroll-snap.
-- **Duplicated content arrays** — extract SR pillars (SR page ↔ About
-  section) and accreditations (Footer ↔ About) into `lib/content`, or keep
-  hand-synced.
+- **Duplicated content arrays** — accreditations extracted to
+  `lib/content/accreditations.ts` (2026-10-24). SR pillars (SR page ↔ About
+  section) still hand-synced.
 - **AboutStats payload** — 3 stats or 4? Needs real numbers before decision.
 - **Story Timeline waypoints** — 2016 / 2019 / 2022 / 2025 events are
   placeholder; confirm with Kunal / Rick.
@@ -455,7 +454,11 @@ body, standard alpha values).
 **Bug fixes** (e.g. phased-out `rounded-sm` on buttons) land as **standalone
 fixes** on other pages, separate from the sandbox experiment.
 
-**Currently applied — SognosCare only:**
+**Retired on SognosCare 2026-10-24** (polish pass, Q1-A): Typekit link and
+Sofia Pro / weight ladder removed from Hero + Problems. No page now runs the
+sandbox; decision effectively closed as "retire" unless reopened.
+
+**Previously applied — SognosCare only (history):**
 - **Sofia Pro** via Adobe Typekit (`use.typekit.net/aoi4bxt.css`) on Hero + Problems.
 - **Weight ladder:** `font-bold` (700) H1, `font-semibold` (600) H2,
   `font-light` (300) body on dark surfaces.

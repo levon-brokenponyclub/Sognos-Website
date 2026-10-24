@@ -40,7 +40,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous partners" : "Next partners"}
-      className="flex h-10 w-10 items-center justify-center rounded-lg border border-sognos-line text-sognos-heading transition-opacity duration-300 hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-opacity duration-300 hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-30"
     >
       <svg
         width="20"

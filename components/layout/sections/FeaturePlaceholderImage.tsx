@@ -1,17 +1,14 @@
-import Image from "next/image";
-
+// Neutral stand-in for product-feature visuals until real SognosCare /
+// SognosRoster / SognosGenogram screens exist. (The previous
+// /product/feature-0X.webp files were another company's product UI and were
+// removed 2026-10-24.) Alternates surface so stacked cards stay distinct.
 export default function FeaturePlaceholderImage({ index }: { index: number }) {
-  const n = String((index % 6) + 1).padStart(2, "0");
   return (
-    <div className="relative h-full min-h-[280px] w-full overflow-hidden rounded-lg">
-      <Image
-        src={`/product/feature-${n}.webp`}
-        alt=""
-        fill
-        priority
-        className="object-cover"
-        sizes="(max-width: 1024px) 100vw, 560px"
-      />
-    </div>
+    <div
+      aria-hidden="true"
+      className={`h-full min-h-[280px] w-full rounded border border-sognos-line ${
+        index % 2 === 0 ? "bg-white" : "bg-sognos-tint"
+      }`}
+    />
   );
 }

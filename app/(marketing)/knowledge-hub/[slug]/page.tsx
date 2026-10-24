@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
@@ -30,6 +31,7 @@ import { SeeMoreLink } from "@/components/layout/sections/ProductCustomerStories
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import NewsletterFrame from "@/components/layout/sections/shared/NewsletterFrame";
+import PreviewBar from "@/components/layout/sections/events/PreviewBar";
 
 export const revalidate = 60;
 
@@ -254,8 +256,9 @@ export default async function KnowledgeHubPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { isEnabled: preview } = await draftMode();
   const [post, archive] = await Promise.all([
-    getKnowledgePostBySlug(slug),
+    getKnowledgePostBySlug(slug, { preview }),
     getKnowledgePostArchive(),
   ]);
 
@@ -483,6 +486,12 @@ export default async function KnowledgeHubPost({
             </div>
           </div>
         </section>
+      )}
+
+      {preview && (
+        <PreviewBar
+          exitHref={`/api/draft-mode/disable?redirect=/knowledge-hub/${slug}`}
+        />
       )}
     </main>
   );

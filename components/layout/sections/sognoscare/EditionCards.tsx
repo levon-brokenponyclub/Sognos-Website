@@ -36,7 +36,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-colors hover:bg-gray-200/70 disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex size-11 items-center justify-center rounded-full border border-sognos-line text-sognos-heading transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-sognos-blue-accent disabled:cursor-not-allowed disabled:opacity-30"
     >
       <svg
         width="16"
@@ -67,108 +67,68 @@ function EditionCard({
 }) {
   const title = edition.label ?? edition.name ?? "";
 
+  // One title and one description per card (the old hover layer duplicated
+  // both for screen readers). Edition colour: a 4px top rule at rest, the
+  // arrow fills on hover. Description always visible.
   return (
     <Link
       href={edition.href}
       data-card
       className={[
-        "group relative flex overflow-hidden rounded-lg bg-gray-200/60 p-6",
-        "transition-opacity duration-500 group-hover/cards:opacity-60 hover:opacity-100! focus-visible:opacity-100!",
+        "group relative flex flex-col justify-between overflow-hidden rounded bg-white p-6",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent",
-        "flex-shrink-0 snap-center w-[82vw]",
-        "aspect-square sm:aspect-auto lg:aspect-[3/4]",
+        "flex-shrink-0 snap-start w-[82vw] min-h-[320px]",
         cardWidthClass,
       ].join(" ")}
     >
-      {/* Edition-colour reveal — a complete card layer wipes in left to right. */}
-      <div
+      <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-10 overflow-hidden p-6 [clip-path:inset(0_100%_0_0)] transition-[clip-path] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[clip-path:inset(0_0_0_0)] group-focus-visible:[clip-path:inset(0_0_0_0)]"
+        className="absolute inset-x-0 top-0 h-1"
         style={{ backgroundColor: edition.accentColor }}
-      >
-        <div className="flex h-full w-full flex-col justify-between gap-8">
-          <p className="max-w-[45ch] text-base text-sognos-navy">
-            {edition.description}
-          </p>
+      />
 
-          <div className="flex w-full items-center justify-between">
-            <h3 className="font-heading text-lg font-medium tracking-tight text-white text-balance">
-              {title}
-            </h3>
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white">
-              <svg
-                viewBox="0 0 14 14"
-                fill="none"
-                aria-hidden="true"
-                className="h-5 w-5 text-sognos-navy"
-              >
-                <path
-                  d="M3 7h8M7 3l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
+      <div className="flex flex-col gap-6">
+        {/* Logo as placeholder icon — FLAG: swap to a per-edition icon. */}
+        <div className="w-[140px]">
+          <Image
+            src={edition.logo}
+            alt=""
+            width={140}
+            height={40}
+            className="h-auto w-full object-contain"
+          />
         </div>
+        <p className="max-w-[45ch] text-base leading-relaxed text-sognos-body">
+          {edition.description}
+        </p>
       </div>
 
-      {/* Card body — pushes title+button to bottom */}
-      <div className="relative flex w-full flex-col justify-between gap-8">
-        {/* Top — logo icon + hover-revealed description */}
-        <div className="flex flex-col gap-10">
-          {/* Logo as placeholder icon (h-8 / size-8 area).
-              FLAG: swap to a dedicated per-edition icon in the styling pass. */}
-          <div className="w-[140px]">
-            <Image
-              src={edition.logo}
-              alt={title}
-              width={140}
-              height={40}
-              className="h-auto w-full object-contain"
+      <div className="flex items-center justify-between gap-4 border-t border-sognos-line pt-5">
+        <h3 className="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-sognos-heading text-balance">
+          {title}
+        </h3>
+        <span
+          aria-hidden="true"
+          className="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-sognos-tint"
+        >
+          <span
+            className="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"
+            style={{ backgroundColor: edition.accentColor }}
+          />
+          <svg
+            viewBox="0 0 14 14"
+            fill="none"
+            className="relative h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-white"
+          >
+            <path
+              d="M3 7h8M7 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-          </div>
-
-          {/* Description — hidden at rest, revealed on hover.
-              FLAG: not visible on touch/mobile — make always-visible on small screens in styling pass. */}
-          <p className="max-w-[45ch] translate-y-2 text-base text-sognos-navy opacity-0">
-            {edition.description}
-          </p>
-        </div>
-
-        {/* Bottom — edition title + accent arrow button */}
-        <div className="flex w-full items-center justify-between">
-          <h3 className="font-heading text-lg font-medium tracking-tight text-sognos-heading text-balance">
-            {title}
-          </h3>
-
-          {/* Arrow button: accent fill slides up on hover */}
-          <div className="relative isolate flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/10">
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"
-              style={{ backgroundColor: edition.accentColor }}
-            />
-            <div className="relative">
-              <svg
-                viewBox="0 0 14 14"
-                fill="none"
-                aria-hidden="true"
-                className="h-5 w-5 text-sognos-heading transition-colors duration-300 group-hover:text-white"
-              >
-                <path
-                  d="M3 7h8M7 3l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+          </svg>
+        </span>
       </div>
     </Link>
   );
@@ -204,7 +164,9 @@ export default function EditionCards({
     const el = scrollerRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    // One card + the track gap (12px / 16px from lg), read off the track.
+    const gap = parseFloat(getComputedStyle(el).columnGap || "16") || 16;
+    const step = card ? card.offsetWidth + gap : el.clientWidth * 0.8;
     el.scrollBy({ left: step * dir, behavior: "smooth" });
   };
 
@@ -227,7 +189,7 @@ export default function EditionCards({
       <div
         ref={scrollerRef}
         onScroll={updateArrows}
-        className="group/cards flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory gap-3 lg:gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {editions.map((edition) => (
           <EditionCard

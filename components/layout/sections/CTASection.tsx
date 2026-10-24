@@ -51,7 +51,12 @@ function AnimatedCounter({ value }: { value: number }) {
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
-type ProductKey = "sognoscare" | "sognosroster" | "sognosgenogram" | "not-sure";
+type ProductKey =
+  | "sognoscare"
+  | "sognosroster"
+  | "sognosgenogram"
+  | "digpacks"
+  | "not-sure";
 
 type CTASectionProps = {
   headline?: string;
@@ -107,6 +112,11 @@ const DEMO_PRODUCTS = [
     label: "SognosGenogram",
     value: "sognosgenogram",
     description: "Bring family and relationship context into every record",
+  },
+  {
+    label: "DigPacks",
+    value: "digpacks",
+    description: "Localise UK-proven Microsoft accelerator solutions",
   },
   {
     label: "Not sure yet",

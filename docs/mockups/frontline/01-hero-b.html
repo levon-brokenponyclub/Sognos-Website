@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Frontline 01 - Hero B (dark motion)</title>
+<!--
+OPTION B (Q2): dark Aria-style motion hero - photo + Job dispatched + live field status (from the visuals gallery).
+Audit: H1 (local image, tint frame - no off-palette purple gradient), H2 (breadcrumb label), H3 (H1/sub on the scale), H4 (secondary link - copy, S2).
+Benchmark: AngelList hero discipline - one primary CTA, quiet secondary; light hero keeps solutions below products in the hierarchy.
+Maps to: app/(marketing)/solutions/[slug]/page.tsx hero + SolutionHeroDemoButton (unchanged). Card on the image is illustrative.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  .fv { --ease: cubic-bezier(.22,1,.36,1); }
+  .fv [data-in] { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .fv.is-in [data-in] { opacity: 1; transform: none; }
+  .fv.is-in [data-in="2"] { transition-delay: .12s; } .fv.is-in [data-in="3"] { transition-delay: .24s; } .fv.is-in [data-in="4"] { transition-delay: .36s; }
+  .fv .bar { transform: scaleY(0); transform-origin: bottom; transition: transform .9s var(--ease); }
+  .fv.is-in .bar { transform: scaleY(1); }
+  .fv .spark { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.6s var(--ease) .3s; }
+  .fv.is-in .spark { stroke-dashoffset: 0; }
+  @keyframes fv-dash { to { stroke-dashoffset: -24; } }
+  .fv.is-in .flow { stroke-dasharray: 6 6; animation: fv-dash 1s linear infinite; }
+  @keyframes fv-pulse { 0%,100% { opacity: .6; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .fv .pulse { animation: fv-pulse 2.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .fv [data-in], .fv .bar { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .fv .spark { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .flow, .fv .pulse { animation: none !important; }
+  }
+</style><style>
+  @keyframes x-move-a { 0% { transform: translate(0,0); } 50% { transform: translate(46px,-28px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-b { 0% { transform: translate(0,0); } 50% { transform: translate(-38px,22px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-c { 0% { transform: translate(0,0); } 50% { transform: translate(30px,34px); } 100% { transform: translate(0,0); } }
+  .fv.is-in .x-a { animation: x-move-a 7s ease-in-out infinite; } .fv.is-in .x-b { animation: x-move-b 8s ease-in-out infinite; } .fv.is-in .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .hero-stage .x-a { animation: x-move-a 7s ease-in-out infinite; } .hero-stage .x-b { animation: x-move-b 8s ease-in-out infinite; } .hero-stage .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .fv .route { stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 2.2s cubic-bezier(.22,1,.36,1) .3s; }
+  .fv.is-in .route { stroke-dashoffset: 0; }
+  @keyframes x-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 170; } }
+  .fv.is-in .sla-ring { animation: x-ring 14s linear infinite; }
+  .fv .slot { opacity: 0; transform: scale(.92); transition: opacity .45s, transform .45s cubic-bezier(.22,1,.36,1); }
+  .fv.is-in .slot, .hero-stage .slot { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .x-a, .x-b, .x-c, .sla-ring { animation: none !important; }
+    .fv .route { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .slot { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style><style>
+  @keyframes m-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes m-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes m-drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+  @keyframes m-pulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .m-rise { animation: m-rise .8s cubic-bezier(.22,1,.36,1) both; }
+  .m-float { animation: m-float 6s ease-in-out infinite; }
+  .m-drift { background-size: 220% 220%; animation: m-drift 9s ease-in-out infinite alternate; }
+  .m-pulse { animation: m-pulse 2.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .m-rise, .m-float, .m-drift, .m-pulse { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style><div id="site-header" data-scrolled="false" class="group/header fixed inset-x-0 top-0 z-50">
+  <header class="border-b transition-[background-color,border-color] duration-300 border-transparent group-data-[scrolled=true]/header:border-navy group-data-[scrolled=true]/header:bg-care-dark">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <a href="#hero" class="justify-self-start"><img src="../../../public/logos/sognos-logo.svg" alt="Sognos" class="h-7 w-auto brightness-0 invert" /></a>
+      <nav aria-label="Main" class="hidden h-14 items-center justify-self-center rounded-full p-2 lg:flex bg-white/5"><ul class="flex items-center gap-0.5"><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-white hover:bg-white hover:text-heading">Why Sognos<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-white hover:bg-white hover:text-heading">Products<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-white hover:bg-white hover:text-heading">Solutions<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-white hover:bg-white hover:text-heading">Industries<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-white hover:bg-white hover:text-heading">Knowledge Hub<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li></ul></nav>
+      <a href="#" class="hidden h-12 items-center justify-center justify-self-end rounded-sm px-4 text-base tracking-tight transition-colors lg:inline-flex bg-white text-heading hover:bg-accent hover:text-white">Book a Demo</a>
+    </div>
+  </header>
+</div>
+<script>(() => { const h = document.getElementById("site-header"); const f = () => h.dataset.scrolled = String(scrollY > 8); addEventListener("scroll", f, { passive: true }); f(); })();</script><section id="hero" class="relative overflow-hidden pt-40 pb-16 text-white md:pb-24" style="background:radial-gradient(70% 60% at 20% 30%, color-mix(in srgb, #1d96fc 30%, transparent), transparent 70%), radial-gradient(60% 50% at 85% 70%, color-mix(in srgb, #3b6fe0 35%, transparent), transparent 70%), #0f1936">
+  <div class="relative mx-auto max-w-7xl space-y-10 px-6 md:space-y-16">
+    <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+      <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Frontline</p>
+      <h1 class="mt-4 font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"><span class="block">Coordinate field teams</span><span class="block">without the chaos</span></h1>
+      <p class="mt-4 max-w-[35rem] text-lg leading-relaxed text-white/80 text-pretty md:mt-5">Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.</p>
+      <div class="mt-6 flex flex-col items-center gap-4 sm:flex-row md:mt-8"><button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-care-dark transition-colors hover:bg-accent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button>
+        <a href="#problems" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Learn More <span aria-hidden="true">&#8599;</span></a></div>
+    </div>
+    <div class="hero-stage relative mx-auto aspect-[1280/1284] w-full max-w-[1280px] sm:aspect-[1280/723]">
+      <div aria-hidden="true" data-speed="-0.6" class="absolute left-0 top-0 z-0 aspect-[209/180] w-[30%] sm:left-[5%] sm:w-[16.3%]"><div class="m-rise size-full" style="animation-delay:.1s"><div class="m-drift size-full rounded" style="background-image: linear-gradient(135deg, #59bbf7, #1d96fc, #3b6fe0, #59bbf7)"></div></div></div><div class="absolute inset-x-0 top-[5%] z-10 flex justify-center"><div class="m-rise aspect-[1062/672] w-full max-w-[82.969%] overflow-hidden rounded bg-white/5" style="animation-delay:.2s"><img src="../../../public/images/industries/industrial-services.webp" alt="Field engineer at an industrial site" class="size-full object-cover" /></div></div><div data-speed="0.5" class="absolute z-20 right-0 top-[15%] hidden w-[290px] sm:block"><div class="m-rise" style="animation-delay:.5s"><div class="m-float overflow-hidden rounded-lg border border-line bg-white text-left"><div class="p-4"><div class="flex items-center justify-between"><p class="font-heading text-lg text-heading">Job dispatched</p><span class="text-xs text-muted">#4821</span></div><dl class="mt-3 divide-y divide-line text-sm"><div class="flex justify-between py-2"><dt class="text-muted">Engineer</dt><dd class="text-heading">J. Kelly</dd></div><div class="flex justify-between py-2"><dt class="text-muted">ETA</dt><dd class="text-heading">22 min</dd></div><div class="flex justify-between py-2"><dt class="text-muted">SLA</dt><dd class="font-medium text-emerald-700">On track</dd></div></dl></div></div></div></div><div data-speed="0.9" class="absolute z-20 bottom-[5%] left-0 w-[290px] sm:w-[320px]"><div class="m-rise" style="animation-delay:.7s"><div class="m-float overflow-hidden rounded-lg border border-white/10 bg-care-dark text-left"><div class="p-4"><p class="text-xs text-white/60">Live field status</p><ul class="mt-2 space-y-2 text-sm"><li class="flex items-center justify-between"><span class="text-white/85">Chiller service</span><span class="rounded-full px-2 py-0.5 text-[10px] bg-emerald-400/20 text-emerald-300">On site</span></li><li class="flex items-center justify-between"><span class="text-white/85">HVAC fault</span><span class="rounded-full px-2 py-0.5 text-[10px] bg-sky-400/20 text-sky-300">En route</span></li><li class="flex items-center justify-between"><span class="text-white/85">Lift inspection</span><span class="rounded-full px-2 py-0.5 text-[10px] bg-white/10 text-white/70">Queued</span></li></ul></div></div></div></div>
+    </div>
+  </div>
+</section><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loops = {
+      // Case: the active journey stage walks along the track.
+      journey(el) { const s = [...el.querySelectorAll("[data-stage]")]; let i = 2; return () => { s.forEach((x, j) => { x.dataset.state = j < i ? "done" : j === i ? "now" : "next"; }); i = (i + 1) % s.length; }; },
+      // Compliance: newest audit entry slides in, oldest drops.
+      audit(el) { const ul = el.querySelector("ul"); const pool = JSON.parse(ul.dataset.pool); let n = 0; return () => { const [a, b] = pool[n++ % pool.length]; const li = ul.firstElementChild.cloneNode(true); li.querySelector("[data-a]").textContent = a; li.querySelector("[data-b]").textContent = b; li.animate([{ opacity: 0, transform: "translateY(-10px)" }, { opacity: 1, transform: "none" }], { duration: 500, easing: "cubic-bezier(.22,1,.36,1)" }); ul.prepend(li); if (ul.children.length > 4) ul.lastElementChild.remove(); }; },
+      // Reporting: KPI counts up once.
+      count(el) { el.querySelectorAll("[data-count]").forEach((c) => { const to = +c.dataset.count, suf = c.dataset.suffix || ""; let t0; const step = (t) => { t0 ??= t; const p = Math.min(1, (t - t0) / 1200); c.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString() + suf; if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); return null; },
+      // Automation: run the workflow step by step, hold on the last, restart.
+      run(el) { const st = [...el.querySelectorAll("[data-step]")]; const bar = el.querySelector("[data-progress]"); let i = 0; return () => { const k = i % (st.length + 2); st.forEach((x, j) => { x.dataset.state = j < k ? "done" : j === k ? "now" : "next"; }); bar.style.height = `${Math.min(k, st.length - 1) / (st.length - 1) * 100}%`; i++; }; },
+      // Copilot: the draft types itself, then repeats.
+      type(el) { const t = el.querySelector("[data-type]"); const text = t.dataset.type; let i = 0; return () => { t.textContent = text.slice(0, i); i = i > text.length + 40 ? 0 : i + 1; }; },
+    };
+    const RATE = { journey: 1500, audit: 2600, type: 45, run: 1200 };
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target; el.classList.add("is-in"); io.unobserve(el);
+      const kind = el.dataset.loop; if (!kind) return;
+      if (reduce) {
+        if (kind === "type") { const t = el.querySelector("[data-type]"); t.textContent = t.dataset.type; }
+        if (kind === "run") { el.querySelectorAll("[data-step]").forEach((x) => x.dataset.state = "done"); el.querySelector("[data-progress]").style.height = "100%"; }
+        return;
+      }
+      const fn = loops[kind](el); if (fn) { fn(); setInterval(fn, RATE[kind]); }
+    }), { threshold: 0.35 });
+    document.querySelectorAll(".fv").forEach((el) => io.observe(el));
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Scroll parallax: [data-speed] layers drift at their own rate.
+    const layers = [...document.querySelectorAll("[data-speed]")];
+    if (!reduce && layers.length) {
+      const stage = document.getElementById("hero-stage") || document.querySelector(".hero-stage");
+      const tick = () => {
+        layers.forEach((l) => {
+          const r = (l.closest(".hero-stage") || stage).getBoundingClientRect();
+          const p = Math.max(-1, Math.min(1, r.top / innerHeight));
+          l.style.transform = `translate3d(0, ${(p * l.dataset.speed * 60).toFixed(1)}px, 0)`;
+        });
+      };
+      addEventListener("scroll", tick, { passive: true }); tick();
+    }
+    // Typed Copilot note.
+    document.querySelectorAll(".hero-stage [data-type]").forEach((typed) => {
+      const text = typed.dataset.type;
+      if (reduce) typed.textContent = text;
+      else { let i = 0; const go = () => { typed.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(go, 28); else setTimeout(() => { i = 0; go(); }, 4000); }; setTimeout(go, 1400); }
+    });
+    // Status chips cycle Scheduled -> In progress -> Completed.
+    const chips = [...document.querySelectorAll("[data-cycle]")];
+    const STATES = [["Scheduled", "bg-tint text-body"], ["In progress", "bg-accent/15 text-heading"], ["Completed", "bg-emerald-100 text-emerald-800"]];
+    if (chips.length && !reduce) {
+      let step = 0;
+      setInterval(() => {
+        const chip = chips[step % chips.length];
+        const next = (Number(chip.dataset.cycle) + 1) % STATES.length;
+        chip.dataset.cycle = next; chip.textContent = STATES[next][0];
+        chip.className = "rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-300 " + STATES[next][1];
+        step++;
+      }, 1600);
+    }
+    // Event feed: newest slides in at the top, oldest drops off.
+    const feed = document.getElementById("event-feed");
+    if (feed && !reduce) {
+      const pool = JSON.parse(feed.dataset.pool); let n = 0;
+      setInterval(() => {
+        const [title, meta] = pool[n++ % pool.length];
+        const li = document.createElement("li");
+        li.className = "m-rise flex items-start gap-3 border-b border-line px-4 py-3 last:border-b-0";
+        li.innerHTML = `<span class="mt-1.5 size-2 shrink-0 rounded-full bg-accent"></span><div><p class="text-sm font-medium text-heading">${title}</p><p class="text-xs text-muted">${meta}</p></div>`;
+        feed.prepend(li); if (feed.children.length > 3) feed.lastElementChild.remove();
+      }, 2800);
+    }
+  })();
+</script>
+</body>
+</html>

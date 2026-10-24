@@ -8,6 +8,7 @@ import AboutStoryTimeline from "@/components/layout/sections/AboutStoryTimeline"
 import AboutHeroImage from "@/components/layout/sections/AboutHeroImage";
 import AboutPartnersSlider from "@/components/layout/sections/AboutPartnersSlider";
 import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
+import { ACCREDITATIONS } from "@/lib/content/accreditations";
 
 export const metadata: Metadata = {
   title: "About Sognos | Sognos",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 const PARTNERS = [
   {
     name: "Microsoft",
-    logo: "/logos/partners/mslogo.webp",
+    logo: "/logos/partners/mslogo-transparent.webp",
     type: "Solutions Partner",
     href: "https://www.microsoft.com",
     description:
@@ -40,7 +41,7 @@ const PARTNERS = [
   },
   {
     name: "Ingram Micro",
-    logo: "/logos/partners/ingram-micro.png",
+    logo: "/logos/partners/ingram-micro-positive.webp",
     type: "Distribution & Services",
     href: "https://www.ingrammicro.com",
     description:
@@ -48,36 +49,11 @@ const PARTNERS = [
   },
   {
     name: "Resco",
-    logo: "/logos/partners/resco-blue-bg.png",
+    logo: "/logos/partners/resco-positive.webp",
     type: "Mobile Solutions",
     href: "https://www.resco.net",
     description:
       "Resco extends Dynamics 365 Field Service with powerful offline-capable mobile applications, keeping frontline teams productive regardless of connectivity.",
-  },
-];
-
-// Government prequalification and industry memberships — the same three assets
-// the footer carries. Intrinsic sizes are the artwork's own; height is capped
-// in the markup, so these only set the aspect ratio Next needs. (Kept in step
-// with `ACCREDITATIONS` in components/layout/Footer.tsx by hand for now.)
-const ACCREDITATIONS = [
-  {
-    alt: "NSW Government Approved Supplier - SCM0020 Prequalification Scheme: ICT Services",
-    src: "/logos/accreditations/nsw-ict-services.png",
-    width: 1024,
-    height: 299,
-  },
-  {
-    alt: "Australasian Institute of Digital Health - Organisational Member",
-    src: "/logos/accreditations/aidh.png",
-    width: 200,
-    height: 100,
-  },
-  {
-    alt: "Talking HealthTech partner",
-    src: "/logos/accreditations/talking-health-tech.png",
-    width: 200,
-    height: 200,
   },
 ];
 
@@ -98,7 +74,7 @@ export default function AboutPage() {
               <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
                 Smarter automation for modern teams
               </h1>
-              <p className="mt-6 max-w-5xl text-lg leading-relaxed text-sognos-body">
+              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-sognos-body">
                 Built to serve the organisations that serve others. Since 2016,
                 Sognos has helped service organisations work smarter - replacing
                 disconnected tools with a single intelligent platform built
@@ -152,7 +128,7 @@ export default function AboutPage() {
               {ACCREDITATIONS.map((item) => (
                 <li
                   key={item.src}
-                  className="group flex h-24 w-44 items-center justify-center rounded-lg border border-sognos-line bg-white p-5"
+                  className="group flex h-24 w-44 items-center justify-center rounded border border-sognos-line bg-white p-5"
                 >
                   <Image
                     src={item.src}

@@ -149,16 +149,17 @@ function MilestoneItem({ entry, index }: { entry: Milestone; index: number }) {
             {entry.tag}
           </span>
         </div>
-        <h3 className="font-heading text-3xl font-medium tabular-nums leading-none tracking-tight text-sognos-heading md:text-4xl">
+        {/* Year is a visual marker; the headline is the item's heading. */}
+        <p className="font-heading text-3xl font-medium tabular-nums leading-none tracking-tight text-sognos-heading md:text-4xl">
           {entry.year}
-        </h3>
+        </p>
       </div>
 
       {/* Right column — display-face headline then softer body. */}
       <div className="max-w-xl">
-        <p className="font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading text-balance md:text-2xl">
+        <h3 className="font-heading text-xl font-normal leading-snug tracking-tight text-sognos-heading text-balance md:text-2xl">
           {entry.headline}
-        </p>
+        </h3>
         <p className="mt-3 text-base leading-relaxed text-sognos-body md:text-lg">
           {entry.body}
         </p>

@@ -41,6 +41,12 @@ const STEGA_SKIP_KEYS = new Set([
   "headshot",
   "icon",
   "time",
+  // Knowledge Hub posts: category is compared against "Newsletter"; the rest
+  // are URLs or raw HTML.
+  "category",
+  "newsletterHtml",
+  "href",
+  "link",
 ]);
 
 /**

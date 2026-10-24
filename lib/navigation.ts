@@ -30,7 +30,7 @@ export type NavGroup = {
   label: string;
   href: string;
   items?: NavItem[]; // used on mobile for groups without megaMenu
-  megaMenu?: [MegaColumn, MegaColumn, MegaColumn]; // always 3 cols; col3 empty → bg-slate-100
+  megaMenu?: MegaColumn[]; // usually 3 cols; Products has 4 (three products + DigPacks)
   submenu?: Record<string, ProductSubmenu>; // product-specific submenus (keyed by product name)
 };
 
@@ -137,6 +137,14 @@ const SOGNOSGENOGRAM_SECTIONS: NavItem[] = [
   { name: "Schedule a Call", href: "/contact" },
 ];
 
+const DIGPACKS_SECTIONS: NavItem[] = [
+  { name: "Outcomes", href: "/products/digpacks#outcomes" },
+  { name: "Solutions", href: "/products/digpacks#features" },
+  { name: "Why DigPacks", href: "/products/digpacks#why" },
+  { name: "Asset Booker", href: "/products/digpacks#asset-booker" },
+  { name: "Schedule a Call", href: "/contact" },
+];
+
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 export const nav: NavGroup[] = [
@@ -182,6 +190,11 @@ export const nav: NavGroup[] = [
         href: "/products/sognosgenogram",
         description: "Relationship & family context mapping",
       },
+      {
+        name: "DigPacks",
+        href: "/products/digpacks",
+        description: "Partnership accelerator solutions",
+      },
     ],
     // One column per product: name, tagline, "Learn more", a rule, then that
     // product's own section links — the lists the hover submenu used to show.
@@ -207,6 +220,13 @@ export const nav: NavGroup[] = [
         href: "/products/sognosgenogram",
         items: SOGNOSGENOGRAM_SECTIONS,
       },
+      {
+        heading: "DigPacks",
+        variant: "product",
+        description: "Partnership accelerator solutions",
+        href: "/products/digpacks",
+        items: DIGPACKS_SECTIONS,
+      },
     ],
     submenu: {
       SognosCare: {
@@ -218,6 +238,9 @@ export const nav: NavGroup[] = [
       },
       SognosGenogram: {
         col2: { heading: "SognosGenogram", items: SOGNOSGENOGRAM_SECTIONS },
+      },
+      DigPacks: {
+        col2: { heading: "DigPacks", items: DIGPACKS_SECTIONS },
       },
     },
   },

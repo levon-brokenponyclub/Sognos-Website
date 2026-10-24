@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SognosCare 03 - Problems (A: centred statement band, recommended)</title>
+<!--
+VARIANT A (recommended, Q3): centred dark statement band, solution on the rail.
+2026-10-24 pass: sub-nav moved out to a Routable-style bar under the navbar (see index.html); 4 solution steps (5th removed);
+all type on the shared scale (label 18px accent, H2 30/36/42 weight 400, lede muted max-w-2xl, step numeral 48px accent, 22px title, 14px body).
+Benchmark: AngelList scout-funds "How it works" - hairline border-l columns, md:grid-cols-4, no cards.
+Audit: P1 (sub-nav gap), P3 (invisible cards -> hairline columns), P4 (mono numerals), P5 (one-shot motion), P6 + G3 (one label treatment), G2 (one H2 weight).
+Maps to: components/layout/sections/sognoscare/Problems.tsx (subNav prop removed from the band).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<section id="problems" class="overflow-clip">
+  <div class="bg-navy py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="mx-auto flex max-w-[770px] flex-col items-center gap-4 text-center">
+        <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>The Problem</p>
+        <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-white">Care providers shouldn't operate like this.</h2>
+        <p class="max-w-2xl text-base leading-relaxed text-pretty text-white/75">Fragmented systems, manual compliance, disconnected workforce data, and spreadsheet-driven reporting have become accepted as normal. Every disconnected workflow creates more administration, more risk, and less time for delivering care.</p>
+      </div>
+    </div>
+  </div>
+  <div class="bg-tint py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>The Solution</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4">
+          <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Sognos unifies demand, workforce and outcomes on a single operational platform.</h2>
+          <p class="max-w-2xl text-base leading-relaxed text-pretty text-body">Built on Microsoft Dynamics 365 and Copilot, Sognos connects intake, care planning, workforce coordination, compliance and reporting into one continuous workflow.</p>
+        </div>
+        <ol class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="flex flex-col gap-1 border-l border-line px-4 md:pl-8">
+            <span class="block font-heading text-5xl font-normal leading-[1.05] tracking-[-0.01em] tabular-nums text-accent">1</span>
+            <h3 class="mt-1 text-[1.375rem] font-normal leading-[1.4] tracking-[-0.0035em] text-heading">Unified Care Records</h3>
+            <p class="text-sm leading-normal text-body">Referrals, assessments, care plans, incidents, service agreements and progress notes in one system.</p>
+          </li>
+          <li class="flex flex-col gap-1 border-l border-line px-4 md:pl-8">
+            <span class="block font-heading text-5xl font-normal leading-[1.05] tracking-[-0.01em] tabular-nums text-accent">2</span>
+            <h3 class="mt-1 text-[1.375rem] font-normal leading-[1.4] tracking-[-0.0035em] text-heading">Built-In Compliance</h3>
+            <p class="text-sm leading-normal text-body">Audit trails, funding controls and evidence captured automatically as work happens.</p>
+          </li>
+          <li class="flex flex-col gap-1 border-l border-line px-4 md:pl-8">
+            <span class="block font-heading text-5xl font-normal leading-[1.05] tracking-[-0.01em] tabular-nums text-accent">3</span>
+            <h3 class="mt-1 text-[1.375rem] font-normal leading-[1.4] tracking-[-0.0035em] text-heading">Connected Workforce</h3>
+            <p class="text-sm leading-normal text-body">SognosCare and SognosRoster share the same data layer across visits, plans and participant history.</p>
+          </li>
+          <li class="flex flex-col gap-1 border-l border-line px-4 md:pl-8">
+            <span class="block font-heading text-5xl font-normal leading-[1.05] tracking-[-0.01em] tabular-nums text-accent">4</span>
+            <h3 class="mt-1 text-[1.375rem] font-normal leading-[1.4] tracking-[-0.0035em] text-heading">Real-Time Reporting</h3>
+            <p class="text-sm leading-normal text-body">Operational, workforce, compliance and funding reports generated continuously, not manually assembled.</p>
+          </li>
+        </ol>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

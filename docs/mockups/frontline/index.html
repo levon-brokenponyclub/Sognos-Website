@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solutions / Frontline - polish pass mockups (approved direction)</title>
+<!--
+Approved 2026-10-24: Q2-A light hero; Q3 live Unsplash+ photo kept (licence to confirm); Q1 both capability layouts built - toggle bar above the section.
+Colour picker (bottom-right) recolours capability cards + graphics in both layouts.
+Unanswered / not approved: Q4 (Roster dot stays accent), S2 (no secondary hero link). Surfaces: white > navy > tint > white > navy > white > tint.
+Audit: docs/audits/frontline-polish-audit.md. CTABand + Footer (global) not mocked.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  .fv { --ease: cubic-bezier(.22,1,.36,1); }
+  .fv [data-in] { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .fv.is-in [data-in] { opacity: 1; transform: none; }
+  .fv.is-in [data-in="2"] { transition-delay: .12s; } .fv.is-in [data-in="3"] { transition-delay: .24s; } .fv.is-in [data-in="4"] { transition-delay: .36s; }
+  .fv .bar { transform: scaleY(0); transform-origin: bottom; transition: transform .9s var(--ease); }
+  .fv.is-in .bar { transform: scaleY(1); }
+  .fv .spark { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.6s var(--ease) .3s; }
+  .fv.is-in .spark { stroke-dashoffset: 0; }
+  @keyframes fv-dash { to { stroke-dashoffset: -24; } }
+  .fv.is-in .flow { stroke-dasharray: 6 6; animation: fv-dash 1s linear infinite; }
+  @keyframes fv-pulse { 0%,100% { opacity: .6; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .fv .pulse { animation: fv-pulse 2.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .fv [data-in], .fv .bar { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .fv .spark { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .flow, .fv .pulse { animation: none !important; }
+  }
+</style><style>
+  @keyframes x-move-a { 0% { transform: translate(0,0); } 50% { transform: translate(46px,-28px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-b { 0% { transform: translate(0,0); } 50% { transform: translate(-38px,22px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-c { 0% { transform: translate(0,0); } 50% { transform: translate(30px,34px); } 100% { transform: translate(0,0); } }
+  .fv.is-in .x-a { animation: x-move-a 7s ease-in-out infinite; } .fv.is-in .x-b { animation: x-move-b 8s ease-in-out infinite; } .fv.is-in .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .hero-stage .x-a { animation: x-move-a 7s ease-in-out infinite; } .hero-stage .x-b { animation: x-move-b 8s ease-in-out infinite; } .hero-stage .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .fv .route { stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 2.2s cubic-bezier(.22,1,.36,1) .3s; }
+  .fv.is-in .route { stroke-dashoffset: 0; }
+  @keyframes x-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 170; } }
+  .fv.is-in .sla-ring { animation: x-ring 14s linear infinite; }
+  .fv .slot { opacity: 0; transform: scale(.92); transition: opacity .45s, transform .45s cubic-bezier(.22,1,.36,1); }
+  .fv.is-in .slot, .hero-stage .slot { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .x-a, .x-b, .x-c, .sla-ring { animation: none !important; }
+    .fv .route { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .slot { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style><style>
+  @keyframes m-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes m-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes m-drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+  @keyframes m-pulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .m-rise { animation: m-rise .8s cubic-bezier(.22,1,.36,1) both; }
+  .m-float { animation: m-float 6s ease-in-out infinite; }
+  .m-drift { background-size: 220% 220%; animation: m-drift 9s ease-in-out infinite alternate; }
+  .m-pulse { animation: m-pulse 2.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .m-rise, .m-float, .m-drift, .m-pulse { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style><div id="site-header" data-scrolled="false" class="group/header fixed inset-x-0 top-0 z-50">
+  <header class="border-b transition-[background-color,border-color] duration-300 border-transparent bg-white group-data-[scrolled=true]/header:border-line">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <a href="#hero" class="justify-self-start"><img src="../../../public/logos/sognos-logo.svg" alt="Sognos" class="h-7 w-auto " /></a>
+      <nav aria-label="Main" class="hidden h-14 items-center justify-self-center rounded-full p-2 lg:flex bg-gray-100"><ul class="flex items-center gap-0.5"><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-heading hover:bg-care-dark hover:text-white">Why Sognos<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-heading hover:bg-care-dark hover:text-white">Products<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-heading hover:bg-care-dark hover:text-white">Solutions<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-heading hover:bg-care-dark hover:text-white">Industries<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li><li><button type="button" class="flex items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-normal tracking-tight transition-colors duration-200 text-heading hover:bg-care-dark hover:text-white">Knowledge Hub<svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7"/></svg></button></li></ul></nav>
+      <a href="#" class="hidden h-12 items-center justify-center justify-self-end rounded-sm px-4 text-base tracking-tight transition-colors lg:inline-flex bg-care-dark text-white hover:bg-accent">Book a Demo</a>
+    </div>
+  </header>
+</div>
+<script>(() => { const h = document.getElementById("site-header"); const f = () => h.dataset.scrolled = String(scrollY > 8); addEventListener("scroll", f, { passive: true }); f(); })();</script><section id="hero" class="bg-white pt-32 pb-20 md:pb-28 lg:pt-40">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="flex flex-col items-start gap-4 lg:col-span-6">
+        <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading"><span aria-hidden="true" class="block size-[0.66em] bg-accent"></span><a href="#" class="text-muted underline-offset-4 hover:text-accent hover:underline">Solutions</a><span aria-hidden="true" class="text-muted">/</span>Frontline</p>
+        <h1 class="font-heading text-5xl font-normal leading-[1.05] tracking-[-0.02em] text-balance md:text-6xl lg:text-7xl text-heading md:text-6xl lg:text-6xl">Coordinate field teams without the chaos</h1>
+        <p class="max-w-2xl text-lg leading-relaxed text-pretty text-body">Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.</p>
+        <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center"><button type="button" class="min-h-11 rounded-full bg-accent px-7 py-3.5 text-base font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">Book a Demo</button></div>
+      </div>
+      <div class="lg:col-span-6">
+        <div class="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-tint">
+          <img src="https://plus.unsplash.com/premium_photo-1681967118118-586c2408d0fc?auto=format&fit=crop&w=1600&q=80" alt="Frontline preview" class="absolute inset-0 size-full object-cover" />
+          <div class="absolute bottom-4 left-4 right-4 rounded-lg border border-line bg-white p-4 sm:right-auto sm:w-72">
+            <div class="flex items-center justify-between"><p class="font-heading text-base text-heading">Job dispatched</p><span class="text-xs text-muted">#4821</span></div>
+            <p class="mt-1 text-xs text-muted">J. Kelly &middot; ETA 22 min &middot; <span class="text-emerald-700">SLA on track</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><section id="problem" class="bg-navy py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid gap-3 md:grid-cols-2 lg:gap-4">
+      <div class="flex flex-col justify-center gap-4 p-2 md:p-6 lg:p-8">
+        <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-white/80"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>The problem</p>
+        <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-white">What Frontline solves</h2>
+        <p class="max-w-2xl text-base leading-relaxed text-pretty text-white/75">Most field service problems come from the same place: disconnected systems, manual dispatch, and no real-time view of what's happening on the ground.</p>
+      </div>
+      <div class="flex min-h-[300px] flex-col justify-between rounded-lg bg-white/5 p-6 lg:p-8">
+        <span aria-hidden="true" class="font-heading text-5xl font-light tabular-nums text-white/25">01</span>
+        <div><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-white md:text-xl">Scheduling delays and mismatches</h3><p class="mt-3 text-base leading-relaxed text-white/75">Manual rostering creates bottlenecks. The wrong person gets sent to a job, and fixing it takes hours of phone calls.</p></div>
+      </div><div class="flex min-h-[300px] flex-col justify-between rounded-lg bg-white/5 p-6 lg:p-8">
+        <span aria-hidden="true" class="font-heading text-5xl font-light tabular-nums text-white/25">02</span>
+        <div><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-white md:text-xl">SLA compliance under pressure</h3><p class="mt-3 text-base leading-relaxed text-white/75">Without automated tracking, SLA breaches are only visible after they've happened - not when there's still time to act.</p></div>
+      </div><div class="flex min-h-[300px] flex-col justify-between rounded-lg bg-white/5 p-6 lg:p-8">
+        <span aria-hidden="true" class="font-heading text-5xl font-light tabular-nums text-white/25">03</span>
+        <div><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-white md:text-xl">No real-time ground visibility</h3><p class="mt-3 text-base leading-relaxed text-white/75">Operations teams work from stale information. Job status, location, and worker availability are all guesswork.</p></div>
+      </div>
+    </div>
+  </div>
+</section><div class="sticky top-20 z-40 border-y border-line bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl items-center gap-2 px-6 py-3">
+    <p class="mr-2 text-sm font-medium text-heading">Capabilities layout</p>
+    <button type="button" data-cap="a" aria-pressed="true" class="rounded-full border border-line px-3 py-1.5 text-xs text-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white">A &middot; Grid</button>
+    <button type="button" data-cap="b" aria-pressed="false" class="rounded-full border border-line px-3 py-1.5 text-xs text-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white">B &middot; Sticky stack</button>
+  </div>
+</div>
+<script>
+  (() => {
+    const show = (v) => {
+      document.querySelectorAll("[data-cap-variant]").forEach((s) => s.hidden = s.dataset.capVariant !== v);
+      document.querySelectorAll("[data-cap]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cap === v)));
+      try { localStorage.setItem("sognos-frontline-cap", v); } catch {}
+    };
+    document.querySelectorAll("[data-cap]").forEach((b) => b.addEventListener("click", () => show(b.dataset.cap)));
+    let v = "a"; try { v = localStorage.getItem("sognos-frontline-cap") || "a"; } catch {}
+    show(v);
+  })();
+</script><section data-cap-variant="a" id="capabilities" class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Capabilities</p></div>
+      <div class="min-w-0 lg:col-[3/-1]"><div class="flex max-w-[770px] flex-col gap-4"><h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">What you get with Frontline</h2></div></div>
+    </div>
+    <div class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+      <article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="0">
+            <div data-fv="0" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:#f9fafe" data-loop="run">
+              <div class="w-full max-w-sm space-y-2 text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] uppercase tracking-widest text-muted">Job #4821 &middot; HVAC fault</p><p class="mt-0.5 text-sm font-medium text-heading">Level 3, North Sydney</p></div>
+                <div data-in="2" class="rounded-lg border border-line bg-white px-3 py-1"><div data-progress class="hidden" style="height:0%"></div><ul class="divide-y divide-line"><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Skills: HVAC licence</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Nearest: 1.8 km</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Assigned: J. Kelly</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li></ul></div>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Intelligent job dispatch</h3><p class="mt-2 text-sm leading-normal text-body">Automatically match jobs to the right field worker based on skills, location, and availability.</p></div>
+          </article><article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="1">
+            <div data-fv="1" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)">
+              <div data-in="1" class="flex w-full max-w-sm items-center gap-4 rounded-lg border border-line bg-white p-4 text-left">
+                <svg viewBox="0 0 64 64" class="size-16 shrink-0 -rotate-90" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#e2e8f0" stroke-width="6"/><circle class="sla-ring" cx="32" cy="32" r="27" fill="none" stroke="#1d96fc" stroke-width="6" stroke-linecap="round" stroke-dasharray="170"/></svg>
+                <div class="min-w-0"><p class="text-sm font-medium text-heading">Response SLA &middot; 4h</p><p class="text-xs text-muted">2h 14m remaining</p><p class="mt-2 flex items-center gap-1.5 text-xs text-body"><span class="relative flex size-2"><span class="pulse absolute inset-0 rounded-full bg-[#ffad6e]"></span><span class="relative size-2 rounded-full bg-[#ffad6e]"></span></span>Alert at 30 min</p></div>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">SLA tracking and alerts</h3><p class="mt-2 text-sm leading-normal text-body">Monitor response and resolution times in real time. Get alerted before a breach occurs.</p></div>
+          </article><article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="2">
+            <div data-fv="2" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:#f9fafe">
+              <div data-in="1" class="relative w-full max-w-sm overflow-hidden rounded-lg border border-line bg-white">
+                <svg viewBox="0 0 320 170" class="block h-auto w-full" aria-hidden="true"><rect width="320" height="170" fill="#f9fafe"/><path d="M-10 50 H330" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M-10 120 H330" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M80 -10 V180" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M220 -10 V180" stroke="#e2e8f0" stroke-width="8" fill="none"/></svg>
+                <span class="x-a absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:18%;top:20%;background:#1d96fc">PS</span><span class="x-b absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:62%;top:58%;background:#0f1936">JK</span><span class="x-c absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:40%;top:64%;background:#00a98f">EL</span>
+                <span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:70%;top:22%;background:#ff8e90"></span><span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:28%;top:70%;background:#ff8e90"></span><span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:86%;top:72%;background:#ff8e90"></span>
+                <div class="flex justify-between border-t border-line px-3 py-2 text-xs"><span class="text-body">12 workers &middot; 31 jobs</span><span class="text-emerald-700">All on track</span></div>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Live field visibility</h3><p class="mt-2 text-sm leading-normal text-body">See every job, every worker, and every status update on a single operations dashboard.</p></div>
+          </article><article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="3">
+            <div data-fv="3" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)" data-loop="run">
+              <div data-in="1" class="w-48 rounded-[24px] border-[5px] border-care-dark bg-white p-3 text-left">
+                <div class="mx-auto mb-2 h-1 w-12 rounded-full bg-line"></div>
+                <p class="text-xs font-medium text-heading">Job #4821</p><p class="text-[10px] text-muted">HVAC fault &middot; Level 3</p>
+                <div data-progress class="hidden" style="height:0%"></div><ul class="mt-1 divide-y divide-line"><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">On site</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Photos</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Sign-off</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li></ul>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Mobile worker app</h3><p class="mt-2 text-sm leading-normal text-body">Field workers receive job details, capture attendance, and submit completion data from their phone.</p></div>
+          </article><article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="4">
+            <div data-fv="4" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:#f9fafe">
+              <div class="relative flex w-full max-w-sm items-center gap-3 text-left">
+                <div data-in="1" class="flex-1 rounded-lg border border-line bg-white p-3"><p class="text-[10px] uppercase tracking-widest text-muted">Job</p><p class="text-sm font-medium text-heading">Chiller service</p></div>
+                <svg aria-hidden="true" viewBox="0 0 40 60" class="h-16 w-8 shrink-0"><path class="flow" d="M0 30 H40 M20 30 V8 H40 M20 30 V52 H40" stroke="#1d96fc" stroke-width="2" fill="none"/></svg>
+                <ul class="flex flex-1 flex-col gap-2"><li data-in="2" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Chiller CH-02</li><li data-in="3" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Service manual</li><li data-in="4" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Part 7741-B</li></ul>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Asset and equipment linking</h3><p class="mt-2 text-sm leading-normal text-body">Attach assets to jobs so field workers arrive with the right information and tools.</p></div>
+          </article><article class="flex flex-col gap-5 rounded-lg bg-white p-3" data-card-i="5">
+            <div data-fv="5" class="fv relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[260px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)" data-loop="count">
+              <div class="w-full max-w-sm space-y-2 text-left">
+                <div class="grid grid-cols-2 gap-2"><div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">First-time fix</p><p class="mt-1 font-heading text-xl text-heading" data-count="91" data-suffix="%">0%</p></div><div data-in="2" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Jobs this month</p><p class="mt-1 font-heading text-xl text-heading" data-count="1640" data-suffix="">0</p></div></div>
+                <div data-in="3" class="rounded-lg border border-line bg-white p-3"><div class="flex h-16 items-end gap-1.5"><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:40%;transition-delay:0ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:55%;transition-delay:60ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:48%;transition-delay:120ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:66%;transition-delay:180ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:72%;transition-delay:240ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:61%;transition-delay:300ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:80%;transition-delay:360ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:86%;transition-delay:420ms"></span></div><p class="mt-2 text-[10px] text-muted">Completed jobs by region</p></div>
+              </div>
+            </div>
+            <div class="px-3 pb-3"><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Operational reporting</h3><p class="mt-2 text-sm leading-normal text-body">Understand performance across teams, regions, and job types with configurable reports.</p></div>
+          </article>
+    </div>
+  </div>
+</section><section data-cap-variant="b" hidden id="capabilities-stack" class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Capabilities</p></div>
+      <div class="min-w-0 lg:col-[3/-1]"><div class="flex max-w-[770px] flex-col gap-4"><h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">What you get with Frontline</h2></div></div>
+    </div>
+    <div class="mt-10 md:mt-16 xl:mt-20">
+      <article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="6" style="top:80px;z-index:1">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">01</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Intelligent job dispatch</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">Automatically match jobs to the right field worker based on skills, location, and availability.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="0" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:#f9fafe" data-loop="run">
+              <div class="w-full max-w-sm space-y-2 text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] uppercase tracking-widest text-muted">Job #4821 &middot; HVAC fault</p><p class="mt-0.5 text-sm font-medium text-heading">Level 3, North Sydney</p></div>
+                <div data-in="2" class="rounded-lg border border-line bg-white px-3 py-1"><div data-progress class="hidden" style="height:0%"></div><ul class="divide-y divide-line"><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Skills: HVAC licence</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Nearest: 1.8 km</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Assigned: J. Kelly</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li></ul></div>
+              </div>
+            </div></div>
+      </article><article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="7" style="top:176px;z-index:2">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">02</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">SLA tracking and alerts</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">Monitor response and resolution times in real time. Get alerted before a breach occurs.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="1" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)">
+              <div data-in="1" class="flex w-full max-w-sm items-center gap-4 rounded-lg border border-line bg-white p-4 text-left">
+                <svg viewBox="0 0 64 64" class="size-16 shrink-0 -rotate-90" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#e2e8f0" stroke-width="6"/><circle class="sla-ring" cx="32" cy="32" r="27" fill="none" stroke="#1d96fc" stroke-width="6" stroke-linecap="round" stroke-dasharray="170"/></svg>
+                <div class="min-w-0"><p class="text-sm font-medium text-heading">Response SLA &middot; 4h</p><p class="text-xs text-muted">2h 14m remaining</p><p class="mt-2 flex items-center gap-1.5 text-xs text-body"><span class="relative flex size-2"><span class="pulse absolute inset-0 rounded-full bg-[#ffad6e]"></span><span class="relative size-2 rounded-full bg-[#ffad6e]"></span></span>Alert at 30 min</p></div>
+              </div>
+            </div></div>
+      </article><article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="8" style="top:272px;z-index:3">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">03</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Live field visibility</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">See every job, every worker, and every status update on a single operations dashboard.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="2" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:#f9fafe">
+              <div data-in="1" class="relative w-full max-w-sm overflow-hidden rounded-lg border border-line bg-white">
+                <svg viewBox="0 0 320 170" class="block h-auto w-full" aria-hidden="true"><rect width="320" height="170" fill="#f9fafe"/><path d="M-10 50 H330" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M-10 120 H330" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M80 -10 V180" stroke="#e2e8f0" stroke-width="8" fill="none"/><path d="M220 -10 V180" stroke="#e2e8f0" stroke-width="8" fill="none"/></svg>
+                <span class="x-a absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:18%;top:20%;background:#1d96fc">PS</span><span class="x-b absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:62%;top:58%;background:#0f1936">JK</span><span class="x-c absolute flex size-7 items-center justify-center rounded-full border-2 border-white text-[9px] font-medium text-white" style="left:40%;top:64%;background:#00a98f">EL</span>
+                <span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:70%;top:22%;background:#ff8e90"></span><span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:28%;top:70%;background:#ff8e90"></span><span class="absolute size-3 rotate-45 rounded-sm border-2 border-white" style="left:86%;top:72%;background:#ff8e90"></span>
+                <div class="flex justify-between border-t border-line px-3 py-2 text-xs"><span class="text-body">12 workers &middot; 31 jobs</span><span class="text-emerald-700">All on track</span></div>
+              </div>
+            </div></div>
+      </article><article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="9" style="top:368px;z-index:4">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">04</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Mobile worker app</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">Field workers receive job details, capture attendance, and submit completion data from their phone.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="3" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)" data-loop="run">
+              <div data-in="1" class="w-48 rounded-[24px] border-[5px] border-care-dark bg-white p-3 text-left">
+                <div class="mx-auto mb-2 h-1 w-12 rounded-full bg-line"></div>
+                <p class="text-xs font-medium text-heading">Job #4821</p><p class="text-[10px] text-muted">HVAC fault &middot; Level 3</p>
+                <div data-progress class="hidden" style="height:0%"></div><ul class="mt-1 divide-y divide-line"><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">On site</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Photos</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Sign-off</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li></ul>
+              </div>
+            </div></div>
+      </article><article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="10" style="top:464px;z-index:5">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">05</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Asset and equipment linking</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">Attach assets to jobs so field workers arrive with the right information and tools.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="4" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:#f9fafe">
+              <div class="relative flex w-full max-w-sm items-center gap-3 text-left">
+                <div data-in="1" class="flex-1 rounded-lg border border-line bg-white p-3"><p class="text-[10px] uppercase tracking-widest text-muted">Job</p><p class="text-sm font-medium text-heading">Chiller service</p></div>
+                <svg aria-hidden="true" viewBox="0 0 40 60" class="h-16 w-8 shrink-0"><path class="flow" d="M0 30 H40 M20 30 V8 H40 M20 30 V52 H40" stroke="#1d96fc" stroke-width="2" fill="none"/></svg>
+                <ul class="flex flex-1 flex-col gap-2"><li data-in="2" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Chiller CH-02</li><li data-in="3" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Service manual</li><li data-in="4" class="rounded-lg border border-line bg-white px-3 py-2 text-xs text-heading">Part 7741-B</li></ul>
+              </div>
+            </div></div>
+      </article><article class="sticky grid grid-cols-1 overflow-hidden rounded-t-lg border-t border-line bg-white lg:grid-cols-2" data-card-i="11" style="top:560px;z-index:6">
+        <div class="flex flex-col px-6 py-5 lg:px-8"><div class="flex items-baseline gap-4"><span class="text-xs font-semibold tabular-nums text-muted">06</span><h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Operational reporting</h3></div><p class="mt-2 max-w-md pl-9 text-sm leading-normal text-body">Understand performance across teams, regions, and job types with configurable reports.</p></div>
+        <div class="lg:min-h-[380px]"><div data-fv="5" class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)" data-loop="count">
+              <div class="w-full max-w-sm space-y-2 text-left">
+                <div class="grid grid-cols-2 gap-2"><div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">First-time fix</p><p class="mt-1 font-heading text-xl text-heading" data-count="91" data-suffix="%">0%</p></div><div data-in="2" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Jobs this month</p><p class="mt-1 font-heading text-xl text-heading" data-count="1640" data-suffix="">0</p></div></div>
+                <div data-in="3" class="rounded-lg border border-line bg-white p-3"><div class="flex h-16 items-end gap-1.5"><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:40%;transition-delay:0ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:55%;transition-delay:60ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:48%;transition-delay:120ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:66%;transition-delay:180ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:72%;transition-delay:240ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:61%;transition-delay:300ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:80%;transition-delay:360ms"></span><span class="bar flex-1 rounded-t-sm bg-care-dark" style="height:86%;transition-delay:420ms"></span></div><p class="mt-2 text-[10px] text-muted">Completed jobs by region</p></div>
+              </div>
+            </div></div>
+      </article>
+      <div aria-hidden="true" style="height:640px"></div>
+    </div>
+  </div>
+</section><section id="platform" class="bg-white py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Platform</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4">
+          <h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Built on Dynamics 365 Field Service</h2>
+          <p class="max-w-2xl text-base leading-relaxed text-pretty text-body">Built on Microsoft Dynamics 365 Field Service, with Copilot AI for intelligent scheduling and Power Platform for workflow automation and reporting.</p>
+        </div>
+        <ul class="mt-10 md:mt-16 xl:mt-20 flex flex-wrap items-center gap-x-10 gap-y-6 border-t border-line pt-10">
+          <li><img src="../../../public/logos/Dynamics365.svg" alt="Dynamics 365" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/copilot-logo.svg" alt="Microsoft Copilot" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/platform/PowerBI_scalable.svg" alt="Power BI" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/platform/PowerAutomate_scalable.svg" alt="Power Automate" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/platform/PowerApps_scalable.svg" alt="Power Apps" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/platform/PowerPages_scalable.svg" alt="Power Pages" class="h-6 w-auto sm:h-7" /></li><li><img src="../../../public/logos/platform/Dataverse_scalable.svg" alt="Dataverse" class="h-6 w-auto sm:h-7" /></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section><section aria-label="Trusted organisations" class="bg-navy">
+  <div class="mx-auto max-w-5xl px-6 py-16 text-center md:py-20">
+    <p class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-white">Trusted by industry leaders and professionals worldwide</p>
+    <ul class="mt-10 grid grid-cols-2 gap-y-4 sm:grid-cols-3 md:mt-12 md:grid-cols-5">
+      <li class="flex h-20 items-center justify-center px-6 md:border-l md:border-white/20 md:first:border-l-0"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-10 w-auto max-w-full object-contain opacity-90 brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 md:border-l md:border-white/20 md:first:border-l-0"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-10 w-auto max-w-full object-contain opacity-90 brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 md:border-l md:border-white/20 md:first:border-l-0"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-10 w-auto max-w-full object-contain opacity-90 brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 md:border-l md:border-white/20 md:first:border-l-0"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-10 w-auto max-w-full object-contain opacity-90 brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 md:border-l md:border-white/20 md:first:border-l-0"><img src="../../../public/logos/clients/flourish.webp" alt="Flourish" class="h-auto max-h-10 w-auto max-w-full object-contain opacity-90 brightness-0 invert" /></li>
+    </ul>
+  </div>
+</section><section id="works-with" class="bg-white py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Works with</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4"><h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Connects to the Sognos platform</h2></div>
+        <a href="#" class="group mt-10 md:mt-16 xl:mt-20 flex max-w-md items-center gap-4 rounded-lg border border-line bg-white px-6 py-5 transition-colors hover:border-heading focus-visible:outline-2 focus-visible:outline-accent">
+          <span class="size-2.5 shrink-0 rounded-full bg-accent"></span>
+          <span class="flex-1"><span class="block text-sm font-medium text-heading">SognosRoster</span><span class="mt-0.5 block text-xs text-muted">Workforce scheduling & optimisation engine</span></span>
+          <span aria-hidden="true" class="text-heading transition-transform group-hover:translate-x-0.5">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section><section id="related" class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>Solutions</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4"><h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Extend your operation further</h2></div>
+        <div class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-4">
+          <a href="#" class="group flex flex-col rounded-lg border border-line bg-white p-6 transition-colors hover:border-heading focus-visible:outline-2 focus-visible:outline-accent">
+            <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Customer Relationship Management</h3>
+            <p class="mt-2 line-clamp-3 text-sm leading-normal text-body">Centralise client records, service history, and interactions so your team always has the context they need - and nothing falls through the cracks.</p>
+            <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-heading group-hover:text-accent">Explore <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">&rarr;</span></span>
+          </a><a href="#" class="group flex flex-col rounded-lg border border-line bg-white p-6 transition-colors hover:border-heading focus-visible:outline-2 focus-visible:outline-accent">
+            <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Customer Service</h3>
+            <p class="mt-2 line-clamp-3 text-sm leading-normal text-body">Give your service team a single place to log, track, and close every case - with full context, SLA visibility, and a complete audit trail.</p>
+            <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-heading group-hover:text-accent">Explore <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">&rarr;</span></span>
+          </a><a href="#" class="group flex flex-col rounded-lg border border-line bg-white p-6 transition-colors hover:border-heading focus-visible:outline-2 focus-visible:outline-accent">
+            <h3 class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Power Platform</h3>
+            <p class="mt-2 line-clamp-3 text-sm leading-normal text-body">Build custom apps, automate workflows, and connect your systems without a development team. Power Platform turns your operational needs into working solutions - fast.</p>
+            <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-heading group-hover:text-accent">Explore <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">&rarr;</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loops = {
+      // Case: the active journey stage walks along the track.
+      journey(el) { const s = [...el.querySelectorAll("[data-stage]")]; let i = 2; return () => { s.forEach((x, j) => { x.dataset.state = j < i ? "done" : j === i ? "now" : "next"; }); i = (i + 1) % s.length; }; },
+      // Compliance: newest audit entry slides in, oldest drops.
+      audit(el) { const ul = el.querySelector("ul"); const pool = JSON.parse(ul.dataset.pool); let n = 0; return () => { const [a, b] = pool[n++ % pool.length]; const li = ul.firstElementChild.cloneNode(true); li.querySelector("[data-a]").textContent = a; li.querySelector("[data-b]").textContent = b; li.animate([{ opacity: 0, transform: "translateY(-10px)" }, { opacity: 1, transform: "none" }], { duration: 500, easing: "cubic-bezier(.22,1,.36,1)" }); ul.prepend(li); if (ul.children.length > 4) ul.lastElementChild.remove(); }; },
+      // Reporting: KPI counts up once.
+      count(el) { el.querySelectorAll("[data-count]").forEach((c) => { const to = +c.dataset.count, suf = c.dataset.suffix || ""; let t0; const step = (t) => { t0 ??= t; const p = Math.min(1, (t - t0) / 1200); c.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString() + suf; if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); return null; },
+      // Automation: run the workflow step by step, hold on the last, restart.
+      run(el) { const st = [...el.querySelectorAll("[data-step]")]; const bar = el.querySelector("[data-progress]"); let i = 0; return () => { const k = i % (st.length + 2); st.forEach((x, j) => { x.dataset.state = j < k ? "done" : j === k ? "now" : "next"; }); bar.style.height = `${Math.min(k, st.length - 1) / (st.length - 1) * 100}%`; i++; }; },
+      // Copilot: the draft types itself, then repeats.
+      type(el) { const t = el.querySelector("[data-type]"); const text = t.dataset.type; let i = 0; return () => { t.textContent = text.slice(0, i); i = i > text.length + 40 ? 0 : i + 1; }; },
+    };
+    const RATE = { journey: 1500, audit: 2600, type: 45, run: 1200 };
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target; el.classList.add("is-in"); io.unobserve(el);
+      const kind = el.dataset.loop; if (!kind) return;
+      if (reduce) {
+        if (kind === "type") { const t = el.querySelector("[data-type]"); t.textContent = t.dataset.type; }
+        if (kind === "run") { el.querySelectorAll("[data-step]").forEach((x) => x.dataset.state = "done"); el.querySelector("[data-progress]").style.height = "100%"; }
+        return;
+      }
+      const fn = loops[kind](el); if (fn) { fn(); setInterval(fn, RATE[kind]); }
+    }), { threshold: 0.35 });
+    document.querySelectorAll(".fv").forEach((el) => io.observe(el));
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Scroll parallax: [data-speed] layers drift at their own rate.
+    const layers = [...document.querySelectorAll("[data-speed]")];
+    if (!reduce && layers.length) {
+      const stage = document.getElementById("hero-stage") || document.querySelector(".hero-stage");
+      const tick = () => {
+        layers.forEach((l) => {
+          const r = (l.closest(".hero-stage") || stage).getBoundingClientRect();
+          const p = Math.max(-1, Math.min(1, r.top / innerHeight));
+          l.style.transform = `translate3d(0, ${(p * l.dataset.speed * 60).toFixed(1)}px, 0)`;
+        });
+      };
+      addEventListener("scroll", tick, { passive: true }); tick();
+    }
+    // Typed Copilot note.
+    document.querySelectorAll(".hero-stage [data-type]").forEach((typed) => {
+      const text = typed.dataset.type;
+      if (reduce) typed.textContent = text;
+      else { let i = 0; const go = () => { typed.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(go, 28); else setTimeout(() => { i = 0; go(); }, 4000); }; setTimeout(go, 1400); }
+    });
+    // Status chips cycle Scheduled -> In progress -> Completed.
+    const chips = [...document.querySelectorAll("[data-cycle]")];
+    const STATES = [["Scheduled", "bg-tint text-body"], ["In progress", "bg-accent/15 text-heading"], ["Completed", "bg-emerald-100 text-emerald-800"]];
+    if (chips.length && !reduce) {
+      let step = 0;
+      setInterval(() => {
+        const chip = chips[step % chips.length];
+        const next = (Number(chip.dataset.cycle) + 1) % STATES.length;
+        chip.dataset.cycle = next; chip.textContent = STATES[next][0];
+        chip.className = "rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-300 " + STATES[next][1];
+        step++;
+      }, 1600);
+    }
+    // Event feed: newest slides in at the top, oldest drops off.
+    const feed = document.getElementById("event-feed");
+    if (feed && !reduce) {
+      const pool = JSON.parse(feed.dataset.pool); let n = 0;
+      setInterval(() => {
+        const [title, meta] = pool[n++ % pool.length];
+        const li = document.createElement("li");
+        li.className = "m-rise flex items-start gap-3 border-b border-line px-4 py-3 last:border-b-0";
+        li.innerHTML = `<span class="mt-1.5 size-2 shrink-0 rounded-full bg-accent"></span><div><p class="text-sm font-medium text-heading">${title}</p><p class="text-xs text-muted">${meta}</p></div>`;
+        feed.prepend(li); if (feed.children.length > 3) feed.lastElementChild.remove();
+      }, 2800);
+    }
+  })();
+</script><details class="group fixed bottom-4 right-4 z-[60] w-[min(92vw,26rem)] rounded-lg border border-line bg-white text-left open:p-4"><summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-heading group-open:p-0 [&::-webkit-details-marker]:hidden">Capability colours <span aria-hidden="true" class="transition-transform group-open:rotate-180">&#9662;</span></summary><div class="mt-3 space-y-2 border-t border-line pt-3"><p class="text-xs font-medium uppercase tracking-widest text-muted">Cards</p><div class="flex flex-wrap gap-1.5"><button type="button" data-ipick="cards:a" title="White cards on the tint section." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#ffffff"></span></span>A</button><button type="button" data-ipick="cards:b" title="White with a hairline border." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#ffffff"></span></span>B</button><button type="button" data-ipick="cards:c" title="Live --sognos-tint #f0eff2 - a step darker than the section tint." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#f0eff2"></span></span>C</button><button type="button" data-ipick="cards:d" title="3% / 5% of accent #1d96fc." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:color-mix(in srgb, #1d96fc 3%, white)"></span><span class="size-3 rounded-full border border-line" style="background:color-mix(in srgb, #1d96fc 5%, white)"></span></span>D</button><button type="button" data-ipick="cards:e" title="Care dark #0f1936 cards - card copy flips to white." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#0f1936"></span></span>E</button></div><p data-inote="cards" class="text-xs text-muted"></p></div><div class="mt-3 space-y-2 border-t border-line pt-3"><p class="text-xs font-medium uppercase tracking-widest text-muted">Graphics</p><div class="flex flex-wrap gap-1.5"><button type="button" data-ipick="graphics:a" title="Brand tint alternating with 8% accent #1d96fc." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#f9fafe"></span><span class="size-3 rounded-full border border-line" style="background:color-mix(in srgb, #1d96fc 8%, white)"></span></span>A</button><button type="button" data-ipick="graphics:b" title="8% / 14% of accent #1d96fc." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:color-mix(in srgb, #1d96fc 8%, white)"></span><span class="size-3 rounded-full border border-line" style="background:color-mix(in srgb, #1d96fc 14%, white)"></span></span>B</button><button type="button" data-ipick="graphics:c" title="Industrial Services ice #f4f8f9 + Facilities mint #ebfbe3 - the sectors Frontline serves." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#f4f8f9"></span><span class="size-3 rounded-full border border-line" style="background:#ebfbe3"></span></span>C</button><button type="button" data-ipick="graphics:d" title="All #f9fafe." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#f9fafe"></span><span class="size-3 rounded-full border border-line" style="background:#f9fafe"></span></span>D</button><button type="button" data-ipick="graphics:e" title="Care-dark / navy #0f1936 / #152248 - dark panels, white cards." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#0f1936"></span><span class="size-3 rounded-full border border-line" style="background:#152248"></span></span>E</button><button type="button" data-ipick="graphics:f" title="White with a hairline border." class="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-xs text-heading transition-colors hover:border-heading aria-pressed:border-heading aria-pressed:bg-heading aria-pressed:text-white" aria-pressed="false"><span class="flex -space-x-1"><span class="size-3 rounded-full border border-line" style="background:#ffffff"></span><span class="size-3 rounded-full border border-line" style="background:#ffffff"></span></span>F</button></div><p data-inote="graphics" class="text-xs text-muted"></p></div></details><script>
+  (() => {
+    const DATA = {"cards": {"default": "a", "palettes": {"a": {"name": "White (current)", "note": "White cards on the tint section.", "colours": ["#ffffff"]}, "b": {"name": "White + border", "note": "White with a hairline border.", "colours": ["#ffffff|line"]}, "c": {"name": "Grey tint", "note": "Live --sognos-tint #f0eff2 - a step darker than the section tint.", "colours": ["#f0eff2"]}, "d": {"name": "Accent wash", "note": "3% / 5% of accent #1d96fc.", "colours": ["color-mix(in srgb, #1d96fc 3%, white)", "color-mix(in srgb, #1d96fc 5%, white)"]}, "e": {"name": "Navy", "note": "Care dark #0f1936 cards - card copy flips to white.", "colours": ["#0f1936"]}}}, "graphics": {"default": "a", "palettes": {"a": {"name": "Tint + accent", "note": "Brand tint alternating with 8% accent #1d96fc.", "colours": ["#f9fafe", "color-mix(in srgb, #1d96fc 8%, white)", "#f9fafe", "color-mix(in srgb, #1d96fc 8%, white)", "#f9fafe", "color-mix(in srgb, #1d96fc 8%, white)"]}, "b": {"name": "Accent blues", "note": "8% / 14% of accent #1d96fc.", "colours": ["color-mix(in srgb, #1d96fc 8%, white)", "color-mix(in srgb, #1d96fc 14%, white)", "color-mix(in srgb, #1d96fc 8%, white)", "color-mix(in srgb, #1d96fc 14%, white)", "color-mix(in srgb, #1d96fc 8%, white)", "color-mix(in srgb, #1d96fc 14%, white)"]}, "c": {"name": "Industrial neutrals", "note": "Industrial Services ice #f4f8f9 + Facilities mint #ebfbe3 - the sectors Frontline serves.", "colours": ["#f4f8f9", "#ebfbe3", "#f4f8f9", "#ebfbe3", "#f4f8f9", "#ebfbe3"]}, "d": {"name": "Brand tint", "note": "All #f9fafe.", "colours": ["#f9fafe", "#f9fafe", "#f9fafe", "#f9fafe", "#f9fafe", "#f9fafe"]}, "e": {"name": "Navy", "note": "Care-dark / navy #0f1936 / #152248 - dark panels, white cards.", "colours": ["#0f1936", "#152248", "#0f1936", "#152248", "#0f1936", "#152248"]}, "f": {"name": "Outlined white", "note": "White with a hairline border.", "colours": ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]}}}};
+    const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+    const targets = { cards: "[data-card-i]", graphics: "[data-fv]" };
+    const apply = (grp, key) => {
+      const pal = DATA[grp].palettes[key]; if (!pal) return;
+      document.querySelectorAll(targets[grp]).forEach((el) => {
+        const i = +(el.dataset.cardI ?? el.dataset.fv);
+        const [c, mod] = pal.colours[i % pal.colours.length].split("|");
+        el.style.background = c;
+        el.style.boxShadow = mod === "line" || c === "#ffffff" && grp === "graphics" ? "inset 0 0 0 1px #e2e8f0" : "";
+        if (grp === "cards") el.classList.toggle("is-dark-card", c === "#0f1936");
+      });
+      document.querySelectorAll(`[data-ipick^="${grp}:"]`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.ipick === `${grp}:${key}`)));
+      document.querySelector(`[data-inote="${grp}"]`).textContent = `${pal.name} - ${pal.note}`;
+      store.set(`sognos-frontline-${grp}`, key);
+    };
+    document.querySelectorAll("[data-ipick]").forEach((b) => b.addEventListener("click", () => { const [g, k] = b.dataset.ipick.split(":"); apply(g, k); }));
+    Object.keys(DATA).forEach((g) => apply(g, store.get(`sognos-frontline-${g}`) || DATA[g].default));
+  })();
+</script>
+<style>
+  /* Navy cards: the card's own copy (not the graphic) flips to the dark ladder. */
+  .is-dark-card > div:not(.fv) h3 { color: #fff; }
+  .is-dark-card > div:not(.fv) p, .is-dark-card > div:not(.fv) span { color: rgb(255 255 255 / .75); }
+</style>
+</body>
+</html>

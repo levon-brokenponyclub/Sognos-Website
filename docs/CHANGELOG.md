@@ -1,5 +1,290 @@
 # Changelog
 
+## 2026-10-24 — SognosCare hero: option 3 live
+
+- **New:** `components/layout/sections/sognoscare/HeroStage.tsx` — option 3
+  "Day in motion" from `01m-hero-a.html`: 1280 x 560 stage (420px mobile),
+  care photo at 78%, Support at Home budget card top-right (count-up to
+  $8,412 / $12,000, bar to 70%, float), notification stack bottom-left
+  (new toast every 2.6s, three-deep stack). Rise-in, per-layer scroll
+  parallax; reduced motion → finished, still. Demo data is illustrative.
+- `sognoscare/Hero.tsx`: stage between the copy and the trust logos; copy
+  bottom padding reduced to suit. Headline/subtext unchanged (Sanity) — the
+  mockup's suggested copy was not applied.
+- Mockup stage height raised to 560px for all three options.
+
+## 2026-10-24 — SognosCare hero options: refinements (mockup only)
+
+- Stripe block removed from all three options (canvas + script).
+- Hero stage capped at 450px (sm+; 420px mobile, 520px for option 2 on mobile).
+- **Option 1** rebuilt inside one 1112 x 450 image block: SognosCare badge
+  (mark + wordmark, progress ring, sync status), Visit card stepping
+  Scheduled → En route → Checked in → Note signed with a 4-part progress bar,
+  Copilot note that types, is accepted and added to the record — one 12s
+  looping timeline; final state shown under reduced motion.
+
+## 2026-10-24 — SognosCare hero: three options + stripe block (mockup only)
+
+- `docs/mockups/sognoscare/01m-hero-a.html` now holds three switchable hero
+  options (pill switcher, bottom centre):
+  1. **Visit verified** — live copy; photo, Aria invoice-style Visit card with
+     a sign-off pill loop, typing Copilot note.
+  2. **Care network** — copy suggestion; Aria /saas flow: SognosCare tile
+     centre, four outcomes (Referral, Worker matched, Claim, Family) light up
+     in turn along dotted connectors.
+  3. **Day in motion** — copy suggestion; photo, Support at Home budget card
+     (count-up + bar), cycling notification stack, mirrored stripe blocks.
+- **Stripe block** — Aria's top-left Rive animation rebuilt on `<canvas>`:
+  slanted bars dissolving toward the top-left, travelling wave, build-in on
+  load, paused off-screen, static under reduced motion.
+- Original 01m-hero-a remains as option 1's base and in `index.html`.
+
+## 2026-10-24 — Care / Roster Features: card layout
+
+- `ProductFeaturesScroll`: new `variant="cards"` (approved
+  `docs/mockups/sognoscare/04-features.html`) — 12-col grid, 3-col sticky rail
+  with `SectionLabel` + `aria-current` links, heading on `TYPE.h2`, cards
+  alternate `bg-sognos-tint` / `bg-sognos-tint/50`, tagline + `TYPE.h3` +
+  accent-ruled body (6 cols) | visual (6 cols). `taglineClass` prop for a
+  contrast-safe tagline colour. Default variant unchanged (Genogram, DigPacks,
+  edition pages).
+- SognosCare + SognosRoster Features use the cards variant (taglines
+  `#0b6fc4` / `#104b90`, gallery values).
+- **Fix:** dev "unique key" warning from the palette picker — `headerAside`
+  now renders in its own wrapper so the server-passed element isn't a
+  sibling in a static children array.
+
+## 2026-10-24 — Tokens + Care / Roster feature graphics
+
+- **Tokens:** `--sognos-line` restored to `#e2e8f0` (was `4` — borders using it
+  rendered navy site-wide). `--sognos-tint` retoned `#f0eff2` → `#f9fafe`
+  everywhere (style-guide swatch updated). Home Solutions' local hairline
+  override removed.
+- **New:** `components/ui/visuals/primitives.tsx` — shared motion primitives
+  (Rise, CheckRows, CountUp, Bar, Draw, Pulse, Typed, useRun/useCycle) and the
+  review-only palette system (PaletteProvider, PalettePicker, VisualFrame).
+  Hidden / fixed to the default on production.
+- **SognosCare Features:** six gallery graphics (`sognoscare/FeatureVisuals.tsx`)
+  replace the placeholder; palettes A–F, default C · Care blues.
+- **SognosRoster Features:** six gallery graphics (`sognosroster/FeatureVisuals.tsx`);
+  palettes A–F, default A · Roster tints.
+- `ProductFeaturesScroll`: optional `headerAside` slot (picker row).
+- `home/SolutionVisuals.tsx` refactored onto the shared primitives.
+
+## 2026-10-24 — Home Solutions: graphics polish + panel palettes
+
+- `home/SolutionVisuals.tsx`: card hairlines, row dividers and chart rule now
+  `#e2e8f0` (gallery value), scoped in the component — they were rendering
+  navy because `--sognos-line` in `app/tokens.css` is currently `4` (not a
+  colour). Panel padding `lg:p-10` to match the gallery.
+- **Panel palettes A–F** (gallery Home · Solutions): Tint + accent (default),
+  Accent blues, Brand tint (`#f9fafe`), Product-coded, Navy, Outlined white.
+  Picker shows beside Panel colour / Hero photo in colour mode; choice kept
+  in localStorage. Review-only, hidden on production.
+
+## 2026-10-24 — Home Solutions: motion graphics + background toggle (live)
+
+- **New:** `components/layout/sections/home/SolutionVisuals.tsx` — the four
+  Home · Solutions graphics from the visuals gallery (set A): Frontline job
+  checklist, CRM client record + activity feed, Customer Insights KPIs +
+  line chart, Customer Experience satisfaction + checkpoints. Framer Motion,
+  start in view, reduced-motion safe. Card data illustrative.
+- **Background modes:** panel colour (brand tint / 8% accent alternating) or
+  the solution page's hero photo (`getSolutionContent(slug).hero.image`).
+  `SolutionsBackgroundToggle` sits under the section header; review-only —
+  hidden when `NEXT_PUBLIC_VERCEL_ENV === "production"`. Choice is a
+  per-viewer localStorage preference (`useSyncExternalStore`).
+- **SolutionsSection:** the third-party `/public/dev/*-Payouts-Visual-Static.avif`
+  images and the row `image` field are gone.
+- **Flag:** two of the hero photos (Frontline, Customer Insights) are Unsplash+
+  premium and render watermarked until licensed.
+
+## 2026-10-24 — Solutions / Frontline polish pass: audit + mockups (STEP 1–2)
+
+- **Audit:** `docs/audits/frontline-polish-audit.md` — shared `solutions/[slug]`
+  template (all 8 routes), dependency tree, findings P0–P2, batched
+  QUESTION/SUGGESTION. Baseline `npm run build` passes.
+- **P0s found:** trust `LogoStrip` renders white-on-white on solution pages
+  (built for the dark homepage hero); `public/solutions/solutionTab-Image*.avif`
+  are third-party AI-agent UI ("Hospital Policy Agent").
+- **Mockups:** `docs/mockups/frontline/` — `01-hero-a` (light, rec.) / `-b`
+  (dark motion), `02-problem`, `03-capabilities-a` (grid, rec.) / `-b`
+  (sticky stack), `04-platform`, `05-trust`, `06-works-with`, `07-related`,
+  `index.html`. Built by a Frontline generator that reuses the SognosCare
+  generator's shell, type scale, labels and visuals.
+- No `.tsx` changed.
+
+## 2026-10-24 — SognosCare audit fixes 1–6 (mockup + live)
+
+- **Placeholder imagery (Care / Roster / Genogram Features):**
+  `public/product/feature-01…06.webp` were another company's product UI
+  (AngelList "Scout Investments" / "Structure your fund") — deleted.
+  `FeaturePlaceholderImage` now renders a neutral bordered panel
+  (white / tint alternating) until real product screens exist. Prod never
+  used these files.
+- **Label contrast:** `SectionLabel` text is no longer accent blue (~3.1:1 on
+  white) — heading colour on light, `text-white/80` via `tone="dark"`; the
+  square marker keeps the accent.
+- **Tint contrast:** ledes and step bodies on tint use `text-sognos-body`
+  (muted on tint was ~4.4:1).
+- **Surface rhythm:** Problem band `bg-sognos-navy` (tonal step off the
+  care-dark hero); Solution half `bg-sognos-tint` (white Features follows).
+- **Edition cards (shared with edition pages):** description always visible;
+  `min-h-[320px]` (was 340 / 400).
+- **Advantages:** list items 16px at every breakpoint.
+- Mockups regenerated with the same changes.
+
+## 2026-10-24 — SognosCare hero: trust logos in, logo block out (option A)
+
+- **Hero (`sognoscare/Hero.tsx`):** logo panel removed; centred copy over
+  care-dark with two soft Care-gradient glows (`color-mix` on
+  `--sognos-care-base`); H1 `text-4xl sm:text-5xl md:text-6xl`, split into
+  one line per sentence (first ". " in the CMS headline); trust logos at the
+  hero foot — 4 on desktop, the 5th spans the mobile 2-col grid; logos
+  `h-10 md:h-12`, white at 80%. Hero `min-h-[88vh]`.
+- **Page:** `ProductTrustStrip` section removed from SognosCare; logos come
+  from the new shared `getProductTrustLogos()` (same named set — Deloitte,
+  Water NSW, NECA, Sandvik, APM), resolved to Sanity URLs in `page.tsx`.
+  Roster / Genogram keep their strips.
+- **Mockups:** `01-hero-a/b/c.html` options; index uses A.
+
+## 2026-10-24 — SognosCare Features clears the section bar
+
+- `ProductFeaturesScroll` (shared ×5): new `stickyOffset` prop. `sectionBar`
+  sets the rail to `sticky top-36`, the jump/scroll-spy offset to 146px
+  (80px navbar + 46px bar + 20px) and `scroll-mt-32` on `#features`.
+  Default unchanged (`top-[100px]`, 96px) for Roster, Genogram, DigPacks and
+  edition pages.
+- `sognoscare/Features.tsx` passes `stickyOffset="sectionBar"`.
+
+## 2026-10-24 — SognosCare polish pass applied (STEP 3)
+
+Approved mockups ported to the live page — Hero, Trust strip, Sub-nav,
+Problems/Solution, Editions, Advantages. **Features and Customer Stories
+excluded.** Build passes; full fix log in `docs/audits/sognoscare-polish-audit.md`.
+
+### Type + primitives
+- `components/layout/sections/sognoscare/typeScale.ts` — page scale (H1 400
+  48→72px, H2 400 30→36px, ledes 16px, step/card H3s, numerals) + layout
+  tokens (section rhythm, 770px head, header→content gap, 12-col rail,
+  `scroll-mt-32`).
+- `components/ui/SectionLabel.tsx` — 18px accent label, square marker,
+  optional sticky (`lg:top-36`).
+- Sofia Pro sandbox retired on Care (Typekit `<link>` removed from the page).
+
+### Sections
+- **Hero:** AngelList type; Book a Demo opens the modal (`sognoscare`); Learn
+  More → `#problems`; parallax 160 → 60px; top padding clears the bar.
+- **Sub-nav:** `ProductSubNav` gains `variant="bar"` (default `pill` unchanged
+  for Roster / Genogram / DigPacks) — full-width dashed-hairline bar after
+  routable.com/product/payouts, portalled into a new `#navbar-subnav` slot in
+  `Navbar.tsx` (header also gets `group/header` + `data-scrolled`). Mobile:
+  disclosure. Scroll-spy shared between variants.
+- **Trust strip (shared ×3):** caption is a `<p>` (was an H3 after the H1);
+  single `mt-10 md:mt-12` gap; title on the card-H3 scale.
+- **Problems:** centred dark statement band; solution on the rail; 4 numbered
+  hairline steps (5th "Copilot-Powered Workflows" removed); accent bars and
+  `font-mono` gone; `subNav` prop removed.
+- **Editions + `EditionCards` (shared with 6 edition pages):** full-width
+  header, arrows in the header row; card rebuilt — white, 4px edition rule,
+  single title/description (fixes duplicate a11y output), description visible
+  below lg, 44px arrows, track `gap-3 lg:gap-4`.
+- **Advantages:** rail label, hairline two-column rows with accent numerals,
+  intro `text-white/75`.
+
+**Ended at:** live page matches the mockups for the six sections. Next:
+Features (rail offset under the bar, bullet removal, rail no-wrap) and
+Customer Stories when in scope.
+
+## 2026-10-24 — SognosCare polish pass: audit + mockups (STEP 1–2)
+
+- **Audit:** `docs/audits/sognoscare-polish-audit.md` — dependency tree
+  (shared components flagged), AngelList SPVs benchmark measured from the
+  rendered DOM, findings by section with P0–P2 severity, batched
+  SUGGESTION/QUESTION list. Baseline `npm run build` passes.
+- **Mockups:** `docs/mockups/sognoscare/` — `01-hero` (+ `-b` Sofia Pro),
+  `02-trust`, `03-problems-a` / `-b`, `04-features`, `05-editions`,
+  `06-advantages`, `07-stories`, `index.html` (recommended variants stacked).
+- No `.tsx` changed. Awaiting approval of mockups + Q1–Q4 before STEP 3.
+- Brief's hard rules (`rounded-lg` only, `bg-gray-200/70`, palette hexes)
+  predate PROJECT_STATE §2; audit follows §2 and records the conflict.
+
+## 2026-10-24 — About page design pass (audit findings 1–6)
+
+- **AboutHeroImage:** scroll effects now run off the image's own position
+  (`useScroll({ target, offset: ["start end", "start start"] })`) instead of
+  global `scrollY`, which had finished before the image arrived. Mobile crop
+  `pt-[100vw]` → `pt-[62.5%]`; corner radius capped at 8px; alt "The Sognos
+  team".
+- **AboutStoryTimeline:** milestone headline is now the `h3`; the year is a
+  `p` marker (same look). `AboutStats` lost its own `mt-16` (the wrapper
+  already spaces it).
+- **Accreditations:** new `lib/content/accreditations.ts` read by `Footer` and
+  the About page — About now shows ISO 27001 too. About plates `rounded`.
+- **Partners:** `PartnerCard` `rounded-lg` → `rounded` (also affects the
+  parked `ProductsSection`); slider arrows `rounded-full`. Logos: Microsoft
+  white box keyed out (`mslogo-transparent.webp`); Ingram Micro and Resco
+  rebuilt as blue marks on transparent (`ingram-micro-positive.webp`,
+  `resco-positive.webp`) from the white-on-blue files, which are removed
+  along with the old `mslogo.webp`.
+- **SocialResponsibilitySection:** `py-20 md:py-28`, left label rail +
+  heading (AboutValues/TeamSection frame), `text-white/75`, six numbered
+  type-first pillars over hairlines (no cards), one "Read our commitment →"
+  link instead of six identical "Read more" links.
+- **Hero:** intro measure `max-w-5xl` → `max-w-3xl`.
+- Deferred (content): hero H1 + Careers-only CTA, Story Timeline milestones,
+  AboutStats numbers, Leadership editorial promote/retire.
+
+## 2026-10-24 — ISO 27001 badge in footer
+
+- `public/logos/accreditations/iso-27001.png` (Compass Assurance Services,
+  teal solid horizontal variant, trimmed) added as the first tile in the
+  footer's "Accreditations & memberships" row. Chosen over the stacked and
+  mono variants: it matches the NSW tile's proportions and stays legible at the
+  row's 36px logo height on the white tile.
+
+## 2026-10-24 — Presentation tool for Knowledge Hub posts
+
+- **Resolver:** `sanity/presentation/resolve.ts` maps `/knowledge-hub/:slug` to
+  its `knowledgePost` (main document) and lists each post's locations (the post
+  page + Knowledge Hub).
+- **Page:** `/knowledge-hub/[slug]` reads `draftMode()`; in draft mode
+  `getKnowledgePostBySlug(slug, { preview })` uses `previewClient` (drafts,
+  uncached, stega) and the shared `PreviewBar` shows an exit link. The archive
+  ("The latest news") and metadata stay on published content.
+- **Stega:** `category` (compared to "Newsletter"), `newsletterHtml`, `href`
+  and `link` added to `STEGA_SKIP_KEYS`.
+- **Preview action:** the Studio "Preview" button (next to Publish) now also
+  shows on Knowledge Hub posts. `PreviewAction` reads its route prefix from
+  `PREVIEW_PATHS` (`event` → `/events`, `knowledgePost` → `/knowledge-hub`).
+
+## 2026-10-24 — DigPacks product page
+
+- **Page:** `/products/digpacks` built on the product-page template
+  (`components/layout/sections/digpacks/`): Hero (partner lockup + nurse
+  image), Partnership (replaces the trust strip), `ProductSubNav`, Outcomes
+  (UK stats), Solutions (6 solutions via `ProductFeaturesScroll`, artwork as
+  visuals), Why (checklist + audience + localisation), Asset Booker (free
+  download + drawer). Copy is prod `/digpacks` verbatim; per-solution CTAs
+  dropped (the scroll template has no CTA slot).
+- **Tokens:** `--sognos-digpacks-dark/base/gradient` in `tokens.css`, mapped in
+  `globals.css`.
+- **Images:** `public/images/digpacks/` (from prod; MS partner badge reuses
+  `/logos/Microsoft-Solutions-Partner-Logo.webp`). The prod logo PNG had a
+  baked-in grey background; replaced by transparent `digpacks-logo-full.webp`
+  (colour, light surfaces) and `digpacks-logo-white.webp` (white with the "D"
+  knocked out, dark surfaces).
+- **Wiring:** Products mega menu gets a 4th `product` column (`NavGroup.megaMenu`
+  widened from a 3-tuple to `MegaColumn[]`), mobile Products list, product
+  submenu; `/products` partner card below the product grid; `PRODUCTS.digpacks`
+  in `constants.ts`; `digpacks` option in the demo modal (`CTASection`,
+  `BookDemoContext`), `/book-a-demo`, contact form and `book-demo` action.
+- **Header:** `/products/digpacks` added to `DARK_HERO_PATHS` in `Navbar.tsx`
+  (transparent header over the dark hero, like the other product pages).
+- **Redirects:** `/digpacks` and `/products/digpacks-contact` →
+  `/products/digpacks` (308). Prod keeps `/digpacks` as its canonical URL until
+  cutover.
+
 ## 2026-10-24 — Homepage Hero + How Sognos Works restored
 
 - **Restore (`bbd269e`):** homepage Hero and How Sognos Works reverted to the
