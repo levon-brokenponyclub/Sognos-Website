@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-10-24 — Customer stories: brand card images (option C live)
+
+- **New:** `components/ui/StoryCardImage.tsx` — option C "Facets + tile":
+  pure-CSS brand-colour facets + film grain, full-colour logo on a white tile,
+  container-query sized (parent sets the box). Hover lifts the tile.
+- `/customer-stories`: featured and archive cards use it instead of the photo
+  + dark overlay + inverted logo. `STORIES` gains `brand` / `accent`; the
+  `image` field is dropped from this page. Auckland Airport `#141c6b`
+  (supplied); the others are sampled from the logo files — to confirm.
+- Not yet applied: `ProductCustomerStories`, `EditionPageTemplate`,
+  `lib/featuredNav.ts` still use the photos.
+
+## 2026-10-24 — Customer story card images: 3 options (mockup only)
+
+- `docs/mockups/customer-stories/card-images.html` — pure-CSS 16:9 card
+  images (container-query sized, scale from thumbnail to hero), each with the
+  customer logo on its brand colour: **A** Halftone glow, **B** Logo echo
+  (oversized cropped logo watermark + sector label), **C** Facets + white
+  logo tile (keeps full-colour logos). Shown in the archive card layout and
+  at 200 / 360 / 640px. Brand colours sampled from the logo files — to
+  confirm against brand guides.
+
 ## 2026-10-24 — SognosCare hero: option 3 live
 
 - **New:** `components/layout/sections/sognoscare/HeroStage.tsx` — option 3
