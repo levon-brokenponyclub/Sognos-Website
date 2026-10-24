@@ -162,11 +162,21 @@ Rollout is an open decision (§6). Do not apply site-wide without approval.
   Primitive + semantic tokens in `app/tokens.css`; Tailwind mappings in
   `@theme inline` in `app/globals.css`.
 - **Animation:** Framer Motion 12 (reduced-motion guarded throughout).
-- **CMS:** Sanity (`next-sanity`, `@sanity/vision`, `@sanity/color-input`,
-  `@sanity/image-url`). Studio runs both embedded at `/studio` (reads
-  `NEXT_PUBLIC_SANITY_*`) and standalone via `sanity dev` (reads
-  `SANITY_STUDIO_*`); `sanity.config.ts` resolves both. Production Studio:
-  `sognos.com.au/studio/`. Sanity project `vg117fxr`.
+- **CMS:** Sanity **v6.20** (`next-sanity` 13.4, `@sanity/vision` 6.20,
+  `@sanity/color-input`, `@sanity/image-url`, `@sanity/preview-url-secret`).
+  Upgraded 2026-10-24 — **redesign only; prod stays on v5**. Studio runs both
+  embedded at `/studio` (reads `NEXT_PUBLIC_SANITY_*`) and standalone via
+  `sanity dev` (reads `SANITY_STUDIO_*`); `sanity.config.ts` resolves both.
+  Production Studio: `sognos.com.au/studio/`. Sanity project `vg117fxr`.
+- **Datasets:** `production` = prod site + prod Studio; **`development`** =
+  redesign (local `.env.local` + Vercel Preview scope). One-way re-seed only
+  (production → development). See §5 #16, #18.
+- **Draft preview:** events have a Studio **Preview** action + the
+  **Presentation** tool (events only), both via Next draft mode
+  (`/api/draft-mode/enable|disable`). Draft reads use `previewClient`
+  (Viewer token `SANITY_API_READ_TOKEN`, stega for click-to-edit, value keys
+  skipped). Token lives in redesign `.env.local` + Vercel Preview
+  (`redesign` branch) only.
 - **Product datasheets:** managed via Sanity file fields (`datasheet` on each
   product page schema). GROQ resolves `datasheet.asset->url`; static fallback
   in `public/datasheets/`. Download button rendered by `ProductSubNav`.
@@ -189,13 +199,13 @@ Per-page snapshot of what's actually on the site. **Update this table
 whenever a pattern is applied.** Don't overpromise: if a section is
 untouched, mark ❌.
 
-### 4.1 Homepage (restructured 2026-08-07 — see CHANGELOG "Home restructure")
+### 4.1 Homepage (Hero + How Sognos Works restored to `f2776ef` on 2026-10-24)
 
 | Section | Status | Notes |
 |---|---|---|
-| Hero | 🟡 scaffold | Routable payouts-hero structure: eyebrow → H1 → intro → CTAs → tall motion-image panel (`aspect-[16/10]`, down-drift + grow on scroll) → trust logos (no title). Two placeholder assets pending (panel image + background fluid loop). Copy parallax disabled. |
-| LogoStrip | ✅ live | Trust marquee, Sanity-backed. New `showTitle` prop (hero passes `false`). |
-| HowSognosWorks (merged narrative) | 🟡 scaffold | HIW header + `HomeProductCards` (light re-skin) + timer deck (panel images removed). **Pass needed: deck `max-w-7xl` vs cards `max-w-6xl` width mismatch.** Pipeline hidden in file. |
+| Hero | ✅ restored | `f2776ef` version: H1 "Your entire service operation…" + Book a Demo / Explore products, with `HomeProductCards` (Care / Roster / Genogram) and the trust `LogoStrip` inside the hero. The 2026-08-07 motion-panel scaffold is gone from the page (history in `39552a1`). |
+| LogoStrip | ✅ live | Trust marquee with title ("Trusted by industry leaders…"), Sanity-backed. `showTitle` prop removed with the restore. |
+| HowSognosWorks | ✅ restored | `f2776ef` version: "Healthcare First. Field Services Always. AI at the Centre." + platform logos + timer deck (Manage demand / Coordinate workforce / Track outcomes). No `ScrollReveal` wrapper. |
 | ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
 | SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. Awaiting Pass. |
 | IndustrySection | 🟡 scaffold | Routable swiper rescaffold: 628px cards, per-sector inline hex tints. Awaiting Pass + sector token migration. |
@@ -237,6 +247,7 @@ untouched, mark ❌.
 | Industries `[slug]` | in progress | — | — | — | H2 conflict: uses `font-normal` with inconsistent responsive stepping; matches neither standard nor statement H2 (§6). |
 | Knowledge Hub | ✅ | ✅ | 🔄 in progress | — | Matched to routable.com/resources. Done: SectionShell, Insights `ArticleCard`, News lead + Events/Webinars title bumps, meta hierarchy. Remaining: masthead, tab band, News/Milestone card review. New route `/knowledge-hub/category/[category]` scaffolded 2026-08-06. |
 | Customer Stories | ✅ | ✅ | 🔄 in progress | — | `[slug]` token Pass done. Dark navy hero kept (deliberate). |
+| Events `/events` + `/events/[slug]` | ✅ | ✅ | — | — | Built 2026-10-23/24 from Sanity (option C template: hero, sticky section menu, content + sticky event card). Index: Events + Webinars rails with Upcoming / Past tabs (tabs only when populated). Static `/events/nfp-real-care` retired (seeded in Sanity). |
 
 ### 4.5 Orphaned components (deletion decision needed)
 
@@ -254,7 +265,7 @@ grep: `ProofSection.tsx`, `sognoscare/Proof.tsx` (`99% / 75% / 60% / 12,000+`),
 
 ### 4.6 Not started
 
-`/customers` hub + `/customers/[slug]`; a real `/events` index; edition-token
+`/customers` hub + `/customers/[slug]`; edition-token
 migration; Workhorse token (`--color-wh-*` etc.) removal.
 
 ---
@@ -367,7 +378,9 @@ Design + code work, ordered by impact.
 
 ## 6. Open decisions
 
-- **Hero motion asset — posture + production.** Mechanic (drift + scale) is
+- **Hero motion asset — posture + production.** *Parked 2026-10-24: the
+  homepage hero was restored to the `f2776ef` version, which has no motion
+  panel. Reopen only if the motion hero comes back.* Mechanic (drift + scale) is
   built; missing piece is a layered abstracted-UI panel of the Sognos
   interface (Figma vector composition, fake data, animatable per layer).
   Posture choice pending: Attio "product working" (record assembles, statuses

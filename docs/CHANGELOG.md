@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-10-24 — Homepage Hero + How Sognos Works restored
+
+- **Restore (`bbd269e`):** homepage Hero and How Sognos Works reverted to the
+  version deployed at `sognos-website-mv94pionl` (redesign @ `f2776ef`,
+  2026-08-06). `Hero.tsx`, `HowSognosWorks.tsx`, `HomeProductCards.tsx` and
+  `LogoStrip.tsx` restored from `f2776ef`.
+  - Hero: "Your entire service operation, run on one intelligent platform."
+    + Book a Demo / Explore products, with `HomeProductCards` and the
+    "Trusted by…" `LogoStrip` rendered inside the hero.
+  - How Sognos Works: "Healthcare First. Field Services Always. AI at the
+    Centre." + platform logos + Manage demand / Coordinate workforce / Track
+    outcomes timer deck.
+  - Dropped from the page: placeholder motion centerpiece
+    (`/dev/Instant-Payouts-Visual-Static.avif`, still used by
+    `SolutionsSection`), the `ScrollReveal` wrapper and the `LogoStrip`
+    `showTitle` prop. Rest of the homepage order unchanged.
+- **Presentation (dev note):** "preview iframe hasn't finished loading after
+  15000ms" on first open is the Next dev server's first compile (enable route
+  + `/events` ≈ 13 s). Reload once; Vercel previews are prebuilt. The Firefox
+  reload-loop note in that message does not apply (Dia/Chromium, same
+  origin). Next ≥ 16.3 would also help.
+- **Dev gotcha:** running `npm run build` while `next dev` is up left a stale
+  `.next` that made route handlers and `/events/[slug]` 404 in dev. Fix:
+  stop dev, `rm -rf .next`, restart.
+
 ## 2026-10-24 — Sanity v6 (redesign) + Presentation tool for events
 
 - **Upgrade (redesign only):** sanity 5.28 → 6.20, @sanity/vision 6.20,

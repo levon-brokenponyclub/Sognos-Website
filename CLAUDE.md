@@ -115,6 +115,17 @@ Anything else — check `docs/PROJECT_STATE.md` §2. Don't guess.
 - **Sanity Roster stories query is broken** — `getSognosrosterPageContent()`
   selects `stories`; schema field is `featuredStories`. Roster Sanity stories
   never reach the page. One-line GROQ fix in `lib/sanity/queries.ts`.
+- **Don't `npm run build` while `next dev` is running** — the shared `.next`
+  goes stale and route handlers / dynamic routes 404 in dev. Stop dev,
+  `rm -rf .next`, restart.
+- **Redesign uses the `development` dataset** (`.env.local` + Vercel Preview).
+  Never point it at `production`; never copy development → production.
+- **Draft preview needs `SANITY_API_READ_TOKEN`** (Viewer) — `.env.local` and
+  Vercel Preview (`redesign`). Without it `/api/draft-mode/enable` 500s.
+- **Stega on draft reads** — `previewClient` encodes strings for
+  Presentation overlays. Any new field the code *compares or parses*
+  (dates, enums, URLs, slugs, icon names) must be added to
+  `STEGA_SKIP_KEYS` in `lib/sanity/client.ts`, or wrap it in `stegaClean`.
 
 ---
 
