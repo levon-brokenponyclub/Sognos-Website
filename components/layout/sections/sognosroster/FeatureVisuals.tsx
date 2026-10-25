@@ -125,7 +125,7 @@ const STOPS: [number, number][] = [
   [260, 110],
   [340, 60],
 ];
-function RouteOptimisation({ show, still }: VisualProps) {
+export function RouteOptimisation({ show, still }: VisualProps) {
   return (
     <Rise show={show} className={`${CARD} relative w-full max-w-md overflow-hidden text-left`}>
       <svg viewBox="0 0 400 220" className="block h-auto w-full">

@@ -268,7 +268,7 @@ function Reporting({ show, still }: VisualProps) {
   );
 }
 
-function Copilot({ show, still }: VisualProps) {
+export function Copilot({ show, still }: VisualProps) {
   return (
     <div className="relative w-full max-w-md text-left">
       <Rise show={show} className="overflow-hidden rounded-lg border border-white/10 bg-sognos-care-dark">

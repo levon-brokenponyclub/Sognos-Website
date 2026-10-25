@@ -1,5 +1,44 @@
 # Changelog
 
+## 2026-10-25 — Solutions template: Frontline mockup ported (all 7 routes)
+
+Picks: Hero; Problem A symptom tiles; Capabilities A grid with Accent Blues
+panels; Platform C navy cards; Works with A (product card, alternating,
+graphic 3, Paraform); Related C slider. The new layout runs on every solution
+page. Motion graphics and illustrative copy are Frontline-only.
+
+- **Page (`solutions/[slug]/page.tsx`):**
+  - Hero:
+    - Light 7/5 split with a `SectionLabel` breadcrumb ("Solutions / name").
+    - H1 at `text-5xl` with tight leading.
+    - Book a Demo plus "Explore capabilities ↗" (anchor to `#capabilities`).
+    - The image frame is `bg-sognos-tint` with a 480px cap; the off-palette purple gradient is gone.
+    - Frontline adds the "Job dispatched" overlay.
+  - Problem: navy band, centred header, three tiles (display numeral, title, body). Frontline adds the symptom graphics: reassign counter, SLA countdown, stale map.
+  - Capabilities: rail header, 3-column grid of white cards. Frontline adds six Accent Blues panels.
+  - Platform: care-dark band with rail and lede. Frontline gets three cards (route draw, Copilot typing, automation run); other solutions get `PlatformLogoRow`.
+  - Works with: one card per `worksWithRoster` / `worksWithCare` flag (Roster first), alternating, on Paraform photo panels. The Roster route visual and the Care Copilot visual are reused, now exported from their FeatureVisuals files.
+  - Related: slider with arrow buttons. CRM / Customer Service / Power Platform show mini graphics; other related solutions show their hero image.
+  - The trust `LogoStrip` was removed, as in the mockup.
+  - Follow-up: Capabilities stacks the eyebrow above its H2 (no rail). Platform
+    drops the rail and centres its header with the eyebrow above the heading.
+    Related drops the rail. Works with keeps its rail.
+  - Platform cards (Frontline): `max-w-5xl`, centred.
+  - Related slider:
+    - Lists every other solution (6), with the curated `relatedSlugs` first.
+    - The track stays inside the `max-w-7xl` container (no bleed).
+    - From `lg`, three cards plus a quarter of the fourth fill the content width (~90px peek at 1440).
+- **New:**
+  - `components/layout/sections/solutions/FrontlineVisuals.tsx` (client).
+  - `solutions/frontline.ts` (server-safe copy + slugs).
+  - `SolutionWorksWith.tsx`, `SolutionRelated.tsx`.
+- **Copy and demo data (approved with the mockup):** "Explore capabilities", "Explore {product}", the "Job dispatched" overlay, the platform card lines, and the figures and names in every graphic.
+- **Checks:**
+  - Build passes with no warnings; `tsc` is clean; the changed files are lint-clean.
+  - All 7 solution routes return 200 with one H1.
+  - Frontline: no horizontal scroll at 375 / 1024, no broken images.
+  - `/solutions/finance-operations` returns 404 (no content entry; this predates the port).
+
 ## 2026-10-25 — Home · How Sognos Works: 3 motion-graphic options (mockup only)
 
 - `docs/mockups/home/index.html` (and the variant files) now render How Sognos

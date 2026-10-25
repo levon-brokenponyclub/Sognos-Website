@@ -205,7 +205,7 @@ untouched, mark ❌.
 | Section | Status | Notes |
 |---|---|---|
 | Hero | ✅ polish pass 2026-10-25 | Hero A (centred) ported from `docs/mockups/home/` (audit `docs/audits/home-hero-productcards-audit.md`): Care-hero H1 scale (`4xl/5xl/6xl`, 2 lines from `md`), `rounded-full` CTAs + 44px secondary + focus rings, centred at every size. `HomeProductCards` = cards A: 3-up from `lg` / snap rail below, Paraform image set (`/product/*Bg.avif` + product wash), product names as `h2`, accent bar, focus/active states, entrance stagger. Copy unchanged. |
-| LogoStrip | ✅ live | Sanity-backed. `variant="hero"` (home, 2026-10-25): title as `<p>`, 5-cell row in `max-w-7xl`, mobile marquee on the shared `trust-marquee-scroll` keyframe. `default` variant (solutions/[slug]) unchanged. |
+| LogoStrip | ✅ live | Sanity-backed. `variant="hero"` (home, 2026-10-25): title as `<p>`, 5-cell row in `max-w-7xl`, mobile marquee on the shared `trust-marquee-scroll` keyframe. `default` variant now has no consumer (solutions dropped the trust strip 2026-10-25) — remove or reuse. |
 | HowSognosWorks | ✅ restored | `f2776ef` version: "Healthcare First. Field Services Always. AI at the Centre." + platform logos + timer deck (Manage demand / Coordinate workforce / Track outcomes). No `ScrollReveal` wrapper. |
 | ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
 | SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. 2026-10-24: /dev/ payout art replaced by Sognos motion graphics (`home/SolutionVisuals.tsx`); review toggle Panel colour / Hero photo + palettes A–F (hidden on production). Awaiting Pass. |
@@ -244,7 +244,7 @@ untouched, mark ❌.
 
 | Page family | Scaffold | Approve | Pass | Refine | Notes |
 |---|---|---|---|---|---|
-| Solutions `[slug]` | ✅ | ✅ | ⚠️ outstanding | ⚠️ outstanding | Pre-scaffold `rounded-xl`/`shadow-md` still present; Pass required before Refine. Sole page family still off the design system — top priority (§5). |
+| Solutions `[slug]` | ✅ | ✅ | ✅ 2026-10-25 | 🟡 Frontline only | Approved Frontline mockup ported to all 7 routes: light 7/5 hero (breadcrumb label, Explore capabilities ↗), Problem A symptom tiles (navy), Capabilities A grid (Accent Blues), Platform C navy band, Works with A (alternating, Paraform, Graphic 3; per `worksWith*` flags), Related C slider. Trust `LogoStrip` removed (as in the mockup). Motion graphics + illustrative copy are Frontline-only (`components/layout/sections/solutions/`); other solutions get the layout without visuals until they have their own sets. `SolutionUseCases.tsx` is now unused. |
 | Industries `[slug]` | in progress | — | — | — | H2 conflict: uses `font-normal` with inconsistent responsive stepping; matches neither standard nor statement H2 (§6). |
 | Knowledge Hub | ✅ | ✅ | 🔄 in progress | — | Matched to routable.com/resources. Done: SectionShell, Insights `ArticleCard`, News lead + Events/Webinars title bumps, meta hierarchy. Remaining: masthead, tab band, News/Milestone card review. New route `/knowledge-hub/category/[category]` scaffolded 2026-08-06. |
 | Customer Stories | ✅ | ✅ | 🔄 in progress | — | `[slug]` token Pass done. Dark navy hero kept (deliberate). |
@@ -277,10 +277,9 @@ migration; Workhorse token (`--color-wh-*` etc.) removal.
 
 Design + code work, ordered by impact.
 
-1. **Refine Solutions `[slug]` on Routable.** The 7-route template still uses
-   pre-scaffold `rounded-xl` / `shadow-md` / `bg-white py-24`. Only page
-   family still off the design system. **Decision:** needs Routable section
-   mapping approved before build.
+1. **Solutions `[slug]` — per-solution visual sets.** Layout ported from the
+   approved Frontline mockup (2026-10-25). The other 6 solutions need their
+   own symptom / capability / platform graphics before they match Frontline.
 
 2. **Homepage Products / Solutions / Industries — advance Scaffold → Pass.**
    Three sections scaffolded 2026-08-07 (§4.1), awaiting Pass and sector
