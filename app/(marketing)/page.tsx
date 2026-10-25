@@ -95,8 +95,8 @@ export default async function HomePage() {
           `Hero` is a Client Component, so it cannot be imported there. */}
       <Hero>
         <HomeProductCards />{" "}
-        {/* 3-product AngelList cards (Care / Roster / Genogram) */}
-        <LogoStrip />{" "}
+        {/* 3-up product cards, Paraform image set */}
+        <LogoStrip variant="hero" />{" "}
         {/* "Trusted by industry leaders and professionals worldwide" */}
       </Hero>
       <HowSognosWorks />{" "}

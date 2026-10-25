@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home product cards A - uniform 3-up</title>
+<!--
+Home Hero + Product Cards - PORT_PROMPT STEP 2, 2026-10-25. Audit: docs/audits/home-hero-productcards-audit.md.
+Targets: components/layout/sections/Hero.tsx, HomeProductCards.tsx, LogoStrip.tsx (variant only - shared with solutions/[slug]).
+Reference: hero = docs/mockups/sognoscare/01m-hero-a.html (hero_a: centred column, H1/sub/CTA classes, trust row + mobile marquee);
+cards = docs/mockups/frontline/index.html Works with A (grid card: rounded-lg p-3 frame, rounded panel on top, accent bar, Base / Paraform image sets).
+Addresses: H1 = Care hero_a scale (4xl/5xl/6xl; T.h1's lg:7xl wraps to 4 lines at 1280 and pushes the cards to 721px) + mobile step (6 -> 4 lines at 375), hard break from md only, rounded-full CTAs + 44px secondary + focus rings,
+one alignment per breakpoint, product names as h2 + logo alt fixed, per-product panel + accent, gap-3 lg:gap-4, max-w-7xl, rail below lg,
+card focus/active states, trust title as <p>, marquee on mobile.
+Deviations from reference: navy stays the live sognos-navy #152248 (Care uses care-dark) - no colour drift; cards sit on navy so the frame is
+white/[.04] + border-white/10 instead of tint; product photos replace the Works-with graphic panels (no invented demo copy on Home).
+Review switchers (bottom) are mock-only. Navbar + banner are stubs in their transparent state.
+How Sognos Works - motion graphic options for the TimerCardDeck panel (switcher "How it works"). Target: HowSognosWorks.tsx panel (TimerCardDeck animation slot).
+1 Pipeline: navy scene, three zones (Intake / Roster / Outcomes) joined by a live dashed flow; the active step lights its zone (mobile: active zone only).
+2 Product: Base set - one product UI per step (intake inbox + typed Copilot summary / week roster + route draw / outcomes KPIs + donut + insight).
+3 Photo: Paraform set - product photo under the product wash, one frosted story card per step + pill, slow ken-burns.
+Deck: 8s dwell, countdown ring, active card widens (2fr), hover pauses, click to jump. Header copy is live. Panel data is illustrative demo content.
+Deviation: panel is 4:3 / 16:9 below md (live 2720:976 is ~130px tall at 375).
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  :root { --navy: #152248; }
+  @keyframes h-rise { from { opacity: 0; transform: translateY(16px); } }
+  @keyframes h-glow { from { opacity: 0; transform: translateY(40px); filter: blur(24px); } }
+  @keyframes h-marquee { to { transform: translateX(-50%); } }
+  .h-rise { animation: h-rise .6s cubic-bezier(.22,1,.36,1) backwards; }
+  .h-glow { animation: h-glow 1.2s cubic-bezier(.22,1,.36,1) backwards; }
+  .h-marquee { animation: h-marquee 28s linear infinite; }
+  /* Card image sets: Base = product gradient, Paraform = product photo under the product wash. */
+  .hc-panel { background: var(--band); }
+  [data-img="paraform"] .hc-panel { background: linear-gradient(160deg, color-mix(in srgb, var(--deep) 55%, transparent), color-mix(in srgb, var(--mid) 35%, transparent)), var(--photo) center / cover; }
+  .hc-panel .hc-photo { transition: transform .8s cubic-bezier(.22,1,.36,1); }
+  .group:hover .hc-panel .hc-photo { transform: scale(1.04); }
+  [data-img="base"] .hc-tile { background: transparent; border-color: transparent; backdrop-filter: none; }
+  /* Variant visibility (review switchers) */
+  [data-hero="a"] [data-hv="b"], [data-hero="b"] [data-hv="a"], [data-cards="a"] [data-cv="b"], [data-cards="b"] [data-cv="a"] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .h-rise, .h-glow, .h-marquee { animation: none; } .hc-panel .hc-photo { transition: none; } }
+</style><style>
+  /* Scene plumbing: an element animates only while its step is on, so
+     re-adding .is-on replays it (JS forces a reflow between). */
+  @keyframes hw-rise { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes hw-pop { from { opacity: 0; transform: scale(.9); } }
+  @keyframes hw-fill { from { transform: scaleX(0); } }
+  @keyframes hw-grow { from { transform: scaleY(0); } }
+  @keyframes hw-draw { from { stroke-dashoffset: var(--len, 400); } }
+  @keyframes hw-dash { to { stroke-dashoffset: -24; } }
+  @keyframes hw-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @keyframes hw-slot { from { opacity: 0; transform: translateY(-8px); } }
+  @keyframes hw-ken { from { transform: scale(1.08); } to { transform: scale(1); } }
+  .is-on .hw-rise { animation: hw-rise .7s cubic-bezier(.22,1,.36,1) backwards; }
+  .is-on .hw-pop { animation: hw-pop .5s cubic-bezier(.22,1,.36,1) backwards; }
+  .is-on .hw-fill { transform-origin: left; animation: hw-fill 1.4s cubic-bezier(.22,1,.36,1) backwards; }
+  .is-on .hw-grow { transform-origin: bottom; animation: hw-grow 1s cubic-bezier(.22,1,.36,1) backwards; }
+  .is-on .hw-draw { stroke-dasharray: var(--len, 400); animation: hw-draw 1.6s cubic-bezier(.22,1,.36,1) backwards; }
+  .is-on .hw-slot { animation: hw-slot .45s cubic-bezier(.22,1,.36,1) backwards; }
+  .hw-flow { stroke-dasharray: 6 6; animation: hw-dash 1s linear infinite; }
+  .hw-live { animation: hw-pulse 1.6s ease-in-out infinite; }
+  .hw-scene { transition: opacity .6s ease; }
+  .hw-scene:not(.is-on) { opacity: 0; pointer-events: none; }
+  .is-on .hw-ken { animation: hw-ken 8s ease-out both; }
+  /* Option visibility */
+  [data-hsw="1"] [data-hwo]:not([data-hwo="1"]), [data-hsw="2"] [data-hwo]:not([data-hwo="2"]), [data-hsw="3"] [data-hwo]:not([data-hwo="3"]) { display: none; }
+  /* Option 1 zones: active zone lit, the rest dimmed; mobile shows the active zone only */
+  .hw-zone { transition: opacity .6s ease, border-color .6s ease, background-color .6s ease; opacity: .38; }
+  .hw-zone.is-on { opacity: 1; border-color: rgb(255 255 255 / .28); background-color: rgb(255 255 255 / .07); }
+  @media (max-width: 767px) { .hw-zone:not(.is-on) { display: none; } }
+  /* Deck */
+  .hw-deck { transition: grid-template-columns .6s ease-in-out; }
+  .hw-card .hw-body { transition: opacity .4s ease, transform .6s ease; }
+  .hw-card:not(.is-on) .hw-body { opacity: 0; transform: translateY(12px); }
+  /* Mobile: one column deck, inactive steps collapse to their title; inbox trims to fit the 4:3 panel */
+  @media (max-width: 767px) {
+    .hw-deck { grid-template-columns: 1fr !important; }
+    .hw-card:not(.is-on) { min-height: 0; }
+    .hw-card:not(.is-on) .hw-body { display: none; }
+    .hw-inbox li:nth-child(n+4) { display: none; }
+  }
+  @media (max-width: 639px) { .hw-inbox li:nth-child(n+3) { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .is-on .hw-rise, .is-on .hw-pop, .is-on .hw-fill, .is-on .hw-grow, .is-on .hw-draw, .is-on .hw-slot, .hw-flow, .hw-live, .is-on .hw-ken { animation: none; }
+    .hw-scene, .hw-zone, .hw-deck, .hw-card .hw-body { transition: none; }
+  }
+</style><script>document.body.dataset.hero="a";document.body.dataset.cards="a";document.body.dataset.img="paraform";document.body.dataset.hsw="1";document.body.dataset.lock="1";</script><header class="fixed inset-x-0 top-0 z-50">
+  <div class="flex h-[45px] items-center justify-center gap-3 bg-white px-6 text-sm text-heading"><span class="rounded-full border border-muted px-2 py-0.5 text-xs">Event</span><span class="truncate">Event announcement banner (stub)</span></div>
+  <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 text-white">
+    <img src="../../../public/logos/sognos-logo.svg" alt="Sognos" class="h-6 w-auto brightness-0 invert" />
+    <nav class="hidden items-center gap-1 text-sm lg:flex"><span class="rounded-full px-4 py-2">Products</span><span class="rounded-full px-4 py-2">Solutions</span><span class="rounded-full px-4 py-2">Industries</span><span class="rounded-full px-4 py-2">Customers</span><span class="rounded-full px-4 py-2">Knowledge Hub</span><span class="rounded-full px-4 py-2">Company</span></nav>
+    <span class="rounded-full bg-white px-4 py-2.5 text-sm font-medium text-heading">Book a Demo</span>
+  </div>
+</header><section class="relative overflow-hidden bg-[var(--navy)] pt-40 md:pt-44">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 isolate z-0 flex items-end justify-center">
+    <img src="../../../public/images/home/bottom-blur-dp.avif" alt="" class="h-glow absolute inset-x-0 bottom-0 h-auto w-full z-0" style="animation-delay:0.15s" /><img src="../../../public/images/home/middle-blur-dp.avif" alt="" class="h-glow absolute inset-x-0 bottom-0 h-auto w-full z-20" style="animation-delay:0.27s" /><img src="../../../public/images/home/top-blur-dp.avif" alt="" class="h-glow absolute inset-x-0 bottom-0 h-auto w-full z-30" style="animation-delay:0.39s" />
+    <div class="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-[var(--navy)] to-transparent"></div>
+  </div>
+  <div class="relative z-40 mx-auto max-w-7xl px-6">
+    <div data-hv="a" class="mx-auto flex max-w-6xl flex-col items-center text-center">
+      <h1 class="h-rise font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"><span class="md:block">Your entire service operation, </span><span class="md:block">run on one intelligent platform.</span></h1>
+      <p class="h-rise mt-4 max-w-2xl text-lg leading-relaxed text-white/80 text-pretty md:mt-5" style="animation-delay:.1s">Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.</p>
+      <div class="h-rise mt-6 flex flex-col items-center gap-4 sm:flex-row md:mt-8" style="animation-delay:.2s"><button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-heading transition-colors hover:bg-accent hover:text-white active:scale-[.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button><a href="#" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Explore products <span aria-hidden="true">&#8599;</span></a></div>
+    </div>
+    <div data-hv="b" class="grid grid-cols-1 items-end gap-6 lg:grid-cols-12 lg:gap-10">
+      <h1 class="h-rise font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl lg:col-span-7"><span class="md:block">Your entire service operation, </span><span class="md:block">run on one intelligent platform.</span></h1>
+      <div class="lg:col-span-5">
+        <p class="h-rise text-lg leading-relaxed text-white/80 text-pretty" style="animation-delay:.1s">Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.</p>
+        <div class="h-rise mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center" style="animation-delay:.2s"><button type="button" class="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-heading transition-colors hover:bg-accent hover:text-white active:scale-[.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Book a Demo</button><a href="#" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Explore products <span aria-hidden="true">&#8599;</span></a></div>
+      </div>
+    </div>
+    <div class="mt-14 md:mt-20"><h2 class="sr-only">Products</h2><div data-cv="a" class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 pb-2 [scrollbar-width:none] lg:grid lg:gap-4 lg:overflow-visible lg:pb-0 lg:grid-cols-3">
+        <a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise" style="animation-delay:0.30s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3]" style="--band:linear-gradient(120deg, #0f1936, #203e71, #3b6fe0, #203e71, #0f1936);--photo:url(../../../public/product/CareBg.avif);--deep:#0f1936;--mid:#3b6fe0">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/sognos-care-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="flex flex-1 flex-col gap-5 p-5">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#1d96fc"></span>
+            <h2 class="font-heading text-xl font-normal leading-snug tracking-[-0.01em] text-white">SognosCare</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Deliver safer, simpler care in the field</span> with intake, plans, compliance and outcomes connected in one workflow.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#1d96fc"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></a><a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise" style="animation-delay:0.38s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3]" style="--band:linear-gradient(120deg, #03112f, #104b90, #1d96fc, #104b90, #03112f);--photo:url(../../../public/product/RosterBg.avif);--deep:#104b90;--mid:#59bbf7">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/sognos-roster-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="flex flex-1 flex-col gap-5 p-5">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#59bbf7"></span>
+            <h2 class="font-heading text-xl font-normal leading-snug tracking-[-0.01em] text-white">SognosRoster</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Put the right worker on every shift</span> with skills, location, availability and compliance factored in automatically.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#59bbf7"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></a><a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise" style="animation-delay:0.46s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3]" style="--band:linear-gradient(120deg, #1a0224, #4a1670, #91278c, #4a1670, #1a0224);--photo:url(../../../public/product/GenoBg.avif);--deep:#3a0f45;--mid:#91278c">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/SognosGenogram-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="flex flex-1 flex-col gap-5 p-5">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#91278c"></span>
+            <h2 class="font-heading text-xl font-normal leading-snug tracking-[-0.01em] text-white">SognosGenogram</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Map relationships, histories and support networks</span> so every worker has the context they need to deliver better outcomes.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#91278c"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></a>
+      </div><div data-cv="b" class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 pb-2 [scrollbar-width:none] lg:grid lg:gap-4 lg:overflow-visible lg:pb-0 lg:grid-cols-2">
+        <a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise" style="animation-delay:0.30s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3] lg:aspect-[16/10]" style="--band:linear-gradient(120deg, #0f1936, #203e71, #3b6fe0, #203e71, #0f1936);--photo:url(../../../public/product/CareBg.avif);--deep:#0f1936;--mid:#3b6fe0">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/sognos-care-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="flex flex-1 flex-col gap-5 p-5 lg:p-8">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#1d96fc"></span>
+            <h2 class="font-heading text-2xl md:text-[1.75rem] font-normal leading-snug tracking-[-0.01em] text-white">SognosCare</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Deliver safer, simpler care in the field</span> with intake, plans, compliance and outcomes connected in one workflow.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#1d96fc"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></a><a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise" style="animation-delay:0.38s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3] lg:aspect-[16/10]" style="--band:linear-gradient(120deg, #03112f, #104b90, #1d96fc, #104b90, #03112f);--photo:url(../../../public/product/RosterBg.avif);--deep:#104b90;--mid:#59bbf7">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/sognos-roster-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="flex flex-1 flex-col gap-5 p-5 lg:p-8">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#59bbf7"></span>
+            <h2 class="font-heading text-2xl md:text-[1.75rem] font-normal leading-snug tracking-[-0.01em] text-white">SognosRoster</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Put the right worker on every shift</span> with skills, location, availability and compliance factored in automatically.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#59bbf7"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></a>
+        <a href="#" class="group flex flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none h-rise lg:col-span-2 lg:grid lg:grid-cols-12 lg:items-stretch lg:gap-4" style="animation-delay:.46s"><div class="hc-panel relative overflow-hidden rounded aspect-[4/3] lg:col-span-5 lg:aspect-auto lg:min-h-[220px]" style="--band:linear-gradient(120deg, #1a0224, #4a1670, #91278c, #4a1670, #1a0224);--photo:url(../../../public/product/GenoBg.avif);--deep:#3a0f45;--mid:#91278c">
+            <div class="hc-photo absolute inset-0 flex items-center justify-center"><span class="hc-tile flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md"><img src="../../../public/logos/SognosGenogram-logo.svg" alt="" class="h-8 w-auto brightness-0 invert md:h-9" /></span></div>
+          </div><div class="lg:col-span-7 lg:flex"><div class="flex flex-1 flex-col gap-5 p-5 lg:p-8">
+            <span aria-hidden="true" class="block h-1 w-10 rounded-full" style="background:#91278c"></span>
+            <h2 class="font-heading text-2xl md:text-[1.75rem] font-normal leading-snug tracking-[-0.01em] text-white">SognosGenogram</h2>
+            <div class="mt-auto flex items-end justify-between gap-6"><p class="text-base leading-relaxed text-white/70"><span class="text-white">Map relationships, histories and support networks</span> so every worker has the context they need to deliver better outcomes.</p><span aria-hidden="true" class="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white">
+              <span class="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100" style="background:#91278c"></span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" class="relative"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span></div>
+          </div></div></a>
+      </div></div>
+    <div class="py-16 md:py-24"><div class="text-center">
+      <p class="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] md:text-[1.75rem] text-white">Trusted by industry leaders and professionals worldwide</p>
+      <ul aria-label="Trusted by" class="mt-10 hidden grid-cols-5 md:grid"><li class="flex h-20 items-center justify-center px-6 lg:px-10"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-9 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 lg:px-10 border-l border-white/10"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-9 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 lg:px-10 border-l border-white/10"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-9 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-20 items-center justify-center px-6 lg:px-10 border-l border-white/10"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white">Sandvik</span></li><li class="flex h-20 items-center justify-center px-6 lg:px-10 border-l border-white/10"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-9 w-auto max-w-full object-contain brightness-0 invert" /></li></ul>
+      <div class="relative -mx-6 mt-8 overflow-hidden md:hidden">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[var(--navy)] to-transparent"></div>
+        <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[var(--navy)] to-transparent"></div>
+        <ul aria-label="Trusted by" class="h-marquee flex w-max"><li class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white">Sandvik</span></li><li class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/deloitte.webp" alt="Deloitte" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/water-nsw.webp" alt="Water NSW" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/neca.webp" alt="NECA" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li><li aria-hidden="true" class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><span class="font-heading text-xl font-semibold uppercase tracking-[0.2em] text-white">Sandvik</span></li><li aria-hidden="true" class="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"><img src="../../../public/logos/clients/apm.webp" alt="APM" class="h-auto max-h-8 w-auto max-w-full object-contain brightness-0 invert" /></li></ul>
+      </div>
+    </div></div>
+  </div>
+</section>
+<section id="how-sognos-works" data-hsw-root class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto flex max-w-2xl flex-col gap-4 text-center">
+      <p class="flex items-center justify-center gap-2.5 text-lg text-heading"><span aria-hidden="true" class="block size-[0.66em] bg-accent"></span>How Sognos works</p>
+      <h2 class="mt-4 font-heading text-3xl font-medium tracking-tight text-heading md:text-5xl">Healthcare First. Field Services Always. AI at the Centre.</h2>
+      <p class="mx-auto max-w-2xl text-base leading-normal text-body md:text-lg">One connected process takes service demand from first contact to coordinated delivery and measurable outcomes.</p>
+      <div class="flex justify-center"><div class="inline-flex flex-wrap items-center justify-center gap-3 rounded-full bg-[#152248]/10 px-4 py-3 sm:gap-5 sm:px-6">
+        <img src="../../../public/logos/Dynamics365.svg" alt="Microsoft Dynamics 365" class="h-11 w-auto" /><span aria-hidden="true" class="h-8 w-px bg-[#152248]/30"></span>
+        <img src="../../../public/logos/Microsoft-Solutions-Partner-Logo.webp" alt="Microsoft Solutions Partner" class="h-[5.5rem] w-auto" /><span aria-hidden="true" class="h-8 w-px bg-[#152248]/30"></span>
+        <img src="../../../public/logos/copilot-logo.svg" alt="Microsoft Copilot" class="h-11 w-auto" /></div></div>
+    </div>
+    <div class="mt-10 flex flex-col gap-2 md:mt-12 lg:mt-16">
+      <div class="relative aspect-[4/3] overflow-hidden rounded-lg sm:aspect-[16/9] md:aspect-[2720/976]" aria-label="How Sognos works - animated illustration" role="img"><div data-hwo="1" class="absolute inset-0 overflow-hidden" style="background: radial-gradient(60% 80% at 15% 20%, rgba(59,111,224,.35), transparent 70%), radial-gradient(50% 70% at 90% 90%, rgba(29,150,252,.25), transparent 70%), #152248">
+  <svg aria-hidden="true" class="absolute inset-0 hidden h-full w-full md:block" viewBox="0 0 1000 360" preserveAspectRatio="none"><path class="hw-flow" d="M120 180 C 260 180, 300 120, 500 180 S 760 240, 880 180" stroke="rgba(255,255,255,.35)" stroke-width="1.5" fill="none" vector-effect="non-scaling-stroke"/></svg>
+  <div class="relative grid h-full grid-cols-1 gap-3 p-4 md:grid-cols-3 md:gap-4 md:p-8 lg:p-10">
+    <div data-z="0" class="hw-zone flex flex-col gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 lg:p-5">
+      <p class="flex items-center gap-2 text-xs uppercase tracking-widest text-white/75"><span class="size-1.5 rounded-full" style="background:#1d96fc"></span>01 &middot; Intake</p>
+      <div class="hw-rise flex items-center justify-between rounded border border-white/15 bg-white/10 px-3 py-2 text-sm text-white" style="animation-delay:0.15s"><span>Referral &middot; M. Turner</span><span class="text-xs text-white/75">GP</span></div><div class="hw-rise flex items-center justify-between rounded border border-white/15 bg-white/10 px-3 py-2 text-sm text-white" style="animation-delay:0.4s"><span>Call &middot; J. Okafor</span><span class="text-xs text-white/75">Phone</span></div><div class="hw-rise flex items-center justify-between rounded border border-white/15 bg-white/10 px-3 py-2 text-sm text-white" style="animation-delay:0.65s"><span>Request &middot; Site 14</span><span class="text-xs text-white/75">Portal</span></div>
+      <p class="hw-pop mt-auto inline-flex items-center gap-2 self-start rounded-full bg-[#1d96fc] px-3 py-1 text-xs text-white" style="animation-delay:1s">Triaged &middot; High priority</p>
+    </div>
+    <div data-z="1" class="hw-zone flex flex-col gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 lg:p-5">
+      <p class="flex items-center gap-2 text-xs uppercase tracking-widest text-white/75"><span class="size-1.5 rounded-full" style="background:#59bbf7"></span>02 &middot; Roster</p>
+      <div class="grid grid-cols-5 gap-1.5"><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.1s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.16s"></span><span class="hw-slot h-6 rounded-sm bg-[#59bbf7]" style="animation-delay:0.22s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.28s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.33999999999999997s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.4s"></span><span class="hw-slot h-6 rounded-sm bg-[#59bbf7]" style="animation-delay:0.45999999999999996s"></span><span class="hw-slot h-6 rounded-sm bg-[#59bbf7]" style="animation-delay:0.52s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.58s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.64s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.7s"></span><span class="hw-slot h-6 rounded-sm bg-[#59bbf7]" style="animation-delay:0.7599999999999999s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.82s"></span><span class="hw-slot h-6 rounded-sm bg-[#59bbf7]" style="animation-delay:0.88s"></span><span class="hw-slot h-6 rounded-sm bg-white/15" style="animation-delay:0.94s"></span></div>
+      <div class="hw-rise mt-auto flex items-center gap-3 rounded border border-white/15 bg-white/10 p-3" style="animation-delay:1.1s"><span class="flex size-8 shrink-0 items-center justify-center rounded-full text-[11px] font-medium text-white" style="background:#104b90">PS</span><div class="min-w-0"><p class="text-sm text-white">P. Shah assigned</p><p class="text-xs text-white/75">Skills &#10003; &middot; 4.2 km &middot; 11:00</p></div></div>
+    </div>
+    <div data-z="2" class="hw-zone flex flex-col gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 lg:p-5">
+      <p class="flex items-center gap-2 text-xs uppercase tracking-widest text-white/75"><span class="size-1.5 rounded-full" style="background:#8ea8f0"></span>03 &middot; Outcomes</p>
+      <p class="font-heading text-4xl text-white lg:text-5xl"><span data-cu="96" data-dec="0" data-suf="%">0%</span></p><p class="-mt-2 text-xs text-white/75">Visits completed on time</p>
+      <div class="mt-auto flex h-16 items-end gap-1.5"><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:40%;animation-delay:0.20s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:52%;animation-delay:0.28s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:48%;animation-delay:0.36s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:63%;animation-delay:0.44s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:70%;animation-delay:0.52s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 " style="height:78%;animation-delay:0.60s"></span><span class="hw-grow flex-1 rounded-sm bg-white/25 !bg-[#8ea8f0]" style="height:92%;animation-delay:0.68s"></span></div>
+    </div>
+  </div>
+</div><div data-hwo="2" class="absolute inset-0 overflow-hidden" style="background: linear-gradient(135deg, #eef4fd, #f9fafe 55%, #eaf0fc)">
+  <div data-scene="0" class="hw-scene absolute inset-0 p-4 md:p-8 lg:p-10"><div class="grid h-full grid-cols-1 gap-3 md:grid-cols-[3fr_2fr] md:gap-4">
+        <div class="hw-rise rounded border border-line bg-white overflow-hidden"><div class="flex items-center justify-between border-b border-line px-4 py-3"><p class="text-sm font-medium text-heading">Intake &middot; today</p><span class="flex items-center gap-1.5 text-xs text-muted"><span class="hw-live size-1.5 rounded-full bg-[#1d96fc]"></span>4 new</span></div><ul class="hw-inbox"><li class="hw-rise grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-line px-4 py-2.5 last:border-b-0" style="animation-delay:0.15s"><span class="truncate text-sm text-heading">M. Turner &middot; personal care</span><span class="text-xs text-muted">GP referral</span><span class="rounded-full px-2 py-0.5 text-[11px] bg-[#1d96fc] text-white">High</span></li><li class="hw-rise grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-line px-4 py-2.5 last:border-b-0" style="animation-delay:0.32999999999999996s"><span class="truncate text-sm text-heading">J. Okafor &middot; plan review</span><span class="text-xs text-muted">Phone</span><span class="rounded-full px-2 py-0.5 text-[11px] bg-[#e0effe] text-[#0b6fc4]">Medium</span></li><li class="hw-rise grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-line px-4 py-2.5 last:border-b-0" style="animation-delay:0.51s"><span class="truncate text-sm text-heading">Site 14 &middot; equipment check</span><span class="text-xs text-muted">Portal</span><span class="rounded-full px-2 py-0.5 text-[11px] bg-tint text-body">Routine</span></li><li class="hw-rise grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-line px-4 py-2.5 last:border-b-0" style="animation-delay:0.6900000000000001s"><span class="truncate text-sm text-heading">A. Lee &middot; allied health</span><span class="text-xs text-muted">Email</span><span class="rounded-full px-2 py-0.5 text-[11px] bg-[#e0effe] text-[#0b6fc4]">Medium</span></li></ul></div>
+        <div class="hidden flex-col gap-3 md:flex"><div class="hw-rise rounded border border-line bg-white p-4" style="animation-delay:0.9s"><p class="text-xs uppercase tracking-widest text-muted">Copilot summary</p><p class="mt-2 min-h-[3.5rem] text-sm text-heading" data-type="Personal care after hospital discharge. Lives with daughter. Suggest 2 visits a day for 14 days."></p></div>
+        <div class="hw-rise rounded border border-line bg-white flex items-center justify-between p-4" style="animation-delay:1.2s"><span class="text-sm text-body">Triage SLA</span><span class="font-heading text-2xl text-heading"><span data-cu="12" data-dec="0" data-suf=" min">0 min</span></span></div></div>
+      </div></div><div data-scene="1" class="hw-scene absolute inset-0 p-4 md:p-8 lg:p-10"><div class="grid h-full grid-cols-1 gap-3 md:grid-cols-[3fr_2fr] md:gap-4">
+        <div class="hw-rise rounded border border-line bg-white p-4"><div class="flex items-center justify-between"><p class="text-sm font-medium text-heading">Week roster &middot; North team</p><span class="text-xs text-muted"><span data-cu="142" data-dec="0" data-suf="">0</span> shifts filled</span></div>
+          <div class="mt-3 grid grid-cols-[3.5rem_repeat(5,1fr)] gap-1.5 text-[11px] text-muted"><span></span><span class="text-center">Mon</span><span class="text-center">Tue</span><span class="text-center">Wed</span><span class="text-center">Thu</span><span class="text-center">Fri</span>
+          <span class="flex items-center">P. Shah</span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.10s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.15s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.20s"></span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.25s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.30s"></span><span class="flex items-center">A. Ruiz</span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.35s"></span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.40s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.45s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.50s"></span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.55s"></span><span class="flex items-center">K. Ng</span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.60s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.65s"></span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.70s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.75s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.80s"></span><span class="flex items-center">D. Cole</span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:0.85s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.90s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:0.95s"></span><span class="hw-slot h-6 rounded-sm" style="background:#e0f2fe;animation-delay:1.00s"></span><span class="hw-slot h-6 rounded-sm" style="background:#59bbf7;animation-delay:1.05s"></span></div></div>
+        <div class="hidden flex-col gap-3 md:flex"><div class="hw-rise rounded border border-line bg-white relative overflow-hidden p-4" style="animation-delay:0.8s"><p class="text-xs uppercase tracking-widest text-muted">Route &middot; P. Shah</p>
+          <svg viewBox="0 0 220 90" class="mt-2 h-auto w-full" aria-hidden="true"><path class="hw-draw" style="--len:300" d="M10 70 C 50 20, 90 80, 130 40 S 190 30, 210 20" stroke="#104b90" stroke-width="2" fill="none"/><circle class="hw-pop" style="animation-delay:0.6s" cx="10" cy="70" r="5" fill="#fff" stroke="#59bbf7" stroke-width="2"/><circle class="hw-pop" style="animation-delay:0.9s" cx="130" cy="40" r="5" fill="#fff" stroke="#59bbf7" stroke-width="2"/><circle class="hw-pop" style="animation-delay:1.2s" cx="210" cy="20" r="5" fill="#fff" stroke="#59bbf7" stroke-width="2"/></svg></div>
+        <div class="hw-rise rounded border border-line bg-white flex items-center justify-between p-4" style="animation-delay:1.2s"><span class="text-sm text-body">Travel saved today</span><span class="font-heading text-2xl text-heading">&minus;<span data-cu="38" data-dec="0" data-suf=" min">0 min</span></span></div></div>
+      </div></div><div data-scene="2" class="hw-scene absolute inset-0 p-4 md:p-8 lg:p-10"><div class="grid h-full grid-cols-1 gap-3 md:grid-cols-[3fr_2fr] md:gap-4">
+        <div class="hw-rise rounded border border-line bg-white p-4"><div class="flex items-center justify-between"><p class="text-sm font-medium text-heading">Outcomes &middot; this quarter</p><span class="text-xs text-muted">Live</span></div>
+          <div class="mt-4 grid grid-cols-3 gap-3"><div><p class="font-heading text-3xl text-heading"><span data-cu="96" data-dec="0" data-suf="%">0%</span></p><p class="text-xs text-muted">On-time visits</p></div><div><p class="font-heading text-3xl text-heading"><span data-cu="88" data-dec="0" data-suf="%">0%</span></p><p class="text-xs text-muted">Goals on track</p></div><div><p class="font-heading text-3xl text-heading"><span data-cu="0" data-dec="0" data-suf="">0</span></p><p class="text-xs text-muted">Audit gaps</p></div></div>
+          <div class="mt-4 flex h-14 items-end gap-1.5"><span class="hw-grow flex-1 rounded-sm" style="height:35%;background:#dbe4fb;animation-delay:0.20s"></span><span class="hw-grow flex-1 rounded-sm" style="height:42%;background:#dbe4fb;animation-delay:0.25s"></span><span class="hw-grow flex-1 rounded-sm" style="height:40%;background:#dbe4fb;animation-delay:0.30s"></span><span class="hw-grow flex-1 rounded-sm" style="height:51%;background:#dbe4fb;animation-delay:0.35s"></span><span class="hw-grow flex-1 rounded-sm" style="height:55%;background:#dbe4fb;animation-delay:0.40s"></span><span class="hw-grow flex-1 rounded-sm" style="height:60%;background:#dbe4fb;animation-delay:0.45s"></span><span class="hw-grow flex-1 rounded-sm" style="height:58%;background:#dbe4fb;animation-delay:0.50s"></span><span class="hw-grow flex-1 rounded-sm" style="height:66%;background:#dbe4fb;animation-delay:0.55s"></span><span class="hw-grow flex-1 rounded-sm" style="height:72%;background:#dbe4fb;animation-delay:0.60s"></span><span class="hw-grow flex-1 rounded-sm" style="height:75%;background:#dbe4fb;animation-delay:0.65s"></span><span class="hw-grow flex-1 rounded-sm" style="height:83%;background:#dbe4fb;animation-delay:0.70s"></span><span class="hw-grow flex-1 rounded-sm" style="height:94%;background:#3b6fe0;animation-delay:0.75s"></span></div></div>
+        <div class="hidden flex-col gap-3 md:flex"><div class="hw-rise rounded border border-line bg-white flex items-center gap-4 p-4" style="animation-delay:0.6s"><svg viewBox="0 0 36 36" class="size-16 -rotate-90" aria-hidden="true"><circle cx="18" cy="18" r="15.9" fill="none" stroke="#e2e8f0" stroke-width="3.5"/><circle class="hw-draw" style="--len:100" cx="18" cy="18" r="15.9" fill="none" stroke="#3b6fe0" stroke-width="3.5" pathLength="100" stroke-dasharray="88 100"/></svg><div><p class="text-sm text-heading">Care plans reviewed</p><p class="text-xs text-muted">88% of 412</p></div></div>
+        <div class="hw-rise rounded border border-line bg-white p-4" style="animation-delay:1s"><p class="text-xs uppercase tracking-widest text-muted">Copilot insight</p><p class="mt-2 min-h-[3.5rem] text-sm text-heading" data-type="Missed-visit risk is down 21% since rosters started matching travel time."></p></div></div>
+      </div></div>
+</div><div data-hwo="3" class="absolute inset-0 overflow-hidden bg-[#0f1936]">
+  <div data-scene="0" class="hw-scene absolute inset-0">
+    <div class="hw-ken absolute inset-0" style="background: linear-gradient(160deg, color-mix(in srgb, #0f1936 60%, transparent), color-mix(in srgb, #3b6fe0 30%, transparent)), url(../../../public/product/CareBg.avif) center / cover"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 md:justify-start md:p-10 lg:pl-16">
+      <div class="hw-rise rounded border border-white/60 bg-white/75 backdrop-blur-md w-full max-w-sm p-4 md:p-5" style="animation-delay:0.2s"><div class="flex items-center gap-3"><span class="flex size-10 shrink-0 items-center justify-center rounded-full text-[11px] font-medium text-white" style="background:#0f1936">MT</span><div><p class="text-sm font-medium text-heading">New referral &middot; M. Turner</p><p class="text-xs text-muted">GP &middot; personal care after discharge</p></div></div>
+        <ul class="mt-4 space-y-2"><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.5s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Eligibility checked</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.75s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Funding confirmed</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:1.0s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Triaged &middot; High</li></ul>
+      </div>
+    </div>
+    <p class="hw-pop absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/40 bg-[#0f1936]/30 px-4 py-2 text-xs text-white backdrop-blur-md md:bottom-6" style="animation-delay:1.3s"><span class="size-1.5 rounded-full" style="background:#3b6fe0"></span>Referral to plan in 12 min</p>
+  </div><div data-scene="1" class="hw-scene absolute inset-0">
+    <div class="hw-ken absolute inset-0" style="background: linear-gradient(160deg, color-mix(in srgb, #104b90 60%, transparent), color-mix(in srgb, #59bbf7 30%, transparent)), url(../../../public/product/RosterBg.avif) center / cover"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 md:justify-start md:p-10 lg:pl-16">
+      <div class="hw-rise rounded border border-white/60 bg-white/75 backdrop-blur-md w-full max-w-sm p-4 md:p-5" style="animation-delay:0.2s"><div class="flex items-center gap-3"><span class="flex size-10 shrink-0 items-center justify-center rounded-full text-[11px] font-medium text-white" style="background:#104b90">PS</span><div><p class="text-sm font-medium text-heading">Shift filled &middot; P. Shah</p><p class="text-xs text-muted">Personal care &middot; 11:00 &middot; 4.2 km</p></div></div>
+        <ul class="mt-4 space-y-2"><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.5s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Skills matched</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.75s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Compliance current</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:1.0s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Route optimised</li></ul>
+      </div>
+    </div>
+    <p class="hw-pop absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/40 bg-[#0f1936]/30 px-4 py-2 text-xs text-white backdrop-blur-md md:bottom-6" style="animation-delay:1.3s"><span class="size-1.5 rounded-full" style="background:#59bbf7"></span>142 shifts filled this week</p>
+  </div><div data-scene="2" class="hw-scene absolute inset-0">
+    <div class="hw-ken absolute inset-0" style="background: linear-gradient(160deg, color-mix(in srgb, #0f1936 60%, transparent), color-mix(in srgb, #8ea8f0 30%, transparent)), url(../../../public/product/GenoBg.avif) center / cover"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 md:justify-start md:p-10 lg:pl-16">
+      <div class="hw-rise rounded border border-white/60 bg-white/75 backdrop-blur-md w-full max-w-sm p-4 md:p-5" style="animation-delay:0.2s"><div><p class="text-sm font-medium text-heading">Outcome recorded &middot; M. Turner</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-heading/10"><span class="hw-fill block h-full w-3/4 rounded-full bg-[#3b6fe0]" style="animation-delay:0.4s"></span></div><p class="mt-1.5 text-xs text-muted">3 of 4 goals met</p></div>
+        <ul class="mt-4 space-y-2"><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.5s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Note signed</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:0.75s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Claim ready</li><li class="hw-rise flex items-center gap-2 text-sm text-heading" style="animation-delay:1.0s"><span class="flex size-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">&#10003;</span>Family updated</li></ul>
+      </div>
+    </div>
+    <p class="hw-pop absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-white/40 bg-[#0f1936]/30 px-4 py-2 text-xs text-white backdrop-blur-md md:bottom-6" style="animation-delay:1.3s"><span class="size-1.5 rounded-full" style="background:#8ea8f0"></span>Audit-ready &middot; 0 gaps</p>
+  </div>
+</div></div>
+      <div data-hw-deck class="hw-deck grid gap-2" style="grid-template-columns: 2fr 1fr 1fr">
+        <button type="button" data-hw-card="0" class="hw-card relative flex min-h-[200px] flex-col overflow-hidden rounded-lg bg-white p-6 text-left focus-visible:outline-2 focus-visible:outline-accent md:min-h-[240px]">
+          <span class="font-mono text-xs uppercase text-muted">01</span>
+          <span data-hw-ring class="absolute right-6 top-6 hidden"><svg viewBox="0 0 40 40" class="size-10 -rotate-90" aria-hidden="true"><circle cx="20" cy="20" r="17" class="fill-none stroke-line" stroke-width="2"/><circle data-ring cx="20" cy="20" r="17" class="fill-none stroke-body" stroke-width="2" pathLength="100" stroke-dasharray="0 100"/></svg></span>
+          <span class="mt-auto font-heading text-xl tracking-tight text-heading">Manage demand</span>
+          <span class="hw-body mt-4 line-clamp-3 text-base leading-[1.4] text-body/80">Built for care teams delivering complex services across communities, homes and frontline environments.</span>
+        </button><button type="button" data-hw-card="1" class="hw-card relative flex min-h-[200px] flex-col overflow-hidden rounded-lg bg-white p-6 text-left focus-visible:outline-2 focus-visible:outline-accent md:min-h-[240px]">
+          <span class="font-mono text-xs uppercase text-muted">02</span>
+          <span data-hw-ring class="absolute right-6 top-6 hidden"><svg viewBox="0 0 40 40" class="size-10 -rotate-90" aria-hidden="true"><circle cx="20" cy="20" r="17" class="fill-none stroke-line" stroke-width="2"/><circle data-ring cx="20" cy="20" r="17" class="fill-none stroke-body" stroke-width="2" pathLength="100" stroke-dasharray="0 100"/></svg></span>
+          <span class="mt-auto font-heading text-xl tracking-tight text-heading">Coordinate workforce</span>
+          <span class="hw-body mt-4 line-clamp-3 text-base leading-[1.4] text-body/80">Designed around the realities of mobile workforces, scheduling, compliance and service delivery in the field.</span>
+        </button><button type="button" data-hw-card="2" class="hw-card relative flex min-h-[200px] flex-col overflow-hidden rounded-lg bg-white p-6 text-left focus-visible:outline-2 focus-visible:outline-accent md:min-h-[240px]">
+          <span class="font-mono text-xs uppercase text-muted">03</span>
+          <span data-hw-ring class="absolute right-6 top-6 hidden"><svg viewBox="0 0 40 40" class="size-10 -rotate-90" aria-hidden="true"><circle cx="20" cy="20" r="17" class="fill-none stroke-line" stroke-width="2"/><circle data-ring cx="20" cy="20" r="17" class="fill-none stroke-body" stroke-width="2" pathLength="100" stroke-dasharray="0 100"/></svg></span>
+          <span class="mt-auto font-heading text-xl tracking-tight text-heading">Track outcomes</span>
+          <span class="hw-body mt-4 line-clamp-3 text-base leading-[1.4] text-body/80">Practical AI embedded where it matters most, helping teams reduce admin, improve decisions and focus on people.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section><div class="fixed bottom-5 left-1/2 z-[60] flex max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-1 overflow-x-auto rounded-full border border-white/15 bg-care-dark/90 p-1 text-xs text-white backdrop-blur"><span class="px-2 text-white/60">Hero</span><button type="button" data-set="hero:a" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">A · Centred</button><button type="button" data-set="hero:b" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">B · Split</button><span class="px-2 text-white/60">Cards</span><button type="button" data-set="cards:a" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">A · 3-up</button><button type="button" data-set="cards:b" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">B · Featured</button><span class="px-2 text-white/60">Image</span><button type="button" data-set="img:paraform" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">Paraform</button><button type="button" data-set="img:base" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">Base</button><span class="px-2 text-white/60">How it works</span><button type="button" data-set="hsw:1" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">1 · Pipeline</button><button type="button" data-set="hsw:2" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">2 · Product</button><button type="button" data-set="hsw:3" class="whitespace-nowrap rounded-full px-3 py-2 hover:bg-white/10 aria-pressed:bg-white aria-pressed:text-care-dark">3 · Photo</button></div><script>
+  (() => {
+    const root = document.body, set = (k, v, save) => { root.dataset[k] = v; document.querySelectorAll(`[data-set^="${k}:"]`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.set === `${k}:${v}`))); if (save) try { localStorage.setItem("sognos-home-" + k, v); } catch {} };
+    document.querySelectorAll("[data-set]").forEach((b) => b.addEventListener("click", () => { const [k, v] = b.dataset.set.split(":"); set(k, v, true); }));
+    ["hero", "cards", "img", "hsw"].forEach((k) => { let v = root.dataset[k]; if (root.dataset.lock !== "1") try { v = localStorage.getItem("sognos-home-" + k) || v; } catch {} set(k, v); });
+  })();
+</script><script>
+  (() => {
+    const root = document.querySelector("[data-hsw-root]"); if (!root) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, DWELL = 8000;
+    const cards = [...root.querySelectorAll("[data-hw-card]")], deck = root.querySelector("[data-hw-deck]");
+    let step = 0, t0 = performance.now(), paused = false;
+    const countUp = (el) => { const to = +el.dataset.cu, dec = +el.dataset.dec, suf = el.dataset.suf; if (reduce) { el.textContent = to.toFixed(dec) + suf; return; } const s = performance.now(); const f = (n) => { const p = Math.min(1, (n - s) / 1400), e = 1 - Math.pow(1 - p, 3); el.textContent = (to * e).toFixed(dec) + suf; if (p < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); };
+    const type = (el) => { const txt = el.dataset.type; if (reduce) { el.textContent = txt; return; } clearInterval(el._t); el.textContent = ""; let i = 0; setTimeout(() => { el._t = setInterval(() => { el.textContent = txt.slice(0, ++i); if (i >= txt.length) clearInterval(el._t); }, 22); }, 900); };
+    const activate = (el) => { el.classList.remove("is-on"); void el.offsetWidth; el.classList.add("is-on"); el.querySelectorAll("[data-cu]").forEach(countUp); el.querySelectorAll("[data-type]").forEach(type); };
+    const show = (i) => {
+      step = (i + 3) % 3; t0 = performance.now();
+      root.querySelectorAll("[data-z]").forEach((z) => (+z.dataset.z === step ? activate(z) : z.classList.remove("is-on")));
+      root.querySelectorAll("[data-scene]").forEach((s) => (+s.dataset.scene === step ? activate(s) : s.classList.remove("is-on")));
+      cards.forEach((c, k) => { c.classList.toggle("is-on", k === step); c.setAttribute("aria-current", String(k === step)); c.querySelector("[data-hw-ring]").classList.toggle("hidden", k !== step || reduce); });
+      if (innerWidth >= 768) deck.style.gridTemplateColumns = [0, 1, 2].map((k) => (k === step ? "2fr" : "1fr")).join(" ");
+    };
+    cards.forEach((c, k) => c.addEventListener("click", () => show(k)));
+    root.addEventListener("mouseenter", () => (paused = true)); root.addEventListener("mouseleave", () => { paused = false; t0 = performance.now(); });
+    // Mobile: stacked deck, no column animation.
+    const mq = matchMedia("(min-width: 768px)"); const lay = () => { deck.style.gridTemplateColumns = mq.matches ? [0, 1, 2].map((k) => (k === step ? "2fr" : "1fr")).join(" ") : "1fr"; }; mq.addEventListener("change", lay);
+    const tick = (n) => { if (!paused && !reduce) { const p = (n - t0) / DWELL; const r = cards[step].querySelector("[data-ring]"); if (r) r.setAttribute("stroke-dasharray", `${Math.min(100, p * 100)} 100`); if (p >= 1) show(step + 1); } requestAnimationFrame(tick); };
+    // Re-run the active scene when the option switcher changes.
+    new MutationObserver(() => show(step)).observe(document.body, { attributes: true, attributeFilter: ["data-hsw"] });
+    show(0); lay(); requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>

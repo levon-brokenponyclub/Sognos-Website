@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HSC 03 - How Sognos helps A (tabs, recommended)</title>
+<!--
+Audit T1-T6, G2, G3. Vertical tab rail (keyboard, pause on hover/focus, rotate in view only) + one gallery graphic per item. Maps to: industries/IndustryHowTabs.tsx. docs/audits/health-social-care-polish-audit.md
+-->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  html { scroll-padding-top: 8rem; } /* 80px header + 46px section bar */
+  @font-face { font-family: "AngelList"; src: url("../../../public/app/AngelList.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+</style>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "AngelList", ui-sans-serif, system-ui, sans-serif;
+    --font-sofia: "sofia-pro", ui-sans-serif, system-ui, sans-serif;
+    --color-care-dark: #0f1936;
+    --color-care-base: #3b6fe0;
+    --color-accent: #1d96fc;
+    --color-accent-strong: #0b6fc4; /* accent darkened for small text on white (≈5.1:1) */
+    --color-heading: #0f1936;
+    --color-body: #152248;
+    --color-muted: #68706f;
+    --color-line: #e2e8f0;
+    --color-tint: #f9fafe;
+    --color-navy: #152248;
+    --color-ed-dmh: #00a98f;
+    --color-ed-ahc: #ffad6e;
+    --color-ed-hith: #cbdd61;
+    --color-ed-sah: #ff8e90;
+    --color-ed-rac: #caa4ff;
+    --color-ed-cfs: #ff7dbc;
+  }
+  /* Shared mockup primitives — stand-ins for AnimatedEyebrow / rail. */
+  @utility eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest; }
+</style>
+</head>
+<body class="bg-white font-sans text-body antialiased">
+<style>
+  .fv { --ease: cubic-bezier(.22,1,.36,1); }
+  .fv [data-in] { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .fv.is-in [data-in] { opacity: 1; transform: none; }
+  .fv.is-in [data-in="2"] { transition-delay: .12s; } .fv.is-in [data-in="3"] { transition-delay: .24s; } .fv.is-in [data-in="4"] { transition-delay: .36s; }
+  .fv .bar { transform: scaleY(0); transform-origin: bottom; transition: transform .9s var(--ease); }
+  .fv.is-in .bar { transform: scaleY(1); }
+  .fv .spark { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.6s var(--ease) .3s; }
+  .fv.is-in .spark { stroke-dashoffset: 0; }
+  @keyframes fv-dash { to { stroke-dashoffset: -24; } }
+  .fv.is-in .flow { stroke-dasharray: 6 6; animation: fv-dash 1s linear infinite; }
+  @keyframes fv-pulse { 0%,100% { opacity: .6; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .fv .pulse { animation: fv-pulse 2.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .fv [data-in], .fv .bar { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .fv .spark { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .flow, .fv .pulse { animation: none !important; }
+  }
+</style><style>
+  @keyframes x-move-a { 0% { transform: translate(0,0); } 50% { transform: translate(46px,-28px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-b { 0% { transform: translate(0,0); } 50% { transform: translate(-38px,22px); } 100% { transform: translate(0,0); } }
+  @keyframes x-move-c { 0% { transform: translate(0,0); } 50% { transform: translate(30px,34px); } 100% { transform: translate(0,0); } }
+  .fv.is-in .x-a { animation: x-move-a 7s ease-in-out infinite; } .fv.is-in .x-b { animation: x-move-b 8s ease-in-out infinite; } .fv.is-in .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .hero-stage .x-a { animation: x-move-a 7s ease-in-out infinite; } .hero-stage .x-b { animation: x-move-b 8s ease-in-out infinite; } .hero-stage .x-c { animation: x-move-c 9s ease-in-out infinite; }
+  .fv .route { stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 2.2s cubic-bezier(.22,1,.36,1) .3s; }
+  .fv.is-in .route { stroke-dashoffset: 0; }
+  @keyframes x-ring { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 170; } }
+  .fv.is-in .sla-ring { animation: x-ring 14s linear infinite; }
+  .fv .slot { opacity: 0; transform: scale(.92); transition: opacity .45s, transform .45s cubic-bezier(.22,1,.36,1); }
+  .fv.is-in .slot, .hero-stage .slot { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .x-a, .x-b, .x-c, .sla-ring { animation: none !important; }
+    .fv .route { stroke-dashoffset: 0 !important; transition: none !important; }
+    .fv .slot { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style><style>
+  @keyframes m-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes m-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes m-drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+  @keyframes m-pulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 0; transform: scale(2.4); } }
+  .m-rise { animation: m-rise .8s cubic-bezier(.22,1,.36,1) both; }
+  .m-float { animation: m-float 6s ease-in-out infinite; }
+  .m-drift { background-size: 220% 220%; animation: m-drift 9s ease-in-out infinite alternate; }
+  .m-pulse { animation: m-pulse 2.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .m-rise, .m-float, .m-drift, .m-pulse { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style><style>
+  .flx-rise { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+  .fv.is-in .flx-rise, .fv.is-in.flx-rise { opacity: 1; transform: none; }
+  .fv.is-in .flx-d1 { transition-delay: .12s; } .fv.is-in .flx-d2 { transition-delay: .24s; } .fv.is-in .flx-d3 { transition-delay: .36s; } .fv.is-in .flx-d4 { transition-delay: .48s; }
+  /* Problem B: issue chip flips to resolved once in view */
+  .flip-chip span { transition: opacity .5s, transform .5s; }
+  .flip-chip .ok { position: absolute; inset: 0; opacity: 0; transform: translateY(6px); }
+  .fv.is-in .flip-chip .bad { opacity: 0; transform: translateY(-6px); transition-delay: 1.4s; }
+  .fv.is-in .flip-chip .ok { opacity: 1; transform: none; transition-delay: 1.4s; }
+  /* Problem A: skill mismatch shake, stale dot */
+  @keyframes flx-shake { 0%, 86%, 100% { transform: none; } 88% { transform: translateX(-3px); } 92% { transform: translateX(3px); } 96% { transform: translateX(-2px); } }
+  .flx-shake { animation: flx-shake 3.2s ease-in-out infinite; }
+  @keyframes flx-fade { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .flx-stale { animation: flx-fade 2.4s ease-in-out infinite; }
+  /* Problem C: broken links flicker */
+  @keyframes flx-flicker { 0%, 100% { opacity: .55; } 40% { opacity: .15; } 45% { opacity: .6; } 70% { opacity: .2; } }
+  .flx-broken { animation: flx-flicker 2.8s steps(1, end) infinite; }
+  [data-pc][data-on="true"] .pc-badge { background: #ff8e90; color: #0f1936; }
+  [data-pc][data-on="true"].pc-item { background: rgb(255 255 255 / .08); }
+  /* Platform A: stack builds up */
+  .flx-slab { opacity: 0; transform: translateY(24px) scale(.98); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+  .fv.is-in .flx-slab { opacity: 1; transform: none; }
+  /* Works B: job / worker packet */
+  .pair-dot { left: 0; transition: left 1.1s cubic-bezier(.65,0,.35,1), background-color .3s; }
+  [data-pair="1"] .pair-dot { left: calc(100% - 12px); }
+  [data-pair="2"] .pair-dot { left: calc(100% - 12px); background: #59bbf7; }
+  [data-pair="3"] .pair-dot { left: 0; background: #59bbf7; }
+  [data-pair] [data-ps] { display: none; } [data-pair="0"] [data-ps="0"], [data-pair="1"] [data-ps="1"], [data-pair="2"] [data-ps="2"], [data-pair="3"] [data-ps="3"] { display: inline; }
+  [data-pair="3"] .pair-worker { border-color: #1d96fc; }
+  [data-pair="3"] .pair-worker .pair-tick { opacity: 1; }
+  /* Works C: roster slots breathe */
+  @keyframes flx-slot { 0%, 100% { opacity: .06; } 50% { opacity: .24; } }
+  .flx-slot { animation: flx-slot 3.6s ease-in-out infinite; }
+  /* Related: case status chip cycles */
+  @keyframes flx-c1 { 0%, 30% { opacity: 1; } 33%, 100% { opacity: 0; } }
+  @keyframes flx-c2 { 0%, 30% { opacity: 0; } 33%, 63% { opacity: 1; } 66%, 100% { opacity: 0; } }
+  @keyframes flx-c3 { 0%, 63% { opacity: 0; } 66%, 97% { opacity: 1; } 100% { opacity: 0; } }
+  .flx-chip > span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .flx-chip > span:nth-child(1) { animation: flx-c1 6s infinite; } .flx-chip > span:nth-child(2) { animation: flx-c2 6s infinite; } .flx-chip > span:nth-child(3) { animation: flx-c3 6s infinite; }
+  @keyframes flx-sla { from { width: 20%; } to { width: 78%; } }
+  .flx-sla { animation: flx-sla 6s linear infinite; }
+  .rel-track { scrollbar-width: none; } .rel-track::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .flx-rise, .flx-slab { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .flx-shake, .flx-stale, .flx-broken, .flx-slot, .flx-sla, .flx-chip > span { animation: none !important; }
+    .flx-chip > span:nth-child(n+2) { opacity: 0; }
+    .flip-chip .bad { opacity: 0 !important; } .flip-chip .ok { opacity: 1 !important; transform: none !important; }
+    .pair-dot { transition: none !important; }
+    .flx-anim { display: none; }
+  }
+</style><section id="how" class="bg-tint py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-2"><p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading lg:sticky lg:top-36"><span aria-hidden="true" class="block size-[0.66em] shrink-0 bg-accent"></span>How Sognos helps</p></div>
+      <div class="min-w-0 lg:col-[3/-1]">
+        <div class="flex max-w-[770px] flex-col gap-4"><h2 class="font-heading text-3xl font-normal leading-[1.2] tracking-[-0.01em] text-balance md:text-4xl text-heading">Purpose-built for Health &amp; Social Care</h2><p class="max-w-2xl text-base leading-relaxed text-pretty text-body">Coordinate complex care delivery, multidisciplinary teams, and compliance-heavy service operations.</p></div>
+        <div data-how class="mt-10 md:mt-16 xl:mt-20 grid grid-cols-1 gap-3 lg:grid-cols-12 lg:gap-4">
+          <div role="tablist" aria-label="How Sognos helps" aria-orientation="vertical" class="flex flex-col gap-2 lg:col-span-5">
+            <button type="button" role="tab" id="how-tab-0" aria-controls="how-panel-0" aria-selected="true" tabindex="0" data-how-tab="0" class="group rounded-lg border border-transparent bg-white p-5 text-left transition-colors hover:border-line focus-visible:outline-2 focus-visible:outline-accent aria-selected:border-heading lg:p-6">
+              <span class="flex items-baseline gap-4"><span class="font-heading text-sm tabular-nums text-muted group-aria-selected:text-accent-strong">01</span><span class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Compliance built into every workflow</span></span>
+              <span class="mt-2 block pl-9 text-sm leading-normal text-body group-aria-[selected=false]:hidden">SognosCare embeds compliance checks, audit trails, and outcome recording directly into service delivery - so evidence exists without extra admin effort.</span>
+              <span aria-hidden="true" class="mt-4 ml-9 block h-0.5 overflow-hidden rounded-full bg-line group-aria-[selected=false]:hidden"><span class="how-progress block h-full w-0 bg-accent"></span></span>
+            </button><button type="button" role="tab" id="how-tab-1" aria-controls="how-panel-1" aria-selected="false" tabindex="-1" data-how-tab="1" class="group rounded-lg border border-transparent bg-white p-5 text-left transition-colors hover:border-line focus-visible:outline-2 focus-visible:outline-accent aria-selected:border-heading lg:p-6">
+              <span class="flex items-baseline gap-4"><span class="font-heading text-sm tabular-nums text-muted group-aria-selected:text-accent-strong">02</span><span class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Intelligent workforce matching</span></span>
+              <span class="mt-2 block pl-9 text-sm leading-normal text-body group-aria-[selected=false]:hidden">SognosRoster matches workers to participants automatically, factoring skills, compliance status, travel time, and continuity of care.</span>
+              <span aria-hidden="true" class="mt-4 ml-9 block h-0.5 overflow-hidden rounded-full bg-line group-aria-[selected=false]:hidden"><span class="how-progress block h-full w-0 bg-accent"></span></span>
+            </button><button type="button" role="tab" id="how-tab-2" aria-controls="how-panel-2" aria-selected="false" tabindex="-1" data-how-tab="2" class="group rounded-lg border border-transparent bg-white p-5 text-left transition-colors hover:border-line focus-visible:outline-2 focus-visible:outline-accent aria-selected:border-heading lg:p-6">
+              <span class="flex items-baseline gap-4"><span class="font-heading text-sm tabular-nums text-muted group-aria-selected:text-accent-strong">03</span><span class="font-heading text-lg font-normal leading-snug tracking-[-0.005em] text-heading">Reporting without the overhead</span></span>
+              <span class="mt-2 block pl-9 text-sm leading-normal text-body group-aria-[selected=false]:hidden">Generate funder and regulatory reports from live operational data - no manual compilation, no reconciliation.</span>
+              <span aria-hidden="true" class="mt-4 ml-9 block h-0.5 overflow-hidden rounded-full bg-line group-aria-[selected=false]:hidden"><span class="how-progress block h-full w-0 bg-accent"></span></span>
+            </button>
+          </div>
+          <div class="lg:col-span-7">
+            <div role="tabpanel" id="how-panel-0" aria-labelledby="how-tab-0" data-how-panel="0" class="h-full [&>.fv]:h-full"><div class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:#f7edf3" data-loop="audit">
+              <div class="relative w-full max-w-md text-left">
+                <div data-in="1" class="rounded-lg border border-line bg-white overflow-hidden">
+                  <div class="flex items-center justify-between border-b border-line px-4 py-3"><p class="text-sm font-medium text-heading">Audit trail</p><span class="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted">&#128274; Immutable</span></div>
+                  <ul data-pool='[["Care plan v4 approved", "Coordinator \u00b7 10:14:02"], ["Funding rule applied", "Support at Home cap \u00b7 10:14:09"], ["Incident report filed", "Worker app \u00b7 10:15:31"], ["Progress note signed", "P. Shah \u00b7 10:16:05"], ["Document versioned", "Service agreement v2 \u00b7 10:16:40"]]' class="min-h-[13rem]">
+                    <li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Care plan v4 approved</p><p data-b class="text-xs tabular-nums text-muted">Coordinator &middot; 10:14:02</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Funding rule applied</p><p data-b class="text-xs tabular-nums text-muted">Support at Home cap &middot; 10:14:09</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Incident report filed</p><p data-b class="text-xs tabular-nums text-muted">Worker app &middot; 10:15:31</p></div></li><li class="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0"><span class="size-1.5 shrink-0 bg-accent"></span><div class="min-w-0 flex-1"><p data-a class="truncate text-sm text-heading">Progress note signed</p><p data-b class="text-xs tabular-nums text-muted">P. Shah &middot; 10:16:05</p></div></li>
+                  </ul>
+                </div>
+                <div data-in="3" class="absolute -right-2 -top-4 flex items-center gap-2 rounded-full bg-care-dark px-4 py-2 text-xs font-medium text-white sm:-right-6">&#10003; Audit-ready</div>
+              </div>
+            </div></div><div role="tabpanel" id="how-panel-1" aria-labelledby="how-tab-1" data-how-panel="1" class="h-full [&>.fv]:h-full" hidden><div class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:color-mix(in srgb, #1d96fc 8%, white)" data-loop="run">
+              <div class="w-full max-w-md space-y-3 text-left">
+                <div data-in="1" class="flex items-center gap-3 rounded-lg border border-line bg-white p-4"><img src="../../../public/images/avatar-priya-real.png" alt="" class="size-11 shrink-0 rounded-full object-cover" /><div class="flex-1"><p class="text-sm font-medium text-heading">P. Shah</p><p class="text-xs text-muted">Support worker &middot; 4.2 km away</p></div><span class="text-xs font-medium" style="color:#104b90">98% match</span></div>
+                <div data-in="2" class="rounded-lg border border-line bg-white px-4 py-2"><div data-progress class="hidden" style="height:0%"></div><ul class="divide-y divide-line"><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Manual handling certificate</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">First aid &middot; current</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Client prefers female worker</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li><li data-step data-state="next" class="group/st flex items-center justify-between gap-3 py-2 text-sm"><span class="text-body">Available 9:00 - 11:00</span><span class="flex size-6 items-center justify-center rounded-full border border-line text-[11px] text-transparent transition-colors duration-300 group-data-[state=done]/st:border-emerald-600 group-data-[state=done]/st:bg-emerald-600 group-data-[state=done]/st:text-white group-data-[state=now]/st:border-accent">&#10003;</span></li></ul></div>
+              </div>
+            </div></div><div role="tabpanel" id="how-panel-2" aria-labelledby="how-tab-2" data-how-panel="2" class="h-full [&>.fv]:h-full" hidden><div class="fv relative flex min-h-[340px] w-full items-center justify-center overflow-hidden rounded px-5 py-8 sm:p-8 md:min-h-[400px] lg:p-10" style="background:#f7edf3" data-loop="count">
+              <div class="relative w-full max-w-md space-y-3 text-left">
+                <div class="grid grid-cols-3 gap-3">
+                  <div data-in="1" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Participants</p><p class="mt-1 font-heading text-2xl text-heading" data-count="1284" data-suffix="">0</p></div><div data-in="2" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">Hours delivered</p><p class="mt-1 font-heading text-2xl text-heading" data-count="9640" data-suffix="">0</p></div><div data-in="3" class="rounded-lg border border-line bg-white p-3"><p class="text-[10px] text-muted">On budget</p><p class="mt-1 font-heading text-2xl text-heading" data-count="96" data-suffix="%">0%</p></div>
+                </div>
+                <div data-in="2" class="rounded-lg border border-line bg-white p-4">
+                  <p class="text-xs text-muted">Outcome goals met &middot; last 12 months</p>
+                  <svg viewBox="0 0 300 80" class="mt-2 h-20 w-full" fill="none" aria-hidden="true"><path class="spark" d="M0 64 L27 60 L54 62 L81 50 L108 54 L135 42 L162 44 L189 32 L216 36 L243 24 L270 20 L300 12" stroke="#1d96fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div data-in="4" class="rounded-lg border border-line bg-white flex items-center gap-3 p-3"><span class="flex size-9 items-center justify-center rounded bg-tint text-xs font-medium text-heading">PDF</span><div class="min-w-0 flex-1"><p class="truncate text-sm text-heading">Monthly funding report</p><p class="text-xs text-muted">Generated from live data &middot; just now</p></div><span class="text-xs text-emerald-700">&#10003;</span></div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loops = {
+      // Case: the active journey stage walks along the track.
+      journey(el) { const s = [...el.querySelectorAll("[data-stage]")]; let i = 2; return () => { s.forEach((x, j) => { x.dataset.state = j < i ? "done" : j === i ? "now" : "next"; }); i = (i + 1) % s.length; }; },
+      // Compliance: newest audit entry slides in, oldest drops.
+      audit(el) { const ul = el.querySelector("ul"); const pool = JSON.parse(ul.dataset.pool); let n = 0; return () => { const [a, b] = pool[n++ % pool.length]; const li = ul.firstElementChild.cloneNode(true); li.querySelector("[data-a]").textContent = a; li.querySelector("[data-b]").textContent = b; li.animate([{ opacity: 0, transform: "translateY(-10px)" }, { opacity: 1, transform: "none" }], { duration: 500, easing: "cubic-bezier(.22,1,.36,1)" }); ul.prepend(li); if (ul.children.length > 4) ul.lastElementChild.remove(); }; },
+      // Reporting: KPI counts up once.
+      count(el) { el.querySelectorAll("[data-count]").forEach((c) => { const to = +c.dataset.count, suf = c.dataset.suffix || ""; let t0; const step = (t) => { t0 ??= t; const p = Math.min(1, (t - t0) / 1200); c.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString() + suf; if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); return null; },
+      // Automation: run the workflow step by step, hold on the last, restart.
+      run(el) { const st = [...el.querySelectorAll("[data-step]")]; const bar = el.querySelector("[data-progress]"); let i = 0; return () => { const k = i % (st.length + 2); st.forEach((x, j) => { x.dataset.state = j < k ? "done" : j === k ? "now" : "next"; }); bar.style.height = `${Math.min(k, st.length - 1) / (st.length - 1) * 100}%`; i++; }; },
+      // Copilot: the draft types itself, then repeats.
+      type(el) { const t = el.querySelector("[data-type]"); const text = t.dataset.type; let i = 0; return () => { t.textContent = text.slice(0, i); i = i > text.length + 40 ? 0 : i + 1; }; },
+    };
+    const RATE = { journey: 1500, audit: 2600, type: 45, run: 1200 };
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target; el.classList.add("is-in"); io.unobserve(el);
+      const kind = el.dataset.loop; if (!kind) return;
+      if (reduce) {
+        if (kind === "type") { const t = el.querySelector("[data-type]"); t.textContent = t.dataset.type; }
+        if (kind === "run") { el.querySelectorAll("[data-step]").forEach((x) => x.dataset.state = "done"); el.querySelector("[data-progress]").style.height = "100%"; }
+        return;
+      }
+      const fn = loops[kind](el); if (fn) { fn(); setInterval(fn, RATE[kind]); }
+    }), { threshold: 0.35 });
+    document.querySelectorAll(".fv").forEach((el) => io.observe(el));
+  })();
+</script><script>
+  (() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Scroll parallax: [data-speed] layers drift at their own rate.
+    const layers = [...document.querySelectorAll("[data-speed]")];
+    if (!reduce && layers.length) {
+      const stage = document.getElementById("hero-stage") || document.querySelector(".hero-stage");
+      const tick = () => {
+        layers.forEach((l) => {
+          const r = (l.closest(".hero-stage") || stage).getBoundingClientRect();
+          const p = Math.max(-1, Math.min(1, r.top / innerHeight));
+          l.style.transform = `translate3d(0, ${(p * l.dataset.speed * 60).toFixed(1)}px, 0)`;
+        });
+      };
+      addEventListener("scroll", tick, { passive: true }); tick();
+    }
+    // Typed Copilot note.
+    document.querySelectorAll(".hero-stage [data-type]").forEach((typed) => {
+      const text = typed.dataset.type;
+      if (reduce) typed.textContent = text;
+      else { let i = 0; const go = () => { typed.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(go, 28); else setTimeout(() => { i = 0; go(); }, 4000); }; setTimeout(go, 1400); }
+    });
+    // Status chips cycle Scheduled -> In progress -> Completed.
+    const chips = [...document.querySelectorAll("[data-cycle]")];
+    const STATES = [["Scheduled", "bg-tint text-body"], ["In progress", "bg-accent/15 text-heading"], ["Completed", "bg-emerald-100 text-emerald-800"]];
+    if (chips.length && !reduce) {
+      let step = 0;
+      setInterval(() => {
+        const chip = chips[step % chips.length];
+        const next = (Number(chip.dataset.cycle) + 1) % STATES.length;
+        chip.dataset.cycle = next; chip.textContent = STATES[next][0];
+        chip.className = "rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-300 " + STATES[next][1];
+        step++;
+      }, 1600);
+    }
+    // Event feed: newest slides in at the top, oldest drops off.
+    const feed = document.getElementById("event-feed");
+    if (feed && !reduce) {
+      const pool = JSON.parse(feed.dataset.pool); let n = 0;
+      setInterval(() => {
+        const [title, meta] = pool[n++ % pool.length];
+        const li = document.createElement("li");
+        li.className = "m-rise flex items-start gap-3 border-b border-line px-4 py-3 last:border-b-0";
+        li.innerHTML = `<span class="mt-1.5 size-2 shrink-0 rounded-full bg-accent"></span><div><p class="text-sm font-medium text-heading">${title}</p><p class="text-xs text-muted">${meta}</p></div>`;
+        feed.prepend(li); if (feed.children.length > 3) feed.lastElementChild.remove();
+      }, 2800);
+    }
+  })();
+</script><script>
+  (() => {
+    document.querySelectorAll("[data-how]").forEach((root) => {
+      const tabs = [...root.querySelectorAll("[data-how-tab]")], panels = [...root.querySelectorAll("[data-how-panel]")];
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let i = 0, timer = null, paused = false, inView = false;
+      const show = (k, focus) => {
+        i = k;
+        tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === k)); t.tabIndex = j === k ? 0 : -1; const bar = t.querySelector(".how-progress"); bar.style.transition = "none"; bar.style.width = "0"; });
+        panels.forEach((p, j) => (p.hidden = j !== k));
+        if (focus) tabs[k].focus();
+        const bar = tabs[k].querySelector(".how-progress");
+        if (!reduce && !paused && inView) requestAnimationFrame(() => { bar.style.transition = "width 6s linear"; bar.style.width = "100%"; });
+      };
+      const loop = () => { clearInterval(timer); if (reduce || paused || !inView) return; timer = setInterval(() => show((i + 1) % tabs.length), 6000); };
+      tabs.forEach((t, k) => {
+        t.addEventListener("click", () => { show(k); loop(); });
+        t.addEventListener("keydown", (e) => {
+          const map = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+          if (e.key in map) { e.preventDefault(); show((k + map[e.key] + tabs.length) % tabs.length, true); }
+          if (e.key === "Home") { e.preventDefault(); show(0, true); }
+          if (e.key === "End") { e.preventDefault(); show(tabs.length - 1, true); }
+        });
+      });
+      // Rotate only while in view; pause on hover / keyboard focus (WCAG 2.2.2).
+      root.addEventListener("mouseenter", () => { paused = true; clearInterval(timer); });
+      root.addEventListener("mouseleave", () => { paused = false; show(i); loop(); });
+      root.addEventListener("focusin", () => { paused = true; clearInterval(timer); });
+      new IntersectionObserver(([e]) => { inView = e.isIntersecting; show(i); loop(); }, { threshold: 0.3 }).observe(root);
+    });
+  })();
+</script>
+</body>
+</html>

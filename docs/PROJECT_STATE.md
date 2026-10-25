@@ -204,8 +204,8 @@ untouched, mark ❌.
 
 | Section | Status | Notes |
 |---|---|---|
-| Hero | ✅ restored | `f2776ef` version: H1 "Your entire service operation…" + Book a Demo / Explore products, with `HomeProductCards` (Care / Roster / Genogram) and the trust `LogoStrip` inside the hero. The 2026-08-07 motion-panel scaffold is gone from the page (history in `39552a1`). |
-| LogoStrip | ✅ live | Trust marquee with title ("Trusted by industry leaders…"), Sanity-backed. `showTitle` prop removed with the restore. |
+| Hero | ✅ polish pass 2026-10-25 | Hero A (centred) ported from `docs/mockups/home/` (audit `docs/audits/home-hero-productcards-audit.md`): Care-hero H1 scale (`4xl/5xl/6xl`, 2 lines from `md`), `rounded-full` CTAs + 44px secondary + focus rings, centred at every size. `HomeProductCards` = cards A: 3-up from `lg` / snap rail below, Paraform image set (`/product/*Bg.avif` + product wash), product names as `h2`, accent bar, focus/active states, entrance stagger. Copy unchanged. |
+| LogoStrip | ✅ live | Sanity-backed. `variant="hero"` (home, 2026-10-25): title as `<p>`, 5-cell row in `max-w-7xl`, mobile marquee on the shared `trust-marquee-scroll` keyframe. `default` variant (solutions/[slug]) unchanged. |
 | HowSognosWorks | ✅ restored | `f2776ef` version: "Healthcare First. Field Services Always. AI at the Centre." + platform logos + timer deck (Manage demand / Coordinate workforce / Track outcomes). No `ScrollReveal` wrapper. |
 | ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
 | SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. 2026-10-24: /dev/ payout art replaced by Sognos motion graphics (`home/SolutionVisuals.tsx`); review toggle Panel colour / Hero photo + palettes A–F (hidden on production). Awaiting Pass. |

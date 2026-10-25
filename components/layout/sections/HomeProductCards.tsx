@@ -2,97 +2,103 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
-// FLAG: SognosGenogram has no dedicated bg image yet — using Care bg as placeholder.
-// Swap /images/home/SognosGenogram-bg.* once available.
+// Paraform image set (docs/mockups/home, cards A): the product photo under a
+// wash of the product's deep → mid colour, with the white logo on a frosted
+// tile. Photos and washes are the Frontline "Works with" set.
 const PRODUCTS = [
   {
-    name: "One platform. From intake to outcome.",
+    name: "SognosCare",
     lead: "Deliver safer, simpler care in the field",
     rest: " with intake, plans, compliance and outcomes connected in one workflow.",
     accent: "#1d96fc",
     href: "/products/sognoscare",
     logo: "/logos/sognos-care-logo.svg",
-    bgImage:
-      "https://plus.unsplash.com/premium_photo-1663089870095-c231a534ac31?q=80&w=1702&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    photo: "/product/CareBg.avif",
+    wash: { deep: "#0f1936", mid: "#3b6fe0" },
   },
   {
-    name: "The right worker for every job, in real time.",
+    name: "SognosRoster",
     lead: "Put the right worker on every shift",
     rest: " with skills, location, availability and compliance factored in automatically.",
     accent: "#59bbf7",
     href: "/products/sognosroster",
     logo: "/logos/sognos-roster-logo.svg",
-    bgImage: "/images/home/industries/industrial-services.jpg",
+    photo: "/product/RosterBg.avif",
+    wash: { deep: "#104b90", mid: "#59bbf7" },
   },
   {
-    name: "Family context. Built into every record.",
+    name: "SognosGenogram",
     lead: "Map relationships, histories and support networks",
     rest: " so every worker has the context they need to deliver better outcomes.",
     accent: "#91278c",
     href: "/products/sognosgenogram",
     logo: "/logos/SognosGenogram-logo.svg",
-    bgImage:
-      "https://images.unsplash.com/photo-1674629358478-bff878ed9727?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // FLAG: placeholder — swap when Genogram bg image available
+    photo: "/product/GenoBg.avif",
+    wash: { deep: "#3a0f45", mid: "#91278c" },
   },
 ] as const;
 
 function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
   return (
-    // AngelList column: image card → description → bottom hairline.
-    // The top hairline and the title above it are commented out, not deleted.
     <Link
       href={product.href}
-      className="group flex flex-col border-b border-white/25 pt-4 pb-10 w-[82vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
+      className="group flex h-full flex-col rounded-lg border border-white/10 bg-white/[0.04] p-3 transition-colors hover:border-white/30 active:scale-[.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
     >
-      {/* Title above the image */}
-      {/* <h3 className="font-heading text-2xl font-normal tracking-tight text-white md:text-lg">
-        {product.name}
-      </h3> */}
-
-      {/* Image card. `aspect-[334/354]` is SolutionsSection's ratio, and the
-          track below now uses its `gap-2`, so the two card rows share one
-          proportion and one rhythm. The `max-h` cap is gone — it was there to
-          stop the 4/5 ratio running away, which 334/354 does not. */}
-      <div className="relative mt-4 aspect-[334/354] overflow-hidden rounded-lg">
-        {/* Background image — commented out, not deleted. `bgImage` stays on
-            each PRODUCTS entry, so uncommenting restores it as it was. */}
-        {/* <Image
-          src={product.bgImage}
+      <div className="relative aspect-[4/3] overflow-hidden rounded">
+        <Image
+          src={product.photo}
           alt=""
           fill
-          className="scale-105 object-cover object-center opacity-80 transition-[scale,filter] duration-800 motion-safe:group-hover:scale-100 group-hover/solutions:brightness-[0.60] group-hover:brightness-100!"
-        /> */}
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-sognos-navy-dark/45 transition-colors duration-500 group-hover/cards:bg-sognos-navy-dark/70 group-hover:!bg-sognos-navy-dark/25" />
-
-        {/* Product logo — centered */}
+          sizes="(min-width: 1024px) 400px, 82vw"
+          className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(160deg, color-mix(in srgb, ${product.wash.deep} 55%, transparent), color-mix(in srgb, ${product.wash.mid} 35%, transparent))`,
+          }}
+        />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src={product.logo}
-            alt={product.name}
-            width={140}
-            height={32}
-            className="h-10 w-auto object-contain brightness-0 invert"
-          />
+          <span className="flex items-center justify-center rounded border border-white/30 bg-white/10 px-6 py-4 backdrop-blur-md">
+            {/* Decorative: the product name is the card heading. */}
+            <Image
+              src={product.logo}
+              alt=""
+              width={140}
+              height={32}
+              className="h-8 w-auto brightness-0 invert md:h-9"
+            />
+          </span>
         </div>
+      </div>
 
-        {/* Arrow button — bottom-right. Hover: accent fill slides up. Arrow stays white. */}
-        <div className="absolute bottom-6 right-6">
-          <div className="relative isolate flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/30">
-            <div
-              aria-hidden="true"
+      <div className="flex flex-1 flex-col gap-5 p-5">
+        <span
+          aria-hidden="true"
+          className="block h-1 w-10 rounded-full"
+          style={{ backgroundColor: product.accent }}
+        />
+        <h2 className="font-heading text-xl font-normal leading-snug tracking-[-0.01em] text-white">
+          {product.name}
+        </h2>
+        <div className="mt-auto flex items-end justify-between gap-6">
+          <p className="text-base leading-relaxed text-white/70">
+            <span className="text-white">{product.lead}</span>
+            {product.rest}
+          </p>
+          {/* Arrow — accent fill slides up on hover. */}
+          <span
+            aria-hidden="true"
+            className="relative isolate flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 text-white"
+          >
+            <span
               className="absolute inset-0 translate-y-full scale-50 rounded-full transition-transform duration-300 group-hover:translate-y-0 group-hover:scale-100"
               style={{ backgroundColor: product.accent }}
             />
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-              className="relative text-white"
-            >
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" className="relative">
               <path
                 d="M3 7h8M7 3l4 4-4 4"
                 stroke="currentColor"
@@ -101,32 +107,38 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
                 strokeLinejoin="round"
               />
             </svg>
-          </div>
+          </span>
         </div>
       </div>
-
-      {/* Description below the image — always visible */}
-      <p className="mt-5 text-base tracking-tight leading-normal text-white/70">
-        <span className="text-white">{product.lead}</span>
-        {product.rest}
-      </p>
     </Link>
   );
 }
 
 export default function HomeProductCards() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    // No background of its own — it renders inside the hero, which already
-    // carries the navy and the blur artwork behind it. `pt-16` is the gap
-    // below the hero's CTAs.
-    <section className="pt-16 pb-2">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="group/cards flex items-start snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-6 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible">
-          {PRODUCTS.map((product) => (
-            <ProductCard key={product.href} product={product} />
-          ))}
-        </div>
+    // Renders inside the hero (navy + glow artwork behind it), so no
+    // background of its own. Snap rail below `lg`, 3-up grid from `lg`.
+    <div className="mx-auto mt-14 max-w-7xl px-6 md:mt-20">
+      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 pb-2 scrollbar-hide lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:pb-0">
+        {PRODUCTS.map((product, i) => (
+          // Joins the hero's entrance stagger, after the CTAs.
+          <motion.div
+            key={product.href}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.3 + i * 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="w-[82vw] max-w-[380px] shrink-0 snap-start lg:w-auto lg:max-w-none"
+          >
+            <ProductCard product={product} />
+          </motion.div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }

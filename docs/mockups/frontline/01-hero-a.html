@@ -101,14 +101,14 @@ Maps to: app/(marketing)/solutions/[slug]/page.tsx hero + SolutionHeroDemoButton
 <script>(() => { const h = document.getElementById("site-header"); const f = () => h.dataset.scrolled = String(scrollY > 8); addEventListener("scroll", f, { passive: true }); f(); })();</script><section id="hero" class="bg-white pt-32 pb-20 md:pb-28 lg:pt-40">
   <div class="mx-auto max-w-7xl px-6">
     <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-      <div class="flex flex-col items-start gap-4 lg:col-span-6">
+      <div class="flex flex-col items-start gap-4 lg:col-span-7">
         <p class="flex items-center gap-2.5 text-lg leading-[1.6] text-heading"><span aria-hidden="true" class="block size-[0.66em] bg-accent"></span><a href="#" class="text-muted underline-offset-4 hover:text-accent hover:underline">Solutions</a><span aria-hidden="true" class="text-muted">/</span>Frontline</p>
-        <h1 class="font-heading text-5xl font-normal leading-[1.05] tracking-[-0.02em] text-balance md:text-6xl lg:text-7xl text-heading md:text-6xl lg:text-6xl">Coordinate field teams without the chaos</h1>
+        <h1 class="font-heading text-5xl font-normal leading-[1.05] tracking-[-0.02em] text-balance text-heading">Coordinate field teams without the chaos</h1>
         <p class="max-w-2xl text-lg leading-relaxed text-pretty text-body">Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.</p>
-        <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center"><button type="button" class="min-h-11 rounded-full bg-accent px-7 py-3.5 text-base font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">Book a Demo</button></div>
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"><button type="button" class="min-h-11 rounded-full bg-accent px-7 py-3.5 text-base font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">Book a Demo</button><a href="#capabilities" class="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-heading transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">Explore capabilities <span aria-hidden="true">&#8599;</span></a></div>
       </div>
-      <div class="lg:col-span-6">
-        <div class="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-tint">
+      <div class="lg:col-span-5">
+        <div class="relative aspect-[4/5] max-h-[480px] w-full overflow-hidden rounded-lg bg-tint lg:aspect-auto lg:h-[480px]">
           <img src="https://plus.unsplash.com/premium_photo-1681967118118-586c2408d0fc?auto=format&fit=crop&w=1600&q=80" alt="Frontline preview" class="absolute inset-0 size-full object-cover" />
           <div class="absolute bottom-4 left-4 right-4 rounded-lg border border-line bg-white p-4 sm:right-auto sm:w-72">
             <div class="flex items-center justify-between"><p class="font-heading text-base text-heading">Job dispatched</p><span class="text-xs text-muted">#4821</span></div>

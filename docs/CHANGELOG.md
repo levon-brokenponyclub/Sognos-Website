@@ -1,5 +1,283 @@
 # Changelog
 
+## 2026-10-25 — Home · How Sognos Works: 3 motion-graphic options (mockup only)
+
+- `docs/mockups/home/index.html` (and the variant files) now render How Sognos
+  Works below the hero, with a "How it works" switcher for three panel options.
+  - **1 Pipeline:** navy scene with Intake / Roster / Outcomes zones joined by a
+    live dashed flow; the active step lights its zone.
+  - **2 Product (Base set):** one product UI per step — intake inbox + typed
+    Copilot summary; week roster + route draw; outcomes KPIs + donut + insight.
+  - **3 Photo (Paraform set):** product photo under its wash, one frosted story
+    card per step + pill, slow ken-burns.
+- The deck mirrors `TimerCardDeck`: 8s dwell, countdown ring, active card
+  widens, hover pauses, click to jump. Below `md` it stacks.
+- Header copy is live. Panel data is illustrative.
+- Deviation: the panel is 4:3 / 16:9 below `md` (the live 2720:976 panel is
+  ~130px tall at 375).
+- No `.tsx` changed.
+
+## 2026-10-25 — Home Hero + Product Cards: polish pass ported (STEP 3–4)
+
+Approved: hero A (centred), cards A (3-up), Paraform image set, LogoStrip hero variant.
+
+- **Hero (`Hero.tsx`):**
+  - H1 uses the Care hero scale (`text-4xl sm:text-5xl md:text-6xl`, `leading-[1.05]`, `tracking-[-0.02em]`).
+  - The two-line break applies from `md` only, so the H1 is 4 lines at 375px (was 6).
+  - The copy column is centred at every size.
+  - Sub: `max-w-2xl text-pretty`; tighter rhythm (`mt-4/5`, `mt-6/8`); section `md:pt-44`.
+  - Book a Demo is `rounded-full` with an accent hover fill. Explore products is 44px tall. Both have white focus rings.
+  - Removed the unused `ElegantDarkPattern` import.
+- **Product cards (`HomeProductCards.tsx`):**
+  - Rail is `gap-3` below `lg`, then a 3-up `gap-4` grid in `max-w-7xl`.
+  - Card frame: `rounded-lg border-white/10 bg-white/[.04] p-3`.
+  - Paraform panel: local `/product/{Care,Roster,Geno}Bg.avif` under the product wash, white logo on a frosted tile. The Unsplash URLs are gone.
+  - Copy: accent bar, product name as `h2`, existing description.
+  - States: hover photo zoom + border lift; focus and active states.
+  - Entrance stagger joins the hero's.
+  - The tagline-as-alt bug is gone (logo is decorative now).
+- **LogoStrip (`LogoStrip.tsx`, shared):**
+  - New `variant="hero"`: title as `<p>` (fixes the h1 → h3 skip), 5-cell row, edge-faded mobile marquee on the existing keyframe.
+  - The default variant is unchanged; `solutions/[slug]` was verified.
+- **Checks:**
+  - `npm run build` passes with no warnings; `tsc` is clean; the changed files are lint-clean (the repo still has the same 15 lint errors in untouched files as before).
+  - DOM at 1280×800: H1 2 lines, CTA bottom 526px, cards from 606px.
+  - DOM at 375×812: H1 4 lines, both CTAs above the fold.
+  - No horizontal scroll at either size.
+
+## 2026-10-25 — Home Hero + Product Cards: audit + mockups (PORT_PROMPT STEP 0–2)
+
+- STEP 0: build passes; `Hero` / `HomeProductCards` are home-only, `LogoStrip`
+  is shared with `solutions/[slug]`. No home mockups existed — references agreed:
+  Care `01m-hero-a` (hero) + Frontline Works-with A (cards). PROJECT_STATE §2
+  wins over the prompt's `rounded-lg` / `bg-gray-200/70` rules; live tokens are
+  the colour baseline.
+- Audit: `docs/audits/home-hero-productcards-audit.md`.
+- Mockups: `docs/mockups/home/` — hero A centred / B split, cards A 3-up / B
+  Care + Roster featured, image set Paraform / Base. Live copy only. No `.tsx`
+  changed.
+
+## 2026-10-25 — Customer Stories archive: audit + layout options (mockup only)
+
+- Audit: `docs/audits/customer-stories-archive-audit.md` (9 findings, Q1–Q3, S1–S3).
+- Mockup: `docs/mockups/customer-stories/archive.html`, one page with an A/B/C switcher.
+  Live copy throughout; brand images use the shipped StoryCardImage option C.
+  - A · Grid + filter (recommended): hero + search, featured split card with the live
+    Flourish quote, sticky industry chips, 3-col cards with industry + product tags.
+  - B · Index + rail: sticky rail (search, industries with counts, "Talk to a customer"
+    box — suggested copy), rows with brand thumbnails.
+  - C · Spotlight + bento: navy carousel of the 4 quoted stories (photo, quote, author,
+    staff size), industry chips, bento mixing photo and brand cards.
+- Search and industry filtering work in every option. Industries marked * are
+  proposed (Q2). No `.tsx` changed.
+
+## 2026-10-25 — Frontline + Health & Social Care hero refinements (mockup only)
+
+- Frontline hero (then Health & Social Care hero A/B): H1 `text-5xl`, copy
+  col-span 7 / image col-span 5, secondary outlined CTA beside Book a Demo
+  ("Explore capabilities ↓" / "See how Sognos helps ↓" — copy suggestions),
+  image raised to 600px tall on desktop (4:5 below lg).
+- Follow-up: secondary CTA restyled to the SognosCare hero "Learn More"
+  text link (no border, ↗, hover fade); hero image capped at 480px.
+- Health & Social Care hero A: overlay block on the image mirroring the
+  Frontline "Job dispatched" card — "Visit completed #2207 · P. Shah ·
+  Personal care · Note signed" (illustrative).
+- Health & Social Care hero A/B: copy column gains right padding
+  (`lg:pr-16 xl:pr-24`) for a wider gap to the image; H1 set on two lines
+  ("Service operations" / "built for care", copy unchanged).
+
+## 2026-10-25 — Health & Social Care: Other industries graphic cards + slider (mockup only)
+
+- Slider cards now use each industry's hero photo in the Paraform style
+  (wash, hairline frame, counted stat — illustrative) instead of graphics.
+
+- Two more "Explore other industries" layouts matching the Frontline Related
+  pattern: **cards** (white bordered cards, gallery graphic on the sector
+  tint, title, clamped description, Explore link) and **slider** (snap track,
+  arrow buttons, sector-colour rule). Switcher: "Industries · cards / slider".
+  "Explore" link label is mockup copy, as on Frontline.
+
+## 2026-10-25 — Health & Social Care: Paraform-direction heroes + photo industry cards (mockup only)
+
+- Three new hero options after paraform.com/for-companies: **P1** split
+  (H1 last phrase at 40% ink, framed photo, counted stat, frosted customer
+  card), **P2** photo-led (frosted copy panel, floating care-team card, stat
+  chip), **P3** centred editorial (16:7 framed photo, three frosted cards).
+  Motion: frame draws in, stat counts, cards rise / float, photo drifts.
+- Explore other industries: photo cards reusing each industry's hero photo
+  with the same frame + stat (switcher "Industries · photo").
+- Stat values illustrative; customer card uses the live Flourish story title.
+
+## 2026-10-25 — Industries / Health & Social Care: audit + mockups (STEP 1-2)
+
+- `docs/audits/health-social-care-polish-audit.md` — template audit for all
+  5 industry routes: P0 `/dev/` third-party art in Other industries,
+  P0 `shadow-2xl` on the How-tabs card; P1 surface rhythm, label / H2 drift,
+  `max-w-6xl`, off-palette hero frame, breadcrumb linking to /solutions,
+  tabs auto-rotate without pause or arrow keys, hover-only product copy.
+- `docs/mockups/health-social-care/` — hero A/B, challenge, How Sognos helps
+  A (tabs + gallery graphic per item, keyboard, pause) / B (cards), other
+  industries (Home Industries gallery graphics), platform A (Works-with cards)
+  / B (current cards fixed), `index.html` with switcher. Nothing in `.tsx`
+  changed; build passes.
+
+## 2026-10-25 — Frontline Platform D: split card, connected apps, tones, photos, logos inside (mockup only)
+
+- **Split card** reworked to the Works-with A rhythm: 5 / 7 columns, label
+  pinned top, accent rule + heading + lede + logo tiles pinned bottom.
+- **Connected apps** graphic enhanced: four app tiles (Dynamics 365,
+  Copilot, Automate, Power BI) light in turn, the active wire highlights and
+  carries the dash flow, a "Last sync · <app> · just now" row names it; KPIs
+  count up, trend draws, live dot pings.
+- New D controls (remembered): **Section** White / Tint / Navy / Accent
+  (frames and copy retone); **Logos** With copy / Inside graphic (the seven
+  platform tiles move into the graphic as a top strip); **Paraform photo**
+  Frontline / Roster / Care / Genogram (the Works-with photo + wash sets).
+
+## 2026-10-25 — Frontline Platform D: rebuilt layouts + graphics (mockup only)
+
+- New Platform option **D · Rebuilt** (Platform switcher), with its own bar:
+  - **Layout:** Split card (copy + logo tiles | graphic in one tint frame),
+    Centred (centred header, wide graphic, logos beneath), Three-up (header
+    row, one card per platform part showing graphics 1-3).
+  - **Graphic:** 1 Work order flow (one job checks through Dynamics →
+    Copilot → Power Automate → Frontline), 2 Copilot scheduling (crew board
+    bars grow, suggestion types), 3 Connected apps (app chips flow into a live
+    Frontline card, KPIs count up, line draws).
+  - **Style:** Base (tint panel, white cards) / Paraform (Frontline hero
+    photo under a wash, frosted cards, status pill) — the Works with A
+    system and the gallery's motion.
+- Isometric options 4-6 (Ops board, Modules, Device) remain under A for
+  reference. Live Platform copy; graphic data illustrative.
+
+## 2026-10-25 — Frontline Platform A: isometric stack polish, 3 options x 2 styles (mockup only)
+
+- Isometric stack rebuilt: plates with a thickness edge, a logo on every
+  face (counter-rotated so it reads upright), numbered labels (4 → 1) with a
+  lit state; plates drop in, then the lit layer lifts in turn.
+- "Iso" control: **1 Exploded** (even column), **2 Staircase** (plates step
+  up and right), **3 Pyramid** (plates shrink to the Frontline top, a pulse
+  ring rises through the layers).
+- "Iso style" control: **Base** (section-tone panel, solid plates) or
+  **Paraform** (Frontline hero photo under a navy → accent wash, frosted
+  plates and labels, "Live on Dynamics 365 · 4 layers" pill).
+- Works with every Background option; reduced motion shows plates at rest.
+
+## 2026-10-25 — Frontline Platform A: 3 layer-stack designs (mockup only)
+
+- "Stack" control on the Platform bar (remembered): Classic (existing) plus
+  - **Isometric** — four 3D plates drop in and breathe apart / together;
+    labels right, the lit layer's label slides out with a green tick.
+  - **Nested** — each layer holds the next, Frontline the gradient core; a
+    ripple runs outward from the core, the lit layer is outlined.
+  - **Flow** — the layers as a pipeline; a "Job #4821" chip travels
+    Dynamics → Copilot → Power Platform → Frontline and each layer leaves its
+    result (work order, best slot, approval, dispatched).
+- All designs follow the White / Tint / Navy / Accent background control and
+  the shared layer cycle; reduced motion shows the final state. Step data is
+  illustrative.
+
+## 2026-10-25 — Frontline Platform A polish + trust band removed (mockup only)
+
+- Platform A (layer stack): left rail removed — label, heading, lede and
+  platform logo tiles left (5 cols), the stack right (7 cols) in a panel.
+- Background control on the Platform bar: White / Tint / Navy / Accent
+  (remembered); text, panel, slabs and connectors retone per option.
+- Motion: copy and logo tiles rise in, slabs build bottom-up, a signal climbs
+  the connectors and lights each layer in turn (Dynamics → Frontline) with a
+  live dot, the Frontline slab's gradient drifts. Reduced motion: static,
+  Frontline lit.
+- Trust-logo band removed from `frontline/index.html` (05-trust.html kept).
+
+## 2026-10-24 — Frontline Works with A: layouts, graphics, image styles (mockup only)
+
+- Works with A gains review controls on the switcher bar (remembered):
+  - **Layout:** Stacked (copy | graphic), Alternating (graphic side swaps
+    each card), Grid (graphic on top, cards side by side for 2-3 products).
+  - **Graphic 1 / 2 / 3** per product — Roster: week roster, skills match,
+    route; Care: participant journey, audit trail, Copilot note; Genogram:
+    family tree, support network (new), relationship history (new).
+  - **Style:** Base (product-tint panel, white cards) or Paraform (product
+    photo under a colour wash, frosted cards, blurred status pill).
+- Cards gain a product-colour rule above the tagline. Graphic data is
+  illustrative.
+
+## 2026-10-24 — Knowledge Hub option 1: past events, newsletter band, polish pass (mockup only)
+
+- Past events & recordings: option-3 index rows (date column, blue date
+  block for events, label, title, one-line excerpt, thumbnail); 2 shown +
+  Load more (all shown while searching / filtering).
+- Get The Sognos Pulse: care-dark band with soft accent glows — label,
+  heading, the newsletter's live welcome excerpt; frosted card with the
+  latest edition (image, date, title), email form and note (suggested copy).
+- Polish pass: surfaces alternate by rendered order (tint / white, one dark
+  newsletter break), section rhythm on the shared scale (py-20 / md:py-28,
+  header→content gap), headers with post counts and a pill "View all posts",
+  featured post in a tint product-card frame with Featured pill and footer,
+  44px category chips. Featured card is excluded from the scroll reveal.
+
+## 2026-10-24 — Knowledge Hub option 1 refinements (mockup only)
+
+- News / Insights / Newsletters cards: Frontline card language — white card,
+  hairline border, p-3 frame round an inset image, category · date line,
+  clamped excerpt, footer (read time · Read more →); hover darkens the border
+  and zooms the image.
+- Events & Webinars: upcoming event as the Frontline Works-with A product
+  card (status pill, title, Date / Where list, Register + Event details,
+  image panel); past events and webinar recordings as reduced two-column
+  rows. No upcoming events in Sanity, so the latest event is shown in the
+  upcoming layout as a labelled sample.
+- Milestones: Frontline Related B list rows (date + title, clamped excerpt,
+  image slides in on hover, round arrow).
+- Empty sections are skipped (Newsletters, whose only post is the featured
+  one); card reveal triggers earlier.
+
+## 2026-10-24 — Knowledge Hub: 3 layout options (mockup only)
+
+- `docs/mockups/knowledge-hub/index.html` — three full-page options with a
+  review-only switcher (bottom centre), after synthesia.io/blog. Live Sanity
+  content (development dataset, read-only: 28 posts, 2 events), live
+  title / description / section names; customer stories excluded as live.
+  1. **Synthesia close** — light hero + search, large featured post, sticky
+     "Explore by category" chips, category rows of 3 with View all,
+     newsletter band before Milestones.
+  2. **Editorial** — dark hero (lead + Latest list), sticky tabs filtering
+     one mixed grid (lead tile 2x2, newsletter tile, Load more), events
+     timeline.
+  3. **Index + rail** — sticky rail (search, categories with counts,
+     newsletter), featured card, rows grouped by month, events with date
+     blocks.
+- Search (title + excerpt, all posts) and category filtering work together
+  in every option. Newsletter sign-up copy is a suggestion — no live copy.
+
+## 2026-10-24 — Frontline mockup: Works with, 1-3 products (mockup only)
+
+- Works with now carries SognosRoster, SognosCare and SognosGenogram (live
+  names + taglines) in all three layouts; a "Products 1 / 2 / 3" control on
+  the Works with switcher bar picks how many show (remembered).
+  - A: stacked product cards, each with its graphic (Roster schedule, Care
+    journey, new Genogram family-context panel).
+  - B: one pairing row per product (Frontline → product), loops offset.
+  - C: gradient band per product (Roster / Care / Genogram); 2 or 3 sit
+    side by side.
+
+## 2026-10-24 — Frontline mockup: 3 options per section (mockup only)
+
+- `docs/mockups/frontline/index.html` — review-only switcher above The
+  problem, Platform, Works with and Related (choice remembered per section).
+  Layout + styling only; live copy.
+  - **The problem:** A symptom tiles (skill mismatch, SLA countdown, stale
+    map) · B sticky rail, chips flip "Issue today" → "Frontline fixes" ·
+    C broken-workflow diagram synced to the pain list.
+  - **Platform:** A layer stack builds up · B hub, dots run spokes to the
+    platform logos · C care-dark band, 3 cards (route draws, Copilot types,
+    automation runs).
+  - **Works with (Roster only):** A product card + roster graphic · B pairing
+    (job → Roster → matched worker) · C Roster gradient band.
+  - **Related:** A graphic cards · B list rows, graphic on hover · C slider.
+- New mini graphics for CRM, Customer Service and Power Platform
+  (illustrative data). Reduced motion: final states.
+
 ## 2026-10-24 — Customer stories: brand card images (option C live)
 
 - **New:** `components/ui/StoryCardImage.tsx` — option C "Facets + tile":

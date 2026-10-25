@@ -9,7 +9,6 @@ import {
   useTransform,
 } from "framer-motion";
 import { useBookDemo } from "@/lib/BookDemoContext";
-import ElegantDarkPattern from "@/components/layout/sections/shared/ElegantDarkPattern";
 
 type HeroProps = {
   headline?: React.ReactNode;
@@ -106,11 +105,12 @@ function HeroBlurLayers() {
 }
 
 export default function Hero({
+  // Two lines from `md`; below that the headline wraps naturally so it does
+  // not break mid-measure at 36-48px.
   headline = (
     <>
-      Your entire service operation,
-      <br />
-      run on one intelligent platform.
+      <span className="md:block">Your entire service operation, </span>
+      <span className="md:block">run on one intelligent platform.</span>
     </>
   ),
   subtext = "Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.",
@@ -143,25 +143,20 @@ export default function Hero({
   );
 
   return (
-    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-0">
-      {/* Same background treatment as HeadlineCTA — streaks, grain, dot grid
-          and centre lift. Commented out, not removed: the import and the
-          shared component stay, so this is one line to bring back. HeadlineCTA
-          still uses it. */}
-      {/* <ElegantDarkPattern /> */}
+    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-0 md:pt-44">
       <HeroBlurLayers />
 
       <motion.div
         ref={contentRef}
         style={{ y, opacity }}
-        className="relative z-10 mx-auto max-w-7xl px-6 text-left will-change-transform lg:text-center"
+        className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 text-center will-change-transform"
       >
         <motion.h1
           custom={0}
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto max-w-[1128px] font-heading font-normal text-white text-5xl tracking-tight text-balance lg:text-6xl"
+          className="font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"
         >
           {headline}
         </motion.h1>
@@ -170,7 +165,7 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/80"
+          className="mt-4 max-w-2xl text-lg leading-relaxed text-white/80 text-pretty md:mt-5"
         >
           {subtext}
         </motion.p>
@@ -179,22 +174,18 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row md:mt-8"
         >
-          {/* Book a Demo — matches SognosCare hero pill */}
           <button
             type="button"
             onClick={() => openModal()}
-            className="group/demo relative overflow-hidden rounded-sm bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-colors duration-300"
+            className="min-h-11 rounded-full bg-white px-7 py-3.5 text-base font-medium text-sognos-navy-dark transition-colors duration-300 hover:bg-sognos-blue-accent hover:text-white active:scale-[.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            <span className="absolute bottom-0 left-0 h-40 w-full origin-bottom translate-y-full rounded-[50px] bg-sognos-blue-accent transition-transform duration-300 ease-out group-hover/demo:translate-y-12" />
-            <span className="relative z-10 transition-colors duration-300 group-hover/demo:text-white">
-              {primaryCTA.name}
-            </span>
+            {primaryCTA.name}
           </button>
           <Link
             href={secondaryCTA.href}
-            className="inline-flex items-center gap-1.5 text-base font-medium text-white transition-opacity hover:opacity-80"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             {secondaryCTA.name}
             <span aria-hidden="true">&#8599;</span>
