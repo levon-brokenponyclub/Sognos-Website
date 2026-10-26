@@ -12,6 +12,7 @@ type Accreditation = {
   height: number;
   href?: string;
   title?: string;
+  tileClassName?: string;
 };
 
 const ACCREDITATIONS: Accreditation[] = [
@@ -26,6 +27,13 @@ const ACCREDITATIONS: Accreditation[] = [
     src: "/logos/accreditations/aidh.png",
     width: 200,
     height: 100,
+  },
+  {
+    alt: "ISO 27001 Information Security - Compass Assurance Services",
+    src: "/logos/accreditations/iso-27001.png",
+    width: 302,
+    height: 266,
+    tileClassName: "px-12",
   },
   {
     alt: "Talking HealthTech partner",
@@ -110,7 +118,7 @@ export default async function Footer() {
           <ul className="mt-5 flex flex-wrap justify-center items-stretch gap-3 lg:gap-4">
             {ACCREDITATIONS.map((item) => {
               const mark = (
-                <span className="flex h-22 items-center justify-center rounded-lg bg-white/100 px-5">
+                <span className={`flex h-22 items-center justify-center rounded-lg bg-white/100 ${item.tileClassName ?? "px-5"}`}>
                   <Image
                     src={item.src}
                     alt={item.alt}
@@ -144,7 +152,7 @@ export default async function Footer() {
         {/* Acknowledgement of Country */}
         {content.acknowledgement && (
           <div className="mt-8 border-t border-white/35 pt-10">
-            <p className="text-xs leading-relaxed text-center text-white/60 max-w-4xl">
+            <p className="mx-auto text-xs leading-relaxed text-center text-white/60 max-w-4xl">
               {content.acknowledgement}
             </p>
           </div>
