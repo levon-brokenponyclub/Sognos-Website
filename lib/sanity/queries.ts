@@ -1,6 +1,7 @@
 import { client } from "./client";
 import { urlFor } from "./image";
 import type { SanityImageSource } from "@sanity/image-url";
+import { getVideoEmbedUrl } from "@/lib/videoEmbed";
 import {
   DEFAULT_CTA_CONTENT,
   type CtaSectionContent,
@@ -864,6 +865,8 @@ const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   location,
   meta,
   registrationOpen,
+  playbackUrl,
+  playbackLabel,
   heroImage,
   seo,
   hero{ heading, subtitle, description },
@@ -895,6 +898,8 @@ export type EventPageData = {
   location?: string;
   meta?: string;
   registrationOpen: boolean;
+  /** Recording, set only once the event has ended (see isRecordingAvailable); embedUrl for YouTube / Vimeo. */
+  playback?: { url: string; label: string; embedUrl: string | null };
   seo: { title?: string; description?: string };
   hero: {
     heading?: string;
@@ -970,6 +975,8 @@ type RawEvent = {
   location?: string;
   meta?: string;
   registrationOpen?: boolean;
+  playbackUrl?: string;
+  playbackLabel?: string;
   heroImage?: SanityImageSource;
   seo?: { title?: string; description?: string };
   hero?: {
@@ -1028,7 +1035,9 @@ const EVENT_ARCHIVE_QUERY = `*[_type == "event" && defined(slug.current)] | orde
   title,
   excerpt,
   heroImage,
-  date
+  date,
+  endDate,
+  playbackUrl
 }`;
 
 type RawEventArchiveItem = {
@@ -1037,10 +1046,20 @@ type RawEventArchiveItem = {
   excerpt?: string;
   heroImage?: SanityImageSource;
   date?: string;
+  endDate?: string;
+  playbackUrl?: string;
 };
 
 export async function getEventArchive(): Promise<
-  { slug: string; title: string; excerpt: string; imageUrl: string; date?: string }[]
+  {
+    slug: string;
+    title: string;
+    excerpt: string;
+    imageUrl: string;
+    date?: string;
+    /** Playback URL set and the event has ended. */
+    recordingAvailable: boolean;
+  }[]
 > {
   const rows = await client
     .fetch<RawEventArchiveItem[]>(
@@ -1061,9 +1080,15 @@ export async function getEventArchive(): Promise<
           ? urlFor(r.heroImage).width(720).auto("format").url()
           : "",
         date: r.date,
+        recordingAvailable: isRecordingAvailable(r.playbackUrl, r.endDate ?? r.date),
       },
     ];
   });
+}
+
+/** A recording is public once a playback URL is set and the event has ended. */
+export function isRecordingAvailable(playbackUrl?: string, endsAt?: string): boolean {
+  return Boolean(playbackUrl && endsAt && Date.parse(endsAt) < Date.now());
 }
 
 const BANNER_EVENT_QUERY = `*[_type == "event" && showInBanner == true && defined(slug.current)] | order(date desc)[0]{
@@ -1153,6 +1178,14 @@ export async function getEventBySlug(
     location: raw.location,
     meta: raw.meta,
     registrationOpen: raw.registrationOpen ?? true,
+    playback:
+      raw.playbackUrl && isRecordingAvailable(raw.playbackUrl, raw.endDate ?? raw.date)
+        ? {
+            url: raw.playbackUrl,
+            label: raw.playbackLabel || "Watch the recording",
+            embedUrl: getVideoEmbedUrl(raw.playbackUrl),
+          }
+        : undefined,
     seo: {
       title: raw.seo?.title,
       description: raw.seo?.description ?? raw.excerpt,

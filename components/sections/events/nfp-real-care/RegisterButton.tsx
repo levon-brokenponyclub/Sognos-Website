@@ -7,6 +7,8 @@ interface RegisterButtonProps {
   label?: string;
   className?: string;
   href?: string;
+  /** Open in a new tab (default). False for in-page links such as #recording. */
+  newTab?: boolean;
 }
 
 const FALLBACK_URL =
@@ -25,12 +27,12 @@ export default function RegisterButton({
   label = "Register now",
   className = "",
   href = FALLBACK_URL,
+  newTab = true,
 }: RegisterButtonProps) {
   return (
     <a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(newTab && { target: "_blank", rel: "noopener noreferrer" })}
       className={`${variants[variant]} ${className}`.trim()}
     >
       <span>{label}</span>

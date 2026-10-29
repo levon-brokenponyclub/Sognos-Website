@@ -117,6 +117,23 @@ export const event = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "playbackUrl",
+      group: "settings",
+      title: "Playback URL",
+      description:
+        "Link to the event recording. Shown on the site only after the event has ended. YouTube and Vimeo links play on the page; other links (Teams, Stream, Zoom) open in a new tab.",
+      type: "url",
+      validation: (R) => R.uri({ scheme: ["http", "https"] }),
+    }),
+    defineField({
+      name: "playbackLabel",
+      group: "settings",
+      title: "Playback button label",
+      type: "string",
+      placeholder: "Watch the recording",
+      hidden: ({ parent }) => !parent?.playbackUrl,
+    }),
+    defineField({
       name: "heroImage",
       group: "details",
       title: "Hero image",

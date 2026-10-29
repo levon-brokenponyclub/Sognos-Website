@@ -85,8 +85,12 @@ export default async function EventPage({
   const event = await getEventBySlug(slug);
   if (!event) notFound();
 
+  // Recording replaces registration once the event has ended and a playback URL is set.
+  const playback = event.playback;
   const registerUrl =
-    event.registrationOpen ? event.eventMeta.registerUrl : undefined;
+    !playback && event.registrationOpen ? event.eventMeta.registerUrl : undefined;
+  // Embeddable recordings play on the page; other hosts open in a new tab.
+  const playbackHref = playback?.embedUrl ? "#recording" : playback?.url;
 
   return (
     <main className="bg-white">
@@ -221,9 +225,39 @@ export default async function EventPage({
             {registerUrl && (
               <RegisterButton variant="card" label="Register now" href={registerUrl} />
             )}
+            {playback && (
+              <RegisterButton
+                variant="card"
+                label={playback.label}
+                href={playbackHref}
+                newTab={!playback.embedUrl}
+              />
+            )}
           </div>
         </div>
       </section>
+
+      {/* RECORDING (YouTube / Vimeo playback URLs) */}
+      {playback?.embedUrl && (
+        <section id="recording" className="scroll-mt-28 pt-16 lg:pt-24">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="font-heading text-3xl lg:text-4xl font-normal leading-heading tracking-heading text-prussian-blue-800">
+              {playback.label}
+            </h2>
+            <div className="mt-8 aspect-video w-full overflow-hidden rounded-lg bg-prussian-blue-800">
+              <iframe
+                src={playback.embedUrl}
+                title={`${event.title} recording`}
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CHALLENGE + WHY ATTEND */}
       {(event.challenge.intro ||
@@ -541,7 +575,7 @@ export default async function EventPage({
       )}
 
       {/* FOOTER CTA BANNER */}
-      {registerUrl && (
+      {(registerUrl || playback) && (
         <section className="pb-16 lg:pb-24">
           <div className="max-w-7xl mx-auto px-6">
             <div className="rounded-lg bg-prussian-blue-800 p-8 lg:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -551,16 +585,27 @@ export default async function EventPage({
                 </span>
                 <div>
                   <h2 className="font-heading text-2xl lg:text-3xl font-medium text-white tracking-heading">
-                    {event.footerCta.heading ?? "Ready to join the conversation?"}
+                    {playback
+                      ? "Missed the event? Catch up on the recording."
+                      : (event.footerCta.heading ?? "Ready to join the conversation?")}
                   </h2>
-                  {event.footerCta.description && (
+                  {!playback && event.footerCta.description && (
                     <p className="mt-1.5 text-sm text-[#8E9EBB]">
                       {event.footerCta.description}
                     </p>
                   )}
                 </div>
               </div>
-              <RegisterButton variant="primary" label="Register now" href={registerUrl} />
+              {playback ? (
+                <RegisterButton
+                  variant="primary"
+                  label={playback.label}
+                  href={playbackHref}
+                  newTab={!playback.embedUrl}
+                />
+              ) : (
+                <RegisterButton variant="primary" label="Register now" href={registerUrl} />
+              )}
             </div>
           </div>
         </section>

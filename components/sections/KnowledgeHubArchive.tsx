@@ -15,6 +15,8 @@ export type Article = {
   image: string;
   industry: string | null;
   useCase: string | null;
+  /** Events: a playback URL is set and the event has ended. */
+  recordingAvailable?: boolean;
 };
 
 const CATEGORIES = [
@@ -70,6 +72,11 @@ function ArticleCard({ article }: { article: Article }) {
         >
           {article.category}
         </span>
+        {article.recordingAvailable && (
+          <span className="absolute bottom-3 right-3 inline-flex items-center rounded-full bg-prussian-blue-800 px-2.5 py-0.5 text-xs font-medium text-white">
+            Recording available
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col px-1 pt-3 pb-1">
         <h3 className="font-heading text-base font-medium leading-snug tracking-tight text-prussian-blue-800 line-clamp-3">

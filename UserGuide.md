@@ -254,3 +254,23 @@ Newsletters are Knowledge Hub posts with the **Newsletter** category. They appea
 On the post page the email renders in a sandboxed iframe, so its styles don't affect the site. At render time scripts, unfilled Dynamics merge tokens (`{{PreferenceCenter}}` etc.) and `_msdynmkt` tracking fragments are stripped, and links open in a new tab. The stored HTML is unchanged.
 
 Images in Dynamics-exported emails stay hosted on `assets-oce.mkt.dynamics.com` — if they are removed there, they disappear from the newsletter.
+
+---
+
+## 13. Adding an Event Recording (Playback URL)
+
+Once an event has been recorded, editors can add the recording link in Studio.
+
+1. Open the event in **Events** and go to the **Settings** tab.
+2. Paste the link into **Playback URL** (must start with `http://` or `https://`).
+3. Optional: change **Playback button label** (default "Watch the recording"). The field only appears once a URL is set.
+4. Publish.
+
+The recording only appears on the site once the event has ended (its **End date / time**, or the **Start date / time** when no end is set), so it is safe to add early. Once it shows:
+
+- **Event page** — the Register buttons are replaced by the playback button, and the footer banner reads "Missed the event? Catch up on the recording."
+- **YouTube / Vimeo links** play on the page in a "recording" section (YouTube via the privacy-enhanced `youtube-nocookie.com` player); the buttons jump to it.
+- **Other links** (Teams, Stream, Zoom, SharePoint) open in a new tab.
+- **Knowledge Hub** — the event card shows a "Recording available" label.
+
+Pages refresh within about a minute of publishing.

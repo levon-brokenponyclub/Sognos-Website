@@ -32,6 +32,7 @@ export default async function KnowledgeHubPage({
     image: e.imageUrl,
     industry: null,
     useCase: null,
+    recordingAvailable: e.recordingAvailable,
   }));
 
   const postArticles: Article[] = posts.map((p) => ({
