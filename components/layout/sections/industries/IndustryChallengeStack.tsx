@@ -3,7 +3,8 @@ import { LAYOUT, TYPE } from "@/components/layout/sections/sognoscare/typeScale"
 
 // The challenge — on navy, laid out like the DigPacks Outcomes section
 // (2026-11-02): label, heading and lede, then the challenges in three columns,
-// each under a 2px white rule with a large numeral, title and body.
+// each under a faint 2px rule (white/15) with an accent numeral, title and
+// body.
 
 type Challenge = { title: string; body: string };
 
@@ -29,10 +30,10 @@ export default function IndustryChallengeStack({
 
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
           {challenges.map((challenge, i) => (
-            <div key={challenge.title} className="border-t-2 border-white pt-5">
+            <div key={challenge.title} className="border-t-2 border-white/15 pt-5">
               <p
                 aria-hidden="true"
-                className="font-heading text-4xl tabular-nums text-white md:text-5xl"
+                className="font-heading text-4xl tabular-nums text-sognos-blue-accent md:text-5xl"
               >
                 {String(i + 1).padStart(2, "0")}
               </p>

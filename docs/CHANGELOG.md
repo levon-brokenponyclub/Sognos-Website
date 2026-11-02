@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-11-02 — Industries challenge colours
+
+- **Challenge:** the rules are now `white/15` (they were solid white) and the numerals are the brand accent (they were white), matching the reference.
+
+## 2026-11-02 — Home Inspector port (recommended options)
+
+- **Hero:** Current · Centred (navy), unchanged, with the trust strip inside. The product cards move out of the hero.
+- **Product cards D · Expanding columns** (new `home/HomeProductColumns.tsx`):
+  - On navy-darkest with the brand glow, the three products are photo columns.
+  - On desktop the active column (first by default, then the hovered or focused one) grows to 2.4× and reveals its lead line, description and Explore link. Below `lg` the columns stack fully open.
+- **How Sognos Works:** the current deck, unchanged (tint).
+- **Solutions D · Graphic cards** (`SolutionsSection`, rewritten):
+  - The header has an "Explore all Solutions" pill.
+  - The first four solutions are bordered white cards on white, each with its motion graphic in a 224px panel.
+  - The review-only panel-colour/hero-photo toggle (`SolutionsBackgroundToggle`) is removed.
+- **CTA band C · Editorial** (new `home/HomeCtaBand.tsx`):
+  - The statement sits beside a short line with Book a Demo and Talk to Sales, between hairlines, on white.
+  - It replaces `HeadlineCTA`, and the CTA logos fetch goes with it.
+- **Industries G · Photo slider:** `IndustryOthersSlider` now takes `tone="tint"` and `heading`, and `excludeSlug` is optional. It shows all five industries on tint.
+- **Customer Stories D · Expanding stories** (new `home/HomeStoryColumns.tsx`):
+  - On navy-darkest, the stories with quotes from `ALL_STORIES` are photo columns.
+  - The active one grows to 3× and reveals its quote and author.
+- **News & Insights C · Editorial** (new `home/HomeNewsList.tsx`):
+  - Hairline rows on tint: date, category (ink `#0b6fc4` for AA), title and arrow.
+  - It uses the same four items as before: the latest Insights post, the next event, News and Milestone.
+- **Section order:** navy, navy-darkest, tint, white, white (hairlines), tint, navy-darkest, tint.
+- **Now unused** (kept for now): `HomeProductCards`, `HeadlineCTA`, `CustomerStories`, `IndustrySection`, and the `NewsInsightSection` component (only its type is used).
+- **Checks:**
+  - `tsc` and lint are clean, and `/` returns 200.
+  - At 1440px: the product columns are 653 / 273 / 273 and the story columns 590 / 198 / 198 / 198.
+
 ## 2026-11-02 — Industries challenge: Outcomes layout
 
 - **Challenge**, rebuilt to match the DigPacks Outcomes section on navy:

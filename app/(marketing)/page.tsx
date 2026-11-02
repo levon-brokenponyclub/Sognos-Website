@@ -1,17 +1,15 @@
 import Hero from "@/components/layout/sections/Hero";
-import HomeProductCards from "@/components/layout/sections/HomeProductCards";
+import HomeProductColumns from "@/components/layout/sections/home/HomeProductColumns";
 import LogoStrip from "@/components/layout/sections/LogoStrip";
 import HowSognosWorks from "@/components/layout/sections/HowSognosWorks";
 // import ProductsSection from "@/components/layout/sections/ProductsSection"; // parked — coming back after Solutions Pass
-import IndustrySection from "@/components/layout/sections/IndustrySection";
-import HeadlineCTA from "@/components/layout/sections/HeadlineCTA";
+import IndustryOthersSlider from "@/components/layout/sections/industries/IndustryOthersSlider";
+import HomeCtaBand from "@/components/layout/sections/home/HomeCtaBand";
 import SolutionsSection from "@/components/layout/sections/SolutionsSection";
-import NewsInsightSection, {
-  type NewsInsightArticle,
-} from "@/components/layout/sections/NewsInsightSection";
-import CustomerStories from "@/components/layout/sections/CustomerStories";
+import type { NewsInsightArticle } from "@/components/layout/sections/NewsInsightSection";
+import HomeNewsList from "@/components/layout/sections/home/HomeNewsList";
+import HomeStoryColumns from "@/components/layout/sections/home/HomeStoryColumns";
 import {
-  getCtaSectionContent,
   getKnowledgePostArchive,
   getUpcomingEvents,
   type EventListing,
@@ -60,11 +58,8 @@ function eventToArticle(e: EventListing): NewsInsightArticle {
 }
 
 export default async function HomePage() {
-  // HeadlineCTA is a Client Component, so its logos are resolved here. Same
-  // Sanity source CTASection uses for its "Powered by Microsoft" block.
-  const [posts, cta, upcomingEvents] = await Promise.all([
+  const [posts, upcomingEvents] = await Promise.all([
     getKnowledgePostArchive(),
-    getCtaSectionContent(),
     getUpcomingEvents(),
   ]);
 
@@ -89,28 +84,27 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Home framework — section order mapped from Cohere Home.html */}
-      {/* Hero · navy. The trust strip is passed as a child so it renders
-          inside the hero section; `LogoStrip` is an async Server Component and
-          `Hero` is a Client Component, so it cannot be imported there. */}
+      {/* Home — Inspector port (2026-11-02). Hero · navy, with the trust
+          strip passed as a child (LogoStrip is an async Server Component and
+          Hero a Client Component). */}
       <Hero>
-        <HomeProductCards />{" "}
-        {/* 3-up product cards, Paraform image set */}
-        <LogoStrip variant="hero" />{" "}
-        {/* "Trusted by industry leaders and professionals worldwide" */}
+        <LogoStrip variant="hero" />
       </Hero>
-      <HowSognosWorks />{" "}
-      {/* "Healthcare First. Field Services Always." — timer deck */}
+      {/* Product cards · D expanding columns (navy-deep) */}
+      <HomeProductColumns />
+      {/* How Sognos Works · current deck (tint) */}
+      <HowSognosWorks />
       {/* <ProductsSection /> — parked pending review, coming back after Solutions Pass */}
-      <SolutionsSection />{" "}
-      {/* What extends those products — 7 stacked FeatureRows */}
-      <HeadlineCTA platformLogos={cta.logos} />{" "}
-      {/* Navy statement CTA — platform orbit + per-word blur reveal */}
-      <IndustrySection />{" "}
-      {/* Where those solutions apply — 5-card sector rail */}
-      <CustomerStories />{" "}
-      {/* Embla gutter-inset slider, product-dark palette */}
-      <NewsInsightSection articles={newsArticles} /> {/* "The latest news" */}
+      {/* Solutions · D graphic cards (white) */}
+      <SolutionsSection />
+      {/* CTA band · C editorial (white) */}
+      <HomeCtaBand />
+      {/* Industries · G photo slider (tint) */}
+      <IndustryOthersSlider tone="tint" heading="Purpose-built for service-intensive sectors" />
+      {/* Customer Stories · D expanding stories (navy-deep) */}
+      <HomeStoryColumns />
+      {/* News & Insights · C editorial rows (tint) */}
+      <HomeNewsList articles={newsArticles} />
     </>
   );
 }

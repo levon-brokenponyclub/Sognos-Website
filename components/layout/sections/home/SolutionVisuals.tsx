@@ -10,16 +10,13 @@ import {
   CountUp,
   Draw,
   EASE,
-  PalettePicker,
   PaletteProvider,
-  PILL,
   Rise,
   mix,
   useCycle,
   useRun,
   useStoredValue,
   usePalette,
-  writeKey,
   type Palettes,
   type VisualProps,
 } from "@/components/ui/visuals/primitives";
@@ -65,28 +62,6 @@ export function SolutionsBackgroundProvider({ children }: { children: ReactNode 
     <PaletteProvider storageKey="sognos-home-solutions-palette" palettes={PALETTES} initial="a">
       <BgContext.Provider value={mode}>{children}</BgContext.Provider>
     </PaletteProvider>
-  );
-}
-
-// Review control — shown on localhost and Vercel previews, never on production.
-export function SolutionsBackgroundToggle() {
-  const mode = useContext(BgContext);
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") return null;
-  return (
-    <div className="flex w-full flex-wrap items-center gap-2 text-xs">
-      <div
-        role="group"
-        aria-label="Solution visuals background"
-        className="inline-flex items-center gap-1 rounded-full border border-sognos-line p-1"
-      >
-        {(["colour", "photo"] as const).map((m) => (
-          <button key={m} type="button" aria-pressed={mode === m} onClick={() => writeKey(STORE_KEY, m)} className={PILL}>
-            {m === "colour" ? "Panel colour" : "Hero photo"}
-          </button>
-        ))}
-      </div>
-      {mode === "colour" && <PalettePicker />}
-    </div>
   );
 }
 

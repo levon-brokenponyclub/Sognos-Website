@@ -11,10 +11,10 @@ import {
 } from "@/components/layout/sections/sognoscare/typeScale";
 import { INDUSTRIES } from "@/lib/constants";
 
-// Other industries — Industries Inspector option D "Slider" on the accent
-// (2026-11-02): label, statement heading and short description with arrow
-// buttons, then a snap track of
-// white cards, each with the industry's hero photo (wash + hairline frame),
+// Industries photo slider — Industries Inspector option D "Slider" (industry
+// pages, on the accent) and Home option G "Photo slider" (on the brand tint),
+// 2026-11-02: label, heading and short description with arrow buttons, then
+// a snap track of white cards, each with the industry's hero photo (wash + hairline frame),
 // a sector rule, name, description and Explore. The mockup's per-card stat
 // is illustrative and left out until there is real data.
 
@@ -27,14 +27,23 @@ const SECTOR_RULE: Record<string, string> = {
   "energy-utilities": "#8fae5a",
 };
 
+const DESCRIPTION =
+  "Sectors where coordinating people, compliance and service delivery is the whole operational problem.";
+
 export default function IndustryOthersSlider({
   excludeSlug,
+  tone = "accent",
+  heading = "Explore other industries",
 }: {
-  excludeSlug: string;
+  /** Industry pages leave out their own industry. */
+  excludeSlug?: string;
+  tone?: "accent" | "tint";
+  heading?: string;
 }) {
   const track = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const items = INDUSTRIES.filter((ind) => ind.slug !== excludeSlug);
+  const accent = tone === "accent";
 
   const scrollBy = (dir: number) => {
     const el = track.current;
@@ -49,24 +58,35 @@ export default function IndustryOthersSlider({
 
   return (
     <section
-      className={`overflow-clip bg-sognos-blue-accent ${LAYOUT.section}`}
+      className={`overflow-clip ${accent ? "bg-sognos-blue-accent" : "bg-sognos-tint"} ${LAYOUT.section}`}
     >
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex items-end justify-between gap-6">
           <div className={LAYOUT.head}>
-            <SectionLabel
-              tone="dark"
-              markerClassName="bg-white"
-              className="text-white"
+            {accent ? (
+              <SectionLabel
+                tone="dark"
+                markerClassName="bg-white"
+                className="text-white"
+              >
+                Industries
+              </SectionLabel>
+            ) : (
+              <SectionLabel>Industries</SectionLabel>
+            )}
+            <h2
+              className={
+                accent
+                  ? "font-heading text-3xl font-normal leading-[1.1] tracking-[-0.02em] text-balance text-white md:text-5xl"
+                  : `${TYPE.h2} text-sognos-heading`
+              }
             >
-              Industries
-            </SectionLabel>
-            <h2 className="font-heading text-3xl font-normal leading-[1.1] tracking-[-0.02em] text-balance text-white md:text-5xl">
-              Explore other industries
+              {heading}
             </h2>
-            <p className={`${TYPE.lede} text-white`}>
-              Sectors where coordinating people, compliance and service delivery
-              is the whole operational problem.
+            <p
+              className={`${TYPE.lede} ${accent ? "text-white" : "text-sognos-body"}`}
+            >
+              {DESCRIPTION}
             </p>
           </div>
           <div className="hidden shrink-0 gap-2 md:flex">
@@ -76,7 +96,11 @@ export default function IndustryOthersSlider({
                 type="button"
                 onClick={() => scrollBy(dir)}
                 aria-label={dir < 0 ? "Previous industry" : "Next industry"}
-                className="flex size-11 items-center justify-center rounded-full border border-white bg-white text-sognos-heading transition-colors hover:bg-sognos-heading hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className={`flex size-11 items-center justify-center rounded-full border bg-white text-sognos-heading transition-colors hover:bg-sognos-heading hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                  accent
+                    ? "border-white focus-visible:outline-white"
+                    : "border-sognos-line focus-visible:outline-sognos-blue-accent"
+                }`}
               >
                 <span aria-hidden="true">{dir < 0 ? "←" : "→"}</span>
               </button>
