@@ -370,6 +370,26 @@
   }
 }
 
+/* Home CTA band orbit (HomeCtaBand.tsx) — rings turn, chips counter-turn so
+   the logos stay upright. Duration and direction are set inline per ring. */
+.cta-orbit-ring,
+.cta-orbit-chip {
+  animation: cta-orbit linear infinite;
+}
+
+@keyframes cta-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-orbit-ring,
+  .cta-orbit-chip {
+    animation: none;
+  }
+}
+
 /* Trust marquee */
 .trust-marquee-track {
   display: flex;

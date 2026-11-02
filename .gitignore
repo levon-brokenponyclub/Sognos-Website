@@ -35,3 +35,6 @@
 
 # Dotenv and similar local-only files
 *.local
+
+# design-taste-frontend working files (inspect screenshots, draws)
+/.taste-skill/

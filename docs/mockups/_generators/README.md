@@ -26,6 +26,7 @@ Python 3.12+ is needed; only the standard library is used. Each script also writ
 | `build_home_insp.py` (uses `build_home.py`, `home_extras.py`) | `home/` Inspector page + options |
 | `build_home_stack.py` | `home/hero-stack.html`: hero, trust logos and stacking product cards, after angellist.com |
 | `build_finance.py` | `finance-operations/options.html`: Finance &amp; Operations audit plus 2–3 layout options per section (live prod copy) |
+| `build_cta.py` | `home/cta-options.html`: homepage CTA band options (A Agenda, B Pick a product, C Poster, D The people, E Platform orbit after 21st.dev ruixen.ui, E2 the same on navy), checked with the design-taste-frontend inspector |
 
 ## Shared modules
 

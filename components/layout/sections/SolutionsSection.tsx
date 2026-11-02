@@ -1,55 +1,20 @@
-// Home · Solutions — Inspector option D "Graphic cards (Frontline)"
-// (2026-11-02): header with the "Explore all Solutions" link, then the first
-// four solutions as bordered white cards on white (How Sognos Works above is
-// tint), each with its motion
-// graphic (home/SolutionVisuals.tsx) above the name, body and Explore.
+// Home · Solutions — Inspector option C "Editorial · cards" (2026-11-02):
+// header with the "Explore all Solutions" link, then all eight solutions as
+// editorial cards on Sognos tint (the SognosCare Features card): alternating
+// sides (first image right), 1 : 1, eyebrow + title at the top, copy with an
+// accent left border and the Explore link at the foot. Each card carries the
+// solution's motion graphic (home/SolutionVisuals.tsx).
 import Link from "next/link";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SolutionVisual, {
   SolutionsBackgroundProvider,
 } from "@/components/layout/sections/home/SolutionVisuals";
-import { LAYOUT, TYPE } from "@/components/layout/sections/sognoscare/typeScale";
-
-type SolutionRow = {
-  id: string;
-  label: string; // sticky gutter label
-  href: string;
-  headline: string;
-  body: string;
-};
-
-// First 4 solutions only (2026-08-07 call). Remaining 3 (Customer Service,
-// Power Platform, Quick Start) surface elsewhere / later.
-const SOLUTIONS: SolutionRow[] = [
-  {
-    id: "frontline",
-    label: "Frontline",
-    href: "/solutions/frontline",
-    headline: "End-to-end field service management",
-    body: "Coordinate mobile teams, manage visits and appointments, and keep every service connected from the field to the office.",
-  },
-  {
-    id: "crm",
-    label: "CRM",
-    href: "/solutions/customer-relationship-management",
-    headline: "A complete client relationship record",
-    body: "Centralise every client interaction, service history, and communication in one place — giving every team member the context they need.",
-  },
-  {
-    id: "customer-insights",
-    label: "Customer Insights",
-    href: "/solutions/customer-insights",
-    headline: "Turn service data into operational intelligence",
-    body: "Unified data from care records, rostering, and field operations — surfaced as live dashboards that show what's working and where to act.",
-  },
-  {
-    id: "customer-experience",
-    label: "Customer Experience",
-    href: "/solutions/customer-experience",
-    headline: "Consistent service quality at every touchpoint",
-    body: "From first contact through ongoing delivery, every interaction is tracked, measured, and optimised for consistent service quality.",
-  },
-];
+import {
+  LAYOUT,
+  TYPE,
+} from "@/components/layout/sections/sognoscare/typeScale";
+import { SOLUTIONS } from "@/lib/constants";
+import { getSolutionContent } from "@/lib/solutions-content";
 
 export default function SolutionsSection({
   heading = "Solutions that extend the platform",
@@ -73,35 +38,65 @@ export default function SolutionsSection({
               className="group inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-sognos-line bg-white px-5 text-sm font-medium text-sognos-heading transition-colors hover:border-sognos-blue-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
             >
               Explore all Solutions
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+              <span
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-x-0.5"
+              >
                 &rarr;
               </span>
             </Link>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-            {SOLUTIONS.map((s, i) => (
-              <Link
-                key={s.id}
-                href={s.href}
-                className="group flex flex-col gap-5 rounded-lg border border-sognos-line bg-white p-3 transition-colors hover:border-sognos-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
-              >
-                {/* Panel: the motion graphic at 90% in a 224px frame. */}
-                <div className="overflow-hidden rounded [&>div]:aspect-auto [&>div]:h-56 [&>div]:p-5 [&>div>div]:scale-90">
-                  <SolutionVisual id={s.id} index={i} />
-                </div>
-                <div className="flex flex-1 flex-col px-3 pb-3">
-                  <h3 className={`${TYPE.h3Small} text-sognos-heading`}>{s.label}</h3>
-                  <p className={`mt-2 line-clamp-3 ${TYPE.small} text-sognos-body`}>{s.body}</p>
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-sognos-heading group-hover:text-sognos-blue-accent">
-                    Explore
-                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
-                      &rarr;
-                    </span>
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-12 flex flex-col gap-4 lg:gap-6">
+            {SOLUTIONS.map((s, i) => {
+              const content = getSolutionContent(s.slug);
+              if (!content) return null;
+              // Alternate: odd cards put the graphic first (left from md).
+              const visualLeft = i % 2 === 1;
+              return (
+                <article
+                  key={s.slug}
+                  className="grid grid-cols-1 items-center gap-6 rounded-lg bg-sognos-tint p-6 md:grid-cols-2 md:gap-12 md:p-8 lg:p-10"
+                >
+                  <div className="flex min-w-0 flex-col justify-between gap-8 self-stretch">
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-medium text-sognos-blue-accent">
+                        {s.name}
+                      </p>
+                      <h3
+                        className={`${TYPE.h3} text-balance text-sognos-heading`}
+                      >
+                        {content.hero.headline}
+                      </h3>
+                    </div>
+                    <div className="flex flex-col gap-5">
+                      <p
+                        className={`max-w-[46ch] border-l-2 border-sognos-blue-accent pl-4 ${TYPE.body} text-pretty text-sognos-body`}
+                      >
+                        {content.hero.subtext}
+                      </p>
+                      <Link
+                        href={s.href}
+                        className="group inline-flex min-h-11 items-center gap-1.5 self-start text-sm font-medium text-sognos-heading transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent"
+                      >
+                        Explore {s.name}
+                        <span
+                          aria-hidden="true"
+                          className="transition-transform group-hover:translate-x-0.5"
+                        >
+                          &rarr;
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                  <div
+                    className={`min-w-0 ${visualLeft ? "md:order-first" : ""}`}
+                  >
+                    <SolutionVisual id={s.slug} index={i} />
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </SolutionsBackgroundProvider>

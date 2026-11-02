@@ -19,4 +19,5 @@ run "$G/build_cs_insp.py" $M/sognoscare $M/customer-stories $M/products
 run "$G/build_home_insp.py" $M/sognoscare $M/home $M/products
 run "$G/build_home_stack.py"                              # home/hero-stack.html (angellist.com study)
 run "$G/build_finance.py"                                 # finance-operations/options.html (audit + options)
+run "$G/build_cta.py"                                     # home/cta-options.html (CTA band, taste-skill pass)
 echo "done"

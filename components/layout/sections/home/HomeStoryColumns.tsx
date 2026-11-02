@@ -8,7 +8,7 @@ import { LAYOUT, TYPE } from "@/components/layout/sections/sognoscare/typeScale"
 import { ALL_STORIES } from "@/components/layout/sections/ProductCustomerStories";
 
 // Home · Customer Stories — Inspector option D "Expanding stories"
-// (2026-11-02): story photos as columns on navy-deep. On desktop the active
+// (2026-11-02): story photos as columns on navy. On desktop the active
 // column (first by default, then whichever is hovered or focused) widens and
 // reveals its quote and author. Stacked and fully open below lg.
 
@@ -18,7 +18,7 @@ export default function HomeStoryColumns() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className={`bg-sognos-navy-darkest text-white ${LAYOUT.section}`}>
+    <section className={`bg-sognos-navy text-white ${LAYOUT.section}`}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="flex max-w-3xl flex-col gap-4">
@@ -36,7 +36,7 @@ export default function HomeStoryColumns() {
           </Link>
         </div>
         <div
-          className="mt-12 flex flex-col gap-3 lg:h-[560px] lg:flex-row lg:gap-4"
+          className="mt-12 flex flex-col gap-3 lg:h-[480px] lg:flex-row lg:gap-4"
           onMouseLeave={() => setActive(0)}
         >
           {STORIES.map((st, i) => {
@@ -59,12 +59,9 @@ export default function HomeStoryColumns() {
                 />
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-t from-sognos-navy-darkest via-sognos-navy-darkest/45 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-sognos-navy via-sognos-navy/45 to-transparent"
                 />
                 <div className="relative flex flex-col gap-4 p-5 lg:p-7">
-                  <span className="self-start rounded bg-white px-3 py-2">
-                    <Image src={st.logo} alt={st.company} width={120} height={24} className="h-6 w-auto" />
-                  </span>
                   <p className={`${TYPE.h3Small} text-white`}>{st.company}</p>
                   <div
                     className={`grid transition-[grid-template-rows,opacity] duration-400 motion-reduce:transition-none ${

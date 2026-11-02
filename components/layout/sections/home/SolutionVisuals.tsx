@@ -58,8 +58,9 @@ const BgContext = createContext<BgMode>("colour");
 
 export function SolutionsBackgroundProvider({ children }: { children: ReactNode }) {
   const mode = useStoredValue<BgMode>(STORE_KEY, "colour", (v) => v === "colour" || v === "photo");
+  // Accent blues (b): palette a's tint panels would vanish on the tint cards.
   return (
-    <PaletteProvider storageKey="sognos-home-solutions-palette" palettes={PALETTES} initial="a">
+    <PaletteProvider storageKey="sognos-home-solutions-palette" palettes={PALETTES} initial="b">
       <BgContext.Provider value={mode}>{children}</BgContext.Provider>
     </PaletteProvider>
   );
@@ -183,11 +184,17 @@ function Experience({ show, still }: VisualProps) {
   );
 }
 
+// Keyed by solution slug. The last four are placeholders — the closest of
+// the four approved graphics — until those solutions get their own.
 const VISUALS: Record<string, (p: VisualProps) => ReactNode> = {
   frontline: Frontline,
-  crm: Crm,
+  "customer-relationship-management": Crm,
   "customer-insights": Insights,
   "customer-experience": Experience,
+  "customer-service": Crm,
+  "power-platform": Insights,
+  "quick-start": Frontline,
+  "finance-operations": Insights,
 };
 
 // ── Panel ──────────────────────────────────────────────────────────────────

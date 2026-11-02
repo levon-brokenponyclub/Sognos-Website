@@ -1,5 +1,70 @@
 # Changelog
 
+## 2026-11-02 — Home: Industries A · Split grid
+
+- **New `home/HomeIndustriesGrid.tsx`** replaces `IndustryOthersSlider` on the homepage:
+  - Inspector option A "Split" on Sognos tint: the same label, heading and description, with no slider arrows.
+  - The five industries sit in a 2 + 3 grid: two wide cards, then three. At 1440 the cards are 608px and 400px wide. One column on phones.
+- **New shared `industries/IndustryCard.tsx`:** the slider's card, extracted.
+  - White card, photo with the navy wash and hairline frame, sector rule, name, description and Explore.
+  - The slider (industry pages, 240px photos) and the homepage grid (16:10 photos) both use it, so their styling stays in step.
+  - The focus outline is now accent by default and white only on the accent slider. It was white everywhere before, which didn't show on tint.
+- **Hover stat (HSC "Photo + stat" effect):** new client `industries/IndustryStat.tsx`.
+  - On card hover or keyboard focus, a label and big number fade up over the photo (300ms, strong ease-out), and the number counts from 0 over 900ms. A slightly deeper wash appears under it.
+  - Leaving resets it, so the next hover counts again. Under reduced motion the final number shows with no rise.
+  - Touch screens never show it; it's decoration.
+  - `IndustryCard` takes an optional `stat`, which only the homepage grid passes.
+  - **The figures are ILLUSTRATIVE** (from the HSC mockup: 97, 98, 94, 92 and 100%). Confirm or replace them before launch.
+  - **Frame:** on the homepage cards the white hairline frame is hidden at rest and draws in from the centre on hover or focus (`clip-path` inset 50% → 0, 500ms ease-out). Under reduced motion it just fades. The industry-page slider keeps its frame always on.
+  - The stat number is explicitly white.
+- **Now unused:** `IndustryOthersSlider`'s `tone="tint"` branch and its `heading` override. Only the industry pages use the slider, with the defaults.
+
+## 2026-11-02 — Home: Customer Stories polish
+
+- **`HomeStoryColumns`:**
+  - The section background is navy (`#152248`), replacing navy-darkest. The photo scrim matches.
+  - The white customer-logo tile is removed from each column; the company name stays.
+  - The desktop row is 480px tall (it was 560px).
+
+## 2026-11-02 — Home: CTA band E2 · Platform orbit
+
+- **Options:** `docs/mockups/home/cta-options.html`, from the new `_generators/build_cta.py`. It holds options A–E2, made with the design-taste-frontend skill and checked with its inspector at 1440, 768 and 390px. E is after the 21st.dev ruixen.ui stack-feature-section.
+- **`HomeCtaBand`** is rewritten as E2:
+  - A full-width navy-dark band with no outer section padding. The C editorial band and its hairlines are gone.
+  - **Left:** the two-line headline (`text-[1.625rem]`, `sm:text-5xl`) and the line, plus the SUGGESTED "Built on the Microsoft platform you already trust."
+  - **Buttons:** Book a Demo is a white pill (it opens the demo modal). Talk to Sales is a white/25 outline pill linking to `/contact`.
+  - **Right:** Dynamics 365, Copilot, Power BI, Power Apps, Power Automate, Power Pages, Dataverse, Power Platform and Microsoft logos on 18 flat white chips (white/10 edge, no shadows). They sit in three dotted white/28 rings around a Sognos hub, running off the band.
+  - **Motion:** rings turn in 90, 120 and 150 seconds, alternating direction, and the chips counter-turn so the logos stay upright (`.cta-orbit-*` in `globals.css`). Still under reduced motion.
+  - **Phones:** the orbit sits below the copy at 62% scale, clipped to its own block.
+- **Refined (same day):**
+  - The background is navy (`#152248`) and there's no minimum height (the band is about 434px at 1440).
+  - The title is `TYPE.h2` (36px) and the description `TYPE.lede` in `white/75`.
+  - Talk to Sales is a text link with no border.
+  - The gap above the buttons is 40px.
+- **Hover and press pass (emil-design-eng):**
+  - Book a Demo transitions `background-color`, `color` and `scale` on a strong ease-out (`cubic-bezier(.23,1,.32,1)`): 200ms for colour, 160ms for the 0.97 press. The press scale didn't animate before, because Tailwind v4's `scale` is its own property.
+  - Talk to Sales gets a 200ms opacity hover, a 0.6 press dim, and an arrow that leans up and right on hover. The lean is off under reduced motion.
+  - The orbit stays decorative: linear constant motion, hidden from screen readers, no hover.
+- **`.gitignore`:** `/.taste-skill/` (the skill's working screenshots).
+
+## 2026-11-02 — Home: Solutions C editorial cards + News latest four
+
+- **Solutions · C · Editorial cards** (`SolutionsSection`, rewritten). All eight solutions, from `SOLUTIONS` and `solutions-content`, as SognosCare-style editorial cards:
+  - Sognos tint on a white section.
+  - Sides alternate, starting with the graphic on the right; text and graphic split 1:1.
+  - The eyebrow is the solution name (accent) and the title its hero headline, at the top.
+  - At the foot: the hero subtext with a 2px accent left border, then "Explore {name}".
+  - No counter and no button.
+  - The hand-written four-row list is removed. Copy now comes from `solutions-content`, so the first four cards read differently from before.
+- **`SolutionVisuals`:**
+  - Keyed by solution slug.
+  - Customer Service, Power Platform, Quick Start and Finance & Operations reuse the closest of the four approved graphics as placeholders.
+  - The panel palette defaults to Accent blues (b), so panels stand out on the tint cards.
+- **News & Insights · C:**
+  - Now the latest four posts in any category, replacing the fixed Insights / event / News / Milestone mix. The homepage no longer fetches events.
+  - "Webinar" shows as "Webinar recording".
+  - Newsletter rows open in a new tab.
+
 ## 2026-11-02 — Solutions: Related lists every other solution
 
 - Every solution page's Related section now lists all the other solutions (seven), in `SOLUTIONS` order, matching Finance & Operations.

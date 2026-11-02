@@ -1,8 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
 import SectionLabel from "@/components/ui/SectionLabel";
 import {
@@ -10,6 +8,7 @@ import {
   TYPE,
 } from "@/components/layout/sections/sognoscare/typeScale";
 import { INDUSTRIES } from "@/lib/constants";
+import IndustryCard from "@/components/layout/sections/industries/IndustryCard";
 
 // Industries photo slider — Industries Inspector option D "Slider" (industry
 // pages, on the accent) and Home option G "Photo slider" (on the brand tint),
@@ -18,14 +17,6 @@ import { INDUSTRIES } from "@/lib/constants";
 // a sector rule, name, description and Explore. The mockup's per-card stat
 // is illustrative and left out until there is real data.
 
-// Sector rule colours (mockup); Health & Social Care takes the brand accent.
-const SECTOR_RULE: Record<string, string> = {
-  "health-social-care": "#1d96fc",
-  "facilities-management": "#58b368",
-  "local-government": "#b9b26a",
-  "industrial-services": "#6a9fb5",
-  "energy-utilities": "#8fae5a",
-};
 
 const DESCRIPTION =
   "Sectors where coordinating people, compliance and service delivery is the whole operational problem.";
@@ -112,53 +103,13 @@ export default function IndustryOthersSlider({
           className={`${LAYOUT.gap} -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] lg:gap-4 [&::-webkit-scrollbar]:hidden`}
         >
           {items.map((ind) => (
-            <Link
+            <IndustryCard
               key={ind.slug}
-              href={ind.href}
-              className="group flex w-[85%] shrink-0 snap-start flex-col gap-5 rounded-lg bg-white p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-[420px]"
-            >
-              <div className="relative h-60 overflow-hidden rounded">
-                <Image
-                  src={ind.image}
-                  alt=""
-                  fill
-                  sizes="420px"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-b from-sognos-care-dark/40 via-transparent to-sognos-care-dark/30"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-[6%] rounded border border-white/60"
-                />
-              </div>
-              <div className="flex flex-1 flex-col px-3 pb-3">
-                <span
-                  aria-hidden="true"
-                  className="mb-3 h-1 w-10 rounded-full"
-                  style={{ background: SECTOR_RULE[ind.slug] ?? "#1d96fc" }}
-                />
-                <h3 className={`${TYPE.h3Small} text-sognos-heading`}>
-                  {ind.name}
-                </h3>
-                <p
-                  className={`mt-2 line-clamp-3 ${TYPE.small} text-sognos-body`}
-                >
-                  {ind.description}
-                </p>
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-sognos-heading group-hover:text-sognos-blue-accent">
-                  Explore
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform group-hover:translate-x-0.5"
-                  >
-                    &rarr;
-                  </span>
-                </span>
-              </div>
-            </Link>
+              industry={ind}
+              sizes="420px"
+              mediaClassName="h-60"
+              className={`w-[85%] shrink-0 snap-start sm:w-[420px] ${accent ? "focus-visible:outline-white" : ""}`}
+            />
           ))}
         </div>
       </div>

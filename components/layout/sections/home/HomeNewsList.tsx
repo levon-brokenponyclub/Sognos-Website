@@ -46,6 +46,8 @@ export default function HomeNewsList({ articles }: { articles: NewsInsightArticl
             <li key={`${a.kind}-${a.slug}`}>
               <Link
                 href={a.href}
+                // Newsletters are full email HTML pages: new tab, as in the Knowledge Hub.
+                {...(a.category === "Newsletter" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="group grid grid-cols-1 items-baseline gap-2 border-t border-sognos-line py-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent md:grid-cols-[9rem_10rem_1fr_auto] md:gap-8"
               >
                 <span className="text-sm tabular-nums text-sognos-muted">{displayDate(a.date)}</span>
