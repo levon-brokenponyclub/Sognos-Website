@@ -15,7 +15,7 @@ import { buildFooterLayout } from "@/components/layout/footer/footer.data";
 const ACKNOWLEDGEMENT_BREAK_AFTER =
   "We respect and honour Aboriginal and Torres Strait Islander Elders past, present, and future.";
 
-function AcknowledgementText({ text }: { text: string }) {
+export function AcknowledgementText({ text }: { text: string }) {
   const breakAt = text.indexOf(ACKNOWLEDGEMENT_BREAK_AFTER);
   if (breakAt === -1) return text;
   const firstLineEnd = breakAt + ACKNOWLEDGEMENT_BREAK_AFTER.length;
@@ -37,7 +37,7 @@ const FOCUS =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent";
 
 // Sognos wordmark as a mask, filled navy (footer graphic A2).
-const WORDMARK = {
+export const WORDMARK = {
   WebkitMask: "url(/logos/sognos-logo.svg) center top / 100% auto no-repeat",
   mask: "url(/logos/sognos-logo.svg) center top / 100% auto no-repeat",
 };

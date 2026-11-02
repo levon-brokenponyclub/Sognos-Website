@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-11-02 — Home footer (homepage only)
+
+- **New `footer/HomeFooter.tsx`**, the Home Inspector rows:
+  - **CTA A3a:** statement layout on navy-darkest (`#060e28`), all white. The CTA_BAND_DEFAULTS copy, an accent Book a Demo pill (white on hover), and Talk to Sales as a text link.
+  - **The rest on navy-dark (`#0f1936`):**
+    - Menu A1: Products as dot rows between white/10 hairlines, plus Solutions, Industries, Resources and Company columns.
+    - Accreditations A3a: a white/5 card with the logos on white tiles.
+    - Acknowledgement (centred, white/70).
+    - Legals (white/10 rule, white/80 text).
+    - The wordmark graphic at white/10.
+- **New `footer/FooterSwitch.tsx`** (client): picks `HomeFooter` on `/` and the site footer everywhere else. The layout passes both pre-rendered, because the server layout can't read the pathname. It also switches on client-side navigation.
+- **`FooterBottomBar`** takes `tone="dark"`. `Footer.tsx` now exports `AcknowledgementText` and `WORDMARK` for reuse. Other pages' footer is unchanged.
+
 ## 2026-11-02 — Home: Industries A · Split grid
 
 - **New `home/HomeIndustriesGrid.tsx`** replaces `IndustryOthersSlider` on the homepage:

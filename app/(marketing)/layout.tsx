@@ -2,6 +2,8 @@ import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HomeFooter from "@/components/layout/footer/HomeFooter";
+import FooterSwitch from "@/components/layout/footer/FooterSwitch";
 import PageTransition from "@/components/layout/PageTransition";
 import BookDemoModal from "@/components/ui/BookDemoModal";
 import { BookDemoProvider } from "@/lib/BookDemoContext";
@@ -41,7 +43,7 @@ export default async function MarketingLayout({
         <PageTransition>
           <main className="flex-1">{children}</main>
         </PageTransition>
-        <Footer />
+        <FooterSwitch home={<HomeFooter />} other={<Footer />} />
         <BookDemoModal />
         {preview && <VisualEditing />}
       </BookDemoProvider>
