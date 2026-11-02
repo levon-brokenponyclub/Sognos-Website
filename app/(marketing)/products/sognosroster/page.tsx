@@ -1,12 +1,10 @@
 import SognoscareRosterHero from "@/components/layout/sections/sognosroster/Hero";
-import { getProductTrustLogos } from "@/components/layout/sections/ProductTrustStrip";
 import SognoscareRosterProblems from "@/components/layout/sections/sognosroster/Problems";
 import SognoscareRosterFeatures from "@/components/layout/sections/sognosroster/Features";
 import SognoscareRosterAdvantages from "@/components/layout/sections/sognosroster/Advantages";
 import SognoscareRosterStories from "@/components/layout/sections/sognosroster/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { urlFor } from "@/lib/sanity/image";
 
 export const metadata = {
   title: "SognosRoster - Workforce Scheduling & Optimisation | Sognos",
@@ -24,14 +22,10 @@ const SECTIONS = [
 ];
 
 export default async function SognoscareRosterPage() {
-  const trustLogos = (await getProductTrustLogos()).map((logo) => ({
-    alt: logo.alt,
-    src: urlFor(logo.image).width(360).auto("format").url(),
-  }));
-
   return (
     <>
-      <SognoscareRosterHero trustLogos={trustLogos} />
+      {/* Hero trust logos hidden on the product pages (2026-11-02). */}
+      <SognoscareRosterHero />
       {/* Sub-nav — white, pins under the navbar after the hero. */}
       <ProductSubNav
         productName="SognosRoster"

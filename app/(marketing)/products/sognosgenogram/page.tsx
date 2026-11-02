@@ -1,12 +1,10 @@
 import GenogramHero from "@/components/layout/sections/sognosgenogram/Hero";
-import { getProductTrustLogos } from "@/components/layout/sections/ProductTrustStrip";
 import GenogramProblems from "@/components/layout/sections/sognosgenogram/Problems";
 import GenogramFeatures from "@/components/layout/sections/sognosgenogram/Features";
 import GenogramAdvantages from "@/components/layout/sections/sognosgenogram/Advantages";
 import GenogramStories from "@/components/layout/sections/sognosgenogram/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { urlFor } from "@/lib/sanity/image";
 
 export const metadata = {
   title: "SognosGenogram - Relationship & Family Context Platform | Sognos",
@@ -24,14 +22,10 @@ const SECTIONS = [
 ];
 
 export default async function SognosGenogramPage() {
-  const trustLogos = (await getProductTrustLogos()).map((logo) => ({
-    alt: logo.alt,
-    src: urlFor(logo.image).width(360).auto("format").url(),
-  }));
-
   return (
     <>
-      <GenogramHero trustLogos={trustLogos} />
+      {/* Hero trust logos hidden on the product pages (2026-11-02). */}
+      <GenogramHero />
       {/* Sub-nav — white, pins under the navbar after the hero. */}
       <ProductSubNav
         productName="SognosGenogram"

@@ -32,6 +32,11 @@ export default function SognoscareHero({
       headline={headline}
       subtext={subtext}
       photoSrc="/product/sognos-care-hero-img.png"
+      video={{
+        mp4: "/videos/sognoscare-hero.mp4",
+        webm: "/videos/sognoscare-hero.webm",
+        poster: "/videos/sognoscare-hero-poster.jpg",
+      }}
       tagline="Care operations & compliance platform"
       trustLogos={trustLogos}
     />

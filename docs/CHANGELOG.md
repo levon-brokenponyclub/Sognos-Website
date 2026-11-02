@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-11-02 — SognosCare hero video (Remotion)
+
+- **New `video/`** (dev-only, outside the Next build): a Remotion project. `npx remotion studio video/index.ts` previews it, and `npx remotion render video/index.ts CareHero public/videos/sognoscare-hero.mp4 --codec=h264 --crf=26 --muted` renders it.
+  - Dev dependencies: `remotion`, `@remotion/cli` and `@remotion/google-fonts`, pinned at 4.0.540.
+  - `CareHero` is 10s at 30fps, 1920×840 (the hero panel's 16:7). It follows one client from referral to review:
+    1. Open
+    2. Intake
+    3. Plan + Copilot
+    4. Compliance
+    5. Outcomes
+    6. Resolve
+  - It uses frosted cards over the Care photo and wash, with a slow push-in and back so it loops seamlessly.
+  - Animation is driven by frame number (no timers). Card data is illustrative.
+  - The `CareHeroFrame1`–`6` stills are review frames.
+- **Assets:** `public/videos/sognoscare-hero.webm` (404 KB), `sognoscare-hero.mp4` (614 KB), and `sognoscare-hero-poster.jpg` (50 KB, the Open frame).
+- **`ProductHero`:** an optional `video` prop replaces the photo and wash in the panel with a muted, looping, inline, decorative video (WebM first, MP4 fallback). Under reduced motion it shows the poster instead. Only SognosCare passes it; Roster and Genogram are unchanged.
+- **Polish (same day):**
+  - Scene cards are zoomed 1.35×.
+  - Motion is slower: 0.8s settles, 0.4s exits, and slower typing and ticks.
+  - The Outcomes bars use care-accent so they read on the frosted card.
+  - Re-rendered: WebM 594 KB, MP4 833 KB.
+- **Floating glass card:** `ProductHero` now shows it only on photo heroes, so it's gone on SognosCare.
+- **Trust logos hidden** on the Care, Roster and Genogram heroes. The pages no longer fetch `getProductTrustLogos`, and `ProductHero` still accepts `trustLogos`.
+- **Open:**
+  - Card text is still small at mobile width (16:10 crop); a mobile cut is needed.
+  - Remotion needs a company licence for companies of more than 3 people.
+
 ## 2026-11-02 — Knowledge Hub Inspector port
 
 - **Source:** `docs/mockups/knowledge-hub/options.html`. The picks were Hero 1, Tabs, Mixed grid, Events 1 (with the rail), the dark Newsletter band and Milestone rows.

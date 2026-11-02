@@ -15,6 +15,9 @@ import { PRODUCT_THEME, type ProductKey } from "./theme";
 
 export type HeroTrustLogo = { alt: string; src: string };
 
+/** Silent looping hero film (rendered from video/, see docs/CHANGELOG.md). */
+export type HeroVideo = { mp4: string; webm: string; poster: string };
+
 interface ProductHeroProps {
   product: ProductKey;
   logoSrc: string;
@@ -24,6 +27,8 @@ interface ProductHeroProps {
   /** Floating card line under the product name. */
   tagline: string;
   trustLogos?: HeroTrustLogo[];
+  /** Replaces the photo + wash in the panel; the poster shows under reduced motion. */
+  video?: HeroVideo;
 }
 
 // "One platform. From intake to outcome." → one line per sentence. Only the
@@ -52,6 +57,7 @@ export default function ProductHero({
   photoSrc,
   tagline,
   trustLogos = [],
+  video,
 }: ProductHeroProps) {
   const t = PRODUCT_THEME[product];
   const heroRef = useRef<HTMLElement>(null);
@@ -132,26 +138,51 @@ export default function ProductHero({
 
         <div className="relative mx-auto mt-14 max-w-6xl md:mt-20">
           <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 md:aspect-[16/7]">
-            <Image
-              src={photoSrc}
-              alt=""
-              fill
-              priority
-              sizes="(min-width: 1152px) 1152px, 100vw"
-              className="object-cover"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0"
-              style={{
-                background: `linear-gradient(160deg, color-mix(in srgb, ${t.wash[0]} 55%, transparent), color-mix(in srgb, ${t.wash[1]} 30%, transparent))`,
-              }}
-            />
+            {video && !prefersReducedMotion ? (
+              // The film carries its own photo + wash. Decorative: the copy
+              // above says what it shows.
+              <video
+                aria-hidden="true"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster={video.poster}
+                className="absolute inset-0 size-full object-cover"
+              >
+                <source src={video.webm} type="video/webm" />
+                <source src={video.mp4} type="video/mp4" />
+              </video>
+            ) : (
+              <>
+                <Image
+                  src={video ? video.poster : photoSrc}
+                  alt=""
+                  fill
+                  priority
+                  sizes="(min-width: 1152px) 1152px, 100vw"
+                  className="object-cover"
+                />
+                {!video && (
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{
+                      background: `linear-gradient(160deg, color-mix(in srgb, ${t.wash[0]} 55%, transparent), color-mix(in srgb, ${t.wash[1]} 30%, transparent))`,
+                    }}
+                  />
+                )}
+              </>
+            )}
           </div>
-          <div className="absolute -bottom-6 left-4 rounded-lg border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-md motion-safe:animate-[sognos-float_6s_ease-in-out_infinite] md:left-10">
-            <p className="text-xs text-white/75">{t.name}</p>
-            <p className="font-heading text-lg">{tagline}</p>
-          </div>
+          {/* Floating glass card — photo heroes only; the film carries its own UI. */}
+          {!video && (
+            <div className="absolute -bottom-6 left-4 rounded-lg border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-md motion-safe:animate-[sognos-float_6s_ease-in-out_infinite] md:left-10">
+              <p className="text-xs text-white/75">{t.name}</p>
+              <p className="font-heading text-lg">{tagline}</p>
+            </div>
+          )}
         </div>
 
         {/* Trust logos at the hero foot (kept from the live pages; not in
