@@ -1,6 +1,42 @@
 # Changelog
 
+## 2026-11-02 — Knowledge Hub Inspector port
+
+- **Source:** `docs/mockups/knowledge-hub/options.html`. The picks were Hero 1, Tabs, Mixed grid, Events 1 (with the rail), the dark Newsletter band and Milestone rows.
+- **New** `components/layout/sections/knowledge-hub/`:
+  - **`KnowledgeHub`** (client) holds the search and tab state.
+    - The hero search filters the grid, the past events and the milestones.
+    - The tabs filter the grid.
+    - `?category=` behaviour:
+
+      | Value | Result |
+      |---|---|
+      | `News`, `Insights`, `Newsletter` | Preselects that tab |
+      | `Events`, `Webinar` | Scrolls to events |
+      | `Milestone` | Scrolls to milestones |
+  - **`KhHero`:** white, with title and description beside the search field. The H1 caps at `md:text-6xl`. The featured card (1400px image) is the latest News or Insights post, never a newsletter.
+  - **`KhPostGrid`:** sticky tabs (All · News · Insights · Newsletters), then the mixed grid with an overlaid lead card.
+    - Only News, Insights and Newsletter posts, without the featured one.
+    - 12 cards show, then Load more. A search shows every match.
+    - The mockup's in-grid newsletter card is dropped (the band covers it).
+  - **`KhEvents`:** tint, with the label in the rail.
+    - The next upcoming event, with Register only when `registerUrl` is set.
+    - Then "Past events & recordings": past non-webinar events plus Webinar posts, newest first, capped at 12. Two show, then Load more.
+    - With no upcoming event, only the past rows show.
+  - **`KhNewsletterBand`:** dark (care-dark), with the latest edition's excerpt and link (new tab).
+  - **`KhMilestones`:** hairline rows; a thumbnail slides in on hover. Milestones are left out of the grid and tabs.
+- **`page.tsx`:**
+  - Maps posts to `KhPost` (720px plus 1400px images).
+  - Builds the merged past list on the server.
+  - The `KnowledgeHubSearchDialog` is no longer on this page.
+- **Unchanged:**
+  - The category pages (`/knowledge-hub/category/*`) and the navbar (this route was already a solid header).
+  - `KnowledgeHubArchive.tsx`, whose exports four other pages use. Its default export (the old page layout) is now unused.
+- **Open:** the newsletter field and Subscribe button are visual only. There is no sign-up backend, so nothing is submitted and no confirmation is shown.
+
 ## 2026-11-02 — Home hero + product stack (hero-stack mockup port)
+
+- **Header** (`Navbar.tsx`, `DARK_SCROLLED_PATHS`): on the homepage the bar turns navy once scrolled, with white text, logo and button, and a `white/10` hairline. Other pages are unchanged.
 
 - **Mockup:** `docs/mockups/home/hero-stack.html`, from the new generator `_generators/build_home_stack.py` (after angellist.com).
 - **Hero** (`Hero.tsx`):

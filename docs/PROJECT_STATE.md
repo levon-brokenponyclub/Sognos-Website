@@ -216,19 +216,22 @@ Per-page snapshot of what's actually on the site. **Update this table
 whenever a pattern is applied.** Don't overpromise: if a section is
 untouched, mark ❌.
 
-### 4.1 Homepage (Hero + How Sognos Works restored to `f2776ef` on 2026-10-24)
+### 4.1 Homepage (Inspector + hero-stack ports, 2026-11-02)
 
 | Section | Status | Notes |
 |---|---|---|
-| Hero | ✅ polish pass 2026-10-25 | Hero A (centred) ported from `docs/mockups/home/` (audit `docs/audits/home-hero-productcards-audit.md`): Care-hero H1 scale (`4xl/5xl/6xl`, 2 lines from `md`), `rounded-full` CTAs + 44px secondary + focus rings, centred at every size. `HomeProductCards` = cards A: 3-up from `lg` / snap rail below, Paraform image set (`/product/*Bg.avif` + product wash), product names as `h2`, accent bar, focus/active states, entrance stagger. Copy unchanged. |
-| LogoStrip | ✅ live | Sanity-backed. `variant="hero"` (home, 2026-10-25): title as `<p>`, 5-cell row in `max-w-7xl`, mobile marquee on the shared `trust-marquee-scroll` keyframe. `default` variant now has no consumer (solutions dropped the trust strip 2026-10-25) — remove or reuse. |
-| HowSognosWorks | ✅ restored | `f2776ef` version: "Healthcare First. Field Services Always. AI at the Centre." + platform logos + timer deck (Manage demand / Coordinate workforce / Track outcomes). No `ScrollReveal` wrapper. |
-| ProductsSection | ⏸ parked | Commented out of the page pending review; PartnerCard scaffold survives in the file. |
-| SolutionsSection | 🟡 scaffold | Routable global-payouts rescaffold: sticky gutter labels, 4 rows (first 4 solutions), centered header. 2026-10-24: /dev/ payout art replaced by Sognos motion graphics (`home/SolutionVisuals.tsx`); review toggle Panel colour / Hero photo + palettes A–F (hidden on production). Awaiting Pass. |
-| IndustrySection | 🟡 scaffold | Routable swiper rescaffold: 628px cards, per-sector inline hex tints. Awaiting Pass + sector token migration. |
-| HeadlineCTA | ⚠️ pending fix | `rounded-sm` button violation flagged, not fixed. |
-| CustomerStories | ✅ live | Embla gutter-inset slider, product-dark palette. |
-| NewsInsightSection | ⚠️ structure only | Styling pending; feature-tile scrim bug flagged, not fixed. |
+| Header | ✅ 2026-11-02 | Transparent over the navy hero, then **navy** (not white) on scroll, with white text, logo and button (`DARK_SCROLLED_PATHS` in `Navbar.tsx`). |
+| Hero | ✅ 2026-11-02 | Hero-stack mockup (`docs/mockups/home/hero-stack.html`, after angellist.com). Plain navy (blur glow removed), centred H1 `md:text-6xl` with the second line in the accent, Book a Demo + Talk to Sales (`/contact`). |
+| Trust row | ✅ 2026-11-02 | `LogoStrip variant="hero"`: a stat cell (**"4.9 / Rated by operations leaders": placeholder, needs a source**) and 5 Sanity logos, a 2/3/6 grid with hairlines from `lg`. |
+| Product stack | ✅ 2026-11-02 | `home/HomeProductStack.tsx`: three overlapping cards with rounded tops (`rounded-t-[40px]`, a flagged radius exception), alternating white and tint; Paraform panel (`ParaformPanel` from `ProductWorksCard`) at square size; covered card drifts at half speed (scroll-driven CSS). Copy is placeholder; feature links go to the product page. |
+| How Sognos Works | ✅ unchanged | Current deck (tint). |
+| Solutions | ✅ 2026-11-02 | D · graphic cards (white), first four solutions. |
+| CTA band | ✅ 2026-11-02 | `home/HomeCtaBand.tsx`: C · editorial, between hairlines. |
+| Industries | ✅ 2026-11-02 | `IndustryOthersSlider tone="tint"`: all five sectors. |
+| Customer Stories | ✅ 2026-11-02 | `home/HomeStoryColumns.tsx`: D · expanding columns (navy-darkest). |
+| News & Insights | ✅ 2026-11-02 | `home/HomeNewsList.tsx`: C · editorial rows (tint). |
+
+Now unused on the homepage (kept until sign-off): `HomeProductColumns`, `HomeProductCards`, `HeadlineCTA`, `CustomerStories`, `IndustrySection`, the `NewsInsightSection` component (only its type is used), and `/images/home/*-blur-dp.avif`.
 
 ### 4.2 Products
 
@@ -258,8 +261,8 @@ untouched, mark ❌.
 | Page family | Scaffold | Approve | Pass | Refine | Notes |
 |---|---|---|---|---|---|
 | Solutions `[slug]` | ✅ | ✅ | ✅ 2026-10-25 | 🟡 Frontline only | **Solutions Inspector port 2026-11-02** (`Solutions.json` + config 4), all 7 routes. Header starts transparent with navy text, then white on scroll (`LIGHT_TRANSPARENT_PATH_PREFIXES` in `Navbar.tsx`). Hero A: 6/6 split, breadcrumb label, H1 `md:text-6xl`, Book a Demo + Talk to Sales, photo under a navy→accent wash. The floating card is the live capability index for Frontline (`solutions/HeroCapabilityCard.tsx`) and a name + description card for the others. Problem B: sticky header beside numbered rows on navy, chips flip "Issue today" → "✓ {solution} fixes" (`solutions/SolutionProblem.tsx`). Capabilities A grid (tint). Platform C on navy with the rail: three `bg-white/5` cards with `white/10` borders on every solution (`platformCards()`; card 1 names the solution's platform). Works with A on tint with the rail: white product cards in a 3-column grid (1–2 sit left at a third of the width), the white product logo over the graphic in the panel (Graphic 3, Paraform, no pill), then the accent bar, tagline and link; per `worksWith*` flags. Related B: list rows on navy with the rail and a hero-image hover preview, the 3 curated `relatedSlugs`. The footer stays site-wide C. Frontline's capability and platform motion graphics stand in on the other solutions as placeholders; the hero capability card is Frontline-only. `shared/PlatformLogoRow.tsx` is unused. `SolutionUseCases.tsx` is unused. |
-| Industries `[slug]` | in progress | — | — | — | H2 conflict: uses `font-normal` with inconsistent responsive stepping; matches neither standard nor statement H2 (§6). |
-| Knowledge Hub | ✅ | ✅ | 🔄 in progress | — | Matched to routable.com/resources. Done: SectionShell, Insights `ArticleCard`, News lead + Events/Webinars title bumps, meta hierarchy. Remaining: masthead, tab band, News/Milestone card review. New route `/knowledge-hub/category/[category]` scaffolded 2026-08-06. |
+| Industries `[slug]` | ✅ | ✅ | ✅ 2026-11-02 | — | **Industries Inspector port 2026-11-02**, all 5 routes: Hero A split; Challenge on navy, laid out like DigPacks Outcomes (01–03 accent numerals under `white/15` rules); How Sognos helps A tabs with a `#edf6ff` graphic panel; Platform B cards on navy (`white/5`); product cards from Solutions Works with (`ProductWorksCard`); Other industries D slider on the accent (white-on-accent text fails AA, flagged). Stories hidden. |
+| Knowledge Hub | ✅ | ✅ | ✅ 2026-11-02 | — | **Knowledge Hub Inspector port 2026-11-02** (`docs/mockups/knowledge-hub/options.html`), sections in `components/layout/sections/knowledge-hub/`: Hero 1 light (H1 `md:text-6xl`, search, featured = latest News or Insights post); sticky tabs All · News · Insights · Newsletters; Mixed grid (12 + Load more); Events 1 upcoming + past with the rail; Newsletter dark band (**form is visual only, no sign-up backend**); Milestone rows. The search filters grid, past events and milestones. `/knowledge-hub/category/[category]` is unchanged (old layout). The `KnowledgeHubArchive` default export is now unused; its named exports are still used by 4 pages. |
 | Customer Stories | ✅ | ✅ | 🔄 in progress | — | `[slug]` token Pass done. Dark navy hero kept (deliberate). |
 | Events `/events` + `/events/[slug]` | ✅ | ✅ | — | — | Built 2026-10-23/24 from Sanity (option C template: hero, sticky section menu, content + sticky event card). Index: Events + Webinars rails with Upcoming / Past tabs (tabs only when populated). Static `/events/nfp-real-care` retired (seeded in Sanity). |
 
@@ -288,7 +291,13 @@ migration; Workhorse token (`--color-wh-*` etc.) removal.
 
 ## 5. Next steps (priority order)
 
-Design + code work, ordered by impact.
+**Where we are (2026-11-02):** the Inspector ports are done and on preview (`redesign`) for Products (Care, Roster, Genogram, DigPacks), Solutions (all 8), Industries (all 5), Home (hero-stack + Inspector sections), Knowledge Hub and the header/footer. Still to do:
+
+- **Sign-offs:** Home, Knowledge Hub.
+- **Content to confirm:** the homepage stat ("4.9"), the product stack copy, the Genogram advantages heading.
+- **Decisions:** the 40px stack radius, a newsletter sign-up provider, and whether category pages get the new Knowledge Hub layout.
+- **Not ported yet:** Customer Stories, Events, About, Contact, Careers.
+- **Clean-up:** delete the components listed as unused in §4.1 and §4.5 once pages are signed off.
 
 1. **Solutions `[slug]` — per-solution visual sets.** Layout ported from the
    approved Frontline mockup (2026-10-25). The other 6 solutions need their

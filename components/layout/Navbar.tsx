@@ -41,6 +41,10 @@ const DARK_HERO_PATH_PREFIXES = [
 // Solutions Inspector port, 2026-11-02.
 const LIGHT_TRANSPARENT_PATH_PREFIXES = ["/solutions/"];
 
+// Dark-hero pages whose bar turns navy (not white) once scrolled, so it
+// reads as part of the navy hero/stack: homepage, 2026-11-02.
+const DARK_SCROLLED_PATHS = new Set(["/"]);
+
 // The bannered event comes from Sanity (`event.showInBanner`) via the
 // marketing layout — see lib/upcomingEvent.ts.
 
@@ -665,7 +669,8 @@ export default function Navbar({
     !useTransparent &&
     LIGHT_TRANSPARENT_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const barTransparent = (useTransparent || lightTransparent) && !scrolled;
-  const t = useTransparent && !scrolled ? THEMES.dark : THEMES.light;
+  const darkScrolled = useTransparent && DARK_SCROLLED_PATHS.has(pathname);
+  const t = useTransparent && (!scrolled || darkScrolled) ? THEMES.dark : THEMES.light;
 
   // Banner runs opposite the hero so it always separates from what is below it:
   // white over a dark hero, navy over a light one. Text and borders have to flip
@@ -1027,8 +1032,16 @@ export default function Navbar({
           bannerOffsetClass,
           "transition-[top,background-color,border-color] duration-300 ease-in-out",
           "border-b",
-          scrolled ? "border-sognos-line" : "border-transparent",
-          barTransparent ? "bg-transparent" : "bg-white",
+          scrolled
+            ? darkScrolled
+              ? "border-white/10"
+              : "border-sognos-line"
+            : "border-transparent",
+          barTransparent
+            ? "bg-transparent"
+            : darkScrolled
+              ? "bg-sognos-navy"
+              : "bg-white",
         ].join(" ")}
       >
         {/* ── Inner positioning context — max-w-7xl ── */}
