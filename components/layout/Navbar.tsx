@@ -37,6 +37,10 @@ const DARK_HERO_PATH_PREFIXES = [
   "/knowledge-hub/category/",
 ];
 
+// Light-hero pages that also start transparent (navy text over a white hero):
+// Solutions Inspector port, 2026-11-02.
+const LIGHT_TRANSPARENT_PATH_PREFIXES = ["/solutions/"];
+
 // The bannered event comes from Sanity (`event.showInBanner`) via the
 // marketing layout — see lib/upcomingEvent.ts.
 
@@ -655,9 +659,13 @@ export default function Navbar({
         DARK_HERO_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   // Products Inspector header (2026-11-02): dark-hero pages start transparent
-  // with white text and turn white with navy text once scrolled.
-  const barTransparent = useTransparent && !scrolled;
-  const t = barTransparent ? THEMES.dark : THEMES.light;
+  // with white text, light-transparent pages with navy text; both turn white
+  // with navy text once scrolled.
+  const lightTransparent =
+    !useTransparent &&
+    LIGHT_TRANSPARENT_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const barTransparent = (useTransparent || lightTransparent) && !scrolled;
+  const t = useTransparent && !scrolled ? THEMES.dark : THEMES.light;
 
   // Banner runs opposite the hero so it always separates from what is below it:
   // white over a dark hero, navy over a light one. Text and borders have to flip

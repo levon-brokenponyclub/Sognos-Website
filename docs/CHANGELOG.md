@@ -1,5 +1,72 @@
 # Changelog
 
+## 2026-11-02 — Solutions: Problem B (sticky rail)
+
+- **New `solutions/SolutionProblem.tsx`** on navy `#152248`:
+  - A sticky header column (label, "What {solution} solves", intro) sits beside numbered pain-point rows.
+  - Each row rises in. Its chip flips from "Issue today" (rose outline) to "✓ {solution} fixes" (accent, white text) about 1.4s later. It is static under reduced motion.
+  - For solution names over 16 characters, the chip sits under the copy so the title keeps its width. At 1440px, CRM titles are 617px wide instead of 320px.
+- **Removed:** the Frontline symptom tiles (`FrontlineSymptom` and their visuals) and the unused imports in `FrontlineVisuals.tsx`.
+- **Checks:**
+  - `tsc` and lint are clean, and all 7 solution routes return 200.
+  - The chip flip was not observed, because the pane was hidden.
+
+## 2026-11-02 — Solutions: Platform cards + Works with card layout
+
+- **Platform C:** the Frontline cards are now `bg-white/5` with `border-white/10` on navy. The `--sognos-navy-card` token is removed; nothing uses it now.
+- **Works with A:**
+  - Always a 3-column grid from `md`, so 1–2 products sit left at a third of the width each.
+  - The white product logo now sits at the top of the Paraform panel, over the graphic. The status pill is gone.
+  - Below the panel: the accent bar, a 20px tagline and the Explore link.
+- **Checks:**
+  - `tsc` and lint are clean.
+  - At 1440px on Frontline: the card is 330px wide, the panel 304×327, and the graphic fits with no overflow. The Platform cards render at white/5 on navy.
+
+## 2026-11-02 — Solutions: Works with grid + Related list rows
+
+- **Works with A:**
+  - Now a grid of white product cards on tint, with the graphic on top and the copy below. It keeps graphic 3, the Paraform style and the rail.
+  - Products follow each solution's `worksWith*` flags, so 2 cards side by side from `md`, or 1 full-width card.
+  - Two-up cards use a 360px panel and a 20px tagline.
+- **Related B:**
+  - List rows on navy with the rail. Each row has a large name, a 2-line description and a round arrow that fills with the accent on hover.
+  - On desktop, the related solution's hero image slides in on hover.
+  - It shows the 3 curated `relatedSlugs`.
+- **Removed:** the related mini graphics (`RelatedGraphic`, `RelatedCrm` / `RelatedService` / `RelatedPowerPlatform`, `RELATED_GRAPHIC_SLUGS`) and the `hasGraphic` field. Nothing uses them any more.
+- **Checks:**
+  - `tsc` and lint are clean, and all 7 solution routes return 200.
+  - At 1440px on `/solutions/customer-relationship-management`: Works with is on tint with 2 cards at 503px (378px panels), and Related is on navy with 3 rows.
+
+## 2026-11-02 — Solutions Inspector port
+
+- **Export:** `Solutions.json` plus config (4). The 7 solution routes share one template. `finance-operations` does not exist in redesign.
+- **Header:** `/solutions/*` now starts transparent with navy text and turns white on scroll. This is `LIGHT_TRANSPARENT_PATH_PREFIXES` in `Navbar.tsx`. Other light pages are unchanged.
+- **Hero A (6/6 split):**
+  - The left column has the breadcrumb label, the H1 at `md:text-6xl`, and the subtext.
+  - The CTAs are Book a Demo (navy, hovers to the accent) and "Talk to Sales" (`/contact`), which replaces "Explore capabilities".
+  - The photo is 540px tall under a navy-dark → accent wash.
+  - Frontline's floating card is the new `HeroCapabilityCard`: its first four capabilities, each with a status line and a 2.8s progress bar. It pauses on hover and is static under reduced motion.
+  - The other six get a name + description card.
+  - `FRONTLINE_HERO_OVERLAY` is replaced by `FRONTLINE_HERO_HEADING` / `FRONTLINE_HERO_STATUS`.
+- **Problem:** unchanged, navy `#152248`.
+- **Capabilities:** unchanged, tint.
+- **Platform C:**
+  - Moves from Care-dark to navy, with the label in a sticky rail and the header left-aligned.
+  - Frontline cards use the new `--sognos-navy-card #1b2440` token with `#152248` borders.
+  - On the other solutions, the logo row sits over a `navy-darkest` rule.
+- **Works with A:**
+  - Moves from white to tint, with white cards that have white borders. The rail is kept.
+  - The sub-options are unchanged: alternating, Paraform, Graphic 3.
+- **Related A:**
+  - The slider is replaced by a 3-up grid of graphic cards on navy, with the label in a sticky rail.
+  - It shows the page's 3 curated `relatedSlugs`. Previously it listed all 6 other solutions.
+  - `SolutionRelated` is now a Server Component.
+- **Footer:** stays site-wide C. The export's A3a / A2 picks are not applied, as decided.
+- **Checks:**
+  - `tsc` and lint are clean.
+  - The 7 solution routes and `/solutions` return 200.
+  - At 1440px: the header is transparent at the top with navy text, the H1 is 60px, and the hero card is 352×296. The section backgrounds read white, navy, tint, navy, tint, navy.
+
 ## 2026-11-02 — Try it free: booking motion graphic
 
 - **New `BookingGraphic`** in `digpacks/AssetBooker.tsx`, ported from the mockup's `asset_booker.py`:
