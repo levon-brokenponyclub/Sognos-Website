@@ -4,7 +4,8 @@ import { LAYOUT, TYPE } from "@/components/layout/sections/sognoscare/typeScale"
 // The challenge — on navy, laid out like the DigPacks Outcomes section
 // (2026-11-02): label, heading and lede, then the challenges in three columns,
 // each under a faint 2px rule (white/15) with an accent numeral, title and
-// body.
+// body. Also the Finance & Operations solution's problem section (`label` +
+// `heading` override the industry defaults).
 
 type Challenge = { title: string; body: string };
 
@@ -12,19 +13,21 @@ export default function IndustryChallengeStack({
   challenges,
   industryName,
   description,
+  label = "The challenge",
+  heading = `What makes ${industryName} hard to run`,
 }: {
   challenges: readonly Challenge[];
   industryName: string;
   description: string;
+  label?: string;
+  heading?: string;
 }) {
   return (
     <section className={`bg-sognos-navy text-white ${LAYOUT.section}`}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex max-w-3xl flex-col gap-4">
-          <SectionLabel tone="dark">The challenge</SectionLabel>
-          <h2 className={`${TYPE.h2} text-white`}>
-            What makes {industryName} hard to run
-          </h2>
+          <SectionLabel tone="dark">{label}</SectionLabel>
+          <h2 className={`${TYPE.h2} text-white`}>{heading}</h2>
           <p className={`${TYPE.lede} text-white/75`}>{description}</p>
         </div>
 

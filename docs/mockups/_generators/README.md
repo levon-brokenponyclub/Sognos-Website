@@ -25,6 +25,7 @@ Python 3.12+ is needed; only the standard library is used. Each script also writ
 | `build_cs_insp.py` (uses `build_cs.py`) | `customer-stories/archive.html` + options |
 | `build_home_insp.py` (uses `build_home.py`, `home_extras.py`) | `home/` Inspector page + options |
 | `build_home_stack.py` | `home/hero-stack.html`: hero, trust logos and stacking product cards, after angellist.com |
+| `build_finance.py` | `finance-operations/options.html`: Finance &amp; Operations audit plus 2–3 layout options per section (live prod copy) |
 
 ## Shared modules
 

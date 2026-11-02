@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-11-02 — Solutions: Finance & Operations (route + Inspector port)
+
+- **New route** `/solutions/finance-operations`. It was live on prod but missing on redesign, where it 404'd.
+  - Added to `SOLUTIONS` (`lib/constants.ts`), so it also appears on the `/solutions` hub and in the footer.
+  - Added to the Solutions menu (`lib/navigation.ts`).
+  - Content added to `lib/solutions-content.ts`, with copy word for word from prod. The hero image is a placeholder (`SolutionsHero.avif`), since prod has none.
+- **Audit + options:** `docs/mockups/finance-operations/options.html`, from the new `_generators/build_finance.py`.
+- **Picks:**
+  - Hero: Editorial (the same as the other seven solutions).
+  - Problem B: numbered columns on navy. This reuses `IndustryChallengeStack`, which now takes `label` and `heading`.
+  - Capabilities A: the Frontline card style and graphics.
+  - Experience: new `solutions/SolutionExperience.tsx`. It uses the Problem section's sticky-rail layout and sizing on the brand accent: white text, a white marker, `white/30` rules, and a white "✓ Dynamics 365 Finance & Operations" chip under each customer name. White on the accent is about 3:1, which fails AA for body text (flagged).
+  - Platform A: the four Microsoft ecosystem logo cards on navy with the rail.
+  - Works with: Care + Roster.
+  - Related: all seven other solutions.
+- **`SolutionContent`** gains optional `problemLayout: "columns"`, `experience` and `microsoftEcosystem` fields. Only Finance & Operations sets them; the other solutions render as before.
+- **Left off from prod:** the 0×/0% stats, the "Field Service Innovations" banner, the date-picker booking widget and the "Powered by" carousel.
+
 ## 2026-11-02 — SognosCare hero video (Remotion)
 
 - **New `video/`** (dev-only, outside the Next build): a Remotion project. `npx remotion studio video/index.ts` previews it, and `npx remotion render video/index.ts CareHero public/videos/sognoscare-hero.mp4 --codec=h264 --crf=26 --muted` renders it.

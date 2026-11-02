@@ -12,6 +12,15 @@ export type SolutionContent = {
   relatedSlugs: string[];
   worksWithCare: boolean;
   worksWithRoster: boolean;
+  /** Problem layout: numbered columns instead of the sticky rail. */
+  problemLayout?: "columns";
+  /** Delivery proof — Finance & Operations only (customer rows). */
+  experience?: { intro: string; customers: string[]; outro: string };
+  /** Replaces the standard Platform cards — Finance & Operations only. */
+  microsoftEcosystem?: {
+    heading: string;
+    items: { title: string; body: string; logo: string }[];
+  };
 };
 
 export const SOLUTIONS_CONTENT: SolutionContent[] = [
@@ -466,6 +475,114 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos's proven implementation approach - reducing time, risk, and cost.",
     },
     relatedSlugs: ["frontline", "customer-relationship-management", "customer-service"],
+    worksWithCare: true,
+    worksWithRoster: true,
+  },
+  // Copy verbatim from prod (sognos-react main, 2026-11-02). Hero image is a
+  // placeholder: prod has none.
+  {
+    slug: "finance-operations",
+    hero: {
+      headline: "Bring finance and operations into one connected view",
+      subtext:
+        "Run financial management, procurement, supply chain and operational processes on Microsoft Dynamics 365, with the visibility and control to manage complexity as your organisation grows.",
+      image: "/images/solutions/SolutionsHero.avif",
+    },
+    whatItSolves: {
+      intro:
+        "When finance, procurement and operational teams work across separate systems, every close, approval and decision takes more effort than it should.",
+      painPoints: [
+        {
+          title: "Too much manual work between systems",
+          body: "Teams spend time reconciling spreadsheets, re-entering data and chasing information across different systems before they can act.",
+        },
+        {
+          title: "Limited visibility across the operation",
+          body: "Finance, purchasing, inventory and operational data sit in different places, making it difficult to understand costs, performance and what is happening right now.",
+        },
+        {
+          title: "ERP that cannot keep pace",
+          body: "Heavy customisation and ageing processes make change harder than it needs to be, from adding new services and entities to meeting new reporting and compliance requirements.",
+        },
+      ],
+    },
+    capabilities: [
+      {
+        title: "Financial management",
+        body: "Manage general ledger, accounts payable and receivable, cash, budgeting, fixed assets and financial reporting in one connected environment.",
+      },
+      {
+        title: "Procurement & sourcing",
+        body: "Bring purchasing, approvals and supplier processes together so teams have greater control from requisition through to receipt.",
+      },
+      {
+        title: "Supply chain & inventory",
+        body: "Track inventory, stock movements, orders and supply across locations with clearer operational visibility.",
+      },
+      {
+        title: "Asset & cost management",
+        body: "Connect assets, maintenance activity and costs so teams can understand performance and make better decisions across the asset lifecycle.",
+      },
+      {
+        title: "Reporting & business performance",
+        body: "Give finance and operational leaders clearer access to the numbers that matter, with reporting and analytics built around how your organisation works.",
+      },
+      {
+        title: "Integration & automation",
+        body: "Connect Finance & Operations with the wider Microsoft ecosystem and automate the workflows around approvals, data movement and day-to-day processes.",
+      },
+    ],
+    platform: {
+      label: "Microsoft Dynamics 365 Finance and Supply Chain Management",
+      description:
+        "Sognos works across the Microsoft Finance & Operations platform to connect financial management with the operational processes behind it. Our capability brings together Dynamics 365 Finance and Supply Chain Management with Power Platform, Power BI, Microsoft 365 and the wider Dynamics 365 ecosystem, giving you a Microsoft-native foundation that can evolve with your organisation.",
+    },
+    problemLayout: "columns",
+    experience: {
+      intro:
+        "Sognos is delivering Dynamics 365 Finance & Operations services for organisations operating in complex, high-accountability environments.",
+      customers: [
+        "St Vincent's Health Australia",
+        "Hearing Australia",
+        "Genetic Technologies",
+      ],
+      outro:
+        "From healthcare and national service delivery to commercial operations, our teams understand that ERP needs to work around the reality of your organisation, not force your organisation around the system.",
+    },
+    microsoftEcosystem: {
+      heading: "One platform. Finance through to operations.",
+      items: [
+        {
+          title: "Dynamics 365 Finance",
+          body: "Bring financial management, planning, reporting and control into one core system.",
+          logo: "/logos/Dynamics365.svg",
+        },
+        {
+          title: "Dynamics 365 Supply Chain Management",
+          body: "Connect procurement, inventory, supply chain, assets and operational activity across the organisation.",
+          logo: "/logos/Dynamics365.svg",
+        },
+        {
+          title: "Power Platform",
+          body: "Extend workflows and automate processes without building another disconnected system.",
+          logo: "/logos/PowerPlatform_scalable.svg",
+        },
+        {
+          title: "Power BI",
+          body: "Turn finance and operational data into clear reporting for the people making decisions.",
+          logo: "/logos/platform/PowerBI_scalable.svg",
+        },
+      ],
+    },
+    relatedSlugs: [
+      "frontline",
+      "customer-relationship-management",
+      "customer-insights",
+      "customer-experience",
+      "customer-service",
+      "power-platform",
+      "quick-start",
+    ],
     worksWithCare: true,
     worksWithRoster: true,
   },

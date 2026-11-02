@@ -19,6 +19,8 @@ import {
   FRONTLINE_SLUG,
 } from "@/components/layout/sections/solutions/frontline";
 import SolutionProblem from "@/components/layout/sections/solutions/SolutionProblem";
+import SolutionExperience from "@/components/layout/sections/solutions/SolutionExperience";
+import IndustryChallengeStack from "@/components/layout/sections/industries/IndustryChallengeStack";
 import SolutionWorksWith from "@/components/layout/sections/solutions/SolutionWorksWith";
 import SolutionRelated, {
   type RelatedItem,
@@ -172,12 +174,24 @@ export default async function SolutionPage({
         </div>
       </section>
 
-      {/* The problem — option B: sticky header beside numbered rows on navy */}
-      <SolutionProblem
-        name={meta.name}
-        intro={content.whatItSolves.intro}
-        painPoints={content.whatItSolves.painPoints}
-      />
+      {/* The problem — option B: sticky header beside numbered rows on navy.
+          `columns` (Finance & Operations): numbered columns on navy, the
+          Industries challenge layout. */}
+      {content.problemLayout === "columns" ? (
+        <IndustryChallengeStack
+          label="The problem"
+          heading={`What ${meta.name} solves`}
+          industryName={meta.name}
+          description={content.whatItSolves.intro}
+          challenges={content.whatItSolves.painPoints}
+        />
+      ) : (
+        <SolutionProblem
+          name={meta.name}
+          intro={content.whatItSolves.intro}
+          painPoints={content.whatItSolves.painPoints}
+        />
+      )}
 
       {/* Capabilities — option A: 3-column grid, Accent Blues panels */}
       <section
@@ -216,8 +230,15 @@ export default async function SolutionPage({
         </div>
       </section>
 
+      {/* Experience — Finance & Operations only: customer rows, sticky rail. */}
+      {content.experience && (
+        <SolutionExperience name={meta.name} {...content.experience} />
+      )}
+
       {/* Platform — option C: translucent cards on navy, label in the rail.
-          Frontline graphics stand in for the other solutions. */}
+          Frontline graphics stand in for the other solutions. A solution
+          with `microsoftEcosystem` (Finance & Operations) shows its four
+          Microsoft products instead, logo cards without graphics. */}
       <ScrollReveal>
         <section className={`bg-sognos-navy ${LAYOUT.section}`}>
           <div className="mx-auto max-w-7xl px-6">
@@ -230,41 +251,73 @@ export default async function SolutionPage({
               <div className={LAYOUT.content}>
                 <div className={LAYOUT.head}>
                   <h2 className={`${TYPE.h2} text-white`}>
-                    Built on {content.platform.label}
+                    {content.microsoftEcosystem?.heading ??
+                      `Built on ${content.platform.label}`}
                   </h2>
                   <p className={`${TYPE.lede} text-white/75`}>
                     {content.platform.description}
                   </p>
                 </div>
-                <div
-                  className={`${LAYOUT.gap} grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-4`}
-                >
-                  {platformCards(slug, content.platform.label).map((card, i) => (
-                    <article
-                      key={card.title}
-                      className="flex flex-col gap-5 rounded border border-white/10 bg-white/5 p-5"
-                    >
-                      <div aria-hidden="true">
-                        <FrontlinePlatformVisual index={i} />
-                      </div>
-                      <div>
+                {content.microsoftEcosystem ? (
+                  <div
+                    className={`${LAYOUT.gap} grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4 lg:gap-4`}
+                  >
+                    {content.microsoftEcosystem.items.map((item) => (
+                      <article
+                        key={item.title}
+                        className="flex flex-col gap-6 rounded border border-white/10 bg-white/5 p-5"
+                      >
                         <Image
-                          src={card.logo}
+                          src={item.logo}
                           alt=""
-                          width={24}
-                          height={24}
-                          className="h-6 w-auto"
+                          width={36}
+                          height={36}
+                          className="h-9 w-auto self-start"
                         />
-                        <h3 className={`mt-4 ${TYPE.h3Small} text-white`}>
-                          {card.title}
-                        </h3>
-                        <p className={`mt-1 ${TYPE.small} text-white/75`}>
-                          {card.body}
-                        </p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
+                        <div>
+                          <h3 className={`${TYPE.h3Small} text-white`}>
+                            {item.title}
+                          </h3>
+                          <p className={`mt-1 ${TYPE.small} text-white/75`}>
+                            {item.body}
+                          </p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div
+                    className={`${LAYOUT.gap} grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-4`}
+                  >
+                    {platformCards(slug, content.platform.label).map(
+                      (card, i) => (
+                        <article
+                          key={card.title}
+                          className="flex flex-col gap-5 rounded border border-white/10 bg-white/5 p-5"
+                        >
+                          <div aria-hidden="true">
+                            <FrontlinePlatformVisual index={i} />
+                          </div>
+                          <div>
+                            <Image
+                              src={card.logo}
+                              alt=""
+                              width={24}
+                              height={24}
+                              className="h-6 w-auto"
+                            />
+                            <h3 className={`mt-4 ${TYPE.h3Small} text-white`}>
+                              {card.title}
+                            </h3>
+                            <p className={`mt-1 ${TYPE.small} text-white/75`}>
+                              {card.body}
+                            </p>
+                          </div>
+                        </article>
+                      ),
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

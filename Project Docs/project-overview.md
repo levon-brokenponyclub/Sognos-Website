@@ -57,6 +57,7 @@ Solutions:
 - Customer Service
 - Power Platform
 - Quick Start
+- Finance & Operations
 
 Industries:
 - Health & Social Care
@@ -79,6 +80,7 @@ Industries:
 - `/solutions/customer-service` ✅
 - `/solutions/power-platform` ✅
 - `/solutions/quick-start` ✅
+- `/solutions/finance-operations` ✅
 - `/industries` ✅
 - `/industries/health-social-care` ✅
 - `/industries/facilities-management` ✅
@@ -107,6 +109,7 @@ Industries:
   - Customer Service
   - Power Platform
   - Quick Start
+  - Finance & Operations
 - Industries
   - Health & Social Care
   - Facilities Management
