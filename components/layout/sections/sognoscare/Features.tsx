@@ -1,5 +1,4 @@
 import CareFeatureVisual, {
-  CarePalettePicker,
   CareVisualsProvider,
 } from "@/components/layout/sections/sognoscare/FeatureVisuals";
 import ProductFeaturesScroll, {
@@ -129,12 +128,14 @@ export default function SognoscareFeatures({
       <ProductFeaturesScroll
         header={header}
         features={scrollFeatures}
-        accentBorderClass="border-sognos-blue-accent"
-        accentTextClass="text-sognos-blue-accent"
+        accentBorderClass="border-sognos-care-ink"
+        accentTextClass="text-sognos-care-ink"
         enableVisuals
         variant="cards"
-        taglineClass="text-[#0b6fc4]"
-        headerAside={<CarePalettePicker />}
+        taglineClass="text-sognos-care-ink"
+        alternate
+        cardClass="bg-sognos-tint"
+        markerClass="bg-sognos-care-base"
         stickyOffset="sectionBar"
       />
     </CareVisualsProvider>

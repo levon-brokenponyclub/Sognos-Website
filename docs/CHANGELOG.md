@@ -1,5 +1,684 @@
 # Changelog
 
+## 2026-11-02 — Try it free: booking motion graphic
+
+- **New `BookingGraphic`** in `digpacks/AssetBooker.tsx`, ported from the mockup's `asset_booker.py`:
+  - The Asset Booker card loops every 1.5s: the resource tab is selected, the 10:30 slot is picked, the "booked ✓" toast shows, then it moves on through Desk, Meeting room, Parking and Equipment.
+  - It runs only while in view. Under reduced motion it shows the static booked state.
+- **Layout:** the copy is capped at `max-w-xl` in 7 columns, beside the graphic in 5 columns on a `white/15` inset panel, with `lg:gap-24`. At 1440px the copy is 576px wide, the panel is 457px, and there is 199px of space between them. The hairline CTA row below is unchanged.
+- **Checks:**
+  - `tsc` and lint are clean, and `/products/digpacks` returns 200.
+  - The toast sits inside the panel.
+
+## 2026-11-02 — Sub-nav actions + Asset Booker refactor
+
+- **Sub-nav (all products):** the actions now read downloads first, then Schedule a Call. Off-site downloads (`external`) no longer show in the section menu as well. Button mode (`actions="button"`, `demoProduct`) is removed.
+- **DigPacks sub-nav:** Download and Schedule a Call text links replace the Book a Demo button.
+- **Try it free:** rebuilt on the Outcomes pattern.
+  - The label, the section-size H2 (`TYPE.h2`, previously text-5xl) and the lede sit in a max-w-3xl column.
+  - Below them is a hairline-ruled row with the setup note on the left and both CTAs on one line on the right.
+- **"What is Asset Booker?" drawer:** rebuilt as the mockup's right-side panel (max-w-xl).
+  - The header has the DigPacks logo and a close button, and the body scrolls (both paragraphs and the screenshot).
+  - The "Find out more" foot, with the note, the DigPacks link and the Download for free link, stays pinned at the bottom.
+  - The drawer is portalled to `<body>`, because ScrollReveal's transform was trapping the fixed overlay.
+  - Esc closes it. Focus moves to Close and returns to the trigger, and body scroll is locked.
+- **Checks:**
+  - `tsc` is clean, and lint on the changed files is clean.
+  - All four product pages return 200.
+  - In the pane at 1440×900: the drawer is 900px tall and 576px wide with the foot at 779–900px, Esc restores scroll and focus, and the DigPacks sub-nav reads menu (Outcomes, Solutions, Why DigPacks, Asset Booker) and actions (Download, Schedule a Call).
+  - Animations were not observed, because the pane was hidden.
+
+## 2026-11-02 — Product pages polish pass
+
+- **All four product pages:**
+  - The sub-nav menu now sits on the left, after the logo divider, with the actions on the right (white, below the hero).
+  - Hero H1 is capped at `text-6xl` on desktop. It was `lg:text-7xl` / `md:text-7xl`.
+- **DigPacks:**
+  - Sub-nav: a new "Download" action links to the Asset Booker form in a new tab (`SubNavSection.external`) and sits beside the Book a Demo button.
+  - Hero: the white DigPacks logo replaces the "DigPacks × Sognos" eyebrow above the H1. The logo is removed from the right column.
+  - Why: the localisation panel H3 is now white. It inherited a dark colour before.
+  - Try it free:
+    - The setup note moves under the H2 in the left column.
+    - The split is now 6/6.
+    - Download and "What is Asset Booker?" sit side by side from `sm`.
+  - Graphic panels alternate DigPacks base `#b8166e` and dark `#5d1e4c`.
+  - Bento:
+    - The fixed 23rem rows are gone. Small panels are 480 / 420 / 360px (mobile / sm / lg), so no graphic is cropped. At 1440px each panel has 70–97px of headroom.
+    - The lead tile's panel fills its two rows, and its graphic scales ×1.4 on `lg`.
+    - Card copy now has a 14px medium ink tagline, more padding, and a 3-line clamp on small tiles. The lead tile shows its full description at 60ch.
+- **Checks:**
+  - `tsc` is clean, and lint on the changed files is clean.
+  - All four product pages return 200.
+  - Panel and graphic sizes were measured in the browser pane at 1440px and 288px.
+
+## 2026-11-02 — Header + footer rows (Products Inspector)
+
+- **Header** (`Navbar.tsx`; export `hd-start` trans-light, `hd-scroll` white):
+  - Dark-hero pages still start transparent with white text.
+  - Once scrolled, they now turn white with navy text and the line border. Before, they turned navy. This applies site-wide.
+- **Footer rows**, site-wide (export `fr-cta` C accent, `fr-menu` C, the rest A2):
+  - CTA C: the new `CTABand variant="strip"`, one line on the accent with Book a Demo and Talk to Sales.
+    - The heading is 24px, because white on `#1d96fc` is 3.1:1, the large-text floor.
+    - Book a Demo hovers navy, since the accent hover would vanish.
+    - Talk to Sales is outlined. In the mockup it is a second white pill.
+  - Menu C: index rows on tint. Each row has a label with an accent marker.
+    - Products are chips with product dots.
+    - Solutions, Industries, Resources and Company are inline links.
+  - Accreditations A2: a white card with the logos on tint tiles.
+  - Acknowledgement A2: centred.
+  - Legals A2: the copyright and the Sanity legal links.
+  - Graphic A2: the Sognos wordmark as a navy mask, cropped at the foot.
+  - Removed: the brand block (logo and tagline) and the Legal column.
+- **Backup:** footer B (the uncommitted option B) is backed up to `.backups/footer-b-2026-11-02/`, with its files and `CTABand.tsx`. `FooterLinkGroup.tsx` is now unused.
+- **Checks:**
+  - `tsc` is clean, and lint on the changed files is clean.
+  - `/`, two product pages, a solution, an industry, `/knowledge-hub`, `/company/about` and `/contact` return 200.
+  - The footer rows render, and the server logs no errors.
+  - Not checked in a browser.
+
+## 2026-11-02 — SognosGenogram feature motion graphics
+
+- **New `sognosgenogram/FeatureVisuals.tsx`:** six motion graphics ported from the mockup generator (`product_visuals.py`), built on the shared visual primitives.
+  - Genogram builder: the tree assembles and the relationship line draws
+  - Support network: spokes draw out to six people
+  - Relationship tags: a review run with a pulse alert
+  - Case record with the Genogram tab, shared by four workers
+  - Network snapshots: a year cycle with support counts
+  - Copilot family narrative: the summary types itself
+- **Visual details:**
+  - Panels alternate Genogram soft and tint.
+  - Every graphic starts once it is 35% in view and renders its finished state under reduced motion.
+- **Genogram features** now show the graphics instead of `FeaturePlaceholderImage`. That component no longer has any callers.
+- **Checks:**
+  - `tsc` and lint are clean.
+  - `/products/sognosgenogram` returns 200, and all six graphics render server-side. The server logs no errors.
+  - Not checked in a browser.
+
+## 2026-11-02 — DigPacks solution motion graphics
+
+- **New `digpacks/FeatureVisuals.tsx`:** six motion graphics ported from the mockup generator (`product_visuals.py`), built on the shared visual primitives.
+  - Risk register with an approval run
+  - Safety Lens photo analysis, which types its draft assessment
+  - HR leave self-service run
+  - Vaccination Hub slot grid and count-up
+  - PIA stage cycle with the agent prompt
+  - FixIT service-request queue
+- **Visual details:**
+  - Panels alternate DigPacks soft and tint. The agent accents use the DigPacks secondary `#005eb8`.
+  - Every graphic starts once it is 35% in view and renders its finished state under reduced motion.
+- **Solutions bento** now shows the graphics instead of the screenshots. Tiles below `lg` are 340px tall so the cards fit. The six solution screenshots in `public/images/digpacks/` are now unused.
+- **Checks:**
+  - `tsc` and lint are clean.
+  - `/products/digpacks` returns 200, and all six graphics render server-side. The server logs no errors.
+  - Not checked in a browser.
+
+## 2026-11-02 — DigPacks Products Inspector port
+
+- **Export:** `digpacks.json`. Palette "custom" `#b8166e` / `#5d1e4c` is now the DigPacks base and dark tokens.
+- **Hero C (Editorial):**
+  - On the mockup's 135° gradient (inline; the shared token is unchanged).
+  - The large headline sits beside the white DigPacks mark and a 4-item solutions index. Each index item links to its Solutions tile.
+  - Below is the nurse photo band with the tagline.
+  - Book a Demo is white with heading text. The mockup's magenta button disappears on the magenta gradient.
+  - "Explore the solutions" became "Talk to Sales" (`/contact`).
+- **Sub-nav:** `ProductSubNav variant="sticky"` with the new `actions="button"`. It shows a Book a Demo button that opens the demo modal for DigPacks instead of the links.
+- **Outcomes (Problem A, stats form):**
+  - On DigPacks base, with four white-ruled stats.
+  - The source note becomes the lede.
+  - The text is full white for AA (`/75` on `#b8166e` is 4.0:1).
+- **Solutions (Features B, bento):**
+  - On DigPacks soft, with the first solution spanning 2×2. White bordered tiles carry the ink tagline. Small tiles clamp the copy to two lines.
+  - The visuals are the existing screenshots. The mockup's DigPacks motion graphics are not built yet.
+  - It no longer uses `ProductFeaturesScroll`.
+- **Why (B, Immersive):** on DigPacks deep, in three panels: the reasons, who should start the conversation, and the localisation list on the gradient.
+- **Asset Booker (C, Editorial, graphic off):**
+  - On DigPacks base, with the label and large heading beside the copy and CTAs. Download is a white button.
+  - The live bottom drawer is kept; the mockup uses a right-hand panel.
+  - The product image is no longer shown in the section, only in the drawer.
+- **Removed from the page:** the Partnership section, because it is not in the mockup. `digpacks/Partnership.tsx` is now unused.
+- **Checks:**
+  - `tsc` is clean, and lint on the changed files is clean.
+  - `/products/digpacks` and the other product pages return 200.
+  - The page's 169 image URLs resolve, and the server logs no errors.
+  - No production build was run.
+
+## 2026-11-02 — SognosRoster + SognosGenogram Products Inspector port
+
+- **Shared product sections** (`components/layout/sections/product/`): `ProductHero` (Hero B), `ProductProblemSplit` (Problem A), `ProductAdvantagesIndex` (Advantages C) and the `theme.ts` product map. Together with `ProductStoryStage` (Stories D), these now drive SognosCare, SognosRoster and SognosGenogram. The SognosCare Hero, Problems and Advantages files are now thin wrappers.
+- **SognosRoster** (`roster.json`):
+  - It uses the same layouts as Care.
+  - The product tone uses `roster-dark #104b90` instead of base. White on `#1d96fc` is only 3.1:1.
+  - The hero photo is `RosterBg.avif`. The video and logo crossfade are retired.
+  - Problem shows the three "Without Sognos" points. The With / Without tabs are retired.
+  - The features use alternating tint cards with the ink tagline and rule. The review palette picker is removed, and the panels are fixed to "Roster tints" on the Roster accent `#59bbf7`, which matches the mockup.
+- **SognosGenogram** (`genogram.json`):
+  - It uses the same layouts.
+  - New Key Advantages section with the mockup copy. The heading is a suggestion and the intro is the live Integration heading. "Key Advantages" is added to the sub-nav.
+  - The feature cards drop the eyebrow/tagline (the export has the eyebrow off), keep the placeholder visuals, and move from the default layout to the cards layout.
+- **Both pages:**
+  - The white sticky sub-nav after the hero (`variant="sticky"`) replaces the pill nav band.
+  - The trust logos move into the hero foot, as on Care, and the separate `ProductTrustStrip` section is removed.
+  - "Book a Demo" now opens the demo modal with the product preselected. It previously had no handler.
+  - The secondary CTA "Learn More" (`#`) becomes "Talk to Sales" (`/contact`).
+  - Care's colour set (tint stage, `#1d96fc` markers, `line-strong` tabs) applies to both, as decided.
+- **Checks:**
+  - `tsc` is clean.
+  - Lint on the changed files has no new findings. There are two errors in untouched files (`products/page.tsx:235`, `sognosroster/Proof.tsx:144`).
+  - `/`, `/products` and all three product pages return 200.
+  - All image URLs on Roster (172) and Genogram (166) resolve, and the server logs no errors.
+  - No production build was run, because the dev server is live.
+
+## 2026-11-02 — Product tokens + SognosCare Products Inspector port
+
+- **Tokens** (`app/tokens.css`, `app/globals.css`): the full product ladders from the Products Inspector are now real colour tokens: deep, dark, base, accent, soft, tint and ink for Care, Roster, Genogram and DigPacks. `--sognos-line-strong #b7becc` is added. The product gradients are unchanged; the Care hero carries the mockup's 135° gradient inline until they are signed off.
+  - Changed live values: Roster dark `#1d96fc` → `#104b90` and base `#59bbf7` → `#1d96fc`; Genogram dark `#250438` → `#3a0f45`; DigPacks dark `#2a0517` → `#5d1e4c` and base `#b6065a` → `#b8166e`. Every page that uses these tokens shifts.
+- **SognosCare page**, following the Inspector export `care.json`:
+  - Hero B: Immersive on the Care gradient, with glow and grid, the product photo and a floating glass card. CTAs are "Book a Demo" and "Talk to Sales". The trust logos are kept at the hero foot.
+  - Sub-nav: a white bar that pins under the navbar after the hero. It shows the logo, the section links on the right, and the Schedule a Call and Download Datasheet links. This is the new `ProductSubNav variant="sticky"`.
+  - Problem A: Split on Care base, with a sticky statement beside numbered rows. Text under 24px is full white, because white is only 4.6:1 on Care base and the `/75` step fails AA.
+  - Features C: alternating cards with the visual on the left first, Sognos tint, an ink eyebrow and an ink copy rule. The scroll-spy rail is kept. New `ProductFeaturesScroll` props: `alternate`, `cardClass` and `markerClass`. The review-only feature palette picker is removed, and the panels are fixed to "Care blues".
+  - Editions C: white dot cards in a snap slider, with the label in the left rail on tint. This is the new `EditionCards variant="dot"`; the cards still link to each edition.
+  - Advantages C: oversized numeral rows on Care base. The label and intro are full white.
+  - Stories D: the new `ProductStoryStage`, a photo stage with a quote panel and tabbed customer index. The tabs auto-advance every 7s, pause on hover or focus, and stay static under reduced motion. It falls back to `ALL_STORIES`.
+- **Radius:** `rounded` (4px) on cards, tabs and panels. `rounded-lg` is kept for the hero photo only, a hero-scale surface (§2.1).
+- **Anchors:** `LAYOUT.anchor` is now `scroll-mt-36`, which clears the navbar plus the 56px sub-nav. This also applies to the Solutions tint section.
+- **Checks:** `tsc` and lint are clean. `/`, `/products`, all four product pages, `/solutions/frontline`, `/industries/health-social-care` and an edition page return 200. The 129 image URLs on the Care page resolve, and the server logs no errors. No production build was run because the dev server is live.
+
+## 2026-10-26 — SognosGenogram: Key Advantages section
+
+- **Genogram now has a Key Advantages section** (`products/index.html`, `products/genogram.html`) in all three layouts (A checklist / B gradient tiles / C numeral index), with Inspector layout, tone, rail and Colours.
+- **Six advantages**, derived from the live product page (sognos.com.au/products/sognosgenogram: problems, features, integration) and `components/layout/sections/sognosgenogram/`:
+  - case-record maps
+  - clinical genogram notation
+  - support-network mapping
+  - risk / protective tagging
+  - continuity at handover
+  - Copilot AI summaries
+- **Copy:**
+  - Intro is the live Integration heading: "Context that lives inside the case, not beside it."
+  - Heading "Why practitioners choose SognosGenogram" is a suggestion.
+- **Navigation:** "Key Advantages" is added to the Genogram sub-nav and the header bar.
+- **Checks:** A, B and C render 6 items each, the sub-nav and bar list the new link, and the Inspector lists the adv area for Genogram.
+
+## 2026-10-26 — Asset Booker: section graphic switch
+
+- **New switch:** Inspector → Stories / CTA → "Section graphic (booking motion graphic)". It only appears on DigPacks. It is on by default and saved with presets, undo and export.
+- **Off:**
+  - A collapses to a single copy column (max 48rem).
+  - B drops its glass panel.
+  - C drops its graphic and steps strip.
+  - Copy, CTAs and the "What is Asset Booker?" drawer are unchanged.
+- **Checks:**
+  - Off hides the graphic in A, B and C. Section heights: A 694 → 568, B 1077 → 568, C 995 → 513.
+  - The Inspector switch toggles the attribute.
+
+## 2026-10-26 — DigPacks Asset Booker section: A / B / C layouts, booking motion graphic, info drawer
+
+- **DigPacks Stories / CTA (Asset Booker)** — `products/index.html` and `products/digpacks.html`:
+  - Screenshot removed. Three layouts that follow the page system:
+    - **A · Split:** copy left, booking graphic on a soft panel right.
+    - **B · Immersive:** deep glow + grid, centred copy, graphic in a glass panel with resource chips.
+    - **C · Editorial:** large headline 7/5, then a strip with the graphic and three numbered steps. The step copy is suggested.
+  - **Booking motion graphic** (generated, DigPacks tokens) loops through desk, meeting room, parking and equipment: select resource → 10:30 slot → "booked" toast. The data is illustrative. It is static under reduced motion and pauses when hidden.
+  - **CTAs:**
+    - "Download Asset Booker for free" (replaces Book a Demo) goes to the live Microsoft Forms sign-up in a new tab.
+    - New "What is Asset Booker?" link.
+- **Right-side drawer:** "What is Asset Booker?" opens a drawer with the live copy from AssetBooker.tsx, the Asset Booker image, and "Find out more" (digpacks.co.uk knowledge base, new tab) plus the download link.
+  - Esc, the backdrop or the close button closes it; focus moves to the close button and returns to the link; body scroll is locked.
+  - Full width on mobile.
+- **Checks:**
+  - All layouts render without the screenshot, the loop advances and the drawer opens and closes with focus return.
+  - At 375, no horizontal overflow and the CTA labels stay on one line.
+  - Page scripts are syntax-clean.
+
+## 2026-10-26 — Home product cards: section eyebrow / title switches
+
+- Product cards: new **Section eyebrow** and **Section title** show / hide switches for layouts A, B, C and D. The Current 3-up and featured layouts have no visible section heading, so the switches do nothing there.
+- Product names stay on their own **Product name** switch.
+- **Checks:** both switches hide the eyebrow and "Three products. One platform." in A, B, C and D. Product names are unaffected.
+
+## 2026-10-26 — Home product cards: D · Expanding columns
+
+- **New Product cards layout D · Expanding columns**, using the Industries Immersive pattern. Three product photo columns on a deep surface with the product glow.
+  - **Desktop:** the hovered column (or SognosCare by default) widens to 2.4× and reveals the description and the "Explore" link. The others show the accent bar, logo and name.
+  - **Mobile:** columns stack with everything visible.
+  - The product card switches apply: image, logo, accent bar, name, description, link and glow.
+- **Checks:**
+  - At 1440, the columns measure 545 / 228 / 228px, and the description and glow switches hide their elements.
+  - At 375, no horizontal overflow and the description shows.
+  - Page scripts are syntax-clean.
+
+## 2026-10-26 — Home: brand colours, show/hide + glow, new Solutions / Industries / Stories layouts
+
+- **Sognos brand colours on every section and footer row** (all Inspector pages):
+  - New tone swatches: sognos-navy-darkest #060e28, sognos-navy #152248, sognos-blue-accent #1d96fc, sognos-heading #0f1936. sognos-tint #f9fafe already existed.
+  - Every Colours role (background, headings, text, cards, buttons, panels…) has one-click Brand swatches for the five colours plus white, next to the custom picker.
+- **Hero (every layout):**
+  - Show / hide switches: eyebrow, headline, sub copy, primary button, secondary link, image / visual, floating card, product tiles / index, and glow.
+  - A and C gain a soft product-tinted glow; B and the Current navy layouts switch their existing glow and blur layers.
+- **Product cards (every layout):**
+  - Show / hide switches: image panel, logo tile, accent bar / numeral, name, description, link / arrow, and glow.
+  - A and C gain a soft glow; B gets the product glow.
+- **Solutions:**
+  - **B · Immersive** now matches the products Features B bento: first tile 2×2, plus an "All solutions" tile. That tile's copy is suggested.
+  - **C · Editorial** now uses the products Features C cards, with every card option in the Inspector: stacked / alternate, image side, columns, text position, surface, eyebrow colour, element switches, and the "Match SognosCare card" preset.
+  - The previous C (index + preview) and B (dark 4-up) are kept as C2 and B2.
+  - New from Frontline Related: D graphic cards, E list rows with hover preview, F slider.
+- **Industries:** new from HSC Other industries, with all five sectors:
+  - D graphic tint cards
+  - E photo + counted stat (illustrative)
+  - F bordered graphic cards
+  - G photo slider
+- **Customer Stories:** new **D · Expanding stories**, the Industries Immersive pattern. Customer photo columns; the hovered or first column widens to show the quote and author. Switches for logo, company name, quote and author; tone sets the surface.
+- **Fix:** white buttons kept their navy text when a section has a dark tone. "Book a Demo" was invisible on the Current hero in dark tones.
+- **Checks:**
+  - At 1440, all new layouts render. Toggles initialise on and hide their elements in every layout that has them, and glow off removes the layer.
+  - Brand pick sets the section background to #060e28, the white button stays readable on a navy tone, and the Solutions C card options appear in the Inspector.
+  - At 375, no horizontal overflow on any new layout.
+  - All Inspector page scripts are syntax-clean.
+
+## 2026-10-26 — Home: audit + A / B / C options for every section (Inspector)
+
+- **Audit:** `docs/audits/home-audit.md`. 11 findings, including:
+  - Hero, cards and trust were one 1,392px navy block.
+  - A review control is visible on the live Solutions section.
+  - Industries panels look empty before their graphics load.
+  - Customer story cards are off-palette.
+  - "View more resources" appears twice.
+- **`home/index.html`** is now the Inspector page. Every section has A · Split (light), B · Immersive (dark) and C · Editorial (soft):
+  - **Hero:** A photo with a live platform card / B deep glow with three product tiles / C 8/4 with a product index and photo band. The current centred and split heroes are kept.
+  - **Product cards:** A photo cards / B bento with SognosCare leading / C editorial rows. The current 3-up and featured cards are kept.
+  - **Trust strip:** A logo row / B dark marquee / C statement with logo tiles. The current navy row is kept.
+  - **How Sognos Works:** A sticky header with step cards and visuals / B connected flow / C autoplay tabs with a panel. The current timer deck is kept, with motion 1 Pipeline, 2 Product or 3 Photo.
+  - **Solutions:** A 2×2 visual cards / B dark 4-up / C index with a sticky preview.
+  - **CTA band:** A tint panel / B deep glow / C editorial split.
+  - **Industries:** A photo cards / B expanding columns / C index with a photo.
+  - **Customer Stories:** A featured split with three quotes / B spotlight with logo tabs / C story stage.
+  - **News & Insights:** A lead article with a list / B dark cards / C editorial index (live Sanity posts).
+- **Presets:** A, B and C set every section, the header start and scroll states, and the footer rows (A2 / A3b / C).
+- **Every section:** rail, tone and Colours, with the Sognos brand theme as the default.
+- **`home/options.html`** (new): all 33 options stacked, each with its own tone, plus a theme switch and footer row pickers.
+- **Shared:**
+  - The Sognos brand ladder moved into the product token set; Frontline uses it from there.
+  - The archive builder gained a theme default and presets that can set header and footer rows.
+  - `build_home.py` no longer rewrites the home index when loaded as a library.
+  - Every Inspector page is regenerated, with all page scripts syntax-checked.
+- **Checks:**
+  - At 1440, all 37 section variants render, preset B sets the header and footer, and the theme is sognos (#1e96fc).
+  - At 375, no horizontal overflow for any preset or the kept current layouts.
+  - options.html renders all 33 blocks with no overflow.
+
+## 2026-10-26 — Frontline hero: Sognos brand theme, Editorial without orb, live capability card
+
+- **Sognos brand colour theme** (new, now the Frontline default). Tokens:
+  - deep #0b1430, dark #0f1936 (care-dark), base #1e96fc (accent), accent #59bbf7
+  - soft #f9fafe (Sognos tint), tint #e8f0fb, ink #0b6fc4
+  - gradient #0f1936 → #16336b → #1e96fc
+  - Roster blue, SognosCare, Genogram and DigPacks stay selectable. The theme is saved under a new key so the brand default applies over themes saved earlier.
+- **Hero C · Editorial:** the large gradient circle is removed. Flat product-soft surface; layout unchanged.
+- **Hero A · Split:** the image card now carries the Editorial right column. It shows Frontline, "Field service, connected" and capabilities 01–04, as a live list:
+  - A highlight with a 2.8s progress bar walks the list, and the active item shows a one-line live status (illustrative data).
+  - It pauses on hover and is static under reduced motion.
+- **Fix:** a script on the Frontline page was missing its closing line (from the earlier Rail change), so the colour theme did not apply. Fixed; every Inspector page's scripts are now syntax-checked and clean.
+- **Checks:**
+  - Theme sognos with --p-base #1e96fc.
+  - The card cycles 01 → 02 → 03 and fits inside the image at 1440 (307 of 540px) and 375 (299 of 409px), with no horizontal overflow.
+  - Editorial has no orb.
+
+## 2026-10-26 — Rail switch on every section (Frontline, HSC, Knowledge Hub, Customer Stories)
+
+- **Rail switch on every section.** Every section in the Frontline, HSC, Knowledge Hub and Customer Stories Inspectors now has "Rail (label in a left column)".
+  - Sections built with a rail start with Rail on; turning it off stacks the label above the content.
+  - Other sections move their eyebrow into a left rail. Sections with no eyebrow get a label from their heading, shown only while railed.
+- **Customer Stories layout names.** Every section layout and preset is named A · Grid + filter / B · Index + rail / C · Spotlight + bento.
+- **Shared code.**
+  - New `rail.py`. Page JS railify handles nested sections and section-level bars.
+  - Rail defaults are passed into the page init.
+- **Saved state reset.** Storage namespaces were bumped (v3), because older saved state had stored Rail off.
+- **Checks.**
+  - Frontline: all six sections toggle (native rails grid ↔ stacked; others railgrid ↔ none) with no horizontal overflow.
+  - HSC, Knowledge Hub and Customer Stories were rebuilt but not yet re-verified in the browser.
+
+## 2026-10-26 — Knowledge Hub + Customer Stories: per-section layouts in the Inspector
+
+- **Knowledge Hub (`knowledge-hub/index.html`)**: every section now picks its own layout, as on the product pages, instead of one page-wide switch:
+  - Hero: 1 light + featured / 2 dark lead + latest / 3 title only.
+  - Category filter: 1 chips / 2 tabs / Off.
+  - Posts: 1 category sections / 2 mixed grid / 3 index + rail.
+  - Events & Webinars: 1 upcoming + past / 2 timeline / Off.
+  - Newsletter band and Milestones: rows / Off.
+  - Presets 1 · Synthesia close / 2 · Editorial / 3 · Index + rail set every section at once.
+- **Customer Stories (`customer-stories/archive.html`)** now uses the Inspector, with per-section layouts:
+  - Hero: A search + featured / B title only / C spotlight carousel.
+  - Industry filter: A chips + label / C chips / Off.
+  - Stories: A card grid / B index + rail / C bento.
+  - Presets A / B / C. The bottom switcher is retired.
+- Search and category / industry filters work across any mix of layouts (one filter root per page). Tone, Colours, header states, footer rows and colour theme work as on the other pages.
+- **`options.html`** for both pages: every section layout stacked with its own tone (KH 12 blocks, Customer Stories 8).
+- **Shared:** new `archive_insp.py` builder (cuts whole-page options into sections) used by both pages. `build_cs.py` no longer rewrites its legacy archive when loaded as a library. The unused page-switch branch is removed from the Inspector. All Inspector pages are regenerated.
+- **Checks:**
+  - KH and Customer Stories: every layout of every section renders, presets set the expected mix, and a filter in one layout's bar filters another layout's posts.
+  - The sticky bars stay sticky. Tone, Colours and Load more work.
+  - At mobile width, no horizontal overflow for any preset.
+  - options.html renders every block and block tones apply.
+  - Frontline Inspector is unaffected.
+
+## 2026-10-26 — Knowledge Hub mockup: Inspector drawer + options gallery
+
+- **`knowledge-hub/index.html`** now uses the products Inspector:
+  - **Page layout** (Inspector top, also the preset menu): 1 · Synthesia close / 2 · Editorial / 3 · Index + rail. This replaces the bottom-centre switcher.
+  - **Sections of the active layout** are listed as Inspector areas, each with tone swatches and Colours (Solid / Linear / Radial):
+    - 1: hero + featured, category chips, News, Insights, Events, newsletter band, Milestones. (Newsletters appears when it has posts beyond the featured one.)
+    - 2: hero + latest, category tabs, mixed grid, events timeline.
+    - 3: header, index + rail.
+  - Header start / scroll states, footer rows and colour theme (SognosCare default) as on the other pages. Search and category filters work as before.
+- **`knowledge-hub/options.html`** (new): all three layouts in full, one after another, each with per-section tone controls; plus a jump nav, a theme switch and footer row pickers. Filters work inside each layout.
+- **Shared modules:**
+  - Tone and Colours background rules also match an area that is itself a `<section>` (the sticky filter bars stay direct children of the layout so they still stick).
+  - The Inspector gained a config-driven page-layout switch, `noLayout` areas, and hides areas inside a hidden layout.
+  - `build_kh.py` no longer rewrites its legacy index when loaded as a library.
+  - Products, Frontline and HSC are regenerated, and their output is unchanged.
+- **Checks:**
+  - Layouts 1, 2 and 3 switch, and the Inspector lists only the active layout's sections.
+  - Tone works on the sticky tab bar, Colours opens, the layout-3 category filter works, and the "3" preset switches the layout.
+  - At mobile width, no horizontal overflow on any layout. options.html renders all three layouts, the block tone applies and the layout-2 filter works.
+  - Products tone is still applied.
+
+## 2026-10-26 — Health & Social Care mockup: Inspector drawer + options gallery
+
+- **`health-social-care/index.html`** now uses the products Inspector, the same way as Frontline:
+  - **Hero:** A · Split / B · Immersive / C · Editorial (product-page system, HSC copy + industry photo), plus the five HSC heroes (light split, floating card, Paraform P1 / P2 / P3).
+  - **Sections:** each keeps its HSC variants as Inspector layouts: Challenge, How Sognos helps (tabs / cards), Other industries (graphic / photo / cards / slider), Customer stories (shared component placeholder), Platform (Works-with cards / current cards). The bottom-centre switcher is retired.
+  - **Every area:** tone swatches and Colours (Solid / Linear / Radial), header states and footer rows. Colour theme: SognosCare (default) / Roster blue / Genogram / DigPacks.
+  - Direction presets only switch sections that have that letter.
+- **`health-social-care/options.html`** (new): all 18 variants stacked and labelled, each with its own tone, plus a jump nav, a theme switch and footer row pickers.
+- **Fix:** `build_frontline.py` and `build_hsc.py` no longer rewrite their legacy switcher `index.html` when another generator loads them. Running the HSC build had replaced the new Frontline Inspector index; it is regenerated.
+- **Checks:** at 1440, every variant of every section renders (non-zero height), Inspector layout / tone / Colours apply, and preset C leaves single-layout sections in place. At mobile width, no horizontal overflow on any variant; options.html 18/18 blocks render and block tones apply. HSC section files 01–06 are unchanged.
+
+## 2026-10-26 — Frontline mockup: Inspector drawer + options gallery
+
+- **`frontline/index.html`** now uses the products Inspector (click-to-inspect, presets, export / import, undo):
+  - **Hero:** A · Split / B · Immersive / C · Editorial from the product-page system with Frontline copy and the live Unsplash+ photo, plus the two Frontline heroes (light split, dark motion).
+  - **Problem / Capabilities / Platform / Works with / Related:** keep their Frontline variants. Their in-page option bars are hidden on the page and rendered inside the Inspector (layout, platform background / stack / iso, Platform D options, product count, Works A options, capability card + graphic colours). Clicks forward to the originals.
+  - **Every area:** tone swatches and inline Colours (Solid / Linear / Radial); header start / scroll states; modular footer rows (CTA band, Menu, Accreditations, Acknowledgement, Legals, Graphic). The shared footer switcher is replaced by these rows.
+  - **Colour theme** (Inspector top): Roster blue (default) / SognosCare / Genogram / DigPacks token ladders.
+  - State is stored separately from the products page (`sognos-frontline-*`, `sognos-fl-insp-*`).
+- **`frontline/options.html`** (new): every variant stacked and labelled (5 heroes, 3 problem, 2 capabilities, 4 platform, 3 works with, 3 related = 20 blocks), each with its own tone control and its section option bars, a jump nav, a colour-theme switch and footer row pickers.
+- **Shared modules:** the tone and Colours background rules target `section:not(section section)` instead of `> section` (same result on the products page, and they reach nested Frontline sections). The Inspector gained config-driven proxied controls, per-section layouts, themes, an optional sub-nav, and namespaced storage. The products output is otherwise unchanged.
+- **Checks:** at 1440, all 5 heroes and 5 sections render, proxied Platform layout switches A → B (summary "B · Hub"), tone, theme and Colours apply. At 375, no horizontal overflow on either page. options.html: 20/20 blocks render, and block tones, theme and footer pickers apply. Section files 01–07 are unchanged.
+
+## 2026-10-26 — Products mockup: Inspector colour editor fix, sub-nav layouts
+
+- **Fix — Colours panel empty in the Inspector:** the editor tagged its panel with `data-s`, the same attribute the page uses to hide inactive section variants (`[data-s] { display: none }`), so the custom colour / gradient controls were mounted but hidden. Now tagged `data-ed-p` / `data-ed-s`; Solid / Linear / Radial controls show for every area.
+- **Sub-nav layout** (Inspector → Sub-nav → Layout), from `sognoscare/02b-subnav.html`:
+  - Brand: Logo / Text / None. Menu position: Left / Right.
+  - Actions: Button (Book a Demo) / Links (Schedule a Call + Download Datasheet ↓) / Links + button / None.
+  - Border: Solid / Dashed.
+  - "Match 02b sub-nav" preset (Dark · Text · Right · Links · Dashed). Reset section, Reset all, undo and Export cover the new options.
+  - Applies to the sticky sub-nav; the "Header bar" style keeps its fixed 02b layout.
+- **Checks:** Colours panel displays (Solid / Linear / Radial present); 02b preset gives text brand, right-aligned menu (flush to the nav edge), links in place of the button, dashed border on the dark style; Links + button and Brand: None toggle correctly.
+
+## 2026-10-26 — Products mockup: Editorial card options, Story stage, footer logo fix
+
+- **Editorial (C) feature cards** (Inspector → Features, shown when the layout is C):
+  - Arrangement: Stacked / Alternate. Image position: Left / Right. Columns: 1:1, 5:7, 7:5.
+  - Text position: Top / Centre / Split (copy pinned to the bottom, as on the SognosCare index card).
+  - Card surface: Rows (divider), Sognos tint, Gray, Product tint, White bordered, Deep. Card text keeps its own colours under any section tone.
+  - Eyebrow + border colour: Product ink / Product / Accent #1e96fc / Muted.
+  - Element switches: counter, eyebrow, title, copy, copy accent border, link, button.
+  - "Match SognosCare card" preset; Reset section and undo cover every option.
+  - On mobile, text sits above the visual (SognosCare order).
+- **Customer Stories · D · Story stage** (new layout, Stories / CTA section):
+  - Photo stage (customer photo, white logo, sector chip, organisation) beside an oversized quote panel, with a 3-up tabbed customer index.
+  - Tabs carry 7s progress bars and auto-advance; paused on hover / focus; static under reduced motion; previous / next buttons and a counter.
+  - DigPacks keeps its Asset Booker close under D.
+- **Footer graphic fix:** the Sognos wordmark mask loaded `sognos-logo.svg` by URL, which browsers block for CSS masks on `file://`, so the row rendered empty. It now uses an embedded data-URI mask (`.sg-wm`) in the products footer and the shared footer fragment (A3 options), regenerated across every index / archive mockup, `footer/index.html` and `home/`.
+- **Checks:** at 1440 and 375 every arrangement / side / split / surface combination placed the visual on the expected side with no horizontal overflow (scrollWidth 375). Toggles hide their element; Story stage advances (01 → 02 → 03) and tabs sync. Mask data URI decodes at 223×57 and the A2 graphic row measures 1034×264.
+
+## 2026-10-26 — Products mockup: Inspector drawer (replaces the controls panel)
+
+Approved from `docs/audits/products-controls-audit.md` (built with click-to-inspect, presets incl. JSON import, and undo).
+
+- **Inspector:**
+  - Right-hand drawer, closed by default behind an "Inspector" edge tab.
+  - From 1280px the page and header shift left instead of being covered; full width on mobile.
+  - Replaces the 274-button panel: about 46–56 controls visible with one area open.
+- **One accordion that mirrors the page:** Page chrome (Header, Sub-nav) / Sections / Footer rows.
+  - Collapsed rows show a live summary (e.g. "A · Split · Glow · Rail · 1 colour").
+  - Expanding one closes the others.
+- **In each area:**
+  - Layout segmented control; gallery heroes appear on Hero only, and only for Care / Roster.
+  - Rail **switch**.
+  - Tone **swatches** with names.
+  - Context options: Features gets panel background and a palette-set dropdown plus swatches (and Custom); DigPacks gets motion graphic / product screen.
+  - **Inline Colours** (the editor now mounts per area: Solid / Linear / Radial).
+  - Reset section / row and "Copy colours to all products".
+- **Click-to-inspect** (button or `I`, Esc to exit): hovering outlines and labels the area under the cursor; clicking opens its row. Hovering a row in the drawer outlines it on the page.
+- **Presets:**
+  - Built-in directions (Split / Immersive / Editorial) plus saved presets (browser).
+  - **Export all**: layouts, tones, rail, header, sub-nav, footer rows, palettes and colours, plus a CSS preview. Downloads `sognos-products-config.json` and copies to the clipboard.
+  - **Import JSON** applies an export (or an older colours-only export) and saves it as a preset.
+- **Undo / redo:** 20 steps, from the buttons or Ctrl/Cmd+Z / Shift+Ctrl/Cmd+Z.
+- **Implementation:**
+  - The colour editor is now an API (`window.PEditor`) and the page state is exposed as `window.PCtl`.
+  - `docs/mockups/products/*` is generated from `products_inspector.py` / `products_editor.py`.
+- **Checks:**
+  - At 1440, verified by DOM: open/close, page shift, tone / rail / palette / inline colour changes and summaries.
+  - Click-to-inspect maps correctly for all 8 area types: hero, problem, features, close, sub-nav, footer legal, footer menu, header.
+  - Preset save / apply, direction preset, JSON import, export, and undo ×2 / redo (keyboard).
+  - At 375: drawer full width, no horizontal overflow.
+  - Bugs found and fixed:
+    - Tailwind v4 `translate` kept the drawer off-screen.
+    - `<html data-subnav>` matched every inspect click.
+    - The keydown handler crashed when the event target was `document`.
+    - Gallery heroes leaked into non-hero layout rows.
+
+## 2026-10-26 — Products mockup: index glow tone, radial/angle gradients, controls audit
+
+- New tone **Glow · SognosCare index**: the index hero background (two soft radial glows over the deep colour), product-tinted. Available on every section and footer row; light text.
+- **Colour editor:** each role is Solid, **Linear** (angle slider + number) or **Radial** (X / Y position + size). All three round-trip through save and export.
+- Audit: `docs/audits/products-controls-audit.md`.
+  - The panel has 274 buttons and 4,260px of content in a 463px viewport.
+  - Proposes an Inspector drawer: per-section accordion, inline colour editing, swatch tones, a rail switch, context-aware options, click-to-inspect, presets, undo, one export.
+  - Awaiting approval.
+
+## 2026-10-26 — Products mockup: header, sub-nav, rail, footer rows, gradient editor (mockup only)
+
+- **Fix — custom backgrounds:** colour-editor overrides lost to section tones in 60 of 60 tone tests. Editor rules are now prefixed `:root body` and injected last, so they win over tones and palettes (verified).
+- **Header:** now the SognosCare index header (pill nav + Book a Demo).
+  - Separate **start** and **on-scroll** states, each one of: Transparent · white text, Transparent · navy text, White, Sognos tint, Glass, Dark, Product deep, Product gradient. Scroll can also be "Same as start".
+- **Sub-nav:**
+  - Styles: White, Gray #f3f4f6, Sognos tint #f9fafe, Product tint, Dark, Gradient, Glass, and the SognosCare-index **Header bar**, which attaches to the header with dashed rules, product name, section links, Schedule a Call and Download Datasheet.
+  - Position: below or above the hero.
+- **Sections:**
+  - Layouts renamed A · Split / B · Immersive / C · Editorial.
+  - Gallery heroes renamed: Care motion 1–3, Roster · Photo / Live schedule.
+  - New **Rail on/off** per section, on any layout: the eyebrow moves into a sticky left rail and the content shifts to columns 3–12.
+- **Tones (renamed, shared module):** Auto, White, Gray #f3f4f6, Sognos tint #f9fafe, Product tint, Accent #1e96fc, Product, Dark, Gradient.
+- **Footer (products page):** the shared footer fragment is replaced by a modular footer with six rows: CTA band, Menu, Accreditations, Acknowledgement, Legals, Footer graphic.
+  - Each row offers all seven footer styles: A1 Editorial white, A2 Tint panel, A3a Care dark, A3b Glow, A3c Midnight, B Bento, C Index rows. The graphic row can also be None.
+  - Each row has its own tone.
+- **Colour editor:** new areas Header, Sub-nav and each footer row, alongside the sections.
+  - Roles: start/scrolled header background and text, nav pill and hover, button, border, links, logo tiles, plus all section roles.
+  - Every role can be **Solid or Gradient** (two colours + angle): gradients on text render as gradient text; on borders and text-colour variables they fall back to the first colour.
+  - Export includes everything.
+- **Checks:**
+  - At 1440: header states, sub-nav bar and position, gray / Sognos tint tones, rail on/off, footer row mixing and tones, and editor solid / gradient / header / sub-nav / footer overrides verified by DOM; header and footer screenshot.
+  - At 375: all footer styles, rail on all sections, and the header bar have no horizontal scroll.
+
+## 2026-10-26 — Products mockup: Accent #1e96fc, gallery heroes, Paraform, colour editor (mockup only)
+
+- **Tones:**
+  - Accent is now the Sognos accent **#1e96fc** on every product.
+  - The previous product-base fill is kept as a separate **Product** tone.
+  - Full set: Auto / Light / Tint / Accent / Product / Dark / Gradient.
+- **From the 04b gallery:**
+  - Hero options are selectable on the Hero row: SognosCare's 01m motion heroes 1–3 and SognosRoster's gallery heroes A/B. Each set shows only on its product, and switching product falls back to A.
+  - The panel background toggle is now "Graphic panel background": Panel colour / Product photo / **Paraform** (product photo under the product wash, frosted UI cards).
+  - All gallery panel palettes stay, plus a **Custom** palette with two colour pickers.
+- **Colour editor** (new tab in the controls panel), per product and per section, including the Sub-nav:
+  - Section roles: section background, headings, body text, muted labels, eyebrow marker, hairlines.
+  - Card roles: card background, border, headings and text.
+  - Graphic panel roles: background, cards, accent.
+  - Buttons: background and text.
+  - Sub-nav roles: background, links, active, underline, border, button.
+  - Pickers start from the colour on screen; edits preview live across every layout variant and are saved in the browser.
+  - Copy-to-all-products, reset section, reset all.
+  - Export (JSON + CSS preview, copy or download) for porting to `app/tokens.css`.
+- **Checks:**
+  - Tones, gallery heroes (5), Paraform, custom palette, editor overrides, export and reset verified by DOM at 1440.
+  - Gallery heroes have no horizontal scroll at 375.
+
+## 2026-10-26 — Products mockup: section tones, gallery palettes, true bento, sub-nav (mockup only)
+
+- **Section tones:** each section (Hero, Problem, Features, Editions/Why, Advantages, Stories/CTA) gets Auto / Light / Tint / Dark / Gradient, alongside its layout A/B/C.
+  - Added **Accent**: the product base colour (Care #3B6FE0, Roster #1D96FC, Genogram #91278C, DigPacks #B8166E) with light text; accent-filled buttons and markers flip to white so they stay visible.
+  - Text, hairlines and glass cards adapt to the tone.
+  - White cards, motion panels and photo overlays keep their own colours.
+- **Feature panel colours:** every palette from `04b-feature-visuals.html`, plus the product ladder (as authored, product tints, brand tint, outlined white, product deep, product gradient).
+  - SognosCare A–F, SognosRoster A–F, Frontline A–F, Home Solutions A–F, Home Industries A–F.
+  - Applied per panel in order, as in the gallery.
+- **Direction B features** are now a true bento: 3 columns, fixed 23rem rows, feature 1 spanning 2×2, and each motion panel filling its tile above a compact caption.
+- **Product sub-nav:** sticky under the header after the hero.
+  - Product mark, section anchors with scroll-spy, and Book a Demo.
+  - Colour variants: Light / Tint / Dark / Gradient / Glass.
+  - Labels: SognosCare's are the live `ProductSubNav` labels; Roster and Genogram follow them; DigPacks (Outcomes / Solutions / Why DigPacks / Asset Booker) is a suggestion.
+- **Controls:** Product and Direction moved into the single "Products · sections & colours" panel (bottom-right, open by default), so nothing overlaps the sticky sub-nav.
+- **Checks:** at 1440 and 375, all 12 product × direction renders and the all-dark / all-gradient tones have no horizontal scroll; tone text colours were verified by DOM.
+
+## 2026-10-26 — Products: Genogram + DigPacks motion graphics, section + colour switchers (mockup only)
+
+- Reviewed the 04b feature-visuals system: `.fv` panels, `data-in` rises, and the journey / run / type / audit / count loops. Panels start in view and are static under reduced motion.
+- **New motion graphics**, coloured from the product token ladder:
+  - **SognosGenogram:**
+    - genogram builder (family tree)
+    - support network (radial, flowing ties)
+    - risk / protective tagging (run loop)
+    - embedded case record (tabs + shared-with)
+    - historical snapshots (journey loop)
+    - Copilot narrative (typing)
+  - **DigPacks:**
+    - risk register + approval run
+    - Safety Lens (detection boxes + typed draft)
+    - People & HR request run
+    - Vaccination Hub clinic slots + counts
+    - PIA stage journey + agent
+    - ITSM live request feed with FixIT Agent
+- `docs/mockups/products/index.html` (+ per-product files):
+  - Every feature panel now shows the product's motion graphic: Care and Roster existing, Genogram and DigPacks new. Data is illustrative.
+  - **Top bar:** Product + Direction (sets every section).
+  - **"Sections & colours" panel (bottom-right):**
+    - Per-section layout A/B/C for Hero, Problem, Features, Editions/Why, Advantages, Stories/CTA.
+    - Feature-panel colours: as authored / product tints / brand tint / outlined white / product deep / product gradient.
+    - Light-surface tone: tint / white / product soft.
+    - DigPacks panels: motion graphic or real product screen.
+  - Direction B features are rebalanced to a 6-column bento (each tile a third wide).
+- **Checks:** at 1440 and 375, 12 renders each show 6 motion panels, one H1, no broken images and no horizontal scroll. Mixing sections works (e.g. hero B + problem A + features C).
+
+## 2026-10-26 — Product pages: audit + three system directions (mockup only)
+
+- Audit: `docs/audits/products-audit.md`. Covers SognosCare, SognosRoster, SognosGenogram and DigPacks against the DigPacks Brand Guidelines v1.0.
+- Mockups in `docs/mockups/products/`:
+  - `index.html`, with Product and Direction switchers at the top.
+  - `care.html`, `roster.html`, `genogram.html`, `digpacks.html`.
+  - Live copy; every section of every page.
+  - **A · Product Light:** white/tint surfaces with product accents.
+  - **B · Immersive Dark:** product-deep surfaces, glow hero, bento features, gradient advantages, spotlight quote.
+  - **C · Signature:** soft hero with a gradient orb and feature index, sticky split problem, alternating feature rows, editions slider, numeral advantages index.
+- **Proposed tokens (additive):** a per-product ladder (`--p-deep/dark/base/accent/soft/tint/ink/glow/grad/second`).
+  - DigPacks is rebuilt from the guide: `#B8166E`, secondary `#005EB8`, gradient `#B8166E → #8A1A5E → #5A1E4A`. Sognos type is kept.
+- **Checks:** 12 renders (4 products × 3 directions) at 1440 and 375.
+  - Each has one H1, no broken images, no horizontal scroll and no shadows.
+  - The footer options fragment is included on `index.html`.
+
+## 2026-10-26 — Footer mockups consolidated (mockup only)
+
+- `docs/mockups/footer/index.html` is now the single footer options page: A1, A2, A3a, A3b, A3c (Statement layout styles) plus layouts B (Navy bento) and C (Index rows), on one switcher.
+- `docs/mockups/home/footer.html` (new): the home footer section file, with the same set.
+- The shared fragment on every index and archive mockup now carries all seven options, including home `index.html`.
+  - Its switcher is width-capped below 640px.
+- Removed: `docs/mockups/footer/option-a.html`. The old three-option `index.html` content was folded into the consolidated page, and home notes now point at `home/footer.html`.
+- Checked: each option renders alone with 33 links and no broken images; the switcher stays on-screen at 375.
+
+## 2026-10-26 — Footer A3: three dark styles + A2 lower rows (mockup only)
+
+- `docs/mockups/footer/option-a.html` now has A1, A2, A3a, A3b and A3c. Each A3 style takes A2's lower rows: accreditations card (label left, logos right), centred acknowledgement, bottom bar, and a cropped wordmark aligned to the content width.
+  - **A3a · Care dark:** care-dark surface, white product logos in dot rows, translucent card, white/10 wordmark.
+  - **A3b · Glow:** care-base / accent glows, gradient-chip product cards, frosted card, care-to-roster gradient wordmark.
+  - **A3c · Midnight:** deepest navy, product-colour edge bars, navy card, tone-on-tone navy wordmark.
+- **Shared footer switcher:** now A1 / A2 / A3a / A3b / A3c on every index and archive mockup: home, sognoscare, frontline, health-social-care, knowledge-hub, customer-stories archive.
+  - Home now uses the shared fragment; its separate footer group is gone.
+  - Below 640px the switcher sits under the header (`top-36`) to clear the 125px banner + header stub.
+- Checked at 1440 and 375: each style has 33 links, no broken images, no horizontal scroll, and the switcher overlaps nothing.
+
+## 2026-10-26 — Footer option A: three design styles + accreditation logos (mockup only)
+
+- `docs/mockups/footer/option-a.html`: the Statement layout in three styles, with a switcher.
+  - **A1 · Editorial white:** hairline dividers, dot product rows, faint oversized wordmark.
+  - **A2 · Tint + navy panel:** statement inside a navy gradient panel; product rows as white cards with gradient chips; accreditations card; solid wordmark cropped at the foot.
+  - **A3 · Dark statement:** care-dark surface, white product logos, accent full stop and CTA, faint inverted wordmark.
+- **Accreditations:**
+  - The ISO logo is replaced with the stacked Compass ISO 27001 mark (`public/logos/accreditations/iso-27001-stacked.png`).
+  - All four logos have trimmed copies (`*-trim.png`) with their built-in whitespace removed; Talking HealthTech's file was mostly padding.
+  - Sized for equal optical area in 80px cells: ISO `h-13`, NSW `h-7.5`, AIDH `h-10.5`, THT `h-8.5` (each ≈3,100–3,500 px²).
+  - `index.html` options use the same logos.
+- Checked at 1440 and 375: 33 links in each style, no broken images, no horizontal scroll. The live footer is unchanged.
+- Home mockup (`docs/mockups/home/index.html` + variant files): the footer now follows How Sognos Works, with a "Footer" switcher group (A1 White / A2 Tint + navy / A3 Dark).
+- Page-level mockups now end with the footer options (A1/A2/A3): `sognoscare/`, `frontline/`, `health-social-care/` and `knowledge-hub/` `index.html`, plus `customer-stories/archive.html`.
+  - A shared fragment adds a small "Footer" switcher: bottom-left on desktop, top-right below 640px so it clears each page's own switcher.
+  - The choice is remembered across pages.
+  - The footer is injected between `<!-- footer:start/end -->` markers (idempotent), and the shared mockup `page()` writer re-applies it when a page regenerates.
+
+## 2026-10-26 — Footer: three new layout options (mockup only)
+
+- `docs/mockups/footer/index.html`, with an A/B/C switcher. Live copy and every live footer href.
+  - **A · Statement:** white editorial layout.
+    - Large CTA headline split with the subheading and CTAs.
+    - Product index rows (dot, name, tagline) and four link columns.
+    - Accreditations beside the acknowledgement; oversized faint wordmark at the foot.
+  - **B · Navy bento:** deepest navy with rounded tiles.
+    - Large gradient CTA tile, product tiles on their own gradients.
+    - Link tiles and an accreditations strip.
+  - **C · Index rows:** tint.
+    - Slim white CTA strip on top.
+    - Rows with a square-marker label on the left and inline links on the right; products as pills with dots.
+- Checked at 1440 and 375: all 33 links in each option, no horizontal scroll, no broken images, tap targets ≥ 36px. No `.tsx` changed.
+
+## 2026-10-26 — Footer + CTABand refactor (option B)
+
+Option B: a light footer with the navy CTA band above the grid. Decisions:
+links are regrouped to the prompt's columns with Industries under Solutions,
+PROJECT_STATE §2 and the real tokens win over the prompt's rules, and the
+existing mobile accordion stays.
+
+- **CTABand (`sections/CTABand.tsx`, in place):**
+  - Props: `heading`, `subheading?`, `ctaLabel` (default "Book a Demo"), `ctaHref?` (none = the Book a Demo modal, as before), `secondary?`, `variant` ("navy").
+  - Copy-free; defaults live in `lib/content/ctaBand.ts`.
+  - Now a `rounded-lg` card (hero-scale surface) with text left and CTAs right, wrapping on mobile.
+  - CTAs are `rounded-full`, 44px, with focus rings.
+  - Label fixed from "Book a demo" to "Book a Demo" (site rule).
+- **Footer (`components/layout/footer/`):**
+  - `Footer.tsx`: Server Component, composition only.
+  - `FooterLinkGroup.tsx`: client; each group is a `<nav aria-label>`. Below `sm` it is the existing Framer accordion; from `sm` the links are static.
+  - `FooterBottomBar.tsx`: copyright, with the year from `new Date()`.
+  - `footer.data.ts`: regroups the Sanity columns by route.
+    - Products become dots in the brand block, in the care / roster / genogram base tokens (accent for DigPacks).
+    - Industries sits under Solutions.
+    - Resources: Knowledge Hub, Customer Stories, News, Events.
+    - Company: everything else.
+    - Legal: the legal links, moved from the bottom bar.
+  - `components/layout/Footer.tsx` is now a re-export. `FooterColumns.tsx` was removed.
+  - Surface is `bg-sognos-tint` with `border-sognos-line` dividers.
+  - Accreditations and the acknowledgement are kept; tiles gain a hairline.
+  - Grid: 1 column below `sm`, 2 columns with the brand block full width from `sm`, 5 columns from `lg`.
+- **Layout:** `CTABand` is no longer rendered by `app/(marketing)/layout.tsx`; the footer renders it.
+- **Checks:**
+  - Build passes with no warnings; `tsc` is clean; lint shows no new errors (15 remain in untouched files).
+  - Every footer href from the 2026-10-25 baseline is present on `/`, `/solutions/frontline` and `/company/about`.
+  - Four more hrefs render (Careers, Events, News, DigPacks). They are in the current Sanity footer columns that both layouts render, not added by the refactor.
+  - No `shadow-` classes, no off-scale radii and no raw hex in the changed files.
+  - DOM at 1280: 5 equal columns. At 375: single column, accordion works, tap targets ≥ 44px.
+
 ## 2026-10-25 — Solutions template: Frontline mockup ported (all 7 routes)
 
 Picks: Hero; Problem A symptom tiles; Capabilities A grid with Accent Blues

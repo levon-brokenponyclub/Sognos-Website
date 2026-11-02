@@ -13,9 +13,8 @@ Also complete outside the original phase plan:
 - Sanity CMS integration — CMS-driven across products, posts, global content, legals, footer, site settings
 
 Immediate focus:
-- Phase 7 — ProductSubNav dock-from-bottom
 - Phase 6 — Solutions pages Cohere port (`solutions/[slug]/page.tsx`)
-- Phase 7 — Roster + Genogram Problems dark sections
+- Products Inspector port — Care, Roster, Genogram, DigPacks, header + footer rows done 2026-11-02 (`docs/CHANGELOG.md`)
 
 ## Phase Plan
 
@@ -130,8 +129,8 @@ Completed:
 - **Footer mobile accordions** — `FooterColumns.tsx` as `"use client"`, Framer Motion height/opacity, acknowledgement separated into own row
 
 Pending:
-- **ProductSubNav dock-from-bottom** — reappears fixed under navbar when scrolled past in-section position
-- **Roster + Genogram Problems dark sections** — `#3990c5` / `#250438` bg + inverted text
+- ~~ProductSubNav dock-from-bottom~~ — superseded 2026-11-02: `ProductSubNav variant="sticky"` pins under the navbar after the hero (Care, Roster, Genogram)
+- ~~Roster + Genogram Problems dark sections~~ — superseded 2026-11-02 by the Products Inspector Problem A port (product-colour Split)
 
 ### Phase 8: Conversion and Integration
 

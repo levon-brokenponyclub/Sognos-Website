@@ -1,11 +1,12 @@
 import SognoscareRosterHero from "@/components/layout/sections/sognosroster/Hero";
-import ProductTrustStrip from "@/components/layout/sections/ProductTrustStrip";
+import { getProductTrustLogos } from "@/components/layout/sections/ProductTrustStrip";
 import SognoscareRosterProblems from "@/components/layout/sections/sognosroster/Problems";
 import SognoscareRosterFeatures from "@/components/layout/sections/sognosroster/Features";
 import SognoscareRosterAdvantages from "@/components/layout/sections/sognosroster/Advantages";
 import SognoscareRosterStories from "@/components/layout/sections/sognosroster/Stories";
 import ProductSubNav from "@/components/ui/ProductSubNav";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { urlFor } from "@/lib/sanity/image";
 
 export const metadata = {
   title: "SognosRoster - Workforce Scheduling & Optimisation | Sognos",
@@ -22,16 +23,23 @@ const SECTIONS = [
   { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 
-export default function SognoscareRosterPage() {
+export default async function SognoscareRosterPage() {
+  const trustLogos = (await getProductTrustLogos()).map((logo) => ({
+    alt: logo.alt,
+    src: urlFor(logo.image).width(360).auto("format").url(),
+  }));
+
   return (
     <>
-      <SognoscareRosterHero />
-      <ScrollReveal>
-        <ProductTrustStrip />
-      </ScrollReveal>
-      <div className="bg-sognos-roster-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
-        <ProductSubNav productName="SognosRoster" sections={SECTIONS} />
-      </div>
+      <SognoscareRosterHero trustLogos={trustLogos} />
+      {/* Sub-nav — white, pins under the navbar after the hero. */}
+      <ProductSubNav
+        productName="SognosRoster"
+        sections={SECTIONS}
+        variant="sticky"
+        logoSrc="/logos/sognos-roster-logo-color.svg"
+        markClass="decoration-sognos-roster-base"
+      />
       <ScrollReveal>
         <SognoscareRosterProblems />
       </ScrollReveal>

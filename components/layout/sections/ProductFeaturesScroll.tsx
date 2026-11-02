@@ -33,6 +33,12 @@ interface Props {
   variant?: "default" | "cards";
   /** Tagline colour in the `cards` variant (needs ≥4.5:1 on tint). */
   taglineClass?: string;
+  /** `cards`: alternate the visual left / right from the first row (left). */
+  alternate?: boolean;
+  /** `cards`: one surface for every card instead of tint / tint-50. */
+  cardClass?: string;
+  /** `cards`: rail label marker fill. */
+  markerClass?: string;
 }
 
 // Rail sticky top, jump offset (px) and section anchor margin per offset mode.
@@ -53,6 +59,9 @@ export default function ProductFeaturesScroll({
   headerAside,
   variant = "default",
   taglineClass = "text-sognos-heading",
+  alternate = false,
+  cardClass,
+  markerClass,
 }: Props) {
   const offset = OFFSETS[stickyOffset];
   const [activeId, setActiveId] = useState(features[0]?.id ?? "");
@@ -108,7 +117,7 @@ export default function ProductFeaturesScroll({
             {/* Sticky scroll-spy rail */}
             <nav aria-label="Feature navigation" className="hidden lg:col-span-3 lg:block">
               <div className={`sticky ${offset.rail}`}>
-                <SectionLabel>{header.eyebrow ?? "Features"}</SectionLabel>
+                <SectionLabel markerClassName={markerClass}>{header.eyebrow ?? "Features"}</SectionLabel>
                 <ul className="mt-6 space-y-1">
                   {features.map((feat) => {
                     const active = activeId === feat.id;
@@ -138,7 +147,9 @@ export default function ProductFeaturesScroll({
             </nav>
 
             <div className="min-w-0 lg:col-[4/-1]">
-              <SectionLabel className="lg:hidden">{header.eyebrow ?? "Features"}</SectionLabel>
+              <SectionLabel className="lg:hidden" markerClassName={markerClass}>
+                {header.eyebrow ?? "Features"}
+              </SectionLabel>
               <div className="mt-6 flex max-w-[770px] flex-col gap-4 lg:mt-0">
                 <h2 className={`${TYPE.h2} text-sognos-heading`}>{header.heading}</h2>
                 {/* Own wrapper: a server-passed element can't sit in a static
@@ -156,7 +167,7 @@ export default function ProductFeaturesScroll({
                       else refs.current.delete(feat.id);
                     }}
                     className={`grid scroll-mt-36 grid-cols-1 gap-8 rounded-lg p-6 md:grid-cols-12 md:p-8 lg:p-10 ${
-                      i % 2 === 0 ? "bg-sognos-tint" : "bg-sognos-tint/50"
+                      cardClass ?? (i % 2 === 0 ? "bg-sognos-tint" : "bg-sognos-tint/50")
                     }`}
                   >
                     <div className="flex flex-col justify-between gap-8 md:col-span-6">
@@ -172,7 +183,7 @@ export default function ProductFeaturesScroll({
                         {feat.description}
                       </p>
                     </div>
-                    <div className="md:col-span-6">
+                    <div className={`md:col-span-6 ${alternate && i % 2 === 0 ? "md:order-first" : ""}`}>
                       {feat.visual ?? (
                         <PlaceholderBox className="border-sognos-line bg-sognos-body/[0.03] text-sognos-muted" />
                       )}

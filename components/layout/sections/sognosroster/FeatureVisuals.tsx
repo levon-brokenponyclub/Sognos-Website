@@ -9,7 +9,6 @@ import {
   CheckRows,
   Draw,
   EASE,
-  PalettePicker,
   PaletteProvider,
   Pulse,
   Rise,
@@ -30,13 +29,11 @@ const DEEP = "#104b90";
 const ROSE = "#ff8e90";
 
 const alt = (a: string, b: string) => [a, b, a, b, a, b];
+// Panel colours fixed to "Roster tints" on the Roster accent (Products
+// Inspector export: panel colour). The review picker is gone, so only one
+// palette remains — a palette stored from review falls back to it.
 const PALETTES: Palettes = {
-  a: { name: "Roster tints", colours: alt(mix(BASE, 12), mix(BASE, 20)) },
-  b: { name: "Roster blues", colours: alt(mix(ACCENT, 8), mix(ACCENT, 14)) },
-  c: { name: "Sky + tint", colours: alt(mix(BASE, 15), "var(--sognos-tint)") },
-  d: { name: "Brand tint", colours: ["var(--sognos-tint)"] },
-  e: { name: "Roster deep", colours: alt(DEEP, "#03112f") },
-  f: { name: "Outlined white", colours: ["#ffffff"] },
+  a: { name: "Roster tints", colours: alt(mix("var(--sognos-roster-accent)", 12), mix("var(--sognos-roster-accent)", 20)) },
 };
 
 export function RosterVisualsProvider({ children }: { children: ReactNode }) {
@@ -46,7 +43,6 @@ export function RosterVisualsProvider({ children }: { children: ReactNode }) {
     </PaletteProvider>
   );
 }
-export const RosterPalettePicker = () => <PalettePicker label="Feature panel colours" />;
 
 // ── Visuals ────────────────────────────────────────────────────────────────
 

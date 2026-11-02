@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -10,14 +11,21 @@ export interface SubNavSection {
   id: string;
   href?: string;
   download?: boolean;
+  /** Off-site download (e.g. a sign-up form): new tab, no `download` attribute. */
+  external?: boolean;
 }
 
 interface ProductSubNavProps {
   productName: string;
   sections: SubNavSection[];
   /** `pill` (default) renders in place; `bar` portals into the Navbar's
-   *  section-bar slot, after routable.com/product/payouts. */
-  variant?: "pill" | "bar";
+   *  section-bar slot, after routable.com/product/payouts; `sticky` renders
+   *  in place after the hero and pins under the navbar (Products Inspector). */
+  variant?: "pill" | "bar" | "sticky";
+  /** `sticky`: brand logo (product name stays as the accessible label). */
+  logoSrc?: string;
+  /** `sticky`: active-link underline colour, e.g. `decoration-sognos-care-base`. */
+  markClass?: string;
 }
 
 // scroll-spy: the section crossing the middle band of the viewport is active.
@@ -45,11 +53,122 @@ export default function ProductSubNav({
   productName,
   sections,
   variant = "pill",
+  logoSrc,
+  markClass,
 }: ProductSubNavProps) {
+  if (variant === "sticky")
+    return (
+      <StickyNav
+        productName={productName}
+        sections={sections}
+        logoSrc={logoSrc}
+        markClass={markClass}
+      />
+    );
   return variant === "bar" ? (
     <SectionBar productName={productName} sections={sections} />
   ) : (
     <PillNav productName={productName} sections={sections} />
+  );
+}
+
+// ── Sticky ──────────────────────────────────────────────────────────────────
+// White bar pinned under the 80px navbar once the hero scrolls away: logo,
+// divider, section links left, then the actions on the right (downloads,
+// then Schedule a Call). Section links scroll sideways on small screens.
+
+const SUBNAV_FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent";
+
+function StickyNav({
+  productName,
+  sections,
+  logoSrc,
+  markClass = "decoration-sognos-blue-accent",
+}: Omit<ProductSubNavProps, "variant">) {
+  const activeId = useActiveSection(sections);
+  const isAction = (s: SubNavSection) =>
+    s.id === "calendar" || ((s.download || s.external) && !!s.href);
+  const links = sections.filter((s) => !isAction(s));
+  // Downloads first, then Schedule a Call.
+  const actionLinks = [
+    ...sections.filter((s) => isAction(s) && s.id !== "calendar"),
+    ...sections.filter((s) => s.id === "calendar"),
+  ];
+
+  return (
+    <div className="sticky top-20 z-40 border-b border-sognos-line bg-white">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-6">
+        <a
+          href="#top"
+          className={`flex shrink-0 items-center gap-2 ${SUBNAV_FOCUS}`}
+        >
+          {logoSrc && (
+            <Image
+              src={logoSrc}
+              alt=""
+              width={120}
+              height={20}
+              className="h-5 w-auto"
+            />
+          )}
+          <span
+            className={
+              logoSrc ? "sr-only" : "text-sm font-medium text-sognos-heading"
+            }
+          >
+            {productName}
+          </span>
+        </a>
+        <span
+          aria-hidden="true"
+          className="hidden h-5 w-px bg-sognos-line sm:block"
+        />
+        <nav
+          aria-label={`${productName} sections`}
+          className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <ul className="flex items-center gap-6">
+            {links.map(({ label, id, href }) => (
+              <li key={id}>
+                <Link
+                  href={href ?? `#${id}`}
+                  aria-current={activeId === id ? "true" : undefined}
+                  className={`whitespace-nowrap py-2 text-sm text-sognos-muted transition-colors hover:text-sognos-heading aria-[current=true]:text-sognos-heading aria-[current=true]:underline aria-[current=true]:decoration-2 aria-[current=true]:underline-offset-[18px] ${markClass} ${SUBNAV_FOCUS}`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <span className="flex shrink-0 items-center gap-5 max-sm:hidden">
+          {actionLinks.map(({ label, id, href, download, external }) =>
+            download || external ? (
+              <a
+                key={id}
+                href={href}
+                download={download || undefined}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-sognos-heading transition-opacity hover:opacity-80 ${SUBNAV_FOCUS}`}
+              >
+                {label}
+                <span aria-hidden="true">&darr;</span>
+              </a>
+            ) : (
+              <Link
+                key={id}
+                href={href ?? `#${id}`}
+                className={`whitespace-nowrap text-sm text-sognos-muted transition-colors hover:text-sognos-heading ${SUBNAV_FOCUS}`}
+              >
+                {label}
+              </Link>
+            ),
+          )}
+        </span>
+      </div>
+    </div>
   );
 }
 

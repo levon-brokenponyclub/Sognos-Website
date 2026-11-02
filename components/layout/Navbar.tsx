@@ -654,10 +654,10 @@ export default function Navbar({
         DARK_HERO_PATHS.has(pathname) ||
         DARK_HERO_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
-  // Content theme is fixed per page — never flips on scroll.
-  const t = useTransparent ? THEMES.dark : THEMES.light;
-  // Only the bar background changes on scroll (dark-hero pages).
+  // Products Inspector header (2026-11-02): dark-hero pages start transparent
+  // with white text and turn white with navy text once scrolled.
   const barTransparent = useTransparent && !scrolled;
+  const t = barTransparent ? THEMES.dark : THEMES.light;
 
   // Banner runs opposite the hero so it always separates from what is below it:
   // white over a dark hero, navy over a light one. Text and borders have to flip
@@ -1019,16 +1019,8 @@ export default function Navbar({
           bannerOffsetClass,
           "transition-[top,background-color,border-color] duration-300 ease-in-out",
           "border-b",
-          scrolled
-            ? useTransparent
-              ? "border-sognos-navy"
-              : "border-sognos-line"
-            : "border-transparent",
-          useTransparent
-            ? barTransparent
-              ? "bg-transparent"
-              : "bg-sognos-navy-dark"
-            : "bg-white",
+          scrolled ? "border-sognos-line" : "border-transparent",
+          barTransparent ? "bg-transparent" : "bg-white",
         ].join(" ")}
       >
         {/* ── Inner positioning context — max-w-7xl ── */}

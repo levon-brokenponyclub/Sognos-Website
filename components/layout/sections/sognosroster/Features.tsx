@@ -1,5 +1,4 @@
 import RosterFeatureVisual, {
-  RosterPalettePicker,
   RosterVisualsProvider,
 } from "@/components/layout/sections/sognosroster/FeatureVisuals";
 import ProductFeaturesScroll, {
@@ -109,12 +108,15 @@ export default function SognoscareRosterFeatures() {
           heading: "Built for the full scheduling lifecycle",
         }}
         features={scrollFeatures}
-        accentBorderClass="border-sognos-roster-base"
-        accentTextClass="text-sognos-roster-base"
+        accentBorderClass="border-sognos-roster-ink"
+        accentTextClass="text-sognos-roster-ink"
         enableVisuals
         variant="cards"
-        taglineClass="text-[#104b90]"
-        headerAside={<RosterPalettePicker />}
+        taglineClass="text-sognos-roster-ink"
+        alternate
+        cardClass="bg-sognos-tint"
+        markerClass="bg-sognos-roster-base"
+        stickyOffset="sectionBar"
       />
     </RosterVisualsProvider>
   );

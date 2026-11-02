@@ -10,11 +10,14 @@ export default function SectionLabel({
   tone = "light",
   sticky = false,
   className,
+  markerClassName = "bg-sognos-blue-accent",
 }: {
   children: React.ReactNode;
   tone?: "light" | "dark";
   sticky?: boolean;
   className?: string;
+  /** Marker fill; product pages pass their own colour. */
+  markerClassName?: string;
 }) {
   return (
     <p
@@ -27,7 +30,7 @@ export default function SectionLabel({
     >
       <span
         aria-hidden="true"
-        className="block size-[0.66em] shrink-0 bg-sognos-blue-accent"
+        className={cn("block size-[0.66em] shrink-0", markerClassName)}
       />
       {children}
     </p>

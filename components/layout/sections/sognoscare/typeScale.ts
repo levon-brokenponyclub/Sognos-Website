@@ -25,6 +25,6 @@ export const LAYOUT = {
   rail: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8",
   railLabel: "lg:col-span-2",
   content: "min-w-0 lg:col-[3/-1]",
-  // Anchor jumps clear the 80px navbar + the 46px section bar.
-  anchor: "scroll-mt-32",
+  // Anchor jumps clear the 80px navbar + the 56px product sub-nav.
+  anchor: "scroll-mt-36",
 } as const;

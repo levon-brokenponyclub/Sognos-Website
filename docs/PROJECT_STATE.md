@@ -108,11 +108,17 @@ Reserve for deliberate signature moments — About page + editorial spreads.
 
 ### 2.6 Product / edition / sector tokens
 
-**Product colours (live in `app/tokens.css`):**
-- SognosCare: `--sognos-care-dark #0f1936`, `--sognos-care-base #3b6fe0`, `--sognos-care-gradient`.
-- SognosRoster: `--sognos-roster-dark #1d96fc`, `--sognos-roster-base #59bbf7`, `--sognos-roster-gradient`.
-- SognosGenogram: `--sognos-genogram-dark #250438`, `--sognos-genogram-base #91278c`, `--sognos-genogram-gradient`.
-- DigPacks (partner): `--sognos-digpacks-dark #2a0517`, `--sognos-digpacks-base #b6065a`, `--sognos-digpacks-gradient`. Base doubles as text/CTA colour, so it stays dark enough for white text and for text on white.
+**Product colours (live in `app/tokens.css`, 2026-11-02 — from the Products Inspector ladders in `docs/mockups/products`):**
+each product has `deep → dark → base → accent` (colour) plus `soft → tint` (light fills) and `ink` (text on light), as `--sognos-<product>-<step>` / `bg-sognos-<product>-<step>`. `--sognos-<product>-gradient` keeps its live stops (the mockup's 135° deep → base gradients are pending sign-off).
+
+| Product | deep | dark | base | accent | soft | tint | ink |
+|---|---|---|---|---|---|---|---|
+| SognosCare | `#0b1430` | `#0f1936` | `#3b6fe0` | `#8ea8f0` | `#eef3fd` | `#dfe7fb` | `#2a55c4` |
+| SognosRoster | `#03112f` | `#104b90` | `#1d96fc` | `#59bbf7` | `#eef8fe` | `#d9effd` | `#0b6fc4` |
+| SognosGenogram | `#1a0224` | `#3a0f45` | `#91278c` | `#d9a6d6` | `#f8eef8` | `#efdcee` | `#7a1f75` |
+| DigPacks (partner) | `#2a0a22` | `#5d1e4c` | `#b8166e` | `#e8a6c8` | `#fbeef5` | `#f3d3e4` | `#9a1259` |
+
+DigPacks base doubles as text/CTA colour, so it stays dark enough for white text and for text on white. `--sognos-line-strong #b7becc` is the stronger hairline (story-stage tabs and controls).
 
 **Editions — SognosCare (live in `app/tokens.css`):** six sector-identity
 pairs — Aged Care, Allied Health, Support at Home, Hospital in the Home,
@@ -185,8 +191,18 @@ Rollout is an open decision (§6). Do not apply site-wide without approval.
   keep-alive route (`app/api/ping`) + GitHub Actions cron keeps the free-tier
   DB awake.
 - **Structure:** routes under `app/(marketing)/…`; global chrome (Navbar,
-  PageTransition, CTABand, Footer, BookDemoModal) via
-  `app/(marketing)/layout.tsx`. Shared components in
+  PageTransition, Footer, BookDemoModal) via `app/(marketing)/layout.tsx`.
+  Footer (Products Inspector rows, 2026-11-02; option B kept in
+  `.backups/footer-b-2026-11-02/`) lives in `components/layout/footer/`
+  (Footer, FooterBottomBar, footer.data.ts). The rows are: `CTABand
+  variant="strip"` on the accent (defaults: `lib/content/ctaBand.ts`), then on
+  the brand tint menu C (index rows: Products chips with product dots, then
+  Solutions, Industries, Resources, Company), accreditations A2 (white card),
+  acknowledgement A2, legals A2 (copyright + Sanity legal links) and the Sognos
+  wordmark graphic A2 (navy mask). The groups are regrouped in code from the
+  Sanity footer columns (Sanity is read-only). `FooterLinkGroup` is unused.
+  Navbar on dark-hero pages: transparent with white text at the top, then white
+  with navy text once scrolled. Shared components in
   `components/layout/sections/*`, `components/ui/*`,
   `components/portable-text/*`. Content/data in `lib/*`.
 - **Note:** `embla-carousel-react` is installed but **unused** by the live
@@ -218,12 +234,9 @@ untouched, mark ❌.
 
 | Page | Sofia Pro | Weight ladder | Alpha ladder | Video panel | Notes |
 |---|---|---|---|---|---|
-| **SognosCare Hero / Sub-nav / Problems / Editions / Advantages** | ❌ retired | — | ✅ `/75` | ❌ no panel — trust logos in the hero (option A, 2026-10-24); separate trust strip removed | **Polish pass 2026-10-24** (`docs/audits/sognoscare-polish-audit.md`). AngelList throughout; page-local type scale `sognoscare/typeScale.ts` (H2 400 / 30→36px, ledes 16px); `SectionLabel`; Routable sub-nav bar (`ProductSubNav variant="bar"` → Navbar slot); 4 solution steps; edition cards rebuilt. Hero motion stage = option 3 "Day in motion" (`sognoscare/HeroStage.tsx`, 560px; budget card + notification stack; demo data). |
-| SognosCare Features / Stories | ❌ | ❌ | ❌ | — | Excluded from the polish pass. Features rail/jump offsets clear the section bar via `stickyOffset="sectionBar"` (2026-10-24). |
-| SognosRoster Hero | ❌ | ❌ | ❌ | ✅ live (canonical) | Reference implementation for the video/logo crossfade pattern. |
-| SognosRoster other sections | ❌ | ❌ | ❌ | — | Untouched. Broken Sanity `stories` query (§5). |
-| SognosGenogram (all sections) | ❌ | ❌ | ❌ | ❌ N/A | Sandbox experiment reverted 2026-08-07 — restored to original design system. No `sognosgenogramPage` Sanity schema exists. |
-| DigPacks (`/products/digpacks`, all sections) | ❌ | ❌ | ❌ | ❌ N/A | Added 2026-10-24. Partner page on the product template (Hero, Partnership, sub-nav, Outcomes, Solutions via `ProductFeaturesScroll`, Why, Asset Booker). Copy ported verbatim from prod `/digpacks`. Static — no Sanity schema. Listed in the Products mega menu (4th column) and as a partner card under the `/products` grid. `/digpacks` + `/products/digpacks-contact` 308 → `/products/digpacks`. |
+| **SognosCare (whole page)** | ❌ retired | — | ✅ `/75` | ❌ no panel — trust logos at the hero foot | **Products Inspector port 2026-11-02** (`docs/mockups/products/care.html`, export `care.json`): Hero B Immersive on the Care gradient (glow + grid, photo, floating card; trust logos kept); white sticky sub-nav after the hero (`ProductSubNav variant="sticky"`: logo, links right, Schedule a Call + Datasheet); Problem A Split on Care base; Features C cards (alternate, visual left first, tint, ink eyebrow + rule, scroll-spy rail); Editions C dot cards in the rail on tint; Advantages C numeral rows on Care base; Stories D tabbed story stage (`ProductStoryStage`). Page-local type scale `sognoscare/typeScale.ts`; `SectionLabel` takes a marker colour. |
+| **SognosRoster / SognosGenogram (whole pages)** | ❌ | — | ✅ | ❌ no panel — trust logos at the hero foot (`ProductTrustStrip` section removed from both pages) | **Products Inspector port 2026-11-02** (`roster.json`, `genogram.json`) on the shared product sections in `components/layout/sections/product/` (`ProductHero`, `ProductProblemSplit`, `ProductAdvantagesIndex`, `theme.ts`) + `ProductStoryStage`; SognosCare uses the same sections. Same layouts as SognosCare; Care's colour set applies to both (decision 2026-11-02). Roster's "product" tone uses `roster-dark` (white on Roster base fails AA). Genogram gains Key Advantages (mockup copy; heading is a suggestion) and its sub-nav link; Genogram feature cards drop the eyebrow and carry the Genogram motion graphics (`sognosgenogram/FeatureVisuals.tsx`). Roster hero video + logo crossfade and the With / Without Sognos problem tabs are retired. |
+| DigPacks (`/products/digpacks`, all sections) | ❌ | — | ✅ full white on base | ❌ N/A | Added 2026-10-24; static, no Sanity schema. Copy is verbatim from prod `/digpacks`. It is in the Products mega menu (4th column) and has a partner card under the `/products` grid. `/digpacks` and `/products/digpacks-contact` 308 → `/products/digpacks`. **Products Inspector port 2026-11-02** (`digpacks.json`): Hero C Editorial on the mockup gradient (solutions index, photo band; white Book a Demo); white sticky sub-nav with a Book a Demo button (`actions="button"`); Outcomes = Problem A stats on base; Solutions = Features B bento on product soft with the DigPacks motion graphics (`digpacks/FeatureVisuals.tsx`); Why B on deep (three panels, gradient localisation panel); Asset Booker C on base, graphic off (live bottom drawer kept). The Partnership section is removed from the page (not in the mockup). |
 
 ### 4.3 About page
 

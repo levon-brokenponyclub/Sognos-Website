@@ -209,16 +209,37 @@
   --color-sognos-muted: var(--sognos-muted);
 
   --color-sognos-line: var(--sognos-line);
+  --color-sognos-line-strong: var(--sognos-line-strong);
   --color-sognos-tint: var(--sognos-tint);
 
-  --color-sognos-care-base: var(--sognos-care-base);
+  --color-sognos-care-deep: var(--sognos-care-deep);
   --color-sognos-care-dark: var(--sognos-care-dark);
-  --color-sognos-roster-base: var(--sognos-roster-base);
+  --color-sognos-care-base: var(--sognos-care-base);
+  --color-sognos-care-accent: var(--sognos-care-accent);
+  --color-sognos-care-soft: var(--sognos-care-soft);
+  --color-sognos-care-tint: var(--sognos-care-tint);
+  --color-sognos-care-ink: var(--sognos-care-ink);
+  --color-sognos-roster-deep: var(--sognos-roster-deep);
   --color-sognos-roster-dark: var(--sognos-roster-dark);
-  --color-sognos-genogram-base: var(--sognos-genogram-base);
+  --color-sognos-roster-base: var(--sognos-roster-base);
+  --color-sognos-roster-accent: var(--sognos-roster-accent);
+  --color-sognos-roster-soft: var(--sognos-roster-soft);
+  --color-sognos-roster-tint: var(--sognos-roster-tint);
+  --color-sognos-roster-ink: var(--sognos-roster-ink);
+  --color-sognos-genogram-deep: var(--sognos-genogram-deep);
   --color-sognos-genogram-dark: var(--sognos-genogram-dark);
-  --color-sognos-digpacks-base: var(--sognos-digpacks-base);
+  --color-sognos-genogram-base: var(--sognos-genogram-base);
+  --color-sognos-genogram-accent: var(--sognos-genogram-accent);
+  --color-sognos-genogram-soft: var(--sognos-genogram-soft);
+  --color-sognos-genogram-tint: var(--sognos-genogram-tint);
+  --color-sognos-genogram-ink: var(--sognos-genogram-ink);
+  --color-sognos-digpacks-deep: var(--sognos-digpacks-deep);
   --color-sognos-digpacks-dark: var(--sognos-digpacks-dark);
+  --color-sognos-digpacks-base: var(--sognos-digpacks-base);
+  --color-sognos-digpacks-accent: var(--sognos-digpacks-accent);
+  --color-sognos-digpacks-soft: var(--sognos-digpacks-soft);
+  --color-sognos-digpacks-tint: var(--sognos-digpacks-tint);
+  --color-sognos-digpacks-ink: var(--sognos-digpacks-ink);
 
   --background-image-sognos-care-gradient: var(--sognos-care-gradient);
   --background-image-sognos-roster-gradient: var(--sognos-roster-gradient);
@@ -517,6 +538,25 @@
 
   50% {
     transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+/* Product hero floating card (Products Inspector Hero B) */
+@keyframes sognos-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Product story stage tab progress (ProductStoryStage) */
+@keyframes sognos-story-progress {
+  to {
+    width: 100%;
   }
 }
 

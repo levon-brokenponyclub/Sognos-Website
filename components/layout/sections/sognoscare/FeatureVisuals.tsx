@@ -8,7 +8,6 @@ import {
   CountUp,
   Draw,
   EASE,
-  PalettePicker,
   PaletteProvider,
   Pulse,
   Rise,
@@ -32,19 +31,11 @@ const ROSE = "#ff8e90";
 const AMBER = "#ffad6e";
 
 const alt = (a: string, b: string) => [a, b, a, b, a, b];
+// Panel colours fixed to "Care blues" (Products Inspector export: panel
+// colour). The review picker is gone, so only one palette remains — a
+// palette stored from review fails validation and falls back to it.
 const PALETTES: Palettes = {
-  a: {
-    name: "Sector pastels",
-    colours: ["#f4f8f9", "#ebfbe3", "#f5f6ee", "#f7edf3", "var(--sognos-tint)", "#ebfbe3"],
-  },
-  b: { name: "Brand tint", colours: ["var(--sognos-tint)"] },
   c: { name: "Care blues", colours: alt(mix(CARE, 8), mix(CARE, 14)) },
-  d: { name: "Care navy", colours: alt("#0f1936", "#152248") },
-  e: {
-    name: "Edition tints",
-    colours: ["#00a98f", "#ffad6e", "#cbdd61", "#ff8e90", "#caa4ff", "#ff7dbc"].map((c) => mix(c, 18)),
-  },
-  f: { name: "Outlined white", colours: ["#ffffff"] },
 };
 
 export function CareVisualsProvider({ children }: { children: ReactNode }) {
@@ -54,7 +45,6 @@ export function CareVisualsProvider({ children }: { children: ReactNode }) {
     </PaletteProvider>
   );
 }
-export const CarePalettePicker = () => <PalettePicker label="Feature panel colours" />;
 
 // ── Visuals ────────────────────────────────────────────────────────────────
 

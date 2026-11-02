@@ -19,6 +19,9 @@ interface EditionCardsProps {
   containerClassName?: string;
   controlsClassName?: string;
   dark?: boolean; // kept for EditionPageTemplate compat — not applied to new arrow style
+  /** `dot` — Products Inspector Editions C: white card, edition dot, title
+   *  over the description, no logo or top rule. */
+  variant?: "logo" | "dot";
 }
 
 function ArrowButton({
@@ -58,6 +61,33 @@ function ArrowButton({
   );
 }
 
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent";
+
+function DotCard({ edition }: { edition: Edition }) {
+  return (
+    <Link
+      href={edition.href}
+      data-card
+      className={`flex w-[80%] shrink-0 snap-start flex-col justify-between gap-10 rounded border border-white bg-white p-6 sm:w-[340px] lg:p-8 ${FOCUS}`}
+    >
+      <span
+        aria-hidden="true"
+        className="size-3 rounded-full"
+        style={{ backgroundColor: edition.accentColor }}
+      />
+      <div>
+        <h3 className="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] text-sognos-heading md:text-[1.75rem]">
+          {edition.label ?? edition.name}
+        </h3>
+        <p className="mt-3 text-sm leading-normal text-sognos-body">
+          {edition.description}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 function EditionCard({
   edition,
   cardWidthClass = "lg:w-[31.5%]",
@@ -76,7 +106,7 @@ function EditionCard({
       data-card
       className={[
         "group relative flex flex-col justify-between overflow-hidden rounded bg-white p-6",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sognos-blue-accent",
+        FOCUS,
         "flex-shrink-0 snap-start w-[82vw] min-h-[320px]",
         cardWidthClass,
       ].join(" ")}
@@ -139,6 +169,7 @@ export default function EditionCards({
   showSliderButtons = true,
   containerClassName = "",
   controlsClassName = "mb-5 flex justify-end gap-3",
+  variant = "logo",
 }: EditionCardsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -191,13 +222,17 @@ export default function EditionCards({
         onScroll={updateArrows}
         className="flex snap-x snap-mandatory gap-3 lg:gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {editions.map((edition) => (
-          <EditionCard
-            key={edition.href}
-            edition={edition}
-            cardWidthClass={cardWidthClass}
-          />
-        ))}
+        {editions.map((edition) =>
+          variant === "dot" ? (
+            <DotCard key={edition.href} edition={edition} />
+          ) : (
+            <EditionCard
+              key={edition.href}
+              edition={edition}
+              cardWidthClass={cardWidthClass}
+            />
+          ),
+        )}
       </div>
     </div>
   );

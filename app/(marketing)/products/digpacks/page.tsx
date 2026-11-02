@@ -1,5 +1,4 @@
 import DigPacksHero from "@/components/layout/sections/digpacks/Hero";
-import DigPacksPartnership from "@/components/layout/sections/digpacks/Partnership";
 import DigPacksOutcomes from "@/components/layout/sections/digpacks/Outcomes";
 import DigPacksSolutions from "@/components/layout/sections/digpacks/Solutions";
 import DigPacksWhy from "@/components/layout/sections/digpacks/Why";
@@ -19,6 +18,12 @@ const SECTIONS = [
   { label: "Solutions", id: "features" },
   { label: "Why DigPacks", id: "why" },
   { label: "Asset Booker", id: "asset-booker" },
+  {
+    label: "Download",
+    id: "download",
+    href: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=dIv2xQ42w0yPgwCF_6izmX_i53x-rohEmvUHAV32Ee5UNEZXVEpVQVZLWkVaUTJCSk5GMTg1Q1pESy4u&route=shorturl",
+    external: true,
+  },
   { label: "Schedule a Call", id: "calendar", href: "/contact" },
 ];
 
@@ -26,12 +31,14 @@ export default function DigPacksPage() {
   return (
     <>
       <DigPacksHero />
-      <ScrollReveal>
-        <DigPacksPartnership />
-      </ScrollReveal>
-      <div className="bg-sognos-digpacks-dark flex justify-center px-6 pt-20 pb-16 md:pt-28">
-        <ProductSubNav productName="DigPacks" sections={SECTIONS} />
-      </div>
+      {/* Sub-nav — white, pins under the navbar after the hero. */}
+      <ProductSubNav
+        productName="DigPacks"
+        sections={SECTIONS}
+        variant="sticky"
+        logoSrc="/images/digpacks/digpacks-logo-full.webp"
+        markClass="decoration-sognos-digpacks-base"
+      />
       <ScrollReveal>
         <DigPacksOutcomes />
       </ScrollReveal>

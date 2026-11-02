@@ -30,17 +30,19 @@ export default async function SognosCarePage() {
 
   return (
     <>
-      {/* Section bar — portals into the Navbar's slot under the 80px bar. */}
-      <ProductSubNav
-        productName="SognosCare"
-        sections={content.subNav}
-        variant="bar"
-      />
       <SognoscareHero
         logoSrc={content.hero.logoSrc}
         headline={content.hero.headline}
         subtext={content.hero.subtext}
         trustLogos={trustLogos}
+      />
+      {/* Sub-nav — white, pins under the navbar after the hero. */}
+      <ProductSubNav
+        productName="SognosCare"
+        sections={content.subNav}
+        variant="sticky"
+        logoSrc="/logos/sognos-care-logo-color.svg"
+        markClass="decoration-sognos-care-base"
       />
       <SognoscareProblems />
       <SognoscareFeatures

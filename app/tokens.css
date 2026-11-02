@@ -235,6 +235,7 @@
   --sognos-muted: #68706f;
   /* Lines */
   --sognos-line: #e2e8f0;
+  --sognos-line-strong: #b7becc;
 
   /* Brand tint. Sampled from the AI-in-Healthcare eBook and the company
      brochure, where it is the dominant panel fill. Replaces bg-gray-50 on
@@ -242,9 +243,17 @@
      The rest of the family, for callouts later:
        mint #ebfbe3 · ice #f4f8f9 · cream #f5f6ee · rose #f7edf3 */
   --sognos-tint: #f9fafe;
+  /* Product ladders (2026-11-02, from docs/mockups/products): deep → dark →
+     base → accent on colour; soft → tint as light fills; ink for text on light.
+     Gradients unchanged pending sign-off on the mockup's 135° deep → base. */
   /* Product: SognosCare */
+  --sognos-care-deep: #0b1430;
   --sognos-care-dark: #0f1936;
   --sognos-care-base: #3b6fe0;
+  --sognos-care-accent: #8ea8f0;
+  --sognos-care-soft: #eef3fd;
+  --sognos-care-tint: #dfe7fb;
+  --sognos-care-ink: #2a55c4;
   --sognos-care-gradient: linear-gradient(
     to bottom right,
     #203e71,
@@ -252,8 +261,13 @@
     #122348
   );
   /* Product: SognosRoster */
-  --sognos-roster-dark: #1d96fc;
-  --sognos-roster-base: #59bbf7;
+  --sognos-roster-deep: #03112f;
+  --sognos-roster-dark: #104b90;
+  --sognos-roster-base: #1d96fc;
+  --sognos-roster-accent: #59bbf7;
+  --sognos-roster-soft: #eef8fe;
+  --sognos-roster-tint: #d9effd;
+  --sognos-roster-ink: #0b6fc4;
   --sognos-roster-gradient: linear-gradient(
     to bottom right,
     #1d96fc,
@@ -261,8 +275,13 @@
     #03112f
   );
   /* Product: SognosGenogram */
-  --sognos-genogram-dark: #250438;
+  --sognos-genogram-deep: #1a0224;
+  --sognos-genogram-dark: #3a0f45;
   --sognos-genogram-base: #91278c;
+  --sognos-genogram-accent: #d9a6d6;
+  --sognos-genogram-soft: #f8eef8;
+  --sognos-genogram-tint: #efdcee;
+  --sognos-genogram-ink: #7a1f75;
   --sognos-genogram-gradient: linear-gradient(
     to bottom right,
     #7b3fa8,
@@ -270,8 +289,13 @@
     #1a0224
   );
   /* Partner: DigPacks (brand magenta from the DigPacks mark) */
-  --sognos-digpacks-dark: #2a0517;
-  --sognos-digpacks-base: #b6065a;
+  --sognos-digpacks-deep: #2a0a22;
+  --sognos-digpacks-dark: #5d1e4c;
+  --sognos-digpacks-base: #b8166e;
+  --sognos-digpacks-accent: #e8a6c8;
+  --sognos-digpacks-soft: #fbeef5;
+  --sognos-digpacks-tint: #f3d3e4;
+  --sognos-digpacks-ink: #9a1259;
   --sognos-digpacks-gradient: linear-gradient(
     to bottom right,
     #b6065a,

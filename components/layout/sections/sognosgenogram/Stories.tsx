@@ -1,5 +1,5 @@
-import ProductCustomerStories from "@/components/layout/sections/ProductCustomerStories";
+import ProductStoryStage from "@/components/layout/sections/ProductStoryStage";
 
 export default function GenogramStories() {
-  return <ProductCustomerStories />;
+  return <ProductStoryStage product="genogram" />;
 }
