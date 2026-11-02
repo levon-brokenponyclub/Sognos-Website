@@ -68,15 +68,15 @@ export default async function SolutionPage({
     ...(content.worksWithCare ? (["care"] as const) : []),
   ];
 
-  // The three curated related solutions (Related option A grid).
-  const related: RelatedItem[] = content.relatedSlugs.flatMap((relSlug) => {
-    const relMeta = SOLUTIONS.find((s) => s.slug === relSlug);
-    const relContent = getSolutionContent(relSlug);
-    if (!relMeta || !relContent) return [];
+  // Related: every other solution, in SOLUTIONS order (2026-11-02).
+  const related: RelatedItem[] = SOLUTIONS.flatMap((rel) => {
+    const relContent =
+      rel.slug === slug ? undefined : getSolutionContent(rel.slug);
+    if (!relContent) return [];
     return [
       {
-        slug: relSlug,
-        name: relMeta.name,
+        slug: rel.slug,
+        name: rel.name,
         body: relContent.hero.subtext,
         image: relContent.hero.image,
       },

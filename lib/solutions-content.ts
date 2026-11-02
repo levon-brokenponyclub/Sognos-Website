@@ -9,7 +9,6 @@ export type SolutionContent = {
   };
   capabilities: { title: string; body: string }[];
   platform: { label: string; description: string };
-  relatedSlugs: string[];
   worksWithCare: boolean;
   worksWithRoster: boolean;
   /** Problem layout: numbered columns instead of the sticky rail. */
@@ -82,11 +81,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built on Microsoft Dynamics 365 Field Service, with Copilot AI for intelligent scheduling and Power Platform for workflow automation and reporting.",
     },
-    relatedSlugs: [
-      "customer-relationship-management",
-      "customer-service",
-      "power-platform",
-    ],
     worksWithCare: false,
     worksWithRoster: true,
   },
@@ -148,11 +142,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built on Microsoft Dynamics 365 Sales and Customer Service modules, with Copilot AI for relationship intelligence and Power Platform for workflow automation.",
     },
-    relatedSlugs: [
-      "customer-experience",
-      "customer-service",
-      "customer-insights",
-    ],
     worksWithCare: true,
     worksWithRoster: true,
   },
@@ -214,11 +203,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built on Microsoft Dynamics 365 Customer Insights, with Copilot AI for pattern recognition and Power BI for interactive dashboards and reporting.",
     },
-    relatedSlugs: [
-      "customer-relationship-management",
-      "customer-experience",
-      "power-platform",
-    ],
     worksWithCare: true,
     worksWithRoster: true,
   },
@@ -280,11 +264,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built on Microsoft Dynamics 365 Customer Service with Customer Voice for feedback, Copilot AI for interaction summarisation, and Power Automate for process enforcement.",
     },
-    relatedSlugs: [
-      "customer-relationship-management",
-      "customer-service",
-      "customer-insights",
-    ],
     worksWithCare: true,
     worksWithRoster: true,
   },
@@ -346,11 +325,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built on Microsoft Dynamics 365 Customer Service, with Copilot AI for case summarisation and suggested responses, and Power Automate for routing and escalation logic.",
     },
-    relatedSlugs: [
-      "customer-relationship-management",
-      "customer-experience",
-      "frontline",
-    ],
     worksWithCare: true,
     worksWithRoster: false,
   },
@@ -412,7 +386,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Built entirely on the Microsoft Power Platform - Power Apps, Power Automate, Power BI, and Power Pages - with Copilot AI embedded throughout for intelligent process suggestions.",
     },
-    relatedSlugs: ["frontline", "customer-relationship-management", "quick-start"],
     worksWithCare: true,
     worksWithRoster: true,
   },
@@ -474,7 +447,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
       description:
         "Delivered on Microsoft Dynamics 365 with Power Platform, configured for your sector using Sognos's proven implementation approach - reducing time, risk, and cost.",
     },
-    relatedSlugs: ["frontline", "customer-relationship-management", "customer-service"],
     worksWithCare: true,
     worksWithRoster: true,
   },
@@ -574,15 +546,6 @@ export const SOLUTIONS_CONTENT: SolutionContent[] = [
         },
       ],
     },
-    relatedSlugs: [
-      "frontline",
-      "customer-relationship-management",
-      "customer-insights",
-      "customer-experience",
-      "customer-service",
-      "power-platform",
-      "quick-start",
-    ],
     worksWithCare: true,
     worksWithRoster: true,
   },

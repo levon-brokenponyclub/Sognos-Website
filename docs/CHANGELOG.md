@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-02 — Solutions: Related lists every other solution
+
+- Every solution page's Related section now lists all the other solutions (seven), in `SOLUTIONS` order, matching Finance & Operations.
+- It is derived in `solutions/[slug]/page.tsx`. The curated `relatedSlugs` field is removed from `SolutionContent` and all eight entries.
+
 ## 2026-11-02 — Solutions: Finance & Operations (route + Inspector port)
 
 - **New route** `/solutions/finance-operations`. It was live on prod but missing on redesign, where it 404'd.
