@@ -46,7 +46,17 @@ const STYLE: Record<
   },
 };
 
-function ParaformPanel({ product, name }: { product: WorksProduct; name: string }) {
+// Exported for the homepage product stack, which sizes it with `className`
+// (aspect-square there; the fixed 290px here by default).
+export function ParaformPanel({
+  product,
+  name,
+  className = "h-[290px] rounded px-5 pt-7",
+}: {
+  product: WorksProduct;
+  name: string;
+  className?: string;
+}) {
   const { logo, photo, deep, mid, Visual } = STYLE[product];
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.35 });
@@ -56,7 +66,7 @@ function ParaformPanel({ product, name }: { product: WorksProduct; name: string 
       ref={ref}
       // Frosted UI: the visuals' white cards and hairlines turn translucent
       // over the photo.
-      className="relative flex h-[290px] w-full shrink-0 flex-col items-center gap-6 overflow-hidden rounded px-5 pt-7 [&_.bg-white]:bg-white/75 [&_.bg-white]:backdrop-blur-md [&_.border-sognos-line]:border-white/60"
+      className={`relative flex w-full shrink-0 flex-col items-center gap-6 overflow-hidden ${className} [&_.bg-white]:bg-white/75 [&_.bg-white]:backdrop-blur-md [&_.border-sognos-line]:border-white/60`}
       style={{
         background: `linear-gradient(160deg, color-mix(in srgb, ${deep} 55%, transparent), color-mix(in srgb, ${mid} 35%, transparent)), url(${photo}) center / cover`,
       }}

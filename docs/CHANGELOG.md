@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-11-02 — Home hero + product stack (hero-stack mockup port)
+
+- **Mockup:** `docs/mockups/home/hero-stack.html`, from the new generator `_generators/build_home_stack.py` (after angellist.com).
+- **Hero** (`Hero.tsx`):
+  - Plain navy; the blur glow layers are removed.
+  - The H1's second line is the accent colour, at `md:text-6xl`.
+  - The secondary CTA is now "Talk to Sales" (`/contact`), replacing "Explore products".
+- **Trust row** (`LogoStrip` `hero` variant, rewritten):
+  - The title and the mobile marquee are dropped.
+  - A "4.9 / Rated by operations leaders" stat cell (placeholder) comes before five logos.
+  - It is a 2/3/6-column grid, with hairlines from `lg`.
+- **Product stack** (new `home/HomeProductStack.tsx`):
+  - Three full-width cards with rounded tops overlap on the hero navy, alternating white and tint.
+  - Each card has a dot label, H2 (`md:text-4xl`), an `text-lg` lede, Explore and Book a Demo, and three feature links (to the product page for now).
+  - On the right is a square Paraform panel: photo, white logo and motion graphic.
+  - The covered card drifts at half speed (`.home-stack-card` in `globals.css`, scroll-driven, off for reduced motion).
+- **`ProductWorksCard`:** `ParaformPanel` is now exported, with a `className` for size and radius (290px by default, unchanged).
+- **Radius exception:** the cards use `rounded-t-3xl md:rounded-t-[40px]` and the panel `rounded-xl`, mirroring the mockup and outside the `rounded`/`rounded-lg` rule.
+- **Now unused** (kept for now): `home/HomeProductColumns.tsx`, `/images/home/*-blur-dp.avif`.
+
 ## 2026-11-02 — Industries challenge colours
 
 - **Challenge:** the rules are now `white/15` (they were solid white) and the numerals are the brand accent (they were white), matching the reference.

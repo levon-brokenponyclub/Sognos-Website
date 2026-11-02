@@ -1,5 +1,5 @@
 import Hero from "@/components/layout/sections/Hero";
-import HomeProductColumns from "@/components/layout/sections/home/HomeProductColumns";
+import HomeProductStack from "@/components/layout/sections/home/HomeProductStack";
 import LogoStrip from "@/components/layout/sections/LogoStrip";
 import HowSognosWorks from "@/components/layout/sections/HowSognosWorks";
 // import ProductsSection from "@/components/layout/sections/ProductsSection"; // parked — coming back after Solutions Pass
@@ -84,14 +84,14 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Home — Inspector port (2026-11-02). Hero · navy, with the trust
-          strip passed as a child (LogoStrip is an async Server Component and
-          Hero a Client Component). */}
+      {/* Home — hero-stack mockup port (2026-11-02). Hero · navy, with the
+          trust row passed as a child (LogoStrip is an async Server Component
+          and Hero a Client Component). */}
       <Hero>
         <LogoStrip variant="hero" />
       </Hero>
-      {/* Product cards · D expanding columns (navy-deep) */}
-      <HomeProductColumns />
+      {/* Product stack · stacking cards on the hero's navy (white / tint) */}
+      <HomeProductStack />
       {/* How Sognos Works · current deck (tint) */}
       <HowSognosWorks />
       {/* <ProductsSection /> — parked pending review, coming back after Solutions Pass */}

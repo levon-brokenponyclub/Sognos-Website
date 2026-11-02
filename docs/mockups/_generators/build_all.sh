@@ -17,4 +17,5 @@ run "$G/build_hsc_insp.py" $M/sognoscare $M/frontline $M/health-social-care $M/p
 run "$G/build_kh_insp.py" $M/sognoscare $M/knowledge-hub $M/products
 run "$G/build_cs_insp.py" $M/sognoscare $M/customer-stories $M/products
 run "$G/build_home_insp.py" $M/sognoscare $M/home $M/products
+run "$G/build_home_stack.py"                              # home/hero-stack.html (angellist.com study)
 echo "done"

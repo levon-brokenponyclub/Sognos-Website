@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -22,15 +21,6 @@ type HeroProps = {
   children?: React.ReactNode;
 };
 
-// Glow artwork anchored to the foot of the hero, back to front. Intrinsic
-// sizes are the files' own — they must stay in step, or `next/image` reserves
-// the wrong aspect ratio and the layers land at different heights.
-const BLUR_LAYERS = [
-  { src: "/images/home/bottom-blur-dp.avif", width: 1335, height: 612, z: "z-0" },
-  { src: "/images/home/middle-blur-dp.avif", width: 1360, height: 337, z: "z-20" },
-  { src: "/images/home/top-blur-dp.avif", width: 1335, height: 268, z: "z-30" },
-] as const;
-
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   show: (i: number) => ({
@@ -44,78 +34,20 @@ const fadeUp = {
   }),
 };
 
-// Three glow layers stacked at the foot of the hero, each resolving out of a
-// blur as it rises — the reference's artwork, given the entrance its own hero
-// does not animate (see the note in the changelog).
-//
-// `isolate` matters: the wrapper is `absolute` with no z-index, so it forms no
-// stacking context of its own, and a `z-30` layer inside it would otherwise
-// outrank the `z-10` content in the section's context and sit over the
-// headline. Isolating contains the layer z-values to this subtree.
-function HeroBlurLayers() {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 isolate z-0 flex items-end justify-center"
-    >
-      {BLUR_LAYERS.map((layer, i) => (
-        <motion.div
-          key={layer.src}
-          className={`absolute inset-x-0 bottom-0 ${layer.z}`}
-          initial={
-            prefersReducedMotion
-              ? false
-              : { opacity: 0, y: 40, filter: "blur(24px)" }
-          }
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{
-            duration: 1.2,
-            // Back to front, and behind the headline — the copy lands first
-            // and the glow resolves under it.
-            delay: 0.15 + i * 0.12,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          {/* `unoptimized`: these are already AVIF at 12–34KB, so there is
-              nothing for the optimizer to win — and two things to lose. It
-              re-encodes to JPEG for any client that does not advertise AVIF or
-              WebP, and these glows carry an alpha channel, so that fallback
-              would flatten them to a solid box. Re-encoding a 1335×612 AVIF is
-              also slow enough on a cold cache to stall the hero's first paint.
-              Serving the file as authored avoids both. */}
-          <Image
-            src={layer.src}
-            alt=""
-            width={layer.width}
-            height={layer.height}
-            draggable={false}
-            unoptimized
-            className="h-auto w-full"
-          />
-        </motion.div>
-      ))}
-
-      {/* Sits between the bottom layer and the two above it, fading the widest
-          glow back into the section rather than letting it stop at the edge. */}
-      <div className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-sognos-navy to-transparent" />
-    </div>
-  );
-}
-
 export default function Hero({
   // Two lines from `md`; below that the headline wraps naturally so it does
   // not break mid-measure at 36-48px.
   headline = (
     <>
       <span className="md:block">Your entire service operation, </span>
-      <span className="md:block">run on one intelligent platform.</span>
+      <span className="text-sognos-blue-accent md:block">
+        run on one intelligent platform.
+      </span>
     </>
   ),
   subtext = "Sognos helps service organisations unify demand, workforce, and delivery on Microsoft Dynamics 365 and Copilot-powered workflows.",
   primaryCTA = { name: "Book a Demo" },
-  secondaryCTA = { name: "Explore products", href: "/products" },
+  secondaryCTA = { name: "Talk to Sales", href: "/contact" },
   children,
 }: HeroProps) {
   const { openModal } = useBookDemo();
@@ -143,8 +75,7 @@ export default function Hero({
   );
 
   return (
-    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-0 md:pt-44">
-      <HeroBlurLayers />
+    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-16 md:pt-48">
 
       <motion.div
         ref={contentRef}
@@ -156,7 +87,7 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-white text-balance sm:text-5xl md:text-6xl"
+          className="font-heading text-4xl font-normal leading-[1.05] tracking-[-0.01em] text-white text-balance sm:text-5xl md:text-6xl"
         >
           {headline}
         </motion.h1>
@@ -165,7 +96,7 @@ export default function Hero({
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mt-4 max-w-2xl text-lg leading-relaxed text-white/80 text-pretty md:mt-5"
+          className="mt-4 max-w-2xl text-lg leading-relaxed text-white/85 text-pretty md:mt-5"
         >
           {subtext}
         </motion.p>
@@ -194,9 +125,8 @@ export default function Hero({
       </motion.div>
 
       {/* Trust strip, inside the hero rather than a sibling below it. Sits
-          outside the `max-w-7xl` block above because it brings its own
-          container, and above the blur layers' `z-10` gradient so it is not
-          washed out by it. */}
+          outside the copy block above because it brings its own container,
+          and stays still while the copy fades on scroll. */}
       {children && <div className="relative z-10">{children}</div>}
     </section>
   );

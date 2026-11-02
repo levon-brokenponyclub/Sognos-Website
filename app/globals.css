@@ -345,6 +345,31 @@
   }
 }
 
+/* Home product stack (HomeProductStack.tsx) — as a card leaves the viewport
+   it drifts down at half scroll speed, so the next card visibly slides over
+   it. Scroll-driven; browsers without `view()` timelines get a plain stack.
+   Gated on `animation-range`, not `animation-timeline: view()`: the build
+   drops a `@supports` block whose condition holds `view()`. */
+@supports (animation-range: 0% 100%) {
+  .home-stack-card {
+    animation: home-stack-slow linear both;
+    animation-timeline: view();
+    animation-range: exit 0% exit 100%;
+  }
+}
+
+@keyframes home-stack-slow {
+  to {
+    transform: translateY(50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-stack-card {
+    animation: none;
+  }
+}
+
 /* Trust marquee */
 .trust-marquee-track {
   display: flex;

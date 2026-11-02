@@ -22,10 +22,13 @@ function resolveLogoSrc(logo: Logo) {
     : logo.src;
 }
 
-// `hero` — the homepage variant (docs/mockups/home): title as a paragraph
-// (the hero's product cards hold the h2s), a 5-cell row the width of the card
-// grid, and an edge-faded marquee below `md`. `default` is the solutions page
-// strip, unchanged.
+// Stat that leads the hero trust row. Placeholder copy from the mockup —
+// confirm the figure and its source before launch.
+const HERO_STAT = { value: "4.9", label: "Rated by operations leaders" };
+
+// `hero` — the homepage variant (docs/mockups/home/hero-stack.html): a stat
+// cell then the logos, six cells split by hairlines from `lg`. `default` is
+// the solutions page strip, unchanged.
 export default async function LogoStrip({
   variant = "default",
 }: {
@@ -39,54 +42,32 @@ export default async function LogoStrip({
   ).slice(0, LOGO_LIMIT);
 
   if (variant === "hero") {
-    const cell = (logo: Logo, src: string) => (
-      <Image
-        src={src}
-        alt={logo.alt}
-        width={150}
-        height={40}
-        className="h-auto max-h-9 w-auto max-w-full object-contain brightness-0 invert"
-      />
-    );
     const resolved = logos
       .map((logo) => ({ logo, src: resolveLogoSrc(logo) }))
       .filter((l): l is { logo: Logo; src: string } => Boolean(l.src));
 
     return (
       <section aria-label="Trusted organisations" className="w-full">
-        <div className="mx-auto max-w-7xl px-6 py-16 text-center md:py-24">
-          <p className="font-heading text-2xl font-normal leading-[1.25] tracking-[-0.01em] text-white md:text-[1.75rem]">
-            {LOGO_STRIP_TITLE}
-          </p>
-          <ul className="mt-10 hidden grid-cols-5 md:grid">
-            {resolved.map(({ logo, src }, index) => (
-              <li
-                key={logo.alt + index}
-                className={`flex h-20 items-center justify-center px-6 lg:px-10${index > 0 ? " border-l border-white/10" : ""}`}
-              >
-                {cell(logo, src)}
-              </li>
-            ))}
-          </ul>
-          {/* Mobile: duplicated track on the shared 0 → -50% keyframe. */}
-          <div className="relative -mx-6 mt-8 overflow-hidden md:hidden">
-            <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-sognos-navy to-transparent" />
-            <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-sognos-navy to-transparent" />
-            <ul className="flex w-max animate-[trust-marquee-scroll_28s_linear_infinite] motion-reduce:animate-none">
-              {[0, 1].map((copy) =>
-                resolved.map(({ logo, src }, index) => (
-                  <li
-                    key={`${copy}-${logo.alt}-${index}`}
-                    aria-hidden={copy === 1 || undefined}
-                    className="flex h-16 w-40 shrink-0 items-center justify-center border-l border-white/10 px-6"
-                  >
-                    {cell(logo, src)}
-                  </li>
-                )),
-              )}
-            </ul>
-          </div>
-        </div>
+        <ul className="mx-auto mt-20 grid max-w-6xl grid-cols-2 items-center gap-y-8 px-6 sm:grid-cols-3 md:mt-28 lg:grid-cols-6">
+          <li className="flex flex-col items-center justify-center px-4 text-center">
+            <span className="font-heading text-4xl text-white/85">{HERO_STAT.value}</span>
+            <span className="mt-1 text-sm text-white/60">{HERO_STAT.label}</span>
+          </li>
+          {resolved.map(({ logo, src }, index) => (
+            <li
+              key={logo.alt + index}
+              className="flex h-20 items-center justify-center border-white/20 px-6 lg:border-l"
+            >
+              <Image
+                src={src}
+                alt={logo.alt}
+                width={150}
+                height={40}
+                className="h-auto max-h-10 w-auto max-w-full object-contain opacity-70 brightness-0 invert"
+              />
+            </li>
+          ))}
+        </ul>
       </section>
     );
   }
