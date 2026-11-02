@@ -31,3 +31,15 @@ export const FRONTLINE_PLATFORM_CARDS = [
     body: "Power Platform for workflow automation and reporting.",
   },
 ] as const;
+
+// Other solutions reuse the Frontline platform graphics as placeholders: the
+// first card names the solution's own platform, the Copilot line is neutral.
+export function platformCards(slug: string, label: string) {
+  const [d365, copilot, power] = FRONTLINE_PLATFORM_CARDS;
+  if (slug === FRONTLINE_SLUG) return [d365, copilot, power];
+  return [
+    { ...d365, title: label, body: `Built on Microsoft ${label}.` },
+    { ...copilot, body: "Copilot AI built into everyday work." },
+    power,
+  ];
+}

@@ -51,7 +51,9 @@ function ParaformPanel({ product, name }: { product: ProductKey; name: string })
       ref={ref}
       // Frosted UI: the visuals' white cards and hairlines turn translucent
       // over the photo.
-      className="relative flex w-full flex-col items-center gap-6 overflow-hidden rounded px-5 pt-7 pb-8 [&_.bg-white]:bg-white/75 [&_.bg-white]:backdrop-blur-md [&_.border-sognos-line]:border-white/60"
+      // Fixed height so every card's copy lines up, whatever the graphic
+      // (the Copilot draft types and grows; sized to its full text).
+      className="relative flex h-[460px] w-full shrink-0 flex-col items-center gap-6 overflow-hidden rounded px-5 pt-7 pb-8 md:h-[540px] lg:h-[440px] [&_.bg-white]:bg-white/75 [&_.bg-white]:backdrop-blur-md [&_.border-sognos-line]:border-white/60"
       style={{
         background: `linear-gradient(160deg, color-mix(in srgb, ${deep} 55%, transparent), color-mix(in srgb, ${mid} 35%, transparent)), url(${photo}) center / cover`,
       }}

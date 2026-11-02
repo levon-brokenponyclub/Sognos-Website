@@ -4,7 +4,6 @@ import Image from "next/image";
 import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
-import PlatformLogoRow from "@/components/layout/sections/shared/PlatformLogoRow";
 import {
   LAYOUT,
   TYPE,
@@ -18,7 +17,7 @@ import HeroCapabilityCard from "@/components/layout/sections/solutions/HeroCapab
 import {
   FRONTLINE_HERO_HEADING,
   FRONTLINE_HERO_STATUS,
-  FRONTLINE_PLATFORM_CARDS,
+  platformCards,
   FRONTLINE_SLUG,
 } from "@/components/layout/sections/solutions/frontline";
 import SolutionProblem from "@/components/layout/sections/solutions/SolutionProblem";
@@ -58,8 +57,8 @@ export default async function SolutionPage({
   if (!content || !meta) notFound();
 
   // Layout is shared by every solution (approved Frontline mockup,
-  // docs/mockups/frontline/); the motion graphics and illustrative copy are
-  // Frontline's own until the other solutions get theirs.
+  // docs/mockups/frontline/). The Frontline motion graphics stand in for the
+  // other solutions until they get their own; the hero card stays Frontline's.
   const isFrontline = slug === FRONTLINE_SLUG;
 
   const worksWith = [
@@ -183,9 +182,9 @@ export default async function SolutionPage({
               {content.capabilities.map((cap, i) => (
                 <article
                   key={cap.title}
-                  className={`flex flex-col gap-5 rounded-lg bg-white ${isFrontline ? "p-3" : "p-3 pt-6"}`}
+                  className="flex flex-col gap-5 rounded-lg bg-white p-3"
                 >
-                  {isFrontline && <FrontlineCapabilityVisual index={i} />}
+                  <FrontlineCapabilityVisual index={i} />
                   <div className="px-3 pb-3">
                     <h3 className={`${TYPE.h3Small} text-sognos-heading`}>
                       {cap.title}
@@ -202,7 +201,7 @@ export default async function SolutionPage({
       </section>
 
       {/* Platform — option C: translucent cards on navy, label in the rail.
-          Frontline adds three cards; the others show the logo row. */}
+          Frontline graphics stand in for the other solutions. */}
       <ScrollReveal>
         <section className={`bg-sognos-navy ${LAYOUT.section}`}>
           <div className="mx-auto max-w-7xl px-6">
@@ -221,43 +220,35 @@ export default async function SolutionPage({
                     {content.platform.description}
                   </p>
                 </div>
-                {isFrontline ? (
-                  <div
-                    className={`${LAYOUT.gap} grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-4`}
-                  >
-                    {FRONTLINE_PLATFORM_CARDS.map((card, i) => (
-                      <article
-                        key={card.title}
-                        className="flex flex-col gap-5 rounded border border-white/10 bg-white/5 p-5"
-                      >
-                        <div aria-hidden="true">
-                          <FrontlinePlatformVisual index={i} />
-                        </div>
-                        <div>
-                          <Image
-                            src={card.logo}
-                            alt=""
-                            width={24}
-                            height={24}
-                            className="h-6 w-auto"
-                          />
-                          <h3 className={`mt-4 ${TYPE.h3Small} text-white`}>
-                            {card.title}
-                          </h3>
-                          <p className={`mt-1 ${TYPE.small} text-white/75`}>
-                            {card.body}
-                          </p>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div
-                    className={`${LAYOUT.gap} border-t border-sognos-navy-darkest pt-10`}
-                  >
-                    <PlatformLogoRow variant="dark" />
-                  </div>
-                )}
+                <div
+                  className={`${LAYOUT.gap} grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-4`}
+                >
+                  {platformCards(slug, content.platform.label).map((card, i) => (
+                    <article
+                      key={card.title}
+                      className="flex flex-col gap-5 rounded border border-white/10 bg-white/5 p-5"
+                    >
+                      <div aria-hidden="true">
+                        <FrontlinePlatformVisual index={i} />
+                      </div>
+                      <div>
+                        <Image
+                          src={card.logo}
+                          alt=""
+                          width={24}
+                          height={24}
+                          className="h-6 w-auto"
+                        />
+                        <h3 className={`mt-4 ${TYPE.h3Small} text-white`}>
+                          {card.title}
+                        </h3>
+                        <p className={`mt-1 ${TYPE.small} text-white/75`}>
+                          {card.body}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

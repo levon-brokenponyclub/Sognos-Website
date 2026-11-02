@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-02 — Solutions: capabilities + platform on all solutions, Works with heights
+
+- **Capabilities:** every solution now shows the Frontline capability motion graphics as placeholders, cycling by index. Previously only Frontline had graphics.
+- **Platform C:** every solution now shows the three cards with the Frontline platform graphics as placeholders, via `platformCards()` in `solutions/frontline.ts`.
+  - Card 1 is titled with the solution's own `platform.label` ("Built on Microsoft {label}.").
+  - The Copilot card uses neutral copy, "Copilot AI built into everyday work.". This is placeholder copy.
+  - The Power Platform card is shared.
+  - The logo-row fallback is gone, so `shared/PlatformLogoRow.tsx` now has no callers.
+- **Works with:** the Paraform panels now have a fixed height (460 / 540 / 440px at mobile / md / lg). Every card's accent bar, tagline and link line up, and the typing Copilot draft no longer pushes Care's copy down.
+- **Checks:**
+  - `tsc` and lint are clean, and all 7 solution routes return 200.
+  - With the Copilot text at full length, both panels fit at 1440px (bottoms 295 / 384 of 440), 820px (271 / 447 of 540) and 375px (293 / 384 of 460).
+  - CRM shows 6 capabilities, and its first Platform card is titled "Dynamics 365 Sales & Customer Service".
+
 ## 2026-11-02 — Solutions: Problem B (sticky rail)
 
 - **New `solutions/SolutionProblem.tsx`** on navy `#152248`:
