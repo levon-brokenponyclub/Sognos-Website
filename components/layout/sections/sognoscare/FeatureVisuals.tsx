@@ -176,7 +176,7 @@ const AUDIT = [
   ["Progress note signed", "P. Shah · 10:16:05"],
   ["Document versioned", "Service agreement v2 · 10:16:40"],
 ] as const;
-function Compliance({ show, still }: VisualProps) {
+export function Compliance({ show, still }: VisualProps) {
   const head = useCycle(AUDIT.length, show, still, 2600);
   const rows = [0, 1, 2, 3].map((k) => AUDIT[(head + AUDIT.length - k) % AUDIT.length]);
   return (
@@ -215,7 +215,7 @@ function Compliance({ show, still }: VisualProps) {
   );
 }
 
-function Reporting({ show, still }: VisualProps) {
+export function Reporting({ show, still }: VisualProps) {
   const kpis: [string, number, string][] = [
     ["Participants", 1284, ""],
     ["Hours delivered", 9640, ""],

@@ -1,5 +1,69 @@
 # Changelog
 
+## 2026-11-02 — Industries challenge: Outcomes layout
+
+- **Challenge**, rebuilt to match the DigPacks Outcomes section on navy:
+  - Label, heading and lede in a max-w-3xl column.
+  - The three challenges in a 3-column row, each under a 2px white rule with a large numeral (01–03, `text-4xl`/`5xl`), its title and body.
+  - The cards and the rail are gone.
+- **Checks:** `tsc` and lint are clean, and all 5 industry routes return 200.
+
+## 2026-11-02 — Industries polish pass
+
+- **How Sognos helps:**
+  - The rail is gone; the label now sits above the heading.
+  - Each tab is a bordered white card that grows, so the list runs the full height of the 480px `#edf6ff` panel (`lg`). At 1440px the list and the panel are both 480px.
+- **Platform:**
+  - Moved to `bg-sognos-navy`, without the rail.
+  - The product cards use the new `ProductWorksCard tone="dark"`: `white/5` fill and border, with white text.
+  - The Powered-by row is `white/5`, with the pill at `white/5`. It now uses the white-text partner logo, which is legible on dark.
+- **Other industries:** the rail is gone. A 48px statement heading (`md:text-5xl`) and a one-line description (the homepage industries line) are added.
+- **Customer stories:** hidden for now. `IndustryCustomerStories` stays in the codebase.
+- **Section order:** white, navy, tint, accent, navy. The footer CTA strip follows.
+- **Checks:**
+  - `tsc` and lint are clean. The `PlatformLogoRow` warnings are pre-existing.
+  - All 5 industry routes return 200.
+- **Flag:** the white lede on the accent is 3.1:1, which is below AA for 16–18px text.
+
+## 2026-11-02 — Industries port: challenge, how, other industries, platform
+
+- **Challenge:** a statement band on navy with the rail (`IndustryChallengeStack`). The header is followed by three numbered cards at `bg-white/5`.
+- **How Sognos helps A · Tabs** on tint with the rail (`IndustryHowTabs`, rewritten):
+  - A vertical tab list (5) sits beside a graphic panel (7) on `#edf6ff`.
+  - The active tab shows its copy and a 6s progress bar, then auto-advances. It pauses on hover or keyboard focus, and arrow keys move between tabs.
+  - The graphics are the Care Compliance / Roster Skills matching / Care Reporting visuals, now exported, cycled by tab. They are illustrative.
+- **Other industries D · Slider** on accent `#1d96fc` with the rail. This is the new `IndustryOthersSlider`; the homepage `IndustrySection` is untouched.
+  - White cards show the industry hero photo with a wash and a hairline frame, a sector rule, the name, the description and Explore. White arrow buttons scroll the track.
+  - The mockup's per-card stat is left out because it is illustrative.
+- **Platform B** on navy-dark with the rail (`IndustryPlatformSection`, rewritten):
+  - The three products use the Solutions "Works with" cards, now shared as `shared/ProductWorksCard.tsx`. `SolutionWorksWith` uses it too.
+  - Genogram uses its Snapshots graphic.
+  - Below the cards is one tagline + Powered-by row.
+- **Checks:**
+  - `tsc` and lint are clean. The only warnings are pre-existing ones in the unused `PlatformLogoRow`.
+  - All 5 industries, 2 solution pages and `/` return 200.
+  - At 1440px on HSC: the sections read white, navy, tint, accent, white, navy-dark. There are 3 tabs and a 589×370 panel, 4 slider cards, and the platform cards are 330×485 with 290px panels.
+- **Flag:** white 18px rail text on the accent is 3.1:1, which is below AA for normal text.
+
+## 2026-11-02 — Solutions hero white + 6xl, Works with panels 290px
+
+- **Solutions hero C:** now on white, and the H1 is capped at `md:text-6xl`.
+- **Works with panels:** fixed at 290px at every width. The logo and graphic sit top-aligned, and taller graphics (the typing Copilot draft) crop at the panel foot, as in the reference.
+
+## 2026-11-02 — Solutions hero C + Industries hero A
+
+- **Solutions hero → C · Editorial** on the brand tint:
+  - The headline (`md:text-7xl`) sits in 8 columns beside the solution name, its tagline and an index of the first four capabilities (4 columns).
+  - Below that is a 21:8 photo band with the tagline overlaid.
+  - The tagline is Frontline's own line; the other solutions use their description.
+- **Industries hero → A · Split:** this is the earlier Solutions split, extracted to `shared/SplitHero.tsx`.
+  - The floating card is the live index (`shared/HeroCapabilityCard.tsx`, moved from `solutions/`, with the status line now optional), filled from the first four "How Sognos helps" items.
+  - The breadcrumb now links to `/industries`; it used to link to `/solutions`.
+- **Removed:** `FRONTLINE_HERO_STATUS`.
+- **Checks:**
+  - `tsc` and lint are clean, and all 7 solution and 5 industry routes return 200.
+  - Not measured in a browser.
+
 ## 2026-11-02 — Solutions: capabilities + platform on all solutions, Works with heights
 
 - **Capabilities:** every solution now shows the Frontline capability motion graphics as placeholders, cycling by index. Previously only Frontline had graphics.

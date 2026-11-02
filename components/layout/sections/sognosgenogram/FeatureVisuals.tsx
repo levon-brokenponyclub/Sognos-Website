@@ -242,7 +242,7 @@ function CaseRecord({ show }: VisualProps) {
 
 // ── Historical snapshots ────────────────────────────────────────────────────
 const YEARS = ["2019", "2022", "2025", "2026"];
-function Snapshots({ show, still }: VisualProps) {
+export function Snapshots({ show, still }: VisualProps) {
   const at = useCycle(YEARS.length, show, still, 1500, 2);
   return (
     <div className="w-full max-w-md space-y-3 text-left">

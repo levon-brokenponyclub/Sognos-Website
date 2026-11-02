@@ -1,50 +1,51 @@
-import type { ReactNode } from "react";
+import SectionLabel from "@/components/ui/SectionLabel";
+import { LAYOUT, TYPE } from "@/components/layout/sections/sognoscare/typeScale";
+
+// The challenge — on navy, laid out like the DigPacks Outcomes section
+// (2026-11-02): label, heading and lede, then the challenges in three columns,
+// each under a 2px white rule with a large numeral, title and body.
 
 type Challenge = { title: string; body: string };
 
 export default function IndustryChallengeStack({
   challenges,
-  heading,
+  industryName,
   description,
 }: {
   challenges: readonly Challenge[];
-  heading: ReactNode;
+  industryName: string;
   description: string;
 }) {
   return (
-    <div>
-      <div className="mx-auto max-w-4xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-sognos-blue-accent">
-          The Challenge
-        </p>
-        <h2 className="mt-6 font-heading text-4xl font-normal leading-tight tracking-tight text-white text-balance lg:text-4xl">
-          {heading}
-        </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">
-          {description}
-        </p>
-      </div>
+    <section className={`bg-sognos-navy text-white ${LAYOUT.section}`}>
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex max-w-3xl flex-col gap-4">
+          <SectionLabel tone="dark">The challenge</SectionLabel>
+          <h2 className={`${TYPE.h2} text-white`}>
+            What makes {industryName} hard to run
+          </h2>
+          <p className={`${TYPE.lede} text-white/75`}>{description}</p>
+        </div>
 
-      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-24 lg:grid-cols-3">
-        {challenges.map((challenge, i) => (
-          <div
-            key={i}
-            className="flex min-h-[255px] flex-col rounded-lg bg-white/[0.055] p-8 sm:min-h-[300px] lg:min-h-[340px]"
-          >
-            <p className="font-mono text-base leading-relaxed text-sognos-blue-accent">
-              {String(i + 1).padStart(2, "0")}
-            </p>
-            <div className="mt-auto">
-              <h3 className="font-heading text-xl font-medium leading-tight tracking-tight text-white lg:text-2xl">
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {challenges.map((challenge, i) => (
+            <div key={challenge.title} className="border-t-2 border-white pt-5">
+              <p
+                aria-hidden="true"
+                className="font-heading text-4xl tabular-nums text-white md:text-5xl"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 className={`mt-4 ${TYPE.h3Small} text-white md:text-xl`}>
                 {challenge.title}
               </h3>
-              <p className="mt-3 text-base leading-relaxed text-white/70 lg:text-lg">
+              <p className={`mt-2 ${TYPE.small} text-white/75`}>
                 {challenge.body}
               </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

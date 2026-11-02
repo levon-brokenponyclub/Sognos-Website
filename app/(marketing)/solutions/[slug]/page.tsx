@@ -13,10 +13,8 @@ import {
   FrontlineCapabilityVisuals,
   FrontlinePlatformVisual,
 } from "@/components/layout/sections/solutions/FrontlineVisuals";
-import HeroCapabilityCard from "@/components/layout/sections/solutions/HeroCapabilityCard";
 import {
   FRONTLINE_HERO_HEADING,
-  FRONTLINE_HERO_STATUS,
   platformCards,
   FRONTLINE_SLUG,
 } from "@/components/layout/sections/solutions/frontline";
@@ -60,6 +58,8 @@ export default async function SolutionPage({
   // docs/mockups/frontline/). The Frontline motion graphics stand in for the
   // other solutions until they get their own; the hero card stays Frontline's.
   const isFrontline = slug === FRONTLINE_SLUG;
+  // Hero tagline: Frontline's own line, otherwise the solution description.
+  const heroTagline = isFrontline ? FRONTLINE_HERO_HEADING : meta.description;
 
   const worksWith = [
     ...(content.worksWithRoster ? (["roster"] as const) : []),
@@ -83,11 +83,12 @@ export default async function SolutionPage({
 
   return (
     <>
-      {/* Hero — option A: split 6 / 6, photo under a navy → accent wash with
-          a floating card (the header starts transparent over it). */}
+      {/* Hero — option C "Editorial" on white (header starts
+          transparent over it): oversized headline (8) beside the solution's
+          name, tagline and a capability index (4), then a wide photo band. */}
       <section className="bg-white pt-36 pb-20 md:pt-44 md:pb-28">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-12 lg:gap-16">
-          <div className="flex flex-col items-start gap-5 lg:col-span-6">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-12 lg:gap-16">
+          <div className="flex flex-col items-start gap-6 lg:col-span-8">
             <SectionLabel>
               <Link
                 href="/solutions"
@@ -100,14 +101,14 @@ export default async function SolutionPage({
               </span>
               {meta.name}
             </SectionLabel>
-            <h1 className="font-heading text-5xl font-normal leading-[1.05] tracking-[-0.02em] text-balance text-sognos-heading md:text-6xl">
+            <h1 className="font-heading text-5xl font-normal leading-[1.02] tracking-[-0.03em] text-balance text-sognos-heading md:text-6xl">
               {content.hero.headline}
             </h1>
             <p className={`${TYPE.heroSub} text-sognos-body`}>
               {content.hero.subtext}
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-3">
-              <SolutionHeroDemoButton className="min-h-11 bg-sognos-heading px-7 py-3.5 transition-colors hover:bg-sognos-blue-accent hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent" />
+            <div className="flex flex-wrap items-center gap-3">
+              <SolutionHeroDemoButton className="min-h-11 px-7 py-3.5 transition-colors hover:bg-sognos-heading hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent" />
               <Link
                 href="/contact"
                 className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-base font-medium text-sognos-heading transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
@@ -116,42 +117,57 @@ export default async function SolutionPage({
               </Link>
             </div>
           </div>
-          <div className="lg:col-span-6">
-            <div className="relative aspect-[4/5] max-h-[540px] w-full overflow-hidden rounded-lg bg-sognos-tint lg:aspect-auto lg:h-[540px]">
-              <Image
-                src={content.hero.image}
-                alt={`${meta.name} preview`}
-                fill
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover"
-                priority
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(160deg, color-mix(in srgb, var(--sognos-navy-dark) 55%, transparent), color-mix(in srgb, var(--sognos-blue-accent) 30%, transparent))",
-                }}
-              />
-              {isFrontline ? (
-                <HeroCapabilityCard
-                  name={meta.name}
-                  heading={FRONTLINE_HERO_HEADING}
-                  items={content.capabilities.slice(0, 4).map((cap, i) => ({
-                    title: cap.title,
-                    status: FRONTLINE_HERO_STATUS[i] ?? "",
-                  }))}
-                />
-              ) : (
-                <div className="absolute inset-x-4 bottom-4 rounded border border-sognos-line bg-white p-4 sm:inset-x-auto sm:left-5 sm:w-80 lg:bottom-5 lg:p-5">
-                  <p className="text-xs text-sognos-muted">{meta.name}</p>
-                  <p className="mt-1 font-heading text-lg text-sognos-heading">
-                    {meta.description}
-                  </p>
-                </div>
-              )}
-            </div>
+          <div className="flex flex-col justify-end gap-4 lg:col-span-4">
+            <p className="font-heading text-2xl text-sognos-heading">
+              {meta.name}
+            </p>
+            <p className="text-sm text-sognos-muted">{heroTagline}</p>
+            <ul className="border-t border-sognos-line">
+              {content.capabilities.slice(0, 4).map((cap, i) => (
+                <li key={cap.title}>
+                  <Link
+                    href="#capabilities"
+                    className="group flex min-h-12 items-center justify-between gap-4 border-b border-sognos-line py-3 text-sognos-heading focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sognos-blue-accent"
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className="text-xs tabular-nums text-sognos-muted">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {cap.title}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="text-sognos-blue-accent transition-transform group-hover:translate-x-0.5"
+                    >
+                      &rarr;
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="relative mx-auto mt-16 max-w-7xl px-6">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-lg md:aspect-[21/8]">
+            <Image
+              src={content.hero.image}
+              alt={`${meta.name} preview`}
+              fill
+              sizes="(min-width: 1280px) 1232px, 100vw"
+              className="object-cover"
+              priority
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, color-mix(in srgb, var(--sognos-navy-dark) 70%, transparent), transparent 60%)",
+              }}
+            />
+            <p className="absolute bottom-6 left-6 max-w-sm font-heading text-2xl text-white md:bottom-10 md:left-10 md:text-3xl">
+              {heroTagline}
+            </p>
           </div>
         </div>
       </section>

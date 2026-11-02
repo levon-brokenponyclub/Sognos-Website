@@ -92,7 +92,7 @@ function Scheduling({ show }: VisualProps) {
   );
 }
 
-function SkillsMatching({ show, still }: VisualProps) {
+export function SkillsMatching({ show, still }: VisualProps) {
   const items = ["Manual handling certificate", "First aid · current", "Client prefers female worker", "Available 9:00 - 11:00"];
   const step = useRun(items.length, show, still);
   return (

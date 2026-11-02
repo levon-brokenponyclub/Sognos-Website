@@ -1,15 +1,12 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
-import Image from "next/image";
 import { INDUSTRIES } from "@/lib/constants";
 import { getIndustryContent, getIndustryMeta } from "@/lib/industries-content";
-import SolutionHeroDemoButton from "@/components/layout/sections/SolutionHeroDemoButton";
+import SplitHero from "@/components/layout/sections/shared/SplitHero";
+import HeroCapabilityCard from "@/components/layout/sections/shared/HeroCapabilityCard";
 import IndustryChallengeStack from "@/components/layout/sections/industries/IndustryChallengeStack";
 import IndustryHowTabs from "@/components/layout/sections/industries/IndustryHowTabs";
-import IndustrySection from "@/components/layout/sections/IndustrySection";
+import IndustryOthersSlider from "@/components/layout/sections/industries/IndustryOthersSlider";
 import IndustryPlatformSection from "@/components/layout/sections/industries/IndustryPlatformSection";
-import IndustryCustomerStories from "@/components/layout/sections/industries/IndustryCustomerStories";
 
 export function generateStaticParams() {
   return INDUSTRIES.map((i) => ({ slug: i.slug }));
@@ -41,88 +38,45 @@ export default async function IndustryPage({
 
   return (
     <>
-      {/* ── 1. Hero — matches Solutions detail hero ─────────────────────────── */}
-      <section className="relative bg-white pt-32 pb-20 lg:pt-40 lg:pb-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-7">
-              <AnimatedEyebrow
-                dotClassName="bg-sognos-blue-accent"
-                textClassName="text-sognos-muted"
-              >
-                <Link
-                  href="/solutions"
-                  className="inline-block text-xs font-semibold uppercase tracking-[0.08em] text-sognos-muted hover:text-sognos-blue-accent transition-colors duration-200"
-                >
-                  {meta.name}
-                </Link>
-              </AnimatedEyebrow>
-              <h1 className="mt-5 font-heading font-normal text-sognos-heading text-5xl tracking-tight text-balance lg:text-6xl">
-                {content.hero.headline}
-              </h1>
-              <p className="mt-6 max-w-xl text-base leading-normal text-sognos-body md:text-lg">
-                {content.hero.subtext}
-              </p>
-              <div className="mt-9">
-                <SolutionHeroDemoButton />
-              </div>
-            </div>
-            <div className="lg:col-span-5">
-              <div className="relative aspect-[5/4] w-full overflow-hidden rounded-lg bg-gradient-to-br from-[#E9E2F7] via-[#EEE8F4] to-[#F2EAEF]">
-                <Image
-                  src={meta.image}
-                  alt={`${meta.name} preview`}
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 2. The Challenge — card grid ────────────────────────────────────── */}
-      <section className="bg-sognos-navy py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <IndustryChallengeStack
-            challenges={content.challenges}
-            heading={`What makes ${meta.name} hard to run`}
-            description={meta.description}
+      {/* ── 1. Hero — option A "Split" (Frontline layout): photo with the
+          live "How Sognos helps" index card. */}
+      <SplitHero
+        crumb={{ label: "Industries", href: "/industries" }}
+        name={meta.name}
+        headline={content.hero.headline}
+        subtext={content.hero.subtext}
+        image={meta.image}
+        card={
+          <HeroCapabilityCard
+            name={meta.name}
+            heading="How Sognos helps"
+            items={content.howSognosHelps.slice(0, 4)}
           />
-        </div>
-      </section>
-
-      {/* ── 3. How Sognos helps — interactive tabs ───────────────────────────── */}
-      <section className="bg-sognos-navy py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <IndustryHowTabs
-            items={content.howSognosHelps}
-            industryName={meta.name}
-            description={content.howSognosHelpsIntro ?? meta.description}
-          />
-        </div>
-      </section>
-
-      {/* ── 4. Other industries — sticky card stack ─────────────────────────── */}
-      {/* No subtext here — the homepage default explains what the industries
-          layer is, which a reader already inside an industry page has had. */}
-      <IndustrySection
-        heading="Explore other industries"
-        description=""
-        excludeSlug={slug}
+        }
       />
 
-      {/* ── 5. Customer stories from this industry (hidden if none) ──────────── */}
-      <IndustryCustomerStories industryName={meta.name} />
+      {/* ── 2. The challenge — statement band on navy, rail ─────────────────── */}
+      <IndustryChallengeStack
+        challenges={content.challenges}
+        industryName={meta.name}
+        description={meta.description}
+      />
 
-      {/* ── 6. What we deploy — product and platform blocks ─────────────────── */}
-      <section className="bg-sognos-navy-dark py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-6">
-          <IndustryPlatformSection industryName={meta.name} />
-        </div>
-      </section>
+      {/* ── 3. How Sognos helps — option A tabs on tint, rail ──────────────── */}
+      <IndustryHowTabs
+        items={content.howSognosHelps}
+        industryName={meta.name}
+        description={content.howSognosHelpsIntro ?? meta.description}
+      />
+
+      {/* ── 4. Other industries — option D slider on the accent ────────────── */}
+      <IndustryOthersSlider excludeSlug={slug} />
+
+      {/* ── 5. Customer stories — hidden for now (2026-11-02);
+          IndustryCustomerStories returns when the section is designed. */}
+
+      {/* ── 6. Platform — option B on navy-dark, Works-with product cards ─── */}
+      <IndustryPlatformSection industryName={meta.name} />
     </>
   );
 }

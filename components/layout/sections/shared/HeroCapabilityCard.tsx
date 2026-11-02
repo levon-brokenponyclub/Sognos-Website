@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-// Solutions Hero A floating card (Inspector mockup FH_CARD): the first four
-// capabilities as an index. The active row expands its status line and fills
-// a progress bar, then hands on to the next (paused on hover; static under
-// reduced motion).
+// Hero A floating card (Inspector mockup FH_CARD): up to four items as an
+// index. The active row expands its status line (when it has one) and fills a
+// progress bar, then hands on to the next (paused on hover; static under
+// reduced motion). Industries detail hero.
 
 export default function HeroCapabilityCard({
   name,
@@ -14,7 +14,7 @@ export default function HeroCapabilityCard({
 }: {
   name: string;
   heading: string;
-  items: readonly { title: string; status: string }[];
+  items: readonly { title: string; status?: string }[];
 }) {
   const [on, setOn] = useState(0);
 
@@ -49,15 +49,17 @@ export default function HeroCapabilityCard({
                   &rarr;
                 </span>
               </div>
-              <div
-                className={`grid transition-[grid-template-rows] duration-300 motion-reduce:transition-none ${
-                  active ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <p className="pt-1 pl-[2.25rem] text-xs text-sognos-muted">{item.status}</p>
+              {item.status && (
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 motion-reduce:transition-none ${
+                    active ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="pt-1 pl-[2.25rem] text-xs text-sognos-muted">{item.status}</p>
+                  </div>
                 </div>
-              </div>
+              )}
               <span className={`mt-2 block h-0.5 overflow-hidden ${active ? "bg-sognos-line" : ""}`}>
                 {active && (
                   <span
