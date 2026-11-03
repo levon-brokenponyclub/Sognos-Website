@@ -221,14 +221,14 @@ untouched, mark ❌.
 | Section | Status | Notes |
 |---|---|---|
 | Header | ✅ 2026-11-02 | Transparent over the navy hero, then **navy** (not white) on scroll, with white text, logo and button (`DARK_SCROLLED_PATHS` in `Navbar.tsx`). |
-| Hero | ✅ 2026-11-02 | Hero-stack mockup (`docs/mockups/home/hero-stack.html`, after angellist.com). Plain navy (blur glow removed), centred H1 `md:text-6xl` with the second line in the accent, Book a Demo + Talk to Sales (`/contact`). |
+| Hero | ✅ 2026-11-02 | Hero-stack mockup (`docs/mockups/home/hero-stack.html`, after angellist.com). Plain navy (blur glow removed), centred H1 `md:text-6xl` with the second line in the accent, Book a Demo + Talk to Sales (`/contact`). 2026-11-03: viewport height less 7rem so the How Sognos Works card peeks in; trust strip hidden, to be repositioned. |
 | Trust row | ✅ 2026-11-02 | `LogoStrip variant="hero"`: a stat cell (**"4.9 / Rated by operations leaders": placeholder, needs a source**) and 5 Sanity logos, a 2/3/6 grid with hairlines from `lg`. |
-| Product stack | ✅ 2026-11-02 | `home/HomeProductStack.tsx`: three overlapping cards with rounded tops (`rounded-t-[40px]`, a flagged radius exception), alternating white and tint; Paraform panel (`ParaformPanel` from `ProductWorksCard`) at square size; covered card drifts at half speed (scroll-driven CSS). Copy is placeholder; feature links go to the product page. |
-| How Sognos Works | ✅ unchanged | Current deck (tint). |
+| Product stack | ⏸ hidden 2026-11-03 | `home/HomeProductStack.tsx` commented out on the homepage while How Sognos Works takes the hero card; to return below it. Component and stack graphics unchanged. |
+| How Sognos Works | ✅ 2026-11-03 | `HowSognosWorks.tsx`: the hero's single card (tint, rounded top rising out of the hero navy, peeking 7rem below a viewport-height hero); panels wipe in their tint on scroll, 01 → 03; D · statement grid: left-aligned header, intro as a scroll-filled display statement (`ui/StatementFill`), three shared-border step panels with coloured numerals, "Built on" text row. No imagery. |
 | Solutions | ✅ 2026-11-02 | D · graphic cards (white), first four solutions. |
 | CTA band | ✅ 2026-11-02 | `home/HomeCtaBand.tsx`: C · editorial, between hairlines. |
 | Industries | ✅ 2026-11-02 | `IndustryOthersSlider tone="tint"`: all five sectors. |
-| Customer Stories | ✅ 2026-11-03 | `home/HomeStorySlider.tsx`: E · testimonial slider after angellist.com/funds (navy; quote card, mono story photo, brand-colour logo tile, dots). |
+| Customer Stories | ✅ 2026-11-03 | `home/HomeStorySlider.tsx`: testimonial slider on navy; card after customer.io's case-study card (logo + stats top, large quote, author with small photo, Read story), dots, 8s autoplay. |
 | News & Insights | ✅ 2026-11-02 | `home/HomeNewsList.tsx`: C · editorial rows (tint). |
 
 Now unused on the homepage (kept until sign-off): `HomeProductColumns`, `HomeProductCards`, `HeadlineCTA`, `CustomerStories`, `IndustrySection`, the `NewsInsightSection` component (only its type is used), and `/images/home/*-blur-dp.avif`.

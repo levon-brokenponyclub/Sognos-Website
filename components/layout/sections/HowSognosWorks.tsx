@@ -1,122 +1,158 @@
-// No longer a Client Component: the stepper's state went with it, and the only
-// interactive part left is TimerCardDeck, which owns its own client boundary.
-import Image from "next/image";
-import { AnimatedEyebrow } from "@/components/ui/AnimatedEyebrow";
-import TimerCardDeck, {
-  type TimerCard,
-} from "@/components/layout/sections/shared/TimerCardDeck";
+"use client";
 
-// Matches the reference's 8s dwell rather than the 5s this section used, since
-// the deck's countdown ring now shows the interval and 5s reads as hurried at
-// that size.
-const STEP_DURATION = 8000;
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import SectionLabel from "@/components/ui/SectionLabel";
+import StatementFill from "@/components/ui/StatementFill";
+import {
+  LAYOUT,
+  TYPE,
+} from "@/components/layout/sections/sognoscare/typeScale";
 
-const BLOCKS = [
+// Home · How Sognos Works — Inspector option D "Statement grid" (2026-11-03),
+// after customer.io's "Support every stage" panels: the intro line as a
+// display statement that fills as it scrolls into view, then the three steps
+// as shared-border panels (1px gaps on the line colour, so borders never
+// double), each with its step number in the step's colour. No imagery.
+// Step 3 has no product, so it takes the neutral heading navy.
+// Sits as the hero's single card (2026-11-03): the section keeps the hero's
+// navy behind it and the tint card rises out of it with the rounded top the
+// product stack used (rounded-t-3xl / md:rounded-t-[40px], border-t).
+// Scroll wipe (2026-11-03): as the panels cross the viewport, each one's tint
+// sweeps in from the left in turn, 01 → 02 → 03 (clip-path, tied to scroll).
+// Reduced motion shows all three filled. Client Component for the scroll.
+
+const STEPS = [
   {
+    n: "01",
     title: "Manage demand",
     label: "Intake and triage",
     copy: "Built for care teams delivering complex services across communities, homes and frontline environments.",
-    href: "/products/sognoscare",
-    image: "/images/how-it-works/howitworks01.webp",
-    // Test: step one's panel is a Lottie rather than the still. The JSON is
-    // 1440×1024 against a 2.79:1 panel, so it letterboxes until one or the
-    // other is re-cut — see the changelog.
-    animation: "/animations/hiw01.json",
+    color: "var(--sognos-care-base)",
+    fill: "var(--sognos-care-soft)",
   },
   {
+    n: "02",
     title: "Coordinate workforce",
     label: "Planning and delivery",
     copy: "Designed around the realities of mobile workforces, scheduling, compliance and service delivery in the field.",
-    href: "/products/sognosroster",
-    image: "/images/how-it-works/howitworks02.webp",
+    color: "var(--sognos-roster-base)",
+    fill: "var(--sognos-roster-soft)",
   },
   {
+    n: "03",
     title: "Track outcomes",
     label: "Insight and improvement",
     copy: "Practical AI embedded where it matters most, helping teams reduce admin, improve decisions and focus on people.",
-    href: "/solutions/customer-insights",
-    image: "/images/how-it-works/howitworks03.webp",
+    color: "var(--sognos-heading)",
+    fill: "var(--sognos-genogram-soft)",
   },
 ] as const;
 
-// The deck's own shape. `label` is now unused — it existed only for the
-// stepper — but is left on BLOCKS as the copy is worth keeping if a labelled
-// treatment returns.
-const CARDS: readonly TimerCard[] = BLOCKS.map((b, i) => ({
-  number: String(i + 1).padStart(2, "0"),
-  title: b.title,
-  description: b.copy,
-  // No `href`, so no "Learn more". `TimerCardDeck` renders that link only when
-  // a card carries one, so dropping it here removes the CTA from these cards
-  // without touching the deck — which ProductCustomerStories and LottiePanel
-  // also use. `href` stays on BLOCKS, so this is one line to put back.
-  // href: b.href,
-  // Alt is the step it illustrates — the panel is not decorative, it is the
-  // slide's content.
-  image: { src: b.image, alt: b.title },
-  animation: "animation" in b ? { src: b.animation } : undefined,
-}));
+const STATEMENT =
+  "One connected process takes service demand from first contact to coordinated delivery and measurable outcomes.";
+
+/** One panel's tint, wiped in from the left over its share of the scroll. */
+function Wipe({
+  progress,
+  range,
+  fill,
+}: {
+  progress: MotionValue<number>;
+  range: [number, number];
+  fill: string;
+}) {
+  const clipPath = useTransform(progress, range, [
+    "inset(0 100% 0 0)",
+    "inset(0 0% 0 0)",
+  ]);
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="absolute inset-0"
+      style={{ background: fill, clipPath }}
+    />
+  );
+}
 
 export default function HowSognosWorks() {
-  return (
-    <section className="w-full bg-sognos-tint py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-2xl text-center flex flex-col gap-4">
-          <AnimatedEyebrow className="justify-center">
-            How Sognos works
-          </AnimatedEyebrow>
-          <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight text-sognos-heading md:text-5xl">
-            Healthcare First. Field Services Always. AI at the Centre.
-          </h2>
-          <p className="mx-auto max-w-2xl text-base leading-normal text-sognos-body md:text-lg">
-            One connected process takes service demand from first contact to
-            coordinated delivery and measurable outcomes.
-          </p>
-          <div className="flex justify-center">
-            <div className="inline-flex flex-wrap items-center justify-center gap-3 rounded-full bg-prussian-blue-800/10 px-4 py-3 sm:gap-5 sm:px-6">
-              <Image
-                src="/logos/Dynamics365.svg"
-                alt="Microsoft Dynamics 365"
-                width={96}
-                height={96}
-                className="h-11 w-auto"
-              />
-              <div
-                aria-hidden="true"
-                className="h-8 w-px bg-sognos-navy/30"
-              />
-              <Image
-                src="/logos/Microsoft-Solutions-Partner-Logo.webp"
-                alt="Microsoft Solutions Partner"
-                width={480}
-                height={113}
-                className="h-22 w-auto"
-              />
-              <div
-                aria-hidden="true"
-                className="h-8 w-px bg-sognos-navy/30"
-              />
-              <Image
-                src="/logos/copilot-logo.svg"
-                alt="Microsoft Copilot"
-                width={128}
-                height={128}
-                className="h-11 w-auto"
-              />
-            </div>
-          </div>
-        </div>
+  const grid = useRef<HTMLDivElement>(null);
+  const still = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: grid,
+    offset: ["start 80%", "end 45%"],
+  });
 
-        {/* Auto-advancing deck after middesk.com. The deck owns its own timing
-            and active state now that the stepper it used to drive is gone. */}
-        <div className="mt-10 md:mt-12 lg:mt-16">
-          {/* All three panel images are 2720×976 — the panel takes their own
-              ratio so nothing is cropped. */}
-          <TimerCardDeck
-            cards={CARDS}
-            autoplayMs={STEP_DURATION}
-            panelAspect="2720 / 976"
+  return (
+    <section className="w-full bg-sognos-navy">
+      <div
+        className={`w-full rounded-t-3xl border-t border-sognos-line bg-sognos-tint md:rounded-t-[40px] ${LAYOUT.section}`}
+      >
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex max-w-3xl flex-col gap-4">
+            <SectionLabel>How Sognos works</SectionLabel>
+            <h2 className={`${TYPE.h2} text-sognos-heading`}>
+              Healthcare First. Field Services Always. AI at the Centre.
+            </h2>
+          </div>
+
+          <StatementFill
+            text={STATEMENT}
+            className="mt-10 max-w-5xl font-heading text-3xl font-normal leading-[1.2] tracking-[-0.015em] text-balance md:mt-14 md:text-[2.75rem]"
           />
+
+          <div
+            ref={grid}
+            className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded border border-sognos-line bg-sognos-line md:mt-20 md:grid-cols-3"
+          >
+            {STEPS.map((s, k) => (
+              <article
+                key={s.n}
+                className="relative isolate flex min-h-72 flex-col justify-between gap-12 bg-white p-7 lg:min-h-88 lg:p-10"
+              >
+                {still ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 -z-10"
+                    style={{ background: s.fill }}
+                  />
+                ) : (
+                  <span className="absolute inset-0 -z-10">
+                    <Wipe
+                      progress={scrollYProgress}
+                      range={[k / STEPS.length, (k + 1) / STEPS.length]}
+                      fill={s.fill}
+                    />
+                  </span>
+                )}
+                <div className="flex items-start justify-between gap-6">
+                  <span className="text-sm text-sognos-muted">{s.label}</span>
+                  <span
+                    className="font-heading text-6xl leading-none tracking-[-0.03em] tabular-nums"
+                    style={{ color: s.color }}
+                  >
+                    {s.n}
+                  </span>
+                </div>
+                <div>
+                  <h3 className={`${TYPE.h3Small} text-sognos-heading`}>
+                    {s.title}
+                  </h3>
+                  <p
+                    className={`mt-3 max-w-[34ch] ${TYPE.small} text-sognos-body`}
+                  >
+                    {s.copy}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

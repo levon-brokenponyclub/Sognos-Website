@@ -2,16 +2,18 @@
 
 import { useEffect, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ALL_STORIES } from "@/components/layout/sections/ProductCustomerStories";
-import { BRAND_BG, BRAND_FALLBACK } from "@/lib/customerStoryBrand";
+import { storyStats } from "@/lib/customerStoryBrand";
 
-// Home · Customer Stories — Inspector option E "Testimonial slider", after
-// angellist.com/funds (2026-11-03). One story at a time on navy: the quote
-// card, the story photo in a mono frame overlapping the card's right edge,
-// and a logo tile in the client's brand colour (BRAND_BG). Dots below; the
-// arrow keys also step through. Autoplays every 8s, pausing while hovered or
-// focused and off under reduced motion; crossfade; wraps around. Below lg the
-// photo and tile sit above the card.
+// Home · Customer Stories — testimonial slider (2026-11-03). One story at a
+// time on navy; the card follows customer.io's case-study card
+// (/platform/data-integrations): white logo top-left, the story's stats
+// (STORY_STATS) top-right behind thin dividers, a large quote, then the
+// author with a small square photo and "Read story" to the right. Dots below;
+// the arrow keys also step through. Autoplays every 8s, pausing while hovered
+// or focused and off under reduced motion; crossfade; wraps around. Hidden
+// slides are inert, so their links stay out of the tab order.
 
 const STORIES = ALL_STORIES.filter((s) => s.quote).slice(0, 4);
 
@@ -54,6 +56,7 @@ export default function HomeStorySlider() {
         <div className="mt-12 grid md:mt-16">
           {STORIES.map((st, k) => {
             const on = k === at;
+            const stats = storyStats(st.href.split("/").pop() ?? "");
             return (
               <div
                 key={st.company}
@@ -61,56 +64,73 @@ export default function HomeStorySlider() {
                 aria-roledescription="slide"
                 aria-label={`${k + 1} of ${STORIES.length}`}
                 aria-hidden={!on}
-                className={`relative flex flex-col-reverse gap-8 transition-[opacity,visibility] duration-500 [grid-area:1/1] motion-reduce:transition-none lg:block lg:pb-20 ${
+                inert={!on}
+                className={`transition-[opacity,visibility] duration-500 [grid-area:1/1] motion-reduce:transition-none ${
                   on ? "visible opacity-100" : "invisible opacity-0"
                 }`}
               >
-                <figure className="rounded-lg bg-white/5 p-7 sm:p-10 lg:mr-[8%] lg:ml-[5%] lg:min-h-[440px] lg:py-14 lg:pr-[30%] lg:pl-14">
-                  <blockquote className="font-heading text-2xl leading-[1.4] text-pretty text-white [text-indent:-0.42em]">
-                    &ldquo;{st.quote}&rdquo;
-                  </blockquote>
-                  <figcaption className="mt-8 border-t border-white/10 pt-6 text-base lg:mt-10 lg:pt-8 lg:text-lg">
-                    <span className="block font-medium text-white">{st.author}</span>
-                    <span className="block text-white/75">{st.role}</span>
-                  </figcaption>
-                </figure>
-
-                <div
-                  className={`relative mx-auto w-52 transition-transform duration-700 ease-[cubic-bezier(.23,1,.32,1)] motion-reduce:transition-none sm:w-60 lg:absolute lg:top-16 lg:right-[3%] lg:mx-0 lg:w-[23%] ${
-                    on ? "translate-y-0" : "translate-y-3"
-                  }`}
-                >
-                  <div className="relative aspect-[345/500] overflow-hidden rounded">
-                    <Image
-                      src={st.panelImage}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 23vw, 240px"
-                      className="object-cover grayscale contrast-[1.05]"
-                    />
-                    <span aria-hidden="true" className="absolute inset-0 bg-sognos-navy opacity-55 mix-blend-color" />
-                  </div>
-                  <span
-                    className="absolute bottom-[6%] -left-[18%] flex aspect-[276/132] w-[80%] items-center justify-center rounded-lg px-5 lg:-left-[38%]"
-                    style={{ background: BRAND_BG[st.company] ?? BRAND_FALLBACK }}
-                  >
-                    <span className="relative h-12 w-[72%]">
+                <figure className="flex flex-col rounded-lg bg-white/5 p-7 sm:p-10 lg:min-h-[30rem] lg:p-14">
+                  <div className="flex flex-wrap items-start justify-between gap-x-10 gap-y-8">
+                    <span className="relative block h-9 w-40">
                       <Image
                         src={st.logo}
                         alt={st.company}
                         fill
                         sizes="160px"
-                        className="object-contain brightness-0 invert"
+                        className="object-contain object-left brightness-0 invert"
                       />
                     </span>
-                  </span>
-                </div>
+                    {stats.length > 0 && (
+                      <dl className="flex flex-wrap gap-x-10 gap-y-6">
+                        {stats.map((x) => (
+                          <div key={x.label} className="flex flex-col-reverse border-l border-white/20 pl-5">
+                            <dt className="mt-1 text-sm text-white/75">{x.label}</dt>
+                            <dd className="font-heading text-2xl tracking-tight text-white">{x.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                  </div>
+
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 50 40"
+                    fill="currentColor"
+                    className="mt-14 h-9 w-auto text-white lg:mt-20"
+                  >
+                    <path d="M0 40V24C0 10.7 6.4 2.7 19.2 0l2.4 5.2C14.4 7.6 11 12 10.6 18H20v22H0Zm28 0V24c0-13.3 6.4-21.3 19.2-24l2.4 5.2C42.4 7.6 39 12 38.6 18H48v22H28Z" />
+                  </svg>
+                  <blockquote className="mt-4 max-w-4xl font-heading text-2xl leading-[1.3] text-pretty text-white md:text-[2rem]">
+                    {st.quote}
+                  </blockquote>
+
+                  <div className="mt-12 flex flex-wrap items-end justify-between gap-6 lg:mt-auto lg:pt-16">
+                    <figcaption className="flex items-center gap-4">
+                      <span className="relative block size-14 shrink-0 overflow-hidden rounded">
+                        <Image src={st.panelImage} alt="" fill sizes="56px" className="object-cover" />
+                      </span>
+                      <span className="text-base">
+                        <span className="block font-medium text-white">{st.author}</span>
+                        <span className="block text-white/70">{st.role}</span>
+                      </span>
+                    </figcaption>
+                    <Link
+                      href={st.href}
+                      className={`group inline-flex min-h-11 items-center gap-2 text-base font-medium text-white ${FOCUS}`}
+                    >
+                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                        &rarr;
+                      </span>
+                      Read story
+                    </Link>
+                  </div>
+                </figure>
               </div>
             );
           })}
         </div>
 
-        <div className="mt-8 flex justify-center gap-1 lg:mt-0">
+        <div className="mt-8 flex justify-center gap-1">
           {STORIES.map((st, k) => (
             <button
               key={st.company}

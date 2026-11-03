@@ -185,6 +185,27 @@
     var(--color-cornflower-ocean-300) 0%,
     var(--color-cornflower-ocean-100) 100%
   );
+  /* Brand deck "Let's Talk" slide (2026-11-03): sky blue from the top-left
+     corner falling to deep navy, plus a soft darkening at the bottom centre.
+     Stops sampled from the slide and fitted (radial 140% x 100% from 0 0);
+     the slide's wave lines are artwork, not part of the gradient. */
+  --sognos-gradient-deck:
+    radial-gradient(60% 45% at 38% 100%, rgb(24 40 85 / 0.55), rgb(24 40 85 / 0)),
+    radial-gradient(
+      140% 100% at 0% 0%,
+      #00a3fd 0%,
+      #009dfc 12%,
+      #0393f4 21%,
+      #0284e5 29%,
+      #0576d2 38%,
+      #0766bd 46%,
+      #095cad 54%,
+      #0d54a0 62%,
+      #104d94 71%,
+      #154887 79%,
+      #17417c 88%,
+      #173a73 100%
+    );
 
   /* Shadows */
   --sognos-shadow-sm: 0 1px 3px rgb(5 32 72 / 0.08);

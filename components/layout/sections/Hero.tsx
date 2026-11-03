@@ -74,8 +74,10 @@ export default function Hero({
     prefersReducedMotion ? [1, 1] : [1, 0],
   );
 
+  // Fills the viewport less 7rem, so the How Sognos Works card peeks in from
+  // the bottom (2026-11-03); the copy centres below the navbar.
   return (
-    <section className="relative overflow-hidden bg-sognos-navy pt-40 pb-16 md:pt-48">
+    <section className="relative flex min-h-[calc(100svh-7rem)] flex-col justify-center overflow-hidden bg-sognos-navy pt-28 pb-16 md:pt-32">
 
       <motion.div
         ref={contentRef}

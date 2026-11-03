@@ -68,6 +68,7 @@
   --background-image-gradient-hero: var(--sognos-gradient-hero);
   --background-image-gradient-brand: var(--sognos-gradient-brand);
   --background-image-gradient-accent: var(--sognos-gradient-accent);
+  --background-image-gradient-deck: var(--sognos-gradient-deck);
 
   /* Layout */
   --width-site: var(--sognos-container-width);

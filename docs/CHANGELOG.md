@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-11-03 — Home: hero height, trust strip hidden, How Sognos Works scroll wipe
+
+- **Hero** (`Hero.tsx`, homepage only):
+  - It fills the viewport less 7rem (`min-h-[calc(100svh-7rem)]`, copy centred below the navbar), so the How Sognos Works card peeks in from the bottom. That's 112px at 1440×900.
+  - The trust strip (`<LogoStrip variant="hero" />`) is hidden in `page.tsx`, to be repositioned.
+- **How Sognos Works:**
+  - The "Built on Microsoft Dynamics 365 · Power Platform · Copilot" line is removed.
+  - **Scroll wipe:** as the step panels cross the viewport (top at 80% → bottom at 45%), each panel's tint sweeps in from the left in turn, 01 → 02 → 03.
+    - Fills: `--sognos-care-soft`, `--sognos-roster-soft`, `--sognos-genogram-soft`.
+    - It's a `clip-path` inset driven by Framer `useScroll`; reduced motion shows all three filled.
+    - The section is now a Client Component.
+- **New token** `--sognos-gradient-deck` (`tokens.css`, `bg-gradient-deck`): the brand deck's "Let's Talk" gradient, a radial from the top-left, fitted to the slide. Unused for now.
+
+## 2026-11-03 — Home: How Sognos Works becomes the hero card
+
+- **`HowSognosWorks`:** now the hero's single card. The section keeps the hero's navy behind it, and the tint card rises out of it with the product stack's rounded top (`rounded-t-3xl`, `md:rounded-t-[40px]`, `border-t`). No colour-fill or drift motion, since there is only one card.
+- **Product stack hidden:** `<HomeProductStack />` and its import are commented out in `app/(marketing)/page.tsx`, to return below How Sognos Works later. The component, `home/stack/` and the `.home-stack-card` CSS are unchanged.
+- **Page order:** Hero → How Sognos Works (card) → Solutions → CTA band → Industries → Customer Stories → News.
+
+## 2026-11-03 — Home: How Sognos Works D port + story card refactor
+
+- **How Sognos Works** (`HowSognosWorks.tsx`): ported Inspector option D, "Statement grid" (`docs/mockups/_generators/hsw_flow.py`), which replaces the `TimerCardDeck` deck.
+  - **Header:** left-aligned `SectionLabel` and h2.
+  - **Statement:** the intro line becomes a display statement (`text-3xl`, `md:text-[2.75rem]`) whose words fill from 20% to full navy as it scrolls from 85% to 35% of the viewport. The new `components/ui/StatementFill.tsx` (client, Framer `useScroll`) drives it, and it renders fully filled under reduced motion.
+  - **Steps:** three panels sharing 1px borders. Each has its label, a large numeral in the step's colour (Care base, Roster base, then heading navy for step 3), the title and the text.
+  - **Footer line:** "Built on Microsoft Dynamics 365 · Power Platform · Copilot" as text, replacing the logo pill.
+  - **Dropped:** the panel images and the Lottie, which this section no longer uses. `TimerCardDeck` stays, because `KnowledgeHubArchive` uses its `ProgressButton`.
+  - **New mockup options** in the home Inspector (`hsw_flow.py`): E · Flow track, F · Steps + proof, G1/G2 · Platform hub.
+- **Customer Stories card** (`home/HomeStorySlider.tsx`): rebuilt after customer.io's case-study card (/platform/data-integrations).
+  - **Top:** the white logo on the left; on the right, the story's stats from `STORY_STATS` behind thin dividers. A story with no entry shows none.
+  - **Middle:** a large open-quote mark and the quote (`text-2xl`, `md:text-[2rem]`).
+  - **Bottom:** the author with a 56px square story photo, and "→ Read story" on the right.
+  - **Removed:** the photo frame and the brand-colour logo tile.
+  - **Hidden slides are `inert`,** so their links stay out of the tab order. The slider, dots and autoplay are unchanged.
+
 ## 2026-11-03 — Home: Customer Stories E · testimonial slider
 
 - **Mockup:** new Customer Stories option E in `docs/mockups/home/index.html` (`home_extras.py`), after angellist.com/funds.

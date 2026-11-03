@@ -233,6 +233,7 @@ IND_HEAD = lambda dark=False: f'<div class="flex max-w-3xl flex-col gap-4">{eyeb
 X = runpy.run_path(str(HERE / "home_extras.py"))
 EX = X["build"](dict(P=P, T=T, FOCUS=FOCUS, ARW=ARW, eyebrow=eyebrow, photo=photo, SEC=SEC, W=W, SOLS=SOLS, small_vis=small_vis, SOL_HEAD=SOL_HEAD,
                      HS=HS, INDS=INDS, IND_HEAD=IND_HEAD, SLUG=SLUG, QUOTED=QUOTED, SPH=SPH, ST_HEAD=ST_HEAD, PRODUCTS=PRODUCTS, PHOTO=PHOTO))
+HF = runpy.run_path(str(HERE / "hsw_flow.py"))["build"](dict(T=T, FOCUS=FOCUS, eyebrow=eyebrow, SEC=SEC, W=W))  # How Sognos Works D-G
 GLOW_SOFT = EX["soft_glow"]()
 # Hero / cards: soft glow layer on the layouts that had none, then the show / hide hooks.
 HERO_A = HERO_A.replace('<section class="bg-white pt-36', '<section class="relative overflow-hidden bg-white pt-36', 1).replace(f'<div class="{W} grid', GLOW_SOFT + f'<div class="relative {W} grid', 1)
@@ -248,7 +249,7 @@ SLOTS = [
     ("hero", "Hero", [("a", "A · Split", HERO_A), ("b", "B · Immersive", HERO_B), ("c", "C · Editorial", HERO_C), ("la", "Current · Centred (navy)", HERO_LA), ("lb", "Current · Split (navy)", HERO_LB)], False),
     ("cards", "Product cards", [("a", "A · Split", CARDS_A), ("b", "B · Immersive", CARDS_B), ("c", "C · Editorial", CARDS_C), ("d", "D · Expanding columns", EX["mark_cards"](EX["CARDS_D"])), ("la", "Current · 3-up", CARDS_LA), ("lb", "Current · Featured", CARDS_LB)], True),
     ("trust", "Trust strip", [("a", "A · Split", TRUST_A), ("b", "B · Immersive", TRUST_B), ("c", "C · Editorial", TRUST_C), ("la", "Current · Navy row", TRUST_L)], True),
-    ("hsw", "How Sognos Works", [("a", "A · Split", HSW_A), ("b", "B · Immersive", HSW_B), ("c", "C · Editorial", HSW_C), ("t1", "Current · Deck · 1 Pipeline", HSW_LIVE), ("t2", "Current · Deck · 2 Product", ""), ("t3", "Current · Deck · 3 Photo", "")], False),
+    ("hsw", "How Sognos Works", [("a", "A · Split", HSW_A), ("b", "B · Immersive", HSW_B), ("c", "C · Editorial", HSW_C), ("sg", "D · Statement grid", HF["HSW_D"]), ("ft", "E · Flow track (animated)", HF["HSW_E"]), ("sp", "F · Steps + proof", HF["HSW_F"]), ("hb1", "G1 · Platform hub · tint", HF["HSW_G1"]), ("hb2", "G2 · Platform hub · white", HF["HSW_G2"]), ("t1", "Current · Deck · 1 Pipeline", HSW_LIVE), ("t2", "Current · Deck · 2 Product", ""), ("t3", "Current · Deck · 3 Photo", "")], False),
     ("solutions", "Solutions", [("a", "A · Split", SOL_A), ("b", "B · Immersive · bento", EX["SOL_B"]), ("c", "C · Editorial · cards", EX["SOL_C"]), ("ct", "C2 · Index + preview", SOL_C), ("bd", "B2 · Dark 4-up", SOL_B),
                                 ("d", "D · Graphic cards (Frontline)", EX["SOL_D"]), ("e", "E · List rows (Frontline)", EX["SOL_E"]), ("f", "F · Slider (Frontline)", EX["SOL_F"])], False),
     ("cta", "CTA band", [("a", "A · Split", CTA_A), ("b", "B · Immersive", CTA_B), ("c", "C · Editorial", CTA_C)], True),
@@ -291,9 +292,9 @@ Solutions: A 2x2 visual cards / B dark 4-up / C index + sticky preview (autoplay
 Industries: A photo cards 2+3 / B expanding columns / C index + photo (autoplay). Stories: A featured split + 3 quotes / B spotlight + logo tabs / C story stage. News: A lead + list / B dark cards / C editorial index (live Sanity posts).
 Every section: rail, tone, Colours; Sognos brand theme default. options.html shows every option stacked. Live copy; statuses in visuals illustrative."""
 n = AR["build"](page=page, BP=BP, out_dir=OUT_DIR, pkey="home", name="Home", slots=SLOTS, presets=PRESETS, theme_default="sognos", sognos_theme=True,
-                base_css=ns["FV_CSS"] + ns["XTRA_CSS"] + ns["MOTION_CSS"] + HS["PARA_CSS"] + STAGE["STAGE_CSS"] + STAGE["FC_CSS"] + EXTRA_CSS + EX["CSS"] + X["toggle_css"]("hero", EX["HERO_TOGGLES"]) + X["toggle_css"]("cards", EX["CARD_TOGGLES"]) + X["toggle_css"]("stories", EX["STORY_TOGGLES"]),
+                base_css=ns["FV_CSS"] + ns["XTRA_CSS"] + ns["MOTION_CSS"] + HS["PARA_CSS"] + STAGE["STAGE_CSS"] + STAGE["FC_CSS"] + EXTRA_CSS + EX["CSS"] + HF["CSS"] + X["toggle_css"]("hero", EX["HERO_TOGGLES"]) + X["toggle_css"]("cards", EX["CARD_TOGGLES"]) + X["toggle_css"]("stories", EX["STORY_TOGGLES"]),
                 toggles={"hero": EX["HERO_TOGGLES"], "cards": EX["CARD_TOGGLES"], "stories": EX["STORY_TOGGLES"]}, fc_area="solutions",
-                page_js=ns["FV_JS"] + ns["MOTION_JS"] + HM["HSW_JS"] + STAGE["STAGE_JS"] + TABS_JS + EX["JS"],
+                page_js=ns["FV_JS"] + ns["MOTION_JS"] + HM["HSW_JS"] + STAGE["STAGE_JS"] + TABS_JS + EX["JS"] + HF["JS"],
                 root_attr="data-home", empty="", prefix="sognos-home-v1-", note=NOTE, crumb="Home",
                 opt_note="Every home section option stacked (hero, product cards, trust, how Sognos works, solutions, CTA band, industries, customer stories, news), per-block tone, Sognos brand theme, footer rows. Composition: index.html (Inspector).")
 print(f"wrote home/index.html + options.html ({n} blocks)")

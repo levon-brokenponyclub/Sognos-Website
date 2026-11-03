@@ -1,6 +1,6 @@
 import Hero from "@/components/layout/sections/Hero";
-import HomeProductStack from "@/components/layout/sections/home/HomeProductStack";
-import LogoStrip from "@/components/layout/sections/LogoStrip";
+// import HomeProductStack from "@/components/layout/sections/home/HomeProductStack"; — hidden 2026-11-03
+// import LogoStrip from "@/components/layout/sections/LogoStrip"; — hidden 2026-11-03, to be repositioned
 import HowSognosWorks from "@/components/layout/sections/HowSognosWorks";
 // import ProductsSection from "@/components/layout/sections/ProductsSection"; // parked — coming back after Solutions Pass
 import HomeIndustriesGrid from "@/components/layout/sections/home/HomeIndustriesGrid";
@@ -49,13 +49,15 @@ export default async function HomePage() {
       {/* Home — hero-stack mockup port (2026-11-02). Hero · navy, with the
           trust row passed as a child (LogoStrip is an async Server Component
           and Hero a Client Component). */}
-      <Hero>
-        <LogoStrip variant="hero" />
-      </Hero>
-      {/* Product stack · stacking cards on the hero's navy (white / tint) */}
-      <HomeProductStack />
-      {/* How Sognos Works · current deck (tint) */}
+      <Hero />
+      {/* Trust strip hidden 2026-11-03, to be repositioned:
+          <LogoStrip variant="hero" /> was passed to <Hero> as its child. */}
+      {/* How Sognos Works · D statement grid, as the hero's single card: tint,
+          rounded top rising out of the hero navy (2026-11-03). */}
       <HowSognosWorks />
+      {/* Product stack · hidden 2026-11-03 while How Sognos Works takes the
+          hero card; to return below it. */}
+      {/* <HomeProductStack /> */}
       {/* <ProductsSection /> — parked pending review, coming back after Solutions Pass */}
       {/* Solutions · C editorial cards, all eight (white) */}
       <SolutionsSection />
