@@ -1,0 +1,215 @@
+/* Home product-stack graphics (CareBoard, RosterMatch, GenogramFrame), ported from
+   docs/mockups/home/hero-stack.html option D, 2026-11-03. Each graphic steps through
+   data-s 0..4 (useStages in parts.tsx); transforms, opacity and stroke offsets only. */
+
+/* Shared bar: the label swaps at the last stage. */
+/* Blur bridges the crossfade so the two labels read as one line changing, not two overlapping. */
+.hs-t1,
+.hs-t2,
+.hs-count {
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    filter 0.35s ease;
+}
+.hs-t2 {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+}
+.hs-seq[data-s="4"] .hs-t1 {
+  opacity: 0;
+  transform: translateY(-6px);
+  filter: blur(2px);
+}
+.hs-seq[data-s="4"] .hs-t2 {
+  filter: none;
+}
+.hs-seq[data-s="4"] .hs-t2 {
+  opacity: 1;
+  transform: none;
+}
+
+/* Care board: Referral → Assessment → Care plan, then the client frame (data-s 0..4). */
+.hs-card {
+  display: none;
+}
+.hs-care[data-s="1"] .hs-card[data-show="1"],
+.hs-care[data-s="2"] .hs-card[data-show="2"],
+.hs-care[data-s="3"] .hs-card[data-show="2"],
+.hs-care[data-s="4"] .hs-card[data-show="2"] {
+  display: block;
+  animation: hs-drop 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+@keyframes hs-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.hs-n {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.hs-care[data-s="0"] .hs-n[data-at="0"],
+.hs-care[data-s="1"] .hs-n[data-at="1"],
+.hs-care[data-s="2"] .hs-n[data-at="2"],
+.hs-care[data-s="3"] .hs-n[data-at="2"],
+.hs-care[data-s="4"] .hs-n[data-at="2"] {
+  opacity: 1;
+}
+.hs-board {
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease;
+}
+.hs-care[data-s="3"] .hs-board {
+  transform: translateX(-30%);
+}
+.hs-care[data-s="4"] .hs-board {
+  transform: translateX(-30%) translateY(-8px);
+  opacity: 0;
+}
+.hs-frame {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hs-care[data-s="4"] .hs-frame {
+  opacity: 1;
+  transform: none;
+}
+.hs-care[data-s="4"] .hs-count {
+  opacity: 0;
+}
+
+/* Roster: unfilled shift → matching → ranked workers → assigned → route. */
+.hs-rshift {
+  border-color: #f59e0b;
+  background: #fff7e8;
+  color: #9a5b00;
+  animation: hs-pulse 1.6s ease-in-out infinite;
+}
+@keyframes hs-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+.hs-ras {
+  display: none;
+}
+.hs-roster[data-s="3"] .hs-rshift,
+.hs-roster[data-s="4"] .hs-rshift {
+  border-color: #15803d;
+  background: #dcf5e6;
+  color: #15803d;
+  animation: none;
+}
+.hs-roster[data-s="3"] .hs-run,
+.hs-roster[data-s="4"] .hs-run {
+  display: none;
+}
+.hs-roster[data-s="3"] .hs-ras,
+.hs-roster[data-s="4"] .hs-ras {
+  display: block;
+}
+.hs-rmatch,
+.hs-rrow,
+.hs-rroute {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+.hs-roster:not([data-s="0"]) .hs-rmatch,
+.hs-roster[data-s="2"] .hs-rrow,
+.hs-roster[data-s="3"] .hs-rrow,
+.hs-roster[data-s="4"] .hs-rroute {
+  opacity: 1;
+  transform: none;
+}
+/* Exits are quicker than entrances and drop the stagger. */
+.hs-roster[data-s="4"] .hs-rmatch,
+.hs-roster[data-s="4"] .hs-rrow {
+  opacity: 0;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+.hs-rprogress {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s linear;
+}
+.hs-roster:not([data-s="0"]) .hs-rprogress {
+  transform: none;
+}
+.hs-rrow {
+  border-color: var(--sognos-line);
+}
+.hs-roster[data-s="3"] .hs-rtop {
+  border-color: var(--sognos-roster-base);
+}
+.hs-roster[data-s="3"] .hs-rrow:not(.hs-rtop) {
+  opacity: 0.35;
+}
+.hs-rpath {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.hs-roster[data-s="4"] .hs-rpath {
+  stroke-dashoffset: 0;
+}
+.hs-rpin {
+  opacity: 0;
+  transition: opacity 0.3s ease calc(0.2s + var(--d, 0s));
+}
+.hs-roster[data-s="4"] .hs-rpin {
+  opacity: 1;
+}
+
+/* Genogram: family ties draw → supports → Copilot summary → context shared. */
+.hs-gfam,
+.hs-gsup {
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+.hs-geno:not([data-s="0"]) .hs-gfam,
+.hs-geno:not([data-s="0"]):not([data-s="1"]) .hs-gsup {
+  opacity: 1;
+}
+.hs-gtie {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s);
+}
+.hs-geno:not([data-s="0"]) .hs-gtie {
+  stroke-dashoffset: 0;
+}
+.hs-gai {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hs-geno[data-s="3"] .hs-gai,
+.hs-geno[data-s="4"] .hs-gai {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reduced motion: useStages jumps to the final stage; nothing transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .hs-seq,
+  .hs-seq * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

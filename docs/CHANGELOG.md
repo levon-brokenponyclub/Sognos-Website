@@ -1,5 +1,74 @@
 # Changelog
 
+## 2026-11-03 — Home: Roster + Genogram sequences, split-flap counters
+
+- **Mockup** (`hero-stack.html`, option D): Roster and Genogram are now timed sequences like Care, and all three bars end on a split-flap counter. The product logos are hidden on all D cards.
+- **`parts.tsx`:**
+  - **`useStages`** is one runner for all three graphics.
+    - It steps `data-s` through a timeline once the graphic is 35% in view.
+    - It resets only when the graphic is fully off screen, so a partly visible card never snaps back. It replays on the next visit.
+    - Reduced motion jumps straight to the last stage.
+  - **`Flap`:** a two-digit split-flap counter. The digits flip with a WAAPI `perspective() rotateX` animation.
+  - **`StageBar`:** the frosted bar with an icon tile, a label that crossfades at the last stage (with a 2px blur bridge), and the split-flap.
+  - Removed `Icon`, `FeatureChips`, `PANEL` and `countUp`, which nothing uses now.
+- **`RosterMatch`** (no longer scroll-scrubbed; about 5s):
+  1. An unfilled, pulsing shift appears on the Penrith day schedule.
+  2. "Matching across 120 workers" shows.
+  3. Three ranked workers appear, with skills, distance and fit %.
+  4. Jess Kelly is assigned.
+  5. A 3-stop route draws.
+  - The counter flips 24 → 38, and the label changes from "Shifts filled" to "Route optimised".
+- **`GenogramFrame`** (about 6s):
+  1. The family map draws around Margaret: parents, a double line to her partner (close), a zigzag to her brother (strained), and her daughter. People show as neutral circles with relationship labels.
+  2. Dotted lines reach three supports: GP, Day centre and Support worker.
+  3. Copilot types a one-line summary.
+  - The counter flips 6 → 3, and the label changes from "Support network" to "Context shared".
+- **`CareBoard`:** the bar's ring and arc are replaced by `StageBar` with a split-flap that flips to 4. It fades at the last stage, as the ring did.
+- **`HomeProductStack`:**
+  - The Roster and Genogram logos are removed; every panel is the mesh plus a full-bleed graphic.
+  - The Explore button gets press feedback (`active:scale-[0.97]`, 150ms ease-out).
+- **Taste inspector pass:**
+  - The graphic roots carry `data-ui`, the skill's marker for real interface fragments, so their 9–11px UI text, outlines and frosting are judged as product UI.
+  - The glyph "emoji" (⚲ ✓ ✦ ★) are replaced with lucide icons (`Search`, `Check`, `Sparkles`, `Clock`, `Network`), and Care's funding star is dropped.
+- **Phones:** below `sm`, the bar is wider and its icon tile smaller, so no label truncates at a 327px panel.
+- **Data:** all of it is illustrative.
+
+## 2026-11-03 — Home: product stack graphics (mockup option D, Drift kept)
+
+- **Picks** from `docs/mockups/home/hero-stack.html`: stacking B · Drift (as before) and graphics D for all three products.
+- **New `home/stack/`:**
+  - **`MeshBackdrop`** (client, WebGL): an animated mesh drift in each product's four colours (deep → base → accent → soft), after 21st.dev "dwd" but our own shader.
+    - Half resolution, DPR ≤ 1.5.
+    - Runs only on screen, one still frame under reduced motion, and a CSS gradient if WebGL fails.
+  - **`CareBoard`:** after Paraform's "Make exceptional hires, faster". About 6s once 35% in view, resetting on leave; reduced motion shows the final frame.
+    1. Clients drop into the Referral, Assessment and Care plan columns, and the bar counts "Active clients" to 4.
+    2. The statuses change (Not eligible, Plan accepted, Plan sent).
+    3. The board slides left.
+    4. A frosted client frame takes over, and the bar reads "Care plan active · 3 days from referral".
+    - The stage sits on `data-s`, so there's no re-render per step.
+  - **`RosterMatch`:** scrubbed by scroll (Framer `useScroll`, start 80% → end 30%). The shift rises in, "Matched" slides up from behind it, then the worker tile and pointer arrive and the count ticks to 1.
+  - **`GenogramFrame`:** a frosted frame scales in, the name fades up, then the support-network bar slides in and counts to 6.
+  - **Shared:** `parts.tsx` (frost/panel styles, the illustrated `Avatar`, `Icon`, `FeatureChips`, `countUp`) and `stack-graphics.css` (the motion states).
+- **`HomeProductStack`:** the right panel is now the mesh plus the product graphic.
+  - Roster and Genogram keep their white logo and feature chips. Care carries its icon in the bar.
+  - The hidden `links` list is removed, since the features now live in the graphics.
+- **`ProductWorksCard`:** `ParaformPanel` goes back to private with its fixed 290px size; nothing else imported it.
+- **Data:** all card data (names, funding, counts, "3 days") is illustrative, and the avatars are illustrations.
+
+## 2026-11-03 — Home: product stack colour fill + new copy
+
+- **`HomeProductStack`:**
+  - The Book a Demo button is removed from the cards; only Explore remains.
+  - The feature-link list is hidden. Its data stays in `CARDS.links`, to move into the graphic.
+  - New description copy for each product (client copy), replacing the lead and muted sentence.
+- **Scroll colour fill** (`globals.css`): each card fills from white to its product colour as it enters, reaching full colour 40% into view (`animation-range: entry 0% cover 40%`). It runs alongside the existing half-speed exit drift.
+  - Care: `color-mix(in srgb, var(--sognos-care-base) 8%, white)`
+  - Roster: `color-mix(in srgb, var(--sognos-roster-accent) 12%, white)`
+  - Genogram: `var(--sognos-genogram-soft)`
+  - Set per card as `--stack-fill`. It replaces the white/tint alternation.
+  - Reduced motion, and browsers without scroll timelines, show the full colour.
+- **Dev note:** the Turbopack dev server kept serving a stale `globals.css` compile after this edit, even after a restart, until the file content changed again. If a CSS change doesn't show locally, that's a likely cause.
+
 ## 2026-11-02 — Home footer (homepage only)
 
 - **New `footer/HomeFooter.tsx`**, the Home Inspector rows:

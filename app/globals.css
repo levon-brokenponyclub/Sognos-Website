@@ -345,16 +345,36 @@
   }
 }
 
-/* Home product stack (HomeProductStack.tsx) — as a card leaves the viewport
-   it drifts down at half scroll speed, so the next card visibly slides over
-   it. Scroll-driven; browsers without `view()` timelines get a plain stack.
-   Gated on `animation-range`, not `animation-timeline: view()`: the build
-   drops a `@supports` block whose condition holds `view()`. */
+/* Home product stack (HomeProductStack.tsx) — two scroll-driven effects on
+   each card: it fills from white to its product colour (`--stack-fill`,
+   inline) as it enters, full by 40% into view; and as it leaves it drifts
+   down at half scroll speed, so the next card visibly slides over it.
+   Browsers without `view()` timelines, and reduced motion, get a plain stack
+   in the full colours. Gated on `animation-range`, not
+   `animation-timeline: view()`: the build drops a `@supports` block whose
+   condition holds `view()`. */
+.home-stack-card {
+  background-color: var(--stack-fill, #fff);
+}
+
 @supports (animation-range: 0% 100%) {
   .home-stack-card {
-    animation: home-stack-slow linear both;
-    animation-timeline: view();
-    animation-range: exit 0% exit 100%;
+    animation:
+      home-stack-fill linear both,
+      home-stack-slow linear both;
+    animation-timeline: view(), view();
+    animation-range:
+      entry 0% cover 40%,
+      exit 0% exit 100%;
+  }
+}
+
+@keyframes home-stack-fill {
+  from {
+    background-color: #fff;
+  }
+  to {
+    background-color: var(--stack-fill, #fff);
   }
 }
 
