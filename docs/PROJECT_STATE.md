@@ -228,7 +228,7 @@ untouched, mark ❌.
 | Solutions | ✅ 2026-11-02 | D · graphic cards (white), first four solutions. |
 | CTA band | ✅ 2026-11-02 | `home/HomeCtaBand.tsx`: C · editorial, between hairlines. |
 | Industries | ✅ 2026-11-02 | `IndustryOthersSlider tone="tint"`: all five sectors. |
-| Customer Stories | ✅ 2026-11-02 | `home/HomeStoryColumns.tsx`: D · expanding columns (navy-darkest). |
+| Customer Stories | ✅ 2026-11-03 | `home/HomeStorySlider.tsx`: E · testimonial slider after angellist.com/funds (navy; quote card, mono story photo, brand-colour logo tile, dots). |
 | News & Insights | ✅ 2026-11-02 | `home/HomeNewsList.tsx`: C · editorial rows (tint). |
 
 Now unused on the homepage (kept until sign-off): `HomeProductColumns`, `HomeProductCards`, `HeadlineCTA`, `CustomerStories`, `IndustrySection`, the `NewsInsightSection` component (only its type is used), and `/images/home/*-blur-dp.avif`.

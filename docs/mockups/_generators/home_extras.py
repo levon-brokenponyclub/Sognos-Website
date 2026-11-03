@@ -3,7 +3,8 @@
   - Solutions: B bento (products Features B), C Editorial cards (products Features C, full card options),
     D / E / F from Frontline Related (graphic cards / list rows / slider)
   - Industries: D-G from HSC Other industries (graphic tint cards / photo stat cards / bordered graphic cards / photo slider)
-  - Customer Stories: D expanding columns (Industries Immersive pattern)
+  - Customer Stories: D expanding columns (Industries Immersive pattern); E testimonial slider after
+    angellist.com/funds (quote card, story photo in a mono arch, brand-colour logo tile, dots + arrows)
 build(ctx) -> dict.
 """
 import re
@@ -116,6 +117,28 @@ def build(c):
                                 f'<p data-x="company" class="{T["h3sm"]} text-white">{st["company"]}</p><blockquote data-x="quote" class="st-quote line-clamp-5 text-base leading-relaxed text-white/90">&ldquo;{st["quote"]}&rdquo;</blockquote>'
                                 f'<p data-x="author" class="st-quote text-xs text-white/70">{st["author"]} &middot; {st["role"]}</p></div></a>' for st in QUOTED)
                       + "</div></div></section>")
+    # ── Customer Stories · E · testimonial slider (angellist.com/funds, 2026-11-03) ──
+    # One story at a time: the quote card on navy, the story photo in a mono arch overlapping the
+    # card's right edge (rounded, 2026-11-03), a logo tile in the client's brand colour (BRAND_BG in
+    # lib/customerStoryBrand.ts) and dots centred (stats, Read story and arrows removed 2026-11-03).
+    # Manual, crossfade; arrow keys still step through.
+    BRAND = {"Flourish Australia": "#0096a9", "Auckland Airport": "#151c6b", "Penrith City Council": "#f26522", "Gentari Solar Australia": "#60269e"}
+    def se_slide(k, st):
+        fig = (f'<div class="se-fig relative mx-auto w-52 sm:w-60 lg:absolute lg:top-16 lg:right-[3%] lg:mx-0 lg:w-[23%]">'
+               f'<div class="relative aspect-[345/500] overflow-hidden rounded"><img src="{SPH(st)}" alt="" class="absolute inset-0 size-full object-cover grayscale contrast-[1.05]" />'
+               f'<span aria-hidden="true" class="absolute inset-0 bg-[var(--p-deep)] opacity-55 mix-blend-color"></span></div>'
+               f'<span data-x="logo" class="absolute bottom-[6%] -left-[18%] flex lg:-left-[38%] aspect-[276/132] w-[80%] items-center justify-center rounded-lg px-5" style="background:{BRAND.get(st["company"], "#1d96fc")}">'
+               f'<img src="{P}/logos/{st["logo"]}" alt="{st["company"]}" class="max-h-12 w-[72%] object-contain brightness-0 invert" /></span></div>')
+        card = (f'<figure class="rounded-lg bg-white/[.06] p-7 sm:p-10 lg:mr-[8%] lg:ml-[5%] lg:min-h-[440px] lg:py-14 lg:pr-[30%] lg:pl-14">'
+                f'<blockquote data-x="quote" class="font-heading text-2xl leading-[1.4] text-pretty text-white [text-indent:-0.42em]">&ldquo;{st["quote"]}&rdquo;</blockquote>'
+                f'<figcaption data-x="author" class="mt-8 border-t border-white/10 pt-6 text-base lg:mt-10 lg:pt-8 lg:text-lg"><span class="block font-medium text-white">{st["author"]}</span><span class="block text-white/75">{st["role"]}</span></figcaption></figure>')
+        return (f'<div data-se-slide class="se-slide relative flex flex-col-reverse gap-8 [grid-area:1/1] lg:block lg:pb-20{" is-on" if k == 0 else ""}"'
+                f' role="group" aria-roledescription="slide" aria-label="{k + 1} of {len(QUOTED)}"{"" if k == 0 else " aria-hidden=\"true\""}>{card}{fig}</div>')
+    dots = "".join(f'<button type="button" data-se-dot="{k}" aria-label="Story {k + 1}"{" aria-current=\"true\"" if k == 0 else ""} class="se-dot flex size-6 items-center justify-center {FOCUS}"><span class="block size-2 rounded-full"></span></button>' for k in range(len(QUOTED)))
+    out["STORY_E"] = (f'<section class="bg-[var(--p-deep)] {SEC} text-white"><div class="{W}" data-se aria-roledescription="carousel" aria-label="Customer stories">'
+                      f'<h2 class="mx-auto max-w-5xl text-center font-heading text-3xl font-normal leading-[1.15] tracking-[-0.015em] text-balance text-white md:text-4xl">Why service providers choose Sognos</h2>'
+                      f'<div class="mt-12 grid md:mt-16">{"".join(se_slide(k, st) for k, st in enumerate(QUOTED))}</div>'
+                      f'<div class="mt-8 flex justify-center gap-1 lg:mt-0">{dots}</div></div></section>')
     out["STORY_TOGGLES"] = [("stories-x-logo", "Logo"), ("stories-x-company", "Company name"), ("stories-x-quote", "Quote"), ("stories-x-author", "Author")]
 
     out["CSS"] = """<style>
@@ -123,13 +146,29 @@ def build(c):
     .st-col .st-quote { opacity: 0; max-height: 0; transition: opacity .4s; } .st-acc:hover .st-col:hover .st-quote, .st-acc:not(:hover) .st-col:first-child .st-quote { opacity: 1; max-height: 20rem; } }
   @media (min-width: 1024px) { .pc-col { flex: 1 1 0; transition: flex-grow .6s cubic-bezier(.22,1,.36,1); } .pc-acc:hover .pc-col:hover, .pc-acc:not(:hover) .pc-col:first-child { flex-grow: 2.4; }
     .pc-col .pc-more { opacity: 0; max-height: 0; overflow: hidden; transition: opacity .4s; } .pc-acc:hover .pc-col:hover .pc-more, .pc-acc:not(:hover) .pc-col:first-child .pc-more { opacity: 1; max-height: 12rem; } }
-  @media (prefers-reduced-motion: reduce) { .st-col, .pc-col { transition: none; } }
+  .se-slide { opacity: 0; visibility: hidden; transition: opacity .5s ease, visibility 0s linear .5s; }
+  .se-slide.is-on { opacity: 1; visibility: visible; transition: opacity .5s ease; }
+  .se-fig { transform: translateY(12px); transition: transform .7s cubic-bezier(.23,1,.32,1); } .se-slide.is-on .se-fig { transform: none; }
+  .se-dot > span { background: rgb(255 255 255 / .3); transition: background-color .2s ease; } .se-dot[aria-current="true"] > span { background: #fff; }
+  @media (prefers-reduced-motion: reduce) { .st-col, .pc-col, .se-slide, .se-fig { transition: none; } }
 </style>"""
     out["JS"] = """<script>
   document.querySelectorAll("[data-hsl-nav]").forEach((b) => b.addEventListener("click", () => {
     const track = b.closest("section").querySelector("[data-hsl-track]"); const step = track.firstElementChild.getBoundingClientRect().width + 16;
     track.scrollBy({ left: step * +b.dataset.hslNav, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }));
+  // Stories E: one slide at a time; dots, arrows and arrow keys; wraps around.
+  document.querySelectorAll("[data-se]").forEach((root) => {
+    const slides = [...root.querySelectorAll("[data-se-slide]")], dots = [...root.querySelectorAll("[data-se-dot]")];
+    let at = 0;
+    const go = (i) => {
+      at = (i + slides.length) % slides.length;
+      slides.forEach((s, k) => { s.classList.toggle("is-on", k === at); s.toggleAttribute("aria-hidden", k !== at); });
+      dots.forEach((d, k) => (k === at ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
+    };
+    dots.forEach((d) => d.addEventListener("click", () => go(+d.dataset.seDot)));
+    root.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(at + 1); if (e.key === "ArrowLeft") go(at - 1); });
+  });
 </script>"""
     return out
 

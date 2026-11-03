@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-11-03 — Home: Customer Stories E · testimonial slider
+
+- **Mockup:** new Customer Stories option E in `docs/mockups/home/index.html` (`home_extras.py`), after angellist.com/funds.
+- **`home/HomeStorySlider.tsx`** (client) replaces `HomeStoryColumns.tsx`, renamed with `git mv`.
+  - **Section:** a centred h2 "Why service providers choose Sognos" (`text-3xl`, `md:text-4xl`) on navy.
+  - **Card:** one story at a time. A white/5% card holds the quote (`font-heading text-2xl`, hanging open-quote), then a divider and the author and role.
+  - **Photo:** the story's photo, mono with a navy tint, in a `rounded` frame overlapping the card's right edge.
+  - **Logo tile:** in the client's `BRAND_BG` colour, with the logo in white, overlapping the photo's bottom-left.
+  - **Controls:** dots only, plus the arrow keys. It autoplays every 8s, pausing on hover or focus and off under reduced motion; a manual pick restarts the timer. It wraps around, crossfades in 500ms with the photo rising 12px, and reduced motion drops the transitions.
+  - **Phones:** the photo and logo tile sit above the card.
+  - **Removed after review:** the story stats, the Read story link and the prev/next arrows.
+- **Data:** the first 4 quoted stories from `ALL_STORIES`. The section no longer has a "See more customer stories" link, as in the approved mockup.
+
 ## 2026-11-03 — Home: Roster + Genogram sequences, split-flap counters
 
 - **Mockup** (`hero-stack.html`, option D): Roster and Genogram are now timed sequences like Care, and all three bars end on a split-flap counter. The product logos are hidden on all D cards.

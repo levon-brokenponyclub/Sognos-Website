@@ -8,7 +8,7 @@ import HomeCtaBand from "@/components/layout/sections/home/HomeCtaBand";
 import SolutionsSection from "@/components/layout/sections/SolutionsSection";
 import type { NewsInsightArticle } from "@/components/layout/sections/NewsInsightSection";
 import HomeNewsList from "@/components/layout/sections/home/HomeNewsList";
-import HomeStoryColumns from "@/components/layout/sections/home/HomeStoryColumns";
+import HomeStorySlider from "@/components/layout/sections/home/HomeStorySlider";
 import {
   getKnowledgePostArchive,
   type KnowledgePostArchive,
@@ -63,8 +63,8 @@ export default async function HomePage() {
       <HomeCtaBand />
       {/* Industries · A split, 2 + 3 grid (tint) */}
       <HomeIndustriesGrid />
-      {/* Customer Stories · D expanding stories (navy-deep) */}
-      <HomeStoryColumns />
+      {/* Customer Stories · E testimonial slider (navy) */}
+      <HomeStorySlider />
       {/* News & Insights · C editorial rows (tint) */}
       <HomeNewsList articles={newsArticles} />
     </>

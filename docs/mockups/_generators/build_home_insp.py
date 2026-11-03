@@ -254,7 +254,7 @@ SLOTS = [
     ("cta", "CTA band", [("a", "A · Split", CTA_A), ("b", "B · Immersive", CTA_B), ("c", "C · Editorial", CTA_C)], True),
     ("industries", "Industries", [("a", "A · Split", IND_A), ("b", "B · Immersive", IND_B), ("c", "C · Editorial", IND_C),
                                   ("d", "D · Graphic tint cards (HSC)", EX["IND_D"]), ("e", "E · Photo + stat (HSC)", EX["IND_E"]), ("f", "F · Bordered graphic cards (HSC)", EX["IND_F"]), ("g", "G · Photo slider (HSC)", EX["IND_G"])], False),
-    ("stories", "Customer Stories", [("a", "A · Split", STORY_A), ("b", "B · Immersive", STORY_B), ("c", "C · Editorial", STORY_C), ("d", "D · Expanding stories", EX["STORY_D"])], False),
+    ("stories", "Customer Stories", [("a", "A · Split", STORY_A), ("b", "B · Immersive", STORY_B), ("c", "C · Editorial", STORY_C), ("d", "D · Expanding stories", EX["STORY_D"]), ("e", "E · Testimonial slider", EX["STORY_E"])], False),
     ("news", "News & Insights", [("a", "A · Split", NEWS_A), ("b", "B · Immersive", NEWS_B), ("c", "C · Editorial", NEWS_C)], False),
 ]
 FOOT = lambda st: {f"fr-{rk}": st for rk, _ in BP["CH"]["FOOTER_ROWS"]}
