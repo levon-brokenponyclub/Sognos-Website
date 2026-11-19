@@ -874,6 +874,7 @@ const EVENT_BY_SLUG_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   eventMeta{ date, time, venueName, venueAddress, capacity, registerUrl, mapsEmbedUrl, mapsDirectionsUrl },
   challenge{ intro, callout, bullets[]{ icon, text }, closing },
   whyAttend{ heading, intro, items[]{ icon, title }, closing },
+  speakers[]{ name, credentials, role, headshot, bio },
   speaker{ name, credentials, role, headshot, bio },
   agenda{ timeRange, items[]{ time, item } },
   whoShouldAttend{ heading, roles, description },
@@ -890,6 +891,13 @@ export type EventPartner = {
 export type EventBulletItem = { icon: string; text: string };
 export type EventAttendReason = { icon: string; title: string };
 export type EventAgendaItem = { time: string; item: string };
+export type EventSpeaker = {
+  name: string;
+  credentials?: string;
+  role?: string;
+  headshotUrl?: string;
+  bio: string[];
+};
 
 export type EventPageData = {
   title: string;
@@ -930,13 +938,7 @@ export type EventPageData = {
     items: EventAttendReason[];
     closing?: string;
   };
-  speaker: {
-    name?: string;
-    credentials?: string;
-    role?: string;
-    headshotUrl?: string;
-    bio: string[];
-  };
+  speakers: EventSpeaker[];
   agenda: {
     timeRange?: string;
     items: EventAgendaItem[];
@@ -965,6 +967,13 @@ type RawEventPartner = {
 type RawEventBullet = { icon?: string; text?: string };
 type RawEventAttendItem = { icon?: string; title?: string };
 type RawEventAgendaItem = { time?: string; item?: string };
+type RawEventSpeaker = {
+  name?: string;
+  credentials?: string;
+  role?: string;
+  headshot?: SanityImageSource;
+  bio?: string[];
+};
 
 type RawEvent = {
   title?: string;
@@ -1007,13 +1016,9 @@ type RawEvent = {
     items?: RawEventAttendItem[];
     closing?: string;
   };
-  speaker?: {
-    name?: string;
-    credentials?: string;
-    role?: string;
-    headshot?: SanityImageSource;
-    bio?: string[];
-  };
+  speakers?: RawEventSpeaker[];
+  /** Legacy single-speaker field — used only when `speakers` is empty. */
+  speaker?: RawEventSpeaker;
   agenda?: {
     timeRange?: string;
     items?: RawEventAgendaItem[];
@@ -1219,15 +1224,17 @@ export async function getEventBySlug(
       items: whyAttendItems,
       closing: raw.whyAttend?.closing,
     },
-    speaker: {
-      name: raw.speaker?.name,
-      credentials: raw.speaker?.credentials,
-      role: raw.speaker?.role,
-      headshotUrl: raw.speaker?.headshot
-        ? urlFor(raw.speaker.headshot).width(224).auto("format").url()
-        : undefined,
-      bio: raw.speaker?.bio?.filter(Boolean) ?? [],
-    },
+    speakers: (raw.speakers?.length ? raw.speakers : raw.speaker ? [raw.speaker] : [])
+      .filter((s): s is RawEventSpeaker & { name: string } => Boolean(s?.name))
+      .map((s) => ({
+        name: s.name,
+        credentials: s.credentials,
+        role: s.role,
+        headshotUrl: s.headshot
+          ? urlFor(s.headshot).width(224).auto("format").url()
+          : undefined,
+        bio: s.bio?.filter(Boolean) ?? [],
+      })),
     agenda: {
       timeRange: raw.agenda?.timeRange,
       items: agendaItems,

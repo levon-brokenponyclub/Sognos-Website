@@ -354,48 +354,52 @@ export default async function EventPage({
       )}
 
       {/* SPEAKER + AGENDA */}
-      {(event.speaker.name || event.agenda.items.length > 0) && (
+      {(event.speakers.length > 0 || event.agenda.items.length > 0) && (
         <section className="pb-16 lg:pb-24">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
-            {event.speaker.name && (
+            {event.speakers.length > 0 && (
               <div className="rounded-lg bg-gray-200/70 p-8 lg:p-10">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#1D96FC]">
                   <Mic size={16} aria-hidden />
-                  Guest Speaker
+                  {event.speakers.length > 1 ? "Guest Speakers" : "Guest Speaker"}
                 </div>
-                <div className="mt-6 flex items-start gap-5">
-                  {event.speaker.headshotUrl && (
-                    <div className="relative w-24 h-24 lg:w-28 lg:h-28 shrink-0 rounded-lg overflow-hidden">
-                      <Image
-                        src={event.speaker.headshotUrl}
-                        alt={event.speaker.name}
-                        fill
-                        className="object-cover"
-                        sizes="112px"
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="font-heading text-2xl font-medium text-prussian-blue-800 tracking-heading">
-                      {event.speaker.name}
-                      {event.speaker.credentials && (
-                        <> {event.speaker.credentials}</>
+                <div className="divide-y divide-gray-300">
+                  {event.speakers.map((speaker, idx) => (
+                    <div key={`${speaker.name}-${idx}`} className="py-8 first:pt-6 last:pb-0">
+                      <div className="flex items-start gap-5">
+                        {speaker.headshotUrl && (
+                          <div className="relative w-24 h-24 lg:w-28 lg:h-28 shrink-0 rounded-lg overflow-hidden">
+                            <Image
+                              src={speaker.headshotUrl}
+                              alt={speaker.name}
+                              fill
+                              className="object-cover"
+                              sizes="112px"
+                            />
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-heading text-2xl font-medium text-prussian-blue-800 tracking-heading">
+                            {speaker.name}
+                            {speaker.credentials && <> {speaker.credentials}</>}
+                          </h3>
+                          {speaker.role && (
+                            <p className="mt-1 text-sm font-medium text-[#1D96FC]">
+                              {speaker.role}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      {speaker.bio.length > 0 && (
+                        <div className="mt-6 space-y-4 text-sm text-sognos-text-body leading-relaxed">
+                          {speaker.bio.map((para, i) => (
+                            <p key={i}>{para}</p>
+                          ))}
+                        </div>
                       )}
-                    </h3>
-                    {event.speaker.role && (
-                      <p className="mt-1 text-sm font-medium text-[#1D96FC]">
-                        {event.speaker.role}
-                      </p>
-                    )}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-                {event.speaker.bio.length > 0 && (
-                  <div className="mt-6 space-y-4 text-sm text-sognos-text-body leading-relaxed">
-                    {event.speaker.bio.map((para, i) => (
-                      <p key={i}>{para}</p>
-                    ))}
-                  </div>
-                )}
               </div>
             )}
 

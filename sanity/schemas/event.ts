@@ -21,6 +21,33 @@ const ICON_OPTIONS = [
   { title: "Globe", value: "Globe" },
 ];
 
+const SPEAKER_FIELDS = [
+  defineField({ name: "name", title: "Name", type: "string" }),
+  defineField({
+    name: "credentials",
+    title: "Post-nominals / credentials",
+    type: "string",
+    placeholder: "OAM, B.A. (Hons. Psych)",
+  }),
+  defineField({
+    name: "role",
+    title: "Role and organisation",
+    type: "string",
+  }),
+  defineField({
+    name: "headshot",
+    title: "Headshot",
+    type: "image",
+    options: { hotspot: true },
+  }),
+  defineField({
+    name: "bio",
+    title: "Bio paragraphs (one item per paragraph)",
+    type: "array",
+    of: [{ type: "text" }],
+  }),
+];
+
 export const event = defineType({
   name: "event",
   title: "Event",
@@ -70,6 +97,7 @@ export const event = defineType({
           { title: "Conference", value: "Conference" },
           { title: "Roundtable", value: "Roundtable" },
           { title: "Panel discussion", value: "Panel discussion" },
+          { title: "Lunch & Learn", value: "Lunch & Learn" },
         ],
         layout: "dropdown",
       },
@@ -360,36 +388,32 @@ export const event = defineType({
       ],
     }),
     defineField({
+      name: "speakers",
+      group: "content",
+      title: "Guest Speakers",
+      description: "Add one or more speakers. Drag to reorder.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "eventSpeaker",
+          title: "Speaker",
+          fields: SPEAKER_FIELDS,
+          preview: {
+            select: { title: "name", subtitle: "role", media: "headshot" },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: "speaker",
       group: "content",
-      title: "Guest Speaker",
+      title: "Guest Speaker (legacy)",
+      description:
+        "Older single-speaker field. Still shown on the site if Guest Speakers is empty — move this person into Guest Speakers when you next edit.",
       type: "object",
-      fields: [
-        defineField({ name: "name", title: "Name", type: "string" }),
-        defineField({
-          name: "credentials",
-          title: "Post-nominals / credentials",
-          type: "string",
-          placeholder: "OAM, B.A. (Hons. Psych)",
-        }),
-        defineField({
-          name: "role",
-          title: "Role and organisation",
-          type: "string",
-        }),
-        defineField({
-          name: "headshot",
-          title: "Headshot",
-          type: "image",
-          options: { hotspot: true },
-        }),
-        defineField({
-          name: "bio",
-          title: "Bio paragraphs (one item per paragraph)",
-          type: "array",
-          of: [{ type: "text" }],
-        }),
-      ],
+      hidden: ({ value }) => !value?.name,
+      fields: SPEAKER_FIELDS,
     }),
     defineField({
       name: "agenda",
