@@ -1224,7 +1224,14 @@ export async function getEventBySlug(
       items: whyAttendItems,
       closing: raw.whyAttend?.closing,
     },
-    speakers: (raw.speakers?.length ? raw.speakers : raw.speaker ? [raw.speaker] : [])
+    // Legacy single `speaker` is appended (never dropped) unless already in the list.
+    speakers: [
+      ...(raw.speakers ?? []),
+      ...(raw.speaker?.name &&
+      !raw.speakers?.some((s) => s?.name === raw.speaker?.name)
+        ? [raw.speaker]
+        : []),
+    ]
       .filter((s): s is RawEventSpeaker & { name: string } => Boolean(s?.name))
       .map((s) => ({
         name: s.name,
